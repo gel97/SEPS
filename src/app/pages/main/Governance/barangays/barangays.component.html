@@ -1,0 +1,187 @@
+<div class="">
+  <div class="card o-hidden border-2 shadow-sm my-5">
+      <div class="card-body p-0">
+          <!-- Nested Row within Card Body -->
+          <div class="row">
+              <div class="col-lg-12">
+                  <div class="p-5">
+                      <div class="">
+                          <button class="btn btn-outline-primary btn-circle float-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
+                              <i class="fa fa-minus" aria-hidden="true"></i>
+
+                            </button>
+                      </div>
+                      <div class="text-center">
+                        <h1 class="h4 text-gray-900 mb-4"> Physical / Geographic Profile</h1>
+                    </div>
+                      <br>
+                      <form class="user collapse show" id="collapseExample">
+                      <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label class="labelForm" for="govBrgy">Barangay: </label>
+                            </div>
+                            <div class="col-lg-9">
+                                  <select class="form-select" aria-label="Default select example">
+                                      <option selected>Select Barangay</option>
+                                      <option value="1">Mankilam</option>
+                                      <option value="2">Visayan</option>
+                                      <option value="3">La-Filipina</option>
+                                    </select>
+                            </div>
+                        </div><br>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label class="labelForm" for="govBrgyN">Name of Punong Barangay : </label>
+                            </div>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control"  name =""  id="" placeholder="">
+                            </div>
+                        </div><br>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label class="labelForm" for="govBrgyLA">Barangay Land Area (has) : </label>
+                            </div>
+                            <div class="col-lg-9">
+                              <input type="text" class="form-control"  name =""  id="" placeholder="">
+                            </div>
+                        </div><br>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label class="labelForm" for="govBrgyLoc">Location of Barangay Hall: </label>
+                            </div>
+                            <div class="col-lg-9">
+                              <input type="text" class="form-control"  name =""  id="" placeholder="">
+                              </div>
+                            </div><br>
+                            <div class="row">
+                              <div class="col-lg-3">
+                                  <label class="labelForm" for="govBrgyLoc">Contact Number: </label>
+                              </div>
+                              <div class="col-lg-9">
+                                <input type="text" class="form-control"  name =""  id="" placeholder="">
+                                </div>
+                              </div><br>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label class="labelForm" for="govBrgyNPrk">Number of Puroks: </label>
+                            </div>
+                            <div class="col-lg-9">
+                              <input type="text" class="form-control"  name =""  id="" placeholder="">
+                            </div>
+                        </div><br>
+
+                        <div class="row">
+                            <div class="col-lg-3"></div>
+                            <div class="col-lg-9">
+                                <button class="button-60" role="button"><i class="fa fa-plus"><span>ADD</span></i></button>
+                            </div>
+                        </div>
+
+                        <label class="labelTitles"><strong>Barangay Hall Geographic Coordinates:</strong></label><br>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label class="labelForm" for="govBrgyLong">Longitude : </label>
+                            </div>
+                            <div class="col-lg-9">
+                              <input type="text" class="form-control"  name =""  id="" placeholder="#####">                            </div>
+                        </div><br>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label class="labelForm" for="govBrgyLat">Latitude : </label>
+                            </div>
+                            <div class="col-lg-9">
+                              <input type="text" class="form-control"  name =""  id="" placeholder="">                            </div>
+                        </div>
+                    </div>
+
+
+</form>
+
+
+                        <label class="labelTitles" for="tbl_Officials"><strong>List of Barangays</strong></label>
+                        <div class="table-responsive" style="display:block;" id="tbl_Officials">
+                            <div class="my-custom-scrollbar" style="height: 50vh">
+                                <table class="table table-light table-striped">
+                                    <thead>
+                                      <tr>
+                                        <!-- <tr class="tableHeaderText"> -->
+                                            <th ># </th>
+                                            <th > Barangay </th>
+                                            <th> Punong Barangay </th>
+                                            <th> Land Area(has)</th>
+                                            <th>Contact Number </th>
+                                            <th > Number of Puroks </th>
+                                            <th>  </th>
+                                        <!-- </tr> -->
+                                      </tr>
+                                      </thead>
+                                    <tbody class="labelForm">
+                                        <tr>
+                                            <td>
+                                                1
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>
+                                                <button onclick="initialize()" class="button-60" role="button" data-toggle="modal" data-target="#exampleModal"><i style="color:blue" class="fa fa-globe"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                 </div>
+              </div>
+
+          </div>
+
+      </div>
+  </div>
+
+</div>
+
+<!-- modal area -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">SEPS GEOLOCATION TAGGING</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div>
+            <label for="brgyName" style="margin-right: 5px;">Specify location for: </label>
+            <input id="enme" name="brgyName" class="seqInputBox" type="text">
+          </div>
+          <!-- MAP AREA  -->
+          <div>
+            <div id="map_canvas" style="border:1px  solid #000; height:460px;width:720px; margin:auto; " ></div>
+            <p> <label> Longitude : </label> <input type="text" name="longtxt" id="longtxt" value="125.8095069" onchange="manualMarker(this.value)" />  </p>
+			<p> <label> Latitude :  </label> <input type="text" name="lattxt" id="lattxt" value="7.4458795" onchange="manualMarker(this.value)"/>   </p>
+				<input name="fld_id" type="hidden" value="rec_id" />
+				<input name="id" type="hidden" value="570" />
+
+				<input name="tbl" type="hidden" value="admins_bgychairs" />
+				<input name="bgy" type="hidden" id = "bgy" value="Binancian, Asuncion, Davao del Norte" />
+				<input name="ref" type="hidden" value="" />
+			<p>
+				<input type="submit" name="submit" id="submit" value="Tag" class="btnStyle" style="width:80px; " />
+				<input type="button" VALUE="Back" onClick ="location.href = '  '" class="btnStyle" style="width:75px;" />
+			</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
