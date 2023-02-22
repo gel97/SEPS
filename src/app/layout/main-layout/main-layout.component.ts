@@ -49,7 +49,6 @@ export class MainLayoutComponent implements OnInit {
         }  
         return of();
     })).subscribe(response => {
-        console.log(response);
         const reader = new FileReader();
         reader.readAsDataURL(response);
         reader.onload = () => {
@@ -58,7 +57,6 @@ export class MainLayoutComponent implements OnInit {
             this.isLoading = false;
           }
         };
-        console.log("userInfo", this.userInfo)
     });
   }
 
@@ -76,28 +74,21 @@ export class MainLayoutComponent implements OnInit {
   fileChangeEventt(event: any): void {
     this.imageChangedEventt = event;
     this.fileName = event.target.files[0].name;
-    console.log(event.target.files)
 
   }
   imageCroppedd(event: ImageCroppedEvent) {
     this.croppedImagee = event.base64;
   }
   imageLoadedd(image: LoadedImage) {
-    console.log("image: ", image)
-
-    // show cropper
   }
   cropperReadyy(crop: Dimensions) {
     console.log("crop: ", crop)
 
-    // cropper ready
   }
   loadImageFailedd() {
-    // show message
+
   }
   updateImage() {
-    //this.imagesService.uploadImagee(this.croppedImagee).subscribe();
-
     const imageBlob = this.dataURItoBlob(this.croppedImagee);
     const imageFile = new File([imageBlob], this.fileName);
     this.file = imageFile;
@@ -144,11 +135,8 @@ export class MainLayoutComponent implements OnInit {
   }
   signOut() {
     //localStorage.removeItem('token'); 
-
     this.service.clearSession();
     this.router.navigate(['/seps/guest/home']);
-    
-
   }
 
 

@@ -31,15 +31,10 @@ export class DashboardComponent implements OnInit {
   }
   
   ngOnInit(): void {
-    console.log(this.auth.munCityName)
     this.imagesService.GetImage(this.auth.munCityId).pipe(catchError((error: any, caught: Observable<any>): Observable<any> => {
-      //this.errorMessage = error.message;
-      console.error('There was an error!', error);
-      // after handling error, return a new observable 
-      // that doesn't emit any values and completes
+      console.error('There was an error!', error);    
       return of();
   })).subscribe(response => { 
-      console.log(response);
 
     const reader = new FileReader();
     reader.readAsDataURL(response);
@@ -48,7 +43,6 @@ export class DashboardComponent implements OnInit {
         this.croppedImage = reader.result.toString();
       }   
     };
-      console.log("image", response)
     });
   }
  
@@ -66,28 +60,18 @@ export class DashboardComponent implements OnInit {
   fileChangeEvent(event: any): void {
       this.imageChangedEvent = event;
       this.fileName = event.target.files[0].name;
-      console.log("filechangeEvent: ",event)
 
   }
   imageCropped(event: ImageCroppedEvent) {
       this.croppedImage = event.base64;
       this.img = event.base64;
-      //console.log("imageCropped: ", this.croppedImage)
-     // console.log("file", event.base64)
-
   }
   imageLoaded(image: LoadedImage) {
-    console.log("image: ", image)
 
-      // show cropper
   }
   cropperReady(crop: Dimensions) {
-    console.log("crop: ", crop)
-
-      // cropper ready
   }
   loadImageFailed() {
-      // show message
   }
   updateImage(){
     this.croppedImage;
@@ -95,7 +79,6 @@ export class DashboardComponent implements OnInit {
     const imageFile = new File([imageBlob], this.fileName);
     this.file = imageFile;
     this.ProceedUpload();
-    console.log("imageFile: ", this.file)
   }
   ProceedUpload() {
     let formdata = new FormData();
@@ -136,7 +119,6 @@ export class DashboardComponent implements OnInit {
     ).subscribe();
   }
   handleImageError(event: any) {
-    console.log("error: ", event.target)
       event.target.src = 'assets/img/image.png';
       event.target.height = '100';
       event.target.width = '100';
