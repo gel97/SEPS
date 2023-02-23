@@ -61,13 +61,11 @@ callLoginButton() {
       }
      
       localStorage.setItem("token", this.userData.token);
-      // localStorage.setItem("userData", JSON.stringify(this.userData));
+      localStorage.setItem("userData", JSON.stringify(this.userData));
       this.zone.run(() => {
         this.router.navigate(['/']);
       });
-
-     
-      
+   
      /* Write Your Code Here */
   
     }, (error:any) => {

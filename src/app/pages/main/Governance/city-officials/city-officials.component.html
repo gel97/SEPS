@@ -1,25 +1,49 @@
 
 <div class="">
-
-  <div class="card o-hidden border-2 shadow-sm my-5">
+  <ng-template #isEmpty>
+    <div class="center-div">
+      <div class="row">
+        <div class="col-lg-12">
+          <img src="assets/img/empty-box.png" class="rounded mx-auto d-block" height="200">
+    
+        </div>
+        <div class="col-lg-12">
+          <p class="text-center text-lg text-primary font-weight-bold">NO DATA FOUND.</p>
+        </div>
+        <div class="col-lg-12 text-center p-lg-2">
+          <button class="btn btn-primary">
+            Import 
+          </button>
+        </div>
+        <div class="col-lg-12 text-center">
+          <p class="text-center text-sm text-gray-800 font-weight-normal">
+            Press the button above to import SEP Data from previous year.
+          </p>
+        </div>
+      </div>    
+    </div>
+  </ng-template>
+   
+  <div *ngIf="Official.length > 0 ; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
       <div class="card-body p-0">
           <!-- Nested Row within Card Body -->
           <div class="row">
               <div class="col-lg-12">
                   <div class="p-5">
                       <div class="">
-                          <button class="btn btn-outline-primary btn-circle float-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
+                          <!-- <button class="btn btn-outline-primary btn-circle float-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
                               <i class="fa fa-minus" aria-hidden="true"></i>
 
-                            </button>
+                            </button> -->
                       </div>
                       <div class="text-center">
                           <h1 class="h4 text-gray-900 mb-4">Municipal Officials</h1>
+                          <label><strong>Governance - Municipality of  Asuncion - City Officials</strong></label><br>
                       </div>
 
 <!--
                       <form class="user collapse show" id="collapseExample">
-
+s
 
                           <div class="form-group">
 
@@ -66,8 +90,8 @@
                         <p>List of Municipal Officials:</p>
                       </div>
                       <div class ="col-lg-2">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd ">
-                          Add City Officials
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd "><i class="fa fa-plus"></i>
+                           City Officials
                         </button>
                       </div>
                      </div>
@@ -93,7 +117,11 @@
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    <tr *ngFor="let text of  Official | paginate: { itemsPerPage: 10, currentPage: p}">
+                                    <tr *ngFor="let text of  Official  | paginate:{
+                                      itemsPerPage: tableSize,
+                                      currentPage: p,
+                                      totalItems:count};">
+                                   <!-- <tr *ngFor="let text of  Official | paginate: { itemsPerPage: 10, currentPage: p}"> -->
                                       <!-- <th scope="row">{{i + 1}}</th> -->
                                       <td></td>
                                       <td>{{text.seqNo}}</td>
@@ -109,7 +137,30 @@
                                     </tr>
                                   </tbody>
                               </table>
-                              <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                              <!-- Pagination Control -->
+                              <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
+
+     <div class = "row">
+      <div class="col-lg-12">
+      <form class="form-inline float-right ">
+      <pagination-controls
+      previousLabel="Prev"
+      currentPage="Next"
+      (pageChange) ="onTableDataChange($event)">
+      </pagination-controls>
+      <ul>
+      <select (change)="onTableSizeChange($event)">
+        <option *ngFor = "let size of tableSizes ">
+           {{size}}
+        </option>
+         </select>
+        </ul>
+   </form>
+</div>
+</div>
+
+
+
 
                             </div>
                              </div>
@@ -122,11 +173,11 @@
 
 <!-- Modal For Adding the CityOfficials -->
 <!-- Modal -->
-<div class="modal fade" id="ModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+<div class="modal fade bd-example-modal-lg"id="ModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalLabel">City Officials</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -134,11 +185,11 @@
       <div class="modal-body">
         <div class="row">
 
-          <div class ="col-lg-6"><br>
+          <div class ="col-lg-12"><br>
            <label for="exampleFormControlTextarea1" >Sequence Number :</label>
            <input type="text" class="form-control" name ="seqNo" [(ngModel)]="city.seqNo" id="SeqNum" placeholder="">
           </div>
-          <div class ="col-lg-6"><br>
+          <div class ="col-lg-12"><br>
            <label for="exampleFormControlTextarea1" >Term of Office :</label>
 
            <input type="text" class="form-control" name ="Term" [(ngModel)]="city.term" id="Term" placeholder="">
@@ -162,8 +213,10 @@
          </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" *ngIf="updateOfficial" (click)="addOfficial()">Save</button>&nbsp;
-        <button id = "Cancel"  class="btn btn-secondary" *ngIf="updateOfficial" (click) ="city={}">Cancel</button>&nbsp;
+
+        <button type="button" class="btn btn-primary" *ngIf="updateOfficial" (click)="addOfficial()"><i class="fa fa-check"></i>Save</button>&nbsp;
+        <button type ="button" class="btn btn-secondary" *ngIf="updateOfficial" (click) ="city={}"><i class="fa fa-times"></i>Cancel</button>
+
         <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
       </div>
     </div>
@@ -219,29 +272,14 @@
                   </div>
                    </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="update();updateOfficial=true;" data-dismiss="modal" >UPDATE</button>&nbsp;
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">CLOSE</button>
+        <button type="button" class="btn btn-primary" (click)="update();updateOfficial=true;" data-dismiss="modal"><i class="fa fa-edit"></i>Update</button>&nbsp;
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
 
       </div>
     </div>
   </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+</div>
 
 <!--
 <div class="container" style="width: 100%; " >

@@ -1,4 +1,4 @@
-import { CityOfficialService } from 'src/app/shared/city-official.service';
+import { CityOfficialService } from 'src/app/shared/Governance/city-official.service';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -116,6 +116,8 @@ import { CityLocationComponent } from './pages/main/Governance/city-location/cit
 import { NgxPaginationModule } from 'ngx-pagination';
 import { DashboardComponent } from './pages/main/Dashboard/dashboard/dashboard.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { LoadingComponent } from './components/loading/loading.component';
+import { SepDataComponent } from './pages/main/Tools/sep-data/sep-data.component';
 
 
 
@@ -227,6 +229,8 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     FiscalReportComponent,
     CityLocationComponent,
     DashboardComponent,
+    LoadingComponent,
+    SepDataComponent,
 
   ],
   imports: [

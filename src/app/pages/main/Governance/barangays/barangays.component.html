@@ -6,145 +6,165 @@
               <div class="col-lg-12">
                   <div class="p-5">
                       <div class="">
-                          <button class="btn btn-outline-primary btn-circle float-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
+                          <!-- <button class="btn btn-outline-primary btn-circle float-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
                               <i class="fa fa-minus" aria-hidden="true"></i>
-
-                            </button>
+                            </button> -->
                       </div>
                       <div class="text-center">
-                        <h1 class="h4 text-gray-900 mb-4"> Physical / Geographic Profile</h1>
+                        <h1 class="h4 text-gray-900 mb-4">Barangay Officials</h1>
+                        <label><strong>Governance - Municipality of {{ViewBarangayOfficial.munCityName}} - Barangay Officials</strong></label><br>
                     </div>
                       <br>
-                      <form class="user collapse show" id="collapseExample">
-                      <div class="form-group">
-                        <div class="row">
-                            <div class="col-lg-3">
-                                <label class="labelForm" for="govBrgy">Barangay: </label>
-                            </div>
-                            <div class="col-lg-9">
-                                  <select class="form-select" aria-label="Default select example">
-                                      <option selected>Select Barangay</option>
-                                      <option value="1">Mankilam</option>
-                                      <option value="2">Visayan</option>
-                                      <option value="3">La-Filipina</option>
-                                    </select>
-                            </div>
-                        </div><br>
-                        <div class="row">
-                            <div class="col-lg-3">
-                                <label class="labelForm" for="govBrgyN">Name of Punong Barangay : </label>
-                            </div>
-                            <div class="col-lg-9">
-                                <input type="text" class="form-control"  name =""  id="" placeholder="">
-                            </div>
-                        </div><br>
-                        <div class="row">
-                            <div class="col-lg-3">
-                                <label class="labelForm" for="govBrgyLA">Barangay Land Area (has) : </label>
-                            </div>
-                            <div class="col-lg-9">
-                              <input type="text" class="form-control"  name =""  id="" placeholder="">
-                            </div>
-                        </div><br>
-                        <div class="row">
-                            <div class="col-lg-3">
-                                <label class="labelForm" for="govBrgyLoc">Location of Barangay Hall: </label>
-                            </div>
-                            <div class="col-lg-9">
-                              <input type="text" class="form-control"  name =""  id="" placeholder="">
-                              </div>
-                            </div><br>
-                            <div class="row">
-                              <div class="col-lg-3">
-                                  <label class="labelForm" for="govBrgyLoc">Contact Number: </label>
-                              </div>
-                              <div class="col-lg-9">
-                                <input type="text" class="form-control"  name =""  id="" placeholder="">
-                                </div>
-                              </div><br>
-                        <div class="row">
-                            <div class="col-lg-3">
-                                <label class="labelForm" for="govBrgyNPrk">Number of Puroks: </label>
-                            </div>
-                            <div class="col-lg-9">
-                              <input type="text" class="form-control"  name =""  id="" placeholder="">
-                            </div>
-                        </div><br>
 
-                        <div class="row">
-                            <div class="col-lg-3"></div>
-                            <div class="col-lg-9">
-                                <button class="button-60" role="button"><i class="fa fa-plus"><span>ADD</span></i></button>
-                            </div>
-                        </div>
-
-                        <label class="labelTitles"><strong>Barangay Hall Geographic Coordinates:</strong></label><br>
-                        <div class="row">
-                            <div class="col-lg-3">
-                                <label class="labelForm" for="govBrgyLong">Longitude : </label>
-                            </div>
-                            <div class="col-lg-9">
-                              <input type="text" class="form-control"  name =""  id="" placeholder="#####">                            </div>
-                        </div><br>
-                        <div class="row">
-                            <div class="col-lg-3">
-                                <label class="labelForm" for="govBrgyLat">Latitude : </label>
-                            </div>
-                            <div class="col-lg-9">
-                              <input type="text" class="form-control"  name =""  id="" placeholder="">                            </div>
-                        </div>
-                    </div>
+<div class ="row">
+  <div class="col-lg-9"><br>
+    <p>List of Barangays</p>
+  </div>
+  <!-- <div class ="col-lg-3">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd "><i class="fa fa-plus"></i>
+      Barangays Officials
+    </button>
+  </div> -->
+ </div>
 
 
-</form>
-
-
-                        <label class="labelTitles" for="tbl_Officials"><strong>List of Barangays</strong></label>
-                        <div class="table-responsive" style="display:block;" id="tbl_Officials">
-                            <div class="my-custom-scrollbar" style="height: 50vh">
-                                <table class="table table-light table-striped">
-                                    <thead>
-                                      <tr>
-                                        <!-- <tr class="tableHeaderText"> -->
-                                            <th ># </th>
-                                            <th > Barangay </th>
-                                            <th> Punong Barangay </th>
-                                            <th> Land Area(has)</th>
-                                            <th>Contact Number </th>
-                                            <th > Number of Puroks </th>
-                                            <th>  </th>
-                                        <!-- </tr> -->
-                                      </tr>
-                                      </thead>
-                                    <tbody class="labelForm">
-                                        <tr>
-                                            <td>
-                                                1
-                                            </td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td>
-                                                <button onclick="initialize()" class="button-60" role="button" data-toggle="modal" data-target="#exampleModal"><i style="color:blue" class="fa fa-globe"></i></button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-
-                 </div>
-              </div>
-
-          </div>
+ <div class="form-group">
+  <div class ="row">
+    <div class="row">
 
       </div>
-  </div>
+      <table class="table table-framed table-hover table-striped">
+        <thead>
+            <tr>
+              <th scope="col">Barangay</th>
+              <th scope="col">Punong Barangay</th>
+              <th scope="col">Land Area</th>
+              <th scope="col">Barangay Location</th>
+              <th scope="col">Contact Details </th>
+              <th scope="col">No. of Puroks</th>
+              <th scope="col">Geo-Coord.</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let text of  ViewBarangayOfficial | paginate:{
+              itemsPerPage: tableSize,
+              currentPage: p,
+              totalItems:count};">
 
+              <td>{{text.brgyName}}</td>
+              <td>{{text.punongBrgy}}</td>
+              <td>{{text.landArea}}</td>
+              <td>{{text.address}} </td>
+              <td>{{text.contactNo}}</td>
+              <td>{{text.purokNo}}</td>
+              <td>{{text.longitude}}, {{text.latitude}}</td>
+              <td>
+                <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info" data-toggle="modal" data-target="#ModalEdit" ><i class="fa fa-edit"></i> </button>&nbsp;
+                <!-- <button type="button" title="Delete" class="btn btn-warning" ><i class="fa fa-trash"></i>  </button> -->
+                <button onclick="initialize()" class="button-60" role="button" (click)="editmodal=text"  data-toggle="modal" data-target="#exampleModal"><i style="color:blue" class="fa fa-globe"></i></button>
+
+              </td>
+            </tr>
+          </tbody>
+      </table>
+    <!-- Pagination Control -->
+
+    <div class = "row">
+      <div class="col-lg-12">
+      <form class="form-inline float-right ">
+      <pagination-controls
+      previousLabel="Prev"
+      currentPage="Next"
+      (pageChange) ="onTableDataChange($event)">
+      </pagination-controls>
+      <ul>
+      <select (change)="onTableSizeChange($event)">
+        <option *ngFor = "let size of tableSizes ">
+           {{size}}
+        </option>
+         </select>
+        </ul>
+   </form>
 </div>
+                </div>
+             </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal Edit Barangay Officials-->
+
+<div class="modal fade bd-example-modal-lg" id ="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <!-- <div class="modal-dialog modal-dialog-scrollable" role="document"> -->
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalScrollableTitle">Update your Data</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <!-- <div class ="col-lg-12"><br>
+            <label for="category">Barangay :</label>
+            <select class="form-select" aria-label="Default select example" [(ngModel)] = "editmodal.brgyName">
+                <option selected>Select Barangay</option>
+                <option value="1">Mankilam</option>
+                <option value="2">Visayan</option>
+                <option value="3">La-Filipina</option>
+              </select>
+           </div> -->
+
+           <div class ="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1" >Punong Barangay:</label>
+            <input type="text" class="form-control" id="punongBrgy"  name ="punongBrgy" [(ngModel)]="editmodal.punongBrgy" placeholder="">
+           </div>
+           <div class ="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1" >Contact Number:</label>
+            <input type="text" class="form-control" id="contactNo"  name ="contactNo" [(ngModel)]="editmodal.contactNo" placeholder="">
+           </div>
+           <div class ="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1" >Location of Barangay Hall:</label>
+            <input type="text" class="form-control" id="address"  name ="address"[(ngModel)]="editmodal.address" placeholder="">
+           </div>
+
+           <div class ="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1">Number of Puroks:</label>
+            <input type="number" class="form-control" id="purokNo"  name ="purokNo" [(ngModel)]="editmodal.purokNo" placeholder="">
+           </div>
+           <div class ="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1" >Barangay Land Area (HAS):</label>
+            <input type="number" class="form-control" id="landArea"  name ="landArea" [(ngModel)]="editmodal.landArea" placeholder="">
+           </div><br><br>
+           <label class="labelTitles">Barangay Hall Geographic Coordinates:</label><br>
+          <div class ="col-lg-12"><br>
+      <label for="exampleFormControlTextarea1">Longitude:</label>
+      <input type="number" class="form-control" id="longitude"  name ="longitude" [(ngModel)]="editmodal.longitude" placeholder="">
+     </div>
+     <div class ="col-lg-12"><br>
+      <label for="exampleFormControlTextarea1" >Latitude:</label>
+      <input type="number" class="form-control" id="latitude" name = "latitude" [(ngModel)] ="editmodal.latitude" placeholder="">
+     </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="updateM();UpdateBarangay=true; "><i class="fa fa-check"></i>Save</button>&nbsp;
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+
 
 <!-- modal area -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
@@ -158,30 +178,33 @@
         </div>
         <div class="modal-body">
           <div>
-            <label for="brgyName" style="margin-right: 5px;">Specify location for: </label>
-            <input id="enme" name="brgyName" class="seqInputBox" type="text">
+            <label for="brgyName" style="margin-right: 5px;" id ="enme">Location</label>
+            <!-- <input id="enme" name="brgyName" class="seqInputBox" type="text"> -->
           </div>
           <!-- MAP AREA  -->
           <div>
             <div id="map_canvas" style="border:1px  solid #000; height:460px;width:720px; margin:auto; " ></div>
-            <p> <label> Longitude : </label> <input type="text" name="longtxt" id="longtxt" value="125.8095069" onchange="manualMarker(this.value)" />  </p>
-			<p> <label> Latitude :  </label> <input type="text" name="lattxt" id="lattxt" value="7.4458795" onchange="manualMarker(this.value)"/>   </p>
+            <p> <label> Longitude : </label>
+              <input type="number" name="longtxt" id="longtxt" [(ngModel)]="editmodal.longitude" onchange="manualMarker(this.value)" #long />  </p>
+			<p><label> Latitude :  </label>
+         <input type="number" name="lattxt" id="lattxt" [(ngModel)]="editmodal.latitude" onchange="manualMarker(this.value)" #lat  />   </p>
 				<input name="fld_id" type="hidden" value="rec_id" />
 				<input name="id" type="hidden" value="570" />
 
 				<input name="tbl" type="hidden" value="admins_bgychairs" />
 				<input name="bgy" type="hidden" id = "bgy" value="Binancian, Asuncion, Davao del Norte" />
 				<input name="ref" type="hidden" value="" />
-			<p>
+			<!-- <p>
 				<input type="submit" name="submit" id="submit" value="Tag" class="btnStyle" style="width:80px; " />
 				<input type="button" VALUE="Back" onClick ="location.href = '  '" class="btnStyle" style="width:75px;" />
-			</p>
+			</p> -->
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-secondary"  data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary"   (click)="updateM();UpdateBarangay=true;" >Save changes</button>
         </div>
       </div>
     </div>
   </div>
+

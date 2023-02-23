@@ -6,6 +6,9 @@ import { HttpErrorResponse, HttpEventType } from '@angular/common/http';
 import { catchError } from 'rxjs/internal/operators/catchError';
 import { map } from 'rxjs/internal/operators/map';
 import Swal from 'sweetalert2';
+import { AuthService } from 'src/app/services/auth.service';
+import { Observable } from 'rxjs/internal/Observable';
+import { of } from 'rxjs/internal/observable/of';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,17 +24,23 @@ export class DashboardComponent implements OnInit {
   croppedImage: any = '';
   file!:File;
   fileName:any='';
-  munCityId:any='112301';
   progressvalue = 0;
 
-  constructor(private baseUrl: BaseUrl, private imagesService: ImagesService) { 
+  constructor(private auth:AuthService, private baseUrl: BaseUrl, private imagesService: ImagesService) { 
     
   }
-
-
+  
   ngOnInit(): void {
-    console.log(this.baseUrl.apiurl)
-    this.imagesService.GetImage(this.munCityId).pipe().subscribe(response => { 
+    console.log(this.auth.munCityName)
+    this.imagesService.GetImage(this.auth.munCityId).pipe(catchError((error: any, caught: Observable<any>): Observable<any> => {
+      //this.errorMessage = error.message;
+      console.error('There was an error!', error);
+      // after handling error, return a new observable 
+      // that doesn't emit any values and completes
+      return of();
+  })).subscribe(response => { 
+      console.log(response);
+
     const reader = new FileReader();
     reader.readAsDataURL(response);
     reader.onload = () => {
@@ -57,7 +66,7 @@ export class DashboardComponent implements OnInit {
   fileChangeEvent(event: any): void {
       this.imageChangedEvent = event;
       this.fileName = event.target.files[0].name;
-      console.log(event.target.files)
+      console.log("filechangeEvent: ",event)
 
   }
   imageCropped(event: ImageCroppedEvent) {
@@ -81,6 +90,7 @@ export class DashboardComponent implements OnInit {
       // show message
   }
   updateImage(){
+    this.croppedImage;
     const imageBlob = this.dataURItoBlob(this.croppedImage);
     const imageFile = new File([imageBlob], this.fileName);
     this.file = imageFile;
@@ -89,7 +99,7 @@ export class DashboardComponent implements OnInit {
   }
   ProceedUpload() {
     let formdata = new FormData();
-    formdata.append("file", this.file, this.munCityId)
+    formdata.append("file", this.file, this.auth.munCityId)
 
     this.imagesService.UploadImage(formdata).pipe(
       map(events => {
@@ -125,4 +135,12 @@ export class DashboardComponent implements OnInit {
 
     ).subscribe();
   }
+  handleImageError(event: any) {
+    console.log("error: ", event.target)
+      event.target.src = 'assets/img/image.png';
+      event.target.height = '100';
+      event.target.width = '100';
+  }
+ 
+ 
 }

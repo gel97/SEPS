@@ -180,3 +180,9 @@ h2 {
 .button-60:focus:not(:active) {
   box-shadow: rgba(72, 95, 199, .25) 0 0 0 .125em;
 }
+
+.center-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }

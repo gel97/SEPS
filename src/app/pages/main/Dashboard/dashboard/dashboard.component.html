@@ -1,12 +1,14 @@
 
 <div class="card border-2 shadow-sm">
-    <label for="fileInput" class="position-absolute top-0 end-0 p-2 pointer">
-        <h5>
-            <i class='fas fa-pencil-alt' data-toggle="modal" data-target="#uploadModal"></i>
-        </h5>      
-    </label>
-    <input id="fileInput" type="file" style="display:none" (change)="fileChangeEvent($event)">
-    <img [src]="croppedImage"/>
+  <label for="fileInput" class="position-absolute top-0 end-0 p-2 pointer">
+      <h5>
+          <i class='fas fa-pencil-alt bg-primary p-2 rounded-circle text-white' data-toggle="modal" data-target="#uploadModal"></i>
+      </h5>      
+  </label>
+  <input id="fileInput" type="file"  style="display:none" (change)="fileChangeEvent($event)">
+  <img *ngIf="croppedImage" [src]="croppedImage" (error)="handleImageError($event)"/>
+  <img *ngIf="!croppedImage" src="assets/img/image.png" height="50" width="50"/>
+
 </div>
 
 <!-- Modal -->

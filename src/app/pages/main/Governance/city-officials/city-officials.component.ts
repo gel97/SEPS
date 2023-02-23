@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { CityOfficialService } from 'src/app/shared/city-official.service'; // import service
+import { CityOfficialService } from 'src/app/shared/Governance/city-official.service'; // import service
 import  {DatePipe} from '@angular/common';
 import { Pipe, PipeTransform } from '@angular/core';
 import Swal from 'sweetalert2';
-import { take,of } from 'rxjs';
+import { take,of, concatMap, delay } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-city-officials',
@@ -11,9 +12,9 @@ import { take,of } from 'rxjs';
   styleUrls: ['./city-officials.component.css']
 })
 export class CityOfficialsComponent implements OnInit {
-p: string|number|undefined;
+  isLoading:boolean = true;
 
-  constructor(private service:CityOfficialService) { } // private service: + name of service that you've created
+  constructor(private service:CityOfficialService, private auth:AuthService) { } // private service: + name of service that you've created
   Official:any = [];
   city: any = {};
   city2:any = {};
@@ -22,18 +23,19 @@ p: string|number|undefined;
   editModal: any={};
   AddModal:any ={};
 
-
+  pageSize = 25;
+  p: string|number|undefined;
+  count: number =0;
+  tableSize:number = 5;
+  tableSizes:any =[5,10,15,25,50,100];
 
   date = new DatePipe('en-PH')
   ngOnInit(): void {
-  this.Init(
-      );
-
+    this.Init();
  }
 
   Init(){
-      this.service. GetOfficial().subscribe(data=>{
-      //  alert("ASDASD")
+      this.service.GetOfficial().subscribe(data=>{
       this.Official=(<any>data);
       this.Official=this.Official.filter((s:any) => s.tag == 1); // filter by tag
       this.Official.sort((n1:any,n2:any)=>{ //order by Ascending
@@ -42,10 +44,12 @@ p: string|number|undefined;
         else return 0;
       })
       console.log(this.Official)
+      this.isLoading = false;
 
      })
-    //alert(localStorage.getItem('token'));
   }
+
+
 
   addOfficial() {
     this.city.transId = this.date.transform(Date.now(),'YYMM');
@@ -112,13 +116,11 @@ editOfficial(editOfficial:any={}) {
   this.editModal=editOfficial;
 //passing the data from table (modal)
 this.Init();
-
 }
+
 //for modal
 update(){
-this.service.UpdateOfficial(this.editModal)
-.subscribe({
-next:(_data)=>{
+this.service.UpdateOfficial(this.editModal).subscribe({next:(_data)=>{
 // this.editModal();
 },
 });
@@ -167,16 +169,29 @@ delete(official2:any={}){
           'success'
         );
         this.Init();
-        //this.city = {};
+        this.city = {};
       })
     } else if (result.dismiss === Swal.DismissReason.cancel){
 
     }
       this.Init();
-     // this.city = {};
+      this.city = {};
   })
 }
 
+
+onTableDataChange(page:any){ //paginate
+  console.log(page)
+  this.p = page;
+  this.Init();
+
+}
+onTableSizeChange(event:any ){ //paginate
+  this.tableSize = event. target.value;
+  this.p = 1;
+  this.Init();
+
+}
 
 
 }

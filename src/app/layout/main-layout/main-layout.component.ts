@@ -1,13 +1,15 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-import {ImagesService} from 'src/app/services/image.service';
+import { ImagesService } from 'src/app/services/image.service';
 import { BaseUrl } from 'src/app/services/baseUrl.service';
 import { Dimensions, ImageCroppedEvent, ImageCropperComponent, LoadedImage } from 'ngx-image-cropper';
 import { HttpErrorResponse, HttpEventType } from '@angular/common/http';
 import { catchError } from 'rxjs/internal/operators/catchError';
 import { map } from 'rxjs/internal/operators/map';
 import Swal from 'sweetalert2';
+import { Observable, of } from "rxjs";
+import { concatMap, delay } from "rxjs/operators";
 
 @Component({
   selector: 'app-main-layout',
@@ -16,35 +18,51 @@ import Swal from 'sweetalert2';
 })
 export class MainLayoutComponent implements OnInit {
   @ViewChild('closeModal')
-  closeModal!: ElementRef; 
+  closeModal!: ElementRef;
+  fakeObservable = of('dummy').pipe(delay(100000));
 
   imageChangedEventt: any = '';
   croppedImagee: any = '';
-  file!:File;
-  fileName:any='';
-  munCityId:any='112301';
+  file!: File;
+  fileName: any = '';
   progressvalue = 0;
+  munCityName: any = '';
+  isLoading: boolean = true;
+  set_year:any;
+  active_set_year:any;
 
-  constructor(private service:AuthService,private router: Router, private baseUrl: BaseUrl, private imagesService: ImagesService ) { }
+  constructor(private service: AuthService, private router: Router, private baseUrl: BaseUrl, private imagesService: ImagesService) { }
 
-  _userData:any = {};
-  userInfo:any={};
+  _userData: any = {};
+  userInfo: any = {};
 
   ngOnInit(): void {
+    this.set_year = this.service.setYear;
+    this.active_set_year = this.service.activeSetYear;
     this._userData = this.service.getUserData();
-    this.userInfo = JSON.parse( this._userData);
-    this.imagesService.GetLogo(this.munCityId).pipe().subscribe(response => { 
-      const reader = new FileReader();
-      reader.readAsDataURL(response);
-      reader.onload = () => {
-        if (reader.result) {
-          this.croppedImagee = reader.result.toString();
-        }   
-      };
-        console.log("image", response)
-      });
+    this.munCityName = this.service.munCityName;
+    this.userInfo = JSON.parse(this._userData);
+      this.imagesService.GetLogo(this.service.munCityId).pipe(concatMap(item => of(item).pipe(delay(2000))), catchError((error: any, caught: Observable<any>): Observable<any> => {
+        console.error('There was an error!', error);  
+        if(error){
+          this.isLoading = false;
+        }  
+        return of();
+    })).subscribe(response => {
+        console.log(response);
+        const reader = new FileReader();
+        reader.readAsDataURL(response);
+        reader.onload = () => {
+          if (reader.result) {
+            this.croppedImagee = reader.result.toString();
+            this.isLoading = false;
+          }
+        };
+        console.log("userInfo", this.userInfo)
+    });
   }
-dataURItoBlob(dataURI:any) {
+
+  dataURItoBlob(dataURI: any) {
     const byteString = atob(dataURI.split(',')[1]);
     const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
     const ab = new ArrayBuffer(byteString.length);
@@ -56,28 +74,28 @@ dataURItoBlob(dataURI:any) {
   }
 
   fileChangeEventt(event: any): void {
-      this.imageChangedEventt = event;
-      this.fileName = event.target.files[0].name;
-      console.log(event.target.files)
+    this.imageChangedEventt = event;
+    this.fileName = event.target.files[0].name;
+    console.log(event.target.files)
 
   }
   imageCroppedd(event: ImageCroppedEvent) {
-      this.croppedImagee = event.base64;
+    this.croppedImagee = event.base64;
   }
   imageLoadedd(image: LoadedImage) {
     console.log("image: ", image)
 
-      // show cropper
+    // show cropper
   }
   cropperReadyy(crop: Dimensions) {
     console.log("crop: ", crop)
 
-      // cropper ready
+    // cropper ready
   }
   loadImageFailedd() {
-      // show message
+    // show message
   }
-  updateImage(){
+  updateImage() {
     //this.imagesService.uploadImagee(this.croppedImagee).subscribe();
 
     const imageBlob = this.dataURItoBlob(this.croppedImagee);
@@ -88,7 +106,7 @@ dataURItoBlob(dataURI:any) {
   }
   ProceedUpload() {
     let formdata = new FormData();
-    formdata.append("file", this.file, this.munCityId)
+    formdata.append("file", this.file, this.service.munCityId)
 
     this.imagesService.UploadLogo(formdata).pipe(
       map(events => {
@@ -104,7 +122,7 @@ dataURItoBlob(dataURI:any) {
               timer: 1500
             })
             this.closeModal.nativeElement.click()
-           console.log("HttpEventType.Response : Upload completed")
+            console.log("HttpEventType.Response : Upload completed")
             setTimeout(() => {
               this.progressvalue = 0;
             }, 2500);
@@ -125,8 +143,11 @@ dataURItoBlob(dataURI:any) {
     ).subscribe();
   }
   signOut() {
-    localStorage.removeItem('token');
+    //localStorage.removeItem('token'); 
+
+    this.service.clearSession();
     this.router.navigate(['/seps/guest/home']);
+    
 
   }
 
