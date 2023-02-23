@@ -11,7 +11,7 @@ import { GuestLayoutComponent } from './layout/guest-layout/guest-layout.compone
 import { LoginComponent } from './pages/guest/login/login.component'
 import { MdbCollapseModule } from 'mdb-angular-ui-kit/collapse';
 import { GuestHomeComponent } from './pages/guest/guest-home/guest-home.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+//import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { RegisterComponent } from './pages/guest/register/register.component';
 import { MainHomeComponent } from './pages/main/main-home/main-home.component';
 import { TokenInterceptorService } from './services/token-interceptor.service';
@@ -236,7 +236,7 @@ import { SepDataComponent } from './pages/main/Tools/sep-data/sep-data.component
   imports: [
     MdbCollapseModule,
     BrowserModule,
-    FontAwesomeModule,
+   // FontAwesomeModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
