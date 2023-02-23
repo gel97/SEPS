@@ -1,0 +1,22 @@
+.loading-bar {
+    width: 100%;
+    height: 4px;
+    overflow: hidden;
+    background-color: #91CEFF;
+  }
+  
+  .loading-indicator {
+    width: 100%;
+    height: 100%;
+    background-color: #0060CA;
+    animation: loading-animation 2s linear infinite;
+  }
+  
+  @keyframes loading-animation {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(100%);
+    }
+  }

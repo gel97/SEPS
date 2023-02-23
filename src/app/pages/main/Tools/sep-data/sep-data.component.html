@@ -1,0 +1,28 @@
+<i class="fa fa-database" data-bs-toggle="modal" data-bs-target="#mSepYear" aria-hidden="true"></i>
+  <!-- Modal -->
+  <div class="modal fade" id="mSepYear" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-dark" id="exampleModalLabel">SELECT</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <label class="text-dark">SEP Year:</label>
+            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" [(ngModel)]="set_year">
+                <option value="2022">2022</option>
+                <option value="2021">2021</option>
+                <option value="2020">2020</option>
+            </select>
+            <label class="text-dark">Muncipality / City:</label>
+            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" [(ngModel)]="muncity_id">
+              <option *ngFor="let item of list_muncity" value={{item.munCityId}}>{{item.munCityName}}</option>            
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" (click)="SetData()">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
