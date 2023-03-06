@@ -12,7 +12,7 @@ import { GeoProfileService } from 'src/app/shared/Governance/geo-profile.service
 })
 export class GeoProfileComponent implements OnInit {
 
-constructor( private service: GeoProfileService, private auth:AuthService) { }
+constructor( private service:GeoProfileService, private auth:AuthService) { }
 ViewGeo: any =[];
 geo:any={};
 updategeo:any ={};

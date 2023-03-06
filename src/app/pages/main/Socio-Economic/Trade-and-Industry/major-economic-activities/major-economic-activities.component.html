@@ -1,52 +1,159 @@
 <div class="">
-
-    <div class="card o-hidden border-0 shadow-sm my-5">
-        <div class="card-body p-0">
-            <!-- Nested Row within Card Body -->
-            <div class="row">
-
-                <div class="col-lg-12">
-                    <div class="py-5 px-5">
-                        <div class="">
-                            <button class="btn btn-outline-primary btn-circle float-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
-                                <i class="fa fa-minus" aria-hidden="true"></i>
-                              </button>
-                        </div>
-                        <div class="text-center">
-                            <h1 class="h4 text-gray-900 mb-4">Major Economic Activities</h1>
-                        </div>
-                        <form class="user collapse show" id="collapseExample">
-                            <div class="form-group">
-                                <label for="exampleFormControlInput1">Economic Activity:</label>
-                                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="">
-                              </div>
-                            <div class="form-group">
-                                <label for="exampleFormControlTextarea1">Brief Description:</label>
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                              </div>
-                              <button type="button" class="btn btn-primary">ADD</button>
+  <div class="card o-hidden border-2 shadow-sm my-5">
+      <div class="card-body p-0">
+          <!-- Nested Row within Card Body -->
+          <div class="row">
+              <div class="col-lg-12">
+                  <div class="p-5">
+                      <div class="">
+                      </div>
+                      <div class="text-center">
+                        <h1 class="h4 text-gray-900 mb-4">Major Economic Activities</h1>
+                    </div>
+                      <br>
+                      <div class ="form-inline float-right ">
+                        <form class=>
+                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd "><i class="fa fa-plus"></i>
+                          Major Economic Activities
+                          </button>
 
                         </form>
-                        <br>
-                        <p>List of Major Economic Activities: </p>
-                        <table class="table table-light table-striped">
-                            <thead>
-                                <tr>
-                                  <th scope="col">#</th>
-                                  <th scope="col">Major Activity</th>
-                                  <th scope="col">Brief Description	</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr></tr>
-                                <td></td>
-                                <td></td>
-                              </tbody>
-                          </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                      </div><br><br>
 
-</div>
+<div class ="row">
+  <div class="col-lg-9"><br>
+    <p>List of Major Economic Activities</p>
+  </div>
+
+ </div>
+
+
+ <div class="form-group">
+  <div class ="row">
+    <div class="row">
+
+      </div>
+      <table class="table table-framed table-hover table-striped" >
+        <thead class = "table-dark">
+            <tr>
+              <th scope="col" class="text-center">Major Activity</th>
+              <th scope="col" class="text-center">Brief Description</th>
+              <th scope="col"></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let text of MajorAct">
+              <td class="text-center">{{text.mjrActivity}}</td>
+              <td class="text-center">{{text.description}}</td>
+
+              <td width="20%">
+                 <button type="button" title="Edit" (click)="editmodal=text"  class="btn btn-info" data-toggle="modal" data-target="#ModalEdit" ><i class="fa fa-edit"></i> </button>&nbsp;
+                <button type="button" title="Delete" class="btn btn-warning" ><i class="fa fa-trash"></i>  </button>
+              </td>
+              <td></td>
+            </tr>
+          </tbody>
+      </table>
+    <!-- Pagination Control -->
+<!--
+    <div class = "row">
+      <div class="col-lg-12">
+      <form class="form-inline float-right ">
+      <pagination-controls
+      previousLabel="Prev"
+      currentPage="Next"
+      (pageChange) ="onTableDataChange($event)">
+      </pagination-controls>
+      <ul>
+      <select (change)="onTableSizeChange($event)">
+        <option *ngFor = "let size of tableSizes ">
+           {{size}}
+        </option>
+         </select>
+        </ul>
+   </form>
+</div> -->
+                </div>
+             </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ADD MODAL -->
+  <div class="modal fade bd-example-modal-lg"id="ModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Major Economic Activities</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+
+            <div class="row">
+
+                  <div class ="col-lg-12"><br>
+                   <label for="exampleFormControlTextarea1" >Major Activity:</label>
+                   <input type="text" class="form-control" id=""  name ="" [(ngModel)]="mjr.mjrActivity"  placeholder="">
+                  </div>
+
+                  <div class="col-lg-12">
+                    <label for="exampleFormControlTextarea1">Description:</label>
+                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="6" [(ngModel)]="mjr.description"></textarea>
+                    </div>
+                 </div>
+           </div>
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-primary" (click)=" AddMajorAct()"  ><i class="fa fa-check"></i>Save</button>&nbsp;
+          <!-- <button type ="button" class="btn btn-secondary" *ngIf="updateOfficial" (click) ="city={}"><i class="fa fa-times"></i>Cancel</button> -->
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<!-- edit (Modal) -->
+<div class="modal fade bd-example-modal-lg"  id="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+  <div class="modal-content">
+  <div class="modal-header">
+  <h5 class="modal-title" id="exampleModalLabel">Major Economic Activities</h5>
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+  <span aria-hidden="true">&times;</span>
+  </button>
+  </div>
+  <div class="modal-body">
+  <div class="row">
+
+    <div class ="col-lg-12"><br>
+      <label for="exampleFormControlTextarea1" >Major Activity:</label>
+      <input type="text" class="form-control" id=""  name ="" [(ngModel)]="editmodal.mjrActivity"  placeholder="">
+     </div>
+
+     <div class="col-lg-12">
+       <label for="exampleFormControlTextarea1">Description:</label>
+         <textarea class="form-control" id="exampleFormControlTextarea1" rows="6" [(ngModel)]="editmodal.description"></textarea>
+       </div>
+
+
+  <div class="modal-footer">
+  <button type="button" class="btn btn-primary"   (click)="UpdateMajorAct()"> <i class="fa fa-check"></i>Save</button>&nbsp;
+  <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
+  </div>
+
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+

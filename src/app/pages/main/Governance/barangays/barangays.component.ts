@@ -44,14 +44,14 @@ Init(){
 GetListBarangay(){
   this.service.ListBarangay().subscribe(data=>{
     this.listBarangay=(<any>data);
-    console.log(this.listBarangay) 
+    console.log(this.listBarangay)
    })
 }
 
 AddBarangay() {
   this.barangay.transId = this.date.transform(Date.now(),'YYMM');
   this. barangay.munCityId=this.auth.munCityId;
-  this.barangay.activeSetYear=this.auth.activeSetYear;
+  this.barangay.setYear=this.auth.activeSetYear;
   // this.barangay.tag = 1;
   this.service.AddBarangay(this.barangay).subscribe(_data=>{
 

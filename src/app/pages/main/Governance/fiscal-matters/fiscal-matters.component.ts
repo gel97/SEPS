@@ -1,10 +1,9 @@
-import { CityOfficialService } from 'src/app/shared/Governance/city-official.service';
+import { FiscalMattersService } from 'src/app/shared/Governance/fiscal-matters.service';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { DatePipe } from '@angular/common';
 import { FilterPipe } from 'src/app/pipes/filter.pipe';
 import Swal from 'sweetalert2';
-import { FiscalMattersService } from 'src/app/shared/Governance/fiscal-matters.service';
 
 @Component({
   selector: 'app-fiscal-matters',
@@ -18,6 +17,21 @@ export class FiscalMattersComponent implements OnInit {
   fiscal:any={};
   FisView:any =[];
   editmodal:any={};
+  list_revenues:any =[];
+  list_expend:any=[];
+
+  pageSize = 10;
+  p: string|number|undefined;
+  count: number =0;
+  tableSize:number = 5;
+  tableSizes:any =[5,15,25,50,100];
+
+  pageSize2 = 10;
+  p2: string|number|undefined;
+  count2: number =0;
+  tableSize2:number = 5;
+  tableSizes2:any =[5,15,25,50,100];
+
 
   date = new DatePipe('en-PH')
   ngOnInit(): void {
@@ -27,25 +41,37 @@ export class FiscalMattersComponent implements OnInit {
  }
 
   Init(){
+    this.list_revenues =[];
+    this.list_expend =[];
      this.fiscal.munCityId=this.auth.munCityId;
-     this.fiscal.activeSetYear=this.auth.activeSetYear;
+     //this.fiscal.activeSetYear=this.auth.activeSetYear;
       this.service.GetFiscal().subscribe(data=>{
+        for(var item of data){
+
+          if(item.category=="1"){
+            this.list_revenues.push(item);
+          }  else if(item.category=="2")
+          {this.list_expend.push(item)}
+        }
+        console.log(this.list_revenues);
       this.FisView=(<any>data);
-      this.FisView.sort((n1:any,n2:any)=>{ //order by Descending
+      this.list_expend.sort((n1:any,n2:any)=>{ //order by Descending
         if(n1.fiscalYear<n2.fiscalYear)return 1;
         if(n1.fiscalYear>n2.fiscalYear)return -1;
         else return 0;
       })
-      console.log(this.FisView)
+      this.list_revenues.sort((n1:any,n2:any)=>{ //order by Descending
+        if(n1.fiscalYear<n2.fiscalYear)return 1;
+        if(n1.fiscalYear>n2.fiscalYear)return -1;
+        else return 0;
+      })
+
      })
   }
 
 
     AddFiscal() {
-      this.fiscal.transId = this.date.transform(Date.now(),'YYMM');
       this.fiscal.munCityId=this.auth.munCityId;
-      this.fiscal.activeSetYear=this.auth.activeSetYear;
-      // this.barangay.tag = 1;
       this.service.Addfiscal(this.fiscal).subscribe(_data=>{
 
         Swal.fire(
@@ -53,6 +79,7 @@ export class FiscalMattersComponent implements OnInit {
           'Data Added Successfully!',
           'success'
         );
+
         this.Init();
         this.fiscal = {};
 
@@ -68,13 +95,11 @@ export class FiscalMattersComponent implements OnInit {
       });
     }
 
-    editfiscal(editfiscal:any={}) {
-    this.editmodal=editfiscal;
+  editfiscal(editfiscal:any={}) {
+  this.editmodal=editfiscal;
     //passing the data from table (modal)
-    this.Init();
-
-    }
-
+  this.Init();
+  }
 
 //for modal
 update(){
@@ -93,6 +118,33 @@ update(){
   this.editmodal ={};
 
   }
+
+  onTableDataChange(page:any){ //paginate
+    console.log(page)
+    this.p = page;
+
+  }
+  onTableSizeChange(event:any ){ //paginate
+    this.tableSize = event. target.value;
+    this.p = 1;
+
+  }
+
+
+
+  onTableDataChange2(page:any){ //paginate
+    console.log(page)
+    this.p2 = page;
+
+  }
+  onTableSizeChange2(event:any ){ //paginate
+    this.tableSize2 = event. target.value;
+    this.p2= 1;
+
+  }
+
+
+
 
 
 

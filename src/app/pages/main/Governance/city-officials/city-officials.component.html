@@ -5,14 +5,14 @@
       <div class="row">
         <div class="col-lg-12">
           <img src="assets/img/empty-box.png" class="rounded mx-auto d-block" height="200">
-    
+
         </div>
         <div class="col-lg-12">
           <p class="text-center text-lg text-primary font-weight-bold">NO DATA FOUND.</p>
         </div>
         <div class="col-lg-12 text-center p-lg-2">
           <button class="btn btn-primary">
-            Import 
+            Import
           </button>
         </div>
         <div class="col-lg-12 text-center">
@@ -20,10 +20,10 @@
             Press the button above to import SEP Data from previous year.
           </p>
         </div>
-      </div>    
+      </div>
     </div>
   </ng-template>
-   
+
   <div *ngIf="Official.length > 0 ; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
       <div class="card-body p-0">
           <!-- Nested Row within Card Body -->
@@ -38,53 +38,10 @@
                       </div>
                       <div class="text-center">
                           <h1 class="h4 text-gray-900 mb-4">Municipal Officials</h1>
-                          <label><strong>Governance - Municipality of  Asuncion - City Officials</strong></label><br>
+                          <label><strong>Governance - City Officials</strong></label><br>
                       </div>
 
-<!--
-                      <form class="user collapse show" id="collapseExample">
-s
 
-                          <div class="form-group">
-
-                            <div class="row">
-
-                                     <div class ="col-lg-6"><br>
-                                      <label for="exampleFormControlTextarea1" >Sequence Number :</label>
-                                      <input type="text" class="form-control" name ="seqNo" [(ngModel)]="city.seqNo" id="SeqNum" placeholder="">
-                                     </div>
-                                     <div class ="col-lg-6"><br>
-                                      <label for="exampleFormControlTextarea1" >Term of Office :</label>
-
-                                      <input type="text" class="form-control" name ="Term" [(ngModel)]="city.term" id="Term" placeholder="">
-                                     </div>
-                                     <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1" >Position :</label>
-                                      <input type="text" class="form-control"  name ="position" [(ngModel)]="city.position"  id="position" placeholder="">
-                                     </div>
-
-                                     <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1"  >Name :</label>
-                                      <input type="text" class="form-control" id="name" name = "name" [(ngModel)]="city.name" placeholder="">
-                                     </div>
-                                     <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1" >Contact Details :</label>
-                                     </div>
-                                     <div class ="col-lg-12">
-                                      <input type="text" class="form-control" id="contact"  name ="contact" [(ngModel)]="city.contact" placeholder="">
-                                     </div>
-
-                                    </div>
-                                     </div>
-                                     <br>
-                                     <br>
-                            <button type="button" class="btn btn-primary" *ngIf="updateOfficial" (click)="addOfficial()">ADD</button>&nbsp;
-                            <button id = "Cancel"  class="btn btn-secondary" *ngIf="updateOfficial" (click) ="city={}">CANCEL</button>&nbsp;
-                            <button type="button" class="btn btn-primary" *ngIf="!updateOfficial" (click)="update();updateOfficial=true; city ={}" >Update</button>&nbsp;
-                            <button id ="Cancel" class="btn btn-secondary" *ngIf="!updateOfficial" (click) ="updateOfficial=true;city={}" >Cancel</button>&nbsp;
-
-
-                      </form> -->
                      <div class ="row">
                       <div class="col-lg-10"><br>
                         <p>List of Municipal Officials:</p>
@@ -102,11 +59,11 @@ s
 
                                 </div>
                             <table class="table table-framed table-hover table-striped">
-                                <thead>
+                                <thead class="table-dark">
                                     <tr>
                                       <th></th>
 
-                                      <th scope="col">#</th>
+                                      <!-- <th scope="col">#</th> -->
 
                                       <th scope="col">Name</th>
                                       <th scope="col">Position</th>
@@ -124,7 +81,7 @@ s
                                    <!-- <tr *ngFor="let text of  Official | paginate: { itemsPerPage: 10, currentPage: p}"> -->
                                       <!-- <th scope="row">{{i + 1}}</th> -->
                                       <td></td>
-                                      <td>{{text.seqNo}}</td>
+                                      <!-- <td>{{text.seqNo}}</td> -->
                                       <td>{{text.name}} </td>
                                       <td>{{text.position}}</td>
                                       <td>{{text.contact}} </td>
@@ -174,7 +131,7 @@ s
 <!-- Modal For Adding the CityOfficials -->
 <!-- Modal -->
 <div class="modal fade bd-example-modal-lg"id="ModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">City Officials</h5>
@@ -184,16 +141,12 @@ s
       </div>
       <div class="modal-body">
         <div class="row">
-
+<!--
           <div class ="col-lg-12"><br>
            <label for="exampleFormControlTextarea1" >Sequence Number :</label>
            <input type="text" class="form-control" name ="seqNo" [(ngModel)]="city.seqNo" id="SeqNum" placeholder="">
-          </div>
-          <div class ="col-lg-12"><br>
-           <label for="exampleFormControlTextarea1" >Term of Office :</label>
+          </div> -->
 
-           <input type="text" class="form-control" name ="Term" [(ngModel)]="city.term" id="Term" placeholder="">
-          </div>
           <div class ="col-lg-12"><br>
            <label for="exampleFormControlTextarea1" >Position :</label>
            <input type="text" class="form-control"  name ="position" [(ngModel)]="city.position"  id="position" placeholder="">
@@ -209,6 +162,11 @@ s
           <div class ="col-lg-12">
            <input type="text" class="form-control" id="contact"  name ="contact" [(ngModel)]="city.contact" placeholder="">
           </div>
+
+          <div class ="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1" >Term of Office :</label>
+            <input type="text" class="form-control" name ="Term" [(ngModel)]="city.term" id="Term" placeholder="">
+           </div>
 
          </div>
       </div>
@@ -230,7 +188,7 @@ s
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Update your Data</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle">City Officials</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -241,15 +199,12 @@ s
           </div>
           <div class="row">
 
-            <div class ="col-lg-6"><br>
+            <!-- <div class ="col-lg-6"><br>
               <label for="exampleFormControlTextarea1" >Sequence Number :</label>
               <input type="text" class="form-control" name ="seqNo" [(ngModel)]="editModal.seqNo" id="SeqNum" placeholder="">
-             </div>
+             </div> -->
 
-             <div class ="col-lg-6"><br>
-              <label for="exampleFormControlTextarea1" >Term of Office :</label>
-              <input type="text" class="form-control" name ="term" [(ngModel)]= "editModal.term"  id="term" placeholder="">
-             </div>
+
 
              <div class ="col-lg-12"><br>
               <label for="exampleFormControlTextarea1" >Position :</label>
@@ -264,10 +219,14 @@ s
              <div class ="col-lg-12"><br>
               <label for="exampleFormControlTextarea1" >Contact Details :</label>
              </div>
-
              <div class ="col-lg-12">
               <input type="text" class="form-control" id="contact"  name ="contact" [(ngModel)]="editModal.contact" placeholder="">
              </div>
+             <div class ="col-lg-12"><br>
+              <label for="exampleFormControlTextarea1" >Term of Office :</label>
+              <input type="text" class="form-control" name ="term" [(ngModel)]= "editModal.term"  id="term" placeholder="">
+             </div>
+
 
                   </div>
                    </div>

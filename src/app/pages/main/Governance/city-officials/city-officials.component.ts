@@ -52,6 +52,8 @@ export class CityOfficialsComponent implements OnInit {
 
 
   addOfficial() {
+    this.city.munCityId=this.auth.munCityId;
+    this.city.setYear=this.auth.activeSetYear;
     this.city.transId = this.date.transform(Date.now(),'YYMM');
     this.city.tag = 1;
     this.service.AddOfficial(this.city).subscribe(_data=>{
