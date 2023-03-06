@@ -17,6 +17,7 @@ export class BarangaysComponent implements OnInit {
   constructor(private service:BarangayOfficialService, private auth:AuthService) { }
   ViewBarangayOfficial:any =[];
   barangay: any = {};
+  addmodal:any ={};
   editmodal:any ={};
   UpdateBarangay:any ={};
   listBarangay:any ={};
@@ -139,6 +140,24 @@ this.Init();
 
 }
 
+addM(){
+  
+  this.addmodal.setYear =this.auth.activeSetYear;
+  this.service.AddBarangay(this.addmodal).subscribe({next:(_data)=>{
+    },
+    });
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'Your work has been saved',
+      showConfirmButton: false,
+      timer: 1000
+      });
+      this.Init();
+      this.addmodal ={};
+
+}
+
 // for modal
 updateM(){
 console.log(this.longRef?.nativeElement.value);
@@ -150,6 +169,7 @@ this.service.UpdateBarangay(this.editmodal).subscribe({next:(_data)=>{
 // this.editModal();
 },
 });
+
 
 Swal.fire({
 position: 'center',
