@@ -11,6 +11,7 @@ export class ApiUrl {
     post_get_officials =(munCityId:any, setYear:any)=>`/MunCityOfficial/GetOfficials?munCityId=${munCityId}&setYear=${setYear}`;
     post_save_official =()=>`/MunCityOfficial/SaveOfficial`;
     post_update_official =()=>`/MunCityOfficial/Update`;
+    get_mun_position =()=>`/MunCityOfficial/ListMunPosition`;
 
         // Barangay Officials
     post_get_barangay_officials =(munCityId:any, setYear:any)=>`/Barangay/GetBarangays?munCityId=${munCityId}&setYear=${setYear}`;

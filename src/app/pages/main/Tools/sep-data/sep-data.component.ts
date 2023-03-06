@@ -17,7 +17,7 @@ export class SepDataComponent implements OnInit {
   constructor(private service:SepDataService,private auth:AuthService) { }
 
   ngOnInit(): void {
-    console.log("SEPDATA");
+    //console.log("SEPDATA");
     this.set_year = this.auth.setYear;
     this.muncity_id = this.auth.munCityId;
     this.Init();
@@ -27,7 +27,7 @@ export class SepDataComponent implements OnInit {
   Init(){
     this.service.ListMunCity().subscribe(data=>{
       this.list_muncity =(<any>data);         
-      console.log(this.list_muncity)
+      //console.log(this.list_muncity)
      })
   }
   onChange(value: any) {
@@ -40,11 +40,11 @@ export class SepDataComponent implements OnInit {
       return el.munCityId == this.muncity_id ;
     }
     );
-    console.log("newArray: ", newArray[0].munCityName)
+    //console.log("newArray: ", newArray[0].munCityName)
 
-    console.log("a: ", this.auth.munCityId)
-    console.log("set_year: ", this.set_year)
-    console.log("muncity: ", this.muncity.munCityId + " " + this.muncity.munCityName )
+    //console.log("a: ", this.auth.munCityId)
+   // console.log("set_year: ", this.set_year)
+   // console.log("muncity: ", this.muncity.munCityId + " " + this.muncity.munCityName )
     localStorage.setItem("setYear", this.set_year);
     localStorage.setItem("munCityId", this.muncity_id);
     localStorage.setItem("munCityName", newArray[0].munCityName);

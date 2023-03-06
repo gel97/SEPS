@@ -16,13 +16,15 @@ export class CityOfficialService {
   }
 
   AddOfficial(Official: any = {}) {
-    console.log(Official)
     return this.Http.post(this.Base.url + this.ApiUrl.post_save_official(), Official, { responseType: 'json' });
   }
 
   UpdateOfficial(Official: any = {}) {
-    console.log(Official)
     return this.Http.post(this.Base.url + this.ApiUrl.post_update_official(), Official, { responseType: 'json' });
+  }
+
+  GetMunPosition() {
+    return this.Http.get(this.Base.url + this.ApiUrl.get_mun_position(), { responseType: 'json' });
   }
 
 }
