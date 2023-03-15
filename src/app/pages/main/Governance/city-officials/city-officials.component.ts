@@ -73,6 +73,7 @@ export class CityOfficialsComponent implements OnInit {
         'Data Added Successfully!',
         'success'
       );
+
       this.Init();
       this.city = {};
 
@@ -83,8 +84,7 @@ export class CityOfficialsComponent implements OnInit {
         'error'
       );
 
-      this.Init();
-      this.city = {};
+
     });
   }
 

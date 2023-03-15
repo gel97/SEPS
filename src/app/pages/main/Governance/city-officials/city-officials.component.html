@@ -224,10 +224,10 @@ s
       </div>
       <div class="modal-footer">
 
-        <button type="button" class="btn btn-primary" *ngIf="updateOfficial" (click)="addOfficial()"><i
+        <button type="button" class="btn btn-primary" *ngIf="updateOfficial" (click)= "addOfficial()"  data-dismiss="modal"><i
             class="fa fa-check"></i>Save</button>&nbsp;
-        <button type="button" class="btn btn-secondary" *ngIf="updateOfficial" (click)="city={}"><i
-            class="fa fa-times"></i>Cancel</button>
+        <button type="button" class="btn btn-secondary" *ngIf="updateOfficial" (click)="city={}"  data-dismiss="modal"><i
+            class="fa fa-times" ></i>Cancel</button>
 
         <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
       </div>

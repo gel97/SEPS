@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -12,7 +13,7 @@ export class ProvOfficialService {
   constructor(private Http: HttpClient, private Auth: AuthService, private Base: BaseUrl, private ApiUrl: ApiUrl, private auth: AuthService) { }
 
 
-  GetProvOfficial() {
+  GetProvOfficial(): Observable<any[]> {
     return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_get_prov_official(this.Auth.setYear), { responseType: 'json' });
   }
 

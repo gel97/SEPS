@@ -9,7 +9,7 @@
             </div>
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-4">Barangay Officials</h1>
-              <label><strong>Governance - Municipality of {{ViewBarangayOfficial.munCityName}} - Barangay
+              <label><strong>Governance  - Barangay Officials
                   Officials</strong></label><br>
             </div>
             <br>
@@ -57,14 +57,18 @@
                       <td>{{text.purokNo}}</td>
                       <td>{{text.longitude}}, {{text.latitude}}</td>
                       <td>
+
                         <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info"
                           data-toggle="modal" data-target="#ModalEdit"><i class="fa fa-edit"></i> </button>&nbsp;
-                        <button onclick="initialize()" class="button-60" role="button" (click)="editmodal=text"
+                          <button type="button"  onclick="initialize()" (click)="editmodal=text"  class="btn btn-success" data-toggle="modal"data-target="#exampleModal"><i  class="fa fa-globe"></i> </button>&nbsp;
+
+                        <!-- <button onclick="initialize()" class="button-60" role="button" (click)="editmodal=text"
                           data-toggle="modal" data-target="#exampleModal">
                           <i style="color:blue"
                           class="fa fa-globe">
                         </i>
-                        </button>
+                        </button> -->
+
                       </td>
                     </tr>
                   </tbody>
@@ -93,11 +97,10 @@
         </div>
       </div>
     </div>
-  </div>
-</div>
+
 
 <!-- Modal ADD Barangay Officials-->
-<div class="modal fade bd-example-modal-lg" id="ModalAdd" tabindex="-1" role="dialog"
+<!-- <div class="modal fade bd-example-modal-lg" id="ModalAdd" tabindex="-1" role="dialog"
   aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -108,7 +111,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="row">
+        <div class="row"> -->
 
 <!-- Modal Edit Barangay Officials-->
 <div class="modal fade bd-example-modal-lg" id="ModalEdit" tabindex="-1" role="dialog"
@@ -116,7 +119,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalScrollableTitle">UPDATE</h5>
+        <h5 class="modal-title" id="exampleModalScrollableTitle">Barangay Officials</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -150,7 +153,7 @@
           </div><br><br>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" (click)="updateM()"><i
+          <button type="button" class="btn btn-primary" (click)="updateM()" data-dismiss="modal"><i
               class="fa fa-check"></i>Save</button>&nbsp;
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
@@ -160,7 +163,7 @@
 </div>
 
 
-<!-- modal area -->
+<!-- modal area globe -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
   aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
@@ -206,3 +209,6 @@
     </div>
   </div>
 </div>
+
+
+

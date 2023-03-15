@@ -72,9 +72,19 @@ export class ApiUrl {
 
 
 //Major Economic Activities
-get_major_eco =(munCityId:any, setYear:any)=>`/MjrEcoAct/${setYear}/${munCityId}`;
+get_major_eco=(munCityId:any, setYear:any)=>`/MjrEcoAct/${setYear}/${munCityId}`;
 post_save_major_eco=()=>`/MjrEcoAct`;
-put_update_major_eco=()=>`/MjrEcoAct/Update`;
+put_update_major_eco=()=>`/MjrEcoAct`;
+delete_major_eco=(transId:any)=>`/MjrEcoAct/${transId}`;
+
+//Manufacturing Establishment
+get_manuf_estab=(munCityId:any, setYear:any)=>`/ManEstab/${setYear}/${munCityId}`;
+post_save_manuf_estab=()=>`/ManEstab`;
+put_update_manuf_estab=()=>`/ManEstab`;
+delete_manuf_estab=(transId:any)=>`/ManEstab/${transId}`;
+
+
+
 
 
 

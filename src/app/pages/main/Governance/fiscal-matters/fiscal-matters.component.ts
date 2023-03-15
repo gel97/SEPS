@@ -83,15 +83,14 @@ export class FiscalMattersComponent implements OnInit {
         this.Init();
         this.fiscal = {};
 
-      },err=>{
+      },_err=>{
         Swal.fire(
           'ERROR!',
           'Error',
           'error'
         );
 
-        this.Init();
-        this.fiscal = {};
+
       });
     }
 

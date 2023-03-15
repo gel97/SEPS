@@ -15,11 +15,11 @@ export class MajorEconomicService {
 
   constructor(private Http: HttpClient, private Auth: AuthService, private Base: BaseUrl, private ApiUrl: ApiUrl, private auth: AuthService) { }
 
-  GetMajorEco(): any{
+  GetMajorEco():Observable<any[]>{
     return this.Http.get<any[]>(this.Base.url + this.ApiUrl.get_major_eco(this.Auth.munCityId, this.Auth.setYear), { responseType: 'json' });
   }
 
-  AddMajorEco(MajorAct: any = {}) {
+  AddMajorEco(MajorAct: any = {}){
     console.log(MajorAct)
     return this.Http.post(this.Base.url + this.ApiUrl.post_save_major_eco(), MajorAct, { responseType: 'json' });
   }
@@ -27,6 +27,9 @@ export class MajorEconomicService {
   UpdateMajorEco(MajorAct:any = {}) {
     console.log(MajorAct)
     return this.Http.put(this.Base.url + this.ApiUrl.put_update_major_eco(), MajorAct, { responseType: 'json' });
+  }
+  DeleteMajorEco(transId:any) {
+    return this.Http.delete(this.Base.url + this.ApiUrl.delete_major_eco(transId), { responseType: 'json' });
   }
 
 }

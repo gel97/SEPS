@@ -3,6 +3,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { ApiUrl } from '../../services/apiUrl.service';
 import { BaseUrl } from 'src/app/services/baseUrl.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class MunCityLocService {
 
   constructor(private Http: HttpClient, private Auth: AuthService, private Base: BaseUrl, private ApiUrl: ApiUrl, private auth: AuthService) { }
 
-  GetMunCity(){
+  GetMunCity():Observable<any[]>{
     return this.Http.get<any[]>(this.Base.url + this.ApiUrl.get_all_muncity(),{ responseType: 'json' });
   }
 

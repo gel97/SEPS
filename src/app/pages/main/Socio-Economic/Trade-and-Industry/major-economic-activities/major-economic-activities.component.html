@@ -18,13 +18,13 @@
                           </button>
 
                         </form>
-                      </div><br><br>
+                      </div>
+                      <br><br>
 
 <div class ="row">
   <div class="col-lg-9"><br>
     <p>List of Major Economic Activities</p>
-  </div>
-
+ </div>
  </div>
 
 
@@ -36,6 +36,7 @@
       <table class="table table-framed table-hover table-striped" >
         <thead class = "table-dark">
             <tr>
+              <th></th>
               <th scope="col" class="text-center">Major Activity</th>
               <th scope="col" class="text-center">Brief Description</th>
               <th scope="col"></th>
@@ -43,20 +44,20 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let text of MajorAct">
-              <td class="text-center">{{text.mjrActivity}}</td>
-              <td class="text-center">{{text.description}}</td>
+            <tr *ngFor="let text of MajorAct; let i = index">
+             <td>{{ i + 1 }}</td>
+              <td>{{text.mjrActivity}}</td>
+              <td class="text-justify" width="60%">{{text.description}}</td>
 
-              <td width="20%">
+              <td width="10%">
                  <button type="button" title="Edit" (click)="editmodal=text"  class="btn btn-info" data-toggle="modal" data-target="#ModalEdit" ><i class="fa fa-edit"></i> </button>&nbsp;
-                <button type="button" title="Delete" class="btn btn-warning" ><i class="fa fa-trash"></i>  </button>
+                <button type="button" title="Delete" (click)="delete(text.transId,i)" class="btn btn-warning" ><i class="fa fa-trash"></i>  </button>
               </td>
               <td></td>
             </tr>
           </tbody>
       </table>
     <!-- Pagination Control -->
-<!--
     <div class = "row">
       <div class="col-lg-12">
       <form class="form-inline float-right ">
@@ -73,7 +74,7 @@
          </select>
         </ul>
    </form>
-</div> -->
+</div>
                 </div>
              </div>
             </div>
@@ -113,7 +114,7 @@
         </div>
         <div class="modal-footer">
 
-          <button type="button" class="btn btn-primary" (click)=" AddMajorAct()"  ><i class="fa fa-check"></i>Save</button>&nbsp;
+          <button type="button" class="btn btn-primary" (click)=" AddMajorAct()"  data-dismiss="modal" ><i class="fa fa-check"></i>Save</button>&nbsp;
           <!-- <button type ="button" class="btn btn-secondary" *ngIf="updateOfficial" (click) ="city={}"><i class="fa fa-times"></i>Cancel</button> -->
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
@@ -147,7 +148,7 @@
 
 
   <div class="modal-footer">
-  <button type="button" class="btn btn-primary"   (click)="UpdateMajorAct()"> <i class="fa fa-check"></i>Save</button>&nbsp;
+  <button type="button" class="btn btn-primary"   (click)="UpdateMajorAct()"  data-dismiss="modal">  <i class="fa fa-check"></i>Save</button>&nbsp;
   <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
   </div>
 

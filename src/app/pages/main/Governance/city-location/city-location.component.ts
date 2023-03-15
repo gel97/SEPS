@@ -17,7 +17,7 @@ constructor(private service:MunCityLocService, private auth:AuthService) { }
 MunLoc:any =[];
 
   editmodal:any ={};
-  UpdateBarangay:any ={};
+  // UpdateBarangay:any ={};
   listBarangay:any ={};
 
   pageSize = 25;
