@@ -38,7 +38,7 @@
                       <th></th>
                     </tr>
                   </thead>
-                  <tbody *ngFor="let brgy of listBarangay">
+                  <tbody *ngFor="let brgy of listBarangay; index as i">
                     <tr (click)="addmodal.brgyId = brgy.brgyId"  data-toggle="modal" data-target="#ModalAdd">
                       <td rowspan="2" >
                         {{brgy.brgyName}}
@@ -48,7 +48,8 @@
                     <tr *ngFor="let text of  ViewBarangayOfficial | filter:{brgyId: brgy.brgyId} | paginate:{
                         itemsPerPage: tableSize,
                         currentPage: p,
-                        totalItems:count};">
+                        totalItems:count};"                      
+                        >
 
                       <td>{{text.punongBrgy}}</td>
                       <td>{{text.landArea}}</td>
@@ -57,7 +58,7 @@
                       <td>{{text.purokNo}}</td>
                       <td>{{text.longitude}}, {{text.latitude}}</td>
                       <td>
-                        <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info"
+                        <button type="button" title="Edit" (click)="editmodal=text;is_update = true" class="btn btn-info"
                           data-toggle="modal" data-target="#ModalEdit"><i class="fa fa-edit"></i> </button>&nbsp;
                         <button onclick="initialize()" class="button-60" role="button" (click)="editmodal=text"
                           data-toggle="modal" data-target="#exampleModal">
@@ -66,7 +67,25 @@
                         </i>
                         </button>
                       </td>
-                    </tr>                         
+                    </tr> 
+                    <!-- <tr *ngIf="i+1 > ViewBarangayOfficial.length">
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>
+                        <button type="button" title="Edit" (click)="editmodal=brgy; is_update = true" class="btn btn-info"
+                        data-toggle="modal" data-target="#ModalEdit"><i class="fa fa-edit"></i> </button>&nbsp;
+                      <button onclick="initialize()" class="button-60" role="button" (click)="editmodal=brgy"
+                        data-toggle="modal" data-target="#exampleModal">
+                        <i style="color:blue"
+                        class="fa fa-globe">
+                      </i>
+                      </button>
+                      </td>
+                    </tr>                         -->
                   </tbody>
                 </table>
                 <!-- Pagination Control -->

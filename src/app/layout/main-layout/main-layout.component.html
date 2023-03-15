@@ -614,7 +614,8 @@
                 </li>
                 <div class="topbar-divider d-none d-sm-block"></div>
                 <li class="nav-item dropdown no-arrow mx-1">
-                    <span *ngIf="set_year == active_set_year; else notActive" class="badge bg-success mt-4">{{set_year}}</span>
+                    <span *ngIf="set_year == active_set_year; else notActive"
+                        class="badge bg-success mt-4">{{set_year}}</span>
                     <ng-template #notActive>
                         <span class="badge bg-warning mt-4">{{set_year}}</span>
                     </ng-template>

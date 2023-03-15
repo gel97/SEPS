@@ -15,6 +15,7 @@ export class BarangaysComponent implements OnInit {
 @ViewChild ('lat',{static:false}) latRef : ElementRef | undefined;
 
   constructor(private service:BarangayOfficialService, private auth:AuthService) { }
+  is_update:boolean = false;
   ViewBarangayOfficial:any =[];
   barangay: any = {};
   addmodal:any ={};
