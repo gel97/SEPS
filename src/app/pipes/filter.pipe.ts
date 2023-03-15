@@ -1,12 +1,17 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'filter'
+  name: 'filter',
 })
 export class FilterPipe implements PipeTransform {
+  transform(items: any[], filter: Record<string, any>): any {
+    if (!items || !filter) {
+      return items;
+    }
 
-  transform(value: any , args?: any): any {
-    return null;
+    const key = Object.keys(filter)[0];
+    const value = filter[key];
+
+    return items.filter((e) => e[key].indexOf(value) !== -1);
   }
-
 }

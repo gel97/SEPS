@@ -29,7 +29,7 @@ signIn (){
   console.log(this.user);
   this.service.signin(this.user).subscribe(data=>{
       if(data.token!= null){
-        alert(<any>data.token);
+        //alert(<any>data.token);
         localStorage.setItem("token", data.token);
         this.router.navigate(['/']); //navigate to homepage if authenticated          
       }

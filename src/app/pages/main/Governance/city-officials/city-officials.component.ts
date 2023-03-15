@@ -22,6 +22,7 @@ export class CityOfficialsComponent implements OnInit {
   updateOfficial: any={};
   editModal: any={};
   AddModal:any ={};
+  positions:any = [];
 
   pageSize = 25;
   p: string|number|undefined;
@@ -35,6 +36,8 @@ export class CityOfficialsComponent implements OnInit {
  }
 
   Init(){
+      this.getPositions();
+
       this.service.GetOfficial().subscribe(data=>{
       this.Official=(<any>data);
       this.Official=this.Official.filter((s:any) => s.tag == 1); // filter by tag
@@ -49,11 +52,20 @@ export class CityOfficialsComponent implements OnInit {
      })
   }
 
+  getPositions(){
+    this.service.GetMunPosition().subscribe(data=>{
+      this.positions = <any>data;
+    })
+  }
 
 
   addOfficial() {
+    this.city.munCityId=this.auth.munCityId;
+    this.city.setYear=this.auth.activeSetYear;
     this.city.transId = this.date.transform(Date.now(),'YYMM');
     this.city.tag = 1;
+    this.city.setYear = this.auth.activeSetYear;
+    this.city.position = "";
     this.service.AddOfficial(this.city).subscribe(_data=>{
       // alert("success");
       Swal.fire(
@@ -61,6 +73,7 @@ export class CityOfficialsComponent implements OnInit {
         'Data Added Successfully!',
         'success'
       );
+
       this.Init();
       this.city = {};
 
@@ -71,8 +84,7 @@ export class CityOfficialsComponent implements OnInit {
         'error'
       );
 
-      this.Init();
-      this.city = {};
+
     });
   }
 

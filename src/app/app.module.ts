@@ -118,6 +118,9 @@ import { DashboardComponent } from './pages/main/Dashboard/dashboard/dashboard.c
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { LoadingComponent } from './components/loading/loading.component';
 import { SepDataComponent } from './pages/main/Tools/sep-data/sep-data.component';
+import { FilterPipe } from './pipes/filter.pipe';
+import { FilterallPipe } from './pipes/filterall.pipe';
+
 
 
 
@@ -231,6 +234,8 @@ import { SepDataComponent } from './pages/main/Tools/sep-data/sep-data.component
     DashboardComponent,
     LoadingComponent,
     SepDataComponent,
+    FilterPipe,
+    FilterallPipe,
 
   ],
   imports: [
