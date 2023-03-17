@@ -1,3 +1,5 @@
+
+
 <div class="">
   <div class="card o-hidden border-2 shadow-sm my-5">
     <div class="card-body p-0">
@@ -9,7 +11,7 @@
             </div>
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-4">Barangay Officials</h1>
-              <label><strong>Governance  - Barangay Officials
+              <label><strong>Governance - Municipality of {{ViewBarangayOfficial.munCityName}} - Barangay
                   Officials</strong></label><br>
             </div>
             <br>
@@ -60,15 +62,38 @@
                       <td>
                         <button type="button" title="Edit" (click)="editmodal=text;is_update = true" class="btn btn-info"
                           data-toggle="modal" data-target="#ModalEdit"><i class="fa fa-edit"></i> </button>&nbsp;
-                        <button onclick="initialize()" class="button-60" role="button" (click)="editmodal=text"
+                        <!-- <button onclick="initialize()" class="button-60" role="button" (click)="editmodal=text"
                           data-toggle="modal" data-target="#exampleModal">
                           <i style="color:blue"
                           class="fa fa-globe">
                         </i>
-                        </button>
-
+                        </button> -->
+                        <button onclick="initialize()" class="button-60" role="button" (click)="editmodal=text"
+                        data-toggle="modal" data-target="#exampleModal">
+                        <i style="color:blue"
+                        class="fa fa-globe">
+                      </i>
+                      </button>
                       </td>
-                    </tr>                         
+                    </tr> 
+                    <!-- <tr *ngIf="i+1 > ViewBarangayOfficial.length">
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>
+                        <button type="button" title="Edit" (click)="editmodal=brgy; is_update = true" class="btn btn-info"
+                        data-toggle="modal" data-target="#ModalEdit"><i class="fa fa-edit"></i> </button>&nbsp;
+                      <button onclick="initialize()" class="button-60" role="button" (click)="editmodal=brgy"
+                        data-toggle="modal" data-target="#exampleModal">
+                        <i style="color:blue"
+                        class="fa fa-globe">
+                      </i>
+                      </button>
+                      </td>
+                    </tr>                         -->
                   </tbody>
                 </table>
                 <!-- Pagination Control -->
@@ -95,10 +120,11 @@
         </div>
       </div>
     </div>
-
+  </div>
+</div>
 
 <!-- Modal ADD Barangay Officials-->
-<!-- <div class="modal fade bd-example-modal-lg" id="ModalAdd" tabindex="-1" role="dialog"
+<div class="modal fade bd-example-modal-lg" id="ModalAdd" tabindex="-1" role="dialog"
   aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -109,15 +135,49 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="row"> -->
-
+        <div class="row">
+          <div class="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1">Punong Barangay:</label>
+            <input type="text" class="form-control" id="punongBrgy" name="punongBrgy" [(ngModel)]="addmodal.punongBrgy"
+              placeholder="">
+          </div>
+          <div class="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1">Contact Number:</label>
+            <input type="text" class="form-control" id="contactNo" name="contactNo" [(ngModel)]="addmodal.contactNo"
+              placeholder="">
+          </div>
+          <div class="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1">Location of Barangay Hall:</label>
+            <input type="text" class="form-control" id="address" name="address" [(ngModel)]="addmodal.address"
+              placeholder="">
+          </div>
+          <div class="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1">Number of Puroks:</label>
+            <input type="number" class="form-control" id="purokNo" name="purokNo" [(ngModel)]="addmodal.purokNo"
+              placeholder="">
+          </div>
+          <div class="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1">Barangay Land Area (HAS):</label>
+            <input type="number" class="form-control" id="landArea" name="landArea" [(ngModel)]="addmodal.landArea"
+              placeholder="">
+          </div><br><br>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="addM()"><i
+              class="fa fa-check"></i>Save</button>&nbsp;
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- Modal Edit Barangay Officials-->
 <div class="modal fade bd-example-modal-lg" id="ModalEdit" tabindex="-1" role="dialog"
   aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalScrollableTitle">Barangay Officials</h5>
+        <h5 class="modal-title" id="exampleModalScrollableTitle">UPDATE</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -151,7 +211,7 @@
           </div><br><br>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" (click)="updateM()" data-dismiss="modal"><i
+          <button type="button" class="btn btn-primary" (click)="updateM()"><i
               class="fa fa-check"></i>Save</button>&nbsp;
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
@@ -161,8 +221,30 @@
 </div>
 
 
-<!-- modal area globe -->
+<!-- modal area -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">SEPS GEOLOCATION TAGGING</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-gmap></app-gmap>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="updateM();UpdateBarangay=true;">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal area -->
+<div class="modal fade" id="exampleModall" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
   aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -207,6 +289,3 @@
     </div>
   </div>
 </div>
-
-
-

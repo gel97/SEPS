@@ -120,6 +120,8 @@ import { LoadingComponent } from './components/loading/loading.component';
 import { SepDataComponent } from './pages/main/Tools/sep-data/sep-data.component';
 import { FilterPipe } from './pipes/filter.pipe';
 import { FilterallPipe } from './pipes/filterall.pipe';
+import { GoogleMapsModule } from '@angular/google-maps';
+import { GmapComponent } from './components/gmap/gmap.component'
 
 
 
@@ -236,6 +238,7 @@ import { FilterallPipe } from './pipes/filterall.pipe';
     SepDataComponent,
     FilterPipe,
     FilterallPipe,
+    GmapComponent,
 
   ],
   imports: [
@@ -248,6 +251,7 @@ import { FilterallPipe } from './pipes/filterall.pipe';
     HttpClientModule,
     NgxPaginationModule,
     ImageCropperModule,
+    GoogleMapsModule
 
   ],
   providers: [AuthService ,CityOfficialService,
