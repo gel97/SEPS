@@ -1,13 +1,37 @@
-<google-map height="400px"
-            width="750px"
-            [center]="center"
-            [zoom]="zoom"     
-            (mapClick)="addMarker($event)">
-           
-  <map-marker #marker="mapMarker"
-              *ngFor="let markerPosition of markerPositions"
-              [position]="markerPosition"    
-              (draggableChanged)="move(marker)"      
-              (mapClick)="openInfoWindow(marker)"></map-marker>
-  <map-info-window>Info Window content</map-info-window>
-</google-map>
+<div>
+  <span>
+    <p>Location:
+      <span class="font-weight-bold">
+        {{brgyName}}, {{munCityName}}, Davao del Norte
+      </span>   
+    </p>
+  </span>
+  
+</div>
+
+<agm-map
+  [latitude]="lat"
+  [longitude]="lng"
+  [zoom]="zoom"
+  [disableDefaultUI]="false"
+  [zoomControl]="false"
+  #map
+>
+  <agm-marker
+    (markerClick)="infoWindow.open()"
+    [latitude]="markers.lat"
+    [longitude]="markers.lng"
+    [label]="markers.label"
+    [markerDraggable]="markers.draggable"
+    (dragEnd)="markerDragEnd(markers, $event)"
+  >
+    <agm-info-window>
+      <strong>{{brgyName}}</strong>
+    </agm-info-window>
+  </agm-marker>
+</agm-map>
+<br>
+<label>Longitude</label>
+<input type="text" class="form-control" [(ngModel)]="markers.lng">
+<label>Latitude</label>
+<input type="text" class="form-control" [(ngModel)]="markers.lat">
