@@ -22,3 +22,32 @@
       transform: translateX(100%);
     }
   }
+
+   body.dark-mode {
+    background-image: linear-gradient(to bottom right, rgba(1, 28, 54), rgba(2, 95, 186));
+    color: #fff;
+  }
+
+  body.light-mode {
+    
+    background-image: linear-gradient(to bottom right, rgba(255, 255, 255), rgba(211, 228, 245));
+    color: #2C74B3;
+  }
+
+  .page-container-dark {
+    background-color: #0F4C75;
+    color: #fff;
+  }
+
+  .page-container-light {
+    background-color: #fff;
+    color: #2C74B3;
+  }
+
+  .navbar-dark {
+    color: #2C74B3;
+  }
+  
+  .navbar-light {
+    color: #2C74B3;
+  }

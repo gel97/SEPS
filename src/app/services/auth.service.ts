@@ -22,7 +22,8 @@ export class AuthService {
    o_munCityName:any = localStorage.getItem("o_munCityName");
    activeSetYear:any = localStorage.getItem("activeSetYear");
    setYear:any = localStorage.getItem("setYear");
-  activesetYear: any;
+   activesetYear: any;
+
 
   constructor(private http:HttpClient) { }
 
@@ -39,6 +40,7 @@ export class AuthService {
       localStorage.setItem("activeSetYear",response.activeSetYear);
       localStorage.setItem("setYear",response.activeSetYear);
       localStorage.setItem("userData", JSON.stringify(response));
+
       //console.log(localStorage.getItem("userData"));
       this.token = localStorage.getItem("token");
       this.munCityId = localStorage.getItem("munCityId");

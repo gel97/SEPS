@@ -26,8 +26,10 @@
               "src/styles.css"
             ],
             "scripts": [
-              "src/assets/js/sb-admin-2.min.js"
+              "src/assets/js/sb-admin-2.min.js", 
+              "./node_modules/angular-dark-mode/angular-dark-mode.js"
             ]
+            
           },
           "configurations": {
             "production": {

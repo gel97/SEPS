@@ -10,6 +10,7 @@ import { map } from 'rxjs/internal/operators/map';
 import Swal from 'sweetalert2';
 import { Observable, of } from "rxjs";
 import { concatMap, delay } from "rxjs/operators";
+import { Dark_ModeService } from 'src/app/services/dark-mode.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -31,12 +32,19 @@ export class MainLayoutComponent implements OnInit {
   set_year:any;
   active_set_year:any;
 
-  constructor(private service: AuthService, private router: Router, private baseUrl: BaseUrl, private imagesService: ImagesService) { }
+  dark_mode:boolean = this.DarkModeService.darkMode;
+
+  constructor(private service: AuthService, private router: Router, private baseUrl: BaseUrl, private imagesService: ImagesService,private DarkModeService: Dark_ModeService) { }
 
   _userData: any = {};
   userInfo: any = {};
 
   ngOnInit(): void {
+    this.dark_mode = this.DarkModeService.darkMode;
+    this.DarkModeService.getMyVariable().subscribe((value: boolean) => {
+      this.dark_mode = value;
+    });
+    
     this.set_year = this.service.setYear;
     this.active_set_year = this.service.activeSetYear;
     this._userData = this.service.getUserData();

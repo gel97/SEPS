@@ -1,0 +1,9 @@
+<input
+    type="checkbox"
+    [checked]="darkMode$ | async"
+    (change)="onToggle()"
+    [(ngModel)]="isChecked"
+    style="display: none;"
+  />
+  <img (click)="onToggle()" *ngIf="isChecked " src="assets/img/moon.png" height="25" width="25">
+  <img (click)="onToggle()" *ngIf="!isChecked " src="assets/img/sun.png" height="25" width="25">

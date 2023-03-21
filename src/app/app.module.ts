@@ -123,6 +123,8 @@ import { FilterallPipe } from './pipes/filterall.pipe';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { GmapComponent } from './components/gmap/gmap.component'
 import { AgmCoreModule } from '@agm/core';
+import { DarkmodeComponent } from './components/darkmode/darkmode.component';
+import { PageContainerComponent } from './components/page-container/page-container.component';
 
 
 
@@ -240,6 +242,8 @@ import { AgmCoreModule } from '@agm/core';
     FilterPipe,
     FilterallPipe,
     GmapComponent,
+    DarkmodeComponent,
+    PageContainerComponent,
 
   ],
   imports: [
