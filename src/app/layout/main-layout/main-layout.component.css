@@ -8197,7 +8197,7 @@ a:focus{
     width:2.5rem
 }
 .topbar #sidebarToggleTop:hover{
-    background-color:#eaecf4
+    background-color:rgb(0 46 255 / 25%)
 }
 .topbar #sidebarToggleTop:active{
     background-color:#dddfeb
@@ -8615,7 +8615,7 @@ a:focus{
     color:#b7b9cc
 }
 .sidebar-light #sidebarToggle:hover{
-    background-color:#dddfeb
+    background-color:rgb(0 46 255 / 25%)
 }
 .sidebar-dark .sidebar-brand{
     color:#fff
@@ -8660,7 +8660,7 @@ a:focus{
     color:rgba(255,255,255,.5)
 }
 .sidebar-dark #sidebarToggle:hover{
-    background-color:rgba(255,255,255,.25)
+    background-color:rgb(0 46 255 / 25%)
 }
 .sidebar-dark.toggled #sidebarToggle::after{
     color:rgba(255,255,255,.5)
