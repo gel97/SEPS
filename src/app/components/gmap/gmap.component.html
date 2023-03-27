@@ -15,6 +15,7 @@
   [zoom]="zoom"
   [disableDefaultUI]="false"
   [zoomControl]="false"
+  (mapClick)="mapClicked($event)"
   #map
 >
   <agm-marker
@@ -31,6 +32,15 @@
   </agm-marker>
 </agm-map>
 <br>
+<span *ngIf="isEmptyGeo" >
+    <p>
+      <i>
+        <b>
+          *Note : Click the map to pin the location
+        </b>
+      </i>
+    </p>
+</span>
 <label>Longitude</label>
 <input type="text" class="form-control" [(ngModel)]="markers.lng">
 <label>Latitude</label>

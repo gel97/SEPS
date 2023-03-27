@@ -29,22 +29,24 @@ export class GmapComponent {
  markers: any = {}
  brgyName:string = "";
  munCityName:string = "";
+ isEmptyGeo:boolean = true;
 
  zoom: number = 10;
   
- lat: number = 0;
- lng: number = 0;
+ lat: number = 7.454187360536494;
+ lng: number = 125.80778447882858;
 
  clickedMarker(label: string, index: number) {
    console.log(`clicked the marker: ${label || index}`)
  }
  
  mapClicked($event: MouseEvent) {
-   this.markers.push({
-     lat: $event.coords.lat,
-     lng: $event.coords.lng,
-     draggable: true
-   });
+   this.markers = {
+    lat: $event.coords.lat,
+    lng: $event.coords.lng,
+    draggable: true
+   };
+   this.isEmptyGeo = false;
  }
  
  markerDragEnd(m: any, $event: MouseEvent) {
@@ -53,6 +55,16 @@ export class GmapComponent {
  }
  
  setMarker (markerObj:any){
+  if(markerObj.lat  == null && markerObj.lng == null)
+  {
+   this.isEmptyGeo = true;
+  }
+  else
+  {
+    this.isEmptyGeo = false;
+
+  }
+
   this.lat = markerObj.lat;
   this.lng = markerObj.lng;
   this.brgyName = markerObj.brgyName;

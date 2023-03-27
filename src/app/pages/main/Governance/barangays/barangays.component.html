@@ -1,3 +1,4 @@
+
 <div class="">
   <div class="card o-hidden border-2 shadow-sm my-5">
     <div class="card-body p-0">
@@ -57,9 +58,12 @@
                       <td>{{text.purokNo}}</td>
                       <td>{{text.longitude}}, {{text.latitude}}</td>
                       <td>
-                        <button type="button" title="Edit" (click)="editmodal=text;is_update = true"
+
+                        <app-admin>
+                          <button type="button" title="Edit" (click)="editmodal=text;is_update = true"
                           class="btn btn-info" data-toggle="modal" data-target="#ModalEdit"><i class="fa fa-edit"></i>
                         </button>&nbsp;
+                        </app-admin>                  
                         <button (click)="SetMarker(text)" class="btn btn-success" role="button" (click)="editmodal=text"
                           data-toggle="modal" data-target="#gmapModal">
                           <i class="fa fa-globe">
