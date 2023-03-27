@@ -27,6 +27,9 @@ export class AuthService {
   constructor(private http:HttpClient) { }
 
   signin(user:any): Observable<any> {
+    const now = new Date();
+    const formattedDate = now.toLocaleString(); // formats the date and time as a string
+    console.log(formattedDate); 
     console.log(user);
     return this.http.post(this.apiurl,user).pipe(tap((response:any) =>
     {
@@ -39,6 +42,8 @@ export class AuthService {
       localStorage.setItem("activeSetYear",response.activeSetYear);
       localStorage.setItem("setYear",response.activeSetYear);
       localStorage.setItem("userData", JSON.stringify(response));
+      localStorage.setItem("expire",response.expire);
+
       //console.log(localStorage.getItem("userData"));
       this.token = localStorage.getItem("token");
       this.munCityId = localStorage.getItem("munCityId");
@@ -50,6 +55,8 @@ export class AuthService {
       console.log(this.munCityId);
 
     }));
+
+   
   }
 
   clearSession() {
@@ -57,6 +64,9 @@ export class AuthService {
       localStorage.removeItem("munCityId");
       localStorage.removeItem("munCityName");
       localStorage.removeItem("activeSetYear");
+      localStorage.removeItem('token');
+      localStorage.removeItem('userData');
+
   }
 
   getUsersList(): Observable<any[]> { // test api only | lag
@@ -71,11 +81,14 @@ export class AuthService {
     return localStorage.getItem('userData');
   }
   public isLoggedIn(){
-    return localStorage.getItem('token') !== null;
+    const datenow = new Date();
+    var get_expire_token = localStorage.getItem('expire')?.toLowerCase();
+    const expire_token = new Date(get_expire_token!);
+    return localStorage.getItem('token') !== null && expire_token >= datenow;
   }
-  public logout(){
-    window.location.reload;
 
-    //localStorage.removeItem('token');
+  public logout(){
+    this.clearSession();
+    window.location.reload;
   }
 }

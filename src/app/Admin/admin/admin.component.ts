@@ -13,7 +13,7 @@ export class AdminComponent implements OnInit {
   munCityId:any = "";
 
   ngOnInit(): void {
-    this.munCityId = this.Auth.munCityId;
+    this.munCityId = this.Auth.o_munCityId;
     console.log("ADMIN: ", this.munCityId);
   }
 
