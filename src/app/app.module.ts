@@ -119,6 +119,12 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { LoadingComponent } from './components/loading/loading.component';
 import { SepDataComponent } from './pages/main/Tools/sep-data/sep-data.component';
 import { FilterPipe } from './pipes/filter.pipe';
+import { FilterallPipe } from './pipes/filterall.pipe';
+import { GoogleMapsModule } from '@angular/google-maps';
+import { GmapComponent } from './components/gmap/gmap.component'
+import { AgmCoreModule } from '@agm/core';
+import { AdminComponent } from './Admin/admin/admin.component';
+
 
 
 
@@ -233,6 +239,9 @@ import { FilterPipe } from './pipes/filter.pipe';
     LoadingComponent,
     SepDataComponent,
     FilterPipe,
+    FilterallPipe,
+    GmapComponent,
+    AdminComponent,
 
   ],
   imports: [
@@ -245,6 +254,12 @@ import { FilterPipe } from './pipes/filter.pipe';
     HttpClientModule,
     NgxPaginationModule,
     ImageCropperModule,
+    GoogleMapsModule,
+    AgmCoreModule.forRoot({
+      // please get your own API key here:
+      // https://developers.google.com/maps/documentation/javascript/get-api-key?hl=en
+      apiKey: 'AIzaSyBfQJlyD65DekS6HrSDe2z-6-KvoO4aeRk'
+    })
 
   ],
   providers: [AuthService ,CityOfficialService,

@@ -60,6 +60,8 @@ export class CityOfficialsComponent implements OnInit {
 
 
   addOfficial() {
+    this.city.munCityId=this.auth.munCityId;
+    this.city.setYear=this.auth.activeSetYear;
     this.city.transId = this.date.transform(Date.now(),'YYMM');
     this.city.tag = 1;
     this.city.setYear = this.auth.activeSetYear;
@@ -71,6 +73,7 @@ export class CityOfficialsComponent implements OnInit {
         'Data Added Successfully!',
         'success'
       );
+
       this.Init();
       this.city = {};
 
@@ -81,8 +84,7 @@ export class CityOfficialsComponent implements OnInit {
         'error'
       );
 
-      this.Init();
-      this.city = {};
+
     });
   }
 

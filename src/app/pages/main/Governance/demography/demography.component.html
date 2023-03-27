@@ -5,139 +5,196 @@
       <div class="card-body p-0">
           <!-- Nested Row within Card Body -->
           <div class="row">
-
-
-
               <div class="col-lg-12">
                   <div class="p-5">
-                      <div class="">
-                          <button class="btn btn-outline-primary btn-circle float-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
-                              <i class="fa fa-minus" aria-hidden="true"></i>
 
-                            </button>
-                      </div>
                       <div class="text-center">
                           <h1 class="h4 text-gray-900 mb-4">Demography</h1>
                       </div>
-
-                      <div class="user collapse show" id="collapseExample">
-                        <div class="form-group">
-                        <div class ="row">
-                        </div>
-                        <div class="row">
-
-                                 <div class ="col-lg-12"><br>
-                                  <label for="category">Barangay :</label>
-                                  <select class="form-select" aria-label="Default select example">
-                                      <option selected>Select Barangay</option>
-                                      <option value="1">Mankilam</option>
-                                      <option value="2">Visayan</option>
-                                      <option value="3">La-Filipina</option>
-                                    </select>
-                                 </div>
-                                 <div class ="col-lg-12"><br>
-                                  <label for="exampleFormControlTextarea1" >Total Population:</label><br>
-                                 </div>
-                                 <div class ="col-lg-5">
-                                  <label for="exampleFormControlTextarea1" >Male :</label>
-                                  <input type="text" class="form-control"  name =""  id="" placeholder="">
-                                 </div>
-
-                                 <div class ="col-lg-5">
-                                  <label for="exampleFormControlTextarea1"  >Female:</label>
-                                  <input type="text" class="form-control" id="" name = ""  placeholder="">
+                      <div class ="form-inline float-right ">
+                        <form class=>
+                              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd "><i class="fa fa-plus"></i>
+                                Demography
+                             </button>
+                        </form>
+                      </div><br><br>
+                              <div class="row">
+                                <div class="col-lg-4">
+                                    <p>List of Demography:</p>
                                 </div>
-                                 <div class ="col-lg-6"><br>
-                                  <label for="exampleFormControlTextarea1" >Household Population :</label>
-                                  <input type="text" class="form-control" name =""  id="" placeholder="">
-                                 </div>
-                                 <div class ="col-lg-6"><br>
-                                  <label for="exampleFormControlTextarea1" >No. of Households:</label>
-                                  <input type="text" class="form-control" name ="" id="" placeholder="">
-                                 </div>
-                                 <div class ="col-lg-6"><br>
-                                  <label for="exampleFormControlTextarea1" >Average Households Size :</label>
-                                  <input type="text" class="form-control"  name =""  id="" placeholder="">
-                                 </div>
-
-                                 <div class ="col-lg-6"><br>
-                                  <label for="exampleFormControlTextarea1"  >Population Growth Rate:</label>
-                                  <input type="text" class="form-control" id="" name = ""  placeholder="">
                                 </div>
-
-                                </div>
-                                 </div><br><br>
-                                </div>
-
-
-                      <!-- <div class="col-lg-6">
-                        <p>2010/2015 Total Population and Households</p>
-                    </div> -->
-
-
-                            <!-- <table class="table table-light table-striped">
-                                <thead>
-                                    <tr>
-                                      <th scope="col"></th>
-                                      <th scope="col">Barangay</th>
-                                      <th scope="col">2010 Population	</th>
-                                      <th scope="col">Male</th>
-                                      <th scope="col">Female</th>
-                                      <th scope="col">2010 No. of Household</th>
-                                      <th scope="col">2015 Population	</th>
-                                      <th scope="col">Male</th>
-                                      <th scope="col">Female</th>
-                                      <th scope="col">	2015 No. of Household</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody class="labelForm">
-                                    <tr>
-
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-
-                                        <td>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                              </table> -->
-
-
-
-                              <div class="form-group">
-                                <div class ="row">
-                                  <div class="row">
-
-                                    </div>
-                            <table class="table table-bordered">
-                              <thead>
+                              <table class="table table-light table-striped">
+                              <thead class="table-dark">
                                 <tr>
-                                  <th scope ="col" rowspan ="2"> Censal Year</th>
-                                  <th scope ="col" rowspan ="2"> Barangay</th>
-                                  <th scope ="col" colspan="2">Total Population</th>
-                                  <th scope ="col" rowspan ="2">Household Population</th>
-                                  <th scope ="col" rowspan ="2"> No. of Households</th>
-                                  <th scope ="col" rowspan ="2"> Average Households Size</th>
-                                  <th scope ="col" rowspan ="2">Population Growth Rate</th>
-                                </tr>
-                                <tr>
-                                  <td>Male</td>
-                                  <td >Female</td>
-                                </tr>
+                                  <th scope ="col" rowspan ="3"> Censal Year</th>
+                                  <th scope ="col" rowspan ="3"class="text-center"> Barangay</th>
+                                  <th scope ="col" colspan="2"class="text-center">Total Population</th>
+                                  <th scope ="col" rowspan ="3"class="text-center">Household Population</th>
+                                  <th scope ="col" rowspan ="3" class="text-center"> No. of Households</th>
+                                  <th scope ="col" rowspan ="3" class="text-center"> Average Households Size</th>
+                                  <th scope ="col" rowspan ="3" class="text-center"> Population Growth Rate</th>
+                                  <th scope ="col" rowspan ="3"></th>
+                                  <th></th>
+                                  <tr>
+                                    <td class="text-center">Male</td>
+                                    <td class="text-center">Female</td>
+                                    <td></td>
+
+                                  </tr>
+
+
                                 </thead>
-                                <tbody>
-                                  <td>2022</td>
+                                <tbody >
+                                  <tr *ngFor="let text of Demo">
+                                  <td>{{text.setYear}}</td>
+                                  <td class="text-center">{{text.brgyName}}</td>
+                                  <td class="text-center">{{text.male}}</td>
+                                  <td class="text-center">{{text.female}}</td>
+                                  <td class="text-center">{{text.householdPop}}</td>
+                                  <td class="text-center">{{text.householdNo}}</td>
+                                  <td class="text-center">{{text.avgHouseholdSz}}</td>
+                                  <td class="text-center">{{text.popGrowthRate}}</td>
                                   <td></td>
-                                  <td>23</td>
-                                  <td>34</td>
+                                  <td>
+                                    <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info" data-toggle="modal" data-target="#ModalEdit" ><i class="fa fa-edit"></i> </button>&nbsp;
+                                    <button type="button" title="Delete" class="btn btn-warning" ><i class="fa fa-trash"></i>  </button>
+
+                                  </td>
+
+                                </tr>
                                 </tbody>
                               </table>
+                              </div>
+                              </div>
+                              </div>
+                              </div>
+                              </div>
+                              </div>
+
+
+
+<!-- Add Fiscal (Modal) -->
+<div class="modal fade bd-example-modal-lg"id="ModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Demography Data</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+
+          <div class ="col-lg-12"><br>
+            <label for="category">Barangay :</label>
+            <select class="form-select" aria-label="Default select example" >
+              <option selected *ngFor="let text of Demo" attr.data-value={{Demo.brgyId}}>{{text.brgyName}}</option>
+              </select>
+           </div>
+
+           <div class ="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1" >Total Population:</label><br>
+           </div>
+           <div class ="col-lg-12">
+            <label for="exampleFormControlTextarea1" >Male :</label>
+            <input type="text" class="form-control" id=""  name =""  [(ngModel)]="demo.male" placeholder="">
+          </div>
+
+           <div class ="col-lg-12">
+            <label for="exampleFormControlTextarea1"  >Female:</label>
+            <input type="text" class="form-control" id="" name = "" [(ngModel)]="demo.female"  placeholder="">
+          </div>
+           <div class ="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1" >Household Population :</label>
+            <input type="text" class="form-control" name =""  id="" [(ngModel)]="demo.householdPop" placeholder="">
+           </div>
+           <div class ="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1" >No. of Households:</label>
+            <input type="text" class="form-control" name ="" id="" [(ngModel)]="demo.householdNo" placeholder="">
+           </div>
+           <div class ="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1" >Average Households Size :</label>
+            <input type="text" class="form-control"  name =""  id="" [(ngModel)]="demo.avgHouseholdSz" placeholder="">
+           </div>
+
+           <div class ="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1"  >Population Growth Rate:</label>
+            <input type="text" class="form-control" id="" name = ""[(ngModel)]="demo.popGrowthRate"  placeholder="">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary"  (click)="AddDemo()"><i class="fa fa-check"></i>Save</button>&nbsp;
+            <button type ="button" class="btn btn-secondary" (click) ="demo={}"><i class="fa fa-times"></i>Cancel</button>
+          </div>
+          </div>
+        </div>
+         </div>
+      </div>
+
+    </div>
+
+
+<!-- edit Fiscal (Modal) -->
+<div class="modal fade bd-example-modal-lg"id="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Demography Data</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class ="col-lg-12"><br>
+            <label for="category">Barangay :</label>
+            <select class="form-select" aria-label="Default select example" >
+                <option ></option>
+              </select>
+           </div>
+           <div class ="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1" >Total Population:</label><br>
+           </div>
+           <div class ="col-lg-12">
+            <label for="exampleFormControlTextarea1" >Male :</label>
+            <input type="text" class="form-control" id=""  name =""  [(ngModel)]="editmodal.male" placeholder="">
+          </div>
+
+           <div class ="col-lg-12">
+            <label for="exampleFormControlTextarea1"  >Female:</label>
+            <input type="text" class="form-control" id="" name = "" [(ngModel)]="editmodal.female"  placeholder="">
+          </div>
+           <div class ="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1" >Household Population :</label>
+            <input type="text" class="form-control" name =""  id="" [(ngModel)]="editmodal.householdPop" placeholder="">
+           </div>
+           <div class ="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1" >No. of Households:</label>
+            <input type="text" class="form-control" name ="" id="" [(ngModel)]="editmodal.householdNo" placeholder="">
+           </div>
+           <div class ="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1" >Average Households Size :</label>
+            <input type="text" class="form-control"  name =""  id="" [(ngModel)]="editmodal.avgHouseholdSz" placeholder="">
+           </div>
+
+           <div class ="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1"  >Population Growth Rate:</label>
+            <input type="text" class="form-control" id="" name = ""[(ngModel)]="editmodal.popGrowthRate"  placeholder="">
+          </div>
+          <div class="modal-footer">
+
+            <button type="button" class="btn btn-primary"  (click)=" update()"><i class="fa fa-check"></i>Save</button>&nbsp;
+            <!-- <button type ="button" class="btn btn-secondary" *ngIf="updateOfficial" (click) ="city={}"><i class="fa fa-times"></i>Cancel</button> -->
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+          </div>
+        </div>
+         </div>
+      </div>
+
+    </div>
+
+
 
 
 

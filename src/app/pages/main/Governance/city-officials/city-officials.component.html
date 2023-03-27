@@ -224,10 +224,10 @@ s
       </div>
       <div class="modal-footer">
 
-        <button type="button" class="btn btn-primary" *ngIf="updateOfficial" (click)="addOfficial()"><i
+        <button type="button" class="btn btn-primary" *ngIf="updateOfficial" (click)= "addOfficial()"  data-dismiss="modal"><i
             class="fa fa-check"></i>Save</button>&nbsp;
-        <button type="button" class="btn btn-secondary" *ngIf="updateOfficial" (click)="city={}"><i
-            class="fa fa-times"></i>Cancel</button>
+        <button type="button" class="btn btn-secondary" *ngIf="updateOfficial" (click)="city={}"  data-dismiss="modal"><i
+            class="fa fa-times" ></i>Cancel</button>
 
         <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
       </div>
@@ -263,7 +263,7 @@ s
               <!-- <input type="text" class="form-control" name ="seqNo" [(ngModel)]="city.seqNo" id="SeqNum" placeholder="">  -->
               <select class="form-select" aria-label="Default select example" [(ngModel)]="editModal.seqNo">
                 <option *ngFor="let item  of positions" value={{item.seqNo}}>{{item.position}}</option>
-  
+
               </select>
             </div>
 
@@ -274,7 +274,7 @@ s
 
             <div class="col-lg-12"><br>
               <label for="exampleFormControlTextarea1">Contact Details :</label>
-            </div>        
+            </div>
 
             <div class="col-lg-12">
               <input type="text" class="form-control" id="contact" name="contact" [(ngModel)]="editModal.contact"

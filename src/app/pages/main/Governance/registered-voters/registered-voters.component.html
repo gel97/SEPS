@@ -1,65 +1,163 @@
+                                     <div class="">
+                                        <div class="card o-hidden border-2 shadow-sm my-5">
+                                            <div class="card-body p-0">
+                                                <!-- Nested Row within Card Body -->
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="p-5">
 
-<div class="">
+                                                            <div class="text-center">
+                                                                <h1 class="h4 text-gray-900 mb-4">Polling Precincts and Registered Voters</h1>
+                                                            </div>
+                                                            <div class ="form-inline float-right ">
+                                                              <form class=>
+                                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd "><i class="fa fa-plus"></i>
+                                                                      Registered Voters
+                                                                   </button>
+                                                              </form>
+                                                            </div><br><br>
+                                                                    <div class="row">
+                                                                      <div class="col-lg-4">
+                                                                          <p>Number of Precincts and Registered Voters</p>
+                                                                      </div>
+                                                                      </div>
+                                                                    <table class="table table-light table-striped">
+                                                                    <thead class="table-dark">
+                                                                      <tr>
+                                                                        <th scope="col" class="text-center">Barangay</th>
+                                                                        <th scope="col"class="text-center">No. of Puroks	</th>
+                                                                        <th scope="col" class="text-center">No. of Established Precincts</th>
+                                                                        <th scope="col" class="text-center">No. of Clustered Precincts</th>
+                                                                        <th scope="col" class="text-center">No. of Voting Centers</th>
+                                                                        <th scope="col" class="text-center">No. of Registered Voters	</th>
+                                                                        <th></th>
+                                                                       </tr>
+                                                                      </thead>
 
-  <div class="card o-hidden border-2 shadow-sm my-5">
-      <div class="card-body p-0">
-          <!-- Nested Row within Card Body -->
-          <div class="row">
+                                                                      <tbody >
+                                                                        <tr *ngFor="let text of Voter" >
+                                                                        <td >{{text.brgyName}}</td>
+                                                                        <td class="text-center">{{text.purokNo}}</td>
+                                                                        <td class="text-center">{{text.estabNo}}</td>
+                                                                        <td class="text-center">{{text.clusterNo}}</td>
+                                                                        <td class="text-center">{{text.votingCntrNo}}</td>
+                                                                        <td class="text-center">{{text.regVoterNo}}</td>
+
+                                                                        <td>
+                                                                        <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info" data-toggle="modal" data-target="#ModalEdit" ><i class="fa fa-edit"></i> </button>&nbsp;
+                                                                        <button type="button" title="Delete" class="btn btn-warning" ><i class="fa fa-trash"></i>  </button>
+                                                                        </td>
+
+                                                                      </tr>
+                                                                    </tbody>
+                                                                    </table>
+                                                                    </div>
+                                                                    </div>
+                                                                    </div>
+                                                                    </div>
+                                                                    </div>
+                                                                    </div>
+
+                                      <!-- Add (Modal) -->
+                                      <div class="modal fade bd-example-modal-lg "id="ModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                          <div class="modal-content">
+                                            <div class="modal-header">
+                                              <h5 class="modal-title" id="exampleModalLabel">Registered Voters</h5>
+                                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                              </button>
+                                            </div>
+                                            <div class="modal-body">
+                                              <div class="row">
+
+                                                <div class ="col-lg-12"><br>
+                                                  <label for="category">Barangay :</label>
+                                                  <select class="form-select" aria-label="Default select example" >
+                                                    <!-- <option selected *ngFor="let text of Demo" attr.data-value={{Demo.brgyId}}>{{text.brgyName}}</option> -->
+                                                    </select>
+                                                 </div>
+                                                 <div class ="col-lg-12"><br>
+                                                  <label for="exampleFormControlTextarea1" >No. of Puroks:</label>
+                                                  <input type="text" class="form-control" id=""  name =""  [(ngModel)]="voter.purokNo"  placeholder="">
+                                                </div>
+
+                                                 <div class ="col-lg-12"><br>
+                                                  <label for="exampleFormControlTextarea1"  >No. of Established Precincts:</label>
+                                                  <input type="text" class="form-control" id="" name = "" [(ngModel)]="voter.estabNo"  placeholder="">
+                                                </div>
+                                                 <div class ="col-lg-12"><br>
+                                                  <label for="exampleFormControlTextarea1" >No. of Clustered Precincts:</label>
+                                                  <input type="text" class="form-control" name =""  id="" [(ngModel)]="voter.clusterNo" placeholder="">
+                                                 </div>
+                                                 <div class ="col-lg-12"><br>
+                                                  <label for="exampleFormControlTextarea1" >No. of Voting Centers:</label>
+                                                  <input type="text" class="form-control" name ="" id="" [(ngModel)]="voter.votingCntrNo" placeholder="">
+                                                 </div>
+                                                 <div class ="col-lg-12"><br>
+                                                  <label for="exampleFormControlTextarea1" >No. of Registered Voters:</label>
+                                                  <input type="text" class="form-control"  name =""  id="" [(ngModel)]="voter.regVoterNo" placeholder="">
+
+                                                <div class="modal-footer">
+                                                  <button type="button" class="btn btn-primary"  (click)=" addVoter()"><i class="fa fa-check"></i>Save</button>&nbsp;
+                                                  <button type ="button" class="btn btn-secondary" (click) ="voter={}"><i class="fa fa-times"></i>Cancel</button>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      </div>
 
 
-
-              <div class="col-lg-12">
-                  <div class="p-5">
-                      <div class="">
-                          <button class="btn btn-outline-primary btn-circle float-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
-                              <i class="fa fa-minus" aria-hidden="true"></i>
-
-                            </button>
-                      </div>
-                      <div class="text-center">
-                          <h1 class="h4 text-gray-900 mb-4">Polling Precincts and Registered Voters</h1>
-                      </div>
-
-                      <div class="col-lg-6">
-                        <p>Number of Precincts and Registered Voters</p>
-                    </div>
-
-                      <form class="user collapse show" id="collapseExample">
-                          <div class="form-group">
-                            <div class ="row">
-                              <div class="row">
-
-                                </div>
-                            <table class="table table-light table-striped">
-                                <thead>
-                                    <tr>
-                                      <th scope="col"></th>
-                                      <th scope="col">Barangay</th>
-                                      <th scope="col">No. of Puroks	</th>
-                                      <th scope="col">No. of Established Precincts</th>
-                                      <th scope="col">No. of Clustered Precincts</th>
-                                      <th scope="col">No. of Voting Centers</th>
-                                      <th scope="col">No. of Registered Voters	</th>
-
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                  </tbody>
-                              </table>
-
-                            </div>
-                             </div>
-
-                      </form>
-
-                  </div>
+    <!-- edit (Modal) -->
+        <div class="modal fade bd-example-modal-lg"  id="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Registered Voters</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
               </div>
+              <div class="modal-body">
+                <div class="row">
 
+                  <div class ="col-lg-12"><br>
+                    <label for="category">Barangay :</label>
+                    <select class="form-select" aria-label="Default select example" >
+                      <!-- <option selected *ngFor="let text of Demo" attr.data-value={{Demo.brgyId}}>{{text.brgyName}}</option> -->
+                      </select>
+                   </div>
+                   <div class ="col-lg-12"><br>
+                    <label for="exampleFormControlTextarea1" >No. of Puroks:</label>
+                    <input type="text" class="form-control" id=""  name =""  [(ngModel)]="editmodal.purokNo"  placeholder="">
+                  </div>
+
+                   <div class ="col-lg-12"><br>
+                    <label for="exampleFormControlTextarea1"  >No. of Established Precincts:</label>
+                    <input type="text" class="form-control" id="" name = "" [(ngModel)]="editmodal.estabNo"  placeholder="">
+                  </div>
+                   <div class ="col-lg-12"><br>
+                    <label for="exampleFormControlTextarea1" >No. of Clustered Precincts:</label>
+                    <input type="text" class="form-control" name =""  id="" [(ngModel)]="editmodal.clusterNo" placeholder="">
+                   </div>
+                   <div class ="col-lg-12"><br>
+                    <label for="exampleFormControlTextarea1" >No. of Voting Centers:</label>
+                    <input type="text" class="form-control" name ="" id="" [(ngModel)]="editmodal.votingCntrNo" placeholder="">
+                   </div>
+                   <div class ="col-lg-12"><br>
+                    <label for="exampleFormControlTextarea1" >No. of Registered Voters:</label>
+                    <input type="text" class="form-control"  name =""  id="" [(ngModel)]="editmodal.regVoterNo" placeholder="">
+
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-primary"  (click)="updateVoter()"><i class="fa fa-check"></i>Save</button>&nbsp;
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-
-      </div>
-  </div>
-
-</div>
-
+        </div>
+        </div>
 

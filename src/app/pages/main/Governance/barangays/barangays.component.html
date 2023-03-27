@@ -1,3 +1,4 @@
+
 <div class="">
   <div class="card o-hidden border-2 shadow-sm my-5">
     <div class="card-body p-0">
@@ -9,7 +10,7 @@
             </div>
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-4">Barangay Officials</h1>
-              <label><strong>Governance - Municipality of {{ViewBarangayOfficial.munCityName}} - Barangay
+              <label><strong>Governance - Municipality of {{munCityName}} - Barangay
                   Officials</strong></label><br>
             </div>
             <br>
@@ -38,9 +39,9 @@
                       <th></th>
                     </tr>
                   </thead>
-                  <tbody *ngFor="let brgy of listBarangay">
-                    <tr (click)="addmodal.brgyId = brgy.brgyId"  data-toggle="modal" data-target="#ModalAdd">
-                      <td rowspan="2" >
+                  <tbody *ngFor="let brgy of listBarangay; index as i">
+                    <tr (click)="addmodal.brgyId = brgy.brgyId" data-toggle="modal" data-target="#ModalAdd">
+                      <td rowspan="2">
                         {{brgy.brgyName}}
                       </td>
 
@@ -57,16 +58,19 @@
                       <td>{{text.purokNo}}</td>
                       <td>{{text.longitude}}, {{text.latitude}}</td>
                       <td>
-                        <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info"
-                          data-toggle="modal" data-target="#ModalEdit"><i class="fa fa-edit"></i> </button>&nbsp;
-                        <button onclick="initialize()" class="button-60" role="button" (click)="editmodal=text"
-                          data-toggle="modal" data-target="#exampleModal">
-                          <i style="color:blue"
-                          class="fa fa-globe">
-                        </i>
+
+                        <app-admin>
+                          <button type="button" title="Edit" (click)="editmodal=text;is_update = true"
+                          class="btn btn-info" data-toggle="modal" data-target="#ModalEdit"><i class="fa fa-edit"></i>
+                        </button>&nbsp;
+                        </app-admin>                  
+                        <button (click)="SetMarker(text)" class="btn btn-success" role="button" (click)="editmodal=text"
+                          data-toggle="modal" data-target="#gmapModal">
+                          <i class="fa fa-globe">
+                          </i>
                         </button>
                       </td>
-                    </tr>                         
+                    </tr>
                   </tbody>
                 </table>
                 <!-- Pagination Control -->
@@ -136,8 +140,7 @@
           </div><br><br>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" (click)="addM()"><i
-              class="fa fa-check"></i>Save</button>&nbsp;
+          <button type="button" class="btn btn-primary" (click)="addM()"><i class="fa fa-check"></i>Save</button>&nbsp;
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
       </div>
@@ -195,7 +198,7 @@
 
 
 <!-- modal area -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
   aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -206,32 +209,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <div>
-          <label for="brgyName" style="margin-right: 5px;" id="enme">Location</label>
-          <!-- <input id="enme" name="brgyName" class="seqInputBox" type="text"> -->
-        </div>
-        <!-- MAP AREA  -->
-        <div>
-          <div id="map_canvas" style="border:1px  solid #000; height:460px;width:720px; margin:auto; "></div>
-          <p> <label> Longitude : </label>
-            <input type="number" name="longtxt" id="longtxt" [(ngModel)]="editmodal.longitude"
-              onchange="manualMarker(this.value)" #long />
-          </p>
-          <p><label> Latitude : </label>
-            <input type="number" name="lattxt" id="lattxt" [(ngModel)]="editmodal.latitude"
-              onchange="manualMarker(this.value)" #lat />
-          </p>
-          <input name="fld_id" type="hidden" value="rec_id" />
-          <input name="id" type="hidden" value="570" />
-
-          <input name="tbl" type="hidden" value="admins_bgychairs" />
-          <input name="bgy" type="hidden" id="bgy" value="Binancian, Asuncion, Davao del Norte" />
-          <input name="ref" type="hidden" value="" />
-          <!-- <p>
-				<input type="submit" name="submit" id="submit" value="Tag" class="btnStyle" style="width:80px; " />
-				<input type="button" VALUE="Back" onClick ="location.href = '  '" class="btnStyle" style="width:75px;" />
-			</p> -->
-        </div>
+        <app-gmap></app-gmap>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
