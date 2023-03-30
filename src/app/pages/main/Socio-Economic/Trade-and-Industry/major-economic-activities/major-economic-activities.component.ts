@@ -13,16 +13,17 @@ export class MajorEconomicActivitiesComponent implements OnInit {
 
 
   constructor( private service:MajorEconomicService, private auth:AuthService) { }
+  toValidate:any={};
   MajorAct:any=[];
   mjr:any={};
   editmodal:any={};
 
   // Pagination
-  pageSize = 25;
-  p: string|number|undefined;
-  count: number =0;
-  tableSize:number = 5;
-  tableSizes:any =[5,10,15,25,50,100];
+  // pageSize = 25;
+  // p: string|number|undefined;
+  // count: number =0;
+  // tableSize:number = 5;
+  // tableSizes:any =[5,10,15,25,50,100];
 
   date = new DatePipe('en-PH')
   ngOnInit(): void {
@@ -44,6 +45,16 @@ export class MajorEconomicActivitiesComponent implements OnInit {
 
 
   AddMajorAct(){
+    this.toValidate.mjrActivity = this.mjr.mjrActivity=="" || this.mjr.mjrActivity ==undefined?true:false;
+    this.toValidate.description = this.mjr.description =="" || this.mjr.description == undefined?true:false;
+
+    if (this.toValidate.mjrActivity == true||this.toValidate.description ==true){
+      Swal.fire(
+        '',
+        'Required Fields',
+        'error'
+      );
+    }else{
     this.mjr.munCityId=this.auth.munCityId;
     this.mjr.setYear=this.auth.setYear;
     this.mjr.transId = this.date.transform(Date.now(),'YYMM');
@@ -55,18 +66,12 @@ export class MajorEconomicActivitiesComponent implements OnInit {
         'Data Added Successfully!',
         'success'
       );
-
+      //document.getElementById('close')?.click();
       this.mjr = {};
       this.MajorAct.push(request);
-    },err=>{
-      Swal.fire(
-        'ERROR!',
-        'Error',
-        'error'
-      );
-    });
+    },);
   }
-
+  }
 
   editmajor(editmajor:any={}) {
     this.editmodal=editmajor;
@@ -103,16 +108,17 @@ delete(transId:any, index:any){
           for(let i = 0; i < this.MajorAct.length;i++){
             if(this.MajorAct[i].transId == transId){
               this.MajorAct.splice(i,1);
+              Swal.fire(
+                'Deleted',
+                'Removed successfully',
+                'success'
+              );
             }
           }
 
 
           this.service.DeleteMajorEco(transId).subscribe(_data =>{
-            Swal.fire(
-              'Deleted',
-              'Removed successfully',
-              'success'
-            );
+
            // this.MajorAct.splice(index,1);
 
             // this.Init();
@@ -128,17 +134,17 @@ delete(transId:any, index:any){
       })
     }
 
-    onTableDataChange(page:any){ //paginate
-      console.log(page)
-      this.p = page;
-      this.Init();
+    // onTableDataChange(page:any){ //paginate
+    //   console.log(page)
+    //   this.p = page;
+    //   this.Init();
 
-    }
-    onTableSizeChange(event:any ){ //paginate
-      this.tableSize = event. target.value;
-      this.p = 1;
-      this.Init();
+    // }
+    // onTableSizeChange(event:any ){ //paginate
+    //   this.tableSize = event. target.value;
+    //   this.p = 1;
+    //   this.Init();
 
-    }
+    // }
 
 }

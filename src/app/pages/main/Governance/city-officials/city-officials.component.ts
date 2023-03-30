@@ -32,6 +32,7 @@ export class CityOfficialsComponent implements OnInit {
 
   date = new DatePipe('en-PH')
   ngOnInit(): void {
+
     this.Init();
  }
 
@@ -61,32 +62,45 @@ export class CityOfficialsComponent implements OnInit {
 
   addOfficial() {
     this.city.munCityId=this.auth.munCityId;
-    this.city.setYear=this.auth.activeSetYear;
+   // this.city.setYear=this.auth.activeSetYear;
     this.city.transId = this.date.transform(Date.now(),'YYMM');
     this.city.tag = 1;
     this.city.setYear = this.auth.activeSetYear;
     this.city.position = "";
-    this.service.AddOfficial(this.city).subscribe(_data=>{
-      // alert("success");
-      Swal.fire(
-        'Good job!',
-        'Data Added Successfully!',
-        'success'
-      );
+    this.service.AddOfficial(this.city).subscribe(request=>{
+      if(request.toString() == "{status: 'success'}"){
+        // alert("success");
+        Swal.fire(
+          'Good job!',
+          'Data Added Successfully!',
+          'success'
+        );
 
-      this.Init();
-      this.city = {};
+        this.Init();
+        this.city = {};
+      }
+      else{
+        this.city = {};
+        Swal.fire(
+          'error.!',
+          'dbdsbvjbvjdsvbsdjvbdj!',
+          'error'
+        );
+      }
+
 
     },_err=>{
       Swal.fire(
-        'ERROR!',
-        'Error',
-        'error'
+        'Data already exists.!',
       );
-
+      this.Init();
+      this.city = {};
 
     });
   }
+
+
+
 
   // editOfficial(editOfficial:any={}) {
   //   this.city2.seqNo = this.Official[editOfficial].seqNo;
@@ -144,7 +158,9 @@ title: 'Your work has been updated',
 showConfirmButton: false,
 timer: 1000
 });
-this.editModal ={};
+//this.editModal ={};
+this.Init();
+this.city = {};
 
 }
 

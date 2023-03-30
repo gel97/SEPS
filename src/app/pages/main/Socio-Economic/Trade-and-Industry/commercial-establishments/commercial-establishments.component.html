@@ -1,153 +1,326 @@
 <div class="">
-
-    <div class="card o-hidden border-0 shadow-sm my-5">
-        <div class="card-body p-0">
-            <!-- Nested Row within Card Body -->
-            <div class="row">
-                
-                <div class="col-lg-12">
-                    <div class="p-5">
-                        <div class="">
-                            <button class="btn btn-outline-primary btn-circle float-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
-                                <i class="fa fa-minus" aria-hidden="true"></i>
-
-                              </button>
-                        </div>
-                        <div class="text-center">
-                            <h1 class="h4 text-gray-900 mb-4">Comercial Establishments</h1>
-                        </div>
-                        
-                      
-                        <form class="user collapse show" id="collapseExample">
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <label for="exampleFormControlInput1">Business Permit ID/No :</label>
-                                        <input type="text" class="form-control" id="" placeholder="">                                     
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <label for="category">Status :</label>
-                                    <select class="form-select" aria-label="Default select example">
-                                        <option selected></option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
-                                      </select>
-                                    </div>
-                                </div>
-                               </div>
-                              <div class="row">
-                                <div class="col-lg-6">
-                                    <label for="exampleFormControlInput1">Name of Owner :</label>
-                                    <input type="text" class="form-control" id="" placeholder="">
-                                </div>
-                                <div class="col-lg-6">
-                                    <label for="exampleFormControlInput1">Name of Establishment :</label>
-                                    <input type="text" class="form-control" id="" placeholder="">
-                                </div>
-                              
-                              </div><br>
-                              <div class="row">
-                                <div class="col-lg-6">
-                                    <label for="category">Category :</label>
-                                    <select class="form-select" aria-label="Default select example">
-                                        <option selected>Select Category</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
-                                      </select>
-                                </div>
-                                <div class="col-lg-6">
-                                    <label for="type">Line of Business :</label>
-                                    <select class="form-select" aria-label="Default select example">
-                                        <option selected>Select Type</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
-                                      </select>
-                                </div>
-                              
-                              </div><br>
-                              <div class="row">
-                                <div class="col-lg-6">
-                                    <label>Contact Person/ Designation :</label>
-                                    <input type="text" class="form-control" id="" placeholder="">
-                                </div>
-                                <div class="col-lg-6">
-                                    <label>Contact Numbers :</label>
-                                    <input type="text" class="form-control" id="" placeholder="">
-                                    
-                                </div>                          
-                              </div><br>
-                              <div class="row">
-                                <div class="col-lg-6">
-                                    <label>Location (#/Bldg/St./Purok) :</label>
-                                    <input type="text" class="form-control" id="" placeholder="">
-                                </div>
-                                <div class="col-lg-6">
-                                    <label for="type">Barangay :</label>
-                                    <select class="form-select" aria-label="Default select example">
-                                        <option selected>Select Barangay</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
-                                      </select> </div>
-                              
-                              </div><br>
-                              <div class="row">
-                                <div class="col-lg-6">
-                                    <label>Geo Coordinates - Longitude:</label>
-                                    <input type="text" class="form-control" id="" placeholder="">
-                                </div>
-                                <div class="col-lg-6">
-                                    <label for="type">Latitude : </label>
-                                    <input type="text" class="form-control" id="" placeholder="">
-
-                                 </div>
-                              
-                              </div><br>
-                              <button type="button" class="btn btn-primary">ADD</button>
-
+  <div class="card o-hidden border-2 shadow-sm my-5">
+      <div class="card-body p-0">
+          <!-- Nested Row within Card Body -->
+          <div class="row">
+              <div class="col-lg-12">
+                  <div class="p-5">
+                      <div class="">
+                      </div>
+                      <div class="text-center">
+                        <h1 class="h4 text-gray-900 mb-4">Commercial Establishments</h1>
+                    </div>
+                      <br>
+                      <div class ="form-inline float-right ">
+                        <form class=>
+                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal"><i class="fa fa-plus"></i>
+                           Commercial Establishments
+                          </button>
                         </form>
-
+                      </div><br><br>
                         <br>
                         <div class="row">
                             <div class="col-lg-6">
-                                <p>List of Commercial/Business Establishments</p>
+                                <p>List of Commercial Establishments	</p>
                             </div>
                             <div class="col-lg-6 ">
-                              
                                   <form class="form-inline float-right">
-                                    <div class="form-group">
-                                      <label for="" class=""> Search Business Permit No :</label>
+                                    <div class="form-group mb-4">
+                                      <label for="" class=""> Category filter :</label>
+                                       <input type="text"  class="form-control" placeholder="Search" (input)="onChangeSearch($event)">
                                     </div>
-                                    <div class="form-group mx-sm-1 mb-2">
-                                        <input type="text" class="form-control" id="" placeholder="">
-                                    </div>
-                                    <button type="submit" class="btn btn-primary mb-2">GO</button>
-                                  </form>
-                                
-                            </div>
-                        </div>
+                                    <!-- <div class="form-group mx-sm-1 mb-2">
+                                        <select class="form-select" aria-label="Default select example">
+                                            <option selected></option>
+                                            <option value="1">Onsdsdsde</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                          </select>
+                                    </div> -->
 
-                        <table class="table table-light table-striped">
-                            <thead>
+                                  </form>
+                            </div>
+                             </div>
+
+                             <table class="table table-framed table-hover table-striped" >
+                              <thead class = "table-dark">
                                 <tr>
                                   <th scope="col">#</th>
-                                  <th scope="col">Name of Establishment	</th>
-                                  <th scope="col">Business Type	</th>
                                   <th scope="col">Barangay	</th>
-
+                                  <th scope="col">Business Permit No. </th>
+                                  <th scope="col">Name of Owner </th>
+                                  <th scope="col">Name of Establishment	</th>
+                                  <th scope="col">Category</th>
+                                  <th scope="col">Business Type	</th>
+                                  <th scope="col">Status</th>
+                                  <th scope="col">Contact Person</th>
+                                  <th scope="col">Contact No</th>
+                                  <th scope="col">Location</th>
+                                  <th scope="col"  class="text-center">Action</th>
                                 </tr>
                               </thead>
                               <tbody>
-                               
+                                <tr *ngFor =" let text of ComEstab;let i = index">
+                                  <td>{{ i + 1}}</td>
+                                  <td class="text-center">{{text.brgyName}}</td>
+                                  <td>{{text.permitNo}}</td>
+                                  <td>{{text.ower}}</td>
+                                  <td >{{text.estabName}}</td>
+                                  <td >
+                                    <div *ngFor="let item of list_of_category">
+                                        <span *ngIf="item.id === text.category">{{item.name_category}} </span>
+                                    </div>
+                                </td>
+                                  <td  class="text-center">{{text.lineBusiness}}</td>
+                                  <td  class="text-center">{{text.status}}</td>
+                                  <td>{{text.contactPerson}}</td>
+                                  <td>{{text.contactNo}}</td>
+                                  <td>{{text.location}}</td>
+                                  <td>
+                                    <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info" data-toggle="modal" data-target="#ModalEdit" ><i class="fa fa-edit"></i> </button>&nbsp;
+                                    <button type="button"  onclick="initialize()" (click)="editmodal=text"  class="btn btn-success" data-toggle="modal"data-target="#exampleModal"><i  class="fa fa-globe"></i> </button>&nbsp;
+                                    <button type="button" title="Delete" class="btn btn-warning" (click)="delete(text.transId,i)"><i class="fa fa-trash"></i>  </button>&nbsp;
+
+                                  </td>
+                                </tr>
                               </tbody>
                           </table>
+    <!-- Pagination Control -->
+    <div class = "row">
+      <div class="col-lg-12">
+      <form class="form-inline float-right ">
+      <pagination-controls
+      previousLabel="Prev"
+      currentPage="Next"
+      (pageChange) ="onTableDataChange2($event)">
+      </pagination-controls>
+      <ul>
+      <select (change)="onTableSizeChange2($event)">
+        <option *ngFor = "let size of tableSizes2 ">
+           {{size}}
+        </option>
+         </select>
+        </ul>
+   </form>
+</div>
+</div>
+
+    <!-- ADD MODAL -->
+  <div class="modal fade bd-example-modal-lg" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- <div class="modal-dialog modal-dialog-scrollable" role="document"> -->
+      <div class="modal-dialog modal-lg">
+
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Commercial Establishments
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="form-group">
+              <div class="row">
+            <div class="col-lg-6">
+                <label for="exampleFormControlInput1">Business Permit ID/No :</label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="comm.permitNo" [ngClass]="toValidate.permitNo?'is-invalid':''" (keyup)="toValidate.permitNo=false">
+            </div>
+            <div class="col-lg-6">
+                <label for="category">Status :</label>
+            <select class="form-select" aria-label="Default select example" >
+                <option selected></option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+              </select>
+            </div>
+       </div>
+      <div class="row">
+        <div class="col-lg-6"><br>
+            <label for="exampleFormControlInput1">Name of Owner :</label>
+            <input type="text" class="form-control" id="" placeholder=""  [(ngModel)]="comm.owner" [ngClass]="toValidate.owner?'is-invalid':''" (keyup)="toValidate.owner=false">
+          </div>
+
+        <div class="col-lg-6"><br>
+            <label for="exampleFormControlInput1">Name of Establishment :</label>
+            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="comm.estabName" [ngClass]="toValidate.estabName?'is-invalid':''" (keyup)="toValidate.estabName=false">
+        </div>
+
+
+      </div><br>
+      <div class="row">
+        <div class="col-lg-6">
+          <label for="type">Select Category:</label>
+          <select class="form-select" aria-label="Default select example"  name="list_of_category" [(ngModel)]="comm.category" [ngClass]="toValidate.category?'is-invalid':''" (ngModelChange)="toValidate.category=false">
+              <option *ngFor="let list of list_of_category" value={{list.id}} >{{list.name_category}}</option>
+            </select>
+
+        </div>
+        <div class="col-lg-6">
+            <label for="type">Line of Business :</label>
+            <select class="form-select" aria-label="Default select example" [(ngModel)]="comm.owner">
+                <option selected>Select Type</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+              </select>
+        </div>
+
+      </div><br>
+      <div class="row">
+        <div class="col-lg-6">
+            <label>Contact Person/ Designation :</label>
+            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="comm.contactPerson" >
+        </div>
+        <div class="col-lg-6">
+            <label>Contact Numbers :</label>
+            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="comm.contactNo">
+
+        </div>
+      </div><br>
+      <div class="row">
+        <div class="col-lg-6">
+            <label>Location (#/Bldg/St./Purok) :</label>
+            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="comm.location" >
+        </div>
+        <div class="col-lg-6">  <br>
+          <label for="type">Barangay :</label>
+          <select class="form-select" aria-label="Default select example" [(ngModel)]="comm.brgyId" [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false" >
+            <option *ngFor="let item  of barangays" value={{item.brgyId}}>{{item.brgyName}}</option>
+            </select> </div>
+
+      </div><br>
+      <div class="row">
+        <div class="col-lg-6">
+            <label>Geo Coordinates - Longitude:</label>
+            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="comm.longtitude">
+        </div>
+        <div class="col-lg-6">
+            <label for="type">Latitude : </label>
+            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="comm.latitude">
+          </div>
+        </div>
+         </div>
+
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary"  (click)="Add_Com_Estab()" ><i class="fa fa-check"></i>Save</button>&nbsp;
+          <!-- <button type ="button" class="btn btn-secondary" *ngIf="updateOfficial" (click) ="city={}"><i class="fa fa-times"></i>Cancel</button> -->
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
+
+
+<!-- edit (Modal) -->
+<div class="modal fade bd-example-modal-lg" id="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <!-- <div class="modal-dialog modal-dialog-scrollable" role="document"> -->
+    <div class="modal-dialog modal-lg  " role="document">
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Commercial Establishments
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="form-group">
+            <div class="row">
+          <div class="col-lg-6">
+              <label for="exampleFormControlInput1">Business Permit ID/No :</label>
+              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.permitNo">
+          </div>
+          <div class="col-lg-6">
+              <label for="category">Status :</label>
+          <select class="form-select" aria-label="Default select example">
+              <option selected></option>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+            </select>
+          </div>
+</div>
+    <div class="row">
+      <div class="col-lg-6">
+          <label for="exampleFormControlInput1">Name of Owner :</label>
+          <input type="text" class="form-control" id="" placeholder=""  [(ngModel)]="editmodal.owner">
+      </div>
+      <div class="col-lg-6">
+          <label for="exampleFormControlInput1">Name of Establishment :</label>
+          <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.estabName">
+      </div>
+
+    </div><br>
+    <div class="row">
+      <div class="col-lg-6">
+        <label for="type">Select Category:</label>
+        <select class="form-select" aria-label="Default select example"  name="list_of_category" [(ngModel)]="editmodal.category">
+            <option *ngFor="let list of list_of_category" value={{list.id}} >{{list.name_category}}</option>
+          </select>
+
+      </div>
+      <div class="col-lg-6">
+          <label for="type">Line of Business :</label>
+          <select class="form-select" aria-label="Default select example" [(ngModel)]="editmodal.owner">
+              <option selected>Select Type</option>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+            </select>
+      </div>
+
+    </div><br>
+    <div class="row">
+      <div class="col-lg-6">
+          <label>Contact Person/ Designation :</label>
+          <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.contactPerson">
+      </div>
+      <div class="col-lg-6">
+          <label>Contact Numbers :</label>
+          <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.contactNo">
+
+      </div>
+    </div><br>
+    <div class="row">
+      <div class="col-lg-6">
+          <label>Location (#/Bldg/St./Purok) :</label>
+          <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.location">
+      </div>
+      <div class="col-lg-6">  <br>
+        <label for="type">Barangay :</label>
+        <select class="form-select" aria-label="Default select example" [(ngModel)]="editmodal.brgyId">
+          <option *ngFor="let item  of barangays" value={{item.brgyId}}>{{item.brgyName}}</option>
+          </select> </div>
+
+    </div><br>
+    <div class="row">
+      <div class="col-lg-6">
+          <label>Geo Coordinates - Longitude:</label>
+          <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.longtitude">
+      </div>
+      <div class="col-lg-6">
+          <label for="type">Latitude : </label>
+          <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.latitude">
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="UpdateCommercial()" data-dismiss="modal" ><i class="fa fa-check"></i>Save</button>&nbsp;
+        <!-- <button type ="button" class="btn btn-secondary" *ngIf="updateOfficial" (click) ="city={}"><i class="fa fa-times"></i>Cancel</button> -->
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+

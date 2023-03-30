@@ -20,19 +20,6 @@ export class FiscalMattersComponent implements OnInit {
   list_revenues:any =[];
   list_expend:any=[];
 
-  pageSize = 10;
-  p: string|number|undefined;
-  count: number =0;
-  tableSize:number = 5;
-  tableSizes:any =[5,15,25,50,100];
-
-  pageSize2 = 10;
-  p2: string|number|undefined;
-  count2: number =0;
-  tableSize2:number = 5;
-  tableSizes2:any =[5,15,25,50,100];
-
-
   date = new DatePipe('en-PH')
   ngOnInit(): void {
   this.Init(
@@ -118,29 +105,29 @@ update(){
 
   }
 
-  onTableDataChange(page:any){ //paginate
-    console.log(page)
-    this.p = page;
+  // onTableDataChange(page:any){ //paginate
+  //   console.log(page)
+  //   this.p = page;
 
-  }
-  onTableSizeChange(event:any ){ //paginate
-    this.tableSize = event. target.value;
-    this.p = 1;
+  // }
+  // onTableSizeChange(event:any ){ //paginate
+  //   this.tableSize = event. target.value;
+  //   this.p = 1;
 
-  }
+  // }
 
 
 
-  onTableDataChange2(page:any){ //paginate
-    console.log(page)
-    this.p2 = page;
+  // onTableDataChange2(page:any){ //paginate
+  //   console.log(page)
+  //   this.p2 = page;
 
-  }
-  onTableSizeChange2(event:any ){ //paginate
-    this.tableSize2 = event. target.value;
-    this.p2= 1;
+  // }
+  // onTableSizeChange2(event:any ){ //paginate
+  //   this.tableSize2 = event. target.value;
+  //   this.p2= 1;
 
-  }
+  // }
 
 
 

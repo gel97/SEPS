@@ -10,35 +10,39 @@ import Swal from 'sweetalert2';
   styleUrls: ['./demography.component.css']
 })
 export class DemographyComponent implements OnInit {
-  DemographyService: any;
+ // DemographyService: any;
+
 
   constructor(private service:DemographyService, private auth:AuthService) { }
   demo:any={};
   Demo:any=[];
+  barangays: any=[];
   editmodal:any={};
   ViewBarangayOfficial:any={};
 
   date = new DatePipe('en-PH')
   ngOnInit(): void {
-  this.Init(
-      );
 
+this.Init();
+ this.list_of_barangay();
 
  }
 
-  Init(){
-     this.demo.munCityId=this.auth.munCityId;
-     this.demo.setYear=this.auth.activeSetYear;
-     this.service.GetDemography().subscribe(data=>{
-      this.Demo=(<any>data);
-      this.Demo.sort((n1:any,n2:any)=>{ //order by Descending
-        if(n1.setYear<n2.setYear)return 1;
-        if(n1.setYear>n2.setYear)return -1;
-        else return 0;
-      })
-      console.log(this.Demo)
-     })
-  }
+ Init(){
+  this.demo.munCityId=this.auth.munCityId;
+  this.service.GetDemography().subscribe(data=>{
+   this.Demo=(<any>data);
+   console.log(this.Demo)
+  })
+}
+
+
+  list_of_barangay(){
+    this.service.ListBarangay().subscribe(data=>{
+      this.barangays = <any>data;
+      console.log("fgxtxgcvcgcf",this.barangays)
+    });
+    }
 
   AddDemo() {
     this.demo.munCityId=this.auth.munCityId;
@@ -55,9 +59,7 @@ export class DemographyComponent implements OnInit {
 
     },err=>{
       Swal.fire(
-        'ERROR!',
-        'Error',
-        'error'
+        'Data already exists.!',
       );
 
       this.Init();

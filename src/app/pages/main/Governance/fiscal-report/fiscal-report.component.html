@@ -9,26 +9,29 @@
               <div class="col-lg-12">
                   <div class="p-5">
                       <div class="text-center">
-                          <h1 class="h4 text-gray-900 mb-4"> Provincial Fiscal Report</h1>
+                          <h1 class="h4 text-gray-900 mb-4">Provincial Fiscal Report</h1>
+                          <label><strong>Governance - Provincial Fiscal Report</strong></label><br>
+
                       </div>
                       <br>
                       <div class ="form-inline float-right ">
                       <form class=>
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd "><i class="fa fa-plus"></i>
-                             Provincial Fiscal Report
+                             Provincial Fiscal Reports
                            </button>
                       </form>
                     </div><br><br>
 
                       <div class="row">
                           <div class="col-lg-4">
-                              <p>List of Actual Revenues:</p>
-                          </div>
-                          </div>
-                      <table class="table table-light table-striped">
-                        <thead class ="table-dark">
-                              <tr>
+                            <label><strong>List of Actual Revenues:</strong></label><br>
 
+                          </div>
+                          </div>
+                          <table class="table table-framed table-hover table-striped">
+                            <thead class ="table-dark">
+                              <tr>
+                                <th></th>
                                 <th scope="col">Year</th>
                                 <th scope="col">Revenue</th>
                                 <th scope="col">Amount(PhP)</th>
@@ -37,12 +40,9 @@
                               </tr>
                             </thead>
                             <tbody >
-                              <tr *ngFor="let text of list_revenues| paginate:{
-                                itemsPerPage: tableSize,
-                                currentPage: p,
-                                totalItems:count};" >
+                              <tr *ngFor="let text of list_revenues;let i=index " >
+                                <td>{{i+1}}</td>
 
-                              <!-- <td>{{text.category}}</td> -->
                               <td>{{text.fiscalYear}}</td>
                               <td>{{text.description}}</td>
                               <td>{{text.amount}}</td>
@@ -51,39 +51,21 @@
                                 <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info" data-toggle="modal" data-target="#Edit" ><i class="fa fa-edit"></i> </button>&nbsp;
                                 <!-- <button type="button" title="Delete" class="btn btn-warning" ><i class="fa fa-trash"></i>  </button> -->
                               </td>
-
                             </tr>
                             </tbody>
                         </table>
- <!-- Pagination Control -->
-    <div class = "row">
-      <div class="col-lg-12">
-      <form class="form-inline float-right ">
-      <pagination-controls
-      previousLabel="Prev"
-      currentPage="Next"
-      (pageChange) ="onTableDataChange($event)">
-      </pagination-controls>
-      <ul>
-      <select (change)="onTableSizeChange($event)">
-        <option *ngFor = "let size of tableSizes ">
-           {{size}}
-        </option>
-         </select>
-        </ul>
-   </form>
-</div>
-                </div>
+
                         <br><br>
                         <div class="row">
                           <div class="col-lg-6">
-                              <p>List of Actual Expenditures:</p>
+                            <label><strong>List of Actual Expenditures:</strong></label><br>
+
                           </div>
                           </div>
                       <table class="table table-light table-striped">
                           <thead class ="table-dark">
                               <tr>
-
+                                    <th></th>
                                 <th scope="col">Year</th>
                                 <th scope="col">Expenditures</th>
                                 <th scope="col">Amount(PhP)</th>
@@ -92,10 +74,8 @@
                               </tr>
                             </thead>
                             <tbody>
-                            <tr *ngFor="let text of list_expend| paginate:{
-                              itemsPerPage: tableSize2,
-                              currentPage: p2,
-                              totalItems:count2};" >
+                            <tr *ngFor="let text of list_expend; let i=index " >
+                              <td>{{i+1}}</td>
                               <td>{{text.fiscalYear}}</td>
                               <td>{{text.description}}</td>
                               <td>{{text.amount}}</td>
@@ -107,26 +87,7 @@
                             </tr>
                             </tbody>
                         </table>
-     <!-- Pagination Control -->
 
-    <div class = "row">
-      <div class="col-lg-12">
-      <form class="form-inline float-right ">
-      <pagination-controls
-      previousLabel="Prev"
-      currentPage="Next"
-      (pageChange) ="onTableDataChange2($event)">
-      </pagination-controls>
-      <ul>
-      <select (change)="onTableSizeChange2($event)">
-        <option *ngFor = "let size of tableSizes2 ">
-           {{size}}
-        </option>
-         </select>
-        </ul>
-   </form>
-</div>
-                </div>
                       <br>
                   </div>
               </div>
@@ -144,7 +105,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Provincial Fiscal Report</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Fiscal Matters Data</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -189,11 +150,11 @@
 </div>
 
 <!--Edit Fiscal (Modal) -->
-<div class="modal fade" id="Edit" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="Edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Provincial Fiscal Report</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Fiscal Matters Data</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

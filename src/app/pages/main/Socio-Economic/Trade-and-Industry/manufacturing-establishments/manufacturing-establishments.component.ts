@@ -28,6 +28,7 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
   ];
 
   constructor( private service:ManEstabService, private auth:AuthService) { }
+  toValidate:any={};
   ManEstab:any=[];
   barangays:any=[];
   estab:any={};
@@ -35,11 +36,11 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
   Updatelocation:any={};
 
   // Pagination
-  // pageSize = 25;
-  // p: string|number|undefined;
-  // count: number =0;
-  // tableSize:number = 5;
-  // tableSizes:any =[5,10,15,25,50,100];
+  pageSize2 = 10;
+  p2: string|number|undefined;
+  count2: number =0;
+  tableSize2:number = 5;
+  tableSizes2:any =[5,15,25,50,100];
 
   date = new DatePipe('en-PH')
   ngOnInit(): void {
@@ -69,40 +70,50 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
 list_of_barangay(){
   this.service.ListBarangay().subscribe(data=>{
     this.barangays = <any>data;
-    console.log(this.barangays);
+    console.log("fgxtxgcvcgcf",this.barangays)
   });
-  this.estab = {};
-
 }
 
 
 
 
 AddEstablishment(){
-  this.estab.munCityId=this.auth.munCityId;
-  this.estab.setYear=this.auth.setYear;
-  this.estab.transId = this.date.transform(Date.now(),'YYMM');
-  this.estab.tag = 1;
-  this.service.AddManEstab(this.estab).subscribe(request=>{
-    console.log(request);
-    Swal.fire(
-      'Good job!',
-      'Data Added Successfully!',
-      'success'
-    );
+  this.toValidate.name = this.estab.name =="" || this.estab.name ==undefined?true:false;
+  this.toValidate.category = this.estab.category == "" || this.estab.category == null?true:false
+  this.toValidate.brgyId = this.estab.brgyId == "" || this.estab.brgyId == null?true:false
+  this.toValidate.type = this.estab.type == "" || this.estab.type == null?true:false
+  this.toValidate.workersNo =this.estab.workersNo == "" || this.estab.workersNo == undefined?true:false
 
-    this.estab = {};
-    this.ManEstab.push(request);
-  },err=>{
+  if( this.toValidate.name == true||this.toValidate.category ==true || this.toValidate.type == true|| this.toValidate.workersNo == true){
     Swal.fire(
-      'ERROR!',
-      'Error',
+      '',
+      'Required Fields',
       'error'
     );
-  });
+  }else{
+    this.estab.munCityId=this.auth.munCityId;
+    this.estab.setYear=this.auth.setYear;
+    this.estab.transId = this.date.transform(Date.now(),'YYMM');
+    this.estab.tag = 1;
+    this.service.AddManEstab(this.estab).subscribe(request=>{
+      console.log(request);
+      Swal.fire(
+        'Good job!',
+        'Data Added Successfully!',
+        'success'
+      );
+     // document.getElementById('close')?.click();
+      this.estab = {};
+      this.ManEstab.push(request);
+    });
+
+  }
+
+
 }
 
-  edit_estab(edit_estab:any={}) {
+
+edit_estab(edit_estab:any={}) {
     this.editmodal=edit_estab;
     this.GetListManEstab();
     }
@@ -143,16 +154,17 @@ delete(transId:any, index:any){
           for(let i = 0; i < this.ManEstab.length;i++){
             if(this.ManEstab[i].transId == transId){
               this.ManEstab.splice(i,1);
+              Swal.fire(
+                'Deleted',
+                'Removed successfully',
+                'success'
+              );
             }
           }
 
 
           this.service.DeleteManEstab(transId).subscribe(_data =>{
-            Swal.fire(
-              'Deleted',
-              'Removed successfully',
-              'success'
-            );
+
            // this.MajorAct.splice(index,1);
 
             // this.Init();
@@ -168,17 +180,16 @@ delete(transId:any, index:any){
       })
     }
 
-    // onTableDataChange(page:any){ //paginate
-    //   console.log(page)
-    //   this.p = page;
-    //   this.GetListManEstab();
+    onTableDataChange2(page:any){ //paginate
+      console.log(page)
+      this.p2 = page;
 
-    // }
-    // onTableSizeChange(event:any ){ //paginate
-    //   this.tableSize = event. target.value;
-    //   this.p = 1;
-    //   this.GetListManEstab();
+    }
+    onTableSizeChange2(event:any ){ //paginate
+      this.tableSize2 = event. target.value;
+      this.p2= 1;
 
-    // }
+    }
+
 
 }

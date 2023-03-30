@@ -19,24 +19,30 @@ export class DemographyService {
   constructor(private Http: HttpClient, private Auth: AuthService, private Base: BaseUrl, private ApiUrl: ApiUrl, private auth: AuthService) { }
 
 //DEMOGRAPHY//
+
 GetDemography():Observable<any[]>{
-  return this.Http.post<any[]>(this.apiurl + `/Demography/List?munCityId=${this.auth.munCityId}&setYear=${this.auth.activeSetYear}`,{responseType: 'json'} );
+  return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_get_demography(this.Auth.munCityId), { responseType: 'json' });
 }
-AddDemography(Demo:any={}){
+
+AddDemography(Demo: any = {}){
   console.log(Demo)
-  return this.Http.post (this.apiurl + "/Demography/Save", Demo , {responseType: 'json'});
+  return this.Http.post(this.Base.url + this.ApiUrl.post_save_demography(),Demo, { responseType: 'json' });
 }
 
-UpdateDemography(Demo:any={}){
+UpdateDemography(Demo:any = {}) {
   console.log(Demo)
-  return this.Http.post (this.apiurl + "/Demography/Update", Demo , {responseType: 'json'});
+  return this.Http.post(this.Base.url + this.ApiUrl.post_update_demography(),Demo, { responseType: 'json' });
+}
+// Delete_Com_Estab(transId:any) {
+//   return this.Http.delete(this.Base.url + this.ApiUrl.delete_com_estab(transId), { responseType: 'json' });
+// }
+
+ListBarangay(){
+  return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_list_demography (this.Auth.munCityId), { responseType: 'json' });
 }
 
-
-
- getAuthToken() {
+getAuthToken() {
   return localStorage.getItem('token');
   }
-
 
 }

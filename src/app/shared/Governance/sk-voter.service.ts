@@ -25,5 +25,9 @@ export class SkVoterService {
     console.log(Voter)
     return this.Http.post(this.Base.url + this.ApiUrl. post_update_skvoter(), Voter, { responseType: 'json' });
   }
+  ListBarangay(){
+    return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangays(this.Auth.munCityId), { responseType: 'json' });
+  }
+
 
 }

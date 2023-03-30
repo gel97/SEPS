@@ -13,13 +13,15 @@ export class SkVotersComponent implements OnInit {
 
 constructor(private service:SkVoterService , private auth:AuthService ) { }
 Voter:any=[];
+barangays:any=[];
 voter:any={};
 editmodal:any={};
 
 date = new DatePipe('en-PH')
 ngOnInit(): void {
-this.Init(
-);
+
+this.Init();
+this.list_of_barangay();
 }
   Init(){
     this.voter.munCityId=this.auth.munCityId;
@@ -29,6 +31,12 @@ this.Init(
      console.log(this.Voter)
     })
  }
+ list_of_barangay(){
+  this.service.ListBarangay().subscribe(data=>{
+    this.barangays = <any>data;
+    console.log("fgxtxgcvcgcf",this.barangays)
+  });
+  }
 
  addVoter() {
   this.voter.munCityId=this.auth.munCityId;
@@ -44,9 +52,8 @@ this.Init(
 
   },_err=>{
     Swal.fire(
-      'ERROR!',
-      'Error',
-      'error'
+      'Data already exists.!',
+
     );
 
     this.Init();
