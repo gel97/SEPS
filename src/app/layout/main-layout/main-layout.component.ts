@@ -10,6 +10,7 @@ import { map } from 'rxjs/internal/operators/map';
 import Swal from 'sweetalert2';
 import { Observable, of } from "rxjs";
 import { concatMap, delay } from "rxjs/operators";
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-main-layout',
@@ -138,6 +139,14 @@ export class MainLayoutComponent implements OnInit {
     this.service.clearSession();
     this.router.navigate(['/seps/guest/home']);
   }
+
+  toggleSidebar() {
+      $("body").toggleClass("sidebar-toggled");
+      $(".sidebar").toggleClass("toggled");
+      if ($(".sidebar").hasClass("toggled")) {
+      };  
+  }
+  
 
 
 }
