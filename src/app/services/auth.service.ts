@@ -60,14 +60,17 @@ export class AuthService {
   }
 
   clearSession() {
-      localStorage.removeItem("token");
-      localStorage.removeItem("munCityId");
-      localStorage.removeItem("munCityName");
-      localStorage.removeItem("activeSetYear");
-      localStorage.removeItem('token');
-      localStorage.removeItem('userData');
-
-  }
+    localStorage.removeItem("token");
+    localStorage.removeItem("munCityId");
+    localStorage.removeItem("o_munCityId");
+    localStorage.removeItem("o_munCityName");
+    localStorage.removeItem("munCityName");
+    localStorage.removeItem("activeSetYear");
+    localStorage.removeItem('token');
+    localStorage.removeItem('userData');
+    localStorage.removeItem('userId');
+    this.o_munCityId = "";
+}     
 
   getUsersList(): Observable<any[]> { // test api only | lag
     return this.http.get<any[]>(this.apiurlUser);
