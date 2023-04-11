@@ -1,124 +1,82 @@
-
 <div class="">
-
-  <div class="card o-hidden border-0 shadow-sm my-5">
+  <div class="card o-hidden border-2 shadow-sm my-5">
       <div class="card-body p-0">
           <!-- Nested Row within Card Body -->
           <div class="row">
-
               <div class="col-lg-12">
                   <div class="p-5">
                       <div class="">
-                          <button class="btn btn-outline-primary btn-circle float-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
-                              <i class="fa fa-minus" aria-hidden="true"></i>
-
-                            </button>
                       </div>
                       <div class="text-center">
-                          <h1 class="h4 text-gray-900 mb-4">Finance Institutions</h1>
-                      </div>
+                        <h1 class="h4 text-gray-900 mb-4">Financial Institutions</h1>
+                    </div>
+                      <br>
+                      <div class ="form-inline float-right ">
+                        <form class=>
+                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal "><i class="fa fa-plus"></i>
+                            Financial Institutions
+                          </button>
 
-
-                      <form class="user collapse show" id="collapseExample">
-                          <div class="form-group">
-                              <div class="">
-                                  <div class="">
-                                      <label for="exampleFormControlInput1">Name of Finance Institution :</label>
-                                      <input type="text" class="form-control" id="" placeholder="">
-                                  </div>
-                              </div>
-                             </div>
-                            <div class="row">
-                              <div class="col-lg-4">
-                                <label for="category">Category :</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected>Select Category</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
-                                  </select>
-                            </div>
-                              <div class="col-lg-4">
-                                  <label for="exampleFormControlInput1">No. of Members/ Accounts :</label>
-                                  <input type="text" class="form-control" id="" placeholder="">
-                              </div>
-                              <div class="col-lg-4">
-                                <label for="exampleFormControlInput1"> Total Assets :</label>
-                                <input type="text" class="form-control" id="" placeholder="">
-                            </div>
-                            </div><br>
-
-                            <div class="row">
-                              <div class="col-lg-4">
-                                  <label for="exampleFormControlInput1">Contact Person/ Designation :</label>
-                                  <input type="text" class="form-control" id="" placeholder="">
-                              </div>
-                              <div class="col-lg-4">
-                                  <label for="exampleFormControlInput1">Contact Numbers :</label>
-                                  <input type="text" class="form-control" id="" placeholder="">
-                              </div>
-
-                                <div class="col-lg-4">
-                                    <label>Location (#/Bldg/St./Purok) :</label>
-                                    <input type="text" class="form-control" id="" placeholder="">
-                                </div></div><br>
-
-
-                                <div class="row">
-                                  <div class="col-lg-4">
-                                    <label for="exampleFormControlInput1">Geo Coordinates - Longitude : </label>
-                                    <input type="text" class="form-control" id="" placeholder="">
-                                </div>
-                                  <div class="col-lg-4">
-                                      <label for="exampleFormControlInput1">Latitude :   </label>
-                                      <input type="text" class="form-control" id="" placeholder="">
-                                  </div>
-                                  <div class="col-lg-4">
-                                    <label for="category">Barangay :</label>
-                                    <select class="form-select" aria-label="Default select example">
-                                        <option selected>Select Category</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
-                                      </select>
-                                </div>
-                                </div><br>
-
-                            <button type="button" class="btn btn-primary">ADD</button>
-
-                      </form>
+                        </form>
+                      </div><br><br>
 
                       <br>
                       <div class="row">
-                          <div class="col-lg-6">
-                              <p>List of Financial Institutions</p>
-                          </div>
-                          <div class="col-lg-6 ">
+                        <div class="col-lg-6">
+                            <p>List of  Financial Institutions	</p>
+                        </div>
+                        <div class="col-lg-6 ">
+                              <form class="form-inline float-right">
+                                <div class="form-group mb-4">
+                                  <input type="search input"  class="form-control" width="30%" placeholder="Search" (input)="onChangeSearch($event)"> <label for="" class="btn btn-primary"> <i class="fas fa-search fa-2x"></i></label>
+                                </div>
 
-                                <form class="form-inline float-right">
-                                  <div class="form-group">
-                                    <label for="" class=""> Category filter :</label>
-                                  </div>
-                                  <div class="form-group mx-sm-1 mb-2">
-                                      <input type="text" class="form-control" id="" placeholder="-All-">
-                                  </div>
-                                  <button type="submit" class="btn btn-primary mb-2">GO</button>
-                                </form>
+                              </form>
+                        </div>
+                         </div>
 
-                          </div>
-                      </div>
-
-                      <table class="table table-light table-striped">
-                          <thead>
+                      <table class="table table-framed table-hover table-striped" >
+                        <thead class = "table-dark">
                               <tr>
                                 <th scope="col"></th>
                                 <th scope="col">Name of Finance Institution</th>
                                 <th scope="col">Category</th>
+                                <th scope="col">Member</th>
+                                <th scope="col">Total Asset</th>
+                                <th scope="col">Contact Person</th>
+                                <th scope="col">Contact Numbers	</th>
+                                <th scope="col" class="text-center">Location</th>
                                 <th scope="col">Barangay</th>
+                                <th scope="col"class="text-center" >Geo-Coord. (Long, Lat)</th>
+                                <th scope="col" class="text-center" >Action</th>
+
 
                               </tr>
                             </thead>
                             <tbody>
+                              <tr *ngFor="let text of Financial, let i = index ">
+                                <td>{{ i + 1 }}</td>
+                                  <td>{{text.name}}</td>
+                                  <td >
+                                      <div *ngFor="let item of list_of_category">
+                                          <span *ngIf="item.id === text.category">{{item.name_category}} </span>
+                                      </div>
+                                  </td>
+                                  <td class ="text-center">{{text.members}} </td>
+                                  <td>{{text.totAssets}}</td>
+                                  <td >{{text.contactPerson}}</td>
+                                  <td >{{text.contactNo}} </td>
+                                  <td class="text-center">{{text.location}}</td>
+                                  <td> {{text.brgyName}}</td>
+                                  <td >{{text.longtitude}},<br>{{text.latitude}}</td>
+
+                                  <td>
+
+                                    <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info" data-toggle="modal" data-target="#exampleModal_EDIT" ><i class="fa fa-edit"></i> </button>&nbsp;
+                                    <button (click)="SetMarker(text)" class="btn btn-success" role="button" (click)="editmodal=text" data-toggle="modal" data-target="#gmapModal"><i class="fa fa-globe"> </i> </button>&nbs
+                                    <button type="button" title="Delete" class="btn btn-warning" (click)="deleteFinancial(text.transId,i)"><i class="fa fa-trash"></i>  </button>&nbsp;
+                                  </td>
+                                </tr>
 
                             </tbody>
                         </table>
@@ -127,5 +85,191 @@
           </div>
       </div>
   </div>
+</div>
 
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <div class="">
+              <div class="">
+                  <label for="exampleFormControlInput1">Name of Finance Institution :</label>
+                  <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="financial.name" [ngClass]="toValidate.name?'is-invalid':''" (keyup)="toValidate.name=false">
+              </div>
+          </div>
+         </div>
+        <div class="row">
+          <div class="col-lg-4">
+            <label for="category">Category :</label>
+            <select class="form-select"  [(ngModel)]="financial.category" [ngClass]="toValidate.category?'is-invalid':''" (ngModelChange)="toValidate.category=false">
+              <option selected></option>
+              <option *ngFor="let list of list_of_category" value={{list.id}} >{{list.name_category}}</option>
+            </select>
+
+        </div>
+          <div class="col-lg-4">
+              <label for="exampleFormControlInput1">No. of Members/ Accounts :</label>
+              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="financial.members" [ngClass]="toValidate.members?'is-invalid':''" (keyup)="toValidate.members=false">
+          </div>
+          <div class="col-lg-4">
+            <label for="exampleFormControlInput1"> Total Assets :</label>
+            <div ></div>
+            <input type="text" class="form-control" id="" placeholder=""  [(ngModel)]="financial.totAssets" [ngClass]="toValidate.totAssets?'is-invalid':''" (keyup)="toValidate.totAssets=false">
+        </div>
+        </div><br>
+
+        <div class="row">
+          <div class="col-lg-4">
+              <label for="exampleFormControlInput1">Contact Person/ Designation :</label>
+              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="financial.contactPerson">
+          </div>
+          <div class="col-lg-4">
+              <label for="exampleFormControlInput1">Contact Numbers :</label>
+              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="financial.contactNo">
+          </div>
+
+            <div class="col-lg-4">
+                <label>Location (#/Bldg/St./Purok) :</label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="financial.location">
+            </div></div><br>
+
+
+            <div class="row">
+              <div class="col-lg-4">
+                <label for="exampleFormControlInput1">Geo Coordinates - Longitude : </label>
+
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="financial.longtitude">
+            </div>
+              <div class="col-lg-4">
+                  <label for="exampleFormControlInput1">Latitude :   </label>
+                  <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="financial.latitude">
+              </div>
+              <div class="col-lg-4" >
+                <label for="category">Barangay :</label>
+                <select class="form-select"  aria-label="Default select example" [(ngModel)]="financial.brgyId" [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false">
+                  <option *ngFor="let item  of barangays" value={{item.brgyId}}>{{item.brgyName}}</option>
+                  </select>
+            </div>
+            </div><br>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="Add_Financial()"  ><i class="fa fa-check"></i>Save</button>&nbsp;
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--EDIT  Modal -->
+<div class="modal fade" id="exampleModal_EDIT" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Financial Institutions</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <div class="">
+              <div class="">
+                  <label for="exampleFormControlInput1">Name of Finance Institution :</label>
+                  <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.name">
+              </div>
+          </div>
+         </div>
+        <div class="row">
+          <div class="col-lg-4">
+            <label for="category">Category :</label>
+            <select class="form-select"  [(ngModel)]="editmodal.category">
+              <option selected></option>
+              <option *ngFor="let list of list_of_category" value={{list.id}} >{{list.name_category}}</option>
+
+            </select>
+        </div>
+          <div class="col-lg-4">
+              <label for="exampleFormControlInput1">No. of Members/ Accounts :</label>
+              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.members">
+          </div>
+          <div class="col-lg-4">
+            <label for="exampleFormControlInput1"> Total Assets :</label>
+            <input type="text" class="form-control" id="" placeholder=""  [(ngModel)]="editmodal.totAssets">
+        </div>
+        </div><br>
+
+        <div class="row">
+          <div class="col-lg-4">
+              <label for="exampleFormControlInput1">Contact Person/ Designation :</label>
+              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.contactPerson">
+          </div>
+          <div class="col-lg-4">
+              <label for="exampleFormControlInput1">Contact Numbers :</label>
+              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.contactNo">
+          </div>
+
+            <div class="col-lg-4">
+                <label>Location (#/Bldg/St./Purok) :</label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.location">
+            </div></div><br>
+
+
+            <div class="row">
+              <div class="col-lg-4">
+                <label for="exampleFormControlInput1">Geo Coordinates - Longitude : </label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.longtitude">
+            </div>
+              <div class="col-lg-4">
+                  <label for="exampleFormControlInput1">Latitude :   </label>
+                  <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.latitude">
+              </div>
+              <div class="col-lg-4">
+                <label for="category">Barangay :</label>
+                <select class="form-select" aria-label="Default select example" [(ngModel)]="editmodal.brgyId" >
+                  <option *ngFor="let item  of barangays" value={{item.brgyId}}>{{item.brgyName}}</option>
+                  </select>
+            </div>
+            </div><br>
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="UpdateFinancial()"  data-dismiss="modal" ><i class="fa fa-check"></i>Save</button>&nbsp;
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal area -->
+<div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">SEPS GEOLOCATION TAGGING</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-gmap></app-gmap>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="UpdateFinancial()">Save changes</button>
+      </div>
+    </div>
+  </div>
 </div>

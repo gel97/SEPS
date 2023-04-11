@@ -17,11 +17,13 @@ export class DemographyComponent implements OnInit {
   Demo:any=[];
   editmodal:any={};
   ViewBarangayOfficial:any={};
+  barangays:any={};
 
   date = new DatePipe('en-PH')
   ngOnInit(): void {
-  this.Init(
-      );
+
+  this.Init();
+  this.list_of_barangay();
 
 
  }
@@ -40,7 +42,15 @@ export class DemographyComponent implements OnInit {
      })
   }
 
+  list_of_barangay(){
+    this.service.ListBarangay().subscribe(data=>{
+      this.barangays = <any>data;
+      console.log("fgxtxgcvcgcf",this.barangays)
+    });
+    }
+
   AddDemo() {
+
     this.demo.munCityId=this.auth.munCityId;
     this.demo.setYear=this.auth.activeSetYear;
     this.service.AddDemography(this.demo).subscribe(_data=>{
@@ -86,7 +96,39 @@ export class DemographyComponent implements OnInit {
     timer: 1000
     });
     this.editmodal ={};
+    }
 
+
+delete(transId:any, index:any){
+      Swal.fire({
+        text: 'Do you want to remove this file?',
+        icon: 'warning',
+        showConfirmButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Yes, remove it!'
+      }).then((result)=>{
+
+        if(result.value){
+          for(let i = 0; i < this.Demo.length;i++){
+            if(this.Demo[i].transId == transId){
+              this.Demo.splice(i,1);
+              Swal.fire(
+                'Deleted',
+                'Removed successfully',
+                'success'
+              );
+            }
+          }
+
+          this.service.DeleteDemography(transId).subscribe(_data =>{
+
+          })
+        } else if (result.dismiss === Swal.DismissReason.cancel){
+
+        }
+
+
+      })
     }
 
 

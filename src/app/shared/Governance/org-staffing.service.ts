@@ -15,13 +15,19 @@ export class OrgStaffingService {
     GetOrg():Observable<any[]> {
         return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_get_org(this.Auth.munCityId, this.Auth.setYear), { responseType: 'json' });
     }
-    AddOrg(org: any = {}) {
-        return this.Http.post(this.Base.url + this.ApiUrl.post_save_org(), org, { responseType: 'json' });
+    AddOrg(vieworg: any = {}){
+      console.log(vieworg)
+      return this.Http.post(this.Base.url + this.ApiUrl.post_save_org (),vieworg, { responseType: 'json' });
     }
-    UpdateOrg(org: any = {}) {
-        console.log(org)
-        return this.Http.post(this.Base.url + this.ApiUrl.post_update_org, org, { responseType: 'json' });
+    UpdateOrg(vieworg: any = {}) {
+        console.log(vieworg)
+        return this.Http.post(this.Base.url + this.ApiUrl.post_update_org(), vieworg, { responseType: 'json' });
     }
+
+    Delete_Org(munCityId:any, setYear:any) {
+      return this.Http.delete(this.Base.url + this.ApiUrl.delete_org(munCityId,setYear), { responseType: 'json' });
+    }
+
 
 }
 

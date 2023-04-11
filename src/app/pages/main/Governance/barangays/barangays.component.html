@@ -63,12 +63,14 @@
                           <button type="button" title="Edit" (click)="editmodal=text;is_update = true"
                           class="btn btn-info" data-toggle="modal" data-target="#ModalEdit"><i class="fa fa-edit"></i>
                         </button>&nbsp;
-                        </app-admin>                  
+                        </app-admin>
                         <button (click)="SetMarker(text)" class="btn btn-success" role="button" (click)="editmodal=text"
                           data-toggle="modal" data-target="#gmapModal">
                           <i class="fa fa-globe">
                           </i>
                         </button>
+                        <button type="button" title="Delete" class="btn btn-warning" (click)="delete(text.transId,i)"><i class="fa fa-trash"></i>  </button>&nbsp;
+
                       </td>
                     </tr>
                   </tbody>

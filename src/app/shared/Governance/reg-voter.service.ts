@@ -27,6 +27,14 @@ export class RegVoterService {
     return this.Http.post(this.Base.url + this.ApiUrl.post_update_regvoter(), Voter, { responseType: 'json' });
   }
 
+  DeleteRegVoter(transId:any) {
+    return this.Http.delete(this.Base.url + this.ApiUrl.delete_regVoter(transId), { responseType: 'json' });
+  }
+
+  ListBarangay(){
+    return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay_demo(this.Auth.munCityId), { responseType: 'json' });
+  }
+
 }
 
 

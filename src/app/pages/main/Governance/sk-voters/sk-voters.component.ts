@@ -12,26 +12,36 @@ import Swal from 'sweetalert2';
 export class SkVotersComponent implements OnInit {
 
 constructor(private service:SkVoterService , private auth:AuthService ) { }
+barangays:any={};
 Voter:any=[];
 voter:any={};
 editmodal:any={};
 
 date = new DatePipe('en-PH')
 ngOnInit(): void {
-this.Init(
-);
+this.Init();
+this.list_of_barangay();
+
 }
   Init(){
     this.voter.munCityId=this.auth.munCityId;
+    this.voter.setYear=this.auth.activeSetYear;
     this.service.GetSKVoter().subscribe(data=>{
-
      this.Voter=(<any>data);
      console.log(this.Voter)
     })
  }
 
+ list_of_barangay(){
+  this.service.ListBarangay().subscribe(data=>{
+    this.barangays = <any>data;
+    console.log("fgxtxgcvcgcf",this.barangays)
+  });
+  }
+
  addVoter() {
   this.voter.munCityId=this.auth.munCityId;
+  this.voter.setYear=this.auth.activeSetYear;
   this.service.AddSKVoter(this.voter).subscribe(_data=>{
     // alert("success");
     Swal.fire(
@@ -74,8 +84,47 @@ updateVoter(){
   timer: 1000
   });
   this.editmodal ={};
-
   }
+
+  delete(transId:any, index:any){
+    Swal.fire({
+      text: 'Do you want to remove this file?',
+      icon: 'warning',
+      showConfirmButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Yes, remove it!'
+    }).then((result)=>{
+
+      if(result.value){
+        for(let i = 0; i < this.Voter.length;i++){
+          if(this.Voter[i].transId == transId){
+            this.Voter.splice(i,1);
+            Swal.fire(
+              'Deleted',
+              'Removed successfully',
+              'success'
+            );
+          }
+        }
+
+
+        this.service.DeleteSKVoter(transId).subscribe(_data =>{
+
+         // this.MajorAct.splice(index,1);
+
+          // this.Init();
+          // this.mjr = {};
+
+        })
+      } else if (result.dismiss === Swal.DismissReason.cancel){
+
+      }
+        // this.Init();
+        // this.mjr = {};
+
+    })
+  }
+
 
 
 

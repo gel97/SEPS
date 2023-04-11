@@ -142,7 +142,36 @@ update(){
 
   }
 
+  delete(transId:any, index:any){
+    Swal.fire({
+      text: 'Do you want to remove this file?',
+      icon: 'warning',
+      showConfirmButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Yes, remove it!'
+    }).then((result)=>{
 
+      if(result.value){
+        for(let i = 0; i < this.fiscal.length;i++){
+          if(this.fiscal[i].transId == transId){
+            this.fiscal.splice(i,1);
+            Swal.fire(
+              'Deleted',
+              'Removed successfully',
+              'success'
+            );
+          }
+        }
+
+
+        this.service.Delete(transId).subscribe(_data =>{
+        })
+      } else if (result.dismiss === Swal.DismissReason.cancel){
+
+      }
+
+    })
+  }
 
 
 

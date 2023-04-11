@@ -157,7 +157,46 @@ export class BarangaysComponent implements OnInit {
       showConfirmButton: false,
       timer: 1000
     });
-    
+
+  }
+
+  delete(transId:any, index:any){
+    Swal.fire({
+      text: 'Do you want to remove this file?',
+      icon: 'warning',
+      showConfirmButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Yes, remove it!'
+    }).then((result)=>{
+
+      if(result.value){
+        for(let i = 0; i < this.ViewBarangayOfficial.length;i++){
+          if(this.ViewBarangayOfficial[i].transId == transId){
+            this. ViewBarangayOfficial.splice(i,1);
+            Swal.fire(
+              'Deleted',
+              'Removed successfully',
+              'success'
+            );
+          }
+        }
+
+
+        this.service.Delete_Barangay(transId).subscribe(_data =>{
+
+         // this.MajorAct.splice(index,1);
+
+          // this.Init();
+          // this.mjr = {};
+
+        })
+      } else if (result.dismiss === Swal.DismissReason.cancel){
+
+      }
+        // this.Init();
+        // this.mjr = {};
+
+    })
   }
 
 

@@ -24,6 +24,7 @@
                               <table class="table table-light table-striped">
                               <thead class="table-dark">
                                 <tr>
+                                  <th scope="col">#</th>
                                   <th scope="col">Barangay</th>
                                   <th scope="col" class="text-center">No. of Puroks	</th>
                                   <th scope="col" class="text-center">No. of Established Precincts</th>
@@ -35,7 +36,8 @@
                                 </thead>
 
                                 <tbody >
-                                  <tr *ngFor="let text of Voter" >
+                                  <tr *ngFor="let text of Voter, let i = index" >
+                                    <td>{{i + 1}}</td>
                                   <td>{{text.brgyName}}</td>
                                   <td class="text-center">{{text.purokNo}}</td>
                                   <td class="text-center">{{text.estabNo}}</td>
@@ -45,8 +47,7 @@
 
                                   <td>
                                   <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info" data-toggle="modal" data-target="#ModalEdit" ><i class="fa fa-edit"></i> </button>&nbsp;
-                                  <button type="button" title="Delete" class="btn btn-warning" ><i class="fa fa-trash"></i>  </button>
-                                  </td>
+                                  <button type="button" title="Delete" class="btn btn-warning" (click)="delete(text.transId,i)"><i class="fa fa-trash"></i>  </button>&nbsp;                                  </td>
 
                                 </tr>
                               </tbody>
@@ -71,12 +72,12 @@
       <div class="modal-body">
         <div class="row">
 
-          <div class ="col-lg-12"><br>
-            <label for="category">Barangay :</label>
-            <select class="form-select" aria-label="Default select example" >
-              <!-- <option selected *ngFor="let text of Demo" attr.data-value={{Demo.brgyId}}>{{text.brgyName}}</option> -->
-              </select>
-           </div>
+          <div class="col-lg-12">  <br>
+            <label for="type">Barangay :</label>
+            <select class="form-select" aria-label="Default select example" [(ngModel)]="voter.brgyId" >
+              <option *ngFor="let item  of barangays" value={{item.brgyId}}>{{item.brgyName}}</option>
+              </select> </div>
+
            <div class ="col-lg-12"><br>
             <label for="exampleFormControlTextarea1" >No. of Puroks:</label>
             <input type="text" class="form-control" id=""  name =""  [(ngModel)]="voter.purokNo"  placeholder="">
@@ -123,12 +124,12 @@
 <div class="modal-body">
 <div class="row">
 
-<div class ="col-lg-12"><br>
-<label for="category">Barangay :</label>
-<select class="form-select" aria-label="Default select example" >
-<!-- <option selected *ngFor="let text of Demo" attr.data-value={{Demo.brgyId}}>{{text.brgyName}}</option> -->
-</select>
-</div>
+  <div class="col-lg-12">  <br>
+    <label for="type">Barangay :</label>
+    <select class="form-select" aria-label="Default select example" [(ngModel)]="voter.brgyId" >
+      <option *ngFor="let item  of barangays" value={{item.brgyId}}>{{item.brgyName}}</option>
+      </select> </div>
+
 <div class ="col-lg-12"><br>
 <label for="exampleFormControlTextarea1" >No. of Puroks:</label>
 <input type="text" class="form-control" id=""  name =""  [(ngModel)]="editmodal.purokNo"  placeholder="">
