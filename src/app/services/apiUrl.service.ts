@@ -108,4 +108,67 @@ export class ApiUrl {
     get_list_agriculture = (menuId:any, setYear:any, munCityId:any) => `/Agriculture/${menuId}/${setYear}/${munCityId}`;
     delete_agriculture   = (transId:any) => `/Agriculture/${transId}`;
 
+// SOCIAL-PROFILE
+
+    // Education
+    get_list_education = (menuId :any, setYear  :any,munCityId :any)=>`/Education/${menuId}/${setYear}/${munCityId}`;
+    get_education      = (transId:any,)=>`/Education/${transId}`;
+    post_education     = ()=>`/Education`;
+    put_education      = ()=>`/Education`;
+    delete_education   = (transId:any)=>`/Education/${transId}`;
+    
+    // Health -> Workers
+    get_health_workers    = (setYear:any, munCityId:any) => `/HealthWorkers/${setYear}/${munCityId}`;
+    post_health_workers   = ()=>`/HealthWorkers`;
+    put_health_workers    = ()=>`/HealthWorkers`;
+    delete_health_workers = (transId:any)=>`/HealthWorkers/${transId}`;
+    
+    // Health -> Facilities
+    get_list_health_facilities = (menuId :any, setYear  :any,munCityId :any)=>`/HealthFacilities/${menuId}/${setYear}/${munCityId}`;
+    post_health_facility       = ()=>`/HealthFacilities`;
+    put_health_facility        = ()=>`/HealthFacilities`;
+    delete_health_facility     = (transId:any)=>`/HealthFacilities/${transId}`;
+    
+    // Health -> Handicap
+    get_list_health_handicap = (setYear  :any,munCityId :any)=>`/HealthHandi/${setYear}/${munCityId}`;
+    post_health_handicap     = ()=>`/HealthHandi`;
+    put_health_handicap      = ()=>`/HealthHandi`;
+    delete_health_handicap   = (transId:any)=>`/HealthHandi/${transId}`;
+    
+    // Health -> HealthMalnutrition
+    get_list_health_malnutrition = (setYear  :any,munCityId :any)=>`/HealthMalnut/${setYear}/${munCityId}`;
+    post_health_malnutrition     = ()=>`/HealthMalnut`;
+    put_health_malnutrition      = ()=>`/HealthMalnut`;
+    delete_health_malnutrition   = (transId:any)=>`/HealthMalnut/${transId}`;
+    
+    // Health -> Sanitary
+    get_list_health_sanitary = (setYear  :any,munCityId :any)=>`/HealthSanitary/${setYear}/${munCityId}`;
+    post_health_sanitary     = ()=>`/HealthSanitary`;
+    put_health_sanitary      = ()=>`/HealthSanitary`;
+    delete_health_sanitary   = (transId:any)=>`/HealthSanitary/${transId}`;
+    
+    // Health -> Hospital -> Provincial
+    get_list_health_hospital = (setYear:any)=>`/HealthHosp/${setYear}`;
+    post_health_hospital     = ()=>`/HealthHosp`;
+    put_health_hospital      = ()=>`/HealthHosp`;
+    delete_health_hospital   = (transId:any)=>`/HealthHosp/${transId}`;
+    
+    // Health -> Profile -> Provincial
+    get_list_health_profile  = (setYear:any)=>`/HealthProfile/${setYear}`;
+    post_health_profile      = ()=>`/HealthProfile`;
+    put_health_profile       = ()=>`/HealthProfile`;
+    delete_health_profile    = (transId:any)=>`/HealthProfile/${transId}`;
+    
+    // Safety -> SafetyServices
+    get_list_safety_services = (menuId :any, setYear  :any,munCityId :any)=>`/SafetyServices/${menuId}/${setYear}/${munCityId}`;
+    post_safety_services     = ()=>`/SafetyServices`;
+    put_safety_services      = ()=>`/SafetyServices`;
+    delete_safety_services   = (transId:any)=>`/SafetyServices/${transId}`;
+    
+    // Safety -> SafetyTanod
+    get_list_safety_tanod = ( setYear  :any,munCityId :any)=>`/SafetyTanod/${setYear}/${munCityId}`;
+    post_safety_tanod     = ()=>`/SafetyTanod`;
+    put_safety_tanod      = ()=>`/SafetyTanod`;
+    delete_safety_tanod   = (transId:any)=>`/SafetyTanod/${transId}`;
+
 }
