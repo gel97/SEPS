@@ -1,122 +1,200 @@
 <div class="">
-
   <div class="card o-hidden border-0 shadow-sm my-5">
-      <div class="card-body p-0">
-          <!-- Nested Row within Card Body -->
-          <div class="row">
-
-              <div class="col-lg-12">
-                  <div class="p-5">
-                      <div class="">
-                          <button class="btn btn-outline-primary btn-circle float-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
-                              <i class="fa fa-minus" aria-hidden="true"></i>
-
-                            </button>
-                      </div>
-                      <div class="text-center">
-                          <h1 class="h4 text-gray-900 mb-4">Slaughterhouses</h1>
-                      </div>
-
-
-                      <form class="user collapse show" id="collapseExample">
-                          <div class="form-group">
-                              <div class="row">
-                                  <div class="col-lg-12">
-                                      <label for="exampleFormControlInput1">Name of Slaughterhouse :</label>
-                                      <input type="text" class="form-control" id="" placeholder="">
-                                       </div>
-                                       </div><br>
-
-                            <div class="row">
-                              <div class="col-lg-4">
-                                  <label for="exampleFormControlInput1">Ownership :</label>
-                                  <select class="form-select" aria-label="Default select example">
-                                    <option selected>Select Category</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
-                                  </select>
-                              </div>
-                              <div class="col-lg-4">
-                                  <label for="exampleFormControlInput1">Capacity :</label>
-                                  <input type="text" class="form-control" id="" placeholder="">
-                              </div>
-
-                                <div class="col-lg-4">
-                                    <label>Area (Sq/m) :   </label>
-                                    <input type="text" class="form-control" id="" placeholder="">
-                                </div></div><br>
-
-                                <div class="row">
-                                  <div class="col-lg-4">
-                                    <label for="exampleFormControlInput1">Contact Person/ Designation :</label>
-                                    <input type="text" class="form-control" id="" placeholder="">
-                                </div>
-                                  <div class="col-lg-4">
-                                    <label for="exampleFormControlInput1">Contact Details : </label>
-                                    <input type="text" class="form-control" id="" placeholder="">
-                                </div>
-                                  <div class="col-lg-4">
-                                      <label for="exampleFormControlInput1">Location (#/St./Purok) : </label>
-                                      <input type="text" class="form-control" id="" placeholder="">
-                                  </div>
-                                  </div><br>
-
-                                <div class="row">
-                                  <div class="col-lg-4">
-                                    <label for="exampleFormControlInput1">Geo Coordinates - Longitude : </label>
-                                    <input type="text" class="form-control" id="" placeholder="">
-                                </div>
-                                  <div class="col-lg-4">
-                                      <label for="exampleFormControlInput1">Latitude :   </label>
-                                      <input type="text" class="form-control" id="" placeholder="">
-                                  </div>
-                                  <div class="col-lg-4">
-                                    <label for="category">Barangay :</label>
-                                    <select class="form-select" aria-label="Default select example" placeholder="barangay">
-                                        <option selected></option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
-                                      </select>
-                                      <br>
-                                      <form class="form-inline float-center">
-                                        <div class="form-group">
-                                        <input type="checkbox" class="form-check-input filled-in" id="" checked>
-                                        <label class="form-check-label" for="">Commercial Establishment</label>
-                                        </div>
-                                        </form>
-                                </div>
-                                </div><br>
-                              </div>
-                            <button type="button" class="btn btn-primary">ADD</button>
-                      </form>
-
-                      <br>
-                      <div class="row">
-                          <div class="col-lg-6">
-                              <p>List of Slaughterhouses</p>
-                          </div>
-
-                      <table class="table table-light table-striped">
-                          <thead>
-                              <tr>
-                                <th scope="col"></th>
-                                <th scope="col">	Name of Slaugherhouse</th>
-                                <th scope="col">Ownership</th>
-                                <th scope="col">Contact Person	</th>
-                                <th scope="col">Barangay</th>
-
-                              </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
-                  </div>
+    <div class="card-body p-0">
+      <!-- Nested Row within Card Body -->
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="p-5">
+            <div class="">
+              <button class="btn btn-outline-primary btn-circle float-right" type="button" data-toggle="collapse"
+                data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
+                <i class="fa fa-minus" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="text-center">
+              <h1 class="h4 text-gray-900 mb-4">Slaughterhouses</h1>
+            </div>
+            <form class="user collapse show" id="collapseExample">
+              <button type="button" (click)="clearData()" class="btn btn-labeled btn-success" data-toggle="modal"
+                data-target="#exampleModal">
+                <span class="btn-label"><i class="fa fa-check"></i></span>Add</button>
+            </form>
+            <br>
+            <div class="row">
+              <div class="col-lg-6">
+                <p>List of Slaughterhouses</p>
               </div>
+              <table class="table table-light table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name of Slaughterhouse</th>
+                    <th scope="col">Ownership Type</th>
+                    <th scope="col">Capacity</th>
+                    <th scope="col">Area (Sq/m)</th>
+                    <th scope="col">Contact Person</th>
+                    <th scope="col">Contact Details</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Barangay</th>
+                    <th scope="col">Geo-Coord.(Long,Lat)</th>
+                    <th width="11.4%"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let dataItem of dataList; let i = index">
+                    <td>{{i+1}}</td>
+                    <td>{{dataItem.name}}</td>
+                    <td>
+                      <div *ngFor="let item of listofOwnership">
+                        <span *ngIf="item.id == dataItem.ownershipType">{{item.type}}</span>
+                      </div>
+                    </td>
+                    <td>{{dataItem.capacity}}</td>
+                    <td>{{dataItem.area}}</td>
+                    <td>{{dataItem.contactPerson}}</td>
+                    <td>{{dataItem.contactNo}}</td>
+                    <td>{{dataItem.location}}</td>
+                    <td>{{dataItem.brgyName}}</td>
+                    <td>{{dataItem.longtitude}}, {{dataItem.latitude}}</td>
+                    <td>
+                      <app-admin>
+                        <button (click)="addData = dataItem" data-toggle="modal" (click)="editToggle()"
+                          data-target="#exampleModal" class="btn btn-primary">
+                          <i class="fas fa-edit"></i></button>&nbsp;
+                        <button (click)="SetMarker(dataItem); addData = dataItem" data-toggle="modal"
+                          data-target="#gmapModal" class="btn btn-success">
+                          <i class="fas fa-globe"></i></button>&nbsp;
+                        <button class="btn btn-danger" (click)="DeleteAgriculture(dataItem)">
+                          <i class="fas fa-trash"></i>
+                        </button>
+                      </app-admin>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
+        </div>
       </div>
+    </div>
   </div>
 
-</div>
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-dark" id="exampleModalLabel">Slaughterhouses</h5>
+          <button type="button" #closebutton class="btn-close" data-toggle="modal" data-target="#exampleModal"
+            aria-hidden="true" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <div class="row">
+              <div class="col-lg-6">
+                <label for="category">Barangay :</label>
+                <label *ngIf="required" style="color: red;" for="category">&nbsp;&nbsp;<i
+                    class="fas fa-asterisk"></i>Required</label>
+                <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.brgyId">
+                  <option *ngFor="let item of barangayList" [value]="item.brgyId">
+                    {{ item.brgyName }}
+                  </option>
+                </select>
+              </div>
+            </div><br>
+            <div class="row">
+              <div class="col-lg-12">
+                <label for="exampleFormControlInput1">Name of Slaughterhouse :</label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.name"
+                  [(ngModel)]="dummy_addData.name">
+              </div>
+            </div><br>
+            <div class="row">
+              <div class="col-lg-4">
+                <label for="exampleFormControlInput1">Ownership :</label>
+                <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.ownershipType"
+                  [(ngModel)]="dummy_addData.ownershipType">
+                  <option selected>Select Category</option>
+                  <option value="1">One</option>
+                  <option value="2">Two</option>
+                  <option value="3">Three</option>
+                </select>
+              </div>
+              <div class="col-lg-4">
+                <label for="exampleFormControlInput1">Capacity :</label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.capacity"
+                  [(ngModel)]="dummy_addData.capacity">
+              </div>
+              <div class="col-lg-4">
+                <label>Area (Sq/m) : </label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.area"
+                  [(ngModel)]="dummy_addData.area">
+              </div>
+            </div><br>
+            <div class="row">
+              <div class="col-lg-4">
+                <label for="exampleFormControlInput1">Contact Person/ Designation :</label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.contactPerson"
+                  [(ngModel)]="dummy_addData.contactPerson">
+              </div>
+              <div class="col-lg-4">
+                <label for="exampleFormControlInput1">Contact Details : </label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.contactNo"
+                  [(ngModel)]="dummy_addData.contactNo">
+              </div>
+              <div class="col-lg-4">
+                <label for="exampleFormControlInput1">Location (#/St./Purok) : </label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.location"
+                  [(ngModel)]="dummy_addData.location">
+              </div>
+            </div><br>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="left-absolute" *ngIf="visible">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                (ngModelChange)="onChange(isCheck)" [(ngModel)]="isCheck">
+              <label class="form-check-label" for="flexCheckDefault">
+                Several data
+              </label>
+            </div>
+          </div>
+          <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal"
+            aria-hidden="true">
+            <i class="fas fa-times">&nbsp;</i>Close
+          </button>
+          <button type="button" *ngIf="visible" (click)="AddAgriculture()" id="closeModal" class="btn btn-success">
+            <i class="fas fa-plane-departure">&nbsp;</i>ADD
+          </button>
+          <button type="button" *ngIf="not_visible" (click)="EditAgriculture()" data-toggle="modal"
+            data-target="#exampleModal" aria-hidden="true" class="btn btn-primary">
+            <i class="fas fa-edit">&nbsp;</i>UPDATE
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- modal area GEO -->
+  <div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">SEPS GEOLOCATION TAGGING</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <app-gmap></app-gmap>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" (click)="EditAgriculture()">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>

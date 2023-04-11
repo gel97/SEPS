@@ -9,12 +9,21 @@ import { AuthService } from 'src/app/services/auth.service';
 export class AdminComponent implements OnInit {
 
   constructor(private Auth:AuthService) { }
-
+  o_munCityId:any = "";
   munCityId:any = "";
+  activeSetYear:any = "";
+  setYear:any = "";
 
   ngOnInit(): void {
-    this.munCityId = this.Auth.o_munCityId;
-    console.log("ADMIN: ", this.munCityId);
+    this.o_munCityId = this.Auth.o_munCityId;
+    this.munCityId = this.Auth.munCityId;
+    this.activeSetYear = this.Auth.activeSetYear;
+    this.setYear = this.Auth.setYear
+
+    console.log("o_munCityId: ", this.o_munCityId);
+    console.log("munCityId: ", this.munCityId);
+
   }
+
 
 }
