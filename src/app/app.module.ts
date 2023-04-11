@@ -258,7 +258,8 @@ import { AdminComponent } from './Admin/admin/admin.component';
     AgmCoreModule.forRoot({
       // please get your own API key here:
       // https://developers.google.com/maps/documentation/javascript/get-api-key?hl=en
-      apiKey: 'AIzaSyBfQJlyD65DekS6HrSDe2z-6-KvoO4aeRk'
+      apiKey: 'AIzaSyBfQJlyD65DekS6HrSDe2z-6-KvoO4aeRk',
+      libraries: ['places']
     })
 
   ],
