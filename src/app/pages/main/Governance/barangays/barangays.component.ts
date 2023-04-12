@@ -20,11 +20,11 @@ export class BarangaysComponent implements OnInit {
   munCityName:string = this.auth.munCityName;
   is_update: boolean = false;
   ViewBarangayOfficial: any = [];
+  listBarangay: any = [];
   barangay: any = {};
   addmodal: any = {};
   editmodal: any = {};
   UpdateBarangay: any = {};
-  listBarangay: any = {};
 
   pageSize = 25;
   p: string | number | undefined;
@@ -56,7 +56,6 @@ export class BarangaysComponent implements OnInit {
   Init(){
     this.GetBarangay();
     this.GetListBarangay();
-
   }
 
   GetBarangay() {
@@ -162,44 +161,32 @@ export class BarangaysComponent implements OnInit {
 
   delete(transId:any, index:any){
     Swal.fire({
-      text: 'Do you want to remove this file?',
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
       icon: 'warning',
-      showConfirmButton: true,
       showCancelButton: true,
-      confirmButtonText: 'Yes, remove it!'
-    }).then((result)=>{
-
-      if(result.value){
-        for(let i = 0; i < this.ViewBarangayOfficial.length;i++){
-          if(this.ViewBarangayOfficial[i].transId == transId){
-            this. ViewBarangayOfficial.splice(i,1);
-            Swal.fire(
-              'Deleted',
-              'Removed successfully',
-              'success'
-            );
-          }
-        }
-
-
-        this.service.Delete_Barangay(transId).subscribe(_data =>{
-
-         // this.MajorAct.splice(index,1);
-
-          // this.Init();
-          // this.mjr = {};
-
-        })
-      } else if (result.dismiss === Swal.DismissReason.cancel){
-
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.service.Delete_Barangay(transId).subscribe({
+          next: (_data) => {
+            this.GetBarangay();
+          },
+          error: (err) => {
+            this.GetBarangay();
+          },
+         
+        });      
+        Swal.fire(
+          'Deleted!',
+          'Your file has been deleted.',
+          'success'
+        )
       }
-        // this.Init();
-        // this.mjr = {};
-
     })
+    
   }
-
-
-
 
 }
