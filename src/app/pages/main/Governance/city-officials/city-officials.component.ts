@@ -15,6 +15,7 @@ export class CityOfficialsComponent implements OnInit {
   isLoading:boolean = true;
 
   constructor(private service:CityOfficialService, private auth:AuthService) { } // private service: + name of service that you've created
+  toValidate:any={};
   Official:any = [];
   city: any = {};
   city2:any = {};
@@ -58,8 +59,47 @@ export class CityOfficialsComponent implements OnInit {
     })
   }
 
+  // addOfficial(){
+  //   this.toValidate.name = this.city.name=="" || this.city.name ==null?true:false;
+  //   this.toValidate.seqNo = this.city.seqNo =="" || this.city.seqNo == undefined?true:false;
+
+  //   if (this.toValidate.name == true||this.toValidate.seqNo ==true){
+  //     Swal.fire(
+  //       '',
+  //       'Please fill out the required fields',
+  //       'warning'
+  //     );
+  //   }else{
+
+  //   this.city.munCityId=this.auth.munCityId;
+  //   this.city.setYear=this.auth.setYear;
+  //   this.city.transId = this.date.transform(Date.now(),'YYMM');
+  //   //this.comm.tag = 1;
+  //   this.service.AddOfficial(this.city).subscribe(request=>{
+  //     console.log(request);
+  //     Swal.fire(
+  //       'Good job!',
+  //       'Data Added Successfully!',
+  //       'success'
+  //     );
+
+  //    this.city = {};
+  //     this.Official.push(request);
+  //   },);
+  // }
+  // }
 
   addOfficial() {
+    this.toValidate.name = this.city.name=="" || this.city.name ==null?true:false;
+   this.toValidate.seqNo = this.city.seqNo =="" || this.city.seqNo == undefined?true:false;
+
+   if (this.toValidate.name == true||this.toValidate.seqNo ==true){
+    Swal.fire(
+          '',
+          'Please fill out the required fields',
+          'warning'
+        );
+      }else{
     this.city.munCityId=this.auth.munCityId;
     this.city.setYear=this.auth.activeSetYear;
     this.city.transId = this.date.transform(Date.now(),'YYMM');
@@ -77,7 +117,7 @@ export class CityOfficialsComponent implements OnInit {
       this.Init();
       this.city = {};
 
-    },_err=>{
+    },err=>{
       Swal.fire(
         'ERROR!',
         'Error',
@@ -87,6 +127,7 @@ export class CityOfficialsComponent implements OnInit {
 
     });
   }
+}
 
   // editOfficial(editOfficial:any={}) {
   //   this.city2.seqNo = this.Official[editOfficial].seqNo;

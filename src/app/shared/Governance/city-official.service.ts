@@ -23,6 +23,9 @@ export class CityOfficialService {
   UpdateOfficial(Official: any = {}) {
     return this.Http.post(this.Base.url + this.ApiUrl.post_update_official(), Official, { responseType: 'json' });
   }
+  Delete_Officials(transId:any) {
+    return this.Http.delete(this.Base.url + this.ApiUrl.delete_officials(transId), { responseType: 'json' });
+  }
 
   GetMunPosition() {
     return this.Http.get(this.Base.url + this.ApiUrl.get_mun_position(), { responseType: 'json' });

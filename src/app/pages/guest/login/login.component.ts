@@ -10,11 +10,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class LoginComponent implements OnInit {
   title = 'loginGoogle';
-    
+
   auth2: any;
-    
+
   @ViewChild('loginRef', {static: true }) loginElement!: ElementRef;
-     
+
   userData:any = {};
   user:any={};
   errorLogin:String ="";
@@ -31,19 +31,20 @@ signIn (){
       if(data.token!= null){
         //alert(<any>data.token);
         localStorage.setItem("token", data.token);
-        this.router.navigate(['/']); //navigate to homepage if authenticated          
+        this.router.navigate(['/']); //navigate to homepage if authenticated
       }
 
-    
+
   },
   err => {
-      console.log(err.error)
+     console.log(err.error)
       this.errorLogin = err.error;
-  });
+  }
+  );
 }
 callLoginButton() {
   console.log("jrerer");
-     
+
   this.auth2.attachClickHandler(this.loginElement.nativeElement, {},
     (googleAuthUser:any) => {
       let profile = googleAuthUser.getBasicProfile();
@@ -59,22 +60,22 @@ callLoginButton() {
         profile: profile.getImageUrl(),
         token: googleAuthUser.getAuthResponse().id_token
       }
-     
+
       localStorage.setItem("token", this.userData.token);
       localStorage.setItem("userData", JSON.stringify(this.userData));
       this.zone.run(() => {
         this.router.navigate(['/']);
       });
-   
+
      /* Write Your Code Here */
-  
+
     }, (error:any) => {
       alert(JSON.stringify(error, undefined, 2));
     });
 }
 
 googleAuthSDK() {
-     
+
   (<any>window)['googleSDKLoaded'] = () => {
     (<any>window)['gapi'].load('auth2', () => {
       this.auth2 = (<any>window)['gapi'].auth2.init({
@@ -86,17 +87,17 @@ googleAuthSDK() {
       this.callLoginButton();
     });
   }
-   
+
   (function(d, s, id){
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) {return;}
-    js = d.createElement('script'); 
+    js = d.createElement('script');
     js.id = id;
     js.src = "https://apis.google.com/js/platform.js?onload=googleSDKLoaded";
-    
+
     fjs?.parentNode?.insertBefore(js, fjs);
   }(document, 'script', 'google-jssdk'));
- 
+
 }
 
 }

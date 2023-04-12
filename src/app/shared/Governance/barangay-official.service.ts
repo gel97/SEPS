@@ -28,6 +28,10 @@ export class BarangayOfficialService {
         return this.Http.post(this.Base.url + this.ApiUrl.post_update_barangay(), ViewBarangayOfficial, { responseType: 'json' });
     }
 
+    Delete_Barangay(transId:any) {
+      return this.Http.delete(this.Base.url + this.ApiUrl.delete_barangay(transId), { responseType: 'json' });
+    }
+
     ListBarangay(){
         return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay(this.Auth.munCityId), { responseType: 'json' });
     }

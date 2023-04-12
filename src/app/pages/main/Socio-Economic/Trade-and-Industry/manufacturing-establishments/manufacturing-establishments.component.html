@@ -25,22 +25,12 @@
                             </div>
                             <div class="col-lg-6 ">
                                   <form class="form-inline float-right">
-                                    <div class="form-group mb-4">
-                                      <!-- <label for="" class=""> Category filter :</label> -->
-                                       <input type="text"  class="form-control" placeholder="Search" (input)="onChangeSearch($event)">
+                                    <div class="form-group mb-6">
+                                      <input type="search input"  class="form-control" width="30%" placeholder="Search" (input)="onChangeSearch($event)"> <label for="" class="btn btn-primary"> <i class="fas fa-search fa-2x"></i></label>
                                     </div>
-                                    <!-- <div class="form-group mx-sm-1 mb-2">
-                                        <select class="form-select" aria-label="Default select example">
-                                            <option selected></option>
-                                            <option value="1">Onsdsdsde</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
-                                          </select>
-                                    </div> -->
-
                                   </form>
                             </div>
-                             </div>
+                             </div><br>
 
                              <table class="table table-framed table-hover table-striped" >
                               <thead class = "table-dark">
@@ -55,11 +45,13 @@
                                   <th scope="col" class="text-center">Location</th>
                                   <th scope="col" class="text-center">Barangay Name</th>
                                   <th scope="col" class="text-center">Geo Location</th>
-                                  <th scope="col" class="text-center">Action</th>
+                                  <th scope="col" class="text-center" >Action</th>
                                 </tr>
                               </thead>
                               <tbody>
-                                <tr *ngFor="let text of ManEstab | filterall: searchText , let i = index">
+                                <tr *ngFor="let text of ManEstab | paginate:{ itemsPerPage: tableSize2,
+                                  currentPage: p2,
+                                  totalItems:count2} | filterall: searchText , let i = index ">
                                   <td>{{ i + 1 }}</td>
                                   <td class="text-center">{{text.name}}</td>
                                   <td >
@@ -79,42 +71,66 @@
                                   <td class="text-center">{{text.workersNo}}</td>
                                   <td>{{text.location}}</td>
                                   <td class="text-center">{{text.brgyName}}</td>
-                                  <td>{{text.longtitude}},{{text.latitude}}</td>
-                                  <td >
+                                  <td>{{text.longtitude}},<br>{{text.latitude}}</td>
+                                  <td>
                                     <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info" data-toggle="modal" data-target="#ModalEdit" ><i class="fa fa-edit"></i> </button>&nbsp;
-                                    <button type="button"  onclick="initialize()" (click)="editmodal=text"  class="btn btn-success" data-toggle="modal"data-target="#exampleModal"><i  class="fa fa-globe"></i> </button>&nbsp;
-                                    <button type="button" title="Delete" class="btn btn-warning" (click)="delete(text.transId,i)"><i class="fa fa-trash"></i>  </button>&nbsp;
+                                    <button (click)="SetMarker(text)" class="btn btn-success" role="button" (click)="editmodal=text" data-toggle="modal" data-target="#gmapModal">
+                                    <i class="fa fa-globe"> </i> </button>
+                                   <button type="button" title="Delete" class="btn btn-warning" (click)="delete(text.transId,i)"><i class="fa fa-trash"></i>  </button>&nbsp;
 
                                   </td>
                                 </tr>
                               </tbody>
                           </table>
     <!-- Pagination Control -->
-    <!-- <div class = "row">
+    <div class = "row">
       <div class="col-lg-12">
       <form class="form-inline float-right ">
       <pagination-controls
       previousLabel="Prev"
       currentPage="Next"
-      (pageChange) ="onTableDataChange($event)">
+      (pageChange) ="onTableDataChange2($event)">
       </pagination-controls>
       <ul>
-      <select (change)="onTableSizeChange($event)">
-        <option *ngFor = "let size of tableSizes ">
+      <select (change)="onTableSizeChange2($event)">
+        <option *ngFor = "let size of tableSizes2 ">
            {{size}}
         </option>
          </select>
         </ul>
    </form>
 </div>
-</div> -->
+</div>
+<!-- modal area -->
+<div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">SEPS GEOLOCATION TAGGING</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-gmap></app-gmap>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="UpdateManEstab()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
     <!-- ADD MODAL -->
   <div class="modal fade bd-example-modal-lg" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <!-- <div class="modal-dialog modal-dialog-scrollable" role="document"> -->
+      <div class="modal-dialog modal-lg">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Major Economic Activities</h5>
+        <div class="modal-header modal-header-primary" >
+          <h5 class="modal-title" id="exampleModalLabel">Manufacturing Establishments</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -124,23 +140,29 @@
             <div class="form-group">
               <div class="form-group mb-1">
               <label class="" for="exampleFormControlInput1">Name of Establishment :</label>
-              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="estab.name">
+              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="estab.name"  [ngClass]="toValidate.name?'is-invalid':''" (keyup)="toValidate.name=false">
               </div>
             </div>
-            <div class="row">
-              <div class="col-lg-12">
+            <div class="col-lg-12">
+              <label for="type">Barangay :</label>
+              <select class="form-select" aria-label="Default select example" [(ngModel)]="estab.brgyId"  [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false">
+                <option *ngFor="let item  of barangays" value={{item.brgyId}}>{{item.brgyName}}</option>
+                </select> </div><br>
+
+            <div class="row"><br>
+              <div class="col-lg-6"><br>
                 <label for="type">Select Category:</label>
-                <select class="form-select" aria-label="Default select example"  name="list_of_category" [(ngModel)]="estab.category">
+                <select class="form-select" aria-label="Default select example"  name="list_of_category" [(ngModel)]="estab.category"  [ngClass]="toValidate.category?'is-invalid':''" (ngModelChange)="toValidate.category=false">
                     <option *ngFor="let list of list_of_category" value={{list.id}} >{{list.name_category}}</option>
                   </select>
-
               </div>
 
-              <div class="col-lg12">  <br>
-                  <label for="type">Business Type :</label>
-                  <select class="form-select" aria-label="Default select example"  name="list_of_Business" [(ngModel)]="estab.type">
+              <div class="col-lg-6"><br>
+                  <label for="type">Business Type :</label><br>
+                  <select class="form-select" aria-label="Default select example"  name="list_of_Business" [(ngModel)]="estab.type"  [ngClass]="toValidate.type?'is-invalid':''" (ngModelChange)="toValidate.type=false">
                     <option *ngFor="let list of list_of_Business" value={{list.id}} >{{list.name_business}}</option>
                   </select>
+              </div>
               </div>
 
               <div class="col-lg-12"> <br>
@@ -155,7 +177,7 @@
               <br>
               <div class="col-lg-12">  <br>
                   <label>No. of Workers :</label>
-                  <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="estab.workersNo">
+                  <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="estab.workersNo"  [ngClass]="toValidate.workersNo?'is-invalid':''" (keyup)="toValidate.workersNo=false">
               </div>
               <br>
 
@@ -164,24 +186,19 @@
                   <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="estab.location">
               </div>
               <br>
-              <div class="col-lg-12">  <br>
-                  <label for="type">Barangay :</label>
-                  <select class="form-select" aria-label="Default select example" [(ngModel)]="estab.brgyId">
-                    <option *ngFor="let item  of barangays" value={{item.brgyId}}>{{item.brgyName}}</option>
-                    </select> </div>
                     <br>
-              <!-- <div class="col-lg-12">  <br>
+              <div class="col-lg-12">  <br>
                   <label>Geo Coordinates - Longitude:</label>
                   <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="estab.longtitude">
               </div>
               <div class="col-lg-12">  <br>
                   <label for="type">Latitude : </label>
                   <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="estab.latitude">
-               </div> -->
+               </div>
               </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" (click)="AddEstablishment()"  data-dismiss="modal" ><i class="fa fa-check"></i>Save</button>&nbsp;
+          <button type="button" class="btn btn-primary" (click)="AddEstablishment()" ><i class="fa fa-check"></i>Save</button>&nbsp;
           <!-- <button type ="button" class="btn btn-secondary" *ngIf="updateOfficial" (click) ="city={}"><i class="fa fa-times"></i>Cancel</button> -->
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
@@ -198,10 +215,12 @@
 
 <!-- edit (Modal) -->
 <div class="modal fade bd-example-modal-lg" id="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable" role="document">
+  <!-- <div class="modal-dialog modal-dialog-scrollable" role="document"> -->
+    <div class="modal-dialog modal-lg  modal-dialog-scrollable" role="document">
+
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Major Economic Activities</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Manufacturing Establishment</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -229,7 +248,9 @@
                   <option *ngFor="let list of list_of_Business" value={{list.id}} >{{list.name_business}}</option>
                 </select>
             </div>
+            </div>
 
+            <div class ="row">
             <div class="col-lg-12"> <br>
                 <label>Contact Person/ Designation :</label>
                 <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.contactPerson">
@@ -238,6 +259,7 @@
             <div class="col-lg-12">  <br>
                 <label>Contact Numbers :</label>
                 <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.contactNo" >
+            </div>
             </div>
             <br>
             <div class="col-lg-12">  <br>
@@ -274,60 +296,6 @@
       </div>
     </div>
   </div>
-</div>
-</div>
-</div>
-
-<!-- modal area -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">SEPS GEOLOCATION TAGGING</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div>
-          <label for="brgyName" style="margin-right: 5px;" id ="enme">Location</label>
-          <!-- <input id="enme" name="brgyName" class="seqInputBox" type="text"> -->
-        </div>
-        <!-- MAP AREA  -->
-        <div>
-          <div id="map_canvas" style="border:1px  solid #000; height:460px;width:720px; margin:auto; " ></div>
-
-
-          <p> <label> Longitude : </label>
-            <input type="number" name="longtxt" id="longtxt" [(ngModel)]="editmodal.longtitude" onchange="manualMarker(this.value)" #long />  </p>
-            <input name="fld_id" type="hidden" value="rec_id" />
-            <input name="id" type="hidden" value="570" />
-            <input name="ref" type="hidden" value="" />
-
-            <!-- <input name="tbl" type="hidden" value="admins_bgychairs" />
-            <input name="bgy" type="hidden" id = "bgy" value={{editmodal.longtitude}} />
-            <input name="ref" type="hidden" value="" /> -->
-
-    <p><label> Latitude :  </label>
-       <input type="number" name="lattxt" id="lattxt" [(ngModel)]="editmodal.latitude" onchange="manualMarker(this.value)" #lat  />   </p>
-      <input name="fld_id" type="hidden" value="rec_id" />
-      <input name="id" type="hidden" value="570" />
-      <input name="ref" type="hidden" value="" />
-
-      <!-- <input name="tbl" type="hidden" value="admins_bgychairs" />
-      <input name="bgy" type="hidden" id = "bgy" value={{editmodal.latitude}} />
-      <input name="ref" type="hidden" value="" /> -->
-    <!-- <p>
-      <input type="submit" name="submit" id="submit" value="Tag" class="btnStyle" style="width:80px; " />
-      <input type="button" VALUE="Back" onClick ="location.href = '  '" class="btnStyle" style="width:75px;" />
-    </p> -->
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary"  data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary"    (click)="UpdateManEstab()" >Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
+<!-- </div>
+</div> -->
 

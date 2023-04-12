@@ -104,7 +104,7 @@
                                         <label for="exampleFormControlTextarea1" >Others :</label>
                                        </div>
                                        <div class ="col-lg-9"><br>
-                                        <input type="number" class="form-control" id="others" name = "others" [(ngModel)] ="org.others"  [disabled]="inputDisabled"  placeholder="">
+                                        <input type="text" class="form-control" id="others" name = "others" [(ngModel)] ="org.others"  [disabled]="inputDisabled"  placeholder="">
                                        </div>
 
                                       </div>
@@ -112,7 +112,9 @@
                                        <br>
                                        <br>
                               <button type="button" class="btn btn-primary" *ngIf="!vieworg" (click) = "AddOrg()" ><i class ="fa fa-plus"></i>ADD</button>&nbsp;
-                              <button type="button" title="Edit" (click)="editO=org" class="btn btn-info" data-toggle="modal" data-target="#exampleModalLong" ><i class="fa fa-edit"></i>Edit </button>&nbsp;                        </form>
+                              <button type="button" title="Edit" (click)="editO=org" class="btn btn-info" data-toggle="modal" data-target="#exampleModalLong" ><i class="fa fa-edit"></i>Edit </button>&nbsp;
+                              <button type="button" title="Delete" class="btn btn-warning" (click)="delete(org.setYear,org.munCityId)"><i class="fa fa-trash"></i>  </button>&nbsp;
+                                     </form>
                               <!-- <button type="button" class="btn btn-primary" *ngIf="!ViewGeo"  (click)="AddGeo()" ><i class ="fa fa-plus"></i>ADD</button>&nbsp;
                               <button type="button" title="Edit" (click)="editgeo=geo" class="btn btn-info" data-toggle="modal" data-target="#exampleModalLong" ><i class="fa fa-edit"></i>Edit </button>&nbsp;
  -->
@@ -227,7 +229,7 @@
               <label for="exampleFormControlTextarea1" >Others :</label>
              </div>
              <div class ="col-lg-10"><br>
-              <input type="number" class="form-control" id="others" name = "others" [(ngModel)] ="editO.others"  placeholder="">
+              <input type="text" class="form-control" id="others" name = "others" [(ngModel)] ="editO.others"  placeholder="">
              </div>
 
 
