@@ -76,7 +76,9 @@
                           </button>
                           </div>
                           <div class="col-lg-4">
-                            <button type="button" title="Delete" class="btn btn-warning" (click)="delete(text.transId,i)"><i class="fa fa-trash"></i>  </button>&nbsp;
+                            <app-admin>
+                              <button type="button" title="Delete" class="btn btn-warning" (click)="delete(text.transId,i)"><i class="fa fa-trash"></i>  </button>&nbsp;
+                            </app-admin>
                           </div>
                         </div>  
                       </td>
