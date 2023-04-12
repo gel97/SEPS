@@ -24,12 +24,13 @@
           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd "><i class="fa fa-plus"></i>
             Provincial Officials
           </button>
-        </div>   
+        </div>
       </div>
     </div>
   </ng-template>
 
-  <div *ngIf="ProOfficial.length > 0 ; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
+  <div  class="card o-hidden border-2 shadow-sm my-5">
+    <!-- *ngIf="ProOfficial.length > 0 ; else isEmpty" -->
       <div class="card-body p-0">
           <!-- Nested Row within Card Body -->
           <div class="row">
@@ -151,9 +152,17 @@
            <input type="text" class="form-control" name ="seqNo" [(ngModel)]="city.seqNo" id="SeqNum" placeholder="">
           </div> -->
 
-          <div class ="col-lg-12"><br>
+          <!-- <div class ="col-lg-12"><br>
            <label for="exampleFormControlTextarea1" >Position :</label>
            <input type="text" class="form-control"  name ="position" [(ngModel)]=" Prov.position"  id="position" placeholder="">
+          </div> -->
+          <div class="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1">Select Position :</label>
+            <!-- <input type="text" class="form-control" name ="seqNo" [(ngModel)]="city.seqNo" id="SeqNum" placeholder="">  -->
+            <select class="form-select" aria-label="Default select example" [(ngModel)]="Prov.seqNo" >
+              <option *ngFor="let item  of positions" value={{item.seqNo}}>{{item.position}}</option>
+
+            </select>
           </div>
 
           <div class ="col-lg-12"><br>

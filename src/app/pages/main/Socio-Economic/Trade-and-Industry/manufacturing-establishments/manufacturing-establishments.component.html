@@ -74,8 +74,9 @@
                                   <td>{{text.longtitude}},<br>{{text.latitude}}</td>
                                   <td>
                                     <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info" data-toggle="modal" data-target="#ModalEdit" ><i class="fa fa-edit"></i> </button>&nbsp;
+
                                     <button (click)="SetMarker(text)" class="btn btn-success" role="button" (click)="editmodal=text" data-toggle="modal" data-target="#gmapModal">
-                                    <i class="fa fa-globe"> </i> </button>
+                                    <i class="fa fa-globe"> </i> </button>&nbsp;
                                    <button type="button" title="Delete" class="btn btn-warning" (click)="delete(text.transId,i)"><i class="fa fa-trash"></i>  </button>&nbsp;
 
                                   </td>
