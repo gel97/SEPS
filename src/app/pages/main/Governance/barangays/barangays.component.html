@@ -26,7 +26,7 @@
                 <div class="row">
 
                 </div>
-                <table class="table table-framed table-hover table-striped">
+                <table class="table table-hover">
                   <thead>
                     <tr>
                       <th scope="col">Barangay</th>
@@ -36,13 +36,15 @@
                       <th scope="col">Contact Details </th>
                       <th scope="col">No. of Puroks</th>
                       <th scope="col">Geo-Coord.</th>
-                      <th></th>
+                      <th [width]="150"></th>
                     </tr>
                   </thead>
                   <tbody *ngFor="let brgy of listBarangay; index as i">
                     <tr (click)="addmodal.brgyId = brgy.brgyId" data-toggle="modal" data-target="#ModalAdd">
                       <td rowspan="2">
-                        {{brgy.brgyName}}
+                        <b>
+                          {{brgy.brgyName}}
+                        </b>
                       </td>
 
                     </tr>
@@ -58,19 +60,25 @@
                       <td>{{text.purokNo}}</td>
                       <td>{{text.longitude}}, {{text.latitude}}</td>
                       <td>
-
-                        <app-admin>
-                          <button type="button" title="Edit" (click)="editmodal=text;is_update = true"
-                          class="btn btn-info" data-toggle="modal" data-target="#ModalEdit"><i class="fa fa-edit"></i>
-                        </button>&nbsp;
-                        </app-admin>
-                        <button (click)="SetMarker(text)" class="btn btn-success" role="button" (click)="editmodal=text"
-                          data-toggle="modal" data-target="#gmapModal">
-                          <i class="fa fa-globe">
-                          </i>
-                        </button>
-                        <button type="button" title="Delete" class="btn btn-warning" (click)="delete(text.transId,i)"><i class="fa fa-trash"></i>  </button>&nbsp;
-
+                        <div class="row">
+                          <div class="col-lg-4">
+                            <app-admin>
+                              <button (click)="editmodal=text;is_update = true"
+                              class="btn btn-primary" data-toggle="modal" data-target="#ModalEdit"><i class="fa fa-edit"></i>
+                            </button>
+                            </app-admin>
+                          </div>
+                          <div class="col-lg-4">
+                            <button (click)="SetMarker(text)" class="btn btn-success" role="button" (click)="editmodal=text"
+                            data-toggle="modal" data-target="#gmapModal">
+                            <i class="fa fa-globe">
+                            </i>
+                          </button>
+                          </div>
+                          <div class="col-lg-4">
+                            <button type="button" title="Delete" class="btn btn-warning" (click)="delete(text.transId,i)"><i class="fa fa-trash"></i>  </button>&nbsp;
+                          </div>
+                        </div>  
                       </td>
                     </tr>
                   </tbody>
