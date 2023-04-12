@@ -12,94 +12,95 @@ import Swal from 'sweetalert2';
 
 export class RegisteredVotersComponent implements OnInit {
 
-constructor(private service:RegVoterService , private auth:AuthService ) { }
-barangays:any={};
-Voter:any=[];
-voter:any={};
-editmodal:any={};
+  constructor(private service: RegVoterService, private auth: AuthService) { }
+  barangays: any = {};
+  Voter: any = [];
+  voter: any = {};
+  editmodal: any = {};
 
-date = new DatePipe('en-PH')
-ngOnInit(): void {
-this.Init();
-this.list_of_barangay();
-}
-  Init(){
-    this.voter.munCityId=this.auth.munCityId;
-    this.service.GetRegVoter().subscribe(data=>{
+  date = new DatePipe('en-PH')
+  ngOnInit(): void {
+    this.Init();
+    this.list_of_barangay();
+  }
+  Init() {
+    this.voter.munCityId = this.auth.munCityId;
+    this.service.GetRegVoter().subscribe(data => {
 
-     this.Voter=(<any>data);
-     console.log(this.Voter)
+      this.Voter = (<any>data);
+      console.log(this.Voter)
     })
- }
-
- list_of_barangay(){
-  this.service.ListBarangay().subscribe(data=>{
-    this.barangays = <any>data;
-    console.log("fgxtxgcvcgcf",this.barangays)
-  });
   }
 
- addVoter() {
-  this.voter.munCityId=this.auth.munCityId;
-  this.voter.setYear=this.auth.activeSetYear;
+  list_of_barangay() {
+    this.service.ListBarangay().subscribe(data => {
+      this.barangays = <any>data;
+      console.log("fgxtxgcvcgcf", this.barangays)
+    });
+  }
 
-  this.service.AddRegVoter(this.voter).subscribe(_data=>{
-    // alert("success");
-    Swal.fire(
-      'Good job!',
-      'Data Added Successfully!',
-      'success'
-    );
-    this.Init();
-    this.voter = {};
+  addVoter() {
+    this.voter.munCityId = this.auth.munCityId;
+    this.voter.setYear = this.auth.activeSetYear;
 
-  },_err=>{
-    Swal.fire(
-      'ERROR!',
-      'Error',
-      'error'
-    );
+    this.service.AddRegVoter(this.voter).subscribe(_data => {
+      // alert("success");
+      Swal.fire(
+        'Good job!',
+        'Data Added Successfully!',
+        'success'
+      );
+      this.Init();
+      this.voter = {};
 
-    this.Init();
-    this.voter= {};
-  });
-}
+    }, _err => {
+      Swal.fire(
+        'ERROR!',
+        'Error',
+        'error'
+      );
 
-editdemo(editdemo:any={}) {
-  this.editmodal=editdemo;
+      this.Init();
+      this.voter = {};
+    });
+  }
+
+  editdemo(editdemo: any = {}) {
+    this.editmodal = editdemo;
     //passing the data from table (modal)
-  this.Init();
+    this.Init();
   }
 
-//for modal
-updateVoter(){
-  this.service.UpdateRegVoter(this.editmodal).subscribe({next:(_data)=>{
-  },
-  });
+  //for modal
+  updateVoter() {
+    this.service.UpdateRegVoter(this.editmodal).subscribe({
+      next: (_data) => {
+      },
+    });
 
-  Swal.fire({
-  position: 'center',
-  icon: 'success',
-  title: 'Your work has been updated',
-  showConfirmButton: false,
-  timer: 1000
-  });
-  this.editmodal ={};
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'Your work has been updated',
+      showConfirmButton: false,
+      timer: 1000
+    });
+    this.editmodal = {};
   }
 
-  delete(transId:any, index:any){
+  delete(transId: any, index: any) {
     Swal.fire({
       text: 'Do you want to remove this file?',
       icon: 'warning',
       showConfirmButton: true,
       showCancelButton: true,
       confirmButtonText: 'Yes, remove it!'
-    }).then((result)=>{
+    }).then((result) => {
 
-      if(result.value){
-        for(let i = 0; i < this.Voter.length;i++){
-          if(this.Voter[i].transId == transId){
-            this.Voter.splice(i,1);
+      if (result.value) {
+        for (let i = 0; i < this.Voter.length; i++) {
+          if (this.Voter[i].transId == transId) {
+            this.Voter.splice(i, 1);
             Swal.fire(
               'Deleted',
               'Removed successfully',
@@ -109,19 +110,19 @@ updateVoter(){
         }
 
 
-        this.service.DeleteRegVoter(transId).subscribe(_data =>{
+        this.service.DeleteRegVoter(transId).subscribe(_data => {
 
-         // this.MajorAct.splice(index,1);
+          // this.MajorAct.splice(index,1);
 
           // this.Init();
           // this.mjr = {};
 
         })
-      } else if (result.dismiss === Swal.DismissReason.cancel){
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
 
       }
-        // this.Init();
-        // this.mjr = {};
+      // this.Init();
+      // this.mjr = {};
 
     })
   }

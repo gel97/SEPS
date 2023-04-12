@@ -85,6 +85,7 @@ export class DemographyComponent implements OnInit {
   //for modal
   update(){
     this.service.UpdateDemography(this.editmodal).subscribe({next:(_data)=>{
+      this.Init(); 
     },
     });
 
