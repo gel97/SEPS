@@ -21,14 +21,15 @@
 
         <!-- Sidebar - MUN LOGO -->
         <div>
-            <label for="fileInputt" class="position-absolute top-1 right-1 p-2  pointer">
-                <h5>
-                    <i class='fas fa-pencil-alt' data-toggle="modal" data-target="#uploadLogo"
-                        style="color: rgb(54, 127, 223); font-size: 13px;"></i>
-                </h5>
-            </label>
-            <input id="fileInputt" type="file" style="display:none" (change)="fileChangeEventt($event)">
-
+            <app-admin>
+                <label for="fileInputt" class="position-absolute top-1 right-1 p-2  pointer">
+                    <h5>
+                        <i class='fas fa-pencil-alt' data-toggle="modal" data-target="#uploadLogo"
+                            style="color: rgb(54, 127, 223); font-size: 13px;"></i>
+                    </h5>
+                </label>
+                <input id="fileInputt" type="file" style="display:none" (change)="fileChangeEventt($event)">
+            </app-admin>
             <a class="sidebar-brand d-flex align-items-center justify-content-center" routerLink="">
                 <div class="sidebar-brand-icon">
                     <!-- <img src="assets/img/sepsfinal.png" style="height: 50px;" alt=""> -->
@@ -36,10 +37,9 @@
 
                 </div>
                 <div class="sidebar-brand-text mx-2">
-                    <span style="color: rgb(54, 127, 223); font-size: 12px;">
+                    <span *ngIf="munCityName" style="color: rgb(54, 127, 223); font-size: 12px;">
                         Muncipality of {{munCityName}}
                     </span>
-
                 </div>
             </a>
         </div>
