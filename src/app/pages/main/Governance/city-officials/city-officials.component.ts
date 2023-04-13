@@ -52,6 +52,7 @@ export class CityOfficialsComponent implements OnInit {
     })
   }
 
+
   addOfficial() {
     this.toValidate.name = this.city.name == "" || this.city.name == null ? true : false;
     this.toValidate.seqNo = this.city.seqNo == "" || this.city.seqNo == undefined ? true : false;
@@ -106,7 +107,7 @@ export class CityOfficialsComponent implements OnInit {
       showConfirmButton: false,
       timer: 1000
     });
-    
+
   }
 
   delete(official2: any = {}) {

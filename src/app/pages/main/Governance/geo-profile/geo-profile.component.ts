@@ -73,7 +73,7 @@ Init(){
   }
 
   //for modal
-  update(){
+  update_Geo(){
   this.service.UpdateGeo(this.editgeo).subscribe({next:(_data)=>{
   // this.editModal();
   },
