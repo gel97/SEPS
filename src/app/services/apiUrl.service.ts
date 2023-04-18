@@ -86,30 +86,30 @@ export class ApiUrl {
 
 //SOCIO-ECONOMIC ACTIVITIES
 
-//Comercial Establishments
-get_com_estab=(munCityId:any, setYear:any)=>`/ComEstab/${setYear}/${munCityId}`;
-post_save_com_estab=()=>`/ComEstab`;
-put_update_com_estab=()=>`/ComEstab`;
-delete_com_estab=(transId:any)=>`/ComEstab/${transId}`;
-post_list_barangay_com = (munCityId:any) => `/Barangay/ListBarangays?munCityId=${munCityId}`;
+    //Comercial Establishments
+    get_com_estab=(munCityId:any, setYear:any)=>`/ComEstab/${setYear}/${munCityId}`;
+    post_save_com_estab=()=>`/ComEstab`;
+    put_update_com_estab=()=>`/ComEstab`;
+    delete_com_estab=(transId:any)=>`/ComEstab/${transId}`;
+    post_list_barangay_com = (munCityId:any) => `/Barangay/ListBarangays?munCityId=${munCityId}`;
 
-//Summary Commercial
-get_summ_commercial=(munCityId:any, setYear:any)=>`/SumComEst/${setYear}/${munCityId}`;
-post_save_summ_commercial=()=>`/SumComEst`;
-put_update_summ_commercial=()=>`/SumComEst`;
-delete_summ_commercial=(transId:any)=>`/SumComEst/${transId}`;
+    //Summary Commercial
+    get_summ_commercial=(munCityId:any, setYear:any)=>`/SumComEst/${setYear}/${munCityId}`;
+    post_save_summ_commercial=()=>`/SumComEst`;
+    put_update_summ_commercial=()=>`/SumComEst`;
+    delete_summ_commercial=(transId:any)=>`/SumComEst/${transId}`;
 
-//Financial Institutions
-get_financial_Ins=(munCityId:any, setYear:any)=>`/FinIns/${setYear}/${munCityId}`;
-post_save_financial_Ins=()=>`/FinIns`;
-put_update_financial_Ins=()=>`/FinIns`;
-delete_financial_Ins=(transId:any)=>`/FinIns/${transId}`;
+    //Financial Institutions
+    get_financial_Ins=(munCityId:any, setYear:any)=>`/FinIns/${setYear}/${munCityId}`;
+    post_save_financial_Ins=()=>`/FinIns`;
+    put_update_financial_Ins=()=>`/FinIns`;
+    delete_financial_Ins=(transId:any)=>`/FinIns/${transId}`;
 
-//Industrial estates
-get_Industrial=(munCityId:any, setYear:any)=>`/IndEst/${setYear}/${munCityId}`;
-post_save_Industrial=()=>`/IndEst`;
-put_update_Industrial=()=>`/IndEst`;
-delete_Industrial=(transId:any)=>`/IndEst/${transId}`;
+    //Industrial estates
+    get_Industrial=(munCityId:any, setYear:any)=>`/IndEst/${setYear}/${munCityId}`;
+    post_save_Industrial=()=>`/IndEst`;
+    put_update_Industrial=()=>`/IndEst`;
+    delete_Industrial=(transId:any)=>`/IndEst/${transId}`;
     //Major Economic Activities
     get_major_eco        = (munCityId:any, setYear:any) => `/MjrEcoAct/${setYear}/${munCityId}`;
     post_save_major_eco  = () => `/MjrEcoAct`;
