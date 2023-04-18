@@ -66,11 +66,11 @@ ngOnInit(): void {
 markerObj: any = {};
 
 SetMarker(data: any = {}) {
-  console.log("lnglat: ", data.longitude + " , " + data.latitude)
+  console.log("lnglat: ", data.longtitude+ " , " + data.latitude)
 
   this.markerObj = {
     lat: data.latitude,
-    lng: data.longitude,
+    lng: data.longtitude,
     label: data.brgyName.charAt(0),
     brgyName: data.brgyName,
     munCityName: this.munCityName,

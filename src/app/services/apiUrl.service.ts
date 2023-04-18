@@ -62,6 +62,7 @@ export class ApiUrl {
     post_save_provincialfiscal   = () => `/ProvFiscal/Save`;
     post_update_provincialfiscal = () => `/ProvFiscal/Update`;
 
+
     //Registered Voter
     post_get_regvoter    = (munCityId:any,setYear:any) => `/RegVoters/List?munCityId=${munCityId}&setYear=${setYear}`;
     post_save_regvoter   = () => `/RegVoters/Save`;
@@ -82,6 +83,8 @@ export class ApiUrl {
     post_get_prov_official    = (setYear:any) => `/ProvOfficial/List?setYear=${setYear}`;
     post_save_prov_official   = () => `/ProvOfficial/Save`;
     post_update_prov_official = () => `/ProvOfficial/Update`;
+    get_prov_position =()=>`/ProvOfficial`;
+    delete_prov_officials=(transId:any)=>`/MunCityOfficial/${transId}`;
 
 
 //SOCIO-ECONOMIC ACTIVITIES
@@ -110,6 +113,7 @@ export class ApiUrl {
     post_save_Industrial=()=>`/IndEst`;
     put_update_Industrial=()=>`/IndEst`;
     delete_Industrial=(transId:any)=>`/IndEst/${transId}`;
+
     //Major Economic Activities
     get_major_eco        = (munCityId:any, setYear:any) => `/MjrEcoAct/${setYear}/${munCityId}`;
     post_save_major_eco  = () => `/MjrEcoAct`;

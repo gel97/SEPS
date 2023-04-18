@@ -21,6 +21,7 @@ isLoading:boolean = true;
   updateOfficial: any={};
   editModal: any={};
   AddModal:any ={};
+  positions: any = [];
 
   pageSize = 25;
   p: string|number|undefined;
@@ -30,25 +31,29 @@ isLoading:boolean = true;
 
   date = new DatePipe('en-PH')
   ngOnInit(): void {
-    this.Init();
+
+    this.getOfficials();
+    this.getPositions();
  }
 
- Init(){
-  this.service.GetProvOfficial().subscribe(data=>{
-  this.ProOfficial=(<any>data);
-  this.ProOfficial=this.ProOfficial.filter((s:any) => s.tag == 1); // filter by tag
-  this.ProOfficial.sort((n1:any,n2:any)=>{ //order by Ascending
-    if(n1.seqNo>n2.seqNo)return 1;
-    if(n1.seqNo<n2.seqNo)return -1;
-    else return 0;
+ getPositions() {
+  this.service.GetMunPosition().subscribe(data => {
+    this.positions = <any>data;
   })
-  console.log(this.ProOfficial)
-  this.isLoading = false;
-
- })
 }
 
 
+getOfficials(){
+  // this.Prov.munCityId=this.auth.munCityId;
+  this.Prov.setYear=this.auth.activeSetYear;
+  this.service.GetProvOfficial().subscribe(data=>{
+  this.ProOfficial=(<any>data);
+
+  console.log(this.ProOfficial)
+  // this.isLoading = false;
+
+ })
+}
 
   addOfficial() {
     this.Prov.munCityId=this.auth.munCityId;
@@ -62,7 +67,7 @@ isLoading:boolean = true;
         'Data Added Successfully!',
         'success'
       );
-      this.Init();
+      this.getOfficials();
       this.Prov = {};
 
     },_err=>{
@@ -72,7 +77,7 @@ isLoading:boolean = true;
         'error'
       );
 
-      this.Init();
+      this.getOfficials() ;
       this.Prov = {};
     });
   }
@@ -81,7 +86,7 @@ isLoading:boolean = true;
 editOfficial(editOfficial:any={}) {
   this.editModal=editOfficial;
 //passing the data from table (modal)
-this.Init();
+this.getOfficials() ;
 }
 
 //for modal
@@ -119,13 +124,13 @@ delete(official2:any={}){
           'Removed successfully',
           'success'
         );
-        this.Init();
+        this.getOfficials() ;
         this.Prov = {};
       })
     } else if (result.dismiss === Swal.DismissReason.cancel){
 
     }
-      this.Init();
+      this.getOfficials() ;
       this.Prov = {};
   })
 }
@@ -134,13 +139,13 @@ delete(official2:any={}){
 onTableDataChange(page:any){ //paginate
   console.log(page)
   this.p = page;
-  this.Init();
+  this.getOfficials() ;
 
 }
 onTableSizeChange(event:any ){ //paginate
   this.tableSize = event. target.value;
   this.p = 1;
-  this.Init();
+  this.getOfficials() ;
 
 }
 
