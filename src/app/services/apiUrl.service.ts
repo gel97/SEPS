@@ -160,6 +160,12 @@ export class ApiUrl {
     put_education      = ()=>`/Education`;
     delete_education   = (transId:any)=>`/Education/${transId}`;
 
+    // Education -> Out of School
+    get_list_education_osy = (setYear:any, munCityId:any) => `/EducationOsy/${setYear}/${munCityId}`;
+    post_education_osy     = ()=>`/EducationOsy`;
+    put_education_osy      = ()=>`/EducationOsy`;
+    delete_education_osy   = (transId:any)=>`/EducationOsy/${transId}`;
+
     // Health -> Workers
     get_health_workers    = (setYear:any, munCityId:any) => `/HealthWorkers/${setYear}/${munCityId}`;
     post_health_workers   = ()=>`/HealthWorkers`;
