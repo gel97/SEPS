@@ -20,8 +20,8 @@ export class AdminComponent implements OnInit {
     this.activeSetYear = this.Auth.activeSetYear;
     this.setYear = this.Auth.setYear
 
-    console.log("o_munCityId: ", this.o_munCityId);
-    console.log("munCityId: ", this.munCityId);
+    // console.log("o_munCityId: ", this.o_munCityId);
+    // console.log("munCityId: ", this.munCityId);
 
   }
 

@@ -17,49 +17,51 @@
                 (click)="resetForm(); updateForm=false">ADD</button>
             </app-admin>
             <label>List of Private Hospitals/Clinics(Medical/Dental,Diagnostic), Veterinary </label>
-            <table class="table table-light table-striped">
-              <thead>
-                <tr>
-                  <th scope="col" style="text-align: center;">#</th>
-                  <th scope="col" style="text-align: center;">Name of Hospitals</th>
-                  <th scope="col" style="text-align: center;">Type</th>
-                  <th scope="col" style="text-align: center;">Facilities/Remarks</th>
-                  <th scope="col" style="text-align: center;">Bed Capacity</th>
-                  <th scope="col" style="text-align: center;">Category</th>
-                  <th scope="col" style="text-align: center;">Contact Person/Designation</th>
-                  <th scope="col" style="text-align: center;">Contact Numbers</th>
-                  <th scope="col" style="text-align: center;">Location</th>
-                  <th scope="col" style="text-align: center;">Barangay</th>
-                  <th scope="col" style="text-align: center;">Geo-Coord.(Long.Lat)</th>
-                  <th style="text-align: center;">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let data of listData; let i = index;">
-                  <td style="text-align: center;">{{ i + 1 }} </td>
-                  <td style="text-align: center;">{{ data.name }}</td>
-                  <td style="text-align: center;">type</td>
-                  <td style="text-align: center;">{{ data.remarks }}</td>
-                  <td style="text-align: center;">{{ data.capacity }}</td>
-                  <td style="text-align: center;">Category</td>
-                  <td style="text-align: center;">{{ data.contactPerson }}</td>
-                  <td style="text-align: center;">{{ data.contactNo }}</td>
-                  <td style="text-align: center;">{{ data.location }}</td>
-                  <td style="text-align: center;">{{ data.brgyName }}</td>
-                  <td style="text-align: center;">{{ data.longtitude }}</td>
-                  <td style="text-align: center;">
-                    <app-admin>
-                      <button class="btn btn-sm btn-primary" style="display: inline-block;"
-                        (click)="addData=data; updateForm=true" data-toggle="modal" data-target="#mAdd">
-                        <i class="fa fa-edit"></i>
-                      </button> <button class="btn btn-sm btn-danger" style="display: inline-block; margin-right: 10px;"
-                        (click)="DeleteHealthFacilities(data.transId)">
-                        <i class="fa fa-trash"></i>
-                      </button>
-                    </app-admin>
-                  </td>
-              </tbody>
-            </table>
+            <div class="table-responsive">
+              <table class="table table-light table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col" style="text-align: center;">#</th>
+                    <th scope="col" style="text-align: center;">Name of Hospitals</th>
+                    <th scope="col" style="text-align: center;">Type</th>
+                    <th scope="col" style="text-align: center;">Facilities/Remarks</th>
+                    <th scope="col" style="text-align: center;">Bed Capacity</th>
+                    <th scope="col" style="text-align: center;">Category</th>
+                    <th scope="col" style="text-align: center;">Contact Person/Designation</th>
+                    <th scope="col" style="text-align: center;">Contact Numbers</th>
+                    <th scope="col" style="text-align: center;">Location</th>
+                    <th scope="col" style="text-align: center;">Barangay</th>
+                    <th scope="col" style="text-align: center;">Geo-Coord.(Long.Lat)</th>
+                    <th style="text-align: center;">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of listData; let i = index;">
+                    <td style="text-align: center;">{{ i + 1 }} </td>
+                    <td style="text-align: center;">{{ data.name }}</td>
+                    <td style="text-align: center;">type</td>
+                    <td style="text-align: center;">{{ data.remarks }}</td>
+                    <td style="text-align: center;">{{ data.capacity }}</td>
+                    <td style="text-align: center;">Category</td>
+                    <td style="text-align: center;">{{ data.contactPerson }}</td>
+                    <td style="text-align: center;">{{ data.contactNo }}</td>
+                    <td style="text-align: center;">{{ data.location }}</td>
+                    <td style="text-align: center;">{{ data.brgyName }}</td>
+                    <td style="text-align: center;">{{ data.longtitude }}</td>
+                    <td style="text-align: center;">
+                      <app-admin>
+                        <button class="btn btn-sm btn-primary" style="display: inline-block;"
+                          (click)="addData=data; updateForm=true" data-toggle="modal" data-target="#mAdd">
+                          <i class="fa fa-edit"></i>
+                        </button> <button class="btn btn-sm btn-danger" style="display: inline-block; margin-right: 10px;"
+                          (click)="DeleteHealthFacilities(data.transId)">
+                          <i class="fa fa-trash"></i>
+                        </button>
+                      </app-admin>
+                    </td>
+                </tbody>
+              </table>
+            </div>      
           </div>
         </div>
       </div>

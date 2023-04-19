@@ -27,7 +27,7 @@ export class SepDataComponent implements OnInit {
   Init(){
     this.service.ListMunCity().subscribe(data=>{
       this.list_muncity =(<any>data);         
-      //console.log(this.list_muncity)
+      console.log(this.list_muncity)
      })
   }
   onChange(value: any) {
