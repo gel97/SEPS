@@ -22,6 +22,7 @@ export class CityOfficialsComponent implements OnInit {
   editModal: any = {};
   AddModal: any = {};
   positions: any = [];
+  munCityName:string = this.auth.munCityName;
 
   pageSize = 25;
   p: string | number | undefined;
@@ -123,8 +124,8 @@ export class CityOfficialsComponent implements OnInit {
         official2.tag = -1;
         this.service.UpdateOfficial(official2).subscribe(_data => {
           Swal.fire(
-            'Deleted',
-            'Removed successfully',
+            'Deleted!',
+            'Your file has been removed.',
             'success'
           );
           this.Init();

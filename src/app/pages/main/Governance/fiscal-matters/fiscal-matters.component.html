@@ -10,13 +10,17 @@
                   <div class="p-5">
                       <div class="text-center">
                           <h1 class="h4 text-gray-900 mb-4">Fiscal Matters</h1>
+                          <label><strong>Governance - Municipality of {{munCityName}}</strong></label>
+
                       </div>
                       <br>
                       <div class ="form-inline float-right ">
                       <form class=>
+                        <app-admin>
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd "><i class="fa fa-plus"></i>
                               Fiscal Matters
                            </button>
+                          </app-admin>
                       </form>
                     </div><br><br>
 
@@ -32,7 +36,7 @@
                                 <th scope="col">Year</th>
                                 <th scope="col">Revenue</th>
                                 <th scope="col">Amount(PhP)</th>
-                                <th>Action</th>
+                                <th width ="8%"></th>
 
                               </tr>
                             </thead>
@@ -47,9 +51,11 @@
                               <td>{{text.name}}</td>
                               <td>{{text.amount}}</td>
 
-                              <td >
-                                <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info" data-toggle="modal" data-target="#Edit" ><i class="fa fa-edit"></i> </button>&nbsp;
-                                <button type="button" title="Delete" class="btn btn-warning" (click)="delete(text.transId,i)"><i class="fa fa-trash"></i>  </button>
+                              <td>
+                                <app-admin>
+                                <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info btn-circle" data-toggle="modal" data-target="#Edit" ><i class="fa fa-pen"></i> </button>&nbsp;
+                                <button type="button" title="Delete" class="btn btn-warning btn-circle" (click)="delete(text.transId,i)"><i class="fa fa-trash"></i>  </button>
+                              </app-admin>
                               </td>
 
                             </tr>
@@ -87,7 +93,7 @@
                                 <th scope="col">Year</th>
                                 <th scope="col">Expenditures</th>
                                 <th scope="col">Amount(PhP)</th>
-                                <th>Action</th>
+                                <th width="8%"></th>
 
                               </tr>
                             </thead>
@@ -102,8 +108,10 @@
                               <td>{{text.amount}}</td>
 
                               <td>
-                                <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info" data-toggle="modal" data-target="#Edit" ><i class="fa fa-edit"></i> </button>&nbsp;
-                                <button type="button" title="Delete" class="btn btn-warning" (click)="delete(text.transId,i)"><i class="fa fa-trash"></i>  </button>
+                                <app-admin>
+                                <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info btn-circle" data-toggle="modal" data-target="#Edit" ><i class="fa fa-pen"></i> </button>&nbsp;
+                                <button type="button" title="Delete" class="btn btn-warning btn-circle" (click)="delete(text.transId,i)"><i class="fa fa-trash"></i>  </button>
+                              </app-admin>
                               </td>
                             </tr>
                             </tbody>
@@ -155,14 +163,14 @@
           <div class="row">
             <div class ="col-lg-12"><br>
              <label for="exampleFormControlTextarea1" >Category :</label>
-             <select class="form-select" aria-label="Default select example" [(ngModel)]="fiscal.category" placeholder ="Select Category">
+             <select class="form-select" aria-label="Default select example" [(ngModel)]="fiscal.category" placeholder ="Select Category"  [ngClass]="toValidate.category?'is-invalid':''" (ngModelChange)="toValidate.category=false">
                <option value="1" >Revenue</option>
                <option value="2">Expenditure</option>
              </select>
           </div>
                 <div class ="col-lg-12"><br>
                  <label for="exampleFormControlTextarea1" >Name of Revenues/Expenditures :</label>
-                 <input type="text" class="form-control" id=""  name =""  [(ngModel)]="fiscal.name" placeholder="">
+                 <input type="text" class="form-control" id=""  name =""  [(ngModel)]="fiscal.name" placeholder=""  [ngClass]="toValidate.name?'is-invalid':''" (keyup)="toValidate.name=false">
                 </div>
                 <div class ="col-lg-12"><br>
                  <label for="exampleFormControlTextarea1" >Amount (PhP):</label>
@@ -170,7 +178,7 @@
                 </div>
                 <div class ="col-lg-12"><br>
                  <label for="exampleFormControlTextarea1" >Fiscal Year:</label>
-                 <input type="text" class="form-control" id=""  name =""  [(ngModel)]="fiscal.fiscalYear" placeholder="">
+                 <input type="text" class="form-control" id=""  name =""  [(ngModel)]="fiscal.fiscalYear" placeholder=""  [ngClass]="toValidate.fiscalYear?'is-invalid':''" (keyup)="toValidate.fiscalYear=false">
                 </div>
 
                </div>

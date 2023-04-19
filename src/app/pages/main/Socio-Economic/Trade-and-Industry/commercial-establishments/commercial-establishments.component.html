@@ -9,13 +9,16 @@
                       </div>
                       <div class="text-center">
                         <h1 class="h4 text-gray-900 mb-4">Commercial Establishments</h1>
+                        <label><strong>Trade and Industry - Municipality of {{munCityName}} </strong></label><br>
                     </div>
                       <br>
                       <div class ="form-inline float-right ">
                         <form class=>
+                          <app-admin>
                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal"><i class="fa fa-plus"></i>
                            Commercial Establishments
                           </button>
+                        </app-admin>
                         </form>
                       </div><br><br>
                         <br>
@@ -48,7 +51,7 @@
                                   <th scope="col">Contact No</th>
                                   <th scope="col">Location</th>
                                   <th scope="col" class="text-center">Geo-Coord. (Long, Lat)</th>
-                                  <th scope="col"  class="text-center">Action</th>
+                                  <th width="10%"></th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -65,7 +68,12 @@
                                         <span *ngIf="item.id === text.category">{{item.name_category}} </span>
                                     </div>
                                 </td>
-                                  <td  class="text-center">{{text.lineBusiness}}</td>
+                                <td>
+                                <div *ngFor="let item of list_of_Business">
+                                  <span *ngIf="item.id === text.lineBusiness">{{item .name_business}} </span>
+                              </div>
+                            </td>
+
                                   <td>
                                   <div *ngFor="let item of list_of_status">
                                     <span *ngIf="item.id === text.status">{{item.status}} </span>
@@ -76,9 +84,11 @@
                                   <td>{{text.location}}</td>
                                   <td  class="text-center">{{text.longtitude}}<br>{{text.latitude}}</td>
                                   <td>
-                                    <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info" data-toggle="modal" data-target="#ModalEdit" ><i class="fa fa-edit"></i> </button>&nbsp;
-                                    <button (click)="SetMarker(text)" class="btn btn-success" role="button" (click)="editmodal=text" data-toggle="modal" data-target="#gmapModal"><i class="fa fa-globe"> </i> </button>
-                                   <button type="button" title="Delete" class="btn btn-warning" (click)="delete(text.transId,i)"><i class="fa fa-trash"></i>  </button>&nbsp;
+                                    <app-admin>
+                                    <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info btn-circle" data-toggle="modal" data-target="#ModalEdit" ><i class="fa fa-pen"></i> </button>&nbsp;
+                                    <button (click)="SetMarker(text)" class="btn btn-success btn-circle" role="button" (click)="editmodal=text" data-toggle="modal" data-target="#gmapModal"><i class="fa fa-globe"> </i> </button>&nbsp;
+                                   <button type="button" title="Delete" class="btn btn-warning btn-circle" (click)="delete(text.transId,i)"><i class="fa fa-trash"></i>  </button>&nbsp;
+                                  </app-admin>
                                   </td>
                                 </tr>
                               </tbody>
@@ -177,12 +187,10 @@
         </div>
         <div class="col-lg-6">
             <label for="type">Line of Business :</label>
-            <select class="form-select" aria-label="Default select example" [(ngModel)]="comm.owner">
-                <option selected>Select Type</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
+            <select class="form-select" aria-label="Default select example"  name="list_of_Business" [(ngModel)]="comm.lineBusiness" [ngClass]="toValidate.lineBusiness?'is-invalid':''" (ngModelChange)="toValidate.lineBusiness=false">
+              <option *ngFor="let list of list_of_Business" value={{list.id}} >{{list.name_business}}</option>
+            </select>
+
         </div>
 
       </div><br>
@@ -290,12 +298,9 @@
       </div>
       <div class="col-lg-6">
           <label for="type">Line of Business :</label>
-          <select class="form-select" aria-label="Default select example" [(ngModel)]="editmodal.owner">
-              <option selected>Select Type</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-            </select>
+          <select class="form-select" aria-label="Default select example"  name="list_of_Business" [(ngModel)]="editmodal.lineBusiness" [ngClass]="toValidate.lineBusiness?'is-invalid':''" (ngModelChange)="toValidate.lineBusiness=false">
+            <option *ngFor="let list of list_of_Business" value={{list.id}} >{{list.name_business}}</option>
+          </select>
       </div>
 
     </div><br>

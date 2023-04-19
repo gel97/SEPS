@@ -13,6 +13,9 @@ import Swal from 'sweetalert2';
 export class RegisteredVotersComponent implements OnInit {
 
   constructor(private service: RegVoterService, private auth: AuthService) { }
+  munCityName:string = this.auth.munCityName;
+
+  toValidate:any={};
   barangays: any = {};
   Voter: any = [];
   voter: any = {};
@@ -40,6 +43,20 @@ export class RegisteredVotersComponent implements OnInit {
   }
 
   addVoter() {
+    this.toValidate.brgyId = this.voter.brgyId == "" || this.voter.brgyd == null ? true : false;
+    this.toValidate.votingCntrNo = this.voter.votingCntrNo== "" || this.voter.votingCntrNo == undefined ? true : false;
+    this.toValidate.regVoterNo = this.voter.regVoterNo == "" || this.voter.regVoterNo == undefined ? true : false;
+    this.toValidate.estabNo = this.voter.estabNo == "" || this.voter.estabNo == undefined ? true : false;
+
+
+
+    if (this.toValidate.brgyId  == true || this.toValidate.votingCntrNo == true || this.toValidate.regVoterNo ==true || this.toValidate.estabNo) {
+      Swal.fire(
+        '',
+        'Please fill out the required fields',
+        'warning'
+      );
+    } else {
     this.voter.munCityId = this.auth.munCityId;
     this.voter.setYear = this.auth.activeSetYear;
 
@@ -64,7 +81,7 @@ export class RegisteredVotersComponent implements OnInit {
       this.voter = {};
     });
   }
-
+  }
   editdemo(editdemo: any = {}) {
     this.editmodal = editdemo;
     //passing the data from table (modal)
@@ -102,8 +119,8 @@ export class RegisteredVotersComponent implements OnInit {
           if (this.Voter[i].transId == transId) {
             this.Voter.splice(i, 1);
             Swal.fire(
-              'Deleted',
-              'Removed successfully',
+              'Deleted!',
+              'Your file has been removed.',
               'success'
             );
           }

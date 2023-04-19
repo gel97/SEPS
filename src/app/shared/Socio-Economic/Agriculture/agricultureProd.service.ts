@@ -15,13 +15,15 @@ export class AgricultureProdService {
     this.api = this.Base.url;
   }
 
+  GetListAgricultureProd(menuId:any,setYear:any,munCityId :any) {
+    return this.http.get<any[]>(this.Base.url + this.ApiUrl.get_list_agriculture_prod(menuId,setYear, munCityId), { responseType: 'json' });
+  }
+
+
   AddAgricultureProd(provincialcropsproduction:any) {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_agriculture_prod(), provincialcropsproduction, { responseType: 'json' });
   }
 
-  GetListAgricultureProd(setYear  :any,munCityId :any) {
-    return this.http.get<any[]>(this.Base.url + this.ApiUrl.get_list_agriculture_prod(setYear, munCityId), { responseType: 'json' });
-  }
 
   DeleteAgricultureProd(transId:any) {
     return this.http.delete(this.Base.url + this.ApiUrl.delete_agriculture_prod(transId), { responseType: 'text' });

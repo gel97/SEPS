@@ -13,6 +13,8 @@ export class MajorEconomicActivitiesComponent implements OnInit {
 
 
   constructor( private service:MajorEconomicService, private auth:AuthService) { }
+  munCityName:string = this.auth.munCityName;
+
   toValidate:any={};
   MajorAct:any=[];
   mjr:any={};

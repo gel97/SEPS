@@ -15,6 +15,9 @@ import Swal from 'sweetalert2';
 export class FiscalReportComponent implements OnInit {
 
   constructor(private service:ProvincialFiscalReportService, private auth:AuthService) { }
+  munCityName:string = this.auth.munCityName;
+
+  toValidate:any={};
   fiscal:any={};
   FisView:any =[];
   editmodal:any={};
@@ -44,7 +47,7 @@ export class FiscalReportComponent implements OnInit {
   Init(){
     this.list_revenues =[];
     this.list_expend =[];
-     this.fiscal.setYear=this.auth.activeSetYear;
+     //this.fiscal.setYear=this.auth.activeSetYear;
      //this.fiscal.activeSetYear=this.auth.activeSetYear;
       this.service.GetFiscalReport().subscribe(data=>{
         for(var item of data){
@@ -72,6 +75,18 @@ export class FiscalReportComponent implements OnInit {
 
 
     AddFiscal() {
+      this.toValidate.description = this.fiscal.description == "" || this.fiscal.description == null ? true : false;
+      this.toValidate.fiscalYear = this.fiscal.fiscalYear == "" || this.fiscal.fiscalYear == undefined ? true : false;
+      this.toValidate.category = this.fiscal.category == "" || this.fiscal.category == undefined ? true : false;
+
+
+      if (this.toValidate.description == true || this.toValidate.fiscalYear == true || this.toValidate.category ==true) {
+        Swal.fire(
+          '',
+          'Please fill out the required fields',
+          'warning'
+        );
+      } else {
       this.fiscal.setYear = this.auth.activeSetYear;
       this.service.AddfiscalReport(this.fiscal).subscribe(_data=>{
 
@@ -95,6 +110,7 @@ export class FiscalReportComponent implements OnInit {
         this.fiscal = {};
       });
     }
+  }
 
   editfiscal(editfiscal:any={}) {
   this.editmodal=editfiscal;
@@ -119,6 +135,37 @@ update(){
   this.editmodal ={};
 
   }
+
+  delete(transId: any, index: any) {
+    Swal.fire({
+
+      text: "Do you want to remove this file",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, remove it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.service.Delete(transId).subscribe({
+          next: (_data) => {
+            this.Init();
+          },
+          error: (err) => {
+            this.Init();
+          },
+        });
+        Swal.fire(
+          'Deleted!',
+          'Your file has been removed.',
+          'success'
+        )
+      }
+    })
+  }
+
+
+
 
   onTableDataChange(page:any){ //paginate
     console.log(page)

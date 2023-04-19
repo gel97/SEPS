@@ -36,7 +36,7 @@
                       <th scope="col">Contact Details </th>
                       <th scope="col">No. of Puroks</th>
                       <th scope="col">Geo-Coord.</th>
-                      <th [width]="150"></th>
+                      <th width="9%"></th>
                     </tr>
                   </thead>
                   <tbody *ngFor="let brgy of listBarangay; index as i">
@@ -58,29 +58,31 @@
                       <td>{{text.address}} </td>
                       <td>{{text.contactNo}}</td>
                       <td>{{text.purokNo}}</td>
-                      <td>{{text.longitude}}, {{text.latitude}}</td>
+                      <td>{{text.longitude}},<br> {{text.latitude}}</td>
                       <td>
                         <div class="row">
                           <div class="col-lg-4">
                             <app-admin>
                               <button (click)="editmodal=text;is_update = true"
-                              class="btn btn-primary" data-toggle="modal" data-target="#ModalEdit"><i class="fa fa-edit"></i>
-                            </button>
+                              class="btn btn-info btn-circle" data-toggle="modal" data-target="#ModalEdit"><i class="fa fa-pen"></i>
+                            </button>&nbsp;
                             </app-admin>
-                          </div>
-                          <div class="col-lg-4">
-                            <button (click)="SetMarker(text)" class="btn btn-success" role="button" (click)="editmodal=text"
-                            data-toggle="modal" data-target="#gmapModal">
-                            <i class="fa fa-globe">
-                            </i>
-                          </button>
                           </div>
                           <div class="col-lg-4">
                             <app-admin>
-                              <button type="button" title="Delete" class="btn btn-warning" (click)="delete(text.transId,i)"><i class="fa fa-trash"></i>  </button>&nbsp;
+                            <button (click)="SetMarker(text)" class="btn btn-success btn-circle" role="button" (click)="editmodal=text"
+                            data-toggle="modal" data-target="#gmapModal">
+                            <i class="fa fa-globe">
+                            </i>
+                          </button>&nbsp;
+                        </app-admin>
+                          </div>
+                          <div class="col-lg-4">
+                            <app-admin>
+                              <button type="button" title="Delete" class="btn btn-warning btn-circle" (click)="delete(text.transId,i)"><i class="fa fa-trash"></i>  </button>&nbsp;
                             </app-admin>
                           </div>
-                        </div>  
+                        </div>
                       </td>
                     </tr>
                   </tbody>
@@ -128,7 +130,7 @@
           <div class="col-lg-12"><br>
             <label for="exampleFormControlTextarea1">Punong Barangay:</label>
             <input type="text" class="form-control" id="punongBrgy" name="punongBrgy" [(ngModel)]="addmodal.punongBrgy"
-              placeholder="">
+              placeholder="" [ngClass]="toValidate.punongBrgy?'is-invalid':''" (keyup)="toValidate.punongBrgy=false">
           </div>
           <div class="col-lg-12"><br>
             <label for="exampleFormControlTextarea1">Contact Number:</label>
@@ -137,8 +139,8 @@
           </div>
           <div class="col-lg-12"><br>
             <label for="exampleFormControlTextarea1">Location of Barangay Hall:</label>
-            <input type="text" class="form-control" id="address" name="address" [(ngModel)]="addmodal.address"
-              placeholder="">
+            <input type="text" class="form-control" id="address" name="address" [(ngModel)]="addmodal.address" [ngClass]="toValidate.address?'is-invalid':''" (keyup)="toValidate.address=false"
+              placeholder="" >
           </div>
           <div class="col-lg-12"><br>
             <label for="exampleFormControlTextarea1">Number of Puroks:</label>
