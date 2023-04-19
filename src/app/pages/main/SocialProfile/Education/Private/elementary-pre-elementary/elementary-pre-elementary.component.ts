@@ -12,6 +12,7 @@ import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 })
 export class ElementaryPreElementaryComponent implements OnInit {
   menuId:string = "1";
+  munCityName:string = this.auth.munCityName;
   constructor(private service: EducationService, private auth: AuthService) { }
 
   toValidate:any = {};
@@ -23,6 +24,22 @@ export class ElementaryPreElementaryComponent implements OnInit {
   onChange(isCheck: boolean) {
     this.isCheck = isCheck;
     console.log("isCheck:", this.isCheck);
+  }
+
+  markerObj: any = {};
+
+  SetMarker(data: any = {}) {
+    console.log(data);
+    this.markerObj = {
+      lat: data.latitude,
+      lng: data.longtitude,
+      label: data.brgyName.charAt(0),
+      brgyName: data.brgyName,
+      munCityName: this.munCityName,
+      draggable: true
+    };
+
+    this.gmapComponent.setMarker(this.markerObj);
   }
 
   ngOnInit(): void {
@@ -114,7 +131,7 @@ export class ElementaryPreElementaryComponent implements OnInit {
     {
       Swal.fire(
         'Missing Data!',
-        'Please fill out the required fields!',
+        'Please fill out the required fields.',
         'warning'
         );
     }
@@ -124,6 +141,10 @@ export class ElementaryPreElementaryComponent implements OnInit {
 
   EditPrivateElemSchool()
   {
+
+    this.elementary.longtitude = this.gmapComponent.markers.lng;
+    this.elementary.latitude  = this.gmapComponent.markers.lat;
+
     this.elementary.menuId    = this.menuId;
     this.elementary.setYear   = this.setYear;
     this.elementary.munCityId = this.munCityId;

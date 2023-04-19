@@ -22,3 +22,8 @@
       transform: translateX(100%);
     }
   }
+
+  .left-absolute {
+    position:absolute;
+    left: 15px;
+  }
