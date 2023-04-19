@@ -11,7 +11,7 @@
 
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Organization/ Staffing Pattern </h1>
-                                <label><strong>Governance - Municipality of  - Organization/ Staffing Pattern</strong></label><br>
+                                <label><strong>Governance - Municipality of {{munCityName}} </strong></label><br>
                             </div><br>
 
                           <form class= "user collapse show" id="collapseExample"><br>
@@ -34,90 +34,96 @@
                                         <label for="exampleFormControlTextarea1" >Permanent :</label>
                                        </div>
                                        <div class ="col-lg-9"><br>
-                                        <input type="number" class="form-control" id="permanent" name = "permanent" [(ngModel)] ="org.permanentNo"  [disabled]="inputDisabled"  placeholder="">
+                                        <input type="number" class="form-control" id="permanent" name = "permanent" [(ngModel)] ="org.permanentNo"  [disabled]="inputDisabled"  placeholder="" [ngClass]="toValidate.permanentNo?'is-invalid':''" (keyup)="toValidate.permanentNo=false">
                                       </div>
 
                                        <div class ="col-lg-3"><br>
                                         <label for="exampleFormControlTextarea1" >Temporary :</label>
                                        </div>
                                        <div class ="col-lg-9"><br>
-                                        <input type="number" class="form-control" id="temporary" name = "temporary" [(ngModel)] ="org.temporary"  [disabled]="inputDisabled"  placeholder="">
+                                        <input type="number" class="form-control" id="temporary" name = "temporary" [(ngModel)] ="org.temporary"  [disabled]="inputDisabled"  placeholder="" [ngClass]="toValidate.temporary?'is-invalid':''" (keyup)="toValidate.temporary=false">
                                        </div>
 
                                        <div class ="col-lg-3"><br>
                                         <label for="exampleFormControlTextarea1" >Co-Terminus :</label>
                                        </div>
                                        <div class ="col-lg-9"><br>
-                                        <input type="number" class="form-control" id="coTerminus" name = "coTerminus" [(ngModel)] ="org.coTerminus"  [disabled]="inputDisabled" placeholder="">
+                                        <input type="number" class="form-control" id="coTerminus" name = "coTerminus" [(ngModel)] ="org.coTerminus"  [disabled]="inputDisabled" placeholder="" [ngClass]="toValidate.coTerminus?'is-invalid':''" (keyup)="toValidate.coTerminus=false">
                                        </div>
 
                                        <div class ="col-lg-3"><br>
                                         <label for="exampleFormControlTextarea1" >Elected :</label>
                                        </div>
                                        <div class ="col-lg-9"><br>
-                                        <input type="number" class="form-control" id="elected" name = "elected" [(ngModel)] ="org.elected"  [disabled]="inputDisabled"  placeholder="">
+                                        <input type="number" class="form-control" id="elected" name = "elected" [(ngModel)] ="org.elected"  [disabled]="inputDisabled"  placeholder="" [ngClass]="toValidate.elected?'is-invalid':''" (keyup)="toValidate.elected=false">
                                        </div>
 
                                        <div class ="col-lg-3"><br>
                                         <label for="exampleFormControlTextarea1" >Casual :</label>
                                        </div>
                                        <div class ="col-lg-9"><br>
-                                        <input type="number" class="form-control" id="casual" name = "casual" [(ngModel)] ="org.casual"  [disabled]="inputDisabled"  placeholder="">
+                                        <input type="number" class="form-control" id="casual" name = "casual" [(ngModel)] ="org.casual"  [disabled]="inputDisabled"  placeholder="" [ngClass]="toValidate.casual?'is-invalid':''" (keyup)="toValidate.casual=false">
                                        </div>
 
                                        <div class ="col-lg-3"><br>
                                         <label for="exampleFormControlTextarea1" >Job Order :</label>
                                        </div>
                                        <div class ="col-lg-9"><br>
-                                        <input type="number" class="form-control" id="jobOrder" name = "jobOrder" [(ngModel)] ="org.jobOrder"  [disabled]="inputDisabled" placeholder="">
+                                        <input type="number" class="form-control" id="jobOrder" name = "jobOrder" [(ngModel)] ="org.jobOrder"  [disabled]="inputDisabled" placeholder="" [ngClass]="toValidate.jobOrder?'is-invalid':''" (keyup)="toValidate.jobOrder=false">
                                        </div>
 
                                        <div class ="col-lg-3"><br>
                                         <label for="exampleFormControlTextarea1" >Contractual :</label>
                                        </div>
                                        <div class ="col-lg-9"><br>
-                                        <input type="number" class="form-control" id="contractual" name = "contractual" [(ngModel)] ="org.contractual"  [disabled]="inputDisabled" placeholder="">
+                                        <input type="number" class="form-control" id="contractual" name = "contractual" [(ngModel)] ="org.contractual"  [disabled]="inputDisabled" placeholder="" [ngClass]="toValidate.contractual?'is-invalid':''" (keyup)="toValidate.contractual=false">
                                        </div>
 
                                        <div class ="col-lg-3"><br>
                                         <label for="exampleFormControlTextarea1" >Casual SEF :</label>
                                        </div>
                                        <div class ="col-lg-9"><br>
-                                        <input type="number" class="form-control" id="casualSef" name = "casualSef" [(ngModel)] ="org.casualSef"  [disabled]="inputDisabled" placeholder="">
+                                        <input type="number" class="form-control" id="casualSef" name = "casualSef" [(ngModel)] ="org.casualSef"  [disabled]="inputDisabled" placeholder="" [ngClass]="toValidate.casualSef?'is-invalid':''" (keyup)="toValidate.casualSef=false">
                                        </div>
 
                                        <div class ="col-lg-3"><br>
                                         <label for="exampleFormControlTextarea1" >School Board :</label>
                                        </div>
                                        <div class ="col-lg-9"><br>
-                                        <input type="number" class="form-control" id="schoolBoard" name = "schoolBoard" [(ngModel)] ="org.schoolBoard"  [disabled]="inputDisabled" placeholder="">
+                                        <input type="number" class="form-control" id="schoolBoard" name = "schoolBoard" [(ngModel)] ="org.schoolBoard"  [disabled]="inputDisabled" placeholder="" [ngClass]="toValidate.schoolBoard?'is-invalid':''" (keyup)="toValidate.schoolBoard=false">
                                        </div>
 
                                        <div class ="col-lg-3"><br>
                                         <label for="exampleFormControlTextarea1" >Contract of Services :</label>
                                        </div>
                                        <div class ="col-lg-9"><br>
-                                        <input type="number" class="form-control" id="contractService" name = "contractService" [(ngModel)] ="org.contractService"  [disabled]="inputDisabled" placeholder="">
+                                        <input type="number" class="form-control" id="contractService" name = "contractService" [(ngModel)] ="org.contractService"  [disabled]="inputDisabled" placeholder="" [ngClass]="toValidate.contractService?'is-invalid':''" (keyup)="toValidate.contractService=false">
                                        </div>
 
                                        <div class ="col-lg-3"><br>
                                         <label for="exampleFormControlTextarea1" >Others :</label>
                                        </div>
                                        <div class ="col-lg-9"><br>
-                                        <input type="text" class="form-control" id="others" name = "others" [(ngModel)] ="org.others"  [disabled]="inputDisabled"  placeholder="">
+                                        <input type="text" class="form-control" id="others" name = "others" [(ngModel)] ="org.others"  [disabled]="inputDisabled"  placeholder="" [ngClass]="toValidate.others?'is-invalid':''" (keyup)="toValidate.others=false">
                                        </div>
 
                                       </div>
                                        </div>
                                        <br>
                                        <br>
-                              <button type="button" class="btn btn-primary" *ngIf="!vieworg" (click) = "AddOrg()" ><i class ="fa fa-plus"></i>ADD</button>&nbsp;
-                              <button type="button" title="Edit" (click)="editO=org" class="btn btn-info" data-toggle="modal" data-target="#exampleModalLong" ><i class="fa fa-edit"></i>Edit </button>&nbsp;
-                              <button type="button" title="Delete" class="btn btn-warning" (click)="delete(org.setYear,org.munCityId)"><i class="fa fa-trash"></i>  </button>&nbsp;
-                                     </form>
-                              <!-- <button type="button" class="btn btn-primary" *ngIf="!ViewGeo"  (click)="AddGeo()" ><i class ="fa fa-plus"></i>ADD</button>&nbsp;
-                              <button type="button" title="Edit" (click)="editgeo=geo" class="btn btn-info" data-toggle="modal" data-target="#exampleModalLong" ><i class="fa fa-edit"></i>Edit </button>&nbsp;
- -->
+                                       <div class ="form-inline float-right ">
+                                     <app-admin>
+                                    <button type="button" class="btn btn-primary" *ngIf="!vieworg" (click) = "AddOrg()" ><i class ="fa fa-plus"></i>ADD</button>&nbsp;
+                                  </app-admin>
+
+                                  <app-admin>
+                                     <div *ngIf="vieworg">
+                                      <button type="button" title="Edit" (click)="editO=org" class="btn btn-info btn-circle" data-toggle="modal" data-target="#exampleModalLong" ><i class="fa fa-pen"></i>Edit </button>&nbsp;
+                                       <button type="button" title="Delete" class="btn btn-warning btn-circle" (click)="delete(org.transId)"><i class="fa fa-trash"></i>  </button>&nbsp;
+                                     </div>
+                                    </app-admin>
+                                    </div>
+                                  </form>
 
           </div>
         </div>

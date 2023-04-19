@@ -18,6 +18,9 @@ export class DemographyComponent implements OnInit {
   editmodal:any={};
   ViewBarangayOfficial:any={};
   barangays:any={};
+  toValidate:any={};
+  munCityName:string = this.auth.munCityName;
+
 
   date = new DatePipe('en-PH')
   ngOnInit(): void {
@@ -50,6 +53,16 @@ export class DemographyComponent implements OnInit {
     }
 
   AddDemo() {
+    this.toValidate.brgyId = this.demo.brgyId == "" || this.demo.brgyId == null ? true : false;
+    this.toValidate.householdPop = this.demo.householdPop == "" || this.demo.householdPop == undefined ? true : false;
+
+    if (this.toValidate.brgyId  == true || this.toValidate.householdPop== true) {
+      Swal.fire(
+        '',
+        'Please fill out the required fields',
+        'warning'
+      );
+    } else {
 
     this.demo.munCityId=this.auth.munCityId;
     this.demo.setYear=this.auth.activeSetYear;
@@ -74,7 +87,7 @@ export class DemographyComponent implements OnInit {
       this.demo = {};
     });
   }
-
+  }
 
   editdemo(editdemo:any={}) {
     this.editmodal=editdemo;
@@ -85,7 +98,7 @@ export class DemographyComponent implements OnInit {
   //for modal
   update(){
     this.service.UpdateDemography(this.editmodal).subscribe({next:(_data)=>{
-      this.Init(); 
+      this.Init();
     },
     });
 
@@ -114,8 +127,8 @@ delete(transId:any, index:any){
             if(this.Demo[i].transId == transId){
               this.Demo.splice(i,1);
               Swal.fire(
-                'Deleted',
-                'Removed successfully',
+                'Deleted!',
+                'Your file has been removed.',
                 'success'
               );
             }

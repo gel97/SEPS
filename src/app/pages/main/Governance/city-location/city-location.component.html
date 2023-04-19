@@ -12,6 +12,7 @@
               <h1 class="h4 text-gray-900 mb-4">Locations of Municipalities/ Cities Administrative Buildings</h1>
               <label><strong>Governance - Locations of Municipalities/ Cities Administrative
                   Buildings</strong></label><br>
+               >
             </div>
             <br>
 
@@ -36,9 +37,7 @@
                       <th scope="col"></th>
                       <th scope="col">Municipality/City</th>
                       <th scope="col">Geo-Coord. (Long, Lat)</th>
-
-
-                      <th></th>
+                      <th width ="8%"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -50,8 +49,10 @@
                       <td>{{text.munCityName}}</td>
                       <td>{{text.longtitude}}, {{text.latitude}}</td>
                       <td>
-                        <button type="button" (click)="SetMarker(text);editmodal=text" class="btn btn-success"
+                        <app-admin>
+                        <button type="button" (click)="SetMarker(text);editmodal=text" class="btn btn-success btn-circle"
                           data-toggle="modal" data-target="#exampleModal"><i class="fa fa-globe"></i> </button>&nbsp;
+                        </app-admin>
                       </td>
                     </tr>
                   </tbody>

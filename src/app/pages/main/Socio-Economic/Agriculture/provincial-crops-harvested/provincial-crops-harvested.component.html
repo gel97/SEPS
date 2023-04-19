@@ -1,87 +1,139 @@
-
 <div class="">
-
-  <div class="card o-hidden border-0 shadow-sm my-5">
+  <div class="card o-hidden border-2 shadow-sm my-5">
       <div class="card-body p-0">
           <!-- Nested Row within Card Body -->
           <div class="row">
-
               <div class="col-lg-12">
                   <div class="p-5">
                       <div class="">
-                          <button class="btn btn-outline-primary btn-circle float-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
-                              <i class="fa fa-minus" aria-hidden="true"></i>
-
-                            </button>
                       </div>
                       <div class="text-center">
-                          <h1 class="h4 text-gray-900 mb-4">Agricultural Profile of Province of Davao del Norte As of CY 2015</h1>
+                        <h1 class="h4 text-gray-900 mb-4">Agricultural Profile of Davao del Norte(Provincial Crops Area Harvested)</h1>
+                    </div>
+                      <br>
+                      <div class ="form-inline float-right ">
+                        <form class=>
+                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd "><i class="fa fa-plus"></i>
+                          Crops Area Harvested
+                          </button>
+
+                        </form>
                       </div>
-
-
-                      <form class="user collapse show" id="collapseExample">
-                          <div class="form-group">
-                              <div class="row">
-                                  <div class="">
-                                    <label for="category">Type of Commodity : </label>
-                                    <select class="form-select">
-                                        <option selected>Select Commodity</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
-                                      </select>
-                                  </div>
-
-                              </div>
-                             </div>
-                           <div class = 'row'>
-                             <div class="">
-                              <label for="exampleFormControlTextarea1">Area Harvested (Has) : </label>
-                                <input type ="text" class="form-control" id="" rows="4">
-                              </div>
-                            </div> <br>
-                            <div class = "row">
-                            <div class="">
-                              <label for="exampleFormControlTextarea1">Remarks:</label>
-                                <textarea class="form-control" id="" rows="4"></textarea>
-                              </div>
-                            </div>
-                             <br>
-
-                            <button type="button" class="btn btn-primary">ADD</button>
-
-                      </form>
-
+                      <br><br>
                       <br>
                       <div class="row">
-                          <div class="col-lg-6">
-                              <p>Agricultural Profile of Province of Davao del Norte As of CY 2015
+                        <div class="col-lg-6">
+                            <p>Agricultural Profile of Davao del Norte(Provincial Crops Area Harvested)</p>
+                        </div>
+                        <div class="col-lg-6 ">
+                              <form class="form-inline float-right">
+                                <div class="form-group mb-4">
+                                  <!-- <input type="search input"  class="form-control" width="30%" placeholder="Search" (input)="onChangeSearch($event)"> <label for="" class="btn btn-primary"> <i class="fas fa-search fa-2x"></i></label> -->
 
-                              </p>
-                          </div>
-                          <div class="col-lg-6 ">
+                                </div>
+                              </form>
+                        </div>
+                         </div>
 
-                          </div>
-                      </div>
+ <div class="form-group">
+  <div class ="row">
+    <div class="row">
 
-                      <table class="table table-light table-striped">
-                          <thead>
-                              <tr>
-                                <th scope="col"></th>
-                                <th scope="col">Commodities</th>
-                                <th scope="col">Total Area Harvested (has.)</th>
-                                <th scope="col">Remarks	</th>
-
-
-                              </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
-                  </div>
-              </div>
-          </div>
       </div>
+      <table class="table table-framed table-hover table-striped" >
+        <thead class = "table-dark">
+            <tr>
+
+              <th scope="col">#</th>
+              <th scope="col">Type of Commodities</th>
+              <th scope="col">Area Harvested (Has)</th>
+              <th scope="col">Remarks	</th>
+              <th width="8%"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let text of Commodities, let i = index">
+              <td>{{i + 1}}</td>
+              <td>
+                <div *ngFor="let item of  list_of_Commodities">
+                <span *ngIf="item.name === text.commodities">{{item.name}} </span>
+            </div>
+          </td>
+              <!-- <td>{{text.commodities}}</td> -->
+              <td>{{text.area}}</td>
+              <td>{{text.remarks}}</td>
+
+
+
+              <td class="text-center">
+                  <button type="button" title="Edit" (click)="commo=text;add_Crops_Total=false"  class="btn btn-info" data-toggle="modal" data-target="#ModalAdd" ><i class="fa fa-edit"></i> </button>&nbsp;
+                  <button type="button" title="Delete" (click)="delete(text.transId,i)" class="btn btn-warning" ><i class="fa fa-trash"></i>  </button>
+              </td>
+
+            </tr>
+            </tbody>
+            </table>
+
+             </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+
+
+  <!-- ADD MODAL -->
+  <div class="modal fade bd-example-modal-lg"id="ModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">List of  Provincial Profile on Crops Production and Area Harvested</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <div class="row">
+                <div class="">
+                  <label for="category">Type of Crop : </label>
+                  <select class="form-select" aria-label="Default select example"  name="list_of_Commodities" [(ngModel)]="commo.commodities"  >
+                    <option *ngFor="let list of  list_of_Commodities" value={{list.name}} >{{list.name}}</option>
+                  </select>
+                </div>
+
+            </div>
+           </div>
+         <div class = 'row'>
+          <div class="col-lg-6">
+            <label for="exampleFormControlTextarea1">Total Production (M.T.):</label>
+            <input type="text" class="form-control" id="" rows="4" [(ngModel)]="commo.totalProd">
+          </div>
+
+
+            <div class="col-lg-6">
+            <label for="exampleFormControlTextarea1">Area Harvested (Has) : </label>
+              <input type ="text" class="form-control" id="" rows="4" [(ngModel)]="commo.area">
+            </div>
+          </div> <br>
+          <div class = "row">
+          <div class="">
+            <label for="exampleFormControlTextarea1">Remarks:</label>remarks
+              <textarea class="form-control" id="" rows="4" [(ngModel)]="commo.remarks"></textarea>
+            </div>
+          </div>
+           <br>
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-primary" (click)="add_Crops_Total? Add_Commodities():Edit_Commodities()"><i class="fa fa-check" ></i>Save</button>&nbsp;
+          <!-- <button type ="button" class="btn btn-secondary" *ngIf="updateOfficial" (click) ="city={}"><i class="fa fa-times"></i>Cancel</button> -->
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 

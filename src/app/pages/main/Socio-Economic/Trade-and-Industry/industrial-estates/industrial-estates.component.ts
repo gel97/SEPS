@@ -162,8 +162,8 @@ delete_Industrial(transId:any, index:any){
             if(this.Industrial[i].transId == transId){
               this.Industrial.splice(i,1);
               Swal.fire(
-                'Deleted',
-                'Removed successfully',
+                'Deleted!',
+                'Your file has been removed.',
                 'success'
               );
             }

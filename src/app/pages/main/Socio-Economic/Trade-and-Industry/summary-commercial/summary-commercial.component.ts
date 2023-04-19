@@ -55,6 +55,8 @@ list_of_Business = [
 ];
 
 constructor( private service:SummCommercialService, private auth:AuthService) { }
+munCityName:string = this.auth.munCityName;
+
 toValidate:any={};
 Summary:any=[];
 summ:any={};

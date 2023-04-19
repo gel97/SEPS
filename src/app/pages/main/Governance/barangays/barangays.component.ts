@@ -18,6 +18,7 @@ export class BarangaysComponent implements OnInit {
     private auth: AuthService) { }
 
   munCityName:string = this.auth.munCityName;
+  toValidate: any = {};
   is_update: boolean = false;
   ViewBarangayOfficial: any = [];
   listBarangay: any = [];
@@ -74,6 +75,15 @@ export class BarangaysComponent implements OnInit {
   }
 
   AddBarangay() {
+    this.toValidate.punongBrgy = this.barangay.punongBrgy == "" || this.barangay.punongBrgy == null ? true : false;
+    this.toValidate.address = this.barangay.address == "" || this.barangay.address == undefined ? true : false;
+    if (this.toValidate.punongBrgy == true || this.toValidate.address == true) {
+      Swal.fire(
+        '',
+        'Please fill out the required fields',
+        'warning'
+      );
+    } else {
     this.barangay.munCityId = this.auth.munCityId;
     this.barangay.activeSetYear = this.auth.activeSetYear;
     this.service.AddBarangay(this.barangay).subscribe(_data => {
@@ -97,6 +107,7 @@ export class BarangaysComponent implements OnInit {
       this.barangay = {};
     });
   }
+}
 
   onTableDataChange(page: any) { //paginate
     console.log(page)
@@ -177,8 +188,8 @@ export class BarangaysComponent implements OnInit {
           error: (err) => {
             this.GetBarangay();
           },
-         
-        });      
+
+        });
         Swal.fire(
           'Deleted!',
           'Your file has been deleted.',
@@ -186,7 +197,7 @@ export class BarangaysComponent implements OnInit {
         )
       }
     })
-    
+
   }
 
 }

@@ -177,8 +177,8 @@ SetMarker(data: any = {}) {
             if(this.Financial[i].transId == transId){
               this.Financial.splice(i,1);
               Swal.fire(
-                'Deleted',
-                'Removed successfully',
+                'Deleted!',
+                'Your file has been removed.',
                 'success'
               );
             }
