@@ -24,6 +24,9 @@ export class ProvincialFiscalReportService {
     console.log(fiscal)
     return this.Http.post(this.Base.url + this.ApiUrl.post_update_provincialfiscal (), fiscal, { responseType: 'json' });
   }
+  Delete(transId:any) {
+    return this.Http.delete(this.Base.url + this.ApiUrl.delete_provincialFical (transId), { responseType: 'json' });
+  }
 
 }
 

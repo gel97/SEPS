@@ -9,14 +9,17 @@
                       </div>
                       <div class="text-center">
                         <h1 class="h4 text-gray-900 mb-4">Commercial Establishment Summary</h1>
+                        <label><strong>Trade and Industry - Municipality of {{munCityName}} </strong></label><br>
+
                     </div>
                       <br>
                       <div class ="form-inline float-right ">
                         <form class=>
+                          <app-admin>
                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal "><i class="fa fa-plus"></i>
                             Commercial Establishment Summary
                           </button>
-
+                        </app-admin>
                         </form>
                       </div><br><br>
 
@@ -44,7 +47,7 @@
                                 <th scope="col" class="text-center" >Business Type	</th>
                                 <th scope="col" class="text-center" >Count	</th>
                                 <th scope="col" class="text-center">Remarks	</th>
-                                <th scope="col" class="text-center">Action</th>
+                                <th width="8%"></th>
                               </tr>
                             </thead>
                             <tbody>
@@ -69,10 +72,11 @@
                                   <td class="text-center-justify" width="40%">{{text.remarks}}</td>
 
                                   <td>
-                                    <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info" data-toggle="modal" data-target="#exampleModal_EDIT" ><i class="fa fa-edit"></i> </button>&nbsp;
+                                    <app-admin>
+                                    <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info btn-circle" data-toggle="modal" data-target="#exampleModal_EDIT" ><i class="fa fa-pen"></i> </button>&nbsp;
                                     <!-- <button type="button"  onclick="initialize()" (click)="editmodal=text"  class="btn btn-success" data-toggle="modal"data-target="#exampleModal"><i  class="fa fa-globe"></i> </button>&nbsp; -->
-                                    <button type="button" title="Delete" class="btn btn-warning" (click)="delete(text.transId,i)"><i class="fa fa-trash"></i>  </button>&nbsp;
-
+                                    <button type="button" title="Delete" class="btn btn-warning btn-circle" (click)="delete(text.transId,i)"><i class="fa fa-trash"></i>  </button>&nbsp;
+                                  </app-admin>
                                   </td>
                                 </tr>
 

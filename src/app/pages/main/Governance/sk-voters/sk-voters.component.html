@@ -8,12 +8,16 @@
 
                       <div class="text-center">
                           <h1 class="h4 text-gray-900 mb-4">Polling Precincts and SK Registered Voters</h1>
+                          <label><strong>Governance - Municipality of {{munCityName}} </strong></label><br>
+
                       </div>
                       <div class ="form-inline float-right ">
                         <form class=>
+                          <app-admin>
                               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd "><i class="fa fa-plus"></i>
-                                Registered Voters
+                                SK Registered Voters
                              </button>
+                            </app-admin>
                         </form>
                       </div><br><br>
                               <div class="row">
@@ -31,7 +35,7 @@
                                   <th scope="col" class="text-center">No. of Clustered Precincts</th>
                                   <th scope="col" class="text-center">No. of Voting Centers</th>
                                   <th scope="col" class="text-center">No. of Registered Voters	</th>
-                                  <th></th>
+                                  <th widh ="8%"></th>
                                  </tr>
                                 </thead>
 
@@ -46,10 +50,14 @@
                                   <td class="text-center">{{text.regSkVoterNo}}</td>
 
                                   <td>
-                                  <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info" data-toggle="modal" data-target="#ModalEdit" ><i class="fa fa-edit"></i> </button>&nbsp;
-                                  <button type="button" title="Delete" class="btn btn-warning" (click)="delete(text.transId,i)"><i class="fa fa-trash"></i>  </button>&nbsp;                                  </td>
+                                    <app-admin>
+                                  <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info btn-circle" data-toggle="modal" data-target="#ModalEdit" ><i class="fa fa-pen"></i> </button>&nbsp;
+                                  <button type="button" title="Delete" class="btn btn-warning btn-circle" (click)="delete(text.transId,i)"><i class="fa fa-trash"></i>  </button>&nbsp;
+                                </app-admin>
+                                </td>
 
                                 </tr>
+
                               </tbody>
                               </table>
                               </div>
@@ -74,7 +82,7 @@
 
           <div class="col-lg-12">  <br>
             <label for="type">Barangay :</label>
-            <select class="form-select" aria-label="Default select example" [(ngModel)]="voter.brgyId" >
+            <select class="form-select" aria-label="Default select example" [(ngModel)]="voter.brgyId" [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false">
               <option *ngFor="let item  of barangays" value={{item.brgyId}}>{{item.brgyName}}</option>
               </select> </div>
 
@@ -85,19 +93,19 @@
 
            <div class ="col-lg-12"><br>
             <label for="exampleFormControlTextarea1"  >No. of Established Precincts:</label>
-            <input type="text" class="form-control" id="" name = "" [(ngModel)]="voter.estabNo"  placeholder="">
+            <input type="text" class="form-control" id="" name = "" [(ngModel)]="voter.estabNo"  placeholder="" [ngClass]="toValidate.estabNo?'is-invalid':''" (keyup)="toValidate.estabNo=false">
           </div>
            <div class ="col-lg-12"><br>
             <label for="exampleFormControlTextarea1" >No. of Clustered Precincts:</label>
-            <input type="text" class="form-control" name =""  id="" [(ngModel)]="voter.clusterNo" placeholder="">
+            <input type="text" class="form-control" name =""  id="" [(ngModel)]="voter.clusterNo" placeholder="" [ngClass]="toValidate.clusterNo?'is-invalid':''" (keyup)="toValidate.clusterNo=false">
            </div>
            <div class ="col-lg-12"><br>
             <label for="exampleFormControlTextarea1" >No. of Voting Centers:</label>
-            <input type="text" class="form-control" name ="" id="" [(ngModel)]="voter.votingCntrNo" placeholder="">
+            <input type="text" class="form-control" name ="" id="" [(ngModel)]="voter.votingCntrNo" placeholder="" [ngClass]="toValidate.votingCntrNo?'is-invalid':''" (keyup)="toValidate.votingCntrNo=false">
            </div>
            <div class ="col-lg-12"><br>
             <label for="exampleFormControlTextarea1" >No. of Registered Voters:</label>
-            <input type="text" class="form-control"  name =""  id="" [(ngModel)]="voter.regSkVoterNo" placeholder="">
+            <input type="text" class="form-control"  name =""  id="" [(ngModel)]="voter.regSkVoterNo" placeholder="" [ngClass]="toValidate.regSKVoterNo?'is-invalid':''" (keyup)="toValidate.regSKVoterNo=false">
 
           <div class="modal-footer">
             <button type="button" class="btn btn-primary"  (click)=" addVoter()"><i class="fa fa-check"></i>Save</button>&nbsp;

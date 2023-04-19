@@ -14,6 +14,9 @@ import Swal from 'sweetalert2';
 export class FiscalMattersComponent implements OnInit {
 
   constructor(private service: FiscalMattersService, private auth: AuthService) { }
+  munCityName:string = this.auth.munCityName;
+
+  toValidate:any={};
   fiscal: any = {};
   FisView: any = [];
   editmodal: any = {};
@@ -68,6 +71,18 @@ export class FiscalMattersComponent implements OnInit {
 
 
   AddFiscal() {
+    this.toValidate.name = this.fiscal.name == "" || this.fiscal.name == null ? true : false;
+    this.toValidate.fiscalYear = this.fiscal.fiscalYear == "" || this.fiscal.fiscalYear == undefined ? true : false;
+    this.toValidate.category = this.fiscal.category == "" || this.fiscal.category == undefined ? true : false;
+
+
+    if (this.toValidate.name == true || this.toValidate.fiscalYear == true || this.toValidate.category ==true) {
+      Swal.fire(
+        '',
+        'Please fill out the required fields',
+        'warning'
+      );
+    } else {
     this.fiscal.munCityId = this.auth.munCityId;
     this.service.Addfiscal(this.fiscal).subscribe(_data => {
 
@@ -90,6 +105,7 @@ export class FiscalMattersComponent implements OnInit {
 
     });
   }
+}
 
   editfiscal(editfiscal: any = {}) {
     this.editmodal = editfiscal;
@@ -142,13 +158,13 @@ export class FiscalMattersComponent implements OnInit {
 
   delete(transId: any, index: any) {
     Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
+      // title: 'Are you sure?',
+      text: "Do you want to remove this file!",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonText: 'Yes, remove it!'
     }).then((result) => {
       if (result.isConfirmed) {
         this.service.Delete(transId).subscribe({
@@ -161,7 +177,7 @@ export class FiscalMattersComponent implements OnInit {
         });
         Swal.fire(
           'Deleted!',
-          'Your file has been deleted.',
+          'Your file has been removed.',
           'success'
         )
       }

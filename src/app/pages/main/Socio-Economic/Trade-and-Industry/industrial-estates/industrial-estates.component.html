@@ -9,13 +9,17 @@
                       </div>
                       <div class="text-center">
                         <h1 class="h4 text-gray-900 mb-4">Industrial Estates</h1>
+                        <label><strong>Trade and Industry - Municipality of {{munCityName}} </strong></label><br>
+
                     </div>
                       <br>
                       <div class ="form-inline float-right ">
                         <form class=>
+                          <app-admin>
                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal"><i class="fa fa-plus"></i>
                            Industrial Estates
                           </button>
+                        </app-admin>
                         </form>
                       </div><br><br>
                         <br>
@@ -45,7 +49,7 @@
                                   <th scope="col" class="text-center">Location</th>
                                   <th scope="col" class="text-center">Barangay</th>
                                   <th scope="col" class="text-center">Geo-Coord. (Long, Lat)</th>
-                                  <th scope="col" class="text-center" >Action</th>
+                                  <th width="10%" ></th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -64,10 +68,11 @@
                                   <td class="text-center">{{text.brgyName}}</td>
                                   <td class="text-center">{{text.longtitude}},<br>{{text.latitude}}</td>
                                   <td>
-                                    <button type="button"  title="Edit" (click)="editmodal=text" class="btn btn-info" data-toggle="modal" data-target="#ModalEdit" ><i class="fa fa-edit"></i></button>&nbsp;
-                                    <button (click)="SetMarker(text)" class="btn btn-success" role="button" (click)="editmodal=text" data-toggle="modal" data-target="#gmapModal"><i class="fa fa-globe"> </i> </button>&nbsp;
-                                    <button type="button" title="Delete" class="btn btn-warning" (click)="delete_Industrial(text.transId,i)"><i class="fa fa-trash"></i>  </button>&nbsp;
-
+                                    <app-admin>
+                                    <button type="button"  title="Edit" (click)="editmodal=text" class="btn btn-info btn-circle" data-toggle="modal" data-target="#ModalEdit" ><i class="fa fa-pen"></i></button>&nbsp;
+                                    <button (click)="SetMarker(text)" class="btn btn-success btn-circle" role="button" (click)="editmodal=text" data-toggle="modal" data-target="#gmapModal"><i class="fa fa-globe"> </i> </button>&nbsp;
+                                    <button type="button" title="Delete" class="btn btn-warning btn-circle" (click)="delete_Industrial(text.transId,i)"><i class="fa fa-trash"></i>  </button>&nbsp;
+                                  </app-admin>
                                   </td>
                                 </tr>
                               </tbody>

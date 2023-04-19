@@ -21,15 +21,18 @@ export class ApiUrl {
     delete_barangay             = (transId:any)   => `/Barangay/${transId}`;
 
         //Physical Geographic Profile
-    post_get_geo    = (munCityId:any, setYear:any) => `/PhyGeoProf/ShowPhyGeoProf?munCityId=${munCityId}&setYear=${setYear}`;
-    post_save_geo   = () => `/PhyGeoProf/SavePhyGeoProf`;
-    post_update_geo = () => '/PhyGeoProf/Update';
+    get_get_geo    = (munCityId:any, setYear:any) => `/PhyGeoProf/${setYear}/${munCityId}`;
+    post_save_geo  = () => `/PhyGeoProf`;
+    put_update_geo = () => '/PhyGeoProf';
+    delete_geo=(transId:any)=>`/PhyGeoProf/${transId}`;
+
 
         // Organization & Staffing Pattern
-    post_get_org    = (munCityId:any, setYear:any) => `/OrgStaffPattern/Show?munCityId=${munCityId}&setYear=${setYear}`;
-    post_save_org   = () => `/OrgStaffPattern/Save`;
-    post_update_org = () => '/OrgStaffPattern/Update';
-    delete_org=(munCityId:any, setYear:any)=>`/OrgStaffPattern/${setYear}/${munCityId}`;
+    get_get_org    = (munCityId:any, setYear:any) => `/OrgStaffPattern/${setYear}/${munCityId}`;
+    post_save_org   = () => `/OrgStaffPattern`;
+    put_update_org = () => '/OrgStaffPattern';
+    delete_org=(transId:any)=>`/OrgStaffPattern/${transId}`;
+
 
         //Fiscal Matters
     post_get_fiscal_matters    = (munCityId:any) => `/FiscalMatters/List?munCityId=${munCityId}`;
@@ -61,6 +64,8 @@ export class ApiUrl {
     post_get_provincialfiscal    = (setYear:any)=>`/ProvFiscal/List?setYear=${setYear}`;
     post_save_provincialfiscal   = () => `/ProvFiscal/Save`;
     post_update_provincialfiscal = () => `/ProvFiscal/Update`;
+    delete_provincialFical       = (transId:any)   => `/ProvFiscal/${transId}`;
+
 
 
     //Registered Voter
@@ -142,7 +147,7 @@ delete_Industrial=(transId:any)=>`/IndEst/${transId}`;
     //Provincial Profile on Crops Production and Area Harvested
     post_agriculture_prod     = ()=> `/AgricultureProd`;
     put_agriculture_prod      = () => `/AgricultureProd`;
-    get_list_agriculture_prod = (setYear:any, munCityId:any) => `/AgricultureProd/${setYear}/${munCityId}`;
+    get_list_agriculture_prod = (menuId:any,setYear:any, munCityId:any) => `/AgricultureProd/${menuId}/${setYear}/${munCityId}`;
     delete_agriculture_prod   = (transId:any)=>`/AgricultureProd/${transId}`;
 
     //Rice/Crops Production

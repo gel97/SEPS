@@ -180,20 +180,13 @@ delete(transId:any, index:any){
             }
           }
 
-
           this.service.DeleteManEstab(transId).subscribe(_data =>{
 
-           // this.MajorAct.splice(index,1);
-
-            // this.Init();
-            // this.mjr = {};
 
           })
         } else if (result.dismiss === Swal.DismissReason.cancel){
 
         }
-          // this.Init();
-          // this.mjr = {};
 
       })
     }

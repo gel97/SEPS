@@ -9,15 +9,18 @@
                       </div>
                       <div class="text-center">
                         <h1 class="h4 text-gray-900 mb-4">Major Economic Activities</h1>
+                        <label><strong>Trade and Industry - Municipality of {{munCityName}} </strong></label><br>
+
                     </div>
                       <br>
                       <div class ="form-inline float-right ">
+                        <app-admin>
                         <form class=>
                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd "><i class="fa fa-plus"></i>
                           Major Economic Activities
                           </button>
-
                         </form>
+                      </app-admin>
                       </div>
                       <br><br>
                       <br>
@@ -46,7 +49,7 @@
               <th></th>
               <th scope="col" class="text-center">Major Activity</th>
               <th scope="col" class="text-center">Brief Description</th>
-              <th scope="col" class="text-center">Action</th>
+              <th width="8%"></th>
               <th></th>
             </tr>
           </thead>
@@ -60,8 +63,10 @@
 
 
               <td class="text-center">
-                 <button type="button" title="Edit" (click)="editmodal=text"  class="btn btn-info" data-toggle="modal" data-target="#ModalEdit" ><i class="fa fa-edit"></i> </button>&nbsp;
-                <button type="button" title="Delete" (click)="delete(text.transId,i)" class="btn btn-warning" ><i class="fa fa-trash"></i>  </button>
+                <app-admin>
+                 <button type="button" title="Edit" (click)="editmodal=text"  class="btn btn-info btn-circle" data-toggle="modal" data-target="#ModalEdit" ><i class="fa fa-pen"></i> </button>&nbsp;
+                <button type="button" title="Delete" (click)="delete(text.transId,i)" class="btn btn-warning btn-circle" ><i class="fa fa-trash"></i>  </button>
+              </app-admin>
               </td>
               <td></td>
             </tr>

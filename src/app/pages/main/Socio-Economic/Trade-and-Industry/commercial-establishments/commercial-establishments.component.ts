@@ -18,21 +18,28 @@ export class CommercialEstablishmentsComponent implements OnInit {
 searchText: string= "";
 
 list_of_category = [
-  { id: 1, name_category: "Agricultural products" },
-  { id: 2, name_category: "Crafts/ Furnitures" },
+  { id: 1, name_category: "Merchandisers/ Retailers" },
+  { id: 2, name_category: "Computer/ Electronics/ Cellphones/ Gadgets" },
+  { id: 3, name_category: "Utility Services / Facilities" },
+  { id: 4, name_category: "Construction related trading and services" },
+  { id: 5, name_category: "Food and Beverages Business" },
+  { id: 6, name_category: "Transport-related Trading and Services" },
+  { id: 7, name_category: "Personal Stores and Services" },
+  { id: 8, name_category: "	Agriculture related business" },
 ];
 
 list_of_Business = [
-  { id: 1, name_business: "Agricultural equipments and supplies" },
-  { id: 2, name_business: "Woodcrafts/ Wooden Furniture" },
-  { id: 3, name_business: "Casket/coffin making" },
-  { id: 4, name_business: "Handicrafts/ Shellcraft" },
+  { id: 1, name_business: "General Merchandising" },
+  { id: 2, name_business: "	Sari-sari stores" },
+  { id: 3, name_business: "Drugstores/ Pharmacy" },
+  { id: 4, name_business: "Internet shops/ On-line gaming" },
 ];
 
 list_of_status = [
   { id: 1, status: "New" },
   { id: 2, status: "Renew" },
 ];
+
 
 constructor( private service:CommercialEstablishmentService, private auth:AuthService) { }
 munCityName:string = this.auth.munCityName;
@@ -180,8 +187,8 @@ delete(transId:any, index:any){
           if(this.ComEstab[i].transId == transId){
             this.ComEstab.splice(i,1);
             Swal.fire(
-              'Deleted',
-              'Removed successfully',
+              'Deleted!',
+              'Your file has been removed.',
               'success'
             );
           }

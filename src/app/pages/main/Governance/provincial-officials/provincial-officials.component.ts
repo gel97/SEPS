@@ -14,7 +14,7 @@ export class ProvincialOfficialsComponent implements OnInit {
   constructor(private service:ProvOfficialService, private auth:AuthService) { }
 
 isLoading:boolean = true;
-
+  toValidate:any={};
   ProOfficial:any = [];
   Prov: any = {};
   Edit:any ={};
@@ -56,7 +56,17 @@ getOfficials(){
 }
 
   addOfficial() {
-    this.Prov.munCityId=this.auth.munCityId;
+    this.toValidate.seqNo = this.Prov.seqNo == "" || this.Prov.seqNo == null ? true : false;
+    this.toValidate.name = this.Prov.name == "" || this.Prov.name == undefined ? true : false;
+
+    if (this.toValidate.name == true || this.toValidate.seqNo == true) {
+      Swal.fire(
+        '',
+        'Please fill out the required fields',
+        'warning'
+      );
+    } else {
+   // this.Prov.munCityId=this.auth.munCityId;
     this.Prov.setYear=this.auth.activeSetYear;
     this.Prov.transId = this.date.transform(Date.now(),'YYMM');
     this.Prov.tag = 1;
@@ -81,7 +91,7 @@ getOfficials(){
       this.Prov = {};
     });
   }
-
+  }
 
 editOfficial(editOfficial:any={}) {
   this.editModal=editOfficial;
@@ -91,7 +101,12 @@ this.getOfficials() ;
 
 //for modal
 update(){
+  this.editModal.setYear=this.auth.activeSetYear;
+
 this.service.UpdateProvOfficial(this.editModal).subscribe({next:(_data)=>{
+
+    this.getOfficials();
+    this.editModal = {};
 // this.editModal();
 },
 });
@@ -120,8 +135,8 @@ delete(official2:any={}){
       official2.tag= -1;
       this.service.UpdateProvOfficial(official2).subscribe(_data =>{
         Swal.fire(
-          'Deleted',
-          'Removed successfully',
+          'Deleted!',
+          'Your file has been removed.',
           'success'
         );
         this.getOfficials() ;

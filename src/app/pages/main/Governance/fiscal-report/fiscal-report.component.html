@@ -10,13 +10,17 @@
                   <div class="p-5">
                       <div class="text-center">
                           <h1 class="h4 text-gray-900 mb-4"> Provincial Fiscal Report</h1>
+                          <label><strong>Governance - Municipality of {{munCityName}}</strong></label>
+
                       </div>
                       <br>
                       <div class ="form-inline float-right ">
                       <form class=>
+                        <app-admin>
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd "><i class="fa fa-plus"></i>
                              Provincial Fiscal Report
                            </button>
+                          </app-admin>
                       </form>
                     </div><br><br>
 
@@ -28,11 +32,11 @@
                       <table class="table table-light table-striped">
                         <thead class ="table-dark">
                               <tr>
-
+                                <th>#</th>
                                 <th scope="col">Year</th>
                                 <th scope="col">Revenue</th>
                                 <th scope="col">Amount(PhP)</th>
-                                <th></th>
+                                <th width ="8%"></th>
 
                               </tr>
                             </thead>
@@ -40,23 +44,25 @@
                               <tr *ngFor="let text of list_revenues| paginate:{
                                 itemsPerPage: tableSize,
                                 currentPage: p,
-                                totalItems:count};" >
-
+                                totalItems:count} let i = index;" >
+                                <td>{{i + 1}}</td>
                               <!-- <td>{{text.category}}</td> -->
                               <td>{{text.fiscalYear}}</td>
                               <td>{{text.description}}</td>
                               <td>{{text.amount}}</td>
 
                               <td>
-                                <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info" data-toggle="modal" data-target="#Edit" ><i class="fa fa-edit"></i> </button>&nbsp;
-                                <!-- <button type="button" title="Delete" class="btn btn-warning" ><i class="fa fa-trash"></i>  </button> -->
+                                <app-admin>
+                                <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info btn-circle" data-toggle="modal" data-target="#Edit" ><i class="fa fa-pen"></i> </button>&nbsp;
+                                <button type="button" title="Delete" class="btn btn-warning btn-circle" (click)="delete(text.transId,i)"><i class="fa fa-trash"></i>  </button>
+                                </app-admin>
                               </td>
 
                             </tr>
                             </tbody>
                         </table>
  <!-- Pagination Control -->
-    <div class = "row">
+    <!-- <div class = "row">
       <div class="col-lg-12">
       <form class="form-inline float-right ">
       <pagination-controls
@@ -73,7 +79,7 @@
         </ul>
    </form>
 </div>
-                </div>
+                </div> -->
                         <br><br>
                         <div class="row">
                           <div class="col-lg-6">
@@ -83,11 +89,11 @@
                       <table class="table table-light table-striped">
                           <thead class ="table-dark">
                               <tr>
-
+                                <th>#</th>
                                 <th scope="col">Year</th>
                                 <th scope="col">Expenditures</th>
                                 <th scope="col">Amount(PhP)</th>
-                                <th></th>
+                                <th width ="8%"></th>
 
                               </tr>
                             </thead>
@@ -95,21 +101,24 @@
                             <tr *ngFor="let text of list_expend| paginate:{
                               itemsPerPage: tableSize2,
                               currentPage: p2,
-                              totalItems:count2};" >
+                              totalItems:count2} let i = index;" >
+                              <td>{{i + 1}}</td>
                               <td>{{text.fiscalYear}}</td>
                               <td>{{text.description}}</td>
                               <td>{{text.amount}}</td>
 
                               <td>
-                                <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info" data-toggle="modal" data-target="#Edit" ><i class="fa fa-edit"></i> </button>&nbsp;
-                                <!-- <button type="button" title="Delete" class="btn btn-warning"  (click)="delete(text)"><i class="fa fa-trash"></i>  </button>  -->
+                                <app-admin>
+                                <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info btn-circle" data-toggle="modal" data-target="#Edit" ><i class="fa fa-pen"></i> </button>&nbsp;
+                                <button type="button" title="Delete" class="btn btn-warning btn-circle" (click)="delete(text.transId,i)"><i class="fa fa-trash"></i>  </button>
+                               </app-admin>
                               </td>
                             </tr>
                             </tbody>
                         </table>
      <!-- Pagination Control -->
 
-    <div class = "row">
+    <!-- <div class = "row">
       <div class="col-lg-12">
       <form class="form-inline float-right ">
       <pagination-controls
@@ -126,7 +135,7 @@
         </ul>
    </form>
 </div>
-                </div>
+                </div> -->
                       <br>
                   </div>
               </div>
@@ -155,14 +164,14 @@
           <div class="row">
             <div class ="col-lg-12"><br>
              <label for="exampleFormControlTextarea1" >Category :</label>
-             <select class="form-select" aria-label="Default select example" [(ngModel)]="fiscal.category" placeholder ="Select Category">
+             <select class="form-select" aria-label="Default select example" [(ngModel)]="fiscal.category" placeholder ="Select Category" [ngClass]="toValidate.category?'is-invalid':''" (ngModelChange)="toValidate.category=false">
                <option value="1" >Revenue</option>
                <option value="2">Expenditure</option>
              </select>
           </div>
                 <div class ="col-lg-12"><br>
                  <label for="exampleFormControlTextarea1" >Name of Revenues/Expenditures :</label>
-                 <input type="text" class="form-control" id=""  name =""  [(ngModel)]="fiscal.description" placeholder="">
+                 <input type="text" class="form-control" id=""  name =""  [(ngModel)]="fiscal.description" placeholder="" [ngClass]="toValidate.description?'is-invalid':''" (keyup)="toValidate.description=false">
                 </div>
                 <div class ="col-lg-12"><br>
                  <label for="exampleFormControlTextarea1" >Amount (PhP):</label>
@@ -170,7 +179,7 @@
                 </div>
                 <div class ="col-lg-12"><br>
                  <label for="exampleFormControlTextarea1" >Fiscal Year:</label>
-                 <input type="text" class="form-control" id=""  name =""  [(ngModel)]="fiscal.fiscalYear" placeholder="">
+                 <input type="text" class="form-control" id=""  name =""  [(ngModel)]="fiscal.fiscalYear" placeholder="" [ngClass]="toValidate.fiscalYear?'is-invalid':''" (keyup)="toValidate.fiscalYearalse">
                 </div>
 
                </div>
