@@ -159,6 +159,8 @@ UpdateCommercial(){
   this.editmodal.latitude = this.gmapComponent.markers.lat;
 
   this.service.Update_Com_Estab(this.editmodal).subscribe({next:(_data)=>{
+    this.GetListCommercialEstab();
+
   },
   });
 

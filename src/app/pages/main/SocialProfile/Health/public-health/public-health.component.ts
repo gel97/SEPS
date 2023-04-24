@@ -12,7 +12,7 @@ export class PublicHealthComponent implements OnInit {
   constructor(
     private Auth: AuthService,
     private service: HealthWorkersService
-  ) { }
+  ) {}
 
   menuId = 7;
   setYear = Number(this.Auth.activeSetYear);

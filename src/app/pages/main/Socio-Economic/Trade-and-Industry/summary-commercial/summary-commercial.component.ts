@@ -142,6 +142,7 @@ edit_estab(edit_estab:any={}) {
 //for modal
 UpdateSummary_Estab(){
   this.service.Update_Summ_Estab(this.editmodal).subscribe({next:(_data)=>{
+    this.GetList_Summary_CommercialEstab();
   },
   });
 

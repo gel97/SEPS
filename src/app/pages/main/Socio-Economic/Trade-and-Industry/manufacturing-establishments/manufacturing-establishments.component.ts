@@ -145,6 +145,7 @@ edit_estab(edit_estab:any={}) {
     this.editmodal.latitude = this.gmapComponent.markers.lat;
     //this.editmodal.setYear = this.auth.activeSetYear;
     this.service.UpdateManEstab(this.editmodal).subscribe({next:(_data)=>{
+      this.GetListManEstab();
     },
     });
 

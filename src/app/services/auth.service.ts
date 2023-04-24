@@ -13,8 +13,7 @@ export class AuthService {
   readonly apiurl = "https://davaodelnorte.ph/sep/apidata/api/Auth/login";
 
   readonly apiurlUser = "https://davaodelnorte.ph/sep/apidata/api/User";
-  readonly baseUrl = "https://davaodelnorte.ph/FMIS/APIData/API";
-
+  readonly apiUrlGoogleLogin = "https://localhost:7292/api/AuthGoogle";
    token:any = localStorage.getItem("token");
    munCityId:any = localStorage.getItem("munCityId");
    munCityName:any = localStorage.getItem("munCityName");
@@ -53,6 +52,30 @@ export class AuthService {
       this.activeSetYear = localStorage.getItem("activeSetYear");
       this.setYear = localStorage.getItem("setYear");
       console.log(this.munCityId);
+
+    }));
+
+   
+  }
+
+  signinGoogle(user:any): Observable<any> {
+    const now = new Date();
+    const formattedDate = now.toLocaleString(); // formats the date and time as a string
+    console.log(formattedDate); 
+    console.log(user);
+    return this.http.post(this.apiUrlGoogleLogin,user,{responseType: 'json'}).pipe(tap((response:any) =>
+    {
+
+      localStorage.setItem("token", response.token);
+      localStorage.setItem("activeSetYear",response.activeSetYear);
+      localStorage.setItem("setYear",response.activeSetYear);
+      localStorage.setItem("userData", JSON.stringify(response));
+      localStorage.setItem("expire",response.expire);
+
+      this.token = localStorage.getItem("token");
+      this.activeSetYear = localStorage.getItem("activeSetYear");
+      this.setYear = localStorage.getItem("setYear");
+      console.log(response);
 
     }));
 

@@ -149,6 +149,7 @@ SetMarker(data: any = {}) {
     this.editmodal.longtitude = this.gmapComponent.markers.lng;
     this.editmodal.latitude = this.gmapComponent.markers.lat;
     this.service.Update_Financial_Ins(this.editmodal).subscribe({next:(_data)=>{
+      this.GetListFinancial();
     },
     });
 

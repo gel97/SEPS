@@ -17,6 +17,7 @@ export class LoginComponent implements OnInit {
 
   userData:any = {};
   user:any={};
+  guser:any={};
   errorLogin:String ="";
 constructor(private service:AuthService ,private router: Router,private zone: NgZone) { }
 
@@ -58,15 +59,22 @@ callLoginButton() {
         userId: profile.getId(),
         profile: profile.getImageUrl(),
         token: googleAuthUser.getAuthResponse().id_token
-      }
+      };
+      
+      this.guser.email = profile.getEmail();
+      this.guser.fullName = profile.getName();
+      this.service.signinGoogle(this.guser).subscribe(request=>{
+        this.router.navigate(['/'])
+      });
 
-      localStorage.setItem("token", this.userData.token);
+      //localStorage.setItem("token", this.userData.token);
       localStorage.setItem("userData", JSON.stringify(this.userData));
       this.zone.run(() => {
         this.router.navigate(['/']);
       });
 
      /* Write Your Code Here */
+
 
     }, (error:any) => {
       alert(JSON.stringify(error, undefined, 2));

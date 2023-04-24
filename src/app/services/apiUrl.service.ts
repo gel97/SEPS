@@ -158,6 +158,12 @@ export class ApiUrl {
 
 // SOCIAL-PROFILE
 
+    // Association
+    post_association      = ()=> `/Associations`;
+    put_association       = ()=> `/Associations`;
+    get_list_associations = (menuId:any, setYear:any, munCityId:any) => `/Associations/${menuId}/${setYear}/${munCityId}`;
+    delete_association    = (transId:any) => `/Associations/${transId}`;  
+
     // Education
     get_list_education = (menuId :any, setYear  :any,munCityId :any)=>`/Education/${menuId}/${setYear}/${munCityId}`;
     get_education      = (transId:any,)=>`/Education/${transId}`;
