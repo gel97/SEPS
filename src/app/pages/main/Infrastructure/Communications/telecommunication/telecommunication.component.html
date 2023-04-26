@@ -73,15 +73,17 @@
                                 <td>{{text.location}}</td>
                                 <td>{{text.brgyName}}</td>
                                 <td>{{text.longtitude}},<br> {{text.latitude}}</td>
-                                 <app-admin>
+
                                   <td class="text-center">
+                                    <app-admin>
                                     <button type="button" title="Edit" (click)="telco = text; Add_tel=false"  class="btn btn-info btn-circle" data-toggle="modal" data-target="#Water_Utility" ><i class="fa fa-pen"></i> </button>&nbsp;
                                     <button (click)="SetMarker(text);telco=text" class="btn btn-success btn-circle" role="button" data-toggle="modal"
                                     data-target="#gmapModal">
                                     <i class="fa fa-globe"></i></button> &nbsp;
                                     <button type="button" title="Delete" (click)="Delete_Tel(text.transId)" class="btn btn-warning btn-circle" ><i class="fa fa-trash"></i>  </button>
-                                </td>
-                              </app-admin>
+                                  </app-admin>
+                                  </td>
+
                               </tr>
                             </tbody>
                         </table>
