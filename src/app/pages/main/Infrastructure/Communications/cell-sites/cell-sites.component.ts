@@ -101,6 +101,7 @@ export class CellSitesComponent implements OnInit {
     {
       this.service.Add_CellSites(this.cell).subscribe(
         {
+
           next: (request) => {
             this.GetList_CellSites();
           },

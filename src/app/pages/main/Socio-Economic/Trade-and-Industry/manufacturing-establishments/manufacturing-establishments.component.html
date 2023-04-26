@@ -137,7 +137,7 @@
       <div class="modal-content">
         <div class="modal-header modal-header-primary" >
           <h5 class="modal-title" id="exampleModalLabel">Manufacturing Establishments</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -215,7 +215,7 @@
         </div>
           <button type="button" class="btn btn-primary" (click)="AddEstablishment()" ><i class="fa fa-check"></i>Save</button>&nbsp;
           <!-- <button type ="button" class="btn btn-secondary" *ngIf="updateOfficial" (click) ="city={}"><i class="fa fa-times"></i>Cancel</button> -->
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
         </div>
       </div>
     </div>
@@ -305,9 +305,9 @@
             </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="UpdateManEstab()"  data-dismiss="modal" ><i class="fa fa-check"></i>Save</button>&nbsp;
+        <button type="button" class="btn btn-primary" (click)="UpdateManEstab()"  data-dismiss="modal" ><i class="fa fa-check"></i>Save Changes</button>&nbsp;
         <!-- <button type ="button" class="btn btn-secondary" *ngIf="updateOfficial" (click) ="city={}"><i class="fa fa-times"></i>Cancel</button> -->
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
       </div>
     </div>
   </div>

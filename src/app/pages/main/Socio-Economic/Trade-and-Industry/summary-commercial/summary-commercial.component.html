@@ -114,8 +114,8 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h5 class="modal-title" id="exampleModalLabel">Commercial Establishments Summary</h5>
+        <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -167,7 +167,7 @@
           </div>
       </div>
         <button type="button" class="btn btn-primary" (click)="Add_Com_Estab()" ><i class="fa fa-check"></i>Save</button>&nbsp;
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
 
       </div>
     </div>
@@ -223,8 +223,8 @@
         ...
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="UpdateSummary_Estab()"  data-dismiss="modal" ><i class="fa fa-check"></i>Save</button>&nbsp;
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="UpdateSummary_Estab()"  data-dismiss="modal" ><i class="fa fa-check"></i>Save Changes</button>&nbsp;
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
 
       </div>
     </div>

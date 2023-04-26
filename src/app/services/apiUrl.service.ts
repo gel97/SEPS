@@ -56,9 +56,8 @@ export class ApiUrl {
     post_get_demography     = (munCityId:any, setYear:any) => `/Demography/List?munCityId=${munCityId}&setYear=${setYear}`;
     post_save_demography    = () => `/Demography/Save`;
     post_update_demography  = () => `/Demography/Update`;
-    post_list_demography    = (munCityId:any) => `/Barangay/ListBarangays?munCityId=${munCityId}`;
     delete_demography       = (transId:any)   => `/Demography/${transId}`;
-    post_list_barangay_demo = (munCityId:any) => `/Barangay/ListBarangays?munCityId=${munCityId}`;
+     post_list_barangay_demo = (munCityId:any) => `/Barangay/ListBarangays?munCityId=${munCityId}`;
 
     //Provincial Fiscal
     post_get_provincialfiscal    = (setYear:any)=>`/ProvFiscal/List?setYear=${setYear}`;
@@ -72,7 +71,6 @@ export class ApiUrl {
     post_get_regvoter    = (munCityId:any,setYear:any) => `/RegVoters/List?munCityId=${munCityId}&setYear=${setYear}`;
     post_save_regvoter   = () => `/RegVoters/Save`;
     post_update_regvoter = () => `/RegVoters/Update`;
-    post_list_barangay_RegV = (munCityId:any) => `/Barangay/ListBarangays?munCityId=${munCityId}`;
     delete_regVoter=(transId:any)=>`/RegVoters/${transId}`;
 
 
@@ -80,7 +78,6 @@ export class ApiUrl {
     post_get_skvoter    = (munCityId:any,setYear:any) => `/RegSkVoters/List?munCityId=${munCityId}&setYear=${setYear}`;
     post_save_skvoter   = () => `/RegSkVoters/Save`;
     post_update_skvoter = () => `/RegSkVoters/Update`;
-    post_list_barangay_SKV = (munCityId:any) => `/Barangay/ListBarangays?munCityId=${munCityId}`;
     delete_skVoter=(transId:any)=>`/RegSkVoters/${transId}`;
 
 
@@ -99,7 +96,6 @@ export class ApiUrl {
     post_save_com_estab=()=>`/ComEstab`;
     put_update_com_estab=()=>`/ComEstab`;
     delete_com_estab=(transId:any)=>`/ComEstab/${transId}`;
-    post_list_barangay_com = (munCityId:any) => `/Barangay/ListBarangays?munCityId=${munCityId}`;
 
     //Summary Commercial
     get_summ_commercial=(munCityId:any, setYear:any)=>`/SumComEst/${setYear}/${munCityId}`;
@@ -130,7 +126,6 @@ export class ApiUrl {
     post_save_manuf_estab  = () => `/ManEstab`;
     put_update_manuf_estab = () => `/ManEstab`;
     delete_manuf_estab     = (transId:any) => `/ManEstab/${transId}`;
-    post_list_barangays = (munCityId:any) => `/Barangay/ListBarangays?munCityId=${munCityId}`;
 
     //TOURISM
     post_tourism     = ()=> `/Tourism`;
@@ -232,35 +227,30 @@ export class ApiUrl {
     post_services     = ()=>`/ServiceUtilities`;
     put_services      = ()=>`/ServiceUtilities`;
     delete_services   = (transId:any)=>`/ServiceUtilities/${transId}`;
-    post_list_barangay_Services = (munCityId:any) => `/Barangay/ListBarangays?munCityId=${munCityId}`;
 
     // Service_Facilities
     get_list_facilities = (menuId :any, setYear  :any,munCityId :any)=>`/ServiceFacilities/${menuId}/${setYear}/${munCityId}`;
     post_facilities     = ()=>`/ServiceFacilities`;
     put_facilities      = ()=>`/ServiceFacilities`;
     delete_facilities   = (transId:any)=>`/ServiceFacilities/${transId}`;
-    post_list_barangay_facilities = (munCityId:any) => `/Barangay/ListBarangays?munCityId=${munCityId}`;
 
     // Service_Station
     get_list_station = (menuId :any, setYear  :any,munCityId :any)=>`/ServiceStations/${menuId}/${setYear}/${munCityId}`;
     post_station    = ()=>`/ServiceStations`;
     put_station      = ()=>`/ServiceStations`;
     delete_station   = (transId:any)=>`/ServiceStations/${transId}`;
-    post_list_barangay_station = (munCityId:any) => `/Barangay/ListBarangays?munCityId=${munCityId}`;
 
     // Cell Sites
     get_list_cell = (setYear  :any,munCityId :any)=>`/ComCellSites/${setYear}/${munCityId}`;
     post_cell   = ()=>`/ComCellSites`;
     put_cell      = ()=>`/ComCellSites`;
     delete_cell   = (transId:any)=>`/ComCellSites/${transId}`;
-    post_list_barangay_cell = (munCityId:any) => `/Barangay/ListBarangays?munCityId=${munCityId}`;
 
     // Telecommunication
     get_list_telcom = (setYear  :any,munCityId :any)=>`/ComTelSystems/${setYear}/${munCityId}`;
     post_telcom   = ()=>`/ComTelSystems`;
     put_telcom      = ()=>`/ComTelSystems`;
     delete_telcom   = (transId:any)=>`/ComTelSystems/${transId}`;
-    post_list_barangay_telcom = (munCityId:any) => `/Barangay/ListBarangays?munCityId=${munCityId}`;
 
     //Communications Services
     get_list_com_telfacilities = ( setYear  :any,munCityId :any)=>`/ComTelFacilities/${setYear}/${munCityId}`;

@@ -1,5 +1,5 @@
 import { AuthService } from 'src/app/services/auth.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { DemographyService } from 'src/app/shared/Governance/demography.service';
 import Swal from 'sweetalert2';
@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./demography.component.css']
 })
 export class DemographyComponent implements OnInit {
-  DemographyService: any;
+  // DemographyService: any;
 
   constructor(private service:DemographyService, private auth:AuthService) { }
   demo:any={};
@@ -21,8 +21,13 @@ export class DemographyComponent implements OnInit {
   toValidate:any={};
   munCityName:string = this.auth.munCityName;
 
+  isLoading: boolean = true;
   isCheck: boolean = false;
   visible: boolean = true;
+  not_visible: boolean = true;
+
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void; }; };
 
   onChange(isCheck: boolean) {
     this.isCheck = isCheck;
@@ -75,6 +80,12 @@ export class DemographyComponent implements OnInit {
     this.demo.munCityId=this.auth.munCityId;
     this.demo.setYear=this.auth.activeSetYear;
     this.service.AddDemography(this.demo).subscribe(_data=>{
+      if (!this.isCheck) {
+        this.closebutton.nativeElement.click();
+      }
+      console.log(_data);
+      this.clearData();
+      this.Init();
 
       Swal.fire(
         'Good job!',
@@ -96,6 +107,12 @@ export class DemographyComponent implements OnInit {
     });
   }
   }
+  clearData() {
+    this.demo = {};
+    this.not_visible = false;
+    this.visible = true;
+    // this.required = false;
+  }
 
   editdemo(editdemo:any={}) {
     this.editmodal=editdemo;
@@ -106,6 +123,7 @@ export class DemographyComponent implements OnInit {
   //for modal
   update(){
     this.service.UpdateDemography(this.editmodal).subscribe({next:(_data)=>{
+      this.editmodal ={};
       this.Init();
     },
     });
@@ -117,7 +135,7 @@ export class DemographyComponent implements OnInit {
     showConfirmButton: false,
     timer: 1000
     });
-    this.editmodal ={};
+
     }
 
 

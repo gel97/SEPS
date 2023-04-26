@@ -29,7 +29,7 @@ export class IndustrialEstatesService {
   }
 
   ListBarangay(){
-    return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangays(this.Auth.munCityId), { responseType: 'json' });
+    return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay(this.Auth.munCityId), { responseType: 'json' });
 }
 
 }

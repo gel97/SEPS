@@ -37,7 +37,7 @@ DeleteDemography(transId:any) {
 }
 
 ListBarangay(){
-  return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay_demo(this.Auth.munCityId), { responseType: 'json' });
+  return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay(this.Auth.munCityId), { responseType: 'json' });
 }
 
 

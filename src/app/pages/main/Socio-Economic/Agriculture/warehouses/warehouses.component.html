@@ -154,11 +154,11 @@
             <i class="fas fa-times">&nbsp;</i>Close
           </button>
           <button type="button" *ngIf="visible" (click)="AddAgriculture()" id="closeModal" class="btn btn-primary">
-            <i class="fas fa-check">&nbsp;</i>ADD
+            <i class="fa fa-check">&nbsp;</i>ADD
           </button>
           <button type="button" *ngIf="not_visible" (click)="EditAgriculture()" data-toggle="modal"
             data-target="#exampleModal" aria-hidden="true" class="btn btn-primary">
-            <i class="fas fa-edit">&nbsp;</i>UPDATE
+            <i class="fas fa-check">&nbsp;</i>Save Changes
           </button>
         </div>
       </div>
@@ -181,7 +181,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" (click)="EditAgriculture()">Save changes</button>
+          <button type="button" class="btn btn-primary" (click)="EditAgriculture()"  data-dismiss="modal">Save changes</button>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { AgricultureProdService } from 'src/app/shared/Socio-Economic/Agriculture/agricultureProd.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import Swal from 'sweetalert2';
 
@@ -43,11 +43,22 @@ toValidate:any={};
 
   isCheck: boolean = false;
   visible: boolean = true;
+  not_visible: boolean = true;
 
- onChange(isCheck: boolean) {
-   this.isCheck = isCheck;
-   console.log("isCheck:", this.isCheck);
- }
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void; }; };
+
+  onChange(isCheck: boolean) {
+    this.isCheck = isCheck;
+    console.log("isCheck:", this.isCheck);
+  }
+
+  clearData() {
+    this.commo = {};
+    this.not_visible = false;
+    this.visible = true;
+    // this.required = false;
+  }
 
 
     ngOnInit(): void {
@@ -77,7 +88,12 @@ toValidate:any={};
       this.commo.setYear = this.setYear;
       this.commo.munCityId = this.munCityId;
       this.service.AddAgricultureProd(this.commo).subscribe(data=>{
-        console.log("checke_data", data);
+        if (!this.isCheck) {
+          this.closebutton.nativeElement.click();
+        }
+        console.log(data);
+        this.clearData();
+        this.List_Commodities();
         Swal.fire(
           'Good job!',
           'Data Added Successfully!',
@@ -128,6 +144,8 @@ toValidate:any={};
           }
 
           this.service.DeleteAgricultureProd(transId).subscribe(_data =>{
+            this.List_Commodities();
+
 
 
           })

@@ -1,6 +1,6 @@
 import { MajorEconomicService } from './../../../../../shared/Trade&_Industry/major-economic.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 
@@ -23,12 +23,22 @@ export class MajorEconomicActivitiesComponent implements OnInit {
 
   isCheck: boolean = false;
   visible: boolean = true;
+  not_visible: boolean = true;
 
- onChange(isCheck: boolean) {
-   this.isCheck = isCheck;
-   console.log("isCheck:", this.isCheck);
- }
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void; }; };
 
+  onChange(isCheck: boolean) {
+    this.isCheck = isCheck;
+    console.log("isCheck:", this.isCheck);
+  }
+
+  clearData() {
+    this.mjr = {};
+    this.not_visible = false;
+    this.visible = true;
+    // this.required = false;
+  }
 
 
 pageSize = 10;
@@ -80,6 +90,13 @@ onChangeSearch(e:any) {
     this.mjr.transId = this.date.transform(Date.now(),'YYMM');
     this.mjr.tag = 1;
     this.service.AddMajorEco(this.mjr).subscribe(request=>{
+      if (!this.isCheck) {
+        this.closebutton.nativeElement.click();
+      }
+      console.log(request);
+      this.clearData();
+      this.Init();
+
       console.log(request);
       Swal.fire(
         'Good job!',
@@ -101,6 +118,9 @@ onChangeSearch(e:any) {
   //for modal
   UpdateMajorAct(){
     this.service.UpdateMajorEco(this.editmodal).subscribe({next:(_data)=>{
+
+      this.Init();
+
     },
     });
 
@@ -140,8 +160,7 @@ delete(transId:any, index:any){
           this.service.DeleteMajorEco(transId).subscribe(_data =>{
 
            // this.MajorAct.splice(index,1);
-
-            // this.Init();
+            this.Init();
             // this.mjr = {};
 
           })
