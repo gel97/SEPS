@@ -20,6 +20,16 @@ Voter:any=[];
 voter:any={};
 editmodal:any={};
 
+
+isCheck: boolean = false;
+visible: boolean = true;
+
+onChange(isCheck: boolean) {
+  this.isCheck = isCheck;
+  console.log("isCheck:", this.isCheck);
+}
+
+
 date = new DatePipe('en-PH')
 ngOnInit(): void {
 this.Init();
@@ -43,16 +53,14 @@ this.list_of_barangay();
   }
 
  addVoter() {
-  this.toValidate.brgyId = this.voter.brgyId == "" || this.voter.brgyd == null ? true : false;
+  // console.log(this.voter);
+  this.toValidate.brgyId = this.voter.brgyId == "" || this.voter.brgyId == null ? true : false;
   this.toValidate.votingCntrNo = this.voter.votingCntrNo== "" || this.voter.votingCntrNo == undefined ? true : false;
-  this.toValidate.regVoterNo = this.voter.regVoterNo == "" || this.voter.regVoterNo == undefined ? true : false;
-  this.toValidate.estabNo = this.voter.estabNo == "" || this.voter.estabNo == undefined ? true : false;
-  this.toValidate.clusterNo = this.voter.clusterNo == "" || this.voter.clusterNo == undefined ? true : false;
+  this.toValidate.estabNo = this.voter.estabNo == "" || this.voter.estabNo== undefined ? true : false;
 
 
 
-
-  if (this.toValidate.brgyId  == true || this.toValidate.votingCntrNo == true || this.toValidate.regVoterNo ==true || this.toValidate.estabNo == true || this.toValidate.clusterNo==true) {
+  if (this.toValidate.brgyId  == true || this.toValidate.votingCntrNo == true || this.toValidate.estabNo ==true ) {
     Swal.fire(
       '',
       'Please fill out the required fields',
@@ -83,6 +91,7 @@ this.list_of_barangay();
   });
 }
  }
+
 
 editdemo(editdemo:any={}) {
   this.editmodal=editdemo;

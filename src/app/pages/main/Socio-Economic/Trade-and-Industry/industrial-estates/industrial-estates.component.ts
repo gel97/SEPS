@@ -27,6 +27,15 @@ toValidate:any={};
  editmodal:any={};
  barangays:any={};
 
+ isCheck: boolean = false;
+ visible: boolean = true;
+
+onChange(isCheck: boolean) {
+  this.isCheck = isCheck;
+  console.log("isCheck:", this.isCheck);
+}
+
+
  // Pagination
   pageSize = 25;
   p: string|number|undefined;

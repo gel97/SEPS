@@ -26,6 +26,7 @@ export class ResortsComponent implements OnInit {
   }
 
   munCityName: string = this.Auth.munCityName;
+  toValidate:any={};
   menuId = "1";
   dataList: any = [];
   setYear = this.Auth.activeSetYear;
@@ -96,6 +97,16 @@ export class ResortsComponent implements OnInit {
   }
 
   AddTourism() {
+    this.toValidate.brgyId = this.addData.brgyId == "" || this.addData.brgyId == null ? true : false;
+    this.toValidate.name = this.addData.name== "" || this.addData.name == undefined ? true : false;
+
+    if (this.toValidate.brgyId  == true || this.toValidate.name == true) {
+      Swal.fire(
+        '',
+        'Please fill out the required fields',
+        'warning'
+      );
+    } else {
     console.log("trap", this.addData);
     console.log("brgyid", this.addData.brgyId);
     this.dummy_addData = this.addData;
@@ -139,6 +150,7 @@ export class ResortsComponent implements OnInit {
 
       })
     }
+  }
   }
 
   EditTourism() {

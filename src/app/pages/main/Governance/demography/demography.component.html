@@ -25,6 +25,7 @@
                                     <p>List of Demography:</p>
                                 </div>
                                 </div>
+                                <div class="table-responsive">
                               <table class="table table-light table-striped">
                               <thead class="table-dark">
                                 <tr>
@@ -67,6 +68,8 @@
                                 </tr>
                                 </tbody>
                               </table>
+                             </div>
+
                               </div>
                               </div>
                               </div>
@@ -125,6 +128,17 @@
             <input type="text" class="form-control" id="" name = ""[(ngModel)]="demo.popGrowthRate"  placeholder="">
           </div>
           <div class="modal-footer">
+
+            <div class="left-absolute" *ngIf="visible">
+              <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                      (ngModelChange)="onChange(isCheck)" [(ngModel)]="isCheck">
+                  <label class="form-check-label" for="flexCheckDefault">
+                      Several data
+                  </label>
+              </div>
+          </div>
+
             <button type="button" class="btn btn-primary"  (click)="AddDemo()"><i class="fa fa-check"></i>Save</button>&nbsp;
             <button type ="button" class="btn btn-secondary" (click) ="demo={}"><i class="fa fa-times"></i>Cancel</button>
           </div>

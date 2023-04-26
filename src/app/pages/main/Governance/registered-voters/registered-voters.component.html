@@ -26,6 +26,7 @@
                 <p>Number of Precincts and Registered Voters</p>
               </div>
             </div>
+            <div class="table-responsive">
             <table class="table table-light table-striped">
               <thead class="table-dark">
                 <tr>
@@ -63,6 +64,7 @@
               </tbody>
             </table>
           </div>
+          </div>
         </div>
       </div>
     </div>
@@ -90,10 +92,10 @@
             </select>
           </div>
 
-          <div class="col-lg-12"><br>
+          <!-- <div class="col-lg-12"><br>
             <label for="exampleFormControlTextarea1">No. of Puroks:</label>
             <input type="text" class="form-control" id="" name="" [(ngModel)]="voter.purokNo" placeholder="">
-          </div>
+          </div> -->
 
           <div class="col-lg-12"><br>
             <label for="exampleFormControlTextarea1">No. of Established Precincts:</label>
@@ -112,6 +114,15 @@
             <input type="text" class="form-control" name="" id="" [(ngModel)]="voter.regVoterNo" placeholder="" [ngClass]="toValidate.regVoterNo?'is-invalid':''" (keyup)="toValidate.regVoterNo=false">
 
             <div class="modal-footer">
+              <div class="left-absolute" *ngIf="visible">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                        (ngModelChange)="onChange(isCheck)" [(ngModel)]="isCheck">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        Several data
+                    </label>
+                </div>
+            </div>
               <button type="button" class="btn btn-primary" (click)=" addVoter()"><i
                   class="fa fa-check"></i>Save</button>&nbsp;
               <button type="button" class="btn btn-secondary" (click)="voter={}"><i
@@ -145,10 +156,10 @@
               <option *ngFor="let item  of barangays" value={{item.brgyId}}>{{item.brgyName}}</option>
             </select>
           </div>
-          <div class="col-lg-12"><br>
+          <!-- <div class="col-lg-12"><br>
             <label for="exampleFormControlTextarea1">No. of Puroks:</label>
             <input type="text" class="form-control" id="" name="" [(ngModel)]="editmodal.purokNo" placeholder="">
-          </div>
+          </div> -->
 
           <div class="col-lg-12"><br>
             <label for="exampleFormControlTextarea1">No. of Established Precincts:</label>

@@ -14,6 +14,20 @@ export class ProvincialCropsHarvestedComponent implements OnInit {
 
   Commodities:any=[];
   commo:any={};
+  toValidate:any={};
+  isCheck: boolean = false;
+  visible: boolean = true;
+  add_Crops_Total:boolean = true;
+  munCityName:string = this.auth.munCityName;
+  setYear = this.auth.activeSetYear;
+  munCityId = this.auth.munCityId;
+  menuId = "9";
+
+onChange(isCheck: boolean) {
+  this.isCheck = isCheck;
+  console.log("isCheck:", this.isCheck);
+}
+
 
     list_of_Commodities =[{ id: 1, name: "Rice - Irrigated" },
                        { id: 2, name: "Rice - Rain Fed" },
@@ -29,13 +43,6 @@ export class ProvincialCropsHarvestedComponent implements OnInit {
                        { id: 12, name: "Root Crops" },
                        { id: 13, name: "Others: Rubber, Oil Palm" },];
 
-    add_Crops_Total:boolean = true;
-
-
-    munCityName:string = this.auth.munCityName;
-    setYear = this.auth.activeSetYear;
-    munCityId = this.auth.munCityId;
-    menuId = "9";
 
 
       ngOnInit(): void {
@@ -50,6 +57,17 @@ export class ProvincialCropsHarvestedComponent implements OnInit {
       }
 
       Add_Commodities(){
+        this.toValidate.commodities = this.commo.commodities == "" || this.commo.commodities == null ? true : false;
+        this.toValidate.totalProd = this.commo.totalProd== "" || this.commo.totalProd == undefined ? true : false;
+        this.toValidate.area = this.commo.area == "" || this.commo.area == undefined ? true : false;
+
+        if (this.toValidate.commodities  == true || this.toValidate.totalProd == true || this.toValidate.area == true) {
+          Swal.fire(
+            '',
+            'Please fill out the required fields',
+            'warning'
+          );
+        } else {
         this.commo.menuId = this. menuId;
         this.commo.setYear = this.setYear;
         this.commo.munCityId = this.munCityId;
@@ -61,8 +79,10 @@ export class ProvincialCropsHarvestedComponent implements OnInit {
             'success'
           );
           this.List_Commodities();
+          this.commo ={};
           });
       }
+    }
 
     Edit_Commodities(){
         this.service.EditAgricultureProd(this.commo).subscribe({next:(_data)=>{
@@ -78,7 +98,7 @@ export class ProvincialCropsHarvestedComponent implements OnInit {
         showConfirmButton: false,
         timer: 1000
         });
-        this.commo();
+        this.commo={};
       }
 
       delete(transId:any, index:any){

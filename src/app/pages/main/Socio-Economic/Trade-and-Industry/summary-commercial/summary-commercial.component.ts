@@ -70,6 +70,14 @@ count: number =1;
 tableSize:number = 20;
 tableSizes:any =[20,40,60,80,100];
 
+isCheck: boolean = false;
+visible: boolean = true;
+
+onChange(isCheck: boolean) {
+ this.isCheck = isCheck;
+ console.log("isCheck:", this.isCheck);
+}
+
 date = new DatePipe('en-PH')
 ngOnInit(): void {
 

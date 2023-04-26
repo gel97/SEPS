@@ -26,6 +26,7 @@ export class NaturalsAttractionsComponent implements OnInit {
   }
 
   munCityName: string = this.Auth.munCityName;
+  toValidate:any={};
   menuId = "5";
   dataList: any = [];
   setYear = this.Auth.activeSetYear;
@@ -96,6 +97,16 @@ export class NaturalsAttractionsComponent implements OnInit {
   }
 
   AddTourism() {
+    this.toValidate.brgyId = this.addData.brgyId == "" || this.addData.brgyId == null ? true : false;
+    this.toValidate.name = this.addData.name== "" || this.addData.name == undefined ? true : false;
+
+    if (this.toValidate.brgyId  == true || this.toValidate.name == true) {
+      Swal.fire(
+        '',
+        'Please fill out the required fields',
+        'warning'
+      );
+    } else {
     console.log("trap", this.addData);
     console.log("brgyid", this.addData.brgyId);
     this.dummy_addData = this.addData;
@@ -121,13 +132,11 @@ export class NaturalsAttractionsComponent implements OnInit {
         console.log("add", request);
         this.clearData();
         this.GetListTourism();
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'Your work has been saved',
-          showConfirmButton: false,
-          timer: 1500
-        })
+        Swal.fire(
+          'Good job!',
+          'Data Added Successfully!',
+          'success'
+        );
       })
     }
     else {
@@ -140,6 +149,7 @@ export class NaturalsAttractionsComponent implements OnInit {
       })
     }
   }
+}
 
   EditTourism() {
     Swal.fire({

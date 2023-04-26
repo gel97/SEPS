@@ -21,6 +21,15 @@ export class MajorEconomicActivitiesComponent implements OnInit {
   editmodal:any={};
   searchText: string= "";
 
+  isCheck: boolean = false;
+  visible: boolean = true;
+
+ onChange(isCheck: boolean) {
+   this.isCheck = isCheck;
+   console.log("isCheck:", this.isCheck);
+ }
+
+
 
 pageSize = 10;
 p: string|number|undefined;

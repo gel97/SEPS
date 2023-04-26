@@ -6,27 +6,31 @@
       <div class="row">
         <div class="col-lg-12">
           <div class="p-5">
-            <div class="">
-              <button class="btn btn-outline-primary btn-circle float-right" type="button" data-toggle="collapse"
-                data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
-                <i class="fa fa-minus" aria-hidden="true"></i>
-              </button>
-            </div>
+
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-4"> Ricemills</h1>
+              <label><strong>Agriculture - Municipality of {{munCityName}} </strong></label><br>
+
             </div>
-            <form class="user collapse show" id="collapseExample">
-              <button type="button" (click)="clearData()" class="btn btn-labeled btn-success" data-toggle="modal"
+              <div class="form-inline float-right ">
+            <app-admin>
+            <form class="">
+              <button type="button" (click)="clearData()" class="btn btn-labeled btn-primary" data-toggle="modal"
                 data-target="#exampleModal">
-                <span class="btn-label"><i class="fa fa-check"></i></span>Add</button>
+                <span class="btn-label"><i class="fa fa-plus"></i></span>Ricemills</button>
             </form>
+           </app-admin>
+
+        </div>
+            <br>
             <br>
             <div class="row">
               <div class="col-lg-6">
                 <p>List of Ricemills</p>
               </div>
+              <div class="table-responsive">
               <table class="table table-light table-striped">
-                <thead>
+                <thead class="table-dark">
                   <tr>
                     <th scope="col">#</th>
                     <th scope="col">Name of Ricemill</th>
@@ -38,7 +42,7 @@
                     <th scope="col">Location</th>
                     <th scope="col">Barangay</th>
                     <th scope="col">Geo-Coord.(Long,Lat)</th>
-                    <th width="11.4%"></th>
+                    <th width="10%"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -56,16 +60,16 @@
                     <td>{{dataItem.contactNo}}</td>
                     <td>{{dataItem.location}}</td>
                     <td>{{dataItem.brgyName}}</td>
-                    <td>{{dataItem.longtitude}}, {{dataItem.latitude}}</td>
+                    <td>{{dataItem.longtitude}},<br> {{dataItem.latitude}}</td>
                     <td>
                       <app-admin>
                         <button (click)="addData = dataItem" data-toggle="modal" (click)="editToggle()"
-                          data-target="#exampleModal" class="btn btn-primary">
-                          <i class="fas fa-edit"></i></button>&nbsp;
+                          data-target="#exampleModal" class="btn btn-info btn-circle">
+                          <i class="fas fa-pen"></i></button>&nbsp;
                         <button (click)="SetMarker(dataItem); addData = dataItem" data-toggle="modal"
-                          data-target="#gmapModal" class="btn btn-success">
+                          data-target="#gmapModal" class="btn btn-success btn-circle">
                           <i class="fas fa-globe"></i></button>&nbsp;
-                        <button class="btn btn-danger" (click)="DeleteAgriculture(dataItem)">
+                        <button class="btn btn-warning btn-circle" (click)="DeleteAgriculture(dataItem)">
                           <i class="fas fa-trash"></i>
                         </button>
                       </app-admin>
@@ -73,6 +77,7 @@
                   </tr>
                 </tbody>
               </table>
+            </div>
             </div>
           </div>
         </div>
@@ -93,11 +98,15 @@
         <div class="modal-body">
           <div class="form-group">
             <div class="row">
-              <div class="col-lg-6">
+              <div class="col-lg-8">
+                <label for="exampleFormControlInput1">Name of Ricemill :</label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.name" [ngClass]="toValidate.name?'is-invalid':''" (keyup)="toValidate.name=false">
+              </div>
+              <div class="col-lg-4">
                 <label for="category">Barangay :</label>
-                <label *ngIf="required" style="color: red;" for="category">&nbsp;&nbsp;<i
-                    class="fas fa-asterisk"></i>Required</label>
-                <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.brgyId">
+                <!-- <label *ngIf="required" style="color: red;" for="category">&nbsp;&nbsp;<i
+                    class="fas fa-asterisk"></i>Required</label> -->
+                <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.brgyId" [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false">
                   <option *ngFor="let item of barangayList" [value]="item.brgyId">
                     {{ item.brgyName }}
                   </option>
@@ -105,15 +114,9 @@
               </div>
             </div><br>
             <div class="row">
-              <div class="col-lg-12">
-                <label for="exampleFormControlInput1">Name of Ricemill :</label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.name">
-              </div>
-            </div><br>
-            <div class="row">
               <div class="col-lg-4">
                 <label for="exampleFormControlInput1">Type of Ricemill :</label>
-                <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.type">
+                <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.type" [ngClass]="toValidate.type?'is-invalid':''" (ngModelChange)="toValidate.type=false">
                   <option selected>Select Category</option>
                   <option value="1">One</option>
                   <option value="2">Two</option>
@@ -122,11 +125,11 @@
               </div>
               <div class="col-lg-4">
                 <label for="exampleFormControlInput1">Capacity (M/T) :</label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.capacity">
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.capacity" [ngClass]="toValidate.capacity?'is-invalid':''" (keyup)="toValidate.capacity=false">
               </div>
               <div class="col-lg-4">
                 <label>Area (Sq/m) : </label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.area">
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.area" [ngClass]="toValidate.area?'is-invalid':''" (keyup)="toValidate.area=false">
               </div>
             </div><br>
             <div class="row">
@@ -155,12 +158,12 @@
               </label>
             </div>
           </div>
+          <button type="button" *ngIf="visible" (click)="AddAgriculture()" id="closeModal" class="btn btn-primary">
+            <i class="fas fa-check">&nbsp;</i>Save
+          </button>
           <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal"
             aria-hidden="true">
             <i class="fas fa-times">&nbsp;</i>Close
-          </button>
-          <button type="button" *ngIf="visible" (click)="AddAgriculture()" id="closeModal" class="btn btn-success">
-            <i class="fas fa-plane-departure">&nbsp;</i>ADD
           </button>
           <button type="button" *ngIf="not_visible" (click)="EditAgriculture()" data-toggle="modal"
             data-target="#exampleModal" aria-hidden="true" class="btn btn-primary">

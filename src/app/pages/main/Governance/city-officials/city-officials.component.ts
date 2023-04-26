@@ -30,6 +30,15 @@ export class CityOfficialsComponent implements OnInit {
   tableSize: number = 5;
   tableSizes: any = [5, 10, 15, 25, 50, 100];
 
+  isCheck: boolean = false;
+  visible: boolean = true;
+
+  onChange(isCheck: boolean) {
+    this.isCheck = isCheck;
+    console.log("isCheck:", this.isCheck);
+  }
+
+
   date = new DatePipe('en-PH')
   ngOnInit(): void {
     this.Init();

@@ -13,6 +13,7 @@ export class ProvincialCropsTotalProductionComponent implements OnInit {
   constructor(private service:AgricultureProdService, private auth:AuthService) { }
 Commodities:any=[];
 commo:any={};
+toValidate:any={};
 
   list_of_Commodities =[{ id: 1, name: "Rice - Irrigated" },
                      { id: 2, name: "Rice - Rain Fed" },
@@ -40,6 +41,14 @@ commo:any={};
   munCityId = this.auth.munCityId;
   menuId = "10";
 
+  isCheck: boolean = false;
+  visible: boolean = true;
+
+ onChange(isCheck: boolean) {
+   this.isCheck = isCheck;
+   console.log("isCheck:", this.isCheck);
+ }
+
 
     ngOnInit(): void {
       this.List_Commodities();
@@ -53,6 +62,17 @@ commo:any={};
     }
 
     Add_Commodities(){
+      this.toValidate.commodities = this.commo.commodities == "" || this.commo.commodities == null ? true : false;
+      this.toValidate.totalProd = this.commo.totalProd== "" || this.commo.totalProd == undefined ? true : false;
+      this.toValidate.area = this.commo.area == "" || this.commo.area == undefined ? true : false;
+
+      if (this.toValidate.commodities  == true || this.toValidate.totalProd == true || this.toValidate.area == true) {
+        Swal.fire(
+          '',
+          'Please fill out the required fields',
+          'warning'
+        );
+      } else {
       this.commo.menuId = this. menuId;
       this.commo.setYear = this.setYear;
       this.commo.munCityId = this.munCityId;
@@ -64,8 +84,10 @@ commo:any={};
           'success'
         );
         this.List_Commodities();
+        this.commo = {};
         });
     }
+  }
 
   Edit_Commodities(){
       this.service.EditAgricultureProd(this.commo).subscribe({next:(_data)=>{
@@ -81,7 +103,7 @@ commo:any={};
       showConfirmButton: false,
       timer: 1000
       });
-      this.commo();
+      this.commo = {};
     }
 
     delete(transId:any, index:any){

@@ -26,7 +26,7 @@ export class RiceCropsProductionComponent implements OnInit {
   munCityName:string = this.Auth.munCityName;
 
   menuId = "2";
-  
+  toValidate:any={};
   dataList:any = [];
   addData:any = {};
   barangayList:any = [];
@@ -53,7 +53,7 @@ export class RiceCropsProductionComponent implements OnInit {
 
   SetMarker(data: any = {} ) {
     console.log("lnglat: ", data.longtitude + " , " + data.latitude)
-   
+
 
     if(data.longtitude == undefined && data.latitude == undefined){
       data.longtitude = this.longtitude;
@@ -80,7 +80,7 @@ export class RiceCropsProductionComponent implements OnInit {
   GetListAgriculture(){
     this.Service.GetListAgriculture(this.menuId, this.setYear, this.munCityId).subscribe(response=>{
       this.dataList = (<any>response);
-      console.log("check", response); 
+      console.log("check", response);
     })
   }
 
@@ -97,13 +97,30 @@ export class RiceCropsProductionComponent implements OnInit {
   }
 
   AddAgriculture(){
+    this.toValidate.brgyId = this.addData.brgyId == "" || this.addData.brgyId == null ? true : false;
+    this.toValidate.type = this.addData.type== "" || this.addData.type == undefined ? true : false;
+    this.toValidate.source = this.addData.source == "" || this.addData.source == undefined ? true : false;
+    this.toValidate.ownershipType = this.addData.ownershipType == "" || this.addData.ownershipType == null ? true : false;
+    this.toValidate.totalProd = this.addData.totalProd== "" || this.addData.totalProd == undefined ? true : false;
+    this.toValidate.area = this.addData.area == "" || this.addData.area == undefined ? true : false;
+    this.toValidate.name = this.addData.name == "" || this.addData.name == undefined ? true : false;
+
+
+    if (this.toValidate.brgyId  == true || this.toValidate.type == true || this.toValidate.source == true||
+      this.toValidate.ownershipType  == true || this.toValidate.totalProd == true || this.toValidate.area == true || this.toValidate.area == true)  {
+      Swal.fire(
+        '',
+        'Please fill out the required fields',
+        'warning'
+      );
+    } else {
 
     this.dummy_addData = this.addData;
     if(JSON.stringify(this.dummy_addData) != JSON.stringify(this.dummyData) && this.addData.brgyId != undefined){
 
       this.addData.setYear = this.setYear;
       this.addData.munCityId = this.munCityId;
-      this.addData.menuId = this.menuId; 
+      this.addData.menuId = this.menuId;
 
       const result = this.findBrgyId(this.addData.brgyId);
       this.longtitude = result.longitude;
@@ -121,16 +138,15 @@ export class RiceCropsProductionComponent implements OnInit {
 
         console.log("add", request);
         this.GetListAgriculture();
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'Your work has been saved',
-          showConfirmButton: false,
-          timer: 1500
-        })
+        Swal.fire(
+          'Good job!',
+          'Data Added Successfully!',
+          'success'
+        );
       })
 
     }
+
 
     else{
       this.required = true;
@@ -138,10 +154,11 @@ export class RiceCropsProductionComponent implements OnInit {
         icon: 'warning',
         title: 'Oops...',
         text: 'Missing data!',
-       
+
       })
     }
   }
+}
 
   clearData(){
     this.addData = {};
@@ -172,14 +189,14 @@ export class RiceCropsProductionComponent implements OnInit {
 
         this.addData.setYear = this.setYear;
         this.addData.munCityId = this.munCityId;
-        this.addData.menuId = this.menuId;  
+        this.addData.menuId = this.menuId;
         this.addData.tag =1;
         console.log("edit", this.addData);
         this.Service.EditAgriculture(this.addData).subscribe(request =>{
           console.log("edit", request);
           this.GetListAgriculture();
 
-     
+
         })
         Swal.fire('Saved!', '', 'success')
       } else if (result.isDenied) {

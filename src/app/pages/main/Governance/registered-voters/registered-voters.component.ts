@@ -21,6 +21,15 @@ export class RegisteredVotersComponent implements OnInit {
   voter: any = {};
   editmodal: any = {};
 
+  isCheck: boolean = false;
+  visible: boolean = true;
+
+  onChange(isCheck: boolean) {
+    this.isCheck = isCheck;
+    console.log("isCheck:", this.isCheck);
+  }
+
+
   date = new DatePipe('en-PH')
   ngOnInit(): void {
     this.Init();
@@ -43,7 +52,7 @@ export class RegisteredVotersComponent implements OnInit {
   }
 
   addVoter() {
-    this.toValidate.brgyId = this.voter.brgyId == "" || this.voter.brgyd == null ? true : false;
+    this.toValidate.brgyId = this.voter.brgyId == "" || this.voter.brgyId == null ? true : false;
     this.toValidate.votingCntrNo = this.voter.votingCntrNo== "" || this.voter.votingCntrNo == undefined ? true : false;
     this.toValidate.regVoterNo = this.voter.regVoterNo == "" || this.voter.regVoterNo == undefined ? true : false;
     this.toValidate.estabNo = this.voter.estabNo == "" || this.voter.estabNo == undefined ? true : false;

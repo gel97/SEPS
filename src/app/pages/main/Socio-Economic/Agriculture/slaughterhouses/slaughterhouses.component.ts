@@ -26,7 +26,7 @@ export class SlaughterhousesComponent implements OnInit {
   munCityName: string = this.Auth.munCityName;
 
   menuId = "7";
-
+  toValidate:any={};
   dataList: any = [];
   addData: any = {};
   barangayList: any = [];
@@ -95,6 +95,21 @@ export class SlaughterhousesComponent implements OnInit {
   }
 
   AddAgriculture() {
+    this.toValidate.brgyId = this.addData.brgyId == "" || this.addData.brgyId == null ? true : false;
+    this.toValidate.type = this.addData.type== "" || this.addData.type == undefined ? true : false;
+    this.toValidate.source = this.addData.source == "" || this.addData.source == undefined ? true : false;
+    this.toValidate.ownershipType = this.addData.ownershipType == "" || this.addData.ownershipType == null ? true : false;
+    this.toValidate.capacity= this.addData.capacity== "" || this.addData.capacity == undefined ? true : false;
+    this.toValidate.area = this.addData.area == "" || this.addData.area == undefined ? true : false;
+    this.toValidate.name = this.addData.name == "" || this.addData.name == undefined ? true : false;
+    if (this.toValidate.brgyId  == true || this.toValidate.type == true || this.toValidate.source == true||
+      this.toValidate.ownershipType  == true || this.toValidate.capacity == true || this.toValidate.area == true || this.toValidate.name == true)  {
+      Swal.fire(
+        '',
+        'Please fill out the required fields',
+        'warning'
+      );
+    } else {
 
     this.dummy_addData = this.addData;
     if (JSON.stringify(this.dummy_addData) != JSON.stringify(this.dummyData) && this.addData.brgyId != undefined) {
@@ -140,6 +155,7 @@ export class SlaughterhousesComponent implements OnInit {
       })
     }
   }
+}
 
   clearData() {
     this.addData = {};
