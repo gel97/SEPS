@@ -37,6 +37,17 @@ export class FiscalReportComponent implements OnInit {
   tableSizes2:any =[5,15,25,50,100];
 
 
+  isCheck: boolean = false;
+  visible: boolean = true;
+
+  onChange(isCheck: boolean) {
+    this.isCheck = isCheck;
+    console.log("isCheck:", this.isCheck);
+  }
+
+
+
+
   date = new DatePipe('en-PH')
   ngOnInit(): void {
   this.Init(

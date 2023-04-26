@@ -21,6 +21,15 @@ export class RegisteredVotersComponent implements OnInit {
   voter: any = {};
   editmodal: any = {};
 
+  isCheck: boolean = false;
+  visible: boolean = true;
+
+  onChange(isCheck: boolean) {
+    this.isCheck = isCheck;
+    console.log("isCheck:", this.isCheck);
+  }
+
+
   date = new DatePipe('en-PH')
   ngOnInit(): void {
     this.Init();

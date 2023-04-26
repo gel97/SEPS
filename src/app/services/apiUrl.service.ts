@@ -225,4 +225,39 @@ export class ApiUrl {
     put_safety_tanod      = ()=>`/SafetyTanod`;
     delete_safety_tanod   = (transId:any)=>`/SafetyTanod/${transId}`;
 
+    // Utility - SERVICES
+    get_list_services = (menuId :any, setYear  :any,munCityId :any)=>`/ServiceUtilities/${menuId}/${setYear}/${munCityId}`;
+    post_services     = ()=>`/ServiceUtilities`;
+    put_services      = ()=>`/ServiceUtilities`;
+    delete_services   = (transId:any)=>`/ServiceUtilities/${transId}`;
+    post_list_barangay_Services = (munCityId:any) => `/Barangay/ListBarangays?munCityId=${munCityId}`;
+
+    // Service_Facilities
+    get_list_facilities = (menuId :any, setYear  :any,munCityId :any)=>`/ServiceFacilities/${menuId}/${setYear}/${munCityId}`;
+    post_facilities     = ()=>`/ServiceFacilities`;
+    put_facilities      = ()=>`/ServiceFacilities`;
+    delete_facilities   = (transId:any)=>`/ServiceFacilities/${transId}`;
+    post_list_barangay_facilities = (munCityId:any) => `/Barangay/ListBarangays?munCityId=${munCityId}`;
+
+    // Service_Station
+    get_list_station = (menuId :any, setYear  :any,munCityId :any)=>`/ServiceStations/${menuId}/${setYear}/${munCityId}`;
+    post_station    = ()=>`/ServiceStations`;
+    put_station      = ()=>`/ServiceStations`;
+    delete_station   = (transId:any)=>`/ServiceStations/${transId}`;
+    post_list_barangay_station = (munCityId:any) => `/Barangay/ListBarangays?munCityId=${munCityId}`;
+
+    // Cell Sites
+    get_list_cell = (setYear  :any,munCityId :any)=>`/ComCellSites/${setYear}/${munCityId}`;
+    post_cell   = ()=>`/ComCellSites`;
+    put_cell      = ()=>`/ComCellSites`;
+    delete_cell   = (transId:any)=>`/ComCellSites/${transId}`;
+    post_list_barangay_cell = (munCityId:any) => `/Barangay/ListBarangays?munCityId=${munCityId}`;
+
+    // Telecommunication
+    get_list_telcom = (setYear  :any,munCityId :any)=>`/ComTelSystems/${setYear}/${munCityId}`;
+    post_telcom   = ()=>`/ComTelSystems`;
+    put_telcom      = ()=>`/ComTelSystems`;
+    delete_telcom   = (transId:any)=>`/ComTelSystems/${transId}`;
+    post_list_barangay_telcom = (munCityId:any) => `/Barangay/ListBarangays?munCityId=${munCityId}`;
+
 }

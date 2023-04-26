@@ -14,19 +14,18 @@
                         </div>
                         <div class="text-center">
                             <h1 class="h4 text-gray-900 mb-4">Resorts</h1>
+                            <label><strong>Tourism - Municipality of {{munCityName}} </strong></label><br>
+
                         </div>
-
-                        <form class="user collapse show" id="collapseExample">
-
+                        <div class ="form-inline float-right ">
                             <app-admin>
-                                <button type="button" (click)="clearData()" class="btn btn-labeled btn-success"
+                                <button type="button" (click)="clearData()" class="btn btn-labeled btn-primary"
                                     data-toggle="modal" data-target="#exampleModal">
-                                    <span class="btn-label"><i class="fa fa-check"></i></span>Add
+                                    <span class="btn-label"><i class="fa fa-plus"></i></span>Resorts
                                 </button>
-                            </app-admin>
-
-                        </form>
-                        <br />
+                              </app-admin>
+                              </div><br>
+                        <br>
                         <div class="row">
                             <div class="col-lg-6">
                                 <p>List of Resorts</p>
@@ -34,7 +33,7 @@
                             <div class="col-lg-6"></div>
                         </div>
                         <table class="table table-light table-striped">
-                            <thead>
+                            <thead class="table-dark">
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Name of Resort</th>
@@ -44,7 +43,7 @@
                                     <th scope="col">Location</th>
                                     <th scope="col">Barangay</th>
                                     <th scope="col">Geo-Coord.(Long,Lat)</th>
-                                    <th [width]="150"></th>
+                                    <th width="8%"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -56,26 +55,26 @@
                                     <td>{{ dataItem.contactNo }}</td>
                                     <td>{{ dataItem.location }}</td>
                                     <td>{{ dataItem.brgyName }}</td>
-                                    <td>{{ dataItem.longtitude }}, {{ dataItem.latitude }}</td>
+                                    <td>{{ dataItem.longtitude }},<br> {{ dataItem.latitude }}</td>
                                     <td>
                                         <div class="d-inline-flex">
                                             <app-admin>
                                                 <button (click)="addData = dataItem" data-toggle="modal"
                                                     (click)="editToggle()" data-target="#exampleModal"
-                                                    class="btn btn-primary">
-                                                    <i class="fas fa-edit"></i>
-                                                </button>        
+                                                    class="btn btn-info btn-circle">
+                                                    <i class="fas fa-pen"></i>
+                                                </button>
                                             </app-admin>&nbsp;
                                             <button (click)="SetMarker(dataItem); addData = dataItem"
-                                                data-toggle="modal" data-target="#gmapModal" class="btn btn-success">
+                                                data-toggle="modal" data-target="#gmapModal" class="btn btn-success btn-circle">
                                                 <i class="fas fa-globe"></i>
                                             </button>&nbsp;
                                             <app-admin>
-                                                <button class="btn btn-danger" (click)="DeleteTourism(dataItem)">
+                                                <button class="btn btn-warning btn-circle" (click)="DeleteTourism(dataItem)">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </app-admin>
-                                        </div>                  
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -100,11 +99,16 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-lg-6">
+                  <div class="col-lg-8">
+                    <label for="exampleFormControlInput1">Name of Resort :</label>
+                    <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.name"
+                        [(ngModel)]="dummy_addData.name" [ngClass]="toValidate.name?'is-invalid':''" (keyup)="toValidate.name=false" />
+                </div>
+                    <div class="col-lg-4">
                         <label for="category">Barangay :</label>
-                        <label *ngIf="required" style="color: red;" for="category">&nbsp;&nbsp;<i
-                                class="fas fa-asterisk"></i>Required</label>
-                        <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.brgyId">
+                        <!-- <label *ngIf="required" style="color: red;" for="category">&nbsp;&nbsp;<i
+                                class="fas fa-asterisk"></i>Required</label> -->
+                        <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.brgyId" [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false">
                             <option *ngFor="let item of barangayList" [value]="item.brgyId">
                                 {{ item.brgyName }}
                             </option>
@@ -113,16 +117,12 @@
                 </div><br>
                 <div class="form-group">
                     <div class="">
-                        <div class="">
-                            <label for="exampleFormControlInput1">Name of Resort :</label>
-                            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.name"
-                                [(ngModel)]="dummy_addData.name" />
-                        </div>
+
                         <br />
                         <div class="">
                             <label for="exampleFormControlTextarea1">Brief Description/ Amenities :</label>
                             <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"
-                                [(ngModel)]="addData.description"></textarea>
+                                [(ngModel)]="addData.description" ></textarea>
                         </div>
                     </div>
                 </div>
@@ -153,12 +153,12 @@
                         </label>
                     </div>
                 </div>
+                <button type="button" *ngIf="visible" (click)="AddTourism()" id="closeModal" class="btn btn-primary">
+                  <i class="fas fa-check">&nbsp;</i>Save
+              </button>
                 <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal"
                     aria-hidden="true">
                     <i class="fas fa-times">&nbsp;</i>Close
-                </button>
-                <button type="button" *ngIf="visible" (click)="AddTourism()" id="closeModal" class="btn btn-success">
-                    <i class="fas fa-plane-departure">&nbsp;</i>ADD
                 </button>
                 <button type="button" *ngIf="not_visible" (click)="EditTourism()" data-toggle="modal"
                     data-target="#exampleModal" aria-hidden="true" class="btn btn-primary">

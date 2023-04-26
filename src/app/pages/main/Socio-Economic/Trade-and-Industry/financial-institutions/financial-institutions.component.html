@@ -97,7 +97,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Financial Institutions</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -167,6 +167,15 @@
 
       </div>
       <div class="modal-footer">
+        <div class="left-absolute" *ngIf="visible">
+          <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                  (ngModelChange)="onChange(isCheck)" [(ngModel)]="isCheck">
+              <label class="form-check-label" for="flexCheckDefault">
+                  Several data
+              </label>
+          </div>
+      </div>
         <button type="button" class="btn btn-primary" (click)="Add_Financial()"  ><i class="fa fa-check"></i>Save</button>&nbsp;
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 

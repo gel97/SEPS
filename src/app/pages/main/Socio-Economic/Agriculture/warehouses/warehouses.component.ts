@@ -26,7 +26,7 @@ export class WarehousesComponent implements OnInit {
   munCityName: string = this.Auth.munCityName;
 
   menuId = "6";
-
+  toValidate:any={};
   dataList: any = [];
   addData: any = {};
   barangayList: any = [];
@@ -94,6 +94,20 @@ export class WarehousesComponent implements OnInit {
   }
 
   AddAgriculture() {
+   this.toValidate.brgyId = this.addData.brgyId == "" || this.addData.brgyId == null ? true : false;
+    this.toValidate.classification = this.addData.classification== "" || this.addData.classification == undefined ? true : false;
+    this.toValidate.capacity = this.addData.capacity == "" || this.addData.capacity == undefined ? true : false;
+    this.toValidate.area = this.addData.area == "" || this.addData.area == undefined ? true : false;
+    this.toValidate.name = this.addData.name == "" || this.addData.name == undefined ? true : false;
+
+    if (this.toValidate.brgyId  == true || this.toValidate.classification == true ||
+  this.toValidate.capacity == true || this.toValidate.area == true || this.toValidate.name == true)  {
+      Swal.fire(
+        '',
+        'Please fill out the required fields',
+        'warning'
+      );
+    } else {
 
     this.dummy_addData = this.addData;
     if (JSON.stringify(this.dummy_addData) != JSON.stringify(this.dummyData) && this.addData.brgyId != undefined) {
@@ -139,7 +153,7 @@ export class WarehousesComponent implements OnInit {
       })
     }
   }
-
+  }
   clearData() {
     this.addData = {};
     this.not_visible = false;
@@ -207,4 +221,4 @@ export class WarehousesComponent implements OnInit {
       }
     })
   }
-} 
+}

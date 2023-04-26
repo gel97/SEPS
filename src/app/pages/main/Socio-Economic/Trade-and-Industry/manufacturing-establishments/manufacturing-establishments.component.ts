@@ -47,6 +47,15 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
   tableSize2:number = 20;
   tableSizes2:any =[20,40,60,80,100];
 
+  isCheck: boolean = false;
+  visible: boolean = true;
+
+ onChange(isCheck: boolean) {
+   this.isCheck = isCheck;
+   console.log("isCheck:", this.isCheck);
+ }
+
+
   date = new DatePipe('en-PH')
   ngOnInit(): void {
 

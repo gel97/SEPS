@@ -59,7 +59,7 @@ export class ElementaryPreElementaryComponent implements OnInit {
     this.GetListPrivateElemSchool();
   }
 
-  GetListBarangay() 
+  GetListBarangay()
   {
     this.service.ListOfBarangay(this.auth.munCityId).subscribe(data => {
       this.listBarangay = (<any>data);
@@ -92,12 +92,12 @@ export class ElementaryPreElementaryComponent implements OnInit {
   AddPrivateElemSchool()
   {
     this.toValidate.name = this.elementary.name=="" || this.elementary.name ==null?true:false;
-    this.toValidate.brgyId = this.elementary.brgyId=="" || this.elementary.brgyId ==null?true:false; 
-    
+    this.toValidate.brgyId = this.elementary.brgyId=="" || this.elementary.brgyId ==null?true:false;
+
     this.elementary.menuId    = this.menuId;
     this.elementary.setYear   = this.setYear;
     this.elementary.munCityId = this.munCityId;
-   
+
     if(!this.toValidate.name && !this.toValidate.brgyId)
     {
       this.service.AddEducation(this.elementary).subscribe(
@@ -130,12 +130,12 @@ export class ElementaryPreElementaryComponent implements OnInit {
     else
     {
       Swal.fire(
-        'Missing Data!',
+        '',
         'Please fill out the required fields.',
         'warning'
         );
     }
-   
+
 
   }
 

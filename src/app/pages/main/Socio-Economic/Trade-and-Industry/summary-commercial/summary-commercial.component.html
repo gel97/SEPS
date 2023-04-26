@@ -157,6 +157,15 @@
         ...
       </div>
       <div class="modal-footer">
+        <div class="left-absolute" *ngIf="visible">
+          <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                  (ngModelChange)="onChange(isCheck)" [(ngModel)]="isCheck">
+              <label class="form-check-label" for="flexCheckDefault">
+                  Several data
+              </label>
+          </div>
+      </div>
         <button type="button" class="btn btn-primary" (click)="Add_Com_Estab()" ><i class="fa fa-check"></i>Save</button>&nbsp;
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 

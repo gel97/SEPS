@@ -21,6 +21,14 @@ export class DemographyComponent implements OnInit {
   toValidate:any={};
   munCityName:string = this.auth.munCityName;
 
+  isCheck: boolean = false;
+  visible: boolean = true;
+
+  onChange(isCheck: boolean) {
+    this.isCheck = isCheck;
+    console.log("isCheck:", this.isCheck);
+  }
+
 
   date = new DatePipe('en-PH')
   ngOnInit(): void {

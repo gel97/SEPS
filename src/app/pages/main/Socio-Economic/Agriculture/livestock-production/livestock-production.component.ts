@@ -26,7 +26,7 @@ export class LivestockProductionComponent implements OnInit {
   munCityName: string = this.Auth.munCityName;
 
   menuId = "4";
-
+  toValidate:any={};
   dataList: any = [];
   addData: any = {};
   barangayList: any = [];
@@ -39,6 +39,8 @@ export class LivestockProductionComponent implements OnInit {
   required: boolean = true;
   latitude: any
   longtitude: any
+
+
 
 
   setYear = this.Auth.activeSetYear;
@@ -95,7 +97,16 @@ export class LivestockProductionComponent implements OnInit {
   }
 
   AddAgriculture() {
+    this.toValidate.brgyId = this.addData.brgyId == "" || this.addData.brgyId == null ? true : false;
+    this.toValidate.name = this.addData.name== "" || this.addData.name == undefined ? true : false;
 
+    if (this.toValidate.brgyId  == true || this.toValidate.votingCntrNo == true) {
+      Swal.fire(
+        '',
+        'Please fill out the required fields',
+        'warning'
+      );
+    } else {
     this.dummy_addData = this.addData;
     if (JSON.stringify(this.dummy_addData) != JSON.stringify(this.dummyData) && this.addData.brgyId != undefined) {
 
@@ -119,13 +130,11 @@ export class LivestockProductionComponent implements OnInit {
 
         console.log("add", request);
         this.GetListAgriculture();
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'Your work has been saved',
-          showConfirmButton: false,
-          timer: 1500
-        })
+        Swal.fire(
+          'Good job!',
+          'Data Added Successfully!',
+          'success'
+        );
       })
 
     }
@@ -140,7 +149,7 @@ export class LivestockProductionComponent implements OnInit {
       })
     }
   }
-
+  }
   clearData() {
     this.addData = {};
     this.not_visible = false;

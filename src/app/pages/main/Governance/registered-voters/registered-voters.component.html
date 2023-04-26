@@ -114,6 +114,15 @@
             <input type="text" class="form-control" name="" id="" [(ngModel)]="voter.regVoterNo" placeholder="" [ngClass]="toValidate.regVoterNo?'is-invalid':''" (keyup)="toValidate.regVoterNo=false">
 
             <div class="modal-footer">
+              <div class="left-absolute" *ngIf="visible">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                        (ngModelChange)="onChange(isCheck)" [(ngModel)]="isCheck">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        Several data
+                    </label>
+                </div>
+            </div>
               <button type="button" class="btn btn-primary" (click)=" addVoter()"><i
                   class="fa fa-check"></i>Save</button>&nbsp;
               <button type="button" class="btn btn-secondary" (click)="voter={}"><i

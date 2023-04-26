@@ -24,6 +24,16 @@ munCityName:string = this.auth.munCityName;
 setYear = this.auth.activeSetYear;
 munCityId = this.auth.munCityId;
 menuId = "8";
+toValidate:any={};
+
+isCheck: boolean = false;
+visible: boolean = true;
+
+  onChange(isCheck: boolean) {
+  this.isCheck = isCheck;
+  console.log("isCheck:", this.isCheck);
+}
+
 
 
   ngOnInit(): void {
@@ -38,6 +48,17 @@ menuId = "8";
   }
 
   Add_Crops(){
+    this.toValidate.type = this.crop.type == "" || this.crop.type == null ? true : false;
+    this.toValidate.totalProd = this.crop.totalProd== "" || this.crop.totalProd == undefined ? true : false;
+    this.toValidate.area = this.crop.area == "" || this.crop.area == undefined ? true : false;
+
+    if (this.toValidate.type  == true || this.toValidate.totalProd == true || this.toValidate.area == true) {
+      Swal.fire(
+        '',
+        'Please fill out the required fields',
+        'warning'
+      );
+    } else {
     this.crop.menuId = this. menuId;
     this.crop.setYear = this.setYear;
     this.crop.munCityId = this.munCityId;
@@ -49,8 +70,10 @@ menuId = "8";
         'success'
       );
       this.List_Crops();
+      this.crop = {};
       });
   }
+}
 
 Edit_Crops(){
     this.service.EditAgricultureProd(this.crop).subscribe({next:(_data)=>{
@@ -66,8 +89,9 @@ Edit_Crops(){
     showConfirmButton: false,
     timer: 1000
     });
-    this.crop();
+    this.crop = {};
   }
+
 
   delete(transId:any, index:any){
     Swal.fire({
