@@ -225,6 +225,8 @@ export class ApiUrl {
     put_safety_tanod      = ()=>`/SafetyTanod`;
     delete_safety_tanod   = (transId:any)=>`/SafetyTanod/${transId}`;
 
+//INFRASTRUCTURE & UTILITIES
+
     // Utility - SERVICES
     get_list_services = (menuId :any, setYear  :any,munCityId :any)=>`/ServiceUtilities/${menuId}/${setYear}/${munCityId}`;
     post_services     = ()=>`/ServiceUtilities`;
@@ -259,5 +261,37 @@ export class ApiUrl {
     put_telcom      = ()=>`/ComTelSystems`;
     delete_telcom   = (transId:any)=>`/ComTelSystems/${transId}`;
     post_list_barangay_telcom = (munCityId:any) => `/Barangay/ListBarangays?munCityId=${munCityId}`;
+
+    //Communications Services
+    get_list_com_telfacilities = ( setYear  :any,munCityId :any)=>`/ComTelFacilities/${setYear}/${munCityId}`;
+    post_com_telfacility       = ()=>`/ComTelFacilities`;
+    put_com_telfacility        = ()=>`/ComTelFacilities`;
+    delete_com_telfacility     = (transId:any)=>`/ComTelFacilities/${transId}`;
+     
+    get_list_com_isp = ( setYear  :any,munCityId :any)=>`/ComISP/${setYear}/${munCityId}`;
+    post_com_isp     = ()=>`/ComISP`;
+    put_com_isp      = ()=>`/ComISP`;
+    delete_com_isp   = (transId:any)=>`/ComISP/${transId}`;
+                   
+    get_list_com_express_mail = ( setYear  :any,munCityId :any)=>`/ComExpressMail/${setYear}/${munCityId}`;
+    post_com_express_mail     = ()=>`/ComExpressMail`;
+    put_com_express_mail      = ()=>`/ComExpressMail`;
+    delete_com_express_mail   = (transId:any)=>`/ComExpressMail/${transId}`;
+     
+    get_com_postal    = ( setYear  :any,munCityId :any)=>`/ComPostalService/${setYear}/${munCityId}`;
+    post_com_postal   = ()=>`/ComPostalService`;
+    put_com_postal    = ()=>`/ComPostalService`;
+    delete_com_postal = (transId:any)=>`/ComPostalService/${transId}`;
+     
+    //ServiceFacilities
+    get_list_service_facilities = (menuId :any, setYear  :any,munCityId :any)=>`/ServiceFacilities/${menuId}/${setYear}/${munCityId}`;
+    post_services_faclitity     = ()=>`/ServiceFacilities`;
+    put_serivce_facility        = ()=>`/ServiceFacilities`;
+    delete_service_facility     = (transId:any)=>`/ServiceFacilities/${transId}`;
+    //ServiceIrrigation
+    get_service_irrigation      = ( setYear  :any,munCityId :any)=>`/ServiceIrrigation/${setYear}/${munCityId}`;
+    post_service_irrigation     = ()=>`/ServiceIrrigation`;
+    put_service_irrigation      = ()=>`/ServiceIrrigation`;
+    delete_service_irrigation   = (transId:any)=>`/ServiceIrrigation/${transId}`; 
 
 }
