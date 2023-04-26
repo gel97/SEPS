@@ -1,6 +1,6 @@
 import { ProvincialFiscalReportService } from './../../../../shared/Governance/provincial-fiscal-report.service';
 import { FiscalMattersService } from 'src/app/shared/Governance/fiscal-matters.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { DatePipe } from '@angular/common';
 import { FilterPipe } from 'src/app/pipes/filter.pipe';
@@ -36,15 +36,24 @@ export class FiscalReportComponent implements OnInit {
   tableSize2:number = 5;
   tableSizes2:any =[5,15,25,50,100];
 
-
   isCheck: boolean = false;
   visible: boolean = true;
+  not_visible: boolean = true;
+
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void; }; };
 
   onChange(isCheck: boolean) {
     this.isCheck = isCheck;
     console.log("isCheck:", this.isCheck);
   }
 
+  clearData() {
+    this.fiscal = {};
+    this.not_visible = false;
+    this.visible = true;
+    // this.required = false;
+  }
 
 
 
@@ -98,8 +107,15 @@ export class FiscalReportComponent implements OnInit {
           'warning'
         );
       } else {
+      this.fiscal.munCityId = this.auth.munCityId;
       this.fiscal.setYear = this.auth.activeSetYear;
       this.service.AddfiscalReport(this.fiscal).subscribe(_data=>{
+        if (!this.isCheck) {
+          this.closebutton.nativeElement.click();
+        }
+        console.log(_data);
+        this.clearData();
+        this.Init();
 
         Swal.fire(
           'Good job!',
@@ -132,7 +148,8 @@ export class FiscalReportComponent implements OnInit {
 //for modal
 update(){
   this.service.UpdatefiscalReport(this.editmodal).subscribe({next:(_data)=>{
-  // this.editModal();
+  this.editmodal();
+  this.Init();
   },
   });
 

@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { ProvOfficialService } from 'src/app/shared/Governance/prov-official.service';
 import Swal from 'sweetalert2';
@@ -32,10 +32,21 @@ isLoading:boolean = true;
 
   isCheck: boolean = false;
   visible: boolean = true;
+  not_visible: boolean = true;
+
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void; }; };
 
   onChange(isCheck: boolean) {
     this.isCheck = isCheck;
     console.log("isCheck:", this.isCheck);
+  }
+
+  clearData() {
+    this.Prov = {};
+    this.not_visible = false;
+    this.visible = true;
+    // this.required = false;
   }
 
 
@@ -76,19 +87,24 @@ getOfficials(){
         'warning'
       );
     } else {
-   // this.Prov.munCityId=this.auth.munCityId;
+    this.Prov.munCityId=this.auth.munCityId;
     this.Prov.setYear=this.auth.activeSetYear;
     this.Prov.transId = this.date.transform(Date.now(),'YYMM');
-    this.Prov.tag = 1;
+    // this.Prov.tag = 1;
     this.service.AddProvOfficial(this.Prov).subscribe(_data=>{
-      // alert("success");
+      if (!this.isCheck) {
+        this.closebutton.nativeElement.click();
+      }
+      console.log(_data);
+      this.clearData();
+      this.getOfficials();
+
       Swal.fire(
         'Good job!',
         'Data Added Successfully!',
         'success'
       );
-      this.getOfficials();
-      this.Prov = {};
+
 
     },_err=>{
       Swal.fire(
@@ -112,8 +128,7 @@ this.getOfficials() ;
 //for modal
 update(){
   this.editModal.setYear=this.auth.activeSetYear;
-
-this.service.UpdateProvOfficial(this.editModal).subscribe({next:(_data)=>{
+  this.service.UpdateProvOfficial(this.editModal).subscribe({next:(_data)=>{
 
     this.getOfficials();
     this.editModal = {};

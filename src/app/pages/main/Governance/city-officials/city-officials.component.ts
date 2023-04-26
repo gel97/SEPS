@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CityOfficialService } from 'src/app/shared/Governance/city-official.service'; // import service
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
@@ -11,6 +11,14 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class CityOfficialsComponent implements OnInit {
   isLoading: boolean = true;
+  isCheck: boolean = false;
+  visible: boolean = true;
+  not_visible: boolean = true;
+  // required: boolean = true;
+
+
+
+
 
   constructor(private service: CityOfficialService, private auth: AuthService) { } // private service: + name of service that you've created
   toValidate: any = {};
@@ -30,8 +38,8 @@ export class CityOfficialsComponent implements OnInit {
   tableSize: number = 5;
   tableSizes: any = [5, 10, 15, 25, 50, 100];
 
-  isCheck: boolean = false;
-  visible: boolean = true;
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void; }; };
 
   onChange(isCheck: boolean) {
     this.isCheck = isCheck;
@@ -81,13 +89,17 @@ export class CityOfficialsComponent implements OnInit {
       this.city.setYear = this.auth.activeSetYear;
       this.city.position = "";
       this.service.AddOfficial(this.city).subscribe(_data => {
-        // alert("success");
+        if (!this.isCheck) {
+          this.closebutton.nativeElement.click();
+        }
+        console.log(_data);
+        this.clearData();
+        this.getOfficials();
         Swal.fire(
           'Good job!',
           'Data Added Successfully!',
           'success'
         );
-
         this.getOfficials();
         this.city = {};
 
@@ -160,5 +172,12 @@ export class CityOfficialsComponent implements OnInit {
     this.p = 1;
     this.Init();
   }
+  clearData() {
+    this.city = {};
+    this.not_visible = false;
+    this.visible = true;
+    // this.required = false;
+  }
+
 
 }

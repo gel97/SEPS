@@ -1,5 +1,5 @@
 import { SummCommercialService } from './../../../../../shared/Trade&_Industry/summ-commercial.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
@@ -72,10 +72,21 @@ tableSizes:any =[20,40,60,80,100];
 
 isCheck: boolean = false;
 visible: boolean = true;
+not_visible: boolean = true;
+
+@ViewChild('closebutton')
+closebutton!: { nativeElement: { click: () => void; }; };
 
 onChange(isCheck: boolean) {
- this.isCheck = isCheck;
- console.log("isCheck:", this.isCheck);
+  this.isCheck = isCheck;
+  console.log("isCheck:", this.isCheck);
+}
+
+clearData() {
+  this.summ = {};
+  this.not_visible = false;
+  this.visible = true;
+  // this.required = false;
 }
 
 date = new DatePipe('en-PH')
@@ -123,6 +134,13 @@ this.summ.setYear=this.auth.setYear;
 this.summ.transId = this.date.transform(Date.now(),'YYMM');
 this.summ.tag = 1;
 this.service.Add_Summ_Estab(this.summ).subscribe(request=>{
+  if (!this.isCheck) {
+    this.closebutton.nativeElement.click();
+  }
+  console.log(request);
+  this.clearData();
+  this.GetList_Summary_CommercialEstab();
+
   console.log(request);
   Swal.fire(
     'Good job!',
@@ -150,6 +168,9 @@ edit_estab(edit_estab:any={}) {
 //for modal
 UpdateSummary_Estab(){
   this.service.Update_Summ_Estab(this.editmodal).subscribe({next:(_data)=>{
+    this.GetList_Summary_CommercialEstab();
+    this.summ={};
+
   },
   });
 
@@ -187,6 +208,9 @@ delete(transId:any, index:any){
 
 
         this.service.Delete_Summ_Estab(transId).subscribe(_data =>{
+          this.GetList_Summary_CommercialEstab();
+          this.summ={};
+
 
          // this.MajorAct.splice(index,1);
 

@@ -1,5 +1,5 @@
 import { AuthService } from 'src/app/services/auth.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AgricultureProdService } from 'src/app/shared/Socio-Economic/Agriculture/agricultureProd.service';
 import Swal from 'sweetalert2';
 
@@ -28,10 +28,21 @@ toValidate:any={};
 
 isCheck: boolean = false;
 visible: boolean = true;
+not_visible: boolean = true;
 
-  onChange(isCheck: boolean) {
+@ViewChild('closebutton')
+closebutton!: { nativeElement: { click: () => void; }; };
+
+onChange(isCheck: boolean) {
   this.isCheck = isCheck;
   console.log("isCheck:", this.isCheck);
+}
+
+clearData() {
+  this.crop = {};
+  this.not_visible = false;
+  this.visible = true;
+  // this.required = false;
 }
 
 
@@ -63,7 +74,14 @@ visible: boolean = true;
     this.crop.setYear = this.setYear;
     this.crop.munCityId = this.munCityId;
     this.service.AddAgricultureProd(this.crop).subscribe(data=>{
-      console.log("checke_data", data);
+      if (!this.isCheck) {
+        this.closebutton.nativeElement.click();
+      }
+      console.log(data);
+      this.clearData();
+      this.List_Crops();
+
+
       Swal.fire(
         'Good job!',
         'Data Added Successfully!',
@@ -115,6 +133,8 @@ Edit_Crops(){
         }
 
         this.service.DeleteAgricultureProd(transId).subscribe(_data =>{
+         this.List_Crops();
+         this.crop = {};
 
 
         })

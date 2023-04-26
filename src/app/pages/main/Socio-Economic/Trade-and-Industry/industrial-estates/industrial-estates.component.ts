@@ -29,11 +29,22 @@ toValidate:any={};
 
  isCheck: boolean = false;
  visible: boolean = true;
+ not_visible: boolean = true;
 
-onChange(isCheck: boolean) {
-  this.isCheck = isCheck;
-  console.log("isCheck:", this.isCheck);
-}
+ @ViewChild('closebutton')
+ closebutton!: { nativeElement: { click: () => void; }; };
+
+ onChange(isCheck: boolean) {
+   this.isCheck = isCheck;
+   console.log("isCheck:", this.isCheck);
+ }
+
+ clearData() {
+   this.industrial = {};
+   this.not_visible = false;
+   this.visible = true;
+   // this.required = false;
+ }
 
 
  // Pagination
@@ -119,6 +130,13 @@ list_of_barangay(){
     this.industrial.setYear=this.auth.setYear;
     this.industrial.transId = this.date.transform(Date.now(),'YYMM');
     this.service.Add_Industrial(this.industrial).subscribe(request=>{
+      if (!this.isCheck) {
+        this.closebutton.nativeElement.click();
+      }
+      console.log(request);
+      this.clearData();
+      this.GetIndustrialEstates();
+
     console.log(request);
     Swal.fire(
         'Good job!',
@@ -143,6 +161,8 @@ list_of_barangay(){
     this.editmodal.longtitude = this.gmapComponent.markers.lng;
     this.editmodal.latitude = this.gmapComponent.markers.lat;
     this.service.Update_Industrial(this.editmodal).subscribe({next:(_data)=>{
+      this.GetIndustrialEstates();
+      this.editmodal ={};
     },
     });
 
@@ -180,7 +200,8 @@ delete_Industrial(transId:any, index:any){
 
 
           this.service.Delete_Industrial(transId).subscribe(_data =>{
-
+            this.GetIndustrialEstates();
+            this.industrial={};
            // this.MajorAct.splice(index,1);
 
             // this.Init();
