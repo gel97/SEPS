@@ -96,14 +96,15 @@ export class RicemillsComponent implements OnInit {
 
   AddAgriculture() {
     this.toValidate.brgyId = this.addData.brgyId == "" || this.addData.brgyId == null ? true : false;
-    this.toValidate.type = this.addData.type== "" || this.addData.type == undefined ? true : false;
-    this.toValidate.source = this.addData.source == "" || this.addData.source == undefined ? true : false;
-    this.toValidate.ownershipType = this.addData.ownershipType == "" || this.addData.ownershipType == null ? true : false;
-    this.toValidate.capacity= this.addData.capacity== "" || this.addData.capacity == undefined ? true : false;
-    this.toValidate.area = this.addData.area == "" || this.addData.area == undefined ? true : false;
+    // this.toValidate.type = this.addData.type== "" || this.addData.type == undefined ? true : false;
+    // this.toValidate.source = this.addData.source == "" || this.addData.source == undefined ? true : false;
+    // this.toValidate.ownershipType = this.addData.ownershipType == "" || this.addData.ownershipType == null ? true : false;
+    // this.toValidate.capacity= this.addData.capacity== "" || this.addData.capacity == undefined ? true : false;
+    // this.toValidate.area = this.addData.area == "" || this.addData.area == undefined ? true : false;
     this.toValidate.name = this.addData.name == "" || this.addData.name == undefined ? true : false;
-    if (this.toValidate.brgyId  == true || this.toValidate.type == true || this.toValidate.source == true||
-      this.toValidate.ownershipType  == true || this.toValidate.capacity == true || this.toValidate.area == true || this.toValidate.area == true)  {
+
+    if (this.toValidate.brgyId  == true || this.toValidate.name== true ){
+      // this.toValidate.ownershipType  == true || this.toValidate.capacity == true || this.toValidate.area == true || this.toValidate.area == true)  {
       Swal.fire(
         '',
         'Please fill out the required fields',

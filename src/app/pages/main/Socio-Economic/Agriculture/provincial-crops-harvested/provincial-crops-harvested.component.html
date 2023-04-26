@@ -90,7 +90,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">List of  Provincial Profile on Crops Production and Area Harvested</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -136,9 +136,9 @@
                 </label>
             </div>
         </div>
-          <button type="button" class="btn btn-primary" (click)="add_Crops_Total? Add_Commodities():Edit_Commodities();"><i class="fa fa-check" ></i>Save</button>&nbsp;
+          <button type="button" class="btn btn-primary" (click)="add_Crops_Total? Add_Commodities():Edit_Commodities();"  data-dismiss="modal"><i class="fa fa-check" ></i>Save</button>&nbsp;
           <!-- <button type ="button" class="btn btn-secondary" *ngIf="updateOfficial" (click) ="city={}"><i class="fa fa-times"></i>Cancel</button> -->
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
         </div>
       </div>
     </div>

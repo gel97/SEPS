@@ -50,13 +50,24 @@ export class FinancialInstitutionsComponent implements OnInit {
   tableSize:number = 5;
   tableSizes:any =[5,15,25,50,100];
 
-isCheck: boolean = false;
-visible: boolean = true;
+  isCheck: boolean = false;
+  visible: boolean = true;
+  not_visible: boolean = true;
 
-onChange(isCheck: boolean) {
-  this.isCheck = isCheck;
-  console.log("isCheck:", this.isCheck);
-}
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void; }; };
+
+  onChange(isCheck: boolean) {
+    this.isCheck = isCheck;
+    console.log("isCheck:", this.isCheck);
+  }
+
+  clearData() {
+    this.financial = {};
+    this.not_visible = false;
+    this.visible = true;
+    // this.required = false;
+  }
 
 
   date = new DatePipe('en-PH')
@@ -126,6 +137,13 @@ SetMarker(data: any = {}) {
     this.financial.transId = this.date.transform(Date.now(),'YYMM');
     //this.comm.tag = 1;
     this.service.Add_Financial_Ins(this.financial).subscribe(request=>{
+      if (!this.isCheck) {
+        this.closebutton.nativeElement.click();
+      }
+      console.log(request);
+      this.clearData();
+      this.GetListFinancial();
+
       console.log(request);
       Swal.fire(
         'Good job!',
@@ -158,6 +176,7 @@ SetMarker(data: any = {}) {
     this.editmodal.longtitude = this.gmapComponent.markers.lng;
     this.editmodal.latitude = this.gmapComponent.markers.lat;
     this.service.Update_Financial_Ins(this.editmodal).subscribe({next:(_data)=>{
+      this.GetListFinancial();
     },
     });
 
@@ -169,6 +188,7 @@ SetMarker(data: any = {}) {
     timer: 1000
     });
     this.editmodal ={};
+    this.GetListFinancial();
     }
 
 
@@ -194,7 +214,7 @@ SetMarker(data: any = {}) {
           }
 
           this.service.Delete_Financial_Ins(transId).subscribe(_data =>{
-
+            this.GetListFinancial();
            // this.Financial.splice(index,1);
 
             // this.Init();

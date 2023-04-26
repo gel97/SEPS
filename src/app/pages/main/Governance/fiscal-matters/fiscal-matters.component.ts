@@ -1,5 +1,5 @@
 import { FiscalMattersService } from 'src/app/shared/Governance/fiscal-matters.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { DatePipe } from '@angular/common';
 import { FilterPipe } from 'src/app/pipes/filter.pipe';
@@ -35,12 +35,24 @@ export class FiscalMattersComponent implements OnInit {
   tableSize2: number = 5;
   tableSizes2: any = [5, 15, 25, 50, 100];
 
+  // isLoading: boolean = true;
   isCheck: boolean = false;
   visible: boolean = true;
+  not_visible: boolean = true;
+
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void; }; };
 
   onChange(isCheck: boolean) {
     this.isCheck = isCheck;
     console.log("isCheck:", this.isCheck);
+  }
+
+  clearData() {
+    this.fiscal = {};
+    this.not_visible = false;
+    this.visible = true;
+    // this.required = false;
   }
 
 
@@ -83,8 +95,6 @@ export class FiscalMattersComponent implements OnInit {
     this.toValidate.name = this.fiscal.name == "" || this.fiscal.name == null ? true : false;
     this.toValidate.fiscalYear = this.fiscal.fiscalYear == "" || this.fiscal.fiscalYear == undefined ? true : false;
     this.toValidate.category = this.fiscal.category == "" || this.fiscal.category == undefined ? true : false;
-
-
     if (this.toValidate.name == true || this.toValidate.fiscalYear == true || this.toValidate.category ==true) {
       Swal.fire(
         '',
@@ -93,7 +103,14 @@ export class FiscalMattersComponent implements OnInit {
       );
     } else {
     this.fiscal.munCityId = this.auth.munCityId;
+    this.fiscal.setYear=this.auth.activeSetYear;
     this.service.Addfiscal(this.fiscal).subscribe(_data => {
+         if (!this.isCheck) {
+      this.closebutton.nativeElement.click();
+    }
+    console.log(_data);
+    this.clearData();
+    this.Init();
 
       Swal.fire(
         'Good job!',
@@ -126,7 +143,9 @@ export class FiscalMattersComponent implements OnInit {
   update() {
     this.service.Updatefiscal(this.editmodal).subscribe({
       next: (_data) => {
-        // this.editModal();
+        this.Init();
+        this.editmodal = {};
+
       },
     });
 
@@ -137,7 +156,6 @@ export class FiscalMattersComponent implements OnInit {
       showConfirmButton: false,
       timer: 1000
     });
-    this.editmodal = {};
 
   }
 

@@ -30,7 +30,7 @@ List_Station(menuId:any,setYear:any,munCityId :any) {
   }
 
   ListBarangay(){
-    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangays(this.auth.munCityId), { responseType: 'json' });
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay(this.auth.munCityId), { responseType: 'json' });
 }
 
 }

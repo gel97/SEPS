@@ -30,8 +30,8 @@ export class SummCommercialService {
     return this.Http.delete(this.Base.url + this.ApiUrl.delete_summ_commercial(transId), { responseType: 'json' });
   }
 
-//   ListBarangay(){
-//     return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangays(this.Auth.munCityId), { responseType: 'json' });
-// }
+  ListBarangay(){
+    return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay(this.Auth.munCityId), { responseType: 'json' });
+}
 
 }

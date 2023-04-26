@@ -49,12 +49,22 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
 
   isCheck: boolean = false;
   visible: boolean = true;
+  not_visible: boolean = true;
 
- onChange(isCheck: boolean) {
-   this.isCheck = isCheck;
-   console.log("isCheck:", this.isCheck);
- }
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void; }; };
 
+  onChange(isCheck: boolean) {
+    this.isCheck = isCheck;
+    console.log("isCheck:", this.isCheck);
+  }
+
+  clearData() {
+    this.estab = {};
+    this.not_visible = false;
+    this.visible = true;
+    // this.required = false;
+  }
 
   date = new DatePipe('en-PH')
   ngOnInit(): void {
@@ -126,6 +136,13 @@ AddEstablishment(){
     this.estab.transId = this.date.transform(Date.now(),'YYMM');
     this.estab.tag = 1;
     this.service.AddManEstab(this.estab).subscribe(request=>{
+      if (!this.isCheck) {
+        this.closebutton.nativeElement.click();
+      }
+      console.log(request);
+      this.clearData();
+      this.GetListManEstab();
+
       console.log(request);
       Swal.fire(
         'Good job!',
@@ -154,6 +171,8 @@ edit_estab(edit_estab:any={}) {
     this.editmodal.latitude = this.gmapComponent.markers.lat;
     //this.editmodal.setYear = this.auth.activeSetYear;
     this.service.UpdateManEstab(this.editmodal).subscribe({next:(_data)=>{
+      this.GetListManEstab();
+
     },
     });
 
@@ -190,6 +209,8 @@ delete(transId:any, index:any){
           }
 
           this.service.DeleteManEstab(transId).subscribe(_data =>{
+            this.GetListManEstab();
+
 
 
           })

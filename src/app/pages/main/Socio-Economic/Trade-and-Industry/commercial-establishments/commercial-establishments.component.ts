@@ -65,10 +65,21 @@ tableSizes:any =[5,15,25,50,100];
 
 isCheck: boolean = false;
 visible: boolean = true;
+not_visible: boolean = true;
+
+@ViewChild('closebutton')
+closebutton!: { nativeElement: { click: () => void; }; };
 
 onChange(isCheck: boolean) {
   this.isCheck = isCheck;
   console.log("isCheck:", this.isCheck);
+}
+
+clearData() {
+  this.comm = {};
+  this.not_visible = false;
+  this.visible = true;
+  // this.required = false;
 }
 
 
@@ -139,6 +150,13 @@ Add_Com_Estab(){
   this.comm.transId = this.date.transform(Date.now(),'YYMM');
   //this.comm.tag = 1;
   this.service. Add_Com_Estab(this.comm).subscribe(request=>{
+    if (!this.isCheck) {
+      this.closebutton.nativeElement.click();
+    }
+    console.log(request);
+    this.clearData();
+    this.GetListCommercialEstab();
+
     console.log(request);
     Swal.fire(
       'Good job!',
@@ -168,6 +186,8 @@ UpdateCommercial(){
   this.editmodal.latitude = this.gmapComponent.markers.lat;
 
   this.service.Update_Com_Estab(this.editmodal).subscribe({next:(_data)=>{
+    this.GetListCommercialEstab();
+    this.editmodal ={};
   },
   });
 
@@ -207,7 +227,7 @@ delete(transId:any, index:any){
 
          // this.MajorAct.splice(index,1);
 
-          // this.Init();
+          this.GetListCommercialEstab();
           // this.mjr = {};
 
         })

@@ -31,7 +31,7 @@ List_CellSites(setYear:any,munCityId :any) {
   }
 
   ListBarangay(){
-    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay_cell(this.auth.munCityId), { responseType: 'json' });
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay(this.auth.munCityId), { responseType: 'json' });
 }
 
 }

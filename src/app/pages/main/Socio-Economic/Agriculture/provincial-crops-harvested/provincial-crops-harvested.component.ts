@@ -1,6 +1,6 @@
 import { AuthService } from 'src/app/services/auth.service';
 import { AgricultureProdService } from './../../../../../shared/Socio-Economic/Agriculture/agricultureProd.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -15,19 +15,30 @@ export class ProvincialCropsHarvestedComponent implements OnInit {
   Commodities:any=[];
   commo:any={};
   toValidate:any={};
-  isCheck: boolean = false;
-  visible: boolean = true;
   add_Crops_Total:boolean = true;
   munCityName:string = this.auth.munCityName;
   setYear = this.auth.activeSetYear;
   munCityId = this.auth.munCityId;
   menuId = "9";
 
-onChange(isCheck: boolean) {
-  this.isCheck = isCheck;
-  console.log("isCheck:", this.isCheck);
-}
+  isCheck: boolean = false;
+  visible: boolean = true;
+  not_visible: boolean = true;
 
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void; }; };
+
+  onChange(isCheck: boolean) {
+    this.isCheck = isCheck;
+    console.log("isCheck:", this.isCheck);
+  }
+
+  clearData() {
+    this.commo = {};
+    this.not_visible = false;
+    this.visible = true;
+    // this.required = false;
+  }
 
     list_of_Commodities =[{ id: 1, name: "Rice - Irrigated" },
                        { id: 2, name: "Rice - Rain Fed" },
@@ -72,6 +83,13 @@ onChange(isCheck: boolean) {
         this.commo.setYear = this.setYear;
         this.commo.munCityId = this.munCityId;
         this.service.AddAgricultureProd(this.commo).subscribe(data=>{
+          if (!this.isCheck) {
+            this.closebutton.nativeElement.click();
+          }
+          console.log(data);
+          this.clearData();
+          this.List_Commodities();
+
           console.log("checke_data", data);
           Swal.fire(
             'Good job!',
@@ -123,6 +141,7 @@ onChange(isCheck: boolean) {
             }
 
             this.service.DeleteAgricultureProd(transId).subscribe(_data =>{
+              this.List_Commodities();
 
 
             })

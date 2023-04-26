@@ -75,7 +75,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Registered SK Voters</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -120,7 +120,7 @@
               </div>
           </div>
             <button type="button" class="btn btn-primary"  (click)=" addVoter()"><i class="fa fa-check"></i>Save</button>&nbsp;
-            <button type ="button" class="btn btn-secondary" (click) ="voter={}"><i class="fa fa-times"></i>Cancel</button>
+            <button type ="button" class="btn btn-secondary" (click) ="voter={}"><i class="fa fa-times"></i>Close</button>
           </div>
         </div>
       </div>
@@ -145,7 +145,7 @@
 
   <div class="col-lg-12">  <br>
     <label for="type">Barangay :</label>
-    <select class="form-select" aria-label="Default select example" [(ngModel)]="editmodal.brgyId" >
+    <select class="form-select" aria-label="Default select example" [(ngModel)]="editmodal.brgyId"  disabled="true">
       <option *ngFor="let item  of barangays" value={{item.brgyId}}>{{item.brgyName}}</option>
       </select> </div>
 
@@ -171,7 +171,7 @@
 <input type="text" class="form-control"  name =""  id="" [(ngModel)]="editmodal.regSkVoterNo" placeholder="">
 
 <div class="modal-footer">
-<button type="button" class="btn btn-primary"  (click)="updateVoter()"><i class="fa fa-check"></i>Save</button>&nbsp;
+<button type="button" class="btn btn-primary"  (click)="updateVoter()"  data-dismiss="modal"><i class="fa fa-check"></i>Save Changes</button>&nbsp;
 <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
 </div>
 </div>

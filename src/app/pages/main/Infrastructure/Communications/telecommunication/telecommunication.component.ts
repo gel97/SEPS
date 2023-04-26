@@ -13,6 +13,8 @@ export class TelecommunicationComponent implements OnInit {
 
 
   munCityName:string = this.auth.munCityName;
+  not_visible: boolean =false;
+  visible: boolean =true;
   constructor(private service:TelecommunicationService, private auth: AuthService) { }
 
   toValidate:any = {};
@@ -24,6 +26,12 @@ export class TelecommunicationComponent implements OnInit {
   onChange(isCheck: boolean) {
     this.isCheck = isCheck;
     console.log("isCheck:", this.isCheck);
+  }
+  clearData() {
+    this.telco = {};
+    this.not_visible = false;
+    this.visible = true;
+    // this.required = false;
   }
 
   markerObj: any = {};
@@ -105,9 +113,8 @@ export class TelecommunicationComponent implements OnInit {
 
     if(!this.toValidate.telco && !this.toValidate.brgyId  && !this.toValidate.type)
     {
-      this.service.Add_telcom (this.telco).subscribe(
-        {
-          next: (request) => {
+      this.service.Add_telcom (this.telco).subscribe({ next: (request) => {
+
             this.GetList_Telco();
           },
           error:(error)=>{
@@ -122,6 +129,7 @@ export class TelecommunicationComponent implements OnInit {
             if (!this.isCheck) {
               this.closebutton.nativeElement.click();
             }
+            this.GetList_Telco();
 
              Swal.fire(
               'Good job!',
@@ -168,7 +176,9 @@ export class TelecommunicationComponent implements OnInit {
         },
         complete: () =>
         {
-          this.closebutton.nativeElement.click();
+          if (!this.isCheck) {
+            this.closebutton.nativeElement.click();
+          }
            Swal.fire(
             'Good job!',
             'Data Updated Successfully!',
