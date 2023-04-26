@@ -1,154 +1,196 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import Swal from 'sweetalert2';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 import { AuthService } from 'src/app/services/auth.service';
-import { ServicesFacilitiesService } from 'src/app/shared/Infrastructure/Utilities/services-facilities.service';
-import Swal from 'sweetalert2';
-
+import { ServiceFacilitiesService } from 'src/app/shared/Infrastructure/Utilities/service-facilities.service';
 @Component({
   selector: 'app-waste-management',
   templateUrl: './waste-management.component.html',
   styleUrls: ['./waste-management.component.css']
 })
 export class WasteManagementComponent implements OnInit {
-
-  @ViewChild(GmapComponent)
-  private gmapComponent!: GmapComponent;
-
-  constructor(private service:ServicesFacilitiesService, private auth:AuthService) { }
-  add_service:boolean = true;
-
   menuId:string = "6";
   munCityName:string = this.auth.munCityName;
-  setYear = this.auth.activeSetYear;
-  munCityId = this.auth.munCityId;
-  toValidate:any={};
+  constructor(private service: ServiceFacilitiesService, private auth: AuthService) { }
+
+  toValidate:any = {};
+  @ViewChild(GmapComponent)
+  private gmapComponent!: GmapComponent;
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void; }; };
   isCheck: boolean = false;
-  visible: boolean = true;
-  waste:any={};
-  barangays:any={};
-  Facilities:any=[];
-
-    ngOnInit(): void {
-      this.  List_waste();
-      this.  list_of_barangay();
-    }
-
-    onChange(isCheck: boolean) {
-      this.isCheck = isCheck;
-      console.log("isCheck:", this.isCheck);
-    }
-    list_of_barangay(){
-      this.service.ListBarangay().subscribe(data=>{
-        this.barangays = <any>data;
-        console.log("fgxtxgcvcgcf",this.barangays)
-      });
-      }
-
-      markerObj: any = {};
-      SetMarker(data: any = {}) {
-        console.log(data);
-        this.markerObj = {
-          lat: data.latitude,
-          lng: data.longtitude,
-          label: data.brgyName.charAt(0),
-          brgyName: data.brgyName,
-          munCityName: this.munCityName,
-          draggable: true
-        };
-
-        this.gmapComponent.setMarker(this.markerObj);
-      }
-
-
-    List_waste(){
-      this.service.List_Facilities(this.menuId, this.setYear, this.munCityId).subscribe(data=>{
-        console.log("Checked_Data", data)
-        this.Facilities=(<any>data);
-      })
-    }
-
-    Add_waste(){
-      this.toValidate.name = this.waste.name == "" || this.waste.name== undefined ? true : false;
-      this.toValidate.serviceArea= this.waste.serviceArea== "" || this.waste.serviceArea == undefined ? true : false;
-      this.toValidate.brgyId = this.waste.brgyId == "" || this.waste.brgyId == null? true : false;
-
-      if (this.toValidate.name  == true || this.toValidate.serviceArea == true || this.toValidate.brgyId == true) {
-        Swal.fire(
-          '',
-          'Please fill out the required fields',
-          'warning'
-        );
-      } else {
-      this.waste.menuId = this. menuId;
-      this.waste.setYear = this.setYear;
-      this.waste.munCityId = this.munCityId;
-      this.service.Add_Facilities(this.waste).subscribe(data=>{
-        console.log("checke_data", data);
-        Swal.fire(
-          'Good job!',
-          'Data Added Successfully!',
-          'success'
-        );
-        this.List_waste();
-        this.waste = {};
-        });
-    }
+  onChange(isCheck: boolean) {
+    this.isCheck = isCheck;
   }
 
-  Update_waste(){
-    this.waste.longtitude = this.gmapComponent.markers.lng;
-    this.waste.latitude = this.gmapComponent.markers.lat;
-      this.service. Update_Facilities(this.waste).subscribe({next:(_data)=>{
-        this.List_waste();
+  markerObj: any = {};
 
+  SetMarker(data: any = {}) {
+    this.markerObj = {
+      lat: data.latitude,
+      lng: data.longtitude,
+      label: data.brgyName.charAt(0),
+      brgyName: data.brgyName,
+      munCityName: this.munCityName,
+      draggable: true
+    };
+
+    this.gmapComponent.setMarker(this.markerObj);
+  }
+
+  ngOnInit(): void {
+    this.Init();
+  }
+  munCityId:string = this.auth.munCityId;
+  setYear:string = this.auth.setYear;
+
+  isAdd:boolean = true;
+  listFacilities:any = [];
+  facility:any = {};
+  listBarangay:any = [];
+
+  Init()
+  {
+    this.GetListBarangay();
+    this.GetListFacilities();
+  }
+
+  GetListBarangay() 
+  {
+    this.service.ListOfBarangay(this.auth.munCityId).subscribe(data => {
+      this.listBarangay = (<any>data);
+    })
+  }
+
+  GetListFacilities()
+  {
+    this.service.GetListServiceFacilities(this.menuId, this.setYear, this.munCityId).subscribe({
+      next: (response) =>
+      {
+        this.listFacilities = (<any> response);
       },
-      });
+      error: (error) =>
+      {
+        Swal.fire(
+          'Oops!',
+          'Something went wrong.',
+          'error'
+          );
+      },
+      complete: () =>
+      {
 
-      Swal.fire({
-      position: 'center',
-      icon: 'success',
-      title: 'Your work has been updated',
-      showConfirmButton: false,
-      timer: 1000
-      });
-      this.waste = {};
-    }
-
-
-    delete(transId:any, index:any){
-      Swal.fire({
-        text: 'Do you want to remove this file?',
-        icon: 'warning',
-        showConfirmButton: true,
-        showCancelButton: true,
-        confirmButtonText: 'Yes, remove it!'
-      }).then((result)=>{
-
-        if(result.value){
-          for(let i = 0; i < this.Facilities.length;i++){
-            if(this.Facilities[i].transId == transId){
-              this.Facilities.splice(i,1);
-              Swal.fire(
-                'Deleted',
-                'Removed successfully',
-                'success'
-              );
-            }
-          }
-
-          this.service.Delete_Facilities(transId).subscribe(_data =>{
-
-
-          })
-        } else if (result.dismiss === Swal.DismissReason.cancel){
-
-        }
-
-      })
-    }
-
+      }
+    })
 
   }
 
+  AddFacility()
+  {
+    this.toValidate.name = this.facility.name=="" || this.facility.name ==null?true:false;
+    this.toValidate.brgyId = this.facility.brgyId=="" || this.facility.brgyId ==null?true:false; 
+    
+    this.facility.menuId    = this.menuId;
+    this.facility.setYear   = this.setYear;
+    this.facility.munCityId = this.munCityId;
+   
+    if(!this.toValidate.name && !this.toValidate.brgyId)
+    {
+      this.service.AddServiceFacility(this.facility).subscribe(
+        {
+          next: (request) => {
+            this.GetListFacilities();
+          },
+          error:(error)=>{
+            Swal.fire(
+              'Oops!',
+              'Something went wrong.',
+              'error'
+              );
+          },
+          complete: () =>
+          {
+            if (!this.isCheck) {
+              this.closebutton.nativeElement.click();
+            }
+            this.facility = {};
+             Swal.fire(
+              'Good job!',
+              'Data Added Successfully!',
+              'success'
+              );
+          }
+        }
+      )
+    }
+    else
+    {
+      Swal.fire(
+        'Missing Data!',
+        'Please fill out the required fields.',
+        'warning'
+        );
+    }
+   
 
+  }
 
+  EditFacility()
+  {
+
+    this.facility.longtitude = this.gmapComponent.markers.lng;
+    this.facility.latitude  = this.gmapComponent.markers.lat;
+
+    this.facility.menuId    = this.menuId;
+    this.facility.setYear   = this.setYear;
+    this.facility.munCityId = this.munCityId;
+
+    this.service.EditServiceFacility(this.facility).subscribe(
+      {
+        next: (request) => {
+          this.GetListFacilities();
+        },
+        error:(error)=>{
+          Swal.fire(
+            'Oops!',
+            'Something went wrong.',
+            'error'
+            );
+        },
+        complete: () =>
+        {
+          this.closebutton.nativeElement.click();
+           Swal.fire(
+            'Good job!',
+            'Data Updated Successfully!',
+            'success'
+            );
+        }
+      }
+    )
+  }
+
+  DeleteFacility(transId:any)
+  {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.service.DeleteServiceFacility(transId).subscribe(request => {
+          this.GetListFacilities();
+        })
+        Swal.fire(
+          'Deleted!',
+          'Your file has been deleted.',
+          'success'
+        )
+      }
+    })
+  }
+}
