@@ -104,7 +104,7 @@
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTradeIndustry"
                 aria-expanded="true" aria-controls="collapseUtilities">
-                <i class="fas fa-fw fa-bar-chart"></i>
+                <i class='fas fa-exchange-alt'></i>
                 <span>Trade and Ind.</span>
             </a>
             <div id="collapseTradeIndustry" class="collapse" aria-labelledby="headingUtilities"
@@ -274,7 +274,7 @@
                 Facilities</a>
             <a class="collapse-item" routerLink="seps/socialProfile/health/malnutrition">Malnutrition</a>
             <a class="collapse-item" routerLink="seps/socialProfile/health/malnutrition-revised">Malnutrition (Revised
-                Form)</a>s
+                Form)</a>
             <a class="collapse-item" routerLink="seps/socialProfile/health/person-disability">Persons with
                 Disability</a>
             <a class="collapse-item" routerLink="seps/socialProfile/health/provincial-hospital">Provincial/ District
@@ -288,7 +288,7 @@
 <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePubSafety" aria-expanded="true"
         aria-controls="collapseUtilities">
-        <i class="fa fa-fw fa-shield"></i>
+        <i class='fas fa-shield-alt'></i>
         <span>Public Order and Safety</span>
     </a>
     <div id="collapsePubSafety" class="collapse" aria-labelledby="headingUtilities"
@@ -307,7 +307,7 @@
 <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseHousing" aria-expanded="true"
         aria-controls="collapseUtilities">
-        <i class="fa fa-fw fa-building-o"></i>
+        <i class='fa fa-home'></i>
         <span>Housing</span>
     </a>
     <div id="collapseHousing" class="collapse" aria-labelledby="headingUtilities" data-parent="#collapseSocialProfile">
@@ -324,7 +324,7 @@
 <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAssociations"
         aria-expanded="true" aria-controls="collapseUtilities">
-        <i class="fas fa-fw fa-group"></i>
+        <i class='fas fa-place-of-worship'></i>
         <span>Associations/ Accredited NGOs</span>
     </a>
     <div id="collapseAssociations" class="collapse" aria-labelledby="headingUtilities"
@@ -348,7 +348,7 @@
 <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEnvironment"
         aria-expanded="true" aria-controls="collapsePages">
-        <i class="fa fa-fw fa-envira"></i>
+        <i class='fas fa-feather-alt'></i>
         <span>Environment</span>
     </a>
     <div id="collapseEnvironment" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
@@ -367,50 +367,22 @@
 <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseInfrastructure"
         aria-expanded="true" aria-controls="collapsePages">
-        <i class="fa fa-fw fa-wrench"></i>
+        <i class='fa fa-road'></i>
         <span>Infrastructure and Utilities</span>
     </a>
     <div id="collapseInfrastructure" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
         <div class="bg-lightblue py-2 collapse-inner rounded">
             <!-- Nav Item - Transport & Communications  -->
-<li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTransportCommu"
-        aria-expanded="true" aria-controls="collapsePages">
-        <i class="fa fa-fw fa-bus"></i>
-        <span>Transport & Communications</span>
-    </a>
-    <div id="collapseTransportCommu" class="collapse" aria-labelledby="headingPages"
-        data-parent="#collapseInfrastructure">
-        <div class="bg-lightblue py-2 collapse-inner rounded">
-            <!-- Nav Item - Transportation  -->
-<li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTransportation"
-        aria-expanded="true" aria-controls="collapsePages">
-        <i class="fa fa-fw fa-bus"></i>
-        <span>Transportation</span>
-    </a>
-    <div id="collapseTransportation" class="collapse" aria-labelledby="headingPages"
-        data-parent="#collapseTransportCommu">
-        <div class="bg-lightblue py-2 collapse-inner rounded">
-            <a class="collapse-item" routerLink="seps/Insfrastructure/Transportation/roads">Roads</a>
-            <a class="collapse-item" routerLink="seps/Insfrastructure/Transportation/bridges">Bridges</a>
-            <a class="collapse-item" routerLink="seps/Insfrastructure/Transportation/transport-terminals">Transport
-                Terminals</a>
-            <a class="collapse-item" routerLink="seps/Insfrastructure/Transportation/ports">Ports</a>
-        </div>
-    </div>
-</li>
 
-<!-- Nav Item - Communications  -->
 <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCommunications"
         aria-expanded="true" aria-controls="collapsePages">
-        <i class="fa fa-fw fa-bus"></i>
+        <i class='fas fa-broadcast-tower'></i>
         <span>Communications Services</span>
     </a>
     <div id="collapseCommunications" class="collapse" aria-labelledby="headingPages"
-        data-parent="#collapseTransportCommu">
-        <div class="bg-lightblue py-2 collapse-inner rounded">
+    data-parent="#collapseInfrastructure">
+        <div class="bg-lightblue collapse-inner rounded">
             <a class="collapse-item" routerLink="seps/Infrastructure/Communications/telecommunication">Telecommunication
                 Systems</a>
             <a class="collapse-item" routerLink="seps/Infrastructure/Communications/cell-sites">Cell Sites/ Towers</a>
@@ -422,14 +394,28 @@
         </div>
     </div>
 </li>
-</div>
-</div>
+<li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTransportation"
+        aria-expanded="true" aria-controls="collapsePages">
+        <i class="fa fa-fw fa-bus"></i>
+        <span>Transportation</span>
+    </a>
+    <div id="collapseTransportation" class="collapse" aria-labelledby="headingPages"
+    data-parent="#collapseInfrastructure">
+        <div class="bg-lightblue py-2 collapse-inner rounded">
+            <a class="collapse-item" routerLink="seps/Insfrastructure/Transportation/roads">Roads</a>
+            <a class="collapse-item" routerLink="seps/Insfrastructure/Transportation/bridges">Bridges</a>
+            <a class="collapse-item" routerLink="seps/Insfrastructure/Transportation/transport-terminals">Transport
+                Terminals</a>
+            <a class="collapse-item" routerLink="seps/Insfrastructure/Transportation/ports">Ports</a>
+        </div>
+    </div>
 </li>
 <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtility" aria-expanded="true"
         aria-controls="collapsePages">
-        <i class="fa fa-fw fa-bus"></i>
-        <span>Utility Services/ Structures</span>
+        <i class='fa fa-building'></i>
+        <span> Utility Services/ Structures</span>
     </a>
     <div id="collapseUtility" class="collapse" aria-labelledby="headingPages" data-parent="#collapseInfrastructure">
         <div class="bg-lightblue py-2 collapse-inner rounded">
@@ -460,7 +446,7 @@
 <!-- Nav Item - Tools -->
 <li class="nav-item">
     <a class="nav-link">
-        <i class="fas fa-fw fa-gears"></i>
+        <i class="fa fa-fw fa-wrench"></i> 
         <span>Tools</span>
     </a>
 </li>
