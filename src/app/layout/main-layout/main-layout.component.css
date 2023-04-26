@@ -8490,7 +8490,7 @@ a:focus{
         display:block;
         width:100%;
         text-align:left;
-        padding:1rem;
+        padding: 10px 5px 10px 15px;
         width:15rem
     }
     .sidebar .nav-item .nav-link i{
