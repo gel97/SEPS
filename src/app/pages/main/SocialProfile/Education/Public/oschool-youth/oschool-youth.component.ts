@@ -68,6 +68,7 @@ export class OSchoolYouthComponent implements OnInit {
       next: (response) =>
       {
         this.listOsy = (<any> response);
+        console.log(this.listOsy);
       },
       error: (error) =>
       {

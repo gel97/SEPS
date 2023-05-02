@@ -15,7 +15,7 @@ export class EducationOsyService {
   }
 
   GetListEducationOsy(munCityId :any, setYear:any) :Observable<any[]> {
-    return this.http.get<any[]>(this.Base.url + this.ApiUrl.get_list_education_osy(munCityId, setYear ), { responseType: 'json' });
+    return this.http.get<any[]>(this.Base.url + this.ApiUrl.get_list_education_osy(setYear, munCityId ), { responseType: 'json' });
   }
 
   AddEducationOsy(education:any) {
