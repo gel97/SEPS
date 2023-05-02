@@ -70,11 +70,8 @@ export class PostalServicesComponent implements OnInit {
 
   AddData()
   {
-    this.toValidate.data = isEmptyObject(this.data) ?true:false;
 
-    
-   
-    if(!this.toValidate.data)
+    if(!isEmptyObject(this.data))
     {
       this.data.setYear   = this.setYear;
       this.data.munCityId = this.munCityId;
@@ -109,8 +106,8 @@ export class PostalServicesComponent implements OnInit {
     else
     {
       Swal.fire(
-        'Empty Fields!',
-        '',
+        'Empty Fields.',
+        'Please fill out the input fields',
         'warning'
         );
     }

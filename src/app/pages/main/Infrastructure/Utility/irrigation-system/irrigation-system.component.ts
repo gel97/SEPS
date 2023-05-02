@@ -3,6 +3,7 @@ import Swal from 'sweetalert2';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { ServiceIrrigationService } from 'src/app/shared/Infrastructure/Utilities/service-irrigation.service';
+import { isEmptyObject } from 'jquery';
 @Component({
   selector: 'app-irrigation-system',
   templateUrl: './irrigation-system.component.html',
@@ -74,14 +75,11 @@ export class IrrigationSystemComponent implements OnInit {
 
   AddIrrigation()
   {
-    this.toValidate.irrigableNtl = this.irrigation.irrigableNtl=="" || this.irrigation.irrigableNtl ==null?true:false;
-    this.toValidate.irrigableCom = this.irrigation.irrigableCom=="" || this.irrigation.irrigableCom ==null?true:false;
 
-    this.irrigation.setYear   = this.setYear;
-    this.irrigation.munCityId = this.munCityId;
-   
-    if(!this.toValidate.irrigableNtl && !this.toValidate.irrigableCom)
+    if(!isEmptyObject(this.irrigation))
     {
+      this.irrigation.setYear   = this.setYear;
+      this.irrigation.munCityId = this.munCityId;
       this.service.AddServiceIrrigation(this.irrigation).subscribe(
         {
           next: (request) => {
@@ -113,7 +111,7 @@ export class IrrigationSystemComponent implements OnInit {
     {
       Swal.fire(
         'Missing Data!',
-        'Please fill out the required fields.',
+        'Please fill out the input fields.',
         'warning'
         );
     }

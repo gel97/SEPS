@@ -10,7 +10,7 @@
             </div>
             <div *ngIf="!hasData" class ="form-inline float-right ">
               <app-admin>
-                <button (click)="isAdd = true;" class="btn btn-primary" data-bs-toggle="modal"
+                <button (click)="isAdd = true;" class="btn btn-primary mb-2" data-bs-toggle="modal"
                   data-bs-target="#mEducation">
                   <i class="fa fa-plus"></i>
                   Irrigation System
@@ -92,8 +92,8 @@
             <tbody>
               <tr>
                 <td>Irrigable Area (Has) :	</td>
-                <td><input type="number" class="form-control" id="" placeholder="" [(ngModel)]="irrigation.irrigableNtl" [ngClass]="toValidate.irrigableNtl?'is-invalid':''" (keyup)="toValidate.irrigableNtl=false"></td>
-                <td><input type="number" class="form-control" id="" placeholder="" [(ngModel)]="irrigation.irrigableCom" [ngClass]="toValidate.irrigableCom?'is-invalid':''" (keyup)="toValidate.irrigableCom=false"></td>
+                <td><input type="number" class="form-control" id="" placeholder="" [(ngModel)]="irrigation.irrigableNtl"></td>
+                <td><input type="number" class="form-control" id="" placeholder="" [(ngModel)]="irrigation.irrigableCom"></td>
               </tr>
               <tr>
                 <td>Irrigated Area (Has) :	</td>
