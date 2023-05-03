@@ -21,7 +21,7 @@
             <label>List of Public Elementary Schools </label>
             <div class="table-responsive">
               <table class="table table-light table-striped">
-                <thead>
+                <thead class="table-dark">
                   <tr>
                     <th scope="col">#</th>
                     <th scope="col">School ID#</th>
@@ -51,30 +51,24 @@
                     <td>{{data.brgyName}}</td>
                     <td>{{data.longtitude}},<br>{{data.latitude}}</td>
                     <td>
-                      <div class="row">
-                        <div class="col-lg-3">
+                     <div class="d-inline-flex">
                           <app-admin>
                             <button (click)="isAdd = false; elementary = data" class="btn btn-info btn-circle"
                               data-toggle="modal" data-target="#mEducation"><i class="fa fa-pen"></i>
                             </button>
                           </app-admin>
                           &nbsp;
-                        </div>
-                        <div class="col-lg-3">
                           <button (click)="SetMarker(data); elementary=data" class="btn btn-success btn-circle" role="button" data-toggle="modal"
                             data-target="#gmapModal">
                             <i class="fa fa-globe">
                             </i>
                           </button>
                           &nbsp;
-                        </div>
-                        <div class="col-lg-3">
                           <app-admin>
                             <button type="button" title="Delete" class="btn btn-warning btn-circle"
                               (click)="DeletePublicElemSchool(data.transId)"><i class="fa fa-trash"></i>
                             </button>&nbsp;
                           </app-admin>
-                        </div>
                       </div>
                     </td>
                   </tr>
@@ -86,7 +80,6 @@
       </div>
     </div>
   </div>
-</div>
 
 <div class="modal fade" id="mEducation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -194,8 +187,10 @@
         <app-gmap></app-gmap>
       </div>
       <div class="modal-footer">
+        <app-admin>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" (click)="EditPublicElemSchool()">Save changes</button>
+      </app-admin>
       </div>
     </div>
   </div>

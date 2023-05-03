@@ -30,9 +30,23 @@ export class RiceCropsProductionComponent implements OnInit {
   dataList:any = [];
   addData:any = {};
   barangayList:any = [];
-  listofCrop:any = [{id: `1`, type: `one`}, {id: `2`, type: `two`}, {id: `3`, type: `three`}];
-  listofWater:any = [{id: `1`, type: `one`}, {id: `2`, type: `two`}, {id: `3`, type: `three`}];
-  listofLand:any = [{id: `1`, type: `one`}, {id: `2`, type: `two`}, {id: `3`, type: `three`}];
+  listofCrop:any = [{id: `1`, type: `Rice - Irrigated`},    {id: `2`, type: `Rice - Rainfed`},          {id: `3`, type: `Corn - White`},
+                    {id: `4`, type: `Corn - Yellow`},       {id: `5`, type: `Banana - Bungulan`},       {id: `6`, type: `Banana - Cavendish`},
+                    {id: `7`, type: `Banana - Lakatan`},    {id: `8`, type: `Banana - Latundan`},       {id: `9`, type: `Banana - Saba/Cardaba`},
+                    {id: `10`, type: `Coconut`},            {id: `11`, type: `Mango`},                  {id: `12`, type: `Durian`},
+                    {id: `13`, type: `Papaya`},             {id: `14`, type: `Coffee`},                 {id: `15`, type: `Cacao`},
+                    {id: `16`, type: `Mongo`},              {id: `17`, type: `Eggplant`},               {id: `18`, type: `Tomato`},
+                    {id: `19`, type: `Pechay`},             {id: `20`, type: `String beans`},           {id: `21`, type: `Gabi`},
+                    {id: `22`, type: `Ampalaya`},           {id: `23`, type: `Onion leeks`},            {id: `24`, type: `Ube`},
+                    {id: `25`, type: `Chayote`},            {id: `26`, type: `Patola`},                 {id: `27`, type: `Pomelo`},
+                    {id: `28`, type: `Gourd`},              {id: `29`, type: `Raddish`},                {id: `30`, type: `Rubber`},
+                    {id: `31`, type: `Okra`},               {id: `32`, type: `Cucumber`},               {id: `33`, type: `Abaca`},
+                    {id: `34`, type: `Squash fruit`},       {id: `35`, type: `Camote`},                 {id: `36`, type: `Falcata`},
+                    {id: `37`, type: `Ginger`},             {id: `38`, type: `Cassava`},                {id: `39`, type: `Lanzones`},
+                    {id: `40`, type: `Pepper`},             {id: `41`, type: `Other Vgetables`},];
+
+  listofWater:any = [{id: `1`, type: `Irrigated`}, {id: `2`, type: `Rain-fed`}];
+  listofLand:any = [{id: `1`, type: `Owned`}, {id: `2`, type: `Rented`}, {id: `3`, type: `Sharecropping Tenant`},{id: `3`, type: `Informal Tenant`}];
   visible: boolean = true;
   not_visible: boolean = true;
   dummy_addData:any = {};

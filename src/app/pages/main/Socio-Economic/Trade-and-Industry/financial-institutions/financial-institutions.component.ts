@@ -18,16 +18,19 @@ export class FinancialInstitutionsComponent implements OnInit {
 
 
   list_of_category = [
-    { id: 1, name_category: "Agricultural products" },
-    { id: 2, name_category: "Crafts/ Furnitures" },
+    { id: 1, name_category: "Commercial Bank" },
+    { id: 2, name_category: "Thrift Bank" },
+    { id: 3, name_category: "Government-owned Bank" },
+    { id: 4, name_category: "Rural Bank" },
+    { id: 5, name_category: "Insurance Company/ Pre-need plans" },
+    { id: 6, name_category: "Cooperative" },
+    { id: 7, name_category: "Lending Investor/ Credit Union" },
+    { id: 8, name_category: "Money Remittance Center/ Pawnshop" },
+    { id: 9, name_category: "Money Changers/ Foreign Exchange" },
+    { id: 10, name_category: "others" },
   ];
 
-  list_of_Business = [
-    { id: 1, name_business: "Agricultural equipments and supplies" },
-    { id: 2, name_business: "Woodcrafts/ Wooden Furniture" },
-    { id: 3, name_business: "Casket/coffin making" },
-    { id: 4, name_business: "Handicrafts/ Shellcraft" },
-  ];
+
   errorinput: any;
 
   constructor( private service:FinancialInstitutionsService, private auth:AuthService) { }

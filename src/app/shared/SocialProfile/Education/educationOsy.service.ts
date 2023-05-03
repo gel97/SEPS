@@ -33,7 +33,7 @@ export class EducationOsyService {
   ListOfBarangay(munCityId:any)
   {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay(munCityId), { responseType: 'json' });
- 
+
   }
-  
+
 }

@@ -52,10 +52,14 @@
                               <td>{{text.amount}}</td>
 
                               <td>
+                                <div class="d-inline-flex">
                                 <app-admin>
                                 <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info btn-circle" data-toggle="modal" data-target="#Edit" ><i class="fa fa-pen"></i> </button>&nbsp;
+                              </app-admin>&nbsp;
+                              <app-admin>
                                 <button type="button" title="Delete" class="btn btn-warning btn-circle" (click)="delete(text.transId,i)"><i class="fa fa-trash"></i>  </button>
                                 </app-admin>
+                                </div>
                               </td>
 
                             </tr>
@@ -94,7 +98,7 @@
                                 <th scope="col">Year</th>
                                 <th scope="col">Expenditures</th>
                                 <th scope="col">Amount(PhP)</th>
-                                <th width ="8%"></th>
+                                <th ></th>
 
                               </tr>
                             </thead>
@@ -109,10 +113,14 @@
                               <td>{{text.amount}}</td>
 
                               <td>
+                                <div class="d-inline-flex">
                                 <app-admin>
                                 <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info btn-circle" data-toggle="modal" data-target="#Edit" ><i class="fa fa-pen"></i> </button>&nbsp;
+                                </app-admin>&nbsp;
+                                <app-admin>
                                 <button type="button" title="Delete" class="btn btn-warning btn-circle" (click)="delete(text.transId,i)"><i class="fa fa-trash"></i>  </button>
                                </app-admin>
+                               </div>
                               </td>
                             </tr>
                             </tbody>

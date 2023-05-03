@@ -38,20 +38,23 @@ list_of_category = [
 ];
 
 list_of_Business = [
-  { id: 1, name_business: "Agricultural Equipment and Supplies" },
-  { id: 2, name_business: "Fishing Services" },
-  { id: 3, name_business: "Poultry/Livestock Farm" },
-  { id: 4, name_business: "Poultry Supply" },
-  { id: 5, name_business: "Ricemills" },
-  { id: 6, name_business: "Seed Dealers" },
-  { id: 7, name_business: "Slaughter Houses" },
-  { id: 8, name_business: "Warehouses" },
-  { id: 9, name_business: "Garden Plants Retailers" },
-  { id: 10, name_business: "Banana Growers" },
-  { id: 11, name_business: "Fish Cages" },
-  { id: 12, name_business: "Banana Tissue Culture Propagator" },
-  { id: 13, name_business: "Copra Trader" },
-  { id: 14, name_business: "Banana Exporter" },
+  { id: 1, name_business: "Agricultural Equipment and Supplies" , value: 1},
+  { id: 1, name_business: "Fishing Services", value: 2},
+  { id: 1, name_business: "Poultry/Livestock Farm" , value: 3},
+  { id: 1, name_business: "Poultry Supply" , value: 4},
+  { id: 2, name_business: "Ricemills" , value: 5},
+  { id: 2, name_business: "Seed Dealers" , value: 6},
+  { id: 2, name_business: "Slaughter Houses" , value: 7 },
+  { id: 2, name_business: "Warehouses" , value: 8},
+  { id: 3, name_business: "Garden Plants Retailers" , value: 9},
+  { id: 3, name_business: "Banana Growers" , value: 10},
+  { id: 3, name_business: "Fish Cages" , value: 11},
+  { id: 3, name_business: "Banana Tissue Culture Propagator" , value: 12},
+  { id: 4, name_business: "Copra Trader" , value: 13},
+  { id: 4, name_business: "Banana Exporter" , value: 14},
+  { id: 4, name_business: "Feeds Dealer/Retailer" , value: 15},
+  { id: 4, name_business: "Fertilizer Dealer/Retailer" , value: 16},
+
 ];
 
 constructor( private service:SummCommercialService, private auth:AuthService) { }

@@ -30,7 +30,8 @@ export class RicemillsComponent implements OnInit {
   dataList: any = [];
   addData: any = {};
   barangayList: any = [];
-  listofRicemill: any = [{ id: `1`, type: `one` }, { id: `2`, type: `two` }, { id: `3`, type: `three` }];
+  listofRicemill: any = [{ id: `1`, type: `Cono` }, { id: `2`, type: `Kiskisan` }, { id: `3`, type: `Rubber Roll` },
+                         { id: `4`, type: `Centrifugal` }, { id: `5`, type: `MOBILE` }, { id: `6`, type: `Others` }];
   visible: boolean = true;
   not_visible: boolean = true;
   dummy_addData: any = {};

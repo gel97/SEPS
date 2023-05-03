@@ -21,7 +21,7 @@
             <label>List of Tertiary Schools Schools</label>
             <div class="table-responsive">
               <table class="table table-light table-striped">
-                <thead>
+                <thead class="table-dark">
                   <tr>
                     <th scope="col">#</th>
                     <th scope="col">School ID#</th>
@@ -73,7 +73,7 @@
                           (click)="DeleteSchool(data.transId)"><i class="fa fa-trash"></i>
                         </button>&nbsp;
                       </app-admin>
-                      </div>                    
+                      </div>
                     </td>
                   </tr>
                 </tbody>
@@ -110,7 +110,7 @@
             <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" [(ngModel)]="school.remarks"></textarea>
            </div>
         </div>
-       
+
         <div class="row">
           <div class="col-lg-3">
             <label for="exampleFormControlInput1">No. of Teachers :</label>
@@ -200,8 +200,10 @@
         <app-gmap></app-gmap>
       </div>
       <div class="modal-footer">
+        <app-admin>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" (click)="EditSchool()">Save changes</button>
+      </app-admin>
       </div>
     </div>
   </div>

@@ -95,12 +95,16 @@
                       <td>{{text.contact}} </td>
                       <td>{{text.term}}</td>
                       <td>
-                        <app-admin>
+                        <div class="d-inline-flex">
+                          <app-admin>
                         <button type="button" title="Edit" (click)="editModal=text" class="btn btn-info btn-circle"
-                        data-toggle="modal" data-target="#exampleModalLong"><i class="fa fa-pen"></i> </button>&nbsp;
+                        data-toggle="modal" data-target="#exampleModalLong"><i class="fa fa-pen"></i> </button>
+                        </app-admin>&nbsp;
+                        <app-admin>
                         <button type="button" title="Delete" class="btn btn-warning btn-circle" (click)="delete(text)"><i
                         class="fa fa-trash"></i> </button>
                       </app-admin>
+                      </div>
                       </td>
                     </tr>
                   </tbody>

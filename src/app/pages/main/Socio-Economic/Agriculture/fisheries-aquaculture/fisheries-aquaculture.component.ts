@@ -30,8 +30,9 @@ export class FisheriesAquacultureComponent implements OnInit {
   dataList: any = [];
   addData: any = {};
   barangayList: any = [];
-  listofHarvest: any = [{ id: `1`, type: `one` }, { id: `2`, type: `two` }, { id: `3`, type: `three` }];
-  listofFishing: any = [{ id: `1`, type: `one` }, { id: `2`, type: `two` }, { id: `3`, type: `three` }];
+  listofHarvest: any = [{ id: `1`, type: `Bangus` }, { id: `2`, type: `Tilapia` }, { id: `3`, type: `Shrimp` },
+                        { id: `4`, type: `Crabs` }, { id: `5`, type: `Cream Dory` }, { id: `6`, type: `Hito` }, { id: `7`, type: `Others` }];
+  listofFishing: any = [{ id: `1`, type: `` }, { id: `2`, type: `` }, { id: `3`, type: `` }];
   visible: boolean = true;
   not_visible: boolean = true;
   dummy_addData: any = {};

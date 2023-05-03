@@ -56,7 +56,7 @@
                   <th scope="col">Location</th>
                   <th scope="col">Barangay</th>
                   <th scope="col">Geo-Coord.(Long,Lat)</th>
-                  <th width="10%"></th>
+                  <th ></th>
                 </tr>
               </thead>
               <tbody>
@@ -86,17 +86,20 @@
                   <td>{{dataItem.brgyName}}</td>
                   <td>{{dataItem.longtitude}}, {{dataItem.latitude}}</td>
                   <td>
+                    <div class="d-inline-flex">
                     <app-admin>
                       <button (click)="addData = dataItem" data-toggle="modal" (click)="editToggle()"
                         data-target="#exampleModal" class="btn btn-info btn-circle">
-                        <i class="fas fa-pen"></i></button>&nbsp;
+                        <i class="fas fa-pen"></i></button> </app-admin>&nbsp;
                       <button (click)="SetMarker(dataItem); addData = dataItem" data-toggle="modal"
                         data-target="#gmapModal" class="btn btn-success btn-circle">
                         <i class="fas fa-globe"></i></button>&nbsp;
+                        <app-admin>
                       <button class="btn btn-warning btn-circle" (click)="DeleteAgriculture(dataItem)">
                         <i class="fas fa-trash"></i>
                       </button>
                     </app-admin>
+                  </div>
                   </td>
                 </tr>
               </tbody>
@@ -140,29 +143,23 @@
           <div class="row">
             <div class="col-lg-4">
               <label for="category">Type of Crop:</label>
-              <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.type" [ngClass]="toValidate.type?'is-invalid':''" ((keyup))="toValidate.type=false">
-                <option selected>Select Category</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+              <select class="form-select"  [(ngModel)]="addData.type" [ngClass]="toValidate.type?'is-invalid':''" (ngModelChange)="toValidate.type=false">
+                <option selected></option>
+                <option *ngFor="let list of listofCrop" value={{list.id}} >{{list.type}}</option>
               </select>
             </div>
             <div class="col-lg-4">
               <label for="category">Water Source :</label>
               <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.source" [ngClass]="toValidate.source?'is-invalid':''" (keyup)="toValidate.source=false">
-                <option selected>Select Category</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+                <option selected></option>
+                <option *ngFor="let list of listofWater" value={{list.id}} >{{list.type}}</option>
               </select>
             </div>
             <div class="col-lg-4">
               <label for="category">Land Tenure : </label>
               <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.ownershipType" [ngClass]="toValidate.ownershipType?'is-invalid':''" (keyup)="toValidate.ownershipType=false">
-                <option selected>Select Category</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+                <option selected></option>
+                <option *ngFor="let list of listofLand" value={{list.id}} >{{list.type}}</option>
               </select>
             </div>
           </div><br>
@@ -204,16 +201,16 @@
           </div>
         </div>
         <button type="button" *ngIf="visible" (click)="AddAgriculture()" id="closeModal" class="btn btn-primary">
-          <i class="fas fa-check">&nbsp;</i>Save
-        </button>
+          <i class="fas fa-check"></i>Save
+        </button>&nbsp;
         <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal"
           aria-hidden="true">
-          <i class="fas fa-times">&nbsp;</i>Close
-        </button>
+          <i class="fas fa-times"></i>Close
+        </button>&nbsp;
         <button type="button" *ngIf="not_visible" (click)="EditAgriculture()" data-toggle="modal"
           data-target="#exampleModal" aria-hidden="true" class="btn btn-primary">
-          <i class="fas fa-edit">&nbsp;</i>UPDATE
-        </button>
+          <i class="fas fa-edit"></i>UPDATE
+        </button>&nbsp;
       </div>
     </div>
   </div>
@@ -234,8 +231,10 @@
         <app-gmap></app-gmap>
       </div>
       <div class="modal-footer">
+        <app-admin>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" (click)="EditAgriculture()">Save changes</button>
+      </app-admin>
       </div>
     </div>
   </div>

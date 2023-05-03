@@ -27,6 +27,7 @@
                             <div class="col-lg-6 ">
                             </div>
                         </div>
+                        <div class ="table-responsive">
                         <table class="table table-light table-striped">
                             <thead class="table-dark">
                                 <tr>
@@ -73,6 +74,7 @@
                                 </tr>
                             </tbody>
                         </table>
+                      </div>
                     </div>
                 </div>
             </div>
@@ -179,8 +181,10 @@
                 <app-gmap></app-gmap>
             </div>
             <div class="modal-footer">
+              <app-admin>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" (click)="EditTourism()">Save changes</button>
+              </app-admin>
             </div>
         </div>
     </div>

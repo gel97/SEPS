@@ -55,7 +55,7 @@ export class OSchoolYouthComponent implements OnInit {
     this.GetListOsy();
   }
 
-  GetListBarangay() 
+  GetListBarangay()
   {
     this.service.ListOfBarangay(this.auth.munCityId).subscribe(data => {
       this.listBarangay = (<any>data);
@@ -87,11 +87,11 @@ export class OSchoolYouthComponent implements OnInit {
 
   AddOsy()
   {
-    this.toValidate.brgyId = this.osy.brgyId=="" || this.osy.brgyId ==null?true:false; 
-    
+    this.toValidate.brgyId = this.osy.brgyId=="" || this.osy.brgyId ==null?true:false;
+
     this.osy.setYear   = this.setYear;
     this.osy.munCityId = this.munCityId;
-   
+
     if(!this.toValidate.name && !this.toValidate.brgyId)
     {
       this.service.AddEducationOsy(this.osy).subscribe(
@@ -129,7 +129,7 @@ export class OSchoolYouthComponent implements OnInit {
         'warning'
         );
     }
-   
+
 
   }
 

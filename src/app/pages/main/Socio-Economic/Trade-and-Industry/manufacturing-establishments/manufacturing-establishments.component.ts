@@ -18,15 +18,21 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
   searchText: string= "";
 
   list_of_category = [
-    { id: 1, name_category: "Agricultural products" },
-    { id: 2, name_category: "Crafts/ Furnitures" },
+    { id: 1, name_category: "Food processing" },
+    { id: 2, name_category: "Agricultural products" },
+    { id: 3, name_category: "Garments and embroidery" },
+    { id: 4, name_category: "Crafts/ Furnitures" },
+    { id: 5, name_category: "Ceramics/ Paper/ Plastic" },
+    { id: 6, name_category: "Chemical and pharmaceutical" },
+    { id: 7, name_category: "Jewelry" },
+    { id: 8, name_category: "Other non-metallic products" },
   ];
 
   list_of_Business = [
-    { id: 1, name_business: "Agricultural equipments and supplies" },
-    { id: 2, name_business: "Woodcrafts/ Wooden Furniture" },
-    { id: 3, name_business: "Casket/coffin making" },
-    { id: 4, name_business: "Handicrafts/ Shellcraft" },
+    { id: 1, name_business: "" },
+    { id: 2, name_business: "" },
+    { id: 3, name_business: "" },
+    { id: 4, name_business: "" },
   ];
 
 
