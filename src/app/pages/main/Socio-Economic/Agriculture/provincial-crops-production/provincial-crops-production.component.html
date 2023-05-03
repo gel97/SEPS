@@ -58,17 +58,23 @@
             <tr *ngFor="let text of Crops, let i = index">
               <td>{{i + 1}}</td>
               <td>
-                <div *ngFor="let item of list_of_CropType">
+                <div *ngFor="let item of listofCrop">
                 <span *ngIf="item.id === text.type">{{item.name}} </span>
             </div>
           </td>
               <td>{{text.totalProd}}</td>
               <td>{{text.area}}</td>
               <td>{{text.remarks}}</td>
-              <td class="text-center">
-                  <button type="button" title="Edit" (click)="crop=text;add_Crops=false"  class="btn btn-info btn-circle" data-toggle="modal" data-target="#ModalAdd" ><i class="fa fa-pen"></i> </button>&nbsp;
+              <td>
+                <div  class="d-inline-flex">
+                  <app-admin>
+                  <button type="button" title="Edit" (click)="crop=text;add_Crops=false"  class="btn btn-info btn-circle" data-toggle="modal" data-target="#ModalAdd" ><i class="fa fa-pen"></i> </button>
+                </app-admin>&nbsp;
+                <app-admin>
                   <button type="button" title="Delete" (click)="delete(text.transId,i)" class="btn btn-warning btn-circle" ><i class="fa fa-trash"></i>  </button>
-              </td>
+                </app-admin>
+                </div>
+                </td>
 
             </tr>
             </tbody>
@@ -99,7 +105,7 @@
                 <div class="">
                   <label for="category">Type of Crop : </label>
                   <select class="form-select" aria-label="Default select example"  name="list_of_Crop" [(ngModel)]="crop.type" [ngClass]="toValidate.type?'is-invalid':''" (ngModelChange)="toValidate.type=false" >
-                    <option *ngFor="let list of list_of_CropType" value={{list.id}} >{{list.name}}</option>
+                    <option *ngFor="let list of listofCrop" value={{list.id}} >{{list.name}}</option>
                   </select>
                 </div>
 

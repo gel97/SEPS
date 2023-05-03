@@ -14,11 +14,11 @@
             <div class="form-inline float-right ">
               <form class=>
                 <app-admin>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd "><i
-                    class="fa fa-plus"></i>
-                  Registered Voters
-                </button>
-              </app-admin>
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd "><i
+                      class="fa fa-plus"></i>
+                    Registered Voters
+                  </button>
+                </app-admin>
               </form>
             </div><br><br>
             <div class="row">
@@ -27,43 +27,47 @@
               </div>
             </div>
             <div class="table-responsive">
-            <table class="table table-light table-striped">
-              <thead class="table-dark">
-                <tr>
-                  <th>#</th>
-                  <th scope="col" class="text-center">Barangay</th>
-                  <th scope="col" class="text-center">No. of Puroks </th>
-                  <th scope="col" class="text-center">No. of Established Precincts</th>
-                  <th scope="col" class="text-center">No. of Clustered Precincts</th>
-                  <th scope="col" class="text-center">No. of Voting Centers</th>
-                  <th scope="col" class="text-center">No. of Registered Voters </th>
-                  <th width="8%"></th>
-                </tr>
-              </thead>
+              <table class="table table-light table-striped">
+                <thead class="table-dark">
+                  <tr>
+                    <th>#</th>
+                    <th scope="col" class="text-center">Barangay</th>
+                    <th scope="col" class="text-center">No. of Puroks </th>
+                    <th scope="col" class="text-center">No. of Established Precincts</th>
+                    <th scope="col" class="text-center">No. of Clustered Precincts</th>
+                    <th scope="col" class="text-center">No. of Voting Centers</th>
+                    <th scope="col" class="text-center">No. of Registered Voters </th>
+                    <th></th>
+                  </tr>
+                </thead>
 
-              <tbody>
-                <tr *ngFor="let text of Voter, let i = index">
-                  <td>{{i + 1}}</td>
-                  <td>{{text.brgyName}}</td>
-                  <td class="text-center">{{text.purokNo}}</td>
-                  <td class="text-center">{{text.estabNo}}</td>
-                  <td class="text-center">{{text.clusterNo}}</td>
-                  <td class="text-center">{{text.votingCntrNo}}</td>
-                  <td class="text-center">{{text.regVoterNo}}</td>
+                <tbody>
+                  <tr *ngFor="let text of Voter, let i = index">
+                    <td>{{i + 1}}</td>
+                    <td>{{text.brgyName}}</td>
+                    <td class="text-center">{{text.purokNo}}</td>
+                    <td class="text-center">{{text.estabNo}}</td>
+                    <td class="text-center">{{text.clusterNo}}</td>
+                    <td class="text-center">{{text.votingCntrNo}}</td>
+                    <td class="text-center">{{text.regVoterNo}}</td>
 
-                  <td>
-                    <app-admin>
-                    <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info btn-circle" data-toggle="modal"
-                      data-target="#ModalEdit"><i class="fa fa-pen"></i> </button>&nbsp;
-                    <button type="button" title="Delete" class="btn btn-warning btn-circle" (click)="delete(text.transId,i)"><i
-                        class="fa fa-trash"></i> </button>&nbsp;
-                      </app-admin>
-                  </td>
+                    <td>
+                      <div class="d-inline-flex">
+                        <app-admin>
+                          <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info btn-circle"
+                            data-toggle="modal" data-target="#ModalEdit"><i class="fa fa-pen"></i> </button>
+                        </app-admin>&nbsp;
+                        <app-admin>
+                          <button type="button" title="Delete" class="btn btn-warning btn-circle"
+                            (click)="delete(text.transId,i)"><i class="fa fa-trash"></i> </button>&nbsp;
+                        </app-admin>
+                      </div>
+                    </td>
 
-                </tr>
-              </tbody>
-            </table>
-          </div>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -87,7 +91,8 @@
 
           <div class="col-lg-12"> <br>
             <label for="type">Barangay :</label>
-            <select class="form-select" aria-label="Default select example" [(ngModel)]="voter.brgyId" [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false">
+            <select class="form-select" aria-label="Default select example" [(ngModel)]="voter.brgyId"
+              [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false">
               <option *ngFor="let item  of barangays" value={{item.brgyId}}>{{item.brgyName}}</option>
             </select>
           </div>
@@ -99,7 +104,8 @@
 
           <div class="col-lg-12"><br>
             <label for="exampleFormControlTextarea1">No. of Established Precincts:</label>
-            <input type="text" class="form-control" id="" name="" [(ngModel)]="voter.estabNo" placeholder="" [ngClass]="toValidate.estabNo?'is-invalid':''" (keyup)="toValidate.estabNo=false">
+            <input type="text" class="form-control" id="" name="" [(ngModel)]="voter.estabNo" placeholder=""
+              [ngClass]="toValidate.estabNo?'is-invalid':''" (keyup)="toValidate.estabNo=false">
           </div>
           <div class="col-lg-12"><br>
             <label for="exampleFormControlTextarea1">No. of Clustered Precincts:</label>
@@ -111,18 +117,19 @@
           </div>
           <div class="col-lg-12"><br>
             <label for="exampleFormControlTextarea1">No. of Registered Voters:</label>
-            <input type="text" class="form-control" name="" id="" [(ngModel)]="voter.regVoterNo" placeholder="" [ngClass]="toValidate.regVoterNo?'is-invalid':''" (keyup)="toValidate.regVoterNo=false">
+            <input type="text" class="form-control" name="" id="" [(ngModel)]="voter.regVoterNo" placeholder=""
+              [ngClass]="toValidate.regVoterNo?'is-invalid':''" (keyup)="toValidate.regVoterNo=false">
 
             <div class="modal-footer">
               <div class="left-absolute" *ngIf="visible">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                        (ngModelChange)="onChange(isCheck)" [(ngModel)]="isCheck">
-                    <label class="form-check-label" for="flexCheckDefault">
-                        Several data
-                    </label>
+                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                    (ngModelChange)="onChange(isCheck)" [(ngModel)]="isCheck">
+                  <label class="form-check-label" for="flexCheckDefault">
+                    Several data
+                  </label>
                 </div>
-            </div>
+              </div>
               <button type="button" class="btn btn-primary" (click)=" addVoter()"><i
                   class="fa fa-check"></i>Save</button>&nbsp;
               <button type="button" class="btn btn-secondary" (click)="voter={}"><i
@@ -152,7 +159,8 @@
 
           <div class="col-lg-12"> <br>
             <label for="type">Barangay :</label>
-            <select class="form-select" aria-label="Default select example" [(ngModel)]="editmodal.brgyId" disabled="true">
+            <select class="form-select" aria-label="Default select example" [(ngModel)]="editmodal.brgyId"
+              disabled="true">
               <option *ngFor="let item  of barangays" value={{item.brgyId}}>{{item.brgyName}}</option>
             </select>
           </div>

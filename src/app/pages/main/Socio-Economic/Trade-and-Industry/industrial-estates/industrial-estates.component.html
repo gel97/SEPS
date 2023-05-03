@@ -49,7 +49,7 @@
                                   <th scope="col" class="text-center">Location</th>
                                   <th scope="col" class="text-center">Barangay</th>
                                   <th scope="col" class="text-center">Geo-Coord. (Long, Lat)</th>
-                                  <th width="10%" ></th>
+                                  <th></th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -68,11 +68,15 @@
                                   <td class="text-center">{{text.brgyName}}</td>
                                   <td class="text-center">{{text.longtitude}},<br>{{text.latitude}}</td>
                                   <td>
+                                    <div class="d-inline-flex">
                                     <app-admin>
-                                    <button type="button"  title="Edit" (click)="editmodal=text" class="btn btn-info btn-circle" data-toggle="modal" data-target="#ModalEdit" ><i class="fa fa-pen"></i></button>&nbsp;
+                                    <button type="button"  title="Edit" (click)="editmodal=text" class="btn btn-info btn-circle" data-toggle="modal" data-target="#ModalEdit" ><i class="fa fa-pen"></i></button>
+                                    </app-admin>&nbsp;
                                     <button (click)="SetMarker(text)" class="btn btn-success btn-circle" role="button" (click)="editmodal=text" data-toggle="modal" data-target="#gmapModal"><i class="fa fa-globe"> </i> </button>&nbsp;
+                                    <app-admin>
                                     <button type="button" title="Delete" class="btn btn-warning btn-circle" (click)="delete_Industrial(text.transId,i)"><i class="fa fa-trash"></i>  </button>&nbsp;
                                   </app-admin>
+                                  </div>
                                   </td>
                                 </tr>
                               </tbody>
@@ -165,7 +169,7 @@
 
 
             </div>
-              .......
+
         </div>
         <div class="modal-footer">
           <div class="left-absolute" *ngIf="visible">
@@ -288,8 +292,10 @@
         <app-gmap></app-gmap>
       </div>
       <div class="modal-footer">
+        <app-admin>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" (click)="Update_Industrial()" data-dismiss="modal">Save changes</button>
+      </app-admin>
       </div>
     </div>
   </div>

@@ -21,7 +21,7 @@
               <label>List of Out-of-School Youth</label>
               <div class="table-responsive">
                 <table class="table table-light table-striped">
-                  <thead>
+                  <thead class ="table-dark">
                     <tr>
                       <th scope="col">#</th>
                       <th scope="col">Barangay</th>
@@ -42,8 +42,8 @@
                       <td>{{data.age6_11}}</td>
                       <td>{{data.age12_15}}</td>
                       <td>{{data.age16_20}}</td>
-                      <td>{{data.age21_35}}</td>    
-                      <td>{{data.remarks}}</td>    
+                      <td>{{data.age21_35}}</td>
+                      <td>{{data.remarks}}</td>
                       <td>
                         <div class="d-inline-flex">
                           <app-admin>
@@ -51,13 +51,13 @@
                               data-toggle="modal" data-target="#mEducation"><i class="fa fa-pen"></i>
                             </button>
                           </app-admin>
-                          &nbsp;                     
+                          &nbsp;
                         <app-admin>
                           <button type="button" title="Delete" class="btn btn-warning btn-circle"
                             (click)="DeleteOsy(data.transId)"><i class="fa fa-trash"></i>
                           </button>&nbsp;
                         </app-admin>
-                        </div>                    
+                        </div>
                       </td>
                     </tr>
                   </tbody>
@@ -69,7 +69,7 @@
       </div>
     </div>
   </div>
-  
+
   <div class="modal fade" id="mEducation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
@@ -143,7 +143,7 @@
       </div>
     </div>
   </div>
-  
+
   <!-- modal area -->
   <div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -165,5 +165,4 @@
       </div>
     </div>
   </div>
-  
-  
+

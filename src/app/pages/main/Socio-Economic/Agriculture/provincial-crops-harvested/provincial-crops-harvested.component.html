@@ -66,10 +66,16 @@
 
 
 
-              <td class="text-center">
-                  <button type="button" title="Edit" (click)="commo=text;add_Crops_Total=false"  class="btn btn-info btn-circle" data-toggle="modal" data-target="#ModalAdd" ><i class="fa fa-pen"></i> </button>&nbsp;
+              <td >
+                <div class="d-inline-flex">
+                  <app-admin>
+                  <button type="button" title="Edit" (click)="commo=text;add_Crops_Total=false"  class="btn btn-info btn-circle" data-toggle="modal" data-target="#ModalAdd" ><i class="fa fa-pen"></i> </button>
+                  </app-admin>&nbsp;
+              <app-admin>
                   <button type="button" title="Delete" (click)="delete(text.transId,i)" class="btn btn-warning btn-circle" ><i class="fa fa-trash"></i>  </button>
-              </td>
+                </app-admin>
+                </div>
+                </td>
 
             </tr>
             </tbody>

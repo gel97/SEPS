@@ -30,7 +30,7 @@ export class SlaughterhousesComponent implements OnInit {
   dataList: any = [];
   addData: any = {};
   barangayList: any = [];
-  listofOwnership: any = [{ id: `1`, type: `one` }, { id: `2`, type: `two` }, { id: `3`, type: `three` }];
+  listofOwnership: any = [{ id: `1`, type: `Government` }, { id: `2`, type: `Private` }];
   visible: boolean = true;
   not_visible: boolean = true;
   dummy_addData: any = {};

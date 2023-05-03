@@ -50,7 +50,7 @@
               <th></th>
               <th scope="col" class="text-center">Major Activity</th>
               <th scope="col" class="text-center">Brief Description</th>
-              <th width="8%"></th>
+              <th></th>
               <th></th>
             </tr>
           </thead>
@@ -64,10 +64,14 @@
 
 
               <td class="text-center">
+                <div class="d-inline-flex">
                 <app-admin>
-                 <button type="button" title="Edit" (click)="editmodal=text"  class="btn btn-info btn-circle" data-toggle="modal" data-target="#ModalEdit" ><i class="fa fa-pen"></i> </button>&nbsp;
-                <button type="button" title="Delete" (click)="delete(text.transId,i)" class="btn btn-warning btn-circle" ><i class="fa fa-trash"></i>  </button>
+                 <button type="button" title="Edit" (click)="editmodal=text"  class="btn btn-info btn-circle" data-toggle="modal" data-target="#ModalEdit" ><i class="fa fa-pen"></i> </button>
+                </app-admin>&nbsp;
+                 <app-admin>
+                 <button type="button" title="Delete" (click)="delete(text.transId,i)" class="btn btn-warning btn-circle" ><i class="fa fa-trash"></i>  </button>
               </app-admin>
+              </div>
               </td>
               <td></td>
             </tr>

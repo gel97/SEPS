@@ -51,17 +51,20 @@
                     <td>{{dataItem.brgyName}}</td>
                     <td>{{dataItem.longtitude}},<br> {{dataItem.latitude}}</td>
                     <td>
+                      <div class="d-inline-flex">
                       <app-admin>
                         <button (click)="addData = dataItem" data-toggle="modal" (click)="editToggle()"
                           data-target="#exampleModal" class="btn btn-info btn-circle">
-                          <i class="fas fa-pen"></i></button>&nbsp;
+                          <i class="fas fa-pen"></i></button></app-admin>&nbsp;
                         <button (click)="SetMarker(dataItem); addData = dataItem" data-toggle="modal"
                           data-target="#gmapModal" class="btn btn-success btn-circle">
                           <i class="fas fa-globe"></i></button>&nbsp;
+                          <app-admin>
                         <button class="btn btn-warning btn-circle" (click)="DeleteAgriculture(dataItem)">
                           <i class="fas fa-trash"></i>
                         </button>
                       </app-admin>
+                    </div>
                     </td>
                   </tr>
                 </tbody>
@@ -180,8 +183,10 @@
           <app-gmap></app-gmap>
         </div>
         <div class="modal-footer">
+          <app-admin>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary" (click)="EditAgriculture()"  data-dismiss="modal">Save changes</button>
+        </app-admin>
         </div>
       </div>
     </div>

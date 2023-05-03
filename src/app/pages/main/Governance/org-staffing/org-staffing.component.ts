@@ -79,9 +79,9 @@ AddOrg(){
       'Data Added Successfully!',
       'success'
     );
-
+  this.Init();
    this.org = {};
-    this.vieworg.push(request);
+   this.vieworg.push(request);
   },);
 }
 }

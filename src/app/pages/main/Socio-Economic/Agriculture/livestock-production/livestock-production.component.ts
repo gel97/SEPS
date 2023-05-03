@@ -30,7 +30,11 @@ export class LivestockProductionComponent implements OnInit {
   dataList: any = [];
   addData: any = {};
   barangayList: any = [];
-  listofPoultry: any = [{ id: `1`, type: `Cattle` }, { id: `2`, type: `Carabao` }, { id: `3`, type: `Goat` }];
+  listofPoultry: any = [{ id: `1`, type: `Chicken - Broilers` }, { id: `2`, type: `Chicken - Layers` }, { id: `3`, type: `Ducks/ Gees` },
+                        { id: `4`, type: `Hogs` }, { id: `5`, type: `Goat/ Sheep` }, { id: `6`, type: `Cattles` },
+                        { id: `7`, type: `Carabao` }, { id: `8`, type: `Crocs` }, { id: `9`, type: `Avaboy - halal` } ,
+                        { id: `10`, type: `Chicken - Native` }, { id: `11`, type: `Turkey` }, { id: `12`, type: `Swine` },
+                        { id: `13`, type: `Dog` }, { id: `14`, type: `Others` }, ];
   visible: boolean = true;
   not_visible: boolean = true;
   dummy_addData: any = {};

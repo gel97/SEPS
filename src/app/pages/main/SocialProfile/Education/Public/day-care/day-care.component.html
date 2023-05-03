@@ -21,7 +21,7 @@
             <label>List of Day Care Centers </label>
             <div class="table-responsive">
               <table class="table table-light table-striped">
-                <thead>
+                <thead class="table-dark">
                   <tr>
                     <th scope="col">#</th>
                     <th scope="col">Day Care Center Name</th>
@@ -49,31 +49,25 @@
                     <td>{{data.brgyName}}</td>
                     <td>{{data.longtitude}},<br>{{data.latitude}}</td>
                     <td>
-                      <div class="row">
-                        <div class="col-lg-3">
+                        <div class="d-inline-flex">
                           <app-admin>
                             <button (click)="isAdd = false; daycare = data" class="btn btn-info btn-circle"
                               data-toggle="modal" data-target="#mEducation"><i class="fa fa-pen"></i>
                             </button>
                           </app-admin>
                           &nbsp;
-                        </div>
-                        <div class="col-lg-3">
                           <button (click)="SetMarker(data); daycare=data" class="btn btn-success btn-circle" role="button" data-toggle="modal"
                             data-target="#gmapModal">
                             <i class="fa fa-globe">
                             </i>
                           </button>
                           &nbsp;
-                        </div>
-                        <div class="col-lg-3">
                           <app-admin>
                             <button type="button" title="Delete" class="btn btn-warning btn-circle"
                               (click)="DeleteDcareSchool(data.transId)"><i class="fa fa-trash"></i>
                             </button>&nbsp;
                           </app-admin>
                         </div>
-                      </div>
                     </td>
                   </tr>
                 </tbody>
@@ -192,8 +186,10 @@
         <app-gmap></app-gmap>
       </div>
       <div class="modal-footer">
+        <app-admin>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" (click)="EditDcareSchool()">Save changes</button>
+      </app-admin>
       </div>
     </div>
   </div>

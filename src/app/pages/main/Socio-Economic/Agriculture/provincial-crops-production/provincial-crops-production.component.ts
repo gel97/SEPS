@@ -13,9 +13,23 @@ export class ProvincialCropsProductionComponent implements OnInit {
   constructor(private service:AgricultureProdService, private auth:AuthService) { }
 Crops:any=[];
 crop:any={};
+listofCrop:any = [{id: 1, name: "Rice - Irrigated"},    {id: 2, name: "Rice - Rainfed"},          {id: 3, name: "Corn - White"},
+{id: 4, name: "Corn - Yellow"},       {id: 5, name: "Banana - Bungulan"},       {id: 6, name: "Banana - Cavendish"},
+{id: 7, name: "Banana - Lakatan"},    {id: 8, name: "Banana - Latundan"},       {id: 9, name: "Banana - Saba/Cardaba"},
+{id: 10, name: "Coconut"},            {id: 11, name: "Mango"},                  {id: 12, name: "Durian"},
+{id: 13, name: "Papaya"},             {id: 14, name: "Coffee"},                 {id: 15, name: "Cacao"},
+{id: 16, name: "Mongo"},              {id: 17, name: "Eggplant"},               {id: 18, name: "Tomato"},
+{id: 19, name: "Pechay"},             {id: 20, name: "String beans"},           {id: 21, name: "Gabi"},
+{id: 22, name: "Ampalaya"},           {id: 23, name: "Onion leeks"},            {id: 24, name: "Ube"},
+{id: 25, name: "Chayote"},            {id: 26, name: "Patola"},                 {id: 27, name: "Pomelo"},
+{id: 28, name: "Gourd"},              {id: 29, name: "Raddish"},                {id: 30, name: "Rubber"},
+{id: 31, name: "Okra"},               {id: 32, name: "Cucumber"},               {id: 33, name: "Abaca"},
+{id: 34, name: "Squash fruit"},       {id: 35, name: "Camote"},                 {id: 36, name: "Falcata"},
+{id: 37, name: "Ginger"},             {id: 38, name: "Cassava"},                {id: 39, name: "Lanzones"},
+{id: 40, name: "Pepper"},             {id: 41, name: "Other Vgetables"},];
 
-list_of_CropType =[{ id: 1, name: "Sample1" },
-{ id: 2, name: "sample2" },];
+// list_of_CropType =[{ id: 1, name: "Sample1" },
+// { id: 2, name: "sample2" },];
 
 add_Crops:boolean = true;
 

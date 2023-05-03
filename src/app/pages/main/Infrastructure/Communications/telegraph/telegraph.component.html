@@ -21,7 +21,7 @@
             <label>List of Telegraph Facilities</label>
             <div class="table-responsive">
               <table class="table table-light table-striped">
-                <thead>
+                <thead class="table-dark">
                   <tr>
                     <th scope="col">#</th>
                     <th scope="col">Station</th>
@@ -169,8 +169,10 @@
         <app-gmap></app-gmap>
       </div>
       <div class="modal-footer">
+        <app-admin>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" (click)="EditData()">Save changes</button>
+      </app-admin>
       </div>
     </div>
   </div>
