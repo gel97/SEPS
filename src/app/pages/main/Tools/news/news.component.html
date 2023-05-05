@@ -34,8 +34,8 @@
                                         <td>{{i+1}}</td>
                                         <td><i *ngIf="item.hidden" class='fa fa-eye-slash text-gray-900'></i></td>
                                         <td>{{item.title}}</td>
-                                        <td>{{item.datePosted}}</td>
-                                        <td>{{item.lastUpdated}}</td>
+                                        <td>{{item.datePosted | hoursAgoOrDate}}</td>
+                                        <td>{{item.lastUpdated | hoursAgoOrDate}}</td>
                                         <td>
                                             <div class="d-inline-flex">
                                                 <app-admin>
