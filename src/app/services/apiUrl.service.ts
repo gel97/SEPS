@@ -284,4 +284,10 @@ export class ApiUrl {
     put_service_irrigation      = ()=>`/ServiceIrrigation`;
     delete_service_irrigation   = (transId:any)=>`/ServiceIrrigation/${transId}`; 
 
+// TOOLS
+    get_news      = ()=>`/News/list`;
+    post_news     = ()=>`/News`;
+    put_news      = ()=>`/News`;
+    delete_news   = (transId:any)=>`/News/${transId}`;
+
 }

@@ -449,13 +449,20 @@
 </div>
 </li>
 
-<!-- Nav Item - Tools -->
-<li class="nav-item">
-    <a class="nav-link">
+   <!-- Nav Item - Tools -->
+   <li class="nav-item" routerLinkActive="active">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTools"
+        aria-expanded="true" aria-controls="collapseTwo">
         <i class="fa fa-fw fa-wrench"></i> 
         <span>Tools</span>
     </a>
+    <div id="collapseTools" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div class="bg-lightblue collapse-inner rounded" >
+            <a class="collapse-item" routerLinkActive="active" routerLink="seps/Tools/news">News/ Announcements</a>
+        </div>
+    </div>
 </li>
+
 <!-- Divider -->
 <hr class="sidebar-divider d-none d-md-block">
 

@@ -107,6 +107,7 @@ import { WaterUtilityComponent } from './pages/main/Infrastructure/Utility/water
 import { DepartmentStoreComponent } from './pages/main/Infrastructure/Utility/department-store/department-store.component';
 import { MemorialParksComponent } from './pages/main/Infrastructure/Utility/memorial-parks/memorial-parks.component';
 import { FiscalMattersComponent } from './pages/main/Governance/fiscal-matters/fiscal-matters.component';
+import { NewsComponent } from './pages/main/Tools/news/news.component';
 const socioEconomic_TradeIndustry:string = 'seps/socio-economic/trade-and-industry/';
 const socioEconomic_Tourism:string = 'seps/socio-economic/Tourism/';
 const socioEconomic_Agriculture:string = 'seps/socio-economic/Agriculture/';
@@ -120,6 +121,7 @@ const Infrastructure_Transportation: string = 'seps/Insfrastructure/Transportati
 const Infrastructure_Communications: string = 'seps/Infrastructure/Communications';
 const Infrastructure_Utility: string ='seps/Infrastructure/Utility';
 const Governance:string ='seps/Governance';
+const Tools:string ='seps/Tools/';
 
 const routes: Routes = [
   {
@@ -147,6 +149,7 @@ const routes: Routes = [
       {path: 'seps/gov_Barangays',component:BarangaysComponent},
       {path: 'seps/gov_geoProfile',component:GeoProfileComponent},
       {path:'seps/admin/add_user',component:AddUserComponent},
+      {path: Tools+ 'news',component:NewsComponent},
       {path: socioEconomic_TradeIndustry+ 'major-economic-activities',component:MajorEconomicActivitiesComponent},
       {path: socioEconomic_TradeIndustry+ 'manufacturing-establishments',component:ManufacturingEstablishmentsComponent},
       {path: socioEconomic_TradeIndustry+ 'comercial-establishments',component:CommercialEstablishmentsComponent},
