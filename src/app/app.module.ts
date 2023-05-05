@@ -126,6 +126,7 @@ import { AgmCoreModule } from '@agm/core';
 import { AdminComponent } from './Admin/admin/admin.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { NewsComponent } from './pages/main/Tools/news/news.component';
+import { HoursAgoOrDatePipe } from './pipes/hoursAgoOrDate.pipe';
 
 
 
@@ -245,6 +246,7 @@ import { NewsComponent } from './pages/main/Tools/news/news.component';
     GmapComponent,
     AdminComponent,
     NewsComponent,
+    HoursAgoOrDatePipe,
 
   ],
   imports: [
@@ -263,7 +265,8 @@ import { NewsComponent } from './pages/main/Tools/news/news.component';
       // https://developers.google.com/maps/documentation/javascript/get-api-key?hl=en
       apiKey: 'AIzaSyBfQJlyD65DekS6HrSDe2z-6-KvoO4aeRk'
     }),
-    CKEditorModule
+    CKEditorModule,
+     
 
   ],
   providers: [AuthService ,CityOfficialService,

@@ -7,6 +7,6 @@
   .pointer {
     cursor: pointer;
   }
-
-  
-  
+  .selector-class {
+    overflow: hidden;
+  }

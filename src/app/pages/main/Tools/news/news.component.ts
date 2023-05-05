@@ -23,6 +23,7 @@ export class NewsComponent implements OnInit {
 
   ngOnInit(): void {
     this.data.isAdmin = 0;
+    this.data.hidden = 0;
     this.GetData();
   }
 
@@ -66,6 +67,13 @@ export class NewsComponent implements OnInit {
       {
         this.data.isAdmin = 0
       }
+      if(this.data.hidden){
+        this.data.hidden = 1
+      }
+      else
+      {
+        this.data.hidden = 0
+      }
       this.service.AddNews(this.data).subscribe({
         next: (request) => {
           this.GetData();
@@ -105,6 +113,13 @@ export class NewsComponent implements OnInit {
     else
     {
       this.data.isAdmin = 0
+    }
+    if(this.data.hidden){
+      this.data.hidden = 1
+    }
+    else
+    {
+      this.data.hidden = 0
     }
     this.service.EditNews(this.data).subscribe(
       {
@@ -160,6 +175,7 @@ export class NewsComponent implements OnInit {
     this.data.datePosted = null;
     this.data.lastUpdated = null;
     this.data.isAdmin = null;
+    this.data.hidden = null;
     this.data.tag = null;
   }
 }

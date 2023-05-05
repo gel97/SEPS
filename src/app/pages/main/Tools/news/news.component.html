@@ -10,7 +10,7 @@
                         </div>
                         <div class="form-inline float-right ">
                             <app-admin>
-                              <button (click)="isAdd = true;" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#openModal">
+                              <button (click)="isAdd = true;clear()" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#openModal">
                                 <i class="fa fa-plus"></i> News/ Announcements
                               </button>
                             </app-admin>
@@ -22,15 +22,17 @@
                                 <thead class="table-dark">
                                     <tr>
                                         <th scope="col">#</th>
+                                        <th></th>
                                         <th scope="col">Title</th>
                                         <th scope="col">Date Posted	</th>
                                         <th scope="col">Last Update</th>
-                                        <th></th>
+                                        <th width="5"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of listData; let i = index;">
                                         <td>{{i+1}}</td>
+                                        <td><i *ngIf="item.hidden" class='fa fa-eye-slash text-gray-900'></i></td>
                                         <td>{{item.title}}</td>
                                         <td>{{item.datePosted}}</td>
                                         <td>{{item.lastUpdated}}</td>
@@ -85,18 +87,51 @@
             </div>
             
         </div>
-        <div class="modal-footer">
-           <div class="left-absolute">
-            <div class="form-check">
+        <hr class="sidebar-divider my-0">
+        <div class="py-3 px-4">
+            
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                                [(ngModel)]="data.isAdmin">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                  Admin
+                                </label>
+                              </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                                [(ngModel)]="data.hidden">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                  Hidden
+                                </label>
+                              </div>
+                        </div> 
+                    </div>
+                                    
+                </div>
+                <div class="col-lg-6">
+                    <div class ="form-inline float-right ">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>&nbsp;
+                    <button type="button" class="btn btn-primary" (click)="isAdd? AddData(): EditData()">Save changes</button>
+                </div>
+                </div>
+
+            </div>
+           <!-- <div class="left-absolute">
+              <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
                 [(ngModel)]="data.isAdmin">
                 <label class="form-check-label" for="flexCheckDefault">
                   Admin
                 </label>
               </div>
-           </div>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" (click)="isAdd? AddData(): EditData()">Save changes</button>
+             
+           </div> -->
         </div>
       </div>
     </div>
