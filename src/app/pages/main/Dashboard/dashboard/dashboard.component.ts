@@ -66,8 +66,13 @@ export class DashboardComponent implements OnInit {
 
   get filterNews()
   {
-    return this.listNews.filter((a: any) => a.hidden == 0);
-
+    if(this.auth.o_munCityId){
+      return this.listNews.filter((a: any) => a.hidden == 0);
+    }
+    else{
+      return this.listNews.filter((a: any) => a.hidden == 0 && a.isAdmin == 0);
+    }
+    
   }
 
   GetImage()

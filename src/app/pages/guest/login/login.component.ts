@@ -29,12 +29,8 @@ signIn (){
   console.log(this.user);
   this.service.signin(this.user).subscribe(data=>{
       if(data.token!= null){
-        //alert(<any>data.token);
-        localStorage.setItem("token", data.token);
-        this.router.navigate(['/']); //navigate to homepage if authenticated
+        this.router.navigate(['/']);
       }
-
-
   },
   err => {
      console.log(err.error)
@@ -62,6 +58,16 @@ callLoginButton() {
 
       localStorage.setItem("token", this.userData.token);
       localStorage.setItem("userData", JSON.stringify(this.userData));
+
+      this.user.email = profile.getEmail();
+      this.user.fullName = profile.getName();
+      this.service.signinGoogle(this.user).subscribe(data => { },
+        err => {
+          console.log(err.error)
+          this.errorLogin = err.error;
+        }
+      );
+      
       this.zone.run(() => {
         this.router.navigate(['/']);
       });
