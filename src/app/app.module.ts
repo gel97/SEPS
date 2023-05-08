@@ -127,7 +127,11 @@ import { AdminComponent } from './Admin/admin/admin.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { NewsComponent } from './pages/main/Tools/news/news.component';
 import { HoursAgoOrDatePipe } from './pipes/hoursAgoOrDate.pipe';
-
+import {
+  FacebookLoginProvider,
+  SocialLoginModule,
+  SocialAuthServiceConfig,
+} from 'angularx-social-login';
 
 
 
@@ -266,6 +270,8 @@ import { HoursAgoOrDatePipe } from './pipes/hoursAgoOrDate.pipe';
       apiKey: 'AIzaSyBfQJlyD65DekS6HrSDe2z-6-KvoO4aeRk'
     }),
     CKEditorModule,
+    SocialLoginModule,
+
      
 
   ],
@@ -274,7 +280,21 @@ import { HoursAgoOrDatePipe } from './pipes/hoursAgoOrDate.pipe';
      provide: HTTP_INTERCEPTORS,
      useClass: TokenInterceptorService,
      multi: true
-    },],
+    },
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: FacebookLoginProvider.PROVIDER_ID,
+            provider: new FacebookLoginProvider('1325737945023713'),
+          },
+        ],
+      } as SocialAuthServiceConfig,
+    }
+  ],
+    
   bootstrap: [AppComponent]
 })
 export class AppModule { }

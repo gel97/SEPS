@@ -12,7 +12,11 @@ import { concatMap, delay } from "rxjs/operators";
 import * as $ from 'jquery';
 import { Router,NavigationEnd  } from '@angular/router';
 import { filter } from 'rxjs/operators';
-
+import {
+  SocialAuthService,
+  FacebookLoginProvider,
+  SocialUser,
+} from 'angularx-social-login';
 
 
 @Component({
@@ -36,7 +40,8 @@ export class MainLayoutComponent implements OnInit {
   active_set_year:any;
 
 
-  constructor(private service: AuthService, private router: Router, private baseUrl: BaseUrl, private imagesService: ImagesService) { 
+  constructor(private service: AuthService, private router: Router, private baseUrl: BaseUrl, private imagesService: ImagesService,
+    private socialAuthService: SocialAuthService) { 
     console.log(router.url);
 
     this.router.events.pipe(
@@ -150,6 +155,7 @@ export class MainLayoutComponent implements OnInit {
   signOut() {
     //localStorage.removeItem('token'); 
     this.service.clearSession();
+    this.socialAuthService.signOut();
     this.router.navigate(['/seps/guest/home']);
   }
 

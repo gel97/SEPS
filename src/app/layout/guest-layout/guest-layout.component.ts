@@ -10,6 +10,7 @@ export class GuestLayoutComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    window.location.reload;
   }
 
 }
