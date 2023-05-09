@@ -83,8 +83,21 @@ post_save_manuf_estab=()=>`/ManEstab`;
 put_update_manuf_estab=()=>`/ManEstab`;
 delete_manuf_estab=(transId:any)=>`/ManEstab/${transId}`;
 
+//Manufacturing Establishment
+get_list_transpo_road=(setYear:any, munCityId:any)=>`/TranspoRoads/${setYear}/${munCityId}`;
+post_save_transpo_road=()=>`/TranspoRoads`;
+put_update_transpo_road=()=>`/TranspoRoads`;
+delete_transpo_road=(transId:any)=>`/TranspoRoads/${transId}`;
 
+get_list_transpo_bridge=(setYear:any, munCityId:any)=>`/TranspoBridges/${setYear}/${munCityId}`;
+post_save_transpo_bridge=()=>`/TranspoBridges`;
+put_update_transpo_bridge=()=>`/TranspoBridges`;
+delete_transpo_bridge=(transId:any)=>`/TranspoBridges/${transId}`;
 
+get_list_transpo_terminal=(setYear:any, munCityId:any)=>`/TranspoTerminals/${setYear}/${munCityId}`;
+post_save_transpo_terminal=()=>`/TranspoTerminals`;
+put_update_transpo_terminal=()=>`/TranspoTerminals`;
+delete_transpo_terminal=(transId:any)=>`/TranspoTerminals/${transId}`;
 
 
 

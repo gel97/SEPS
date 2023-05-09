@@ -237,6 +237,7 @@ import { AdminComponent } from './Admin/admin/admin.component';
     CityLocationComponent,
     DashboardComponent,
     LoadingComponent,
+
     SepDataComponent,
     FilterPipe,
     FilterallPipe,
