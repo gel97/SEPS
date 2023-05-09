@@ -1,5 +1,4 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { ImagesService } from 'src/app/services/image.service';
 import { BaseUrl } from 'src/app/services/baseUrl.service';
@@ -11,6 +10,14 @@ import Swal from 'sweetalert2';
 import { Observable, of } from "rxjs";
 import { concatMap, delay } from "rxjs/operators";
 import * as $ from 'jquery';
+import { Router,NavigationEnd  } from '@angular/router';
+import { filter } from 'rxjs/operators';
+import {
+  SocialAuthService,
+  FacebookLoginProvider,
+  SocialUser,
+} from 'angularx-social-login';
+
 
 @Component({
   selector: 'app-main-layout',
@@ -32,13 +39,24 @@ export class MainLayoutComponent implements OnInit {
   set_year:any;
   active_set_year:any;
 
-  constructor(private service: AuthService, private router: Router, private baseUrl: BaseUrl, private imagesService: ImagesService) { }
+
+  constructor(private service: AuthService, private router: Router, private baseUrl: BaseUrl, private imagesService: ImagesService,
+    private socialAuthService: SocialAuthService) { 
+    console.log(router.url);
+
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(event => {
+
+      console.log(event);
+    });
+  }
 
   _userData: any = {};
   userInfo: any = {};
 
   ngOnInit(): void {
-    this.set_year = this.service.setYear;
+     this.set_year = this.service.setYear;
     this.active_set_year = this.service.activeSetYear;
     this._userData = this.service.getUserData();
     this.munCityName = this.service.munCityName;
@@ -137,6 +155,7 @@ export class MainLayoutComponent implements OnInit {
   signOut() {
     //localStorage.removeItem('token'); 
     this.service.clearSession();
+    this.socialAuthService.signOut();
     this.router.navigate(['/seps/guest/home']);
   }
 

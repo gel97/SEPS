@@ -3,6 +3,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
+import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 
 @Component({
   selector: 'app-city-location',
@@ -10,8 +11,8 @@ import Swal from 'sweetalert2';
   styleUrls: ['./city-location.component.css']
 })
 export class CityLocationComponent implements OnInit {
-@ViewChild ('long',{static:false}) longRef : ElementRef | undefined;
-@ViewChild ('lat',{static:false}) latRef : ElementRef | undefined;
+  @ViewChild(GmapComponent)
+  private gmapComponent!: GmapComponent;
 
 constructor(private service:MunCityLocService, private auth:AuthService) { }
 MunLoc:any =[];
@@ -54,22 +55,11 @@ onTableSizeChange(event:any ){ //paginate
 
 }
 
-// editBarangay(editBarangay:any={}) {
-// this.editmodal=editBarangay;
-// //passing the data from table (modal)
-// this.Init();
-
-// }
-
 // for modal
 updateM(){
-console.log(this.longRef?.nativeElement.value);
-console.log(this.latRef?.nativeElement.value);
-
- this.editmodal.longtitude=this.longRef?.nativeElement.value;
- this.editmodal.latitude= this.latRef?.nativeElement.value;
+ this.editmodal.longtitude=this.gmapComponent.markers.lng;
+ this.editmodal.latitude= this.gmapComponent.markers.lat;
  this.service.UpdateMunCity(this.editmodal).subscribe({next:(_data)=>{
-// this.editModal();
 },
 });
 
@@ -86,6 +76,17 @@ this.editmodal ={};
 }
 
 
-
+markerObj: any = {};
+SetMarker(data: any = {}) {
+  this.markerObj = {
+    lat: data.latitude,
+    lng: data.longtitude,
+    label: data.munCityName.charAt(0),
+    brgyName: '',
+    munCityName: data.munCityName,
+    draggable: true
+  };
+  this.gmapComponent.setMarker(this.markerObj);
+}
 
 }

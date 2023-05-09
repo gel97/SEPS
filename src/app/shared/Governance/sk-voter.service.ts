@@ -13,7 +13,7 @@ export class SkVoterService {
   constructor(private Http: HttpClient, private Auth: AuthService, private Base: BaseUrl, private ApiUrl: ApiUrl, private auth: AuthService) { }
 
   GetSKVoter():Observable<any[]> {
-    return this.Http.post<any[]>(this.Base.url + this.ApiUrl. post_get_skvoter(this.Auth.munCityId), { responseType: 'json' });
+    return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_get_skvoter(this.Auth.munCityId,this.Auth.setYear), { responseType: 'json' });
   }
 
   AddSKVoter(Voter: any = {}) {
@@ -25,5 +25,15 @@ export class SkVoterService {
     console.log(Voter)
     return this.Http.post(this.Base.url + this.ApiUrl. post_update_skvoter(), Voter, { responseType: 'json' });
   }
+
+
+  DeleteSKVoter(transId:any) {
+    return this.Http.delete(this.Base.url + this.ApiUrl.delete_skVoter(transId), { responseType: 'json' });
+  }
+
+  ListBarangay(){
+    return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay(this.Auth.munCityId), { responseType: 'json' });
+  }
+
 
 }

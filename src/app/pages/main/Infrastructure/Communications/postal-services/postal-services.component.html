@@ -1,75 +1,175 @@
-
 <div class="">
-
-  <div class="card o-hidden border-2 shadow-sm my-5">
-      <div class="card-body p-0">
-          <!-- Nested Row within Card Body -->
-          <div class="row">
-
-              <div class="col-lg-12">
-                  <div class="p-5">
-                      <div class="">
-                          <button class="btn btn-outline-primary btn-circle float-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
-                              <i class="fa fa-minus" aria-hidden="true"></i>
-
-                            </button>
-                      </div>
-                      <div class="text-center">
-                          <h1 class="h4 text-gray-900 mb-4">Postal Service Facilities</h1>
-                      </div>
-
-
-                      <form class="user collapse show" id="collapseExample">
-                          <div class="form-group">
-                              <div class="row">
-
-                                     <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1">Post Office/ Location :</label>
-                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                                     </div>
-                                     <div class ="col-lg-4"><br>
-                                      <label for="exampleFormControlTextarea1">No. of Post Masters :</label>
-                                      <input type="text" class="form-control" id="" placeholder="">
-                                     </div>
-                                     <div class ="col-lg-4"><br>
-                                      <label for="exampleFormControlTextarea1">No. of Mail Sorters :</label>
-                                      <input type="text" class="form-control" id="" placeholder="">
-                                     </div>
-                                     <div class ="col-lg-4"><br>
-                                      <label for="exampleFormControlTextarea1">No. of Postal Clerks :</label>
-                                      <input type="text" class="form-control" id="" placeholder="">
-                                     </div>
-                                     <div class ="col-lg-3"><br>
-                                      <label for="exampleFormControlTextarea1">No. of Mail Carriers :</label>
-                                      <input type="text" class="form-control" id="" placeholder="">
-                                     </div>
-                                     <div class ="col-lg-3"><br>
-                                      <label for="exampleFormControlTextarea1">Mail Truck/ Van :</label>
-                                      <input type="text" class="form-control" id="" placeholder="">
-                                     </div>
-                                     <div class ="col-lg-3"><br>
-                                      <label for="exampleFormControlTextarea1" >Motorcycle : </label>
-                                      <input type="text" class="form-control" id="" placeholder="">
-                                     </div>
-                                     <div class ="col-lg-3"><br>
-                                      <label for="exampleFormControlTextarea1" >Bicycle</label>
-                                      <input type="text" class="form-control" id="" placeholder="">
-                                     </div>
-                                     <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1">Postal Stations :</label>
-                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                                     </div>
-                                    </div>
-                                    </div>
-                                    <br>
-                            <button type="button" class="btn btn-primary">SAVE</button>&nbsp;
-                            <button type="button" class="btn btn-primary">RESET</button>&nbsp;
-                                    </form>
-              </div>
-          </div>
-      </div>
-  </div>
-
+    <div class="card o-hidden border-2 shadow-sm my-5">
+        <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="p-5">
+                        <div class="text-center">
+                            <h1 class="h4 text-gray-900 mb-4">Postal Service Facilities</h1>
+                        </div>
+                        <div *ngIf="!hasData" class="form-inline float-right ">
+                            <app-admin>
+                                <button (click)="isAdd = true;" class="btn btn-primary mb-2" data-bs-toggle="modal"
+                                    data-bs-target="#mEducation">
+                                    <i class="fa fa-plus"></i>
+                                    Postal Service Facility
+                                </button>
+                            </app-admin>
+                        </div>
+                        <br>
+                        <div class="table-responsive">
+                            <table class="table table-light table-striped">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th scope="col">Item: </th>
+                                        <th scope="col">Description/ Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Municipality/ City : </td>
+                                        <td><b>Municipality of {{munCityName}}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Post Office/ Location : </td>
+                                        <td>{{data.location}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>No. of Post Masters :</td>
+                                        <td>{{data.postMastersNo}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>No. of Mail Sorters :</td>
+                                        <td>{{data.mailSortersNo}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>No. of Postal Clerks : </td>
+                                        <td>{{data.postalClerkNo}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>No. of Postal Carriers :</td>
+                                        <td>{{data.postalCarriersNo}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Mail Truck/ Van :</td>
+                                        <td>{{data.mailTruck}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Motorcycle :</td>
+                                        <td>{{data.motorcycle}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bicycle :</td>
+                                        <td>{{data.bicycle}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Postal Stations :</td>
+                                        <td>{{data.postalStations}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div *ngIf="hasData" class="form-inline float-right ">
+                            <div class="d-inline-flex">
+                                <app-admin>
+                                    <button (click)="isAdd = false" class="btn btn-info btn-circle" data-toggle="modal"
+                                        data-target="#mEducation"><i class="fa fa-pen"></i>
+                                    </button>
+                                    &nbsp;
+                                </app-admin>
+                                <app-admin>
+                                    <button type="button" title="Delete" class="btn btn-warning btn-circle"
+                                        (click)="DeleteData(data.transId)"><i class="fa fa-trash"></i>
+                                    </button>
+                                </app-admin>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
+<div class="modal fade" id="mEducation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-dark" id="exampleModalLabel">Postal Service Facility</h5>
+                <button type="button" #closebutton class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                    <div class="row">
 
+                        <div class="col-lg-12"><br>
+                            <label >Post Office/ Location :</label>
+                            <textarea class="form-control" rows="4" [(ngModel)]="data.location"></textarea>
+                        </div>
+                        <div class="col-lg-3"><br>
+                            <label >No. of Post Masters :</label>
+                            <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.postMastersNo">
+                        </div>
+                        <div class="col-lg-3"><br>
+                            <label >No. of Mail Sorters :</label>
+                            <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.mailSortersNo">
+                        </div>
+                        <div class="col-lg-3"><br>
+                            <label >No. of Postal Clerks :</label>
+                            <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.postalClerkNo">
+                        </div>
+                        <div class="col-lg-3"><br>
+                            <label >No. of Mail Carriers :</label>
+                            <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.postalCarriersNo">
+                        </div>
+                        <div class="col-lg-3"><br>
+                            <label >Mail Truck/ Van :</label>
+                            <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.mailTruck">
+                        </div>
+                        <div class="col-lg-3"><br>
+                            <label >Motorcycle : </label>
+                            <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.motorcycle">
+                        </div>
+                        <div class="col-lg-3"><br>
+                            <label >Bicycle</label>
+                            <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.bicycle">
+                        </div>
+                        <div class="col-lg-3"><br>
+                            <label >Postal Stations :</label>
+                            <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.postalStations">
+                        </div>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-school" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="isAdd? AddData(): EditData()">Save
+                    changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal area -->
+<div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">SEPS GEOLOCATION TAGGING</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <app-gmap></app-gmap>
+            </div>
+            <div class="modal-footer">
+              <app-admin>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="EditData()">Save changes</button>
+              </app-admin>
+            </div>
+        </div>
+    </div>
+</div>

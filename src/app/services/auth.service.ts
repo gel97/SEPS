@@ -11,7 +11,10 @@ import { Userlogin } from '../models/userlogin';
 export class AuthService {
 
   readonly apiurl = "https://davaodelnorte.ph/sep/apidata/api/Auth/login";
-
+ // readonly apiurlGoogle = "https://davaodelnorte.ph/sep/apidata/api/Auth/login";
+  readonly apiurlGoogle = "https://localhost:7292/api/AuthGoogle";
+  // readonly apiurlGoogle = "https://davaodelnorte.ph/sep/apidata/api/Auth/login";
+  readonly apiurlFb = "https://localhost:7292/api/AuthFb";
   readonly apiurlUser = "https://davaodelnorte.ph/sep/apidata/api/User";
   readonly baseUrl = "https://davaodelnorte.ph/FMIS/APIData/API";
 
@@ -59,15 +62,57 @@ export class AuthService {
    
   }
 
-  clearSession() {
-      localStorage.removeItem("token");
-      localStorage.removeItem("munCityId");
-      localStorage.removeItem("munCityName");
-      localStorage.removeItem("activeSetYear");
-      localStorage.removeItem('token');
-      localStorage.removeItem('userData');
+  signinGoogle(user:any): Observable<any> {
+    const now = new Date();
+    const formattedDate = now.toLocaleString(); // formats the date and time as a string
+    console.log(formattedDate); 
+    console.log(user);
+    return this.http.post(this.apiurlGoogle,user).pipe(tap((response:any) =>
+    {
 
+      localStorage.setItem("token", response.token);
+      localStorage.setItem("activeSetYear",response.activeSetYear);
+      localStorage.setItem("setYear",response.activeSetYear);
+      localStorage.setItem("expire",response.expire);
+
+      this.token = localStorage.getItem("token");
+      this.activeSetYear = localStorage.getItem("activeSetYear");
+      this.setYear = localStorage.getItem("setYear");
+    }));
   }
+
+  signinFb(user:any): Observable<any> {
+    const now = new Date();
+    const formattedDate = now.toLocaleString(); // formats the date and time as a string
+    console.log(formattedDate); 
+    console.log(user);
+    return this.http.post(this.apiurlFb,user).pipe(tap((response:any) =>
+    {
+
+      localStorage.setItem("token", response.token);
+      localStorage.setItem("activeSetYear",response.activeSetYear);
+      localStorage.setItem("setYear",response.activeSetYear);
+      localStorage.setItem("expire",response.expire);
+
+      this.token = localStorage.getItem("token");
+      this.activeSetYear = localStorage.getItem("activeSetYear");
+      this.setYear = localStorage.getItem("setYear");
+    }));
+  }
+
+  clearSession() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("munCityId");
+    localStorage.removeItem("o_munCityId");
+    localStorage.removeItem("o_munCityName");
+    localStorage.removeItem("munCityName");
+    localStorage.removeItem("activeSetYear");
+    localStorage.removeItem("setYear");
+    localStorage.removeItem("expire");
+    localStorage.removeItem('userData');
+    localStorage.removeItem('userId');
+    this.o_munCityId = "";
+}     
 
   getUsersList(): Observable<any[]> { // test api only | lag
     return this.http.get<any[]>(this.apiurlUser);
@@ -89,6 +134,7 @@ export class AuthService {
 
   public logout(){
     this.clearSession();
-    window.location.reload;
+    this.isLoggedIn();
+   
   }
 }

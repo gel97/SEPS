@@ -18,13 +18,14 @@ export class BarangaysComponent implements OnInit {
     private auth: AuthService) { }
 
   munCityName:string = this.auth.munCityName;
+  toValidate: any = {};
   is_update: boolean = false;
   ViewBarangayOfficial: any = [];
+  listBarangay: any = [];
   barangay: any = {};
   addmodal: any = {};
   editmodal: any = {};
   UpdateBarangay: any = {};
-  listBarangay: any = {};
 
   pageSize = 25;
   p: string | number | undefined;
@@ -56,7 +57,6 @@ export class BarangaysComponent implements OnInit {
   Init(){
     this.GetBarangay();
     this.GetListBarangay();
-
   }
 
   GetBarangay() {
@@ -75,6 +75,15 @@ export class BarangaysComponent implements OnInit {
   }
 
   AddBarangay() {
+    this.toValidate.punongBrgy = this.barangay.punongBrgy == "" || this.barangay.punongBrgy == null ? true : false;
+    this.toValidate.address = this.barangay.address == "" || this.barangay.address == undefined ? true : false;
+    if (this.toValidate.punongBrgy == true || this.toValidate.address == true) {
+      Swal.fire(
+        '',
+        'Please fill out the required fields',
+        'warning'
+      );
+    } else {
     this.barangay.munCityId = this.auth.munCityId;
     this.barangay.activeSetYear = this.auth.activeSetYear;
     this.service.AddBarangay(this.barangay).subscribe(_data => {
@@ -98,6 +107,7 @@ export class BarangaysComponent implements OnInit {
       this.barangay = {};
     });
   }
+}
 
   onTableDataChange(page: any) { //paginate
     console.log(page)
@@ -157,10 +167,37 @@ export class BarangaysComponent implements OnInit {
       showConfirmButton: false,
       timer: 1000
     });
-    
+
   }
 
+  delete(transId:any, index:any){
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.service.Delete_Barangay(transId).subscribe({
+          next: (_data) => {
+            this.GetBarangay();
+          },
+          error: (err) => {
+            this.GetBarangay();
+          },
 
+        });
+        Swal.fire(
+          'Deleted!',
+          'Your file has been deleted.',
+          'success'
+        )
+      }
+    })
 
+  }
 
 }

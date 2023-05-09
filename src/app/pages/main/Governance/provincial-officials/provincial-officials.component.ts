@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { ProvOfficialService } from 'src/app/shared/Governance/prov-official.service';
 import Swal from 'sweetalert2';
@@ -14,13 +14,14 @@ export class ProvincialOfficialsComponent implements OnInit {
   constructor(private service:ProvOfficialService, private auth:AuthService) { }
 
 isLoading:boolean = true;
-
+  toValidate:any={};
   ProOfficial:any = [];
   Prov: any = {};
   Edit:any ={};
   updateOfficial: any={};
   editModal: any={};
   AddModal:any ={};
+  positions: any = [];
 
   pageSize = 25;
   p: string|number|undefined;
@@ -28,42 +29,82 @@ isLoading:boolean = true;
   tableSize:number = 5;
   tableSizes:any =[5,10,15,25,50,100];
 
+
+  isCheck: boolean = false;
+  visible: boolean = true;
+  not_visible: boolean = true;
+
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void; }; };
+
+  onChange(isCheck: boolean) {
+    this.isCheck = isCheck;
+    console.log("isCheck:", this.isCheck);
+  }
+
+  clearData() {
+    this.Prov = {};
+    this.not_visible = false;
+    this.visible = true;
+    // this.required = false;
+  }
+
+
   date = new DatePipe('en-PH')
   ngOnInit(): void {
-    this.Init();
+
+    this.getOfficials();
+    this.getPositions();
  }
 
- Init(){
+ getPositions() {
+  this.service.GetMunPosition().subscribe(data => {
+    this.positions = <any>data;
+  })
+}
+
+
+getOfficials(){
+  // this.Prov.munCityId=this.auth.munCityId;
+  this.Prov.setYear=this.auth.activeSetYear;
   this.service.GetProvOfficial().subscribe(data=>{
   this.ProOfficial=(<any>data);
-  this.ProOfficial=this.ProOfficial.filter((s:any) => s.tag == 1); // filter by tag
-  this.ProOfficial.sort((n1:any,n2:any)=>{ //order by Ascending
-    if(n1.seqNo>n2.seqNo)return 1;
-    if(n1.seqNo<n2.seqNo)return -1;
-    else return 0;
-  })
+
   console.log(this.ProOfficial)
-  this.isLoading = false;
+  // this.isLoading = false;
 
  })
 }
 
-
-
   addOfficial() {
+    this.toValidate.seqNo = this.Prov.seqNo == "" || this.Prov.seqNo == null ? true : false;
+    this.toValidate.name = this.Prov.name == "" || this.Prov.name == undefined ? true : false;
+
+    if (this.toValidate.name == true || this.toValidate.seqNo == true) {
+      Swal.fire(
+        '',
+        'Please fill out the required fields',
+        'warning'
+      );
+    } else {
     this.Prov.munCityId=this.auth.munCityId;
     this.Prov.setYear=this.auth.activeSetYear;
     this.Prov.transId = this.date.transform(Date.now(),'YYMM');
-    this.Prov.tag = 1;
+    // this.Prov.tag = 1;
     this.service.AddProvOfficial(this.Prov).subscribe(_data=>{
-      // alert("success");
+      if (!this.isCheck) {
+        this.closebutton.nativeElement.click();
+      }
+      console.log(_data);
+      this.clearData();
+      this.getOfficials();
+
       Swal.fire(
         'Good job!',
         'Data Added Successfully!',
         'success'
       );
-      this.Init();
-      this.Prov = {};
+
 
     },_err=>{
       Swal.fire(
@@ -72,21 +113,25 @@ isLoading:boolean = true;
         'error'
       );
 
-      this.Init();
+      this.getOfficials() ;
       this.Prov = {};
     });
   }
-
+  }
 
 editOfficial(editOfficial:any={}) {
   this.editModal=editOfficial;
 //passing the data from table (modal)
-this.Init();
+this.getOfficials() ;
 }
 
 //for modal
 update(){
-this.service.UpdateProvOfficial(this.editModal).subscribe({next:(_data)=>{
+  this.editModal.setYear=this.auth.activeSetYear;
+  this.service.UpdateProvOfficial(this.editModal).subscribe({next:(_data)=>{
+
+    this.getOfficials();
+    this.editModal = {};
 // this.editModal();
 },
 });
@@ -115,17 +160,17 @@ delete(official2:any={}){
       official2.tag= -1;
       this.service.UpdateProvOfficial(official2).subscribe(_data =>{
         Swal.fire(
-          'Deleted',
-          'Removed successfully',
+          'Deleted!',
+          'Your file has been removed.',
           'success'
         );
-        this.Init();
+        this.getOfficials() ;
         this.Prov = {};
       })
     } else if (result.dismiss === Swal.DismissReason.cancel){
 
     }
-      this.Init();
+      this.getOfficials() ;
       this.Prov = {};
   })
 }
@@ -134,13 +179,13 @@ delete(official2:any={}){
 onTableDataChange(page:any){ //paginate
   console.log(page)
   this.p = page;
-  this.Init();
+  this.getOfficials() ;
 
 }
 onTableSizeChange(event:any ){ //paginate
   this.tableSize = event. target.value;
   this.p = 1;
-  this.Init();
+  this.getOfficials() ;
 
 }
 

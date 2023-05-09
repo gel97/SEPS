@@ -8322,7 +8322,7 @@ a:focus{
     position:relative
 }
 .sidebar .nav-item:last-child{
-    margin-bottom:1rem
+    margin-bottom:0rem
 }
 .sidebar .nav-item .nav-link{
     text-align:center;
@@ -8490,7 +8490,7 @@ a:focus{
         display:block;
         width:100%;
         text-align:left;
-        padding:1rem;
+        padding: 10px 5px 10px 15px;
         width:15rem
     }
     .sidebar .nav-item .nav-link i{

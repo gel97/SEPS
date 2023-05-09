@@ -32,6 +32,13 @@ UpdateDemography(Demo:any={}){
   return this.Http.post (this.apiurl + "/Demography/Update", Demo , {responseType: 'json'});
 }
 
+DeleteDemography(transId:any) {
+  return this.Http.delete(this.Base.url + this.ApiUrl.delete_demography(transId), { responseType: 'json' });
+}
+
+ListBarangay(){
+  return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay(this.Auth.munCityId), { responseType: 'json' });
+}
 
 
  getAuthToken() {

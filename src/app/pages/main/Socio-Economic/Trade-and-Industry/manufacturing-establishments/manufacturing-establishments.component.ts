@@ -3,6 +3,8 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { ManEstabService } from 'src/app/shared/Trade&_Industry/man-estab.service';
 import Swal from 'sweetalert2';
+import { GmapComponent } from 'src/app/components/gmap/gmap.component';
+
 
 @Component({
   selector: 'app-manufacturing-establishments',
@@ -10,24 +12,34 @@ import Swal from 'sweetalert2';
   styleUrls: ['./manufacturing-establishments.component.css']
 })
 export class ManufacturingEstablishmentsComponent implements OnInit {
-  @ViewChild ('long',{static:false}) longRef : ElementRef | undefined;
-  @ViewChild ('lat',{static:false}) latRef : ElementRef | undefined;
+  @ViewChild(GmapComponent)
+  private gmapComponent!: GmapComponent;
 
   searchText: string= "";
 
   list_of_category = [
-    { id: 1, name_category: "Agricultural products" },
-    { id: 2, name_category: "Crafts/ Furnitures" },
+    { id: 1, name_category: "Food processing" },
+    { id: 2, name_category: "Agricultural products" },
+    { id: 3, name_category: "Garments and embroidery" },
+    { id: 4, name_category: "Crafts/ Furnitures" },
+    { id: 5, name_category: "Ceramics/ Paper/ Plastic" },
+    { id: 6, name_category: "Chemical and pharmaceutical" },
+    { id: 7, name_category: "Jewelry" },
+    { id: 8, name_category: "Other non-metallic products" },
   ];
 
   list_of_Business = [
-    { id: 1, name_business: "Agricultural equipments and supplies" },
-    { id: 2, name_business: "Woodcrafts/ Wooden Furniture" },
-    { id: 3, name_business: "Casket/coffin making" },
-    { id: 4, name_business: "Handicrafts/ Shellcraft" },
+    { id: 1, name_business: "" },
+    { id: 2, name_business: "" },
+    { id: 3, name_business: "" },
+    { id: 4, name_business: "" },
   ];
 
+
   constructor( private service:ManEstabService, private auth:AuthService) { }
+  munCityName:string = this.auth.munCityName;
+
+  toValidate:any={};
   ManEstab:any=[];
   barangays:any=[];
   estab:any={};
@@ -35,11 +47,30 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
   Updatelocation:any={};
 
   // Pagination
-  // pageSize = 25;
-  // p: string|number|undefined;
-  // count: number =0;
-  // tableSize:number = 5;
-  // tableSizes:any =[5,10,15,25,50,100];
+  pageSize2 = 10;
+  p2: string|number|undefined;
+  count2: number =1;
+  tableSize2:number = 20;
+  tableSizes2:any =[20,40,60,80,100];
+
+  isCheck: boolean = false;
+  visible: boolean = true;
+  not_visible: boolean = true;
+
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void; }; };
+
+  onChange(isCheck: boolean) {
+    this.isCheck = isCheck;
+    console.log("isCheck:", this.isCheck);
+  }
+
+  clearData() {
+    this.estab = {};
+    this.not_visible = false;
+    this.visible = true;
+    // this.required = false;
+  }
 
   date = new DatePipe('en-PH')
   ngOnInit(): void {
@@ -47,6 +78,22 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
     this.GetListManEstab();
     this.list_of_barangay();
  }
+ markerObj: any = {};
+
+ SetMarker(data: any = {}) {
+   console.log("lnglat: ", data.longtitude + " , " + data.latitude)
+
+   this.markerObj = {
+     lat: data.latitude,
+     lng: data.longtitude,
+     label: data.brgyName.charAt(0),
+     brgyName: data.brgyName,
+     munCityName: this.munCityName,
+     draggable: true
+   };
+   this.gmapComponent.setMarker(this.markerObj);
+ }
+
 
 
 //searchBar
@@ -69,53 +116,69 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
 list_of_barangay(){
   this.service.ListBarangay().subscribe(data=>{
     this.barangays = <any>data;
-    console.log(this.barangays);
+    console.log("fgxtxgcvcgcf",this.barangays)
   });
-  this.estab = {};
-
 }
 
 
 
 
 AddEstablishment(){
-  this.estab.munCityId=this.auth.munCityId;
-  this.estab.setYear=this.auth.setYear;
-  this.estab.transId = this.date.transform(Date.now(),'YYMM');
-  this.estab.tag = 1;
-  this.service.AddManEstab(this.estab).subscribe(request=>{
-    console.log(request);
-    Swal.fire(
-      'Good job!',
-      'Data Added Successfully!',
-      'success'
-    );
+  this.toValidate.name = this.estab.name =="" || this.estab.name ==undefined?true:false;
+  this.toValidate.category = this.estab.category == "" || this.estab.category == null?true:false
+  this.toValidate.brgyId = this.estab.brgyId == "" || this.estab.brgyId == null?true:false
+  this.toValidate.type = this.estab.type == "" || this.estab.type == null?true:false
+  this.toValidate.workersNo =this.estab.workersNo == "" || this.estab.workersNo == undefined?true:false
 
-    this.estab = {};
-    this.ManEstab.push(request);
-  },err=>{
+  if( this.toValidate.name == true||this.toValidate.category ==true || this.toValidate.type == true|| this.toValidate.workersNo == true){
     Swal.fire(
-      'ERROR!',
-      'Error',
-      'error'
+      '',
+        'Please fill out the required fields',
+        'warning'
     );
-  });
+  }else{
+    this.estab.munCityId=this.auth.munCityId;
+    this.estab.setYear=this.auth.setYear;
+    this.estab.transId = this.date.transform(Date.now(),'YYMM');
+    this.estab.tag = 1;
+    this.service.AddManEstab(this.estab).subscribe(request=>{
+      if (!this.isCheck) {
+        this.closebutton.nativeElement.click();
+      }
+      console.log(request);
+      this.clearData();
+      this.GetListManEstab();
+
+      console.log(request);
+      Swal.fire(
+        'Good job!',
+        'Data Added Successfully!',
+        'success'
+      );
+     // document.getElementById('close')?.click();
+      this.estab = {};
+      this.ManEstab.push(request);
+    });
+
+  }
+
+
 }
 
-  edit_estab(edit_estab:any={}) {
+
+edit_estab(edit_estab:any={}) {
     this.editmodal=edit_estab;
     this.GetListManEstab();
     }
 
   //for modal
   UpdateManEstab(){
-    console.log(this.longRef?.nativeElement.value);
-    console.log(this.latRef?.nativeElement.value);
-
-     this.editmodal.longtitude=this.longRef?.nativeElement.value;
-     this.editmodal.latitude= this.latRef?.nativeElement.value;
-
+    this.editmodal.longtitude = this.gmapComponent.markers.lng;
+    this.editmodal.latitude = this.gmapComponent.markers.lat;
+    //this.editmodal.setYear = this.auth.activeSetYear;
     this.service.UpdateManEstab(this.editmodal).subscribe({next:(_data)=>{
+      this.GetListManEstab();
+
     },
     });
 
@@ -143,42 +206,37 @@ delete(transId:any, index:any){
           for(let i = 0; i < this.ManEstab.length;i++){
             if(this.ManEstab[i].transId == transId){
               this.ManEstab.splice(i,1);
+              Swal.fire(
+                'Deleted',
+                'Removed successfully',
+                'success'
+              );
             }
           }
 
-
           this.service.DeleteManEstab(transId).subscribe(_data =>{
-            Swal.fire(
-              'Deleted',
-              'Removed successfully',
-              'success'
-            );
-           // this.MajorAct.splice(index,1);
+            this.GetListManEstab();
 
-            // this.Init();
-            // this.mjr = {};
+
 
           })
         } else if (result.dismiss === Swal.DismissReason.cancel){
 
         }
-          // this.Init();
-          // this.mjr = {};
 
       })
     }
 
-    // onTableDataChange(page:any){ //paginate
-    //   console.log(page)
-    //   this.p = page;
-    //   this.GetListManEstab();
+    onTableDataChange2(page:any){ //paginate
+      console.log(page)
+      this.p2 = page;
 
-    // }
-    // onTableSizeChange(event:any ){ //paginate
-    //   this.tableSize = event. target.value;
-    //   this.p = 1;
-    //   this.GetListManEstab();
+    }
+    onTableSizeChange2(event:any ){ //paginate
+      this.tableSize2 = event. target.value;
+      this.p2= 1;
 
-    // }
+    }
+
 
 }

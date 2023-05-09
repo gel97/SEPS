@@ -1,5 +1,5 @@
 import { AuthService } from 'src/app/services/auth.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { DemographyService } from 'src/app/shared/Governance/demography.service';
 import Swal from 'sweetalert2';
@@ -10,18 +10,36 @@ import Swal from 'sweetalert2';
   styleUrls: ['./demography.component.css']
 })
 export class DemographyComponent implements OnInit {
-  DemographyService: any;
+  // DemographyService: any;
 
   constructor(private service:DemographyService, private auth:AuthService) { }
   demo:any={};
   Demo:any=[];
   editmodal:any={};
   ViewBarangayOfficial:any={};
+  barangays:any={};
+  toValidate:any={};
+  munCityName:string = this.auth.munCityName;
+
+  isLoading: boolean = true;
+  isCheck: boolean = false;
+  visible: boolean = true;
+  not_visible: boolean = true;
+
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void; }; };
+
+  onChange(isCheck: boolean) {
+    this.isCheck = isCheck;
+    console.log("isCheck:", this.isCheck);
+  }
+
 
   date = new DatePipe('en-PH')
   ngOnInit(): void {
-  this.Init(
-      );
+
+  this.Init();
+  this.list_of_barangay();
 
 
  }
@@ -40,10 +58,34 @@ export class DemographyComponent implements OnInit {
      })
   }
 
+  list_of_barangay(){
+    this.service.ListBarangay().subscribe(data=>{
+      this.barangays = <any>data;
+      console.log("fgxtxgcvcgcf",this.barangays)
+    });
+    }
+
   AddDemo() {
+    this.toValidate.brgyId = this.demo.brgyId == "" || this.demo.brgyId == null ? true : false;
+    this.toValidate.householdPop = this.demo.householdPop == "" || this.demo.householdPop == undefined ? true : false;
+
+    if (this.toValidate.brgyId  == true || this.toValidate.householdPop== true) {
+      Swal.fire(
+        '',
+        'Please fill out the required fields',
+        'warning'
+      );
+    } else {
+
     this.demo.munCityId=this.auth.munCityId;
     this.demo.setYear=this.auth.activeSetYear;
     this.service.AddDemography(this.demo).subscribe(_data=>{
+      if (!this.isCheck) {
+        this.closebutton.nativeElement.click();
+      }
+      console.log(_data);
+      this.clearData();
+      this.Init();
 
       Swal.fire(
         'Good job!',
@@ -64,7 +106,13 @@ export class DemographyComponent implements OnInit {
       this.demo = {};
     });
   }
-
+  }
+  clearData() {
+    this.demo = {};
+    this.not_visible = false;
+    this.visible = true;
+    // this.required = false;
+  }
 
   editdemo(editdemo:any={}) {
     this.editmodal=editdemo;
@@ -75,6 +123,8 @@ export class DemographyComponent implements OnInit {
   //for modal
   update(){
     this.service.UpdateDemography(this.editmodal).subscribe({next:(_data)=>{
+      this.editmodal ={};
+      this.Init();
     },
     });
 
@@ -85,8 +135,40 @@ export class DemographyComponent implements OnInit {
     showConfirmButton: false,
     timer: 1000
     });
-    this.editmodal ={};
 
+    }
+
+
+delete(transId:any, index:any){
+      Swal.fire({
+        text: 'Do you want to remove this file?',
+        icon: 'warning',
+        showConfirmButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Yes, remove it!'
+      }).then((result)=>{
+
+        if(result.value){
+          for(let i = 0; i < this.Demo.length;i++){
+            if(this.Demo[i].transId == transId){
+              this.Demo.splice(i,1);
+              Swal.fire(
+                'Deleted!',
+                'Your file has been removed.',
+                'success'
+              );
+            }
+          }
+
+          this.service.DeleteDemography(transId).subscribe(_data =>{
+
+          })
+        } else if (result.dismiss === Swal.DismissReason.cancel){
+
+        }
+
+
+      })
     }
 
 

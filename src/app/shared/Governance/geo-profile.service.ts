@@ -13,7 +13,7 @@ export class GeoProfileService {
   constructor(private Http: HttpClient, private Auth: AuthService, private Base: BaseUrl, private ApiUrl: ApiUrl, private auth: AuthService) { }
 
   GetGeo():Observable<any[]> {
-    return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_get_geo(this.Auth.munCityId,this.Auth.setYear), { responseType: 'json' });
+    return this.Http.get<any[]>(this.Base.url + this.ApiUrl.get_get_geo (this.Auth.munCityId,this.Auth.setYear), { responseType: 'json' });
   }
 
   AddGeoP(geo: any = {}) {
@@ -23,8 +23,12 @@ export class GeoProfileService {
 
   UpdateGeo(geo: any = {}) {
     console.log(geo)
-    return this.Http.post(this.Base.url + this.ApiUrl.post_update_geo(), geo, { responseType: 'json' });
+    return this.Http.put(this.Base.url + this.ApiUrl.put_update_geo (), geo, { responseType: 'json' });
   }
+  Delete(transId:any) {
+    return this.Http.delete(this.Base.url + this.ApiUrl.delete_geo(transId), { responseType: 'json' });
+  }
+
 
 }
 

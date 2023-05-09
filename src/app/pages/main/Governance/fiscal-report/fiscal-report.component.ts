@@ -1,6 +1,6 @@
 import { ProvincialFiscalReportService } from './../../../../shared/Governance/provincial-fiscal-report.service';
 import { FiscalMattersService } from 'src/app/shared/Governance/fiscal-matters.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { DatePipe } from '@angular/common';
 import { FilterPipe } from 'src/app/pipes/filter.pipe';
@@ -15,6 +15,9 @@ import Swal from 'sweetalert2';
 export class FiscalReportComponent implements OnInit {
 
   constructor(private service:ProvincialFiscalReportService, private auth:AuthService) { }
+  munCityName:string = this.auth.munCityName;
+
+  toValidate:any={};
   fiscal:any={};
   FisView:any =[];
   editmodal:any={};
@@ -33,6 +36,26 @@ export class FiscalReportComponent implements OnInit {
   tableSize2:number = 5;
   tableSizes2:any =[5,15,25,50,100];
 
+  isCheck: boolean = false;
+  visible: boolean = true;
+  not_visible: boolean = true;
+
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void; }; };
+
+  onChange(isCheck: boolean) {
+    this.isCheck = isCheck;
+    console.log("isCheck:", this.isCheck);
+  }
+
+  clearData() {
+    this.fiscal = {};
+    this.not_visible = false;
+    this.visible = true;
+    // this.required = false;
+  }
+
+
 
   date = new DatePipe('en-PH')
   ngOnInit(): void {
@@ -44,7 +67,7 @@ export class FiscalReportComponent implements OnInit {
   Init(){
     this.list_revenues =[];
     this.list_expend =[];
-     this.fiscal.setYear=this.auth.activeSetYear;
+     //this.fiscal.setYear=this.auth.activeSetYear;
      //this.fiscal.activeSetYear=this.auth.activeSetYear;
       this.service.GetFiscalReport().subscribe(data=>{
         for(var item of data){
@@ -72,8 +95,27 @@ export class FiscalReportComponent implements OnInit {
 
 
     AddFiscal() {
+      this.toValidate.description = this.fiscal.description == "" || this.fiscal.description == null ? true : false;
+      this.toValidate.fiscalYear = this.fiscal.fiscalYear == "" || this.fiscal.fiscalYear == undefined ? true : false;
+      this.toValidate.category = this.fiscal.category == "" || this.fiscal.category == undefined ? true : false;
+
+
+      if (this.toValidate.description == true || this.toValidate.fiscalYear == true || this.toValidate.category ==true) {
+        Swal.fire(
+          '',
+          'Please fill out the required fields',
+          'warning'
+        );
+      } else {
+      this.fiscal.munCityId = this.auth.munCityId;
       this.fiscal.setYear = this.auth.activeSetYear;
       this.service.AddfiscalReport(this.fiscal).subscribe(_data=>{
+        if (!this.isCheck) {
+          this.closebutton.nativeElement.click();
+        }
+        console.log(_data);
+        this.clearData();
+        this.Init();
 
         Swal.fire(
           'Good job!',
@@ -95,6 +137,7 @@ export class FiscalReportComponent implements OnInit {
         this.fiscal = {};
       });
     }
+  }
 
   editfiscal(editfiscal:any={}) {
   this.editmodal=editfiscal;
@@ -105,7 +148,8 @@ export class FiscalReportComponent implements OnInit {
 //for modal
 update(){
   this.service.UpdatefiscalReport(this.editmodal).subscribe({next:(_data)=>{
-  // this.editModal();
+  this.editmodal();
+  this.Init();
   },
   });
 
@@ -119,6 +163,37 @@ update(){
   this.editmodal ={};
 
   }
+
+  delete(transId: any, index: any) {
+    Swal.fire({
+
+      text: "Do you want to remove this file",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, remove it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.service.Delete(transId).subscribe({
+          next: (_data) => {
+            this.Init();
+          },
+          error: (err) => {
+            this.Init();
+          },
+        });
+        Swal.fire(
+          'Deleted!',
+          'Your file has been removed.',
+          'success'
+        )
+      }
+    })
+  }
+
+
+
 
   onTableDataChange(page:any){ //paginate
     console.log(page)

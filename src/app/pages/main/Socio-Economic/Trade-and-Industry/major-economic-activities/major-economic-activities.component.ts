@@ -1,6 +1,6 @@
 import { MajorEconomicService } from './../../../../../shared/Trade&_Industry/major-economic.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 
@@ -13,16 +13,41 @@ export class MajorEconomicActivitiesComponent implements OnInit {
 
 
   constructor( private service:MajorEconomicService, private auth:AuthService) { }
+  munCityName:string = this.auth.munCityName;
+
+  toValidate:any={};
   MajorAct:any=[];
   mjr:any={};
   editmodal:any={};
+  searchText: string= "";
 
-  // Pagination
-  pageSize = 25;
-  p: string|number|undefined;
-  count: number =0;
-  tableSize:number = 5;
-  tableSizes:any =[5,10,15,25,50,100];
+  isCheck: boolean = false;
+  visible: boolean = true;
+  not_visible: boolean = true;
+
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void; }; };
+
+  onChange(isCheck: boolean) {
+    this.isCheck = isCheck;
+    console.log("isCheck:", this.isCheck);
+  }
+
+  clearData() {
+    this.mjr = {};
+    this.not_visible = false;
+    this.visible = true;
+    // this.required = false;
+  }
+
+
+pageSize = 10;
+p: string|number|undefined;
+count: number =1;
+tableSize:number = 20;
+tableSizes:any =[20,40,60,80,100];
+
+
 
   date = new DatePipe('en-PH')
   ngOnInit(): void {
@@ -42,31 +67,48 @@ export class MajorEconomicActivitiesComponent implements OnInit {
  })
 }
 
+//searchBar
+onChangeSearch(e:any) {
+  this.searchText = e.target.value;
+
+  }
+
 
   AddMajorAct(){
+    this.toValidate.mjrActivity = this.mjr.mjrActivity=="" || this.mjr.mjrActivity ==undefined?true:false;
+    this.toValidate.description = this.mjr.description =="" || this.mjr.description == undefined?true:false;
+
+    if (this.toValidate.mjrActivity == true||this.toValidate.description ==true){
+      Swal.fire(
+        '',
+        'Please fill out the required fields',
+        'warning'
+      );
+    }else{
     this.mjr.munCityId=this.auth.munCityId;
     this.mjr.setYear=this.auth.setYear;
     this.mjr.transId = this.date.transform(Date.now(),'YYMM');
     this.mjr.tag = 1;
     this.service.AddMajorEco(this.mjr).subscribe(request=>{
+      if (!this.isCheck) {
+        this.closebutton.nativeElement.click();
+      }
+      console.log(request);
+      this.clearData();
+      this.Init();
+
       console.log(request);
       Swal.fire(
         'Good job!',
         'Data Added Successfully!',
         'success'
       );
-
+      //document.getElementById('close')?.click();
       this.mjr = {};
       this.MajorAct.push(request);
-    },err=>{
-      Swal.fire(
-        'ERROR!',
-        'Error',
-        'error'
-      );
-    });
+    },);
   }
-
+  }
 
   editmajor(editmajor:any={}) {
     this.editmodal=editmajor;
@@ -76,6 +118,9 @@ export class MajorEconomicActivitiesComponent implements OnInit {
   //for modal
   UpdateMajorAct(){
     this.service.UpdateMajorEco(this.editmodal).subscribe({next:(_data)=>{
+
+      this.Init();
+
     },
     });
 
@@ -103,19 +148,19 @@ delete(transId:any, index:any){
           for(let i = 0; i < this.MajorAct.length;i++){
             if(this.MajorAct[i].transId == transId){
               this.MajorAct.splice(i,1);
+              Swal.fire(
+                'Deleted',
+                'Removed successfully',
+                'success'
+              );
             }
           }
 
 
           this.service.DeleteMajorEco(transId).subscribe(_data =>{
-            Swal.fire(
-              'Deleted',
-              'Removed successfully',
-              'success'
-            );
-           // this.MajorAct.splice(index,1);
 
-            // this.Init();
+           // this.MajorAct.splice(index,1);
+            this.Init();
             // this.mjr = {};
 
           })
