@@ -1,0 +1,29 @@
+<li class="nav-item dropdown no-arrow mx-1" >
+    <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="GetNotif(); result = [];totalNotif = []">
+        <i class="fas fa-bell fa-fw"></i>
+        <!-- Counter - Alerts -->
+        <span *ngIf="totalNotif.length> 0" class="badge badge-danger badge-counter">{{totalNotif.length}}</span>
+    </a>
+    <!-- Dropdown - Alerts -->
+    <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+        aria-labelledby="alertsDropdown">
+        <h6 class="dropdown-header">
+            Notifications
+        </h6>
+        <div *ngFor="let item of result">
+            <a (click)="!item.seen? IsSeen(item):''" class="dropdown-item d-flex align-items-center" [ngClass]="item.seen? '':'bg-notif'"  href="#">
+                <div class="mr-3">
+                    <div class="icon-circle bg-primary">
+                        <i class="fas fa-file-alt text-white"></i>
+                    </div>
+                </div>
+                <div>
+                    <div class="small text-gray-500">{{item.datePosted | hoursAgoOrDate}}</div>
+                    <span [ngClass]="item.seen? '':'bold-text'">{{item.title}}</span>
+                </div>
+            </a>
+        </div>
+        
+    </div>
+</li>

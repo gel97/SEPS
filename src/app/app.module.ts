@@ -124,7 +124,15 @@ import { GoogleMapsModule } from '@angular/google-maps';
 import { GmapComponent } from './components/gmap/gmap.component'
 import { AgmCoreModule } from '@agm/core';
 import { AdminComponent } from './Admin/admin/admin.component';
-
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { NewsComponent } from './pages/main/Tools/news/news.component';
+import { HoursAgoOrDatePipe } from './pipes/hoursAgoOrDate.pipe';
+import {
+  FacebookLoginProvider,
+  SocialLoginModule,
+  SocialAuthServiceConfig,
+} from 'angularx-social-login';
+import { NotificationComponent } from './pages/main/Tools/notification/notification.component';
 
 
 
@@ -237,11 +245,15 @@ import { AdminComponent } from './Admin/admin/admin.component';
     CityLocationComponent,
     DashboardComponent,
     LoadingComponent,
+
     SepDataComponent,
     FilterPipe,
     FilterallPipe,
     GmapComponent,
     AdminComponent,
+    NewsComponent,
+    HoursAgoOrDatePipe,
+    NotificationComponent,
 
 
   ],
@@ -260,7 +272,11 @@ import { AdminComponent } from './Admin/admin/admin.component';
       // please get your own API key here:
       // https://developers.google.com/maps/documentation/javascript/get-api-key?hl=en
       apiKey: 'AIzaSyBfQJlyD65DekS6HrSDe2z-6-KvoO4aeRk'
-    })
+    }),
+    CKEditorModule,
+    SocialLoginModule,
+
+     
 
   ],
   providers: [AuthService ,CityOfficialService,
@@ -268,7 +284,21 @@ import { AdminComponent } from './Admin/admin/admin.component';
      provide: HTTP_INTERCEPTORS,
      useClass: TokenInterceptorService,
      multi: true
-    },],
+    },
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: FacebookLoginProvider.PROVIDER_ID,
+            provider: new FacebookLoginProvider('1325737945023713'),
+          },
+        ],
+      } as SocialAuthServiceConfig,
+    }
+  ],
+    
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -234,6 +234,23 @@ export class ApiUrl {
     put_facilities      = ()=>`/ServiceFacilities`;
     delete_facilities   = (transId:any)=>`/ServiceFacilities/${transId}`;
 
+
+//Manufacturing Establishment
+get_list_transpo_road=(setYear:any, munCityId:any)=>`/TranspoRoads/${setYear}/${munCityId}`;
+post_save_transpo_road=()=>`/TranspoRoads`;
+put_update_transpo_road=()=>`/TranspoRoads`;
+delete_transpo_road=(transId:any)=>`/TranspoRoads/${transId}`;
+
+get_list_transpo_bridge=(setYear:any, munCityId:any)=>`/TranspoBridges/${setYear}/${munCityId}`;
+post_save_transpo_bridge=()=>`/TranspoBridges`;
+put_update_transpo_bridge=()=>`/TranspoBridges`;
+delete_transpo_bridge=(transId:any)=>`/TranspoBridges/${transId}`;
+
+get_list_transpo_terminal=(setYear:any, munCityId:any)=>`/TranspoTerminals/${setYear}/${munCityId}`;
+post_save_transpo_terminal=()=>`/TranspoTerminals`;
+put_update_transpo_terminal=()=>`/TranspoTerminals`;
+delete_transpo_terminal=(transId:any)=>`/TranspoTerminals/${transId}`;
+
     // Service_Station
     get_list_station = (menuId :any, setYear  :any,munCityId :any)=>`/ServiceStations/${menuId}/${setYear}/${munCityId}`;
     post_station    = ()=>`/ServiceStations`;
@@ -251,6 +268,7 @@ export class ApiUrl {
     post_telcom   = ()=>`/ComTelSystems`;
     put_telcom      = ()=>`/ComTelSystems`;
     delete_telcom   = (transId:any)=>`/ComTelSystems/${transId}`;
+
 
     //Communications Services
     get_list_com_telfacilities = ( setYear  :any,munCityId :any)=>`/ComTelFacilities/${setYear}/${munCityId}`;
@@ -283,5 +301,14 @@ export class ApiUrl {
     post_service_irrigation     = ()=>`/ServiceIrrigation`;
     put_service_irrigation      = ()=>`/ServiceIrrigation`;
     delete_service_irrigation   = (transId:any)=>`/ServiceIrrigation/${transId}`; 
+
+// TOOLS
+    get_news      = ()=>`/News/list`;
+    post_news     = ()=>`/News`;
+    put_news      = ()=>`/News`;
+    delete_news   = (transId:any)=>`/News/${transId}`;
+
+    get_notif_seen      = (userId:any)=>`/NotifSeen/${userId}`;
+    post_notif_seen     = ()=>`/NotifSeen`;
 
 }
