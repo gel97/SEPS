@@ -245,6 +245,7 @@ import { NotificationComponent } from './pages/main/Tools/notification/notificat
     CityLocationComponent,
     DashboardComponent,
     LoadingComponent,
+
     SepDataComponent,
     FilterPipe,
     FilterallPipe,
