@@ -290,4 +290,7 @@ export class ApiUrl {
     put_news      = ()=>`/News`;
     delete_news   = (transId:any)=>`/News/${transId}`;
 
+    get_notif_seen      = (userId:any)=>`/NotifSeen/${userId}`;
+    post_notif_seen     = ()=>`/NotifSeen`;
+
 }

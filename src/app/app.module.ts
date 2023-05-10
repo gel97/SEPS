@@ -132,6 +132,7 @@ import {
   SocialLoginModule,
   SocialAuthServiceConfig,
 } from 'angularx-social-login';
+import { NotificationComponent } from './pages/main/Tools/notification/notification.component';
 
 
 
@@ -251,6 +252,7 @@ import {
     AdminComponent,
     NewsComponent,
     HoursAgoOrDatePipe,
+    NotificationComponent,
 
   ],
   imports: [
