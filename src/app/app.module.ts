@@ -243,6 +243,7 @@ import { AdminComponent } from './Admin/admin/admin.component';
     GmapComponent,
     AdminComponent,
 
+
   ],
   imports: [
     MdbCollapseModule,

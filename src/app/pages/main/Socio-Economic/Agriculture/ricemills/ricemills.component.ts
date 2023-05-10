@@ -97,17 +97,15 @@ export class RicemillsComponent implements OnInit {
 
   AddAgriculture() {
     this.toValidate.brgyId = this.addData.brgyId == "" || this.addData.brgyId == null ? true : false;
-    // this.toValidate.type = this.addData.type== "" || this.addData.type == undefined ? true : false;
-    // this.toValidate.source = this.addData.source == "" || this.addData.source == undefined ? true : false;
-    // this.toValidate.ownershipType = this.addData.ownershipType == "" || this.addData.ownershipType == null ? true : false;
-    // this.toValidate.capacity= this.addData.capacity== "" || this.addData.capacity == undefined ? true : false;
-    // this.toValidate.area = this.addData.area == "" || this.addData.area == undefined ? true : false;
+    this.toValidate.type = this.addData.type== "" || this.addData.type == undefined ? true : false;
+    this.toValidate.capacity= this.addData.capacity== "" || this.addData.capacity == undefined ? true : false;
+    this.toValidate.area = this.addData.area == "" || this.addData.area == undefined ? true : false;
     this.toValidate.name = this.addData.name == "" || this.addData.name == undefined ? true : false;
 
-    if (this.toValidate.brgyId  == true || this.toValidate.name== true ){
-      // this.toValidate.ownershipType  == true || this.toValidate.capacity == true || this.toValidate.area == true || this.toValidate.area == true)  {
+    if (this.toValidate.brgyId  == true || this.toValidate.name== true || this.toValidate.capacity == true || this.toValidate.area == true || this.toValidate.area == true ){
+
       Swal.fire(
-        '',
+        'Missing Data!',
         'Please fill out the required fields',
         'warning'
       );
@@ -168,20 +166,31 @@ export class RicemillsComponent implements OnInit {
   }
 
   EditAgriculture() {
-    Swal.fire({
+    this.toValidate.brgyId = this.addData.brgyId == "" || this.addData.brgyId == null ? true : false;
+    this.toValidate.type = this.addData.type== "" || this.addData.type == undefined ? true : false;
+    this.toValidate.capacity= this.addData.capacity== "" || this.addData.capacity == undefined ? true : false;
+    this.toValidate.area = this.addData.area == "" || this.addData.area == undefined ? true : false;
+    this.toValidate.name = this.addData.name == "" || this.addData.name == undefined ? true : false;
+    if (this.toValidate.brgyId  == true || this.toValidate.name== true || this.toValidate.capacity == true || this.toValidate.area == true || this.toValidate.area == true ){
+      Swal.fire(
+        'Missing Data!',
+        'Please fill out the required fields',
+        'warning'
+      );
+    } else {
+      Swal.fire({
       title: 'Do you want to save the changes?',
       showDenyButton: true,
       showCancelButton: true,
       confirmButtonText: 'Save',
       denyButtonText: `Don't save`,
     }).then((result) => {
+
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
 
         this.addData.longtitude = this.gmapComponent.markers.lng;
         this.addData.latitude = this.gmapComponent.markers.lat;
-
-
         this.addData.setYear = this.setYear;
         this.addData.munCityId = this.munCityId;
         this.addData.menuId = this.menuId;
@@ -190,14 +199,13 @@ export class RicemillsComponent implements OnInit {
         this.Service.EditAgriculture(this.addData).subscribe(request => {
           console.log("edit", request);
           this.GetListAgriculture();
-
-
         })
         Swal.fire('Saved!', '', 'success')
       } else if (result.isDenied) {
         Swal.fire('Changes are not saved', '', 'info')
       }
     })
+  }
   }
 
   DeleteAgriculture(dataItem: any) {

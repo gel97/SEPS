@@ -82,7 +82,7 @@ getOfficials(){
 
     if (this.toValidate.name == true || this.toValidate.seqNo == true) {
       Swal.fire(
-        '',
+        'Missing Data!',
         'Please fill out the required fields',
         'warning'
       );
@@ -109,7 +109,7 @@ getOfficials(){
     },_err=>{
       Swal.fire(
         'ERROR!',
-        'Error',
+        'Data Already Exist',
         'error'
       );
 
@@ -128,6 +128,16 @@ this.getOfficials() ;
 //for modal
 update(){
   this.editModal.setYear=this.auth.activeSetYear;
+  this.toValidate.seqNo = this.editModal.seqNo == "" || this.editModal.seqNo == null ? true : false;
+  this.toValidate.name = this.editModal.name == "" || this.editModal.name == undefined ? true : false;
+  if (this.toValidate.name == true || this.toValidate.seqNo == true) {
+    Swal.fire(
+      'Missing Data!',
+      'Please fill out the required fields',
+      'warning'
+    );
+  } else {
+
   this.service.UpdateProvOfficial(this.editModal).subscribe({next:(_data)=>{
 
     this.getOfficials();
@@ -144,7 +154,7 @@ showConfirmButton: false,
 timer: 1000
 });
 this.editModal ={};
-
+}
 }
 
 delete(official2:any={}){

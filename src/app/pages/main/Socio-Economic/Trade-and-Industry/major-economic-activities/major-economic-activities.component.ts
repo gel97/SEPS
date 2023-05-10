@@ -80,7 +80,7 @@ onChangeSearch(e:any) {
 
     if (this.toValidate.mjrActivity == true||this.toValidate.description ==true){
       Swal.fire(
-        '',
+        'Missing Data!',
         'Please fill out the required fields',
         'warning'
       );
@@ -117,10 +117,19 @@ onChangeSearch(e:any) {
 
   //for modal
   UpdateMajorAct(){
+  this.toValidate.mjrActivity = this.editmodal.mjrActivity=="" || this.editmodal.mjrActivity ==undefined?true:false;
+  this.toValidate.description = this.editmodal.description =="" || this.editmodal.description == undefined?true:false;
+
+  if (this.toValidate.mjrActivity == true||this.toValidate.description ==true){
+    Swal.fire(
+      'Missing Data!',
+      'Please fill out the required fields',
+      'warning'
+    );
+  }else{
+
     this.service.UpdateMajorEco(this.editmodal).subscribe({next:(_data)=>{
-
       this.Init();
-
     },
     });
 
@@ -133,7 +142,7 @@ onChangeSearch(e:any) {
     });
     this.editmodal ={};
     }
-
+  }
 
 delete(transId:any, index:any){
       Swal.fire({

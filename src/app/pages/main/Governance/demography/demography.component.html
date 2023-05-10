@@ -72,6 +72,7 @@
                                 </tr>
                                 </tbody>
                               </table>
+                              <p>*** Data are based on Philippine Statistics Authority ***</p>
                              </div>
 
                               </div>
@@ -97,7 +98,7 @@
         <div class="row">
           <div class="col-lg-12">  <br>
             <label for="type">Barangay :</label>
-            <select class="form-select" aria-label="Default select example" [(ngModel)]="demo.brgyId" [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false">
+            <select class="form-select" aria-label="Default select example"   [(ngModel)]="demo.brgyId" [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false">
               <option *ngFor="let item  of barangays" value={{item.brgyId}}>{{item.brgyName}}</option>
               </select> </div>
 
@@ -107,12 +108,12 @@
            </div>
            <div class ="col-lg-12">
             <label for="exampleFormControlTextarea1" >Male :</label>
-            <input type="text" class="form-control" id=""  name =""  [(ngModel)]="demo.male" placeholder="">
+            <input type="text" class="form-control" id=""  name =""  [(ngModel)]="demo.male" placeholder=""  [ngClass]="toValidate.male?'is-invalid':''" (keyup)="toValidate.male=false"placeholder="">
           </div>
 
            <div class ="col-lg-12">
             <label for="exampleFormControlTextarea1"  >Female:</label>
-            <input type="text" class="form-control" id="" name = "" [(ngModel)]="demo.female"  placeholder="">
+            <input type="text" class="form-control" id="" name = "" [(ngModel)]="demo.female"  placeholder=""  [ngClass]="toValidate.female?'is-invalid':''" (keyup)="toValidate.female=false"placeholder="">
           </div>
            <div class ="col-lg-12"><br>
             <label for="exampleFormControlTextarea1" >Household Population :</label>
@@ -160,32 +161,34 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Demography Data</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <div class="row">
-          <div class="col-lg-12">  <br>
+          <div class="col-lg-12"> <br>
             <label for="type">Barangay :</label>
-            <select class="form-select" aria-label="Default select example" [(ngModel)]="editmodal.brgyId" >
+            <select class="form-select" aria-label="Default select example" [(ngModel)]="editmodal.brgyId"
+              disabled="true">
               <option *ngFor="let item  of barangays" value={{item.brgyId}}>{{item.brgyName}}</option>
-              </select> </div>
+            </select>
+          </div>
            <div class ="col-lg-12"><br>
             <label for="exampleFormControlTextarea1" >Total Population:</label><br>
            </div>
            <div class ="col-lg-12">
             <label for="exampleFormControlTextarea1" >Male :</label>
-            <input type="text" class="form-control" id=""  name =""  [(ngModel)]="editmodal.male" placeholder="">
+            <input type="text" class="form-control" id=""  name =""  [(ngModel)]="editmodal.male" placeholder=""  [ngClass]="toValidate.male?'is-invalid':''" (keyup)="toValidate.male=false"placeholder="">
           </div>
 
            <div class ="col-lg-12">
             <label for="exampleFormControlTextarea1"  >Female:</label>
-            <input type="text" class="form-control" id="" name = "" [(ngModel)]="editmodal.female"  placeholder="">
+            <input type="text" class="form-control" id="" name = "" [(ngModel)]="editmodal.female"  placeholder=""  [ngClass]="toValidate.female?'is-invalid':''" (keyup)="toValidate.female=false"placeholder="">
           </div>
            <div class ="col-lg-12"><br>
             <label for="exampleFormControlTextarea1" >Household Population :</label>
-            <input type="text" class="form-control" name =""  id="" [(ngModel)]="editmodal.householdPop" placeholder="">
+            <input type="text" class="form-control" name =""  id="" [(ngModel)]="editmodal.householdPop"  [ngClass]="toValidate.householdPop?'is-invalid':''" (keyup)="toValidate.householdPop=false"placeholder="">
            </div>
            <div class ="col-lg-12"><br>
             <label for="exampleFormControlTextarea1" >No. of Households:</label>
@@ -202,7 +205,7 @@
           </div>
           <div class="modal-footer">
 
-            <button type="button" class="btn btn-primary"  (click)=" update()"><i class="fa fa-check" data-dismiss="modal"></i>Save Changes</button>&nbsp;
+            <button type="button" class="btn btn-primary" (click)=" update()" ><i class="fa fa-check"></i>Save Changes</button>&nbsp;
             <!-- <button type ="button" class="btn btn-secondary" *ngIf="updateOfficial" (click) ="city={}"><i class="fa fa-times"></i>Cancel</button> -->
             <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times" ></i>Close</button>
           </div>

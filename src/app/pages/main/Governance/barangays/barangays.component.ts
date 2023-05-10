@@ -26,6 +26,8 @@ export class BarangaysComponent implements OnInit {
   addmodal: any = {};
   editmodal: any = {};
   UpdateBarangay: any = {};
+  inputDisabled:boolean=false;
+
 
   pageSize = 25;
   p: string | number | undefined;
@@ -54,6 +56,7 @@ export class BarangaysComponent implements OnInit {
     this.gmapComponent.setMarker(this.markerObj);
   }
 
+
   Init(){
     this.GetBarangay();
     this.GetListBarangay();
@@ -69,21 +72,14 @@ export class BarangaysComponent implements OnInit {
 
   GetListBarangay() {
     this.service.ListBarangay().subscribe(data => {
+
       this.listBarangay = (<any>data);
       console.log(this.listBarangay)
     })
   }
 
   AddBarangay() {
-    this.toValidate.punongBrgy = this.barangay.punongBrgy == "" || this.barangay.punongBrgy == null ? true : false;
-    this.toValidate.address = this.barangay.address == "" || this.barangay.address == undefined ? true : false;
-    if (this.toValidate.punongBrgy == true || this.toValidate.address == true) {
-      Swal.fire(
-        '',
-        'Please fill out the required fields',
-        'warning'
-      );
-    } else {
+
     this.barangay.munCityId = this.auth.munCityId;
     this.barangay.activeSetYear = this.auth.activeSetYear;
     this.service.AddBarangay(this.barangay).subscribe(_data => {
@@ -106,7 +102,7 @@ export class BarangaysComponent implements OnInit {
       this.Init();
       this.barangay = {};
     });
-  }
+
 }
 
   onTableDataChange(page: any) { //paginate
@@ -130,7 +126,15 @@ export class BarangaysComponent implements OnInit {
   }
 
   addM() {
-
+    this.toValidate.punongBrgy = this.addmodal.punongBrgy == "" || this.addmodal.punongBrgy == null ? true : false;
+    this.toValidate.address = this.addmodal.address == "" || this.addmodal.address == undefined ? true : false;
+    if (this.toValidate.punongBrgy == true || this.toValidate.address == true) {
+      Swal.fire(
+        'Missing Data!',
+        'Please fill out the required fields',
+        'warning'
+      );
+    } else {
     this.addmodal.setYear = this.auth.activeSetYear;
     this.service.AddBarangay(this.addmodal).subscribe({
       next: (_data) => {
@@ -146,8 +150,17 @@ export class BarangaysComponent implements OnInit {
       timer: 1000
     });
   }
-
+  }
   updateM() {
+    this.toValidate.punongBrgy = this.addmodal.punongBrgy == "" || this.addmodal.punongBrgy == null ? true : false;
+    this.toValidate.address = this.addmodal.address == "" || this.addmodal.address == undefined ? true : false;
+    if (this.toValidate.punongBrgy == true || this.toValidate.address == true) {
+      Swal.fire(
+        'Missing Data!',
+        'Please fill out the required fields',
+        'warning'
+      );
+    } else {
 
     this.editmodal.longitude = this.gmapComponent.markers.lng;
     this.editmodal.latitude = this.gmapComponent.markers.lat;
@@ -169,6 +182,7 @@ export class BarangaysComponent implements OnInit {
     });
 
   }
+}
 
   delete(transId:any, index:any){
     Swal.fire({

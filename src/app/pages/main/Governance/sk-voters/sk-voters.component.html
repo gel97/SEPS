@@ -65,6 +65,7 @@
 
                               </tbody>
                               </table>
+                              <p>*** Data are based on Commission On Elections ***</p>
                             </div>
                               </div>
                               </div>
@@ -155,27 +156,27 @@
 
 <div class ="col-lg-12"><br>
 <label for="exampleFormControlTextarea1" >No. of Puroks:</label>
-<input type="text" class="form-control" id=""  name =""  [(ngModel)]="editmodal.purokNo"  placeholder="">
+<input type="text" class="form-control" id=""  name =""  disabled="true" [(ngModel)]="editmodal.purokNo"  placeholder="">
 </div>
 
 <div class ="col-lg-12"><br>
 <label for="exampleFormControlTextarea1"  >No. of Established Precincts:</label>
-<input type="text" class="form-control" id="" name = "" [(ngModel)]="editmodal.estabNo"  placeholder="">
+<input type="text" class="form-control" id="" name = "" [(ngModel)]="editmodal.estabNo"  placeholder="" [ngClass]="toValidate.estabNo?'is-invalid':''" (keyup)="toValidate.estabNo=false">
 </div>
 <div class ="col-lg-12"><br>
 <label for="exampleFormControlTextarea1" >No. of Clustered Precincts:</label>
-<input type="text" class="form-control" name =""  id="" [(ngModel)]="editmodal.clusterNo" placeholder="">
+<input type="text" class="form-control" name =""  id="" [(ngModel)]="editmodal.clusterNo" placeholder="" [ngClass]="toValidate.clusterNo?'is-invalid':''" (keyup)="toValidate.clusterNo=false">
 </div>
 <div class ="col-lg-12"><br>
 <label for="exampleFormControlTextarea1" >No. of Voting Centers:</label>
-<input type="text" class="form-control" name ="" id="" [(ngModel)]="editmodal.votingCntrNo" placeholder="">
+<input type="text" class="form-control" name ="" id="" [(ngModel)]="editmodal.votingCntrNo" placeholder="" [ngClass]="toValidate.votingCntrNo?'is-invalid':''" (keyup)="toValidate.votingCntrNo=false">
 </div>
 <div class ="col-lg-12"><br>
 <label for="exampleFormControlTextarea1" >No. of Registered Voters:</label>
 <input type="text" class="form-control"  name =""  id="" [(ngModel)]="editmodal.regSkVoterNo" placeholder="">
 
 <div class="modal-footer">
-<button type="button" class="btn btn-primary"  (click)="updateVoter()"  data-dismiss="modal"><i class="fa fa-check"></i>Save Changes</button>&nbsp;
+<button type="button" class="btn btn-primary"  (click)="updateVoter()" ><i class="fa fa-check"></i>Save Changes</button>&nbsp;
 <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
 </div>
 </div>

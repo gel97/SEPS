@@ -8,7 +8,7 @@
             <div class="">
             </div>
             <div class="text-center">
-              <h1 class="h4 text-gray-900 mb-4">Values of Production of Major Agricultural Commodities</h1>
+              <h1 class="h4 text-gray-900 mb-4">Values of Production of Major Agricultural Commodities of Davao Del Norte</h1>
               <label><strong>Agriculture - Municipality of {{munCityName}} </strong></label><br>
 
             </div>
@@ -50,7 +50,7 @@
 
                       <th scope="col">#</th>
                       <th scope="col">Type of Commodities</th>
-                      <th scope="col">Area Harvested (Has)</th>
+                      <th scope="col">Total Production (M.T)</th>
                       <th scope="col">Remarks </th>
                       <th scope="col" width>Action</th>
                     </tr>
@@ -64,7 +64,7 @@
                         </div>
                       </td>
                       <!-- <td>{{text.commodities}}</td> -->
-                      <td>{{text.area}}</td>
+                      <td class="text-center">{{text.totalProd}}</td>
                       <td>{{text.remarks}}</td>
                       <td >
                         <div class="d-inline-flex">
@@ -118,16 +118,16 @@
             </div>
           </div>
           <div class='row'>
-            <div class="col-lg-6">
+            <div class="col-lg-12">
               <label for="exampleFormControlTextarea1">Total Production (M.T.):</label>
               <input type="text" class="form-control" id="" rows="4" [(ngModel)]="commo.totalProd" [ngClass]="toValidate.totalProd?'is-invalid':''" (keyup)="toValidate.totalProd=false">
             </div>
 
-
+<!--
             <div class="col-lg-6">
               <label for="exampleFormControlTextarea1">Area Harvested (Has) : </label>
               <input type="text" class="form-control" id="" rows="4" [(ngModel)]="commo.area" [ngClass]="toValidate.area?'is-invalid':''" (keyup)="toValidate.area=false">
-            </div>
+            </div> -->
           </div> <br>
           <div class="row">
             <div class="">

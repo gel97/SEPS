@@ -15,8 +15,8 @@ Commodities:any=[];
 commo:any={};
 toValidate:any={};
 
-  list_of_Commodities =[{ id: 1, name: "Rice - Irrigated" },
-                     { id: 2, name: "Rice - Rain Fed" },
+  list_of_Commodities =[{ id: 1, name: "Rice" },
+                     { id: 2, name: "Corn" },
                      { id: 3, name: "Corn" },
                      { id: 4, name: "Coconut (with husk)	" },
                      { id: 5, name: "Banana - Cavendish" },
@@ -75,11 +75,11 @@ toValidate:any={};
     Add_Commodities(){
       this.toValidate.commodities = this.commo.commodities == "" || this.commo.commodities == null ? true : false;
       this.toValidate.totalProd = this.commo.totalProd== "" || this.commo.totalProd == undefined ? true : false;
-      this.toValidate.area = this.commo.area == "" || this.commo.area == undefined ? true : false;
+      // this.toValidate.area = this.commo.area == "" || this.commo.area == undefined ? true : false;
 
-      if (this.toValidate.commodities  == true || this.toValidate.totalProd == true || this.toValidate.area == true) {
+      if (this.toValidate.commodities  == true || this.toValidate.totalProd == true ) {
         Swal.fire(
-          '',
+          'Missing Data!',
           'Please fill out the required fields',
           'warning'
         );
@@ -106,8 +106,20 @@ toValidate:any={};
   }
 
   Edit_Commodities(){
+    this.toValidate.commodities = this.commo.commodities == "" || this.commo.commodities == null ? true : false;
+    this.toValidate.totalProd = this.commo.totalProd== "" || this.commo.totalProd == undefined ? true : false;
+    // this.toValidate.area = this.commo.area == "" || this.commo.area == undefined ? true : false;
+
+    if (this.toValidate.commodities  == true || this.toValidate.totalProd == true) {
+      Swal.fire(
+        'Missing Data!',
+        'Please fill out the required fields',
+        'warning'
+      );
+    } else {
       this.service.EditAgricultureProd(this.commo).subscribe({next:(_data)=>{
         this.List_Commodities();
+        this.clearData();
 
       },
       });
@@ -121,6 +133,7 @@ toValidate:any={};
       });
       this.commo = {};
     }
+  }
 
     delete(transId:any, index:any){
       Swal.fire({

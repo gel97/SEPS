@@ -99,10 +99,14 @@ export class FisheriesAquacultureComponent implements OnInit {
   AddAgriculture() {
     this.toValidate.brgyId = this.addData.brgyId == "" || this.addData.brgyId == null ? true : false;
     this.toValidate.name = this.addData.name== "" || this.addData.name == undefined ? true : false;
-
-    if (this.toValidate.brgyId  == true || this.toValidate.votingCntrNo == true) {
+    this.toValidate.type = this.addData.type== "" || this.addData.type == null ? true : false;
+    this.toValidate.name = this.addData.source== "" || this.addData.source == null ? true : false;
+    this.toValidate.totalProd = this.addData.totalProd== "" || this.addData.totalProd == undefined ? true : false;
+    this.toValidate.area = this.addData.area== "" || this.addData.area == undefined ? true : false;
+    this.toValidate.name = this.addData.name== "" || this.addData.name == undefined ? true : false;
+    if (this.toValidate.brgyId  == true || this.toValidate.type == true || this.toValidate.source == true || this.toValidate.totalProd || this.toValidate.area == true || this. toValidate.name == true) {
       Swal.fire(
-        '',
+        'Missing Data!',
         'Please fill out the required fields',
         'warning'
       );
@@ -163,6 +167,21 @@ export class FisheriesAquacultureComponent implements OnInit {
   }
 
   EditAgriculture() {
+    this.toValidate.brgyId = this.addData.brgyId == "" || this.addData.brgyId == null ? true : false;
+    this.toValidate.name = this.addData.name== "" || this.addData.name == undefined ? true : false;
+    this.toValidate.type = this.addData.type== "" || this.addData.type == null ? true : false;
+    this.toValidate.name = this.addData.source== "" || this.addData.source == null ? true : false;
+    this.toValidate.totalProd = this.addData.totalProd== "" || this.addData.totalProd == undefined ? true : false;
+    this.toValidate.area = this.addData.area== "" || this.addData.area == undefined ? true : false;
+    this.toValidate.name = this.addData.name== "" || this.addData.name == undefined ? true : false;
+    if (this.toValidate.brgyId  == true || this.toValidate.type == true || this.toValidate.source == true || this.toValidate.totalProd || this.toValidate.area == true || this. toValidate.name == true) {
+      Swal.fire(
+        'Missing Data!',
+        'Please fill out the required fields',
+        'warning'
+      );
+    } else {
+
     Swal.fire({
       title: 'Do you want to save the changes?',
       showDenyButton: true,
@@ -172,10 +191,8 @@ export class FisheriesAquacultureComponent implements OnInit {
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-
         this.addData.longtitude = this.gmapComponent.markers.lng;
         this.addData.latitude = this.gmapComponent.markers.lat;
-
 
         this.addData.setYear = this.setYear;
         this.addData.munCityId = this.munCityId;
@@ -184,9 +201,8 @@ export class FisheriesAquacultureComponent implements OnInit {
         console.log("edit", this.addData);
         this.Service.EditAgriculture(this.addData).subscribe(request => {
           console.log("edit", request);
+          this.clearData();
           this.GetListAgriculture();
-
-
         })
         Swal.fire('Saved!', '', 'success')
       } else if (result.isDenied) {
@@ -194,6 +210,8 @@ export class FisheriesAquacultureComponent implements OnInit {
       }
     })
   }
+  }
+
 
   DeleteAgriculture(dataItem: any) {
     Swal.fire({

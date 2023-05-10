@@ -103,12 +103,11 @@ export class WarehousesComponent implements OnInit {
     if (this.toValidate.brgyId  == true || this.toValidate.classification == true ||
   this.toValidate.capacity == true || this.toValidate.area == true || this.toValidate.name == true)  {
       Swal.fire(
-        '',
+        'Missing Data!',
         'Please fill out the required fields',
         'warning'
       );
     } else {
-
     this.dummy_addData = this.addData;
     if (JSON.stringify(this.dummy_addData) != JSON.stringify(this.dummyData) && this.addData.brgyId != undefined) {
 
@@ -167,6 +166,20 @@ export class WarehousesComponent implements OnInit {
   }
 
   EditAgriculture() {
+    this.toValidate.brgyId = this.addData.brgyId == "" || this.addData.brgyId == null ? true : false;
+    this.toValidate.classification = this.addData.classification== "" || this.addData.classification == undefined ? true : false;
+    this.toValidate.capacity = this.addData.capacity == "" || this.addData.capacity == undefined ? true : false;
+    this.toValidate.area = this.addData.area == "" || this.addData.area == undefined ? true : false;
+    this.toValidate.name = this.addData.name == "" || this.addData.name == undefined ? true : false;
+
+    if (this.toValidate.brgyId  == true || this.toValidate.classification == true ||
+  this.toValidate.capacity == true || this.toValidate.area == true || this.toValidate.name == true)  {
+      Swal.fire(
+        'Missing Data!',
+        'Please fill out the required fields',
+        'warning'
+      );
+    } else {
     Swal.fire({
       title: 'Do you want to save the changes?',
       showDenyButton: true,
@@ -189,6 +202,7 @@ export class WarehousesComponent implements OnInit {
         this.Service.EditAgriculture(this.addData).subscribe(request => {
           console.log("edit", request);
           this.GetListAgriculture();
+          this.clearData();
 
 
         })
@@ -198,6 +212,7 @@ export class WarehousesComponent implements OnInit {
       }
     })
   }
+}
 
   DeleteAgriculture(dataItem: any) {
     Swal.fire({

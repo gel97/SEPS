@@ -103,7 +103,7 @@ list_of_barangay(){
 
 
   Add_Industrial(){
-    this.toValidate.name = this.industrial.name =="" || this.industrial.name ==undefined?true:false;
+   this.toValidate.name = this.industrial.name =="" || this.industrial.name ==undefined?true:false;
    this.toValidate.contactPerson = this.industrial.contactPerson =="" || this.industrial.contactPerson ==undefined?true:false;
    this.toValidate.brgyId = this.industrial.brgyId =="" || this.industrial.brgyId ==null ?true:false; //dropdown (category)
    this.toValidate.contactPerson = this.industrial.contactPerson =="" || this.industrial.contactPerson ==undefined ?true:false;
@@ -120,7 +120,7 @@ list_of_barangay(){
   if (this.toValidate.contactPerson == true||this.toValidate.brgyId ==true||this.toValidate.contactPerson==true||this.toValidate.contactNo==true
     ||this.toValidate.area == true||this.toValidate.locatorsNo == true ) {
     Swal.fire(
-      '',
+      'Missing Data!',
       'Please fill out the required fields',
       'warning'
       );
@@ -160,7 +160,34 @@ list_of_barangay(){
   Update_Industrial(){
     this.editmodal.longtitude = this.gmapComponent.markers.lng;
     this.editmodal.latitude = this.gmapComponent.markers.lat;
+
+    this.toValidate.name = this.editmodal.name =="" || this.editmodal.name ==undefined?true:false;
+    this.toValidate.contactPerson = this.editmodal.contactPerson =="" || this.editmodal.contactPerson ==undefined?true:false;
+    this.toValidate.brgyId = this.editmodal.brgyId =="" || this.editmodal.brgyId ==null ?true:false; //dropdown (category)
+    this.toValidate.contactPerson = this.editmodal.contactPerson =="" || this.editmodal.contactPerson ==undefined ?true:false;
+    this.toValidate.contactNo = this.editmodal.contactNo =="" || this.editmodal.contactNo ==undefined ?true:false;
+    this.toValidate.area = this.editmodal.area =="" || this.editmodal.area ==undefined ?true:false;
+    this.toValidate.locatorsNo = this.editmodal.locatorsNo =="" || this.editmodal.locatorsNo ==undefined ?true:false;
+   //  this.toValidate.longtitude = this.industrial.longtitude =="" || this.industrial.longtitude ==undefined ?true:false;
+   //  this.toValidate.longtitude = this.industrial.longtitude =="" || this.industrial.longtitude ==undefined ?true:false;
+
+
+
+ // alert(this.industrial.contactPerson)
+
+   if (this.toValidate.contactPerson == true||this.toValidate.brgyId ==true||this.toValidate.contactPerson==true||this.toValidate.contactNo==true
+     ||this.toValidate.area == true||this.toValidate.locatorsNo == true ) {
+     Swal.fire(
+      'Missing Data!',
+       'Please fill out the required fields',
+       'warning'
+       );
+   }else{
     this.service.Update_Industrial(this.editmodal).subscribe({next:(_data)=>{
+      if (!this.isCheck) {
+        this.closebutton.nativeElement.click();
+      }
+      this.clearData();
       this.GetIndustrialEstates();
       this.editmodal ={};
     },
@@ -174,8 +201,9 @@ list_of_barangay(){
     timer: 1000
     });
     this.editmodal ={};
-    }
 
+    }
+  }
 
 delete_Industrial(transId:any, index:any){
       Swal.fire({

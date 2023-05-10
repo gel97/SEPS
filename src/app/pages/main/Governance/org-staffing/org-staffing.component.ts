@@ -63,7 +63,7 @@ AddOrg(){
 
     ){
     Swal.fire(
-      '',
+      'Missing Data!',
       'Please fill out the required fields',
       'warning'
     );
@@ -95,6 +95,29 @@ AddOrg(){
 
   //for modal
   update(){
+    this.toValidate.permanentNo = this.org.permanentNo=="" || this.org.permanentNo ==null?true:false;
+    this.toValidate.temporary = this.org.temporary =="" || this.org.temporary == undefined?true:false;
+    this.toValidate.coTerminus = this.org.coTerminus=="" || this.org.coTerminus == undefined?true:false;
+    this.toValidate.elected = this.org.elected =="" || this.org.elected == undefined?true:false;
+    this.toValidate.casual = this.org.casual=="" || this.org.casual ==null?true:false;
+    this.toValidate.jobOrder = this.org.jobOrder =="" || this.org.jobOrder == undefined?true:false;
+    this.toValidate.contractual = this.org.contractual=="" || this.org.contractual == undefined?true:false;
+    this.toValidate.casualSef = this.org.casualSef =="" || this.org.casualSef == undefined?true:false;
+    this.toValidate.schoolBoard = this.org.schoolBoard=="" || this.org.schoolBoard ==null?true:false;
+    this.toValidate.contractService = this.org.contractService =="" || this.org.contractService == undefined?true:false;
+    this.toValidate.others = this.org.others=="" || this.org.others == undefined?true:false;
+
+    if (this.toValidate.permanentNo == true||this.toValidate.temporary ==true || this.toValidate.coTerminus == true || this.toValidate.elected  == true ||
+       this.toValidate.casual == true||this.toValidate.jobOrder ==true || this.toValidate.contractual == true || this.toValidate.casualSef  == true ||
+       this.toValidate.schoolBoard == true||this.toValidate.contractService ==true || this.toValidate.contractual == true || this.toValidate.others  == true
+
+      ){
+      Swal.fire(
+        'Missing Data!',
+        'Please fill out the required fields',
+        'warning'
+      );
+    }else{
   this.org.tag = 1;
   this.service.UpdateOrg(this.editO).subscribe({next:(_data)=>{
   // this.editModal();
@@ -110,6 +133,7 @@ AddOrg(){
   });
   this.editO ={};
   }
+}
 
 //   delete(munCityId:any, setYear:any, index:any){
 //     Swal.fire({

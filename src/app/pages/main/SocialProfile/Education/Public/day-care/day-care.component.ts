@@ -58,7 +58,7 @@ export class DayCareComponent implements OnInit {
     this.GetListDcarechool();
   }
 
-  GetListBarangay() 
+  GetListBarangay()
   {
     this.service.ListOfBarangay(this.auth.munCityId).subscribe(data => {
       this.listBarangay = (<any>data);
@@ -91,13 +91,17 @@ export class DayCareComponent implements OnInit {
   AddDcareSchool()
   {
     this.toValidate.name = this.daycare.name=="" || this.daycare.name ==null?true:false;
-    this.toValidate.brgyId = this.daycare.brgyId=="" || this.daycare.brgyId ==null?true:false; 
-    
+    this.toValidate.schoolId = this.daycare.schoolId=="" || this.daycare.schoolId ==null?true:false;
+    this.toValidate.teacherNo = this.daycare.teacherNo=="" || this.daycare.teacherNo ==null?true:false;
+    this.toValidate.classroomNo = this.daycare.classroomNo=="" || this.daycare.classroomNo ==null?true:false;
+    this.toValidate.classesNo = this.daycare.classesNo=="" || this.daycare.classesNo ==null?true:false;
+    this.toValidate.brgyId = this.daycare.brgyId=="" || this.daycare.brgyId ==null?true:false;
+
     this.daycare.menuId    = this.menuId;
     this.daycare.setYear   = this.setYear;
     this.daycare.munCityId = this.munCityId;
-   
-    if(!this.toValidate.name && !this.toValidate.brgyId)
+
+    if(!this.toValidate.name && !this.toValidate.brgyId && !this.toValidate.schoolId && !this.toValidate.teacherNo && !this.toValidate.classroomNo && !this.toValidate.classesNo)
     {
       this.service.AddEducation(this.daycare).subscribe(
         {
@@ -134,12 +138,19 @@ export class DayCareComponent implements OnInit {
         'warning'
         );
     }
-   
+
 
   }
 
   EditDcareSchool()
   {
+    this.toValidate.name = this.daycare.name=="" || this.daycare.name ==null?true:false;
+    this.toValidate.schoolId = this.daycare.schoolId=="" || this.daycare.schoolId ==null?true:false;
+    this.toValidate.teacherNo = this.daycare.teacherNo=="" || this.daycare.teacherNo ==null?true:false;
+    this.toValidate.classroomNo = this.daycare.classroomNo=="" || this.daycare.classroomNo ==null?true:false;
+    this.toValidate.classesNo = this.daycare.classesNo=="" || this.daycare.classesNo ==null?true:false;
+    this.toValidate.brgyId = this.daycare.brgyId=="" || this.daycare.brgyId ==null?true:false;
+
 
     this.daycare.longtitude = this.gmapComponent.markers.lng;
     this.daycare.latitude  = this.gmapComponent.markers.lat;
@@ -148,10 +159,14 @@ export class DayCareComponent implements OnInit {
     this.daycare.setYear   = this.setYear;
     this.daycare.munCityId = this.munCityId;
 
+    if(!this.toValidate.name && !this.toValidate.brgyId && !this.toValidate.schoolId && !this.toValidate.teacherNo && !this.toValidate.classroomNo && !this.toValidate.classesNo)
+    {
     this.service.EditEducation(this.daycare).subscribe(
       {
         next: (request) => {
           this.GetListDcarechool();
+          this.daycare={};
+
         },
         error:(error)=>{
           Swal.fire(
@@ -163,15 +178,27 @@ export class DayCareComponent implements OnInit {
         complete: () =>
         {
           this.closebutton.nativeElement.click();
-           Swal.fire(
-            'Good job!',
-            'Data Updated Successfully!',
-            'success'
-            );
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Your work has been updated',
+            showConfirmButton: false,
+            timer: 1000
+            });
         }
       }
     )
   }
+  else
+  {
+    Swal.fire(
+      'Missing Data!',
+      'Please fill out the required fields.',
+      'warning'
+      );
+  }
+  }
+
 
   DeleteDcareSchool(transId:any)
   {

@@ -57,7 +57,7 @@ export class ElementaryComponent implements OnInit {
     this.GetListPublicElemSchool();
   }
 
-  GetListBarangay() 
+  GetListBarangay()
   {
     this.service.ListOfBarangay(this.auth.munCityId).subscribe(data => {
       this.listBarangay = (<any>data);
@@ -90,13 +90,13 @@ export class ElementaryComponent implements OnInit {
   AddPublicElemSchool()
   {
     this.toValidate.name = this.elementary.name=="" || this.elementary.name ==null?true:false;
-    this.toValidate.brgyId = this.elementary.brgyId=="" || this.elementary.brgyId ==null?true:false; 
-    
+    this.toValidate.brgyId = this.elementary.brgyId=="" || this.elementary.brgyId ==null?true:false;
+
     this.elementary.menuId    = this.menuId;
     this.elementary.setYear   = this.setYear;
     this.elementary.munCityId = this.munCityId;
-   
-    if(!this.toValidate.name && !this.toValidate.brgyId)
+
+    if(!this.toValidate.name && !this.toValidate.brgyId && !this.toValidate.schoolId && !this.toValidate.teacherNo && !this.toValidate.classroomNo && !this.toValidate.classesNo)
     {
       this.service.AddEducation(this.elementary).subscribe(
         {
@@ -133,12 +133,18 @@ export class ElementaryComponent implements OnInit {
         'warning'
         );
     }
-   
+
 
   }
 
   EditPublicElemSchool()
   {
+    this.toValidate.name = this.elementary.name=="" || this.elementary.name ==null?true:false;
+    this.toValidate.schoolId = this.elementary.schoolId=="" || this.elementary.schoolId ==null?true:false;
+    this.toValidate.teacherNo = this.elementary.teacherNo=="" || this.elementary.teacherNo ==null?true:false;
+    this.toValidate.classroomNo = this.elementary.classroomNo=="" || this.elementary.classroomNo ==null?true:false;
+    this.toValidate.classesNo = this.elementary.classesNo=="" || this.elementary.classesNo ==null?true:false;
+    this.toValidate.brgyId = this.elementary.brgyId=="" || this.elementary.brgyId ==null?true:false;
 
     this.elementary.longtitude = this.gmapComponent.markers.lng;
     this.elementary.latitude  = this.gmapComponent.markers.lat;
@@ -146,7 +152,8 @@ export class ElementaryComponent implements OnInit {
     this.elementary.menuId    = this.menuId;
     this.elementary.setYear   = this.setYear;
     this.elementary.munCityId = this.munCityId;
-
+    if(!this.toValidate.name && !this.toValidate.brgyId && !this.toValidate.schoolId && !this.toValidate.teacherNo && !this.toValidate.classroomNo && !this.toValidate.classesNo)
+    {
     this.service.EditEducation(this.elementary).subscribe(
       {
         next: (request) => {
@@ -168,9 +175,22 @@ export class ElementaryComponent implements OnInit {
             'success'
             );
         }
+
       }
     )
   }
+  else
+  {
+    Swal.fire(
+      'Missing Data!',
+      'Please fill out the required fields.',
+      'warning'
+      );
+  }
+
+  }
+
+
 
   DeletePublicElemSchool(transId:any)
   {

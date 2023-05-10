@@ -124,7 +124,7 @@
           <div class="row">
             <div class="col-lg-8">
               <label for="exampleFormControlInput1">Farmer: </label>
-              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.name" [ngClass]="toValidate.name?'is-invalid':''" (keyp)="toValidate.name=false">
+              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.name" [ngClass]="toValidate.name?'is-invalid':''" (keyup)="toValidate.name=false">
             </div>
             <div class="col-lg-4">
               <label for="category">Barangay :</label>
@@ -140,7 +140,7 @@
           <div class="row">
             <div class="col-lg-6">
               <label for="exampleFormControlInput1">Harvest Type</label>
-              <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.type">
+              <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.type" [ngClass]="toValidate.type?'is-invalid':''" (ngModelChange)="toValidate.type=false" >
                 <option selected></option>
                 <option *ngFor="let list of listofHarvest" value={{list.id}} >{{list.type}}</option>
               </select>
@@ -148,7 +148,7 @@
             <div class="col-lg-6">
               <label for="exampleFormControlInput1">Fishing Ground/
                 Fishpond Type :</label>
-                <!-- <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.source"> -->
+                <!-- <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.source" [ngClass]="toValidate.source?'is-invalid':''" (keyup)="toValidate.source=false"> -->
               <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.source">
                 <option selected></option>
                 <option *ngFor="let list of listofFishing" value={{list.id}} >{{list.type}}</option>
@@ -158,11 +158,11 @@
             <div class="row">
               <div class="col-lg-6">
                 <label>Total Production :</label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.totalProd">
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.totalProd" [ngClass]="toValidate.totalProd?'is-invalid':''" (ngModelChange)="toValidate.totalProd=false">
               </div>
               <div class="col-lg-6">
                 <label>Area Harvested :</label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.area">
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.area" [ngClass]="toValidate.area?'is-invalid':''" (ngModelChange)="toValidate.area=false">
               </div>
             </div><br>
 
@@ -202,8 +202,7 @@
           aria-hidden="true">
           <i class="fas fa-times">&nbsp;</i>Close
         </button>
-        <button type="button" *ngIf="not_visible" (click)="EditAgriculture()" data-toggle="modal"
-          data-target="#exampleModal" aria-hidden="true" class="btn btn-primary"   data-dismiss="modal">
+        <button type="button" *ngIf="not_visible" (click)="EditAgriculture()" aria-hidden="true" class="btn btn-primary">
           <i class="fas fa-check">&nbsp;</i>Save Changes
         </button>
       </div>

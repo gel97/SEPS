@@ -102,7 +102,7 @@ export class ResortsComponent implements OnInit {
 
     if (this.toValidate.brgyId  == true || this.toValidate.name == true) {
       Swal.fire(
-        '',
+        'Missing Data!',
         'Please fill out the required fields',
         'warning'
       );
@@ -154,6 +154,16 @@ export class ResortsComponent implements OnInit {
   }
 
   EditTourism() {
+    this.toValidate.brgyId = this.addData.brgyId == "" || this.addData.brgyId == null ? true : false;
+    this.toValidate.name = this.addData.name== "" || this.addData.name == undefined ? true : false;
+    if (this.toValidate.brgyId  == true || this.toValidate.name == true) {
+      Swal.fire(
+        'Missing Data!',
+        'Please fill out the required fields',
+        'warning'
+      );
+    } else {
+
     Swal.fire({
       title: 'Do you want to save the changes?',
       showDenyButton: true,
@@ -174,14 +184,17 @@ export class ResortsComponent implements OnInit {
         console.log("edit", this.addData);
         this.Service.EditTourism(this.addData).subscribe(request => {
           console.log("edit", request);
-          this.GetListTourism();
+          // this.GetListTourism();
         })
         Swal.fire('Saved!', '', 'success')
       } else if (result.isDenied) {
         Swal.fire('Changes are not saved', '', 'info')
+        this.GetListTourism();
       }
     })
   }
+}
+
 
   DeleteTourism(dataItem: any) {
     Swal.fire({

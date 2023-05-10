@@ -77,7 +77,7 @@ export class CityOfficialsComponent implements OnInit {
 
     if (this.toValidate.name == true || this.toValidate.seqNo == true) {
       Swal.fire(
-        '',
+        'Missing Data!',
         'Please fill out the required fields',
         'warning'
       );
@@ -106,7 +106,7 @@ export class CityOfficialsComponent implements OnInit {
       }, err => {
         Swal.fire(
           'ERROR!',
-          'Error',
+          'Data Already Exist',
           'error'
         );
       });
@@ -115,8 +115,17 @@ export class CityOfficialsComponent implements OnInit {
 
   //for modal
   update() {
-    this.service.UpdateOfficial(this.editModal).subscribe({
-      next: (_data) => {
+    this.toValidate.name = this.editModal.name == "" || this.editModal.name == null ? true : false;
+    this.toValidate.seqNo = this.editModal.seqNo == "" || this.editModal.seqNo == undefined ? true : false;
+
+    if (this.toValidate.name == true || this.toValidate.seqNo == true) {
+      Swal.fire(
+        'Missing Data!',
+        'Please fill out the required fields',
+        'warning'
+      );
+    }else {
+    this.service.UpdateOfficial(this.editModal).subscribe({ next: (_data) => {
         this.getOfficials();
         this.editModal = {};
       },
@@ -129,8 +138,9 @@ export class CityOfficialsComponent implements OnInit {
       showConfirmButton: false,
       timer: 1000
     });
-
+    this. getOfficials();
   }
+}
 
   delete(official2: any = {}) {
     Swal.fire({

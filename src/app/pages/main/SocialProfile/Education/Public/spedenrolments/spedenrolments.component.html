@@ -46,7 +46,12 @@
                     <td>{{i+1}}</td>
                     <td>{{data.schoolId}}</td>
                     <td>{{data.name}}</td>
-                    <td>{{data.exception}}</td>
+                    <td>
+                      <!-- {{data.exception}} -->
+                      <div *ngFor="let item of AreaofExceptionality">
+                        <span *ngIf="item.value === data.exception">{{item.name}} </span>
+                    </div>
+                    </td>
                     <td>{{data.total1_m}}</td>
                     <td>{{data.total1_f}}</td>
                     <td>{{data.total2_m}}</td>
@@ -75,6 +80,7 @@
                   </tr>
                 </tbody>
               </table>
+              <p>*** Data are based on Department of Education ***</p>
             </div>
           </div>
         </div>
@@ -102,9 +108,15 @@
                 <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="school.schoolId">
               </div>
 
-              <div class=""><br>
+              <!-- <div class=""><br>
                 <label for="exampleFormControlInput1">Area of Exceptionality :</label>
                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" [(ngModel)]="school.exception"></textarea>
+              </div> -->
+              <div class="">
+                <label for="category">Area of Exceptionality : </label>
+                <select class="form-select" aria-label="Default select example"  name="AreaofExceptionality" [(ngModel)]="school.exception" [ngClass]="toValidate.exception?'is-invalid':''" (ngModelChange)="toValidate.exception=false" >
+                  <option *ngFor="let list of AreaofExceptionality" value={{list.value}} >{{list.name}}</option>
+                </select>
               </div>
               <table class="table"> <br><br>
                 <tr>

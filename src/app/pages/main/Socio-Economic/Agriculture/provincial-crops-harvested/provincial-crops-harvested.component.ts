@@ -74,11 +74,12 @@ export class ProvincialCropsHarvestedComponent implements OnInit {
 
         if (this.toValidate.commodities  == true || this.toValidate.totalProd == true || this.toValidate.area == true) {
           Swal.fire(
-            '',
+            'Missing Data!',
             'Please fill out the required fields',
             'warning'
           );
         } else {
+
         this.commo.menuId = this. menuId;
         this.commo.setYear = this.setYear;
         this.commo.munCityId = this.munCityId;
@@ -86,8 +87,7 @@ export class ProvincialCropsHarvestedComponent implements OnInit {
           if (!this.isCheck) {
             this.closebutton.nativeElement.click();
           }
-          console.log(data);
-          this.clearData();
+
           this.List_Commodities();
 
           console.log("checke_data", data);
@@ -103,8 +103,21 @@ export class ProvincialCropsHarvestedComponent implements OnInit {
     }
 
     Edit_Commodities(){
+      this.toValidate.commodities = this.commo.commodities == "" || this.commo.commodities == null ? true : false;
+        this.toValidate.totalProd = this.commo.totalProd== "" || this.commo.totalProd == undefined ? true : false;
+        this.toValidate.area = this.commo.area == "" || this.commo.area == undefined ? true : false;
+
+        if (this.toValidate.commodities  == true || this.toValidate.totalProd == true || this.toValidate.area == true) {
+          Swal.fire(
+            'Missing Data!',
+            'Please fill out the required fields',
+            'warning'
+          );
+        } else {
+
         this.service.EditAgricultureProd(this.commo).subscribe({next:(_data)=>{
           this.List_Commodities();
+          this.clearData();
 
         },
         });
@@ -118,6 +131,7 @@ export class ProvincialCropsHarvestedComponent implements OnInit {
         });
         this.commo={};
       }
+    }
 
       delete(transId:any, index:any){
         Swal.fire({

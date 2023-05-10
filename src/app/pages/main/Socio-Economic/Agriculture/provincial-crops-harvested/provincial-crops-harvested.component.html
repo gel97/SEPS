@@ -47,7 +47,7 @@
 
               <th scope="col">#</th>
               <th scope="col">Type of Commodities</th>
-              <th scope="col">Area Harvested (Has)</th>
+              <th scope="col">Total Area Harvested (has.) :</th>
               <th scope="col">Remarks	</th>
               <th width="8%"></th>
             </tr>
@@ -96,7 +96,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">List of  Provincial Profile on Crops Production and Area Harvested</h5>
-          <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -113,16 +113,16 @@
             </div>
            </div>
          <div class = 'row'>
-          <div class="col-lg-6">
+          <div class="col-lg-12">
             <label for="exampleFormControlTextarea1">Total Production (M.T.):</label>
             <input type="text" class="form-control" id="" rows="4" [(ngModel)]="commo.totalProd" [ngClass]="toValidate.totalProd?'is-invalid':''" (keyup)="toValidate.totalProd=false">
           </div>
 
 
-            <div class="col-lg-6">
+            <!-- <div class="col-lg-6">
             <label for="exampleFormControlTextarea1">Area Harvested (Has) : </label>
               <input type ="text" class="form-control" id="" rows="4" [(ngModel)]="commo.area" [ngClass]="toValidate.area?'is-invalid':''" (keyup)="toValidate.area=false">
-            </div>
+            </div> -->
           </div> <br>
           <div class = "row">
           <div class="">
@@ -142,7 +142,7 @@
                 </label>
             </div>
         </div>
-          <button type="button" class="btn btn-primary" (click)="add_Crops_Total? Add_Commodities():Edit_Commodities();"  data-dismiss="modal"><i class="fa fa-check" ></i>Save</button>&nbsp;
+          <button type="button" class="btn btn-primary" (click)="add_Crops_Total? Add_Commodities():Edit_Commodities();" ><i class="fa fa-check" ></i>Save</button>&nbsp;
           <!-- <button type ="button" class="btn btn-secondary" *ngIf="updateOfficial" (click) ="city={}"><i class="fa fa-times"></i>Cancel</button> -->
           <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
         </div>

@@ -150,7 +150,7 @@
             </div>
             <div class="col-lg-4">
               <label for="category">Water Source :</label>
-              <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.source" [ngClass]="toValidate.source?'is-invalid':''" (keyup)="toValidate.source=false">
+              <select class="form-select" aria-label="Default select example" [ngClass]="toValidate.source?'is-invalid':''" (ngModelChange)="toValidate.source=false"  [(ngModel)]="addData.source">
                 <option selected></option>
                 <option *ngFor="let list of listofWater" value={{list.id}} >{{list.type}}</option>
               </select>
@@ -204,11 +204,10 @@
           <i class="fas fa-check"></i>Save
         </button>&nbsp;
         <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal"
-          aria-hidden="true">
+          aria-hidden="true" data-dismiss="modal">
           <i class="fas fa-times"></i>Close
         </button>&nbsp;
-        <button type="button" *ngIf="not_visible" (click)="EditAgriculture()" data-toggle="modal"
-          data-target="#exampleModal" aria-hidden="true" class="btn btn-primary">
+        <button type="button" *ngIf="not_visible" (click)="EditAgriculture()" id="closeModal" aria-hidden="true" class="btn btn-primary">
           <i class="fas fa-edit"></i>UPDATE
         </button>&nbsp;
       </div>
