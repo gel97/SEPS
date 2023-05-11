@@ -29,7 +29,7 @@ export class BarangayOfficialService {
     }
 
     Delete_Barangay(transId:any) {
-      return this.Http.delete(this.Base.url + this.ApiUrl.delete_barangay(transId), { responseType: 'json' });
+      return this.Http.delete(this.Base.url + this.ApiUrl.delete_barangay(transId), { responseType: 'text' });
     }
 
     ListBarangay(){

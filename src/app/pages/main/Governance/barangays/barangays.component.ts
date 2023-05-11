@@ -12,45 +12,28 @@ import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 export class BarangaysComponent implements OnInit {
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void; }; };
 
   constructor(
     private service: BarangayOfficialService,
     private auth: AuthService) { }
 
-  munCityName:string = this.auth.munCityName;
+  munCityName: string = this.auth.munCityName;
   toValidate: any = {};
-  is_update: boolean = false;
+  isAdd: boolean = false;
+
   ViewBarangayOfficial: any = [];
   listBarangay: any = [];
+
   listData: any = [];
-  barangay: any = {};
-  addmodal: any = {};
-  editmodal: any = {};
-  UpdateBarangay: any = {};
-  inputDisabled:boolean=false;
+  data: any = {};
 
   ngOnInit(): void {
     this.Init();
   }
 
-  markerObj: any = {};
-
-  SetMarker(data: any = {}) {
-    console.log("lnglat: ", data.longitude + " , " + data.latitude)
-
-    this.markerObj = {
-      lat: data.latitude,
-      lng: data.longitude,
-      label: data.brgyName.charAt(0),
-      brgyName: data.brgyName,
-      munCityName: this.munCityName,
-      draggable: true
-    };
-    this.gmapComponent.setMarker(this.markerObj);
-  }
-
-
-  Init(){
+  Init() {
     this.GetBarangay();
     this.GetListBarangay();
   }
@@ -59,11 +42,10 @@ export class BarangaysComponent implements OnInit {
     this.service.GetBarangay().subscribe({
       next: (response) => {
         this.ViewBarangayOfficial = (<any>response);
-        console.log("Barangay officials :",response )
       },
       error: (error) => {
       },
-      complete: ()=> {
+      complete: () => {
         this.GetListBarangay();
       }
     });
@@ -73,39 +55,41 @@ export class BarangaysComponent implements OnInit {
     this.service.ListBarangay().subscribe({
       next: (response) => {
         this.listBarangay = (<any>response);
-        console.log("Barangay :",response )
       },
       error: (error) => {
       },
-      complete: ()=> {
-        this.filterList();
+      complete: () => {
+        this.FilterList();
       }
     });
-  
   }
 
-  filterList(){
-    this.listBarangay.forEach((a:any)=>{
-      this.ViewBarangayOfficial.forEach((b:any)=>{
+  FilterList() {
+    let isExist;
+    this.listBarangay.forEach((a: any) => {
+      this.ViewBarangayOfficial.forEach((b: any) => {
         if (a.brgyId == b.brgyId) {
-          this.listData.push(b);
-        } 
-
+          isExist = this.listData.filter((x: any) => x.brgyId == a.brgyId);
+          if (isExist.length == 0) {
+            this.listData.push(b);
+          }
+        }
       });
 
-      let isExist = this.listData.filter((x: any) => x.brgyId == a.brgyId);
+      isExist = this.listData.filter((x: any) => x.brgyId == a.brgyId);
       if (isExist.length == 0) {
-        this.listData.push(a);
+        this.listData.push({
+          'brgyId': a.brgyId,
+          'brgyName': a.brgyName
+        });
       }
 
     });
-    console.log("filter: ", this.listData);
   }
 
-
-  addM() {
-    this.toValidate.punongBrgy = this.addmodal.punongBrgy == "" || this.addmodal.punongBrgy == null ? true : false;
-    this.toValidate.address = this.addmodal.address == "" || this.addmodal.address == undefined ? true : false;
+  AddData() {
+    this.toValidate.punongBrgy = this.data.punongBrgy == "" || this.data.punongBrgy == null ? true : false;
+    this.toValidate.address = this.data.address == "" || this.data.address == undefined ? true : false;
     if (this.toValidate.punongBrgy == true || this.toValidate.address == true) {
       Swal.fire(
         'Missing Data!',
@@ -113,25 +97,32 @@ export class BarangaysComponent implements OnInit {
         'warning'
       );
     } else {
-    this.addmodal.setYear = this.auth.activeSetYear;
-    this.service.AddBarangay(this.addmodal).subscribe({
-      next: (_data) => {
-        this.Init();
-        this.addmodal = {};
-      },
-    });
-    Swal.fire({
-      position: 'center',
-      icon: 'success',
-      title: 'Your work has been saved',
-      showConfirmButton: false,
-      timer: 1000
-    });
+      this.data.setYear = this.auth.activeSetYear;
+      this.service.AddBarangay(this.data).subscribe({
+        next: (request) => {
+          let index = this.listData.findIndex((obj: any) => obj.brgyId === this.data.brgyId);
+          this.listData[index] = request;
+        },
+        complete: () => {
+          this.data = {};
+          this.closebutton.nativeElement.click();
+
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Your work has been saved',
+            showConfirmButton: false,
+            timer: 1000
+          });
+        }
+      });
+    }
   }
-  }
-  updateM() {
-    this.toValidate.punongBrgy = this.addmodal.punongBrgy == "" || this.addmodal.punongBrgy == null ? true : false;
-    this.toValidate.address = this.addmodal.address == "" || this.addmodal.address == undefined ? true : false;
+
+  EditData() {
+
+    this.toValidate.punongBrgy = this.data.punongBrgy == "" || this.data.punongBrgy == null ? true : false;
+    this.toValidate.address = this.data.address == "" || this.data.address == undefined ? true : false;
     if (this.toValidate.punongBrgy == true || this.toValidate.address == true) {
       Swal.fire(
         'Missing Data!',
@@ -140,29 +131,31 @@ export class BarangaysComponent implements OnInit {
       );
     } else {
 
-    this.editmodal.longitude = this.gmapComponent.markers.lng;
-    this.editmodal.latitude = this.gmapComponent.markers.lat;
+      if (this.gmapComponent.markers.lng !== undefined && this.gmapComponent.markers.lat !== undefined) {
+        this.data.longitude = this.gmapComponent.markers.lng;
+        this.data.latitude = this.gmapComponent.markers.lat;
+      }
 
-    this.editmodal.setYear = this.auth.activeSetYear;
-    this.service.UpdateBarangay(this.editmodal).subscribe({
-      next: (_data) => {
-        this.Init();
-        this.editmodal = {};
-      },
-    });
-
-    Swal.fire({
-      position: 'center',
-      icon: 'success',
-      title: 'Your work has been updated',
-      showConfirmButton: false,
-      timer: 1000
-    });
-
+      this.data.setYear = this.auth.activeSetYear;
+      this.service.UpdateBarangay(this.data).subscribe({
+        next: (request) => {
+          this.closebutton.nativeElement.click();
+          this.data = {};
+        },
+        complete: () => {
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Your work has been updated',
+            showConfirmButton: false,
+            timer: 1000
+          });
+        }
+      });
+    }
   }
-}
 
-  delete(transId:any, index:any){
+  DeleteData(transId: any, index: any) {
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -175,21 +168,43 @@ export class BarangaysComponent implements OnInit {
       if (result.isConfirmed) {
         this.service.Delete_Barangay(transId).subscribe({
           next: (_data) => {
-            this.GetBarangay();
           },
           error: (err) => {
-            this.GetBarangay();
+            Swal.fire(
+              'Oops!',
+              'Something went wrong.',
+              'error'
+            )
           },
+          complete: () => {
+            let index = this.listData.findIndex((obj: any) => obj.transId === transId);
+            this.listData[index] = {};
+            this.listData[index].brgyId = this.data.brgyId;
+            this.listData[index].brgyName = this.data.brgyName;
+            Swal.fire(
+              'Deleted!',
+              'Your file has been deleted.',
+              'success'
+            )
+          }
 
         });
-        Swal.fire(
-          'Deleted!',
-          'Your file has been deleted.',
-          'success'
-        )
+
       }
     })
+  }
 
+  markerObj: any = {};
+  SetMarker(data: any = {}) {
+    this.markerObj = {
+      lat: data.latitude,
+      lng: data.longitude,
+      label: data.brgyName.charAt(0),
+      brgyName: data.brgyName,
+      munCityName: this.munCityName,
+      draggable: true
+    };
+    this.gmapComponent.setMarker(this.markerObj);
   }
 
 }
