@@ -165,84 +165,84 @@
               <label for="exampleFormControlTextarea1" >Permanent :</label>
              </div>
              <div class ="col-lg-10"><br>
-              <input type="number" class="form-control" id="permanent" name = "permanent" [(ngModel)] ="editO.permanentNo"  placeholder="">
+              <input type="number" class="form-control" id="permanent" name = "permanent" [(ngModel)] ="editO.permanentNo"  placeholder="" [ngClass]="toValidate.permanentNo?'is-invalid':''" (keyup)="toValidate.permanentNo=false">
             </div>
 
              <div class ="col-lg-2"><br>
               <label for="exampleFormControlTextarea1" >Temporary :</label>
              </div>
              <div class ="col-lg-10"><br>
-              <input type="number" class="form-control" id="temporary" name = "temporary" [(ngModel)] ="editO.temporary"  placeholder="">
+              <input type="number" class="form-control" id="temporary" name = "temporary" [(ngModel)] ="editO.temporary"  placeholder="" [ngClass]="toValidate.temporary?'is-invalid':''" (keyup)="toValidate.temporary=false">
              </div>
 
              <div class ="col-lg-2"><br>
               <label for="exampleFormControlTextarea1" >Co-Terminus :</label>
              </div>
              <div class ="col-lg-10"><br>
-              <input type="number" class="form-control" id="coTerminus" name = "coTerminus" [(ngModel)] ="editO.coTerminus"  placeholder="">
+              <input type="number" class="form-control" id="coTerminus" name = "coTerminus" [(ngModel)] ="editO.coTerminus"  placeholder="" [ngClass]="toValidate.coTerminus?'is-invalid':''" (keyup)="toValidate.coTerminus=false">
              </div>
 
              <div class ="col-lg-2"><br>
               <label for="exampleFormControlTextarea1" >Elected :</label>
              </div>
              <div class ="col-lg-10"><br>
-              <input type="number" class="form-control" id="elected" name = "elected" [(ngModel)] ="editO.elected" placeholder="">
+              <input type="number" class="form-control" id="elected" name = "elected" [(ngModel)] ="editO.elected" placeholder="" [ngClass]="toValidate.elected?'is-invalid':''" (keyup)="toValidate.elected=false">
              </div>
 
              <div class ="col-lg-2"><br>
               <label for="exampleFormControlTextarea1" >Casual :</label>
              </div>
              <div class ="col-lg-10"><br>
-              <input type="number" class="form-control" id="casual" name = "casual" [(ngModel)] ="editO.casual"  placeholder="">
+              <input type="number" class="form-control" id="casual" name = "casual" [(ngModel)] ="editO.casual"  placeholder="" [ngClass]="toValidate.casual?'is-invalid':''" (keyup)="toValidate.casual=false">
              </div>
 
              <div class ="col-lg-2"><br>
               <label for="exampleFormControlTextarea1" >Job Order :</label>
              </div>
              <div class ="col-lg-10"><br>
-              <input type="number" class="form-control" id="jobOrder" name = "jobOrder" [(ngModel)] ="editO.jobOrder" placeholder="">
+              <input type="number" class="form-control" id="jobOrder" name = "jobOrder" [(ngModel)] ="editO.jobOrder" placeholder="" [ngClass]="toValidate.jobOrder?'is-invalid':''" (keyup)="toValidate.jobOrder=false">
              </div>
 
              <div class ="col-lg-2"><br>
               <label for="exampleFormControlTextarea1" >Contractual :</label>
              </div>
              <div class ="col-lg-10"><br>
-              <input type="number" class="form-control" id="contractual" name = "contractual" [(ngModel)] ="org.contractual"  placeholder="">
+              <input type="number" class="form-control" id="contractual" name = "contractual" [(ngModel)] ="org.contractual"  placeholder="" [ngClass]="toValidate.contractual?'is-invalid':''" (keyup)="toValidate.contractual=false">
              </div>
 
              <div class ="col-lg-2"><br>
               <label for="exampleFormControlTextarea1" >Casual SEF :</label>
              </div>
              <div class ="col-lg-10"><br>
-              <input type="number" class="form-control" id="casualSef" name = "casualSef" [(ngModel)] ="editO.casualSef" placeholder="">
+              <input type="number" class="form-control" id="casualSef" name = "casualSef" [(ngModel)] ="editO.casualSef" placeholder="" [ngClass]="toValidate.casualSef?'is-invalid':''" (keyup)="toValidate.casualSef=false">
              </div>
 
              <div class ="col-lg-2"><br>
               <label for="exampleFormControlTextarea1" >School Board :</label>
              </div>
              <div class ="col-lg-10"><br>
-              <input type="number" class="form-control" id="schoolBoard" name = "schoolBoard" [(ngModel)] ="editO.schoolBoard"  placeholder="">
+              <input type="number" class="form-control" id="schoolBoard" name = "schoolBoard" [(ngModel)] ="editO.schoolBoard"  placeholder="" [ngClass]="toValidate.schoolBoard?'is-invalid':''" (keyup)="toValidate.schoolBoard=false">
              </div>
 
              <div class ="col-lg-2"><br>
               <label for="exampleFormControlTextarea1" >Contract of Services :</label>
              </div>
              <div class ="col-lg-10"><br>
-              <input type="number" class="form-control" id="contractService" name = "contractService" [(ngModel)] ="editO.contractService" placeholder="">
+              <input type="number" class="form-control" id="contractService" name = "contractService" [(ngModel)] ="editO.contractService" placeholder="" [ngClass]="toValidate.contractService?'is-invalid':''" (keyup)="toValidate.contractService=false">
              </div>
 
              <div class ="col-lg-2"><br>
               <label for="exampleFormControlTextarea1" >Others :</label>
              </div>
              <div class ="col-lg-10"><br>
-              <input type="text" class="form-control" id="others" name = "others" [(ngModel)] ="editO.others"  placeholder="">
+              <input type="text" class="form-control" id="others" name = "others" [(ngModel)] ="editO.others"  placeholder="" [ngClass]="toValidate.others?'is-invalid':''" (keyup)="toValidate.others=false">
              </div>
 
 
                   </div>
                    </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="update()" data-dismiss="modal"><i class="fa fa-check"></i>Save Changes</button>&nbsp;
+        <button type="button" class="btn btn-primary" (click)="update()" ><i class="fa fa-check"></i>Save Changes</button>&nbsp;
         <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
 
       </div>

@@ -102,21 +102,17 @@ export class FiscalReportComponent implements OnInit {
 
       if (this.toValidate.description == true || this.toValidate.fiscalYear == true || this.toValidate.category ==true) {
         Swal.fire(
-          '',
+          'Missing Data!',
           'Please fill out the required fields',
           'warning'
         );
       } else {
       this.fiscal.munCityId = this.auth.munCityId;
-      this.fiscal.setYear = this.auth.activeSetYear;
+      this.fiscal.setYear = this.auth.setYear;
       this.service.AddfiscalReport(this.fiscal).subscribe(_data=>{
         if (!this.isCheck) {
           this.closebutton.nativeElement.click();
         }
-        console.log(_data);
-        this.clearData();
-        this.Init();
-
         Swal.fire(
           'Good job!',
           'Data Added Successfully!',
@@ -133,8 +129,8 @@ export class FiscalReportComponent implements OnInit {
           'error'
         );
 
-        this.Init();
-        this.fiscal = {};
+        // this.Init();
+        // this.fiscal = {};
       });
     }
   }
@@ -147,9 +143,21 @@ export class FiscalReportComponent implements OnInit {
 
 //for modal
 update(){
+  this.toValidate.description = this.editmodal.description == "" || this.editmodal.description == null ? true : false;
+  this.toValidate.fiscalYear = this.editmodal.fiscalYear == "" || this.editmodal.fiscalYear == undefined ? true : false;
+  this.toValidate.category = this.editmodal.category == "" || this.editmodal.category == undefined ? true : false;
+
+  if (this.toValidate.description == true || this.toValidate.fiscalYear == true || this.toValidate.amount ==true) {
+    Swal.fire(
+      'Missing Data!',
+      'Please fill out the required fields',
+      'warning'
+    );
+  } else {
   this.service.UpdatefiscalReport(this.editmodal).subscribe({next:(_data)=>{
-  this.editmodal();
-  this.Init();
+    if (!this.isCheck) {
+      this.closebutton.nativeElement.click();
+    }
   },
   });
 
@@ -161,8 +169,9 @@ update(){
   timer: 1000
   });
   this.editmodal ={};
-
   }
+  }
+
 
   delete(transId: any, index: any) {
     Swal.fire({

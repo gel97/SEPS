@@ -255,6 +255,7 @@ import { NotificationComponent } from './pages/main/Tools/notification/notificat
     HoursAgoOrDatePipe,
     NotificationComponent,
 
+
   ],
   imports: [
     MdbCollapseModule,

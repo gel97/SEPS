@@ -79,7 +79,7 @@ clearData() {
 
     if (this.toValidate.type  == true || this.toValidate.totalProd == true || this.toValidate.area == true) {
       Swal.fire(
-        '',
+        'Missing Data!',
         'Please fill out the required fields',
         'warning'
       );
@@ -108,8 +108,20 @@ clearData() {
 }
 
 Edit_Crops(){
+  this.toValidate.type = this.crop.type == "" || this.crop.type == null ? true : false;
+  this.toValidate.totalProd = this.crop.totalProd== "" || this.crop.totalProd == undefined ? true : false;
+  this.toValidate.area = this.crop.area == "" || this.crop.area == undefined ? true : false;
+
+  if (this.toValidate.type  == true || this.toValidate.totalProd == true || this.toValidate.area == true) {
+    Swal.fire(
+      'Missing Data!',
+      'Please fill out the required fields',
+      'warning'
+    );
+  } else {
     this.service.EditAgricultureProd(this.crop).subscribe({next:(_data)=>{
       this.List_Crops();
+      this.clearData();
 
     },
     });
@@ -123,7 +135,7 @@ Edit_Crops(){
     });
     this.crop = {};
   }
-
+}
 
   delete(transId:any, index:any){
     Swal.fire({

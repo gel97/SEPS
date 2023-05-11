@@ -14,27 +14,14 @@ import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 export class ManufacturingEstablishmentsComponent implements OnInit {
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;
-
   searchText: string= "";
 
-  list_of_category = [
-    { id: 1, name_category: "Food processing" },
-    { id: 2, name_category: "Agricultural products" },
-    { id: 3, name_category: "Garments and embroidery" },
-    { id: 4, name_category: "Crafts/ Furnitures" },
-    { id: 5, name_category: "Ceramics/ Paper/ Plastic" },
-    { id: 6, name_category: "Chemical and pharmaceutical" },
-    { id: 7, name_category: "Jewelry" },
-    { id: 8, name_category: "Other non-metallic products" },
-  ];
-
-  list_of_Business = [
-    { id: 1, name_business: "" },
-    { id: 2, name_business: "" },
-    { id: 3, name_business: "" },
-    { id: 4, name_business: "" },
-  ];
-
+  get filteredItems() {
+    return this.list_of_Business.filter(item => item.categoryId == this.estab.category);
+  }
+  get EDITfilteredItems() {
+    return this.list_of_Business.filter(item => item.categoryId == this.editmodal.category);
+  }
 
   constructor( private service:ManEstabService, private auth:AuthService) { }
   munCityName:string = this.auth.munCityName;
@@ -132,7 +119,7 @@ AddEstablishment(){
 
   if( this.toValidate.name == true||this.toValidate.category ==true || this.toValidate.type == true|| this.toValidate.workersNo == true){
     Swal.fire(
-      '',
+      'Missing Data!',
         'Please fill out the required fields',
         'warning'
     );
@@ -176,6 +163,20 @@ edit_estab(edit_estab:any={}) {
     this.editmodal.longtitude = this.gmapComponent.markers.lng;
     this.editmodal.latitude = this.gmapComponent.markers.lat;
     //this.editmodal.setYear = this.auth.activeSetYear;
+
+    this.toValidate.name = this.editmodal.name =="" || this.editmodal.name ==undefined?true:false;
+    this.toValidate.category = this.editmodal.category == "" || this.editmodal.category == null?true:false
+    this.toValidate.brgyId = this.editmodal.brgyId == "" || this.editmodal.brgyId == null?true:false
+    this.toValidate.type = this.editmodal.type == "" || this.editmodal.type == null?true:false
+    this.toValidate.workersNo =this.editmodal.workersNo == "" || this.editmodal.workersNo == undefined?true:false
+
+    if( this.toValidate.name == true||this.toValidate.category ==true || this.toValidate.type == true|| this.toValidate.workersNo == true){
+      Swal.fire(
+        'Missing Data!',
+          'Please fill out the required fields',
+          'warning'
+      );
+    }else{
     this.service.UpdateManEstab(this.editmodal).subscribe({next:(_data)=>{
       this.GetListManEstab();
 
@@ -191,7 +192,7 @@ edit_estab(edit_estab:any={}) {
     });
     this.editmodal ={};
     }
-
+  }
 
 delete(transId:any, index:any){
       Swal.fire({
@@ -237,6 +238,76 @@ delete(transId:any, index:any){
       this.p2= 1;
 
     }
+    list_of_category = [
+      { id: 1, name_category: "Food processing" },
+      { id: 2, name_category: "Agricultural products" },
+      { id: 3, name_category: "Garments and embroidery" },
+      { id: 4, name_category: "Crafts/ Furnitures" },
+      { id: 5, name_category: "Ceramics/ Paper/ Plastic" },
+      { id: 6, name_category: "Chemical and pharmaceutical" },
+      { id: 7, name_category: "Jewelry" },
+      { id: 8, name_category: "Other non-metallic products" },
+    ];
+
+    list_of_Business = [
+        { id: 1, name_business: "Bakeries/ Bakeshop", categoryId: 1 },
+        { id: 2, name_business: "Meat products/ processed meat", categoryId: 1 },
+        { id: 3, name_business: "Fish products/ fish drying and smoking", categoryId: 1 },
+        { id: 4, name_business: "Ice Plant", categoryId: 1 },
+        { id: 5, name_business: "Ice cream/ Ice drops/ frozen products", categoryId: 1 },
+        { id: 6, name_business: "Native Delicacies", categoryId: 1 },
+        { id: 7, name_business: "Sweet Preserves", categoryId: 1 },
+        { id: 8, name_business: "Nuts/ Kornik/ Chicharon", categoryId: 1 },
+        { id: 9, name_business: "Noodles / Bihon products", categoryId: 1 },
+        { id: 10, name_business: "Vinegar/ patis/ bagoong making", categoryId: 1 },
+        { id: 11, name_business: "Juices and Beverages", categoryId: 1 },
+        { id: 12, name_business: "Poultry and farm products processing", categoryId: 1 },
+        { id: 13, name_business: "Other processed food", categoryId: 1 },
+
+      { id: 14, name_business: "Agricultural equipments and supplies", categoryId: 2 },
+      { id: 15, name_business: "Feeds manufacturing", categoryId: 2 },
+      { id: 16, name_business: "Fertilizer manufacturing", categoryId: 2 },
+
+      { id: 17, name_business: "Gowns and Barong", categoryId: 3 },
+      { id: 18, name_business: "Ladies Wear", categoryId: 3},
+      { id: 19, name_business: "Shirts/ Pants Manufacturing", categoryId: 3 },
+      { id: 20, name_business: "Needlecraft/ Embroidery", categoryId: 3 },
+      { id: 21, name_business: "Knitting", categoryId: 3},
+      { id: 22, name_business: "Bed Sheets/ Pillow cases/ Curtains", categoryId: 3 },
+      { id: 23, name_business: "Dress making/ undergarments", categoryId: 3 },
+
+      { id: 24, name_business: "Woodcrafts/ Wooden Furniture", categoryId: 4 },
+      { id: 25, name_business: "Casket/coffin making", categoryId: 4},
+      { id: 26, name_business: "Sash manufacturing", categoryId: 4 },
+      { id: 27, name_business: "Rattan products manufacturing", categoryId: 4 },
+      { id: 28, name_business: "Bamboo products", categoryId: 4},
+      { id: 29, name_business: "Steel products/ Iron works", categoryId: 4 },
+      { id: 30, name_business: "Handicrafts/ Shellcraft", categoryId: 4 },
+      { id: 31, name_business: "Upholstery", categoryId: 4 },
+
+      { id: 32, name_business: "Ceramics / pottery", categoryId: 5 },
+      { id: 33, name_business: "Plastic wares", categoryId: 5 },
+      { id: 34, name_business: "Paper Products ", categoryId: 5 },
+      { id: 35, name_business: "Glasswares", categoryId: 5 },
+
+      { id: 36, name_business: "Laboratories", categoryId: 6 },
+      { id: 37, name_business: "Chemical industries", categoryId: 6 },
+      { id: 38, name_business: "Soap making", categoryId: 6 },
+      { id: 39, name_business: "Candle making", categoryId: 6 },
+      { id: 40, name_business: "Tobacco/ Cigarettes", categoryId: 6 },
+
+      { id: 41, name_business: "Fancy Jewelry maker", categoryId: 7 },
+      { id: 42, name_business: "Jewelry tools and equipments", categoryId: 7 },
+      { id: 43, name_business: "Fine Jewelries", categoryId: 7 },
+      { id: 44, name_business: "Fashion Accessories", categoryId: 7 },
+
+      { id: 45, name_business: "Cement Factories", categoryId: 8 },
+      { id: 46, name_business: "Marble Craft", categoryId: 8 },
+      { id: 47, name_business: "Pyro-tecnics/ Firecrackers", categoryId: 8 },
+      { id: 48, name_business: "Rubber/ Leather products", categoryId: 8 },
+      { id: 49, name_business: "Concrete products/ Tiles/ Hollowblocks", categoryId: 8 },
+      { id: 50, name_business: "Foam Products", categoryId: 8 },
+    ];
 
 
 }

@@ -166,7 +166,7 @@
             </div>
             <div class="col-lg-6">
                 <label for="category">Status :</label>
-            <select class="form-select" aria-label="Default select example"   [(ngModel)]="comm.status" >
+            <select class="form-select" aria-label="Default select example"   [(ngModel)]="comm.status" [ngClass]="toValidate.lineBusiness?'is-invalid':''" (ngModelChange)="toValidate.lineBusiness=false" >
               <option *ngFor="let list of list_of_status" value={{list.id}} >{{list.status}}</option>
               </select>
             </div>
@@ -195,7 +195,7 @@
         <div class="col-lg-6">
             <label for="type">Line of Business :</label>
             <select class="form-select" aria-label="Default select example"  name="list_of_Business" [(ngModel)]="comm.lineBusiness" [ngClass]="toValidate.lineBusiness?'is-invalid':''" (ngModelChange)="toValidate.lineBusiness=false">
-              <option *ngFor="let list of list_of_Business" value={{list.id}} >{{list.name_business}}</option>
+              <option *ngFor="let list of filteredItems" value={{list.id}} >{{list.name_business}}</option>
             </select>
 
         </div>
@@ -224,7 +224,7 @@
             </select> </div>
 
       </div><br>
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-lg-6">
             <label>Geo Coordinates - Longitude:</label>
             <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="comm.longtitude">
@@ -233,7 +233,7 @@
             <label for="type">Latitude : </label>
             <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="comm.latitude">
           </div>
-        </div>
+        </div> -->
          </div>
 
 
@@ -272,7 +272,8 @@
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Commercial Establishments
         </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
+            <!-- <button type="button"  class="close" data-dismiss="modal" aria-label="Close"> -->
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -282,11 +283,11 @@
             <div class="row">
           <div class="col-lg-6">
               <label for="exampleFormControlInput1">Business Permit ID/No :</label>
-              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.permitNo">
+              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.permitNo" [ngClass]="toValidate.permitNo?'is-invalid':''" (keyup)="toValidate.permitNo=false">
           </div>
           <div class="col-lg-6">
               <label for="category">Status :</label>
-              <select class="form-select" aria-label="Default select example"   [(ngModel)]="editmodal.status" >
+              <select class="form-select" aria-label="Default select example"   [(ngModel)]="editmodal.status" [ngClass]="toValidate.lineBusiness?'is-invalid':''" (ngModelChange)="toValidate.lineBusiness=false" >
                 <option *ngFor="let list of list_of_status" value={{list.id}} >{{list.status}}</option>
                 </select>
           </div>
@@ -294,18 +295,18 @@
     <div class="row">
       <div class="col-lg-6">
           <label for="exampleFormControlInput1">Name of Owner :</label>
-          <input type="text" class="form-control" id="" placeholder=""  [(ngModel)]="editmodal.owner">
+          <input type="text" class="form-control" id="" placeholder=""  [(ngModel)]="editmodal.owner"  [(ngModel)]="comm.owner" [ngClass]="toValidate.owner?'is-invalid':''" (keyup)="toValidate.owner=false">
       </div>
       <div class="col-lg-6">
           <label for="exampleFormControlInput1">Name of Establishment :</label>
-          <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.estabName">
+          <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.estabName" [ngClass]="toValidate.estabName?'is-invalid':''" (keyup)="toValidate.estabName=false">
       </div>
 
     </div><br>
     <div class="row">
       <div class="col-lg-6">
         <label for="type">Select Category:</label>
-        <select class="form-select" aria-label="Default select example"  name="list_of_category" [(ngModel)]="editmodal.category">
+        <select class="form-select" aria-label="Default select example"  name="list_of_category" [(ngModel)]="editmodal.category" [ngClass]="toValidate.category?'is-invalid':''" (ngModelChange)="toValidate.category=false" >
             <option *ngFor="let list of list_of_category" value={{list.id}} >{{list.name_category}}</option>
           </select>
 
@@ -313,7 +314,7 @@
       <div class="col-lg-6">
           <label for="type">Line of Business :</label>
           <select class="form-select" aria-label="Default select example"  name="list_of_Business" [(ngModel)]="editmodal.lineBusiness" [ngClass]="toValidate.lineBusiness?'is-invalid':''" (ngModelChange)="toValidate.lineBusiness=false">
-            <option *ngFor="let list of list_of_Business" value={{list.id}} >{{list.name_business}}</option>
+            <option *ngFor="let list of EDTfilteredItems" value={{list.id}} >{{list.name_business}}</option>
           </select>
       </div>
 
@@ -336,7 +337,7 @@
       </div>
       <div class="col-lg-6">  <br>
         <label for="type">Barangay :</label>
-        <select class="form-select" aria-label="Default select example" [(ngModel)]="editmodal.brgyId">
+        <select class="form-select" aria-label="Default select example" [(ngModel)]="editmodal.brgyId" [ngClass]="toValidate.permitNo?'is-invalid':''" (keyup)="toValidate.permitNo=false">
           <option *ngFor="let item  of barangays" value={{item.brgyId}}>{{item.brgyName}}</option>
           </select> </div>
 
@@ -353,7 +354,7 @@
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="UpdateCommercial()" data-dismiss="modal" ><i class="fa fa-check"></i>Save Changes</button>&nbsp;
+        <button type="button" class="btn btn-primary" (click)="UpdateCommercial()" ><i class="fa fa-check"></i>Save Changes</button>&nbsp;
         <!-- <button type ="button" class="btn btn-secondary" *ngIf="updateOfficial" (click) ="city={}"><i class="fa fa-times"></i>Cancel</button> -->
         <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
       </div>

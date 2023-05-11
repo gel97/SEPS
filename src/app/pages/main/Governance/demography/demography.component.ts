@@ -68,10 +68,12 @@ export class DemographyComponent implements OnInit {
   AddDemo() {
     this.toValidate.brgyId = this.demo.brgyId == "" || this.demo.brgyId == null ? true : false;
     this.toValidate.householdPop = this.demo.householdPop == "" || this.demo.householdPop == undefined ? true : false;
+    this.toValidate.male = this.demo.male == "" || this.demo.male == undefined ? true : false;
+    this.toValidate.female = this.demo.female == "" || this.demo.female == undefined ? true : false;
 
-    if (this.toValidate.brgyId  == true || this.toValidate.householdPop== true) {
+    if (this.toValidate.brgyId  == true || this.toValidate.householdPop== true || this.toValidate.male == true || this.toValidate.female == true) {
       Swal.fire(
-        '',
+        'Missing Data!',
         'Please fill out the required fields',
         'warning'
       );
@@ -122,22 +124,39 @@ export class DemographyComponent implements OnInit {
 
   //for modal
   update(){
-    this.service.UpdateDemography(this.editmodal).subscribe({next:(_data)=>{
-      this.editmodal ={};
-      this.Init();
-    },
-    });
+    this.toValidate.brgyId = this.editmodal.brgyId == "" || this.editmodal.brgyId == null ? true : false;
+    this.toValidate.householdPop = this.editmodal.householdPop == "" || this.editmodal.householdPop == undefined ? true : false;
+    this.toValidate.male = this.editmodal.male == "" || this.editmodal.male == undefined ? true : false;
+    this.toValidate.female = this.editmodal.female == "" || this.editmodal.female == undefined ? true : false;
 
-    Swal.fire({
-    position: 'center',
-    icon: 'success',
-    title: 'Your work has been updated',
-    showConfirmButton: false,
-    timer: 1000
-    });
+    if (this.toValidate.brgyId  == true || this.toValidate.householdPop== true || this.toValidate.male==true || this.toValidate.female==true) {
+      Swal.fire(
+        'Missing Data!',
+        'Please fill out the required fields',
+        'warning'
+      );
+    } else {
+    this.service.UpdateDemography(this.editmodal).subscribe((_data)=>{
+      if (!this.isCheck) {
+        this.closebutton.nativeElement.click();
+      }
+      this.clearData();
+      this.Init();
+
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Your work has been updated',
+        showConfirmButton: false,
+        timer: 1000
+        });
+    this.Init();
+    },
+    );
+
 
     }
-
+  }
 
 delete(transId:any, index:any){
       Swal.fire({

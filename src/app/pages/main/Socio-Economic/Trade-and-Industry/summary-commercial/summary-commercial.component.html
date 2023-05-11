@@ -69,14 +69,16 @@
                                     </div>
                                   </td>
                                   <td class="text-center" >{{text.count}}</td>
-                                  <td class="text-center-justify" width="40%">{{text.remarks}}</td>
+                                  <td width="30%" class="text-center"> {{text.remarks}}</td>
 
                                   <td>
+                                    <div class="d-inline-flex">
                                     <app-admin>
                                     <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info btn-circle" data-toggle="modal" data-target="#exampleModal_EDIT" ><i class="fa fa-pen"></i> </button>&nbsp;
                                     <!-- <button type="button"  onclick="initialize()" (click)="editmodal=text"  class="btn btn-success" data-toggle="modal"data-target="#exampleModal"><i  class="fa fa-globe"></i> </button>&nbsp; -->
                                     <button type="button" title="Delete" class="btn btn-warning btn-circle" (click)="delete(text.transId,i)"><i class="fa fa-trash"></i>  </button>&nbsp;
                                   </app-admin>
+                                  </div>
                                   </td>
                                 </tr>
 
@@ -134,7 +136,7 @@
                   <label for="category">Business Type :</label>
               <select class="form-select"  [(ngModel)]="summ.type"  [ngClass]="toValidate.type?'is-invalid':''" (ngModelChange)="toValidate.type=false">
                   <option selected></option>
-                  <option *ngFor="let list of list_of_Business " value={{list.id}} >{{list.name_business}}</option>
+                  <option *ngFor="let list of filteredItems" value={{list.id}} >{{list.name_business}}</option>
 
                 </select>
               </div>
@@ -190,7 +192,7 @@
           <div class="row">
               <div class="col-lg-6">
                 <label for="category">Category :</label>
-                <select class="form-select"  [(ngModel)]="editmodal.category">
+                <select class="form-select"  [(ngModel)]="editmodal.category" [ngClass]="toValidate.category?'is-invalid':''" (ngModelChange)="toValidate.category=false">
                     <option selected></option>
                     <option *ngFor="let list of list_of_category" value={{list.id}} >{{list.name_category}}</option>
 
@@ -198,9 +200,9 @@
               </div>
               <div class="col-lg-6">
                   <label for="category">Business Type :</label>
-              <select class="form-select"  [(ngModel)]="editmodal.type">
+              <select class="form-select"  [(ngModel)]="editmodal.type" [ngClass]="toValidate.type?'is-invalid':''" (ngModelChange)="toValidate.type=false">
                   <option selected></option>
-                  <option *ngFor="let list of list_of_Business " value={{list.id}} >{{list.name_business}}</option>
+                  <option *ngFor="let list of EDTfilteredItems" value={{list.id}} >{{list.name_business}}</option>
 
                 </select>
               </div>
@@ -209,7 +211,7 @@
        <div class = 'row'>
         <div class="col-lg-12">
           <label for="exampleFormControlTextarea1">Total Count:</label>
-          <input class="form-control" id="" [(ngModel)]="editmodal.count">
+          <input class="form-control" id="" [(ngModel)]="editmodal.count" [ngClass]="toValidate.count?'is-invalid':''" (keyup)="toValidate.count=false">
         </div>
 
 
@@ -223,7 +225,7 @@
         ...
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="UpdateSummary_Estab()"  data-dismiss="modal" ><i class="fa fa-check"></i>Save Changes</button>&nbsp;
+        <button type="button" class="btn btn-primary" (click)="UpdateSummary_Estab()"   ><i class="fa fa-check"></i>Save Changes</button>&nbsp;
         <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
 
       </div>

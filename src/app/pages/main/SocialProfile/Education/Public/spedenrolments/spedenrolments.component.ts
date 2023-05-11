@@ -12,6 +12,20 @@ export class SPEDEnrolmentsComponent implements OnInit {
   menuId:string = "9";
   munCityName:string = this.auth.munCityName;
   constructor(private service: EducationService, private auth: AuthService) { }
+  AreaofExceptionality:any=[
+    {value:"Learning Disability", name: "Learning Disability"},
+    {value:"Hearing Impaired", name: "Hearing Impaired"},
+    {value:"Visually Impaired - Blindness", name: "Visually Impaired - Blindness"},
+    {value:"Visually Impaired - Low Vision", name: "Visually Impaired - Low Vision"},
+    {value:"Intellectually Disabled/ Mental Retardation", name: "Intellectually Disabled/ Mental Retardation"},
+    {value:"Behavioral Problem", name: "Behavioral Problem"},
+    {value:"Autism", name: "Autism"},
+    {value:"Multiple Handicapped", name: "Multiple Handicapped"},
+    {value:"Communication Disorder", name: "Communication Disorder"},
+    {value:"Hearing Cerebral Palsy", name: "Hearing Cerebral Palsy"},
+    {value:"Special Health Problem", name: "Special Health Problem"},
+    {value:"Fast Learner/ Gifted", name: "Fast Learner/ Gifted"},
+    {value:"Not Specified", name: "Not Specified"},]
 
   toValidate:any = {};
   @ViewChild(GmapComponent)
@@ -55,7 +69,7 @@ export class SPEDEnrolmentsComponent implements OnInit {
     this.GetListSchool();
   }
 
-  GetListBarangay() 
+  GetListBarangay()
   {
     this.service.ListOfBarangay(this.auth.munCityId).subscribe(data => {
       this.listBarangay = (<any>data);
@@ -88,12 +102,12 @@ export class SPEDEnrolmentsComponent implements OnInit {
   AddSchool()
   {
     this.toValidate.name = this.school.name=="" || this.school.name ==null?true:false;
-    this.toValidate.brgyId = this.school.brgyId=="" || this.school.brgyId ==null?true:false; 
-    
+    this.toValidate.brgyId = this.school.brgyId=="" || this.school.brgyId ==null?true:false;
+
     this.school.menuId    = this.menuId;
     this.school.setYear   = this.setYear;
     this.school.munCityId = this.munCityId;
-   
+
     if(!this.toValidate.name && !this.toValidate.brgyId)
     {
       this.service.AddEducation(this.school).subscribe(
@@ -131,7 +145,7 @@ export class SPEDEnrolmentsComponent implements OnInit {
         'warning'
         );
     }
-   
+
 
   }
 

@@ -41,7 +41,7 @@
                       </tr>
                     </thead>
                     <tbody *ngFor="let brgy of listBarangay; index as i">
-                      <tr (click)="addmodal.brgyId = brgy.brgyId" data-toggle="modal" data-target="#ModalAdd">
+                      <tr (click)="addmodal.brgyId = brgy.brgyId" data-toggle="modal" disabled="true"  data-target="#ModalAdd">
                         <td rowspan="2">
                           <b>
                             {{brgy.brgyName}}
@@ -153,7 +153,7 @@
           </div><br><br>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" (click)="addM()"><i class="fa fa-check"></i>Save</button>&nbsp;
+          <button type="button" class="btn btn-primary"  (click)="addM()"><i class="fa fa-check"></i>Save</button>&nbsp;
           <button type="button" class="btn btn-secondary" data-dismiss="modal"> <i
               class="fa fa-times"></i>Close</button>
         </div>

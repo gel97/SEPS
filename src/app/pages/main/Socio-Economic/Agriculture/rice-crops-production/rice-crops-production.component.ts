@@ -123,12 +123,11 @@ export class RiceCropsProductionComponent implements OnInit {
     if (this.toValidate.brgyId  == true || this.toValidate.type == true || this.toValidate.source == true||
       this.toValidate.ownershipType  == true || this.toValidate.totalProd == true || this.toValidate.area == true || this.toValidate.area == true)  {
       Swal.fire(
-        '',
+        'Missing Data!',
         'Please fill out the required fields',
         'warning'
       );
     } else {
-
     this.dummy_addData = this.addData;
     if(JSON.stringify(this.dummy_addData) != JSON.stringify(this.dummyData) && this.addData.brgyId != undefined){
 
@@ -187,6 +186,21 @@ export class RiceCropsProductionComponent implements OnInit {
   }
 
   EditAgriculture(){
+    this.toValidate.brgyId = this.addData.brgyId == "" || this.addData.brgyId == null ? true : false;
+    this.toValidate.type = this.addData.type== "" || this.addData.type == undefined ? true : false;
+    this.toValidate.source = this.addData.source == "" || this.addData.source == undefined ? true : false;
+    this.toValidate.ownershipType = this.addData.ownershipType == "" || this.addData.ownershipType == null ? true : false;
+    this.toValidate.totalProd = this.addData.totalProd== "" || this.addData.totalProd == undefined ? true : false;
+    this.toValidate.area = this.addData.area == "" || this.addData.area == undefined ? true : false;
+    this.toValidate.name = this.addData.name == "" || this.addData.name == undefined ? true : false;
+
+    if (this.toValidate.brgyId  == true || this.toValidate.type == true || this.toValidate.source == true || this.toValidate.ownershipType  == true || this.toValidate.totalProd == true || this.toValidate.area == true || this.toValidate.area == true)  {
+      Swal.fire(
+        'Missing Data!',
+        'Please fill out the required fields',
+        'warning'
+      );
+    } else {
     Swal.fire({
       title: 'Do you want to save the changes?',
       showDenyButton: true,
@@ -209,7 +223,7 @@ export class RiceCropsProductionComponent implements OnInit {
         this.Service.EditAgriculture(this.addData).subscribe(request =>{
           console.log("edit", request);
           this.GetListAgriculture();
-
+          this.clearData();
 
         })
         Swal.fire('Saved!', '', 'success')
@@ -217,6 +231,7 @@ export class RiceCropsProductionComponent implements OnInit {
         Swal.fire('Changes are not saved', '', 'info')
       }
     })
+  }
   }
 
   DeleteAgriculture(dataItem:any){

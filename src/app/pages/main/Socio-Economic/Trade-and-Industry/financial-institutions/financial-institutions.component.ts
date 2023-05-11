@@ -130,7 +130,7 @@ SetMarker(data: any = {}) {
     if (this.toValidate.category == true||this.toValidate.name ==true ||this.toValidate.members == true ||this.toValidate.totAssets == true||this.toValidate.brgyI == true
   ){
       Swal.fire(
-        '',
+        'Missing Data!',
         'Please fill out the required fields',
         'warning'
       );
@@ -176,8 +176,23 @@ SetMarker(data: any = {}) {
 
   //for modal
   UpdateFinancial(){
+
     this.editmodal.longtitude = this.gmapComponent.markers.lng;
     this.editmodal.latitude = this.gmapComponent.markers.lat;
+    this.toValidate.name = this.editmodal.name=="" || this.editmodal.name ==null?true:false;
+    this.toValidate.category = this.editmodal.category =="" || this.editmodal.category == null?true:false;
+    this.toValidate.members = this.editmodal.members =="" || this.editmodal.members == undefined?true:false;
+    this.toValidate.totAssets = this.editmodal.totAssets =="" || this.editmodal.totAssets == undefined?true:false;
+    this.toValidate.brgyId = this.editmodal.brgyId =="" || this.editmodal.brgyId == null?true:false;
+
+    if (this.toValidate.category == true||this.toValidate.name ==true ||this.toValidate.members == true ||this.toValidate.totAssets == true||this.toValidate.brgyI == true
+  ){
+      Swal.fire(
+        'Missing Data!',
+        'Please fill out the required fields',
+        'warning'
+      );
+    }else{
     this.service.Update_Financial_Ins(this.editmodal).subscribe({next:(_data)=>{
       this.GetListFinancial();
     },
@@ -193,7 +208,7 @@ SetMarker(data: any = {}) {
     this.editmodal ={};
     this.GetListFinancial();
     }
-
+  }
 
   deleteFinancial(transId:any, index:any){
       Swal.fire({

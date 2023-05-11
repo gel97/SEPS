@@ -116,7 +116,7 @@
                         <div class="">
                             <label for="exampleFormControlInput1">Name of Tourist Attraction :</label>
                             <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.name"
-                                [(ngModel)]="dummy_addData.name" [ngClass]="toValidate.name?'is-invalid':''" (keyup)="toValidate.name=false"/>
+                                [(ngModel)]="dummy_addData.name" [ngClass]="toValidate.name?'is-invalid':''" (keyup) ="toValidate.name=false"/>
                         </div>
                         <br />
                         <div class="row">
@@ -162,8 +162,7 @@
                     aria-hidden="true">
                     <i class="fas fa-times">&nbsp;</i>Close
                 </button>
-                <button type="button" *ngIf="not_visible" (click)="EditTourism()" data-toggle="modal"
-                    data-target="#exampleModal" aria-hidden="true" class="btn btn-primary">
+                <button type="button" *ngIf="not_visible" (click)="EditTourism()"aria-hidden="true" class="btn btn-primary">
                     <i class="fas fa-edit">&nbsp;</i>UPDATE
                 </button>
               </app-admin>

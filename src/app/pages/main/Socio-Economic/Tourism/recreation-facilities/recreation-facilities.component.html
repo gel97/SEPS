@@ -25,7 +25,7 @@
                 <p>List of Recreation Facilities</p>
               </div>
               <div class="col-lg-6 ">
-                <form class="form-inline float-right">
+                <!-- <form class="form-inline float-right">
                   <div class="form-group mb-2">
                     <label for="" class=""> Category filter :</label>
                   </div>
@@ -38,7 +38,7 @@
                     </select>
                   </div>
                   <button type="submit" class="btn btn-primary mb-2">GO</button>
-                </form>
+                </form> -->
               </div>
             </div>
             <div class="table-responsive">
@@ -182,8 +182,7 @@
           <i class="fas fa-times">&nbsp;</i>Close
         </button>
 
-        <button type="button" *ngIf="not_visible" (click)="EditTourism()" data-toggle="modal"
-          data-target="#exampleModal" aria-hidden="true" class="btn btn-primary">
+        <button type="button" *ngIf="not_visible" (click)="EditTourism()"aria-hidden="true" class="btn btn-primary">
           <i class="fas fa-edit">&nbsp;</i>UPDATE
         </button>
       </div>

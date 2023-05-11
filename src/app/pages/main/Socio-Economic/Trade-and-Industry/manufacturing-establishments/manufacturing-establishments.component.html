@@ -1,243 +1,260 @@
 <div class="">
   <div class="card o-hidden border-2 shadow-sm my-5">
-      <div class="card-body p-0">
-          <!-- Nested Row within Card Body -->
-          <div class="row">
-              <div class="col-lg-12">
-                  <div class="p-5">
-                      <div class="">
-                      </div>
-                      <div class="text-center">
-                        <h1 class="h4 text-gray-900 mb-4">Manufacturing Establishments</h1>
-                        <label><strong>Trade and Industry - Municipality of {{munCityName}} </strong></label><br>
+    <div class="card-body p-0">
+      <!-- Nested Row within Card Body -->
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="p-5">
+            <div class="">
+            </div>
+            <div class="text-center">
+              <h1 class="h4 text-gray-900 mb-4">Manufacturing Establishments</h1>
+              <label><strong>Trade and Industry - Municipality of {{munCityName}} </strong></label><br>
 
-                    </div>
-                      <br>
-                      <div class ="form-inline float-right ">
-                        <form class=>
-                          <app-admin>
-                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal"><i class="fa fa-plus"></i>
-                            Manufacturing Establishments
-                          </button>
-                        </app-admin>
-                        </form>
-                      </div><br><br>
-                        <br>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <p>List of Manufacturing Establishments	</p>
-                            </div>
-                            <div class="col-lg-6 ">
-                                  <form class="form-inline float-right">
-                                    <div class="form-group mb-6">
-                                      <input type="search input"  class="form-control" width="30%" placeholder="Search" (input)="onChangeSearch($event)"> <label for="" class="btn btn-primary"> <i class="fas fa-search fa-2x"></i></label>
-                                    </div>
-                                  </form>
-                            </div>
-                             </div><br>
-                             <div class="table-responsive">
-                             <table class="table table-framed table-hover table-striped" >
-                              <thead class = "table-dark">
-                                <tr>
-                                  <th></th>
-                                  <th scope="col" class="text-center">Name of Establishment	</th>
-                                  <th scope="col" class="text-center">Category	</th>
-                                  <th scope="col" class="text-center">Business Type		</th>
-                                  <th scope="col" class="text-center">Contact Person</th>
-                                  <th scope="col" class="text-center">Contact Details</th>
-                                  <th scope="col" class="text-center">Workers No</th>
-                                  <th scope="col" class="text-center">Location</th>
-                                  <th scope="col" class="text-center">Barangay Name</th>
-                                  <th scope="col" class="text-center">Geo Location</th>
-                                  <th width="10%" ></th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr *ngFor="let text of ManEstab | paginate:{ itemsPerPage: tableSize2,
+            </div>
+            <br>
+            <div class="form-inline float-right ">
+              <form class=>
+                <app-admin>
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal"><i
+                      class="fa fa-plus"></i>
+                    Manufacturing Establishments
+                  </button>
+                </app-admin>
+              </form>
+            </div><br><br>
+            <br>
+            <div class="row">
+              <div class="col-lg-6">
+                <p>List of Manufacturing Establishments </p>
+              </div>
+              <div class="col-lg-6 ">
+                <form class="form-inline float-right">
+                  <div class="form-group mb-6">
+                    <input type="search input" class="form-control" width="30%" placeholder="Search"
+                      (input)="onChangeSearch($event)"> <label for="" class="btn btn-primary"> <i
+                        class="fas fa-search fa-2x"></i></label>
+                  </div>
+                </form>
+              </div>
+            </div><br>
+            <div class="table-responsive">
+              <table class="table table-framed table-hover table-striped">
+                <thead class="table-dark">
+                  <tr>
+                    <th></th>
+                    <th scope="col" class="text-center">Name of Establishment </th>
+                    <th scope="col" class="text-center">Category </th>
+                    <th scope="col" class="text-center">Business Type </th>
+                    <th scope="col" class="text-center">Contact Person</th>
+                    <th scope="col" class="text-center">Contact Details</th>
+                    <th scope="col" class="text-center">Workers No</th>
+                    <th scope="col" class="text-center">Location</th>
+                    <th scope="col" class="text-center">Barangay Name</th>
+                    <th scope="col" class="text-center">Geo Location</th>
+                    <th width="10%"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let text of ManEstab | paginate:{ itemsPerPage: tableSize2,
                                   currentPage: p2,
                                   totalItems:count2} | filterall: searchText , let i = index ">
-                                  <td>{{ i + 1 }}</td>
-                                  <td class="text-center">{{text.name}}</td>
-                                  <td >
-                                      <div *ngFor="let item of list_of_category">
-                                          <span *ngIf="item.id === text.category">{{item.name_category}} </span>
-                                      </div>
-                                  </td>
-                                  <td class="text-justify" width="10%">
-                                    <div *ngFor="let item of list_of_Business">
-                                      <span *ngIf="item.id === text.type">{{item.name_business}}
+                    <td>{{ i + 1 }}</td>
+                    <td class="text-center">{{text.name}}</td>
+                    <td>
+                      <div *ngFor="let item of list_of_category">
+                        <span *ngIf="item.id === text.category">{{item.name_category}} </span>
+                      </div>
+                    </td>
+                    <td>
+                      <div *ngFor="let item of list_of_Business">
+                        <span *ngIf="item.id === text.type">{{item.name_business}}
 
-                                      </span>
-                                    </div>
-                                  </td>
-                                  <td>{{text.contactPerson}}</td>
-                                  <td>{{text.contactNo}}</td>
-                                  <td class="text-center">{{text.workersNo}}</td>
-                                  <td>{{text.location}}</td>
-                                  <td class="text-center">{{text.brgyName}}</td>
-                                  <td>{{text.longtitude}},<br>{{text.latitude}}</td>
-                                  <td>
-                                    <div class="d-inline-flex">
-                                    <app-admin>
-                                    <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info btn-circle" data-toggle="modal" data-target="#ModalEdit" ><i class="fa fa-pen"></i> </button>
-                                  </app-admin>&nbsp;
-                                    <button (click)="SetMarker(text)" class="btn btn-success btn-circle" role="button" (click)="editmodal=text" data-toggle="modal" data-target="#gmapModal">
-                                    <i class="fa fa-globe"> </i> </button>&nbsp;
-                                    <app-admin>
-                                   <button type="button" title="Delete" class="btn btn-warning btn-circle" (click)="delete(text.transId,i)"><i class="fa fa-trash"></i>  </button>&nbsp;
-                                  </app-admin>
-                                  </div>
-                                  </td>
-                                </tr>
-                              </tbody>
-                          </table>
-                        </div>
-    <!-- Pagination Control -->
-    <div class = "row">
-      <div class="col-lg-12">
-      <form class="form-inline float-right ">
-      <pagination-controls
-      previousLabel="Prev"
-      currentPage="Next"
-      (pageChange) ="onTableDataChange2($event)">
-      </pagination-controls>
-      <ul>
-      <select (change)="onTableSizeChange2($event)">
-        <option *ngFor = "let size of tableSizes2 ">
-           {{size}}
-        </option>
-         </select>
-        </ul>
-   </form>
-</div>
-</div>
-<!-- modal area -->
-<div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">SEPS GEOLOCATION TAGGING</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <app-gmap></app-gmap>
-      </div>
-      <div class="modal-footer">
-        <app-admin>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="UpdateManEstab()">Save changes</button>
-      </app-admin>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-    <!-- ADD MODAL -->
-  <div class="modal fade bd-example-modal-lg" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <!-- <div class="modal-dialog modal-dialog-scrollable" role="document"> -->
-      <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header modal-header-primary" >
-          <h5 class="modal-title" id="exampleModalLabel">Manufacturing Establishments</h5>
-          <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="form-group">
-              <div class="form-group mb-1">
-              <label class="" for="exampleFormControlInput1">Name of Establishment :</label>
-              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="estab.name"  [ngClass]="toValidate.name?'is-invalid':''" (keyup)="toValidate.name=false">
+                        </span>
+                      </div>
+                    </td>
+                    <td>{{text.contactPerson}}</td>
+                    <td>{{text.contactNo}}</td>
+                    <td class="text-center">{{text.workersNo}}</td>
+                    <td>{{text.location}}</td>
+                    <td class="text-center">{{text.brgyName}}</td>
+                    <td>{{text.longtitude}},<br>{{text.latitude}}</td>
+                    <td>
+                      <div class="d-inline-flex">
+                        <app-admin>
+                          <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info btn-circle"
+                            data-toggle="modal" data-target="#ModalEdit"><i class="fa fa-pen"></i> </button>
+                        </app-admin>&nbsp;
+                        <button (click)="SetMarker(text)" class="btn btn-success btn-circle" role="button"
+                          (click)="editmodal=text" data-toggle="modal" data-target="#gmapModal">
+                          <i class="fa fa-globe"> </i> </button>&nbsp;
+                        <app-admin>
+                          <button type="button" title="Delete" class="btn btn-warning btn-circle"
+                            (click)="delete(text.transId,i)"><i class="fa fa-trash"></i> </button>&nbsp;
+                        </app-admin>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- Pagination Control -->
+            <div class="row">
+              <div class="col-lg-12">
+                <form class="form-inline float-right ">
+                  <pagination-controls previousLabel="Prev" currentPage="Next"
+                    (pageChange)="onTableDataChange2($event)">
+                  </pagination-controls>
+                  <ul>
+                    <select (change)="onTableSizeChange2($event)">
+                      <option *ngFor="let size of tableSizes2 ">
+                        {{size}}
+                      </option>
+                    </select>
+                  </ul>
+                </form>
               </div>
             </div>
-            <div class="col-lg-12">
-              <label for="type">Barangay :</label>
-              <select class="form-select" aria-label="Default select example" [(ngModel)]="estab.brgyId"  [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false">
-                <option *ngFor="let item  of barangays" value={{item.brgyId}}>{{item.brgyName}}</option>
-                </select> </div><br>
-
-            <div class="row"><br>
-              <div class="col-lg-6"><br>
-                <label for="type">Select Category:</label>
-                <select class="form-select" aria-label="Default select example"  name="list_of_category" [(ngModel)]="estab.category"  [ngClass]="toValidate.category?'is-invalid':''" (ngModelChange)="toValidate.category=false">
-                    <option *ngFor="let list of list_of_category" value={{list.id}} >{{list.name_category}}</option>
-                  </select>
-              </div>
-
-              <div class="col-lg-6"><br>
-                  <label for="type">Business Type :</label><br>
-                  <select class="form-select" aria-label="Default select example"  name="list_of_Business" [(ngModel)]="estab.type"  [ngClass]="toValidate.type?'is-invalid':''" (ngModelChange)="toValidate.type=false">
-                    <option *ngFor="let list of list_of_Business" value={{list.id}} >{{list.name_business}}</option>
-                  </select>
-              </div>
-              </div>
-
-              <div class="col-lg-12"> <br>
-                  <label>Contact Person/ Designation :</label>
-                  <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="estab.contactPerson">
-              </div>
-
-              <div class="col-lg-12">  <br>
-                  <label>Contact Numbers :</label>
-                  <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="estab.contactNo" >
-              </div>
-              <br>
-              <div class="col-lg-12">  <br>
-                  <label>No. of Workers :</label>
-                  <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="estab.workersNo"  [ngClass]="toValidate.workersNo?'is-invalid':''" (keyup)="toValidate.workersNo=false">
-              </div>
-              <br>
-
-              <div class="col-lg-12">  <br>
-                  <label>Location (#/Bldg/St./Purok) :</label>
-                  <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="estab.location">
-              </div>
-              <br>
-                    <br>
-              <div class="col-lg-12">  <br>
-                  <label>Geo Coordinates - Longitude:</label>
-                  <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="estab.longtitude">
-              </div>
-              <div class="col-lg-12">  <br>
-                  <label for="type">Latitude : </label>
-                  <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="estab.latitude">
-               </div>
-              </div>
-        </div>
-        <div class="modal-footer">
-          <div class="left-absolute" *ngIf="visible">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                    (ngModelChange)="onChange(isCheck)" [(ngModel)]="isCheck">
-                <label class="form-check-label" for="flexCheckDefault">
-                    Several data
-                </label>
-            </div>
-        </div>
-          <button type="button" class="btn btn-primary" (click)="AddEstablishment()" ><i class="fa fa-check"></i>Save</button>&nbsp;
-          <!-- <button type ="button" class="btn btn-secondary" *ngIf="updateOfficial" (click) ="city={}"><i class="fa fa-times"></i>Cancel</button> -->
-          <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-                    </div>
+            <!-- modal area -->
+            <div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">SEPS GEOLOCATION TAGGING</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <app-gmap></app-gmap>
+                  </div>
+                  <div class="modal-footer">
+                    <app-admin>
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary" (click)="UpdateManEstab()">Save changes</button>
+                    </app-admin>
+                  </div>
                 </div>
+              </div>
             </div>
+
+
+            <!-- ADD MODAL -->
+            <div class="modal fade bd-example-modal-lg" id="Modal" tabindex="-1" role="dialog"
+              aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <!-- <div class="modal-dialog modal-dialog-scrollable" role="document"> -->
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header modal-header-primary">
+                    <h5 class="modal-title" id="exampleModalLabel">Manufacturing Establishments</h5>
+                    <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row">
+                      <div class="form-group">
+                        <div class="form-group mb-1">
+                          <label class="" for="exampleFormControlInput1">Name of Establishment :</label>
+                          <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="estab.name"
+                            [ngClass]="toValidate.name?'is-invalid':''" (keyup)="toValidate.name=false">
+                        </div>
+                      </div>
+                      <div class="col-lg-12">
+                        <label for="type">Barangay :</label>
+                        <select class="form-select" aria-label="Default select example" [(ngModel)]="estab.brgyId"
+                          [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false">
+                          <option *ngFor="let item  of barangays" value={{item.brgyId}}>{{item.brgyName}}</option>
+                        </select>
+                      </div><br>
+
+                      <div class="row"><br>
+                        <div class="col-lg-6"><br>
+                          <label for="type">Select Category:</label>
+                          <select class="form-select" aria-label="Default select example" name="list_of_category"
+                            [(ngModel)]="estab.category" [ngClass]="toValidate.category?'is-invalid':''"
+                            (ngModelChange)="toValidate.category=false">
+                            <option *ngFor="let list of list_of_category" value={{list.id}}>{{list.name_category}}
+                            </option>
+                          </select>
+                        </div>
+
+                        <div class="col-lg-6"><br>
+                          <label for="type">Business Type :</label><br>
+                          <select class="form-select" aria-label="Default select example" name="list_of_Business"
+                            id="list_of_Business" [(ngModel)]="estab.type" [ngClass]="toValidate.type?'is-invalid':''"
+                            (ngModelChange)="toValidate.type=false">
+                            <option *ngFor="let list of filteredItems" value={{list.id}}>{{list.name_business}}</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-12"> <br>
+                        <label>Contact Person/ Designation :</label>
+                        <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="estab.contactPerson">
+                      </div>
+
+                      <div class="col-lg-12"> <br>
+                        <label>Contact Numbers :</label>
+                        <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="estab.contactNo">
+                      </div>
+                      <br>
+                      <div class="col-lg-12"> <br>
+                        <label>No. of Workers :</label>
+                        <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="estab.workersNo"
+                          [ngClass]="toValidate.workersNo?'is-invalid':''" (keyup)="toValidate.workersNo=false">
+                      </div>
+                      <br>
+
+                      <div class="col-lg-12"> <br>
+                        <label>Location (#/Bldg/St./Purok) :</label>
+                        <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="estab.location">
+                      </div>
+                      <br>
+                      <br>
+                      <!-- <div class="col-lg-12"> <br>
+                        <label>Geo Coordinates - Longitude:</label>
+                        <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="estab.longtitude">
+                      </div>
+                      <div class="col-lg-12"> <br>
+                        <label for="type">Latitude : </label>
+                        <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="estab.latitude">
+                      </div> -->
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <div class="left-absolute" *ngIf="visible">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                          (ngModelChange)="onChange(isCheck)" [(ngModel)]="isCheck">
+                        <label class="form-check-label" for="flexCheckDefault">
+                          Several data
+                        </label>
+                      </div>
+                    </div>
+                    <button type="button" class="btn btn-primary" (click)="AddEstablishment()"><i
+                        class="fa fa-check"></i>Save</button>&nbsp;
+                    <!-- <button type ="button" class="btn btn-secondary" *ngIf="updateOfficial" (click) ="city={}"><i class="fa fa-times"></i>Cancel</button> -->
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i
+                        class="fa fa-times"></i>Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 
 
 <!-- edit (Modal) -->
-<div class="modal fade bd-example-modal-lg" id="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade bd-example-modal-lg" id="ModalEdit" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
   <!-- <div class="modal-dialog modal-dialog-scrollable" role="document"> -->
-    <div class="modal-dialog modal-lg  modal-dialog-scrollable" role="document">
+  <div class="modal-dialog modal-lg  modal-dialog-scrollable" role="document">
 
     <div class="modal-content">
       <div class="modal-header">
@@ -250,73 +267,81 @@
         <div class="row">
           <div class="form-group">
             <div class="form-group mb-1">
-            <label class="" for="exampleFormControlInput1">Name of Establishment :</label>
-            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.name">
+              <label class="" for="exampleFormControlInput1">Name of Establishment :</label>
+              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.name"  [ngClass]="toValidate.name?'is-invalid':''"
+              (keyup)="toValidate.name=false">
             </div>
           </div>
           <div class="row">
             <div class="col-lg-12">
               <label for="type">Select Category:</label>
-              <select class="form-select" aria-label="Default select example"  name="list_of_category" [(ngModel)]="editmodal.category">
-                  <option *ngFor="let list of list_of_category" value={{list.id}} >{{list.name_category}}</option>
-                </select>
+              <select class="form-select" aria-label="Default select example" name="list_of_category"
+                [(ngModel)]="editmodal.category"  [ngClass]="toValidate.category?'is-invalid':''"
+                (ngModelChange)="toValidate.category=false">
+                <option *ngFor="let list of list_of_category" value={{list.id}}>{{list.name_category}}</option>
+              </select>
 
             </div>
 
-            <div class="col-lg12">  <br>
-                <label for="type">Business Type :</label>
-                <select class="form-select" aria-label="Default select example"  name="list_of_Business" [(ngModel)]="editmodal.type">
-                  <option *ngFor="let list of list_of_Business" value={{list.id}} >{{list.name_business}}</option>
-                </select>
+            <div class="col-lg12"> <br>
+              <label for="type">Business Type :</label>
+              <select class="form-select" aria-label="Default select example" name="list_of_Business"
+                [(ngModel)]="editmodal.type"  [ngClass]="toValidate.type?'is-invalid':''"
+                (keyup)="toValidate.type=false">
+                <option *ngFor="let list of EDITfilteredItems" value={{list.id}}>{{list.name_business}}</option>
+              </select>
             </div>
-            </div>
+          </div>
 
-            <div class ="row">
+          <div class="row">
             <div class="col-lg-12"> <br>
-                <label>Contact Person/ Designation :</label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.contactPerson">
+              <label>Contact Person/ Designation :</label>
+              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.contactPerson">
             </div>
 
-            <div class="col-lg-12">  <br>
-                <label>Contact Numbers :</label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.contactNo" >
+            <div class="col-lg-12"> <br>
+              <label>Contact Numbers :</label>
+              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.contactNo">
             </div>
-            </div>
-            <br>
-            <div class="col-lg-12">  <br>
-                <label>No. of Workers :</label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.workersNo">
-            </div>
-            <br>
+          </div>
+          <br>
+          <div class="col-lg-12"> <br>
+            <label>No. of Workers :</label>
+            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.workersNo"  [ngClass]="toValidate.workersNo?'is-invalid':''"
+            (keyup)="toValidate.workersNo=false">
+          </div>
+          <br>
 
-            <div class="col-lg-12">  <br>
-                <label>Location (#/Bldg/St./Purok) :</label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.location">
-            </div>
-            <br>
-            <div class="col-lg-12">  <br>
-                <label for="type">Barangay :</label>
-                <select class="form-select" aria-label="Default select example" [(ngModel)]="editmodal.brgyId">
-                  <option *ngFor="let item  of barangays" value={{item.brgyId}}>{{item.brgyName}}</option>
-                  </select> </div>
-                  <br>
-            <div class="col-lg-12">  <br>
-                <label>Geo Coordinates - Longitude:</label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.longtitude">
-            </div>
-            <div class="col-lg-12">  <br>
-                <label for="type">Latitude : </label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.latitude">
-             </div>
-            </div>
+          <div class="col-lg-12"> <br>
+            <label>Location (#/Bldg/St./Purok) :</label>
+            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.location">
+          </div>
+          <br>
+          <div class="col-lg-12"> <br>
+            <label for="type">Barangay :</label>
+            <select class="form-select" aria-label="Default select example" [(ngModel)]="editmodal.brgyId"  [ngClass]="toValidate.brgyId?'is-invalid':''"
+            (ngModelChange)="toValidate.brgyId=false">
+              <option *ngFor="let item  of barangays" value={{item.brgyId}}>{{item.brgyName}}</option>
+            </select>
+          </div>
+          <br>
+          <div class="col-lg-12"> <br>
+            <label>Geo Coordinates - Longitude:</label>
+            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.longtitude">
+          </div>
+          <div class="col-lg-12"> <br>
+            <label for="type">Latitude : </label>
+            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.latitude">
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="UpdateManEstab()"  data-dismiss="modal" ><i class="fa fa-check"></i>Save Changes</button>&nbsp;
+        <button type="button" class="btn btn-primary" (click)="UpdateManEstab()" ><i
+            class="fa fa-check"></i>Save Changes</button>&nbsp;
         <!-- <button type ="button" class="btn btn-secondary" *ngIf="updateOfficial" (click) ="city={}"><i class="fa fa-times"></i>Cancel</button> -->
         <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
       </div>
     </div>
   </div>
-<!-- </div>
+  <!-- </div>
 </div> -->
-

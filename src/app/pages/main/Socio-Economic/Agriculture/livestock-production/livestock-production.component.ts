@@ -103,10 +103,12 @@ export class LivestockProductionComponent implements OnInit {
   AddAgriculture() {
     this.toValidate.brgyId = this.addData.brgyId == "" || this.addData.brgyId == null ? true : false;
     this.toValidate.name = this.addData.name== "" || this.addData.name == undefined ? true : false;
+    this.toValidate.area = this.addData.area == "" || this.addData.area == null ? true : false;
+    this.toValidate.headRaiseNo = this.addData.headRaiseNo== "" || this.addData.headRaiseNo == undefined ? true : false;
 
-    if (this.toValidate.brgyId  == true || this.toValidate.votingCntrNo == true) {
+    if (this.toValidate.brgyId  == true || this.toValidate.name == true || this.toValidate.area == true || this.toValidate.headRaiseNo == true) {
       Swal.fire(
-        '',
+        'Missing Data!',
         'Please fill out the required fields',
         'warning'
       );
@@ -167,6 +169,18 @@ export class LivestockProductionComponent implements OnInit {
   }
 
   EditAgriculture() {
+    this.toValidate.brgyId = this.addData.brgyId == "" || this.addData.brgyId == null ? true : false;
+    this.toValidate.name = this.addData.name== "" || this.addData.name == undefined ? true : false;
+    this.toValidate.area = this.addData.area == "" || this.addData.area == null ? true : false;
+    this.toValidate.headRaiseNo = this.addData.headRaiseNo== "" || this.addData.headRaiseNo == undefined ? true : false;
+
+    if (this.toValidate.brgyId  == true || this.toValidate.name == true || this.toValidate.area == true || this.toValidate.headRaiseNo == true) {
+      Swal.fire(
+        'Missing Data!',
+        'Please fill out the required fields',
+        'warning'
+      );
+    } else {
     Swal.fire({
       title: 'Do you want to save the changes?',
       showDenyButton: true,
@@ -189,6 +203,7 @@ export class LivestockProductionComponent implements OnInit {
         this.Service.EditAgriculture(this.addData).subscribe(request => {
           console.log("edit", request);
           this.GetListAgriculture();
+          this.clearData();
 
 
         })
@@ -198,6 +213,7 @@ export class LivestockProductionComponent implements OnInit {
       }
     })
   }
+}
 
   DeleteAgriculture(dataItem: any) {
     Swal.fire({

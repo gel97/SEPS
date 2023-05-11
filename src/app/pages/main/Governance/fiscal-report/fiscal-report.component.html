@@ -36,7 +36,7 @@
                                 <th scope="col">Year</th>
                                 <th scope="col">Revenue</th>
                                 <th scope="col">Amount(PhP)</th>
-                                <th width ="8%"></th>
+                                <th  width="8%"></th>
 
                               </tr>
                             </thead>
@@ -98,8 +98,7 @@
                                 <th scope="col">Year</th>
                                 <th scope="col">Expenditures</th>
                                 <th scope="col">Amount(PhP)</th>
-                                <th ></th>
-
+                                <th  width="8%"></th>
                               </tr>
                             </thead>
                             <tbody>
@@ -185,11 +184,11 @@
                 </div>
                 <div class ="col-lg-12"><br>
                  <label for="exampleFormControlTextarea1" >Amount (PhP):</label>
-                 <input type="text" class="form-control" id=""  name =""  [(ngModel)]="fiscal.amount" placeholder="">
+                 <input type="text" class="form-control" id=""  name =""  [(ngModel)]="fiscal.amount" placeholder="" [ngClass]="toValidate.amount?'is-invalid':''" (keyup)="toValidate.amount=false">
                 </div>
                 <div class ="col-lg-12"><br>
                  <label for="exampleFormControlTextarea1" >Fiscal Year:</label>
-                 <input type="text" class="form-control" id=""  name =""  [(ngModel)]="fiscal.fiscalYear" placeholder="" [ngClass]="toValidate.fiscalYear?'is-invalid':''" (keyup)="toValidate.fiscalYearalse">
+                 <input type="text" class="form-control" id=""  name =""  [(ngModel)]="fiscal.fiscalYear" placeholder="" [ngClass]="toValidate.fiscalYear?'is-invalid':''" (keyup)="toValidate.fiscalYear=false">
                 </div>
 
                </div>
@@ -230,15 +229,15 @@
           <div class="row">
                 <div class ="col-lg-12"><br>
                  <label for="exampleFormControlTextarea1" >Name of Revenues/Expenditures:</label>
-                 <input type="text" class="form-control" id=""  name =""  [(ngModel)]="editmodal.description" placeholder="">
+                 <input type="text" class="form-control" id=""  name =""  [(ngModel)]="editmodal.description" placeholder=""  [ngClass]="toValidate.description?'is-invalid':''" (ngModelChange)="toValidate.description=false">
                 </div>
                 <div class ="col-lg-12"><br>
                  <label for="exampleFormControlTextarea1" >Amount (PhP):</label>
-                 <input type="text" class="form-control" id=""  name =""  [(ngModel)]="editmodal.amount" placeholder="">
+                 <input type="text" class="form-control" id=""  name =""  [(ngModel)]="editmodal.amount" placeholder="" [ngClass]="toValidate.amount?'is-invalid':''" (keyup)="toValidate.amount=false">
                 </div>
                 <div class ="col-lg-12"><br>
                  <label for="exampleFormControlTextarea1" >Fiscal Year:</label>
-                 <input type="text" class="form-control" id=""  name =""  [(ngModel)]="editmodal.fiscalYear" placeholder="">
+                 <input type="text" class="form-control" id=""  name =""  [(ngModel)]="editmodal.fiscalYear" placeholder="" [ngClass]="toValidate.fiscalYear?'is-invalid':''" (keyup)="toValidate.fiscalYear=false">
                 </div>
 
                </div>
@@ -247,7 +246,7 @@
       </div>
       <div class="modal-footer">
 
-        <button type="button" class="btn btn-primary"  (click)="update()" data-dismiss="modal"><i class="fa fa-check"></i>Save changes</button>&nbsp;
+        <button type="button" class="btn btn-primary"  (click)="update()"><i class="fa fa-check"></i>Save changes</button>&nbsp;
         <!-- <button type ="button" class="btn btn-secondary" *ngIf="updateOfficial" (click) ="city={}"><i class="fa fa-times"></i>Cancel</button> -->
 
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

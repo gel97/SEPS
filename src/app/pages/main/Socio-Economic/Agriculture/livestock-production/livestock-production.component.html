@@ -130,17 +130,17 @@
             <div class="row">
               <div class="col-lg-4">
                 <label for="exampleFormControlInput1">Farm/ Poultry Type :</label>
-                <select class="form-select" aria-label="Default select example"  name="listofPoultry" [(ngModel)]="addData.type">
+                <select class="form-select" aria-label="Default select example"  name="listofPoultry" [(ngModel)]="addData.type" [ngClass]="toValidate.type?'is-invalid':''" (keyup)="toValidate.type=false">
                   <option *ngFor="let list of listofPoultry" value={{list.id}} >{{list.type}}</option>
                 </select>
               </div>
               <div class="col-lg-4">
                 <label for="exampleFormControlInput1">No. of Heads Raised :</label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.headRaiseNo">
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.headRaiseNo" [ngClass]="toValidate.headRaiseNo?'is-invalid':''" (keyup)="toValidate.headRaiseNo=false">
               </div>
               <div class="col-lg-4">
                 <label>Farm/Poultry Area(Has) :</label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.area">
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.area" [ngClass]="toValidate.area?'is-invalid':''" (keyup)="toValidate.area=false">
               </div>
             </div><br>
             <div class="row">
@@ -176,8 +176,7 @@
             aria-hidden="true">
             <i class="fas fa-times">&nbsp;</i>Close
           </button>
-          <button type="button" *ngIf="not_visible" (click)="EditAgriculture()" data-toggle="modal"
-            data-target="#exampleModal" aria-hidden="true" class="btn btn-primary">
+          <button type="button" *ngIf="not_visible" (click)="EditAgriculture()" aria-hidden="true" class="btn btn-primary">
             <i class="fas fa-edit">&nbsp;</i>UPDATE
           </button>
         </div>

@@ -56,7 +56,7 @@ export class SecondaryComponent implements OnInit {
     this.GetListPrivateSecSchool();
   }
 
-  GetListBarangay() 
+  GetListBarangay()
   {
     this.service.ListOfBarangay(this.auth.munCityId).subscribe(data => {
       this.listBarangay = (<any>data);
@@ -89,13 +89,17 @@ export class SecondaryComponent implements OnInit {
   AddPrivateSecSchool()
   {
     this.toValidate.name = this.secondary.name=="" || this.secondary.name ==null?true:false;
-    this.toValidate.brgyId = this.secondary.brgyId=="" || this.secondary.brgyId ==null?true:false; 
-    
+    this.toValidate.schoolId = this.secondary.schoolId=="" || this.secondary.schoolId ==null?true:false;
+    this.toValidate.teacherNo = this.secondary.teacherNo=="" || this.secondary.teacherNo ==null?true:false;
+    this.toValidate.classroomNo = this.secondary.classroomNo=="" || this.secondary.classroomNo ==null?true:false;
+    this.toValidate.classesNo = this.secondary.classesNo=="" || this.secondary.classesNo ==null?true:false;
+    this.toValidate.brgyId = this.secondary.brgyId=="" || this.secondary.brgyId ==null?true:false;
+
     this.secondary.menuId    = this.menuId;
     this.secondary.setYear   = this.setYear;
     this.secondary.munCityId = this.munCityId;
-   
-    if(!this.toValidate.name && !this.toValidate.brgyId)
+
+    if(!this.toValidate.name && !this.toValidate.brgyId && !this.toValidate.schoolId && !this.toValidate.teacherNo && !this.toValidate.classroomNo && !this.toValidate.classesNo)
     {
       this.service.AddEducation(this.secondary).subscribe(
         {
@@ -132,12 +136,18 @@ export class SecondaryComponent implements OnInit {
         'warning'
         );
     }
-   
+
 
   }
 
   EditPrivateSecSchool()
   {
+    this.toValidate.name = this.secondary.name=="" || this.secondary.name ==null?true:false;
+    this.toValidate.schoolId = this.secondary.schoolId=="" || this.secondary.schoolId ==null?true:false;
+    this.toValidate.teacherNo = this.secondary.teacherNo=="" || this.secondary.teacherNo ==null?true:false;
+    this.toValidate.classroomNo = this.secondary.classroomNo=="" || this.secondary.classroomNo ==null?true:false;
+    this.toValidate.classesNo = this.secondary.classesNo=="" || this.secondary.classesNo ==null?true:false;
+    this.toValidate.brgyId = this.secondary.brgyId=="" || this.secondary.brgyId ==null?true:false;
 
     this.secondary.longtitude = this.gmapComponent.markers.lng;
     this.secondary.latitude  = this.gmapComponent.markers.lat;
@@ -146,6 +156,8 @@ export class SecondaryComponent implements OnInit {
     this.secondary.setYear   = this.setYear;
     this.secondary.munCityId = this.munCityId;
 
+    if(!this.toValidate.name && !this.toValidate.brgyId && !this.toValidate.schoolId && !this.toValidate.teacherNo && !this.toValidate.classroomNo && !this.toValidate.classesNo)
+    {
     this.service.EditEducation(this.secondary).subscribe(
       {
         next: (request) => {
@@ -169,6 +181,15 @@ export class SecondaryComponent implements OnInit {
         }
       }
     )
+  }
+  else
+  {
+    Swal.fire(
+      'Missing Data!',
+      'Please fill out the required fields.',
+      'warning'
+      );
+  }
   }
 
   DeletePrivateSecSchool(transId:any)

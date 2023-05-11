@@ -149,14 +149,14 @@
                                         <input type="text" class="form-control" id="reclassified"  name ="reclassified" [(ngModel)]="geo.reclassified" [disabled]="inputDisabled"   placeholder="" [ngClass]="toValidate.reclassified?'is-invalid':''" (keyup)="toValidate.reclassified=false">
                                       </div><br>
                                   </div><br>
-                                  <div class="row">
+                                  <!-- <div class="row">
                                       <div class="col-lg-3">
                                           <label class="labelForm" for="geo_2AsOfYear">As of Year : </label>
                                       </div>
                                       <div class="col-lg-9">
                                           <input  type="number"class="seqInputBox" id="geo_2AsOfYear">
                                       </div><br>
-                                  </div><br>
+                                  </div><br> -->
                                   <div class="row">
                                       <div class="col-lg-3">
                                           <label class="labelForm" for="geo_Remarks">Remarks : </label>
@@ -253,7 +253,7 @@
                   <label class="labelForm" for="geo_TLandArea">Total Land Area (Has): </label>
               </div>
               <div class="col-lg-9"><br>
-                <input type="number" class="form-control" id="totalLandArea"  name ="totalLandArea"  [(ngModel)]="editgeo.totalLandArea"  placeholder="">
+                <input type="number" class="form-control" id="totalLandArea"  name ="totalLandArea"  [(ngModel)]="editgeo.totalLandArea"  placeholder="" [ngClass]="toValidate.totalLandArea?'is-invalid':''" (keyup)="toValidate.totalLandArea=false">
               </div><br>
           </div><br>
           <div class="row">
@@ -261,7 +261,7 @@
                   <label class="labelForm" for="geo_1AsOfYear">As of Year : </label>
               </div>
               <div class="col-lg-9"><br>
-                <input type="number" class="form-control" id="setYear"  name ="setYear" [(ngModel)]="editgeo.setYear"  placeholder="">
+                <input type="number" class="form-control" id="setYear"  name ="setYear" [(ngModel)]="editgeo.setYear"  placeholder="" [ngClass]="toValidate.setYear?'is-invalid':''" (keyup)="toValidate.setYear=false">
               </div><br>
           </div>
           <label class="labelTitles"><strong>Area in Hectares</strong></label>
@@ -270,7 +270,7 @@
                   <label class="labelForm" for="geo_residential">a. Residential : </label>
               </div>
               <div class="col-lg-9"><br>
-                <input type="number" class="form-control" id="residential"  name ="residential" [(ngModel)]="editgeo.residential"  placeholder="">
+                <input type="number" class="form-control" id="residential"  name ="residential" [(ngModel)]="editgeo.residential"  placeholder="" [ngClass]="toValidate.residential?'is-invalid':''" (keyup)="toValidate.residential=false">
               </div>
           </div><br>
           <div class="row">
@@ -278,7 +278,7 @@
                   <label class="labelForm" for="geo_Commercial">b. Commercial: </label>
               </div>
               <div class="col-lg-9"><br>
-                <input type="number" class="form-control" id="commercial"  name ="commercial" [(ngModel)]="editgeo.commercial"  placeholder="">
+                <input type="number" class="form-control" id="commercial"  name ="commercial" [(ngModel)]="editgeo.commercial"  placeholder="" [ngClass]="toValidate.commercial?'is-invalid':''" (keyup)="toValidate.commercial=false">
               </div>
           </div><br>
           <div class="row">
@@ -286,7 +286,7 @@
                   <label class="labelForm" for="geo_Industrial">c. Industrial : </label>
               </div>
               <div class="col-lg-9"><br>
-                <input type="number" class="form-control" id="industrial"  name ="industrial" [(ngModel)]="editgeo.industrial"  placeholder="">
+                <input type="number" class="form-control" id="industrial"  name ="industrial" [(ngModel)]="editgeo.industrial"  placeholder="" [ngClass]="toValidate.industrial?'is-invalid':''" (keyup)="toValidate.industrial=false">
               </div>
           </div><br>
           <div class="row">
@@ -294,7 +294,7 @@
                   <label class="labelForm" for="geo_Agricultural">d. Agricultural: </label>
               </div>
               <div class="col-lg-9"><br>
-                <input type="number" class="form-control" id="agricultural"  name ="agricultural" [(ngModel)]="editgeo.agricultural"  placeholder="">
+                <input type="number" class="form-control" id="agricultural"  name ="agricultural" [(ngModel)]="editgeo.agricultural"  placeholder="" [ngClass]="toValidate.agricultural?'is-invalid':''" (keyup)="toValidate.agricultural=false">
               </div>
           </div><br>
           <div class="row">
@@ -302,7 +302,7 @@
                   <label class="labelForm" for="geo_Institutional">e. Institutional : </label>
               </div>
               <div class="col-lg-9"><br>
-                <input type="number" class="form-control" id="institutional"  name ="institutional" [(ngModel)]="editgeo.institutional"  placeholder="">
+                <input type="number" class="form-control" id="institutional"  name ="institutional" [(ngModel)]="editgeo.institutional"  placeholder="" [ngClass]="toValidate.institutional?'is-invalid':''" (keyup)="toValidate.institutional=false">
               </div>
           </div><br>
           <div class="row">
@@ -310,7 +310,7 @@
                   <label class="labelForm" for="geo_ForestLands">f. Forest Lands : </label>
               </div>
               <div class="col-lg-9"><br>
-                <input type="number" class="form-control" id="forestLand"  name ="forestLand" [(ngModel)]="editgeo.forestLand"  placeholder="">
+                <input type="number" class="form-control" id="forestLand"  name ="forestLand" [(ngModel)]="editgeo.forestLand"  placeholder="" [ngClass]="toValidate.forestLand?'is-invalid':''" (keyup)="toValidate.forestLand=false">
               </div>
           </div><br>
           <div class="row">
@@ -318,7 +318,7 @@
                   <label class="labelForm" for="geo_OpenSpaces">g. Open Spaces : </label>
               </div>
               <div class="col-lg-9"><br>
-                <input type="number" class="form-control" id="openSpaces"  name ="openSpaces" [(ngModel)]="editgeo.openSpaces"  placeholder="">
+                <input type="number" class="form-control" id="openSpaces"  name ="openSpaces" [(ngModel)]="editgeo.openSpaces"  placeholder="" [ngClass]="toValidate.openSpaces?'is-invalid':''" (keyup)="toValidate.openSpaces=false">
               </div>
           </div><br>
           <div class="row">
@@ -326,7 +326,7 @@
                   <label class="labelForm" for="geo_Fishpond">h. Fishpond : </label>
               </div>
               <div class="col-lg-9"><br>
-                <input type="number" class="form-control" id="fishpond"  name ="fishpond" [(ngModel)]="editgeo.fishpond"  placeholder="">
+                <input type="number" class="form-control" id="fishpond"  name ="fishpond" [(ngModel)]="editgeo.fishpond"  placeholder="" [ngClass]="toValidate.fishpond?'is-invalid':''" (keyup)="toValidate.fishpond=false">
               </div>
           </div><br>
           <div class="row">
@@ -334,7 +334,7 @@
                   <label class="labelForm" for="geo_QuarryAreas">i. Quarry Areas : </label>
               </div>
               <div class="col-lg-9"><br>
-                <input type="number" class="form-control" id="quarryAreas"  name ="quarryAreas" [(ngModel)]="editgeo.quarryAreas"  placeholder="">
+                <input type="number" class="form-control" id="quarryAreas"  name ="quarryAreas" [(ngModel)]="editgeo.quarryAreas"  placeholder="" [ngClass]="toValidate.quarryAreas?'is-invalid':''" (keyup)="toValidate.quarryAreas=false">
               </div>
           </div><br>
           <div class="row">
@@ -342,7 +342,7 @@
                   <label class="labelForm" for="geo_OtherUses">j. Other Uses : </label>
               </div>
               <div class="col-lg-9"><br>
-                <input type="text" class="form-control" id="otherUses"  name ="otherUses" [(ngModel)]="editgeo.otherUses"  placeholder="">
+                <input type="text" class="form-control" id="otherUses"  name ="otherUses" [(ngModel)]="editgeo.otherUses"  placeholder="" [ngClass]="toValidate.otherUses?'is-invalid':''" (keyup)="toValidate.otherUses=false">
               </div><br>
           </div><br>
 
@@ -352,17 +352,17 @@
                   <label class="labelForm" for="geo_TAreaReclassified">Total Area Reclassified : </label>
               </div>
               <div class="col-lg-9"><br>
-                <input type="text" class="form-control" id="reclassified"  name ="reclassified" [(ngModel)]="editgeo.reclassified"   placeholder="">
+                <input type="text" class="form-control" id="reclassified"  name ="reclassified" [(ngModel)]="editgeo.reclassified"   placeholder="" [ngClass]="toValidate.reclassified?'is-invalid':''" (keyup)="toValidate.reclassified=false">
               </div><br>
           </div><br>
-          <div class="row"><br>
+          <!-- <div class="row"><br>
               <div class="col-lg-3">
                   <label class="labelForm" for="geo_2AsOfYear">As of Year : </label>
               </div>
               <div class="col-lg-9">
                   <input class="seqInputBox" id="geo_2AsOfYear" type="text">
               </div><br>
-          </div><br>
+          </div><br> -->
           <div class="row"><br>
               <div class="col-lg-3">
                   <label class="labelForm" for="geo_Remarks">Remarks : </label>
@@ -373,7 +373,7 @@
                   </div>
                    </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="update_Geo(); updategeo=true;" data-dismiss="modal"><i class="fa fa-check"></i>Save Changes</button>&nbsp;
+        <button type="button" class="btn btn-primary" (click)="update_Geo(); updategeo=true;" ><i class="fa fa-check"></i>Save Changes</button>&nbsp;
         <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
 
       </div>

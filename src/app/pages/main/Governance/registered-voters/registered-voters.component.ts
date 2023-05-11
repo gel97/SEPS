@@ -67,12 +67,12 @@ export class RegisteredVotersComponent implements OnInit {
     this.toValidate.votingCntrNo = this.voter.votingCntrNo== "" || this.voter.votingCntrNo == undefined ? true : false;
     this.toValidate.regVoterNo = this.voter.regVoterNo == "" || this.voter.regVoterNo == undefined ? true : false;
     this.toValidate.estabNo = this.voter.estabNo == "" || this.voter.estabNo == undefined ? true : false;
+    this.toValidate.clusterNo = this.voter.clusterNo == "" || this.voter.clusterNo == undefined ? true : false;
 
 
-
-    if (this.toValidate.brgyId  == true || this.toValidate.votingCntrNo == true || this.toValidate.regVoterNo ==true || this.toValidate.estabNo) {
+    if (this.toValidate.brgyId  == true || this.toValidate.votingCntrNo == true || this.toValidate.regVoterNo ==true || this.toValidate.estabNo == true || this.toValidate.clusterNo == true) {
       Swal.fire(
-        '',
+        'Missing Data!',
         'Please fill out the required fields',
         'warning'
       );
@@ -116,6 +116,19 @@ export class RegisteredVotersComponent implements OnInit {
 
   //for modal
   updateVoter() {
+    this.toValidate.brgyId = this.editmodal.brgyId == "" || this.editmodal.brgyId == null ? true : false;
+    this.toValidate.votingCntrNo = this.editmodal.votingCntrNo== "" || this.editmodal.votingCntrNo == undefined ? true : false;
+    this.toValidate.regVoterNo = this.editmodal.regVoterNo == "" || this.editmodal.regVoterNo == undefined ? true : false;
+    this.toValidate.estabNo = this.editmodal.estabNo == "" || this.editmodal.estabNo == undefined ? true : false;
+    this.toValidate.clusterNo = this.editmodal.clusterNo == "" || this.editmodal.clusterNo == undefined ? true : false;
+
+    if (this.toValidate.brgyId  == true || this.toValidate.votingCntrNo == true || this.toValidate.regVoterNo ==true || this.toValidate.estabNo == true || this.toValidate.clusterNo == true) {
+      Swal.fire(
+        'Missing Data!',
+        'Please fill out the required fields',
+        'warning'
+      );
+    } else {
     this.service.UpdateRegVoter(this.editmodal).subscribe({
       next: (_data) => {
       this.Init();
@@ -131,6 +144,7 @@ export class RegisteredVotersComponent implements OnInit {
     });
     this.editmodal = {};
   }
+}
 
   delete(transId: any, index: any) {
     Swal.fire({

@@ -97,7 +97,7 @@ export class FiscalMattersComponent implements OnInit {
     this.toValidate.category = this.fiscal.category == "" || this.fiscal.category == undefined ? true : false;
     if (this.toValidate.name == true || this.toValidate.fiscalYear == true || this.toValidate.category ==true) {
       Swal.fire(
-        '',
+        'Missing Data!',
         'Please fill out the required fields',
         'warning'
       );
@@ -110,7 +110,7 @@ export class FiscalMattersComponent implements OnInit {
     }
     console.log(_data);
     this.clearData();
-    this.Init();
+    // this.Init();
 
       Swal.fire(
         'Good job!',
@@ -141,6 +141,16 @@ export class FiscalMattersComponent implements OnInit {
 
   //for modal
   update() {
+    this.toValidate.name = this.editmodal.name == "" || this.editmodal.name == null ? true : false;
+    this.toValidate.fiscalYear = this.editmodal.fiscalYear == "" || this.editmodal.fiscalYear == undefined ? true : false;
+    this.toValidate.category = this.editmodal.category == "" || this.editmodal.category == undefined ? true : false;
+    if (this.toValidate.name == true || this.toValidate.fiscalYear == true || this.toValidate.category ==true) {
+      Swal.fire(
+        'Missing Data!',
+        'Please fill out the required fields',
+        'warning'
+      );
+    } else {
     this.service.Updatefiscal(this.editmodal).subscribe({
       next: (_data) => {
         this.Init();
@@ -157,7 +167,7 @@ export class FiscalMattersComponent implements OnInit {
       timer: 1000
     });
 
-  }
+  }}
 
   onTableDataChange(page: any) { //paginate
     console.log(page)
