@@ -10,7 +10,7 @@ import { BaseUrl } from './baseUrl.service';
 export class AuthService {
   constructor(private http:HttpClient, private Base:BaseUrl) { }
 
-  readonly apiurl       = this.Base.url + "Auth/login";
+  readonly apiurl       = this.Base.url + "/Auth/login";
   readonly apiurlGoogle = this.Base.url + "/AuthGoogle";
   readonly apiurlFb     = this.Base.url + "/AuthFb";
   readonly apiurlUser   = this.Base.url + "/User";
