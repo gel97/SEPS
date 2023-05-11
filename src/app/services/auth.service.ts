@@ -2,34 +2,29 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { catchError, Observable, retry, tap, throwError } from 'rxjs';
-import { Userlogin } from '../models/userlogin';
-
+import { BaseUrl } from './baseUrl.service';
 @Injectable({
   providedIn: 'root'
 })
 
 export class AuthService {
+  constructor(private http:HttpClient, private Base:BaseUrl) { }
 
-  readonly apiurl = "https://davaodelnorte.ph/sep/apidata/api/Auth/login";
- // readonly apiurlGoogle = "https://davaodelnorte.ph/sep/apidata/api/Auth/login";
-  readonly apiurlGoogle = "https://localhost:7292/api/AuthGoogle";
-  // readonly apiurlGoogle = "https://davaodelnorte.ph/sep/apidata/api/Auth/login";
-  readonly apiurlFb = "https://localhost:7292/api/AuthFb";
-  readonly apiurlUser = "https://davaodelnorte.ph/sep/apidata/api/User";
-  readonly baseUrl = "https://davaodelnorte.ph/FMIS/APIData/API";
+  readonly apiurl       = this.Base.url + "Auth/login";
+  readonly apiurlGoogle = this.Base.url + "/AuthGoogle";
+  readonly apiurlFb     = this.Base.url + "/AuthFb";
+  readonly apiurlUser   = this.Base.url + "/User";
 
-   token:any = localStorage.getItem("token");
-   munCityId:any = localStorage.getItem("munCityId");
-   munCityName:any = localStorage.getItem("munCityName");
-   o_munCityId:any = localStorage.getItem("o_munCityId");
-   o_munCityName:any = localStorage.getItem("o_munCityName");
-   activeSetYear:any = localStorage.getItem("activeSetYear");
-   setYear:any = localStorage.getItem("setYear");
-   userId:any = localStorage.getItem("userId");
+  token:any         = localStorage.getItem("token");
+  munCityId:any     = localStorage.getItem("munCityId");
+  munCityName:any   = localStorage.getItem("munCityName");
+  o_munCityId:any   = localStorage.getItem("o_munCityId");
+  o_munCityName:any = localStorage.getItem("o_munCityName");
+  activeSetYear:any = localStorage.getItem("activeSetYear");
+  setYear:any       = localStorage.getItem("setYear");
+  userId:any        = localStorage.getItem("userId");
 
   activesetYear: any;
-
-  constructor(private http:HttpClient) { }
 
   signin(user:any): Observable<any> {
     const now = new Date();
@@ -51,14 +46,14 @@ export class AuthService {
       localStorage.setItem("expire",response.expire);
 
       //console.log(localStorage.getItem("userData"));
-      this.token = localStorage.getItem("token");
-      this.userId = localStorage.getItem("userId");
-      this.munCityId = localStorage.getItem("munCityId");
-      this.munCityName = localStorage.getItem("munCityName");
-      this.o_munCityId = localStorage.getItem("o_munCityId");
+      this.token         = localStorage.getItem("token");
+      this.userId        = localStorage.getItem("userId");
+      this.munCityId     = localStorage.getItem("munCityId");
+      this.munCityName   = localStorage.getItem("munCityName");
+      this.o_munCityId   = localStorage.getItem("o_munCityId");
       this.o_munCityName = localStorage.getItem("o_munCityName");
       this.activeSetYear = localStorage.getItem("activeSetYear");
-      this.setYear = localStorage.getItem("setYear");
+      this.setYear       = localStorage.getItem("setYear");
       console.log(this.munCityId);
 
     }));
@@ -98,9 +93,9 @@ export class AuthService {
       localStorage.setItem("setYear",response.activeSetYear);
       localStorage.setItem("expire",response.expire);
 
-      this.token = localStorage.getItem("token");
+      this.token         = localStorage.getItem("token");
       this.activeSetYear = localStorage.getItem("activeSetYear");
-      this.setYear = localStorage.getItem("setYear");
+      this.setYear       = localStorage.getItem("setYear");
     }));
   }
 

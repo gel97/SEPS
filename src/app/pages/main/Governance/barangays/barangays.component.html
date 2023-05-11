@@ -49,10 +49,7 @@
                         </td>
 
                       </tr>
-                      <tr *ngFor="let text of  ViewBarangayOfficial | filter:{brgyId: brgy.brgyId} | paginate:{
-                        itemsPerPage: tableSize,
-                        currentPage: p,
-                        totalItems:count};">
+                      <tr *ngFor="let text of  ViewBarangayOfficial | filter:{brgyId: brgy.brgyId}">
 
                         <td>{{text.punongBrgy}}</td>
                         <td>{{text.landArea}}</td>
@@ -86,25 +83,7 @@
                     </tbody>
                   </table>
 
-              </div>
-              <!-- Pagination Control -->
-
-              <div class="row">
-                <div class="col-lg-12">
-                  <form class="form-inline float-right ">
-                    <pagination-controls previousLabel="Prev" currentPage="Next"
-                      (pageChange)="onTableDataChange($event)">
-                    </pagination-controls>
-                    <ul>
-                      <select (change)="onTableSizeChange($event)">
-                        <option *ngFor="let size of tableSizes ">
-                          {{size}}
-                        </option>
-                      </select>
-                    </ul>
-                  </form>
-                </div>
-              </div>
+              </div>      
             </div>
           </div>
         </div>

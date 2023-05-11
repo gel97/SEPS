@@ -22,20 +22,13 @@ export class BarangaysComponent implements OnInit {
   is_update: boolean = false;
   ViewBarangayOfficial: any = [];
   listBarangay: any = [];
+  listData: any = [];
   barangay: any = {};
   addmodal: any = {};
   editmodal: any = {};
   UpdateBarangay: any = {};
   inputDisabled:boolean=false;
 
-
-  pageSize = 25;
-  p: string | number | undefined;
-  count: number = 0;
-  tableSize: number = 5;
-  tableSizes: any = [5, 10, 15, 25, 50, 100];
-
-  date = new DatePipe('en-PH')
   ngOnInit(): void {
     this.Init();
   }
@@ -63,67 +56,52 @@ export class BarangaysComponent implements OnInit {
   }
 
   GetBarangay() {
-    this.service.GetBarangay().subscribe(data => {
-      this.ViewBarangayOfficial = (<any>data);
-      console.log(this.ViewBarangayOfficial)
-
-    })
+    this.service.GetBarangay().subscribe({
+      next: (response) => {
+        this.ViewBarangayOfficial = (<any>response);
+        console.log("Barangay officials :",response )
+      },
+      error: (error) => {
+      },
+      complete: ()=> {
+        this.GetListBarangay();
+      }
+    });
   }
 
   GetListBarangay() {
-    this.service.ListBarangay().subscribe(data => {
-
-      this.listBarangay = (<any>data);
-      console.log(this.listBarangay)
-    })
-  }
-
-  AddBarangay() {
-
-    this.barangay.munCityId = this.auth.munCityId;
-    this.barangay.activeSetYear = this.auth.activeSetYear;
-    this.service.AddBarangay(this.barangay).subscribe(_data => {
-
-      Swal.fire(
-        'Good job!',
-        'Data Added Successfully!',
-        'success'
-      );
-      this.Init();
-      this.barangay = {};
-
-    }, err => {
-      Swal.fire(
-        'ERROR!',
-        'Error',
-        'error'
-      );
-
-      this.Init();
-      this.barangay = {};
+    this.service.ListBarangay().subscribe({
+      next: (response) => {
+        this.listBarangay = (<any>response);
+        console.log("Barangay :",response )
+      },
+      error: (error) => {
+      },
+      complete: ()=> {
+        this.filterList();
+      }
     });
-
-}
-
-  onTableDataChange(page: any) { //paginate
-    console.log(page)
-    this.p = page;
-    this.Init();
-
-  }
-  onTableSizeChange(event: any) { //paginate
-    this.tableSize = event.target.value;
-    this.p = 1;
-    this.Init();
-
+  
   }
 
-  editBarangay(editBarangay: any = {}) {
-    this.editmodal = editBarangay;
-    //passing the data from table (modal)
-    this.Init();
+  filterList(){
+    this.listBarangay.forEach((a:any)=>{
+      this.ViewBarangayOfficial.forEach((b:any)=>{
+        if (a.brgyId == b.brgyId) {
+          this.listData.push(b);
+        } 
 
+      });
+
+      let isExist = this.listData.filter((x: any) => x.brgyId == a.brgyId);
+      if (isExist.length == 0) {
+        this.listData.push(a);
+      }
+
+    });
+    console.log("filter: ", this.listData);
   }
+
 
   addM() {
     this.toValidate.punongBrgy = this.addmodal.punongBrgy == "" || this.addmodal.punongBrgy == null ? true : false;
