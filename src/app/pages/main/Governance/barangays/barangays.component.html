@@ -46,7 +46,11 @@
                         <td>{{item.address}} </td>
                         <td>{{item.contactNo}}</td>
                         <td>{{item.purokNo}}</td>
-                        <td>{{item.longitude}},<br> {{item.latitude}}</td>
+                        <td>
+                          <span *ngIf="item.longitude || item.latitude">
+                            {{item.longitude}},<br> {{item.latitude}}
+                          </span>
+                        </td>
                         <td *ngIf="item.transId else isADD">
                           <div class="d-inline-flex">
                             <app-admin>
