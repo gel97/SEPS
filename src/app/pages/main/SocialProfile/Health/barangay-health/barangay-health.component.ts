@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { HealthFacilitiesService } from 'src/app/shared/SocialProfile/Health/healthFacilities.service';
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
+import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 
 @Component({
   selector: 'app-barangay-health',
@@ -12,167 +13,204 @@ import { Observable } from 'rxjs';
 export class BarangayHealthComponent implements OnInit {
   constructor(
     private Auth: AuthService,
-    private service: HealthFacilitiesService
-  ) {}
-  menuId = 3;
-  setYear = Number(this.Auth.activeSetYear);
-  munCityId = this.Auth.munCityId;
+    private Service: HealthFacilitiesService
+  ) { }
 
-  listData: any = [];
+  @ViewChild(GmapComponent)
+  private gmapComponent!: GmapComponent;
+
+  isCheck: boolean = false;
+
+  onChange(isCheck: boolean) {
+    this.isCheck = isCheck;
+    console.log('isCheck:', this.isCheck);
+  }
+
+  munCityName: string = this.Auth.munCityName;
+  menuId = '3';
+  dataList: any = [];
+  setYear = this.Auth.activeSetYear;
+  munCityId = this.Auth.munCityId;
+  barangayList: any = [];
   addData: any = {};
-  editData: any = {};
-  listBarangayData: any = [];
-  idCounter: number = 1;
-  updateForm: boolean = false;
+  dummy_addData: any = {};
+  dummyData: any = {};
+  visible: boolean = true;
+  not_visible: boolean = true;
+  //required == not_visible
+  required: boolean = true;
+  latitude: any;
+  longtitude: any;
+  checker_brgylist: any = {};
+  toValidate: any = {};
+
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void } };
+
+  markerObj: any = {};
+
+  SetMarker(data: any = {}) {
+    console.log('lnglat: ', data.longtitude + ' , ' + data.latitude);
+
+    if (data.longtitude == undefined && data.latitude == undefined) {
+      data.longtitude = this.longtitude;
+      data.latitude = this.latitude;
+    }
+
+    this.markerObj = {
+      lat: data.latitude,
+      lng: data.longtitude,
+      label: data.brgyName.charAt(0),
+      brgyName: data.brgyName,
+      munCityName: this.munCityName,
+      draggable: true,
+    };
+    this.gmapComponent.setMarker(this.markerObj);
+    console.log('marker', this.markerObj);
+  }
 
   ngOnInit(): void {
-    this.resetForm();
     this.GetHealthFacilities();
-    this.getListOfBarangay();
-  }
-  resetForm(): void {
-    this.addData = {}; // Reset the form fields here
+    this.GetBarangayList();
   }
 
-  GetHealthFacilities(): void {
-    this.service
-      .GetHealthFacilities(this.menuId, this.setYear, this.munCityId)
-      .subscribe({
-        next: (response) => {
-          this.listData = response;
-        },
-        error: (err) => {
-          console.log(err);
-        },
-        complete: () => {
-          console.log('GetHealthFacilities() completed.');
-        },
-      });
-  }
-
-  AddHealthFacilities(addData: any): void {
-    addData.setYear = Number(this.setYear);
-    addData.menuId = String(this.menuId);
-    addData.id = this.idCounter++;
-    // console.log(addData);
-    this.service.AddHealthFacilities(addData).subscribe({
-      next: (response) => {
-        this.listData.push(response);
-        console.log(response);
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'Your work has been saved',
-          showConfirmButton: false,
-          timer: 1000,
-        });
-      },
-      error: (err) => {
-        console.log(err);
-        Swal.fire({
-          position: 'center',
-          icon: 'error',
-          title: 'Something went wrong!',
-          text: err.message,
-          showConfirmButton: false,
-          timer: 3000,
-        });
-      },
-      complete: () => {
-        console.log('AddHealthFacilities() completed.');
-      },
+  GetHealthFacilities() {
+    this.Service.GetHealthFacilities(
+      this.menuId,
+      this.setYear,
+      this.munCityId
+    ).subscribe((response) => {
+      this.dataList = <any>response;
+      console.log('check', response);
     });
   }
 
-  EditHealthFacilities(addData: any): void {
-    this.service.EditHealthFacilities(addData).subscribe({
-      next: (response) => {
-        this.GetHealthFacilities();
-        //this.listData.push(response);
-        console.log(response);
-        console.log(response);
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'Your work has been updated',
-          showConfirmButton: false,
-          timer: 1000,
-        });
-        this.resetForm();
-      },
-      error: (err) => {
-        console.log(err);
-        Swal.fire({
-          position: 'center',
-          icon: 'error',
-          title: 'Something went wrong!',
-          text: err.message,
-          showConfirmButton: false,
-          timer: 3000,
-        });
-      },
-      complete: () => {
-        console.log('UpdateHealthFacilities() completed.');
-      },
+  GetBarangayList() {
+    this.Service.ListOfBarangay(this.munCityId).subscribe((response) => {
+      this.barangayList = <any>response;
+      console.log('barangay', response);
     });
   }
 
-  DeleteHealthFacilities(id: any): void {
+  findBrgyId(brgyId: any) {
+    return this.barangayList.find(
+      (item: { brgyId: any }) => item.brgyId === brgyId
+    );
+  }
+
+  AddHealthFacilities() {
+    console.log('trap', this.addData);
+    console.log('brgyid', this.addData.brgyId);
+    this.dummy_addData = this.addData;
+    console.log('trap_2', this.dummy_addData);
+    this.toValidate.brgyId =
+      this.addData.brgyId == '' || this.addData.brgyId == null ? true : false;
+    this.toValidate.name =
+      this.addData.name == '' || this.addData.name == undefined ? true : false;
+    if (this.toValidate.brgyId == true || this.toValidate.name == true) {
+      Swal.fire('', 'Please fill out the required fields', 'warning');
+    } else {
+      if (
+        JSON.stringify(this.dummy_addData) != JSON.stringify(this.dummyData) &&
+        this.addData.brgyId != undefined
+      ) {
+        this.addData.setYear = this.setYear;
+        this.addData.munCityId = this.munCityId;
+        this.addData.menuId = this.menuId;
+        console.log('brgylist', this.barangayList);
+
+        const result = this.findBrgyId(this.addData.brgyId);
+        this.longtitude = result.longitude;
+        this.addData.longtitude = this.longtitude;
+        console.log('long', this.longtitude);
+        this.latitude = result.latitude;
+        this.addData.latitude = this.latitude;
+        console.log('lat', this.latitude);
+
+        this.Service.AddHealthFacilities(this.addData).subscribe((request) => {
+          if (!this.isCheck) {
+            this.closebutton.nativeElement.click();
+          }
+          console.log('add', request);
+          this.clearData();
+          this.GetHealthFacilities();
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Your work has been saved',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        });
+      } else {
+        this.required = true;
+        Swal.fire({
+          icon: 'warning',
+          title: 'Oops...',
+          text: 'Missing data!',
+        });
+      }
+    }
+  }
+
+  EditHealthFacilities() {
     Swal.fire({
-      title: 'Are you sure you want to delete this health facility?',
-      text: 'This action cannot be undone.',
+      title: 'Do you want to save the changes?',
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      denyButtonText: `Don't save`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        this.addData.longtitude = this.gmapComponent.markers.lng;
+        this.addData.latitude = this.gmapComponent.markers.lat;
+
+        this.addData.setYear = this.setYear;
+        this.addData.munCityId = this.munCityId;
+        this.addData.menuId = this.menuId;
+        this.addData.tag = 1;
+        console.log('edit', this.addData);
+        this.Service.EditHealthFacilities(this.addData).subscribe((request) => {
+          console.log('edit', request);
+          this.GetHealthFacilities();
+        });
+        Swal.fire('Saved!', '', 'success');
+      } else if (result.isDenied) {
+        Swal.fire('Changes are not saved', '', 'info');
+      }
+    });
+  }
+  DeleteHealthFacilities(dataItem: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'Cancel',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.service.DeleteHealthFacilities(id).subscribe({
-          next: (response) => {
-            const index = this.listData.findIndex((d: any) => d.transId === id);
-            //console.log(index);
-            this.deleteData(id);
-            this.listData.splice(index, 1);
-            console.log(response);
-            Swal.fire({
-              position: 'center',
-              icon: 'success',
-              title: 'The health facility has been deleted',
-              showConfirmButton: false,
-              timer: 1000,
-            });
-          },
-          error: (err) => {
-            console.log(err);
-            Swal.fire({
-              position: 'center',
-              icon: 'error',
-              title: 'Something went wrong!',
-              text: err.message,
-              showConfirmButton: false,
-              timer: 3000,
-            });
-          },
-          complete: () => {
-            console.log('DeleteHealthFacility() completed.');
-          },
-        });
+        this.Service.DeleteHealthFacilities(dataItem.transId).subscribe(
+          (request) => { }
+        );
+
+        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+        this.ngOnInit();
       }
     });
   }
 
-  deleteData(id: number) {
-    this.listData = this.listData.filter(
-      (data: { id: number }) => data.id !== id
-    );
+  clearData() {
+    this.addData = {};
+    this.not_visible = false;
+    this.visible = true;
+    this.required = false;
   }
 
-  getListOfBarangay(): void {
-    this.service.ListOfBarangay(this.munCityId).subscribe((response) => {
-      console.log('Barangay: ', response);
-      this.listBarangayData = response;
-    });
+  editToggle() {
+    this.not_visible = true;
+    this.visible = false;
   }
 }

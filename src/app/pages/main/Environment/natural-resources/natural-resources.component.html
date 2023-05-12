@@ -1,71 +1,187 @@
-
-
 <div class="">
 
-  <div class="card o-hidden border-2 shadow-sm my-5">
-      <div class="card-body p-0">
-          <!-- Nested Row within Card Body -->
-          <div class="row">
+    <div class="card o-hidden border-2 shadow-sm my-5">
+        <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
 
-              <div class="col-lg-12">
-                  <div class="p-5">
-                      <div class="">
-                          <button class="btn btn-outline-primary btn-circle float-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
-                              <i class="fa fa-minus" aria-hidden="true"></i>
+                <div class="col-lg-12">
+                    <div class="p-5">
+                        <div class="">
 
-                            </button>
-                      </div>
-                      <div class="text-center">
-                          <h1 class="h4 text-gray-900 mb-4">Natural/ Biological Resources</h1>
-                      </div>
+                        </div>
+                        <div class="text-center">
+                            <h1 class="h4 text-gray-900 mb-4">Natural/ Biological Resources</h1>
+                        </div>
 
 
-                      <form class="user collapse show" id="collapseExample">
-                          <div class="form-group">
-                              <div class="row">
-                                    <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1">Forest/ Wildlife Resources :</label>
-                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                                     </div>
-                                     <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1">Aquatic/ Marine Resources and Habitats :</label>
-                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                                     </div>
-                                     <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1">Protected Areas :</label>
-                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                                     </div>
-                                     <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1">Land Resources :</label>
-                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                                     </div>
-                                     <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1">Water Resources :</label>
-                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                                     </div>
-                                     <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1">Minerals and Energy Resources :</label>
-                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                                     </div>
-                                     <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1">Others/ Remarks :</label>
-                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                                     </div>
+                        <form class="user collapse show" id="collapseExample">
+                            <div class="form-group">
+                                <div class="row">
+                                    <app-admin>
+                                        <div class="text-right">
+                                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                data-target="#exampleModalLong" (click)="resetForm(); updateForm=false"
+                                                *ngIf="!listResources || listResources.length === 0"
+                                                style="font-size: 15px;"><i class="fa fa-plus"></i> Natural/ Biological
+                                                Resources</button>
+                                        </div>
+                                    </app-admin>
+                                    <tr *ngFor="let desc of listResources; let i=index">
+                                        <div class="col-lg-12"><br>
+                                            <label for="exampleFormControlTextarea1"
+                                                class="h6 text-gray-900 mb-4">Forest/ Wildlife Resources
+                                                :</label>
+                                            <textarea class="form-control" [(ngModel)]="desc.desc1"
+                                                [ngModelOptions]="{ standalone: true }" [readonly]="true" id="desc1"
+                                                rows="4"></textarea>
+                                        </div>
+
+                                        <div class="col-lg-12"><br>
+                                            <label for="exampleFormControlTextarea1"
+                                                class="h6 text-gray-900 mb-4">Aquatic/ Marine Resources
+                                                and Habitats :</label>
+                                            <textarea class="form-control" [(ngModel)]="desc.desc2"
+                                                [ngModelOptions]="{ standalone: true }" [readonly]="true" id="desc2"
+                                                rows="4"></textarea>
+                                        </div>
+                                        <div class="col-lg-12"><br>
+                                            <label for="exampleFormControlTextarea1"
+                                                class="h6 text-gray-900 mb-4">Protected Areas :</label>
+                                            <textarea class="form-control" [(ngModel)]="desc.desc3"
+                                                [ngModelOptions]="{ standalone: true }" [readonly]="true" id="desc3"
+                                                rows="4"></textarea>
+                                        </div>
+                                        <div class="col-lg-12"><br>
+                                            <label for="exampleFormControlTextarea1" class="h6 text-gray-900 mb-4">Land
+                                                Resources :</label>
+                                            <textarea class="form-control" [(ngModel)]="desc.desc4"
+                                                [ngModelOptions]="{ standalone: true }" [readonly]="true" id="desc4"
+                                                rows="4"></textarea>
+                                        </div>
+                                        <div class="col-lg-12"><br>
+                                            <label for="exampleFormControlTextarea1" class="h6 text-gray-900 mb-4">Water
+                                                Resources :</label>
+                                            <textarea class="form-control" [(ngModel)]="desc.desc5"
+                                                [ngModelOptions]="{ standalone: true }" [readonly]="true" id="desc5"
+                                                rows="4"></textarea>
+                                        </div>
+                                        <div class="col-lg-12"><br>
+                                            <label for="exampleFormControlTextarea1"
+                                                class="h6 text-gray-900 mb-4">Minerals and Energy
+                                                Resources :</label>
+                                            <textarea class="form-control" [(ngModel)]="desc.desc6"
+                                                [ngModelOptions]="{ standalone: true }" [readonly]="true" id="desc6"
+                                                rows="4"></textarea>
+                                        </div>
+                                        <div class="col-lg-12"><br>
+                                            <label for="exampleFormControlTextarea1"
+                                                class="h6 text-gray-900 mb-4">Others/ Remarks :</label>
+                                            <textarea class="form-control" [(ngModel)]="desc.desc7"
+                                                [ngModelOptions]="{ standalone: true }" [readonly]="true" id="desc7"
+                                                rows="4"></textarea>
+                                        </div>
+                                        <br />
+
+                                        <app-admin>
+                                            <div class="text-right">
+                                                <button type="button" class="btn btn-primary btn-circle"
+                                                    data-toggle="modal" data-target="#exampleModalLong"
+                                                    *ngFor="let desc of listResources;"
+                                                    (click)="addData = desc; updateForm = true"
+                                                    style="color: white; padding: 5px 10px; font-size: 15px;">
+                                                    <i class="fa fa-pen"></i></button>&nbsp;
+                                                <button type="button" class="btn btn-danger btn-circle"
+                                                    data-target="#exampleModalLong" *ngFor="let desc of listResources;"
+                                                    (click)="DeleteResources(desc.transId)"
+                                                    style="color: white; padding: 5px 10px; font-size: 15px;">
+                                                    <i class="fa fa-trash"></i></button>
+                                            </div>
+                                        </app-admin>
 
 
-
-                                    </div>
-                                     </div>
-
-                            <button type="button" class="btn btn-primary">SAVE</button>&nbsp;
-                            <button type="button" class="btn btn-primary">RESET</button>
-                      </form>
-                      <br>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
+                                </div>
+                            </div>
+                        </form>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="h4 text-gray-900 mb-4" id="exampleModalLongTitle">Natural/ Biological Resources</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12"><br>
+                    <label for="exampleFormControlTextarea1" class="h6 text-gray-900 mb-4">Forest/ Wildlife Resources
+                        :</label>
+                    <textarea input type="text" class="form-control" id="desc1" [(ngModel)]="addData.desc1" name="desc1"
+                        [ngModelOptions]="{ standalone: true }" (keyup)="onKey($event)"></textarea>
+                </div>
+
+                <div class="col-lg-12"><br>
+                    <label for="exampleFormControlTextarea1" class="h6 text-gray-900 mb-4">Aquatic/ Marine Resources and
+                        Habitats
+                        :</label>
+                    <textarea input type="text" class="form-control" id="desc2" [(ngModel)]="addData.desc2" name="desc2"
+                        [ngModelOptions]="{ standalone: true }" (keyup)="onKey($event)"></textarea>
+                </div>
+
+                <div class="col-lg-12"><br>
+                    <label for="exampleFormControlTextarea1" class="h6 text-gray-900 mb-4">Protected Areas :</label>
+                    <textarea input type="text" class="form-control" id="desc3" [(ngModel)]="addData.desc3" name="desc3"
+                        [ngModelOptions]="{ standalone: true }" (keyup)="onKey($event)"></textarea>
+                </div>
+
+                <div class="col-lg-12"><br>
+                    <label for="exampleFormControlTextarea1" class="h6 text-gray-900 mb-4">Land Resources :</label>
+                    <textarea input type="text" class="form-control" id="desc4" [(ngModel)]="addData.desc4" name="desc4"
+                        [ngModelOptions]="{ standalone: true }" (keyup)="onKey($event)"></textarea>
+                </div>
+
+                <div class="col-lg-12"><br>
+                    <label for="exampleFormControlTextarea1" class="h6 text-gray-900 mb-4">Water Resources :</label>
+                    <textarea input type="text" class="form-control" id="desc5" [(ngModel)]="addData.desc5" name="desc5"
+                        [ngModelOptions]="{ standalone: true }" (keyup)="onKey($event)"></textarea>
+                </div>
+
+                <div class="col-lg-12"><br>
+                    <label for="exampleFormControlTextarea1" class="h6 text-gray-900 mb-4">Minerals and Energy Resources
+                        :</label>
+                    <textarea input type="text" class="form-control" id="desc6" [(ngModel)]="addData.desc6" name="desc6"
+                        [ngModelOptions]="{ standalone: true }" (keyup)="onKey($event)"></textarea>
+                </div>
+
+                <div class="col-lg-12"><br>
+                    <label for="exampleFormControlTextarea1" class="h6 text-gray-900 mb-4">Others/ Remarks :</label>
+                    <textarea input type="text" class="form-control" id="desc7" [(ngModel)]="addData.desc7" name="desc7"
+                        [ngModelOptions]="{ standalone: true }" (keyup)="onKey($event)"></textarea>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    style="font-size: 15px;">Close</button>
+                <button type="button" class="btn btn-primary" *ngIf="updateForm == false"
+                    (click)="AddResources(addData)" (click)="buttonClick()" [disabled]="click"
+                    style="font-size: 15px;">Save</button>
+                <button type="button" class="btn btn-primary" *ngIf="updateForm == true"
+                    (click)="EditResources(addData)" (click)="buttonClick()" [disabled]="click"
+                    style="font-size: 15px;">Update</button>
+            </div>
+        </div>
+    </div>
+</div>

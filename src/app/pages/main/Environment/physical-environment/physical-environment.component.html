@@ -1,70 +1,124 @@
-
 <div class="">
+    <div class="card o-hidden border-2 shadow-sm my-5">
+        <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="p-5">
 
-  <div class="card o-hidden border-2 shadow-sm my-5">
-      <div class="card-body p-0">
-          <!-- Nested Row within Card Body -->
-          <div class="row">
-
-              <div class="col-lg-12">
-                  <div class="p-5">
-                      <div class="">
-                          <button class="btn btn-outline-primary btn-circle float-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
-                              <i class="fa fa-minus" aria-hidden="true"></i>
-
-                            </button>
-                      </div>
-                      <div class="text-center">
-                          <h1 class="h4 text-gray-900 mb-4"> Physical Environment Profile</h1>
-                      </div>
-
-
-                      <form class="user collapse show" id="collapseExample">
-                          <div class="form-group">
-                              <div class="row">
-                                    <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1">General Topography :</label>
-                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                                     </div>
-                                     <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1">Geology :</label>
-                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                                     </div>
-                                     <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1">Soils :</label>
-                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                                     </div>
-                                     <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1">Land Classification :</label>
-                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                                     </div>
-                                     <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1">Climate :</label>
-                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                                     </div>
-                                     <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1">Surface Water :</label>
-                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                                     </div>
-                                     <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1">Others/ Remarks :</label>
-                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                                     </div>
-
-
-
+                        <div class="text-center">
+                            <h1 class="h4 text-gray-900 mb-4"> Physical Environment Profile</h1>
+                        </div>
+                        <app-admin>
+                            <div class="d-flex justify-content-end">
+                                <button type="button" (click)="isAdd=true" class="btn btn-primary"
+                                    data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                    *ngIf="!listEnvironment || listEnvironment.length === 0">
+                                    <i class="fas fa-plus"></i>
+                                    Physical Environment Profile
+                                </button>
+                            </div>
+                        </app-admin>
+                        <form class="user collapse show" id="collapseExample" *ngFor="let item of listEnvironment">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-12"><br>
+                                        <label for="exampleFormControlTextarea1">General Topography:</label>
+                                        <textarea class="form-control" name="generalTopography"
+                                            id="exampleFormControlTextarea1" rows="4"
+                                            readonly>{{ item.desc1 }}</textarea>
                                     </div>
-                                     </div>
-
-                            <button type="button" class="btn btn-primary">SAVE</button>&nbsp;
-                            <button type="button" class="btn btn-primary">RESET</button>
-                      </form>
-                      <br>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
-
+                                    <div class="col-lg-12"><br>
+                                        <label for="exampleFormControlTextarea1">Geology:</label>
+                                        <textarea class="form-control" name="geology" id="exampleFormControlTextarea1"
+                                            rows="4" readonly>{{ item.desc2 }}</textarea>
+                                    </div>
+                                    <div class="col-lg-12"><br>
+                                        <label for="exampleFormControlTextarea1">Soils:</label>
+                                        <textarea class="form-control" name="soils" id="exampleFormControlTextarea1"
+                                            rows="4" readonly>{{ item.desc3 }}</textarea>
+                                    </div>
+                                    <div class="col-lg-12"><br>
+                                        <label for="exampleFormControlTextarea1">Land Classification:</label>
+                                        <textarea class="form-control" name="landClassification"
+                                            id="exampleFormControlTextarea1" rows="4"
+                                            readonly>{{ item.desc4 }}</textarea>
+                                    </div>
+                                    <div class="col-lg-12"><br>
+                                        <label for="exampleFormControlTextarea1">Climate:</label>
+                                        <textarea class="form-control" name="climate" id="exampleFormControlTextarea1"
+                                            rows="4" readonly>{{ item.desc5 }}</textarea>
+                                    </div>
+                                    <div class="col-lg-12"><br>
+                                        <label for="exampleFormControlTextarea1">Surface Water:</label>
+                                        <textarea class="form-control" name="surfaceWater"
+                                            id="exampleFormControlTextarea1" rows="4"
+                                            readonly>{{ item.desc6 }}</textarea>
+                                    </div>
+                                    <div class="col-lg-12"><br>
+                                        <label for="exampleFormControlTextarea1">Others/Remarks:</label>
+                                        <textarea class="form-control" name="remarks" id="exampleFormControlTextarea1"
+                                            rows="4" readonly>{{ item.desc7 }}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <button (click)="AddData = item; isAdd = false" class="btn btn-info btn-circle"
+                                    data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    <i class="fas fa-pen"></i>
+                                </button>&nbsp;
+                                <button (click)="DeleteEnvironment(item.transId)" class="btn btn-warning btn-circle">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </form>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
+
+<!-- Modal -->
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg  modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Physical Environment Profile</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <label>General Topography :</label>
+                <textarea class="form-control" [(ngModel)]="AddData.desc1" name="generalTopography"
+                    id="exampleFormControlTextarea1" rows="4"></textarea>
+                <label>Geology :</label>
+                <textarea class="form-control" [(ngModel)]="AddData.desc2" name="geology"
+                    id="exampleFormControlTextarea1" rows="4"></textarea>
+                <label>Soils :</label>
+                <textarea class="form-control" [(ngModel)]="AddData.desc3" name="soils" id="exampleFormControlTextarea1"
+                    rows="4"></textarea>
+                <label>Land Classification :</label>
+                <textarea class="form-control" [(ngModel)]="AddData.desc4" name="landClassification"
+                    id="exampleFormControlTextarea1" rows="4"></textarea>
+                <label>Climate :</label>
+                <textarea class="form-control" [(ngModel)]="AddData.desc5" name="climate"
+                    id="exampleFormControlTextarea1" rows="4"></textarea>
+                <label>Surface Water :</label>
+                <textarea class="form-control" [(ngModel)]="AddData.desc6" name="surfaceWater"
+                    id="exampleFormControlTextarea1" rows="4"></textarea>
+                <label>Others/ Remarks :</label>
+                <textarea class="form-control" [(ngModel)]="AddData.desc7" name="remarks"
+                    id="exampleFormControlTextarea1" rows="4"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary"
+                    [disabled]="!AddData.desc1 || !AddData.desc2 || !AddData.desc3 || !AddData.desc4 || !AddData.desc5 || !AddData.desc6 || !AddData.desc7"
+                    (click)="isAdd ? AddEnvironment(AddData) : EditEnvironment(AddData)">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>

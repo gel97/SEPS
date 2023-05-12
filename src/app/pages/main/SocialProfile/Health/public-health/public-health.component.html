@@ -5,92 +5,100 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="p-5">
-                        <div class="">
-                        </div>
                         <div class="text-center">
                             <h1 class="h4 text-gray-900 mb-4">Public Health Service Workers</h1>
                         </div>
-                        <app-admin>
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mAdd"
-                                (click)="resetForm(); updateForm=false">ADD</button>
-                        </app-admin>
-                        <br>
-                        <br>
-                        <table class="table table-bordered ">
-                            <thead>
-                                <tr class="thead-dark">
-                                    <th style="text-align: center;">ITEM</th>
-                                    <th style="text-align: center;">Description/Value</th>
-                                </tr>
-                            </thead>
-                            <tr *ngFor="let data of listData">
-                                <th scope="col">Municipality/City:</th>
-                                <th>Municipality of {{munCityName}}</th>
-                            </tr>
-                            <tr *ngFor="let data of listData">
-                                <th scope="col">No. of Barangay Health Workers:</th>
-                                <th>{{data.healthWorkersNo}}</th>
-                            </tr>
-                            <tr *ngFor="let data of listData">
-                                <th scope="col">Doctors(MD/MHO/RHP):</th>
-                                <th>{{data.doctorsNo}}</th>
-                            </tr>
-                            <tr *ngFor="let data of listData">
-                                <th scope="col">Public Health Nurses:</th>
-                                <th>{{data.nursesNo}}</th>
-                            </tr>
-                            <tr *ngFor="let data of listData">
-                                <th scope="col">Rural Health Midwives:</th>
-                                <th>{{data.midwivesNo}}</th>
-                            </tr>
-                            <tr *ngFor="let data of listData">
-                                <th scope="col">Sanitary Inspectors:</th>
-                                <th>{{data.sanitaryInsNo}}</th>
-                            </tr>
-                            <tr *ngFor="let data of listData">
-                                <th scope="col">Medical Technologists:</th>
-                                <th>{{data.medTechNo}}</th>
-                            </tr>
-                            <tr *ngFor="let data of listData">
-                                <th scope="col">Dentists:</th>
-                                <th>{{data.dentistNo}}</th>
-                            </tr>
-                            <tr *ngFor="let data of listData">
-                                <th scope="col">Dental Aides:</th>
-                                <th>{{data.denAidesNo}}</th>
-                            </tr>
-                            <tr *ngFor="let data of listData">
-                                <th scope="col">Nutritionists:</th>
-                                <th>{{data.nutriNo}}</th>
-                            </tr>
-                            <tr *ngFor="let data of listData">
-                                <th scope="col">Traditional Birth Attendants:</th>
-                                <th>{{data.birthAttnNo}}</th>
-                            </tr>
-                            <tr *ngFor="let data of listData">
-                                <th scope="col">Lying-in Personnel:</th>
-                                <th>{{data.lyingPerNo}}</th>
-                            </tr>
-                            <tr *ngFor="let data of listData">
-                                <th scope="col">Non-Technical Personnels:</th>
-                                <th>{{data.nonTechPerNo}}</th>
-                            </tr>
-                        </table>
-                        <tr style=" float:right;" *ngFor="let data of listData">
-                            <div>
+                        <div *ngIf="!hasData" class="form-inline float-right ">
+                            <app-admin>
+                                <button (click)="isAdd = true;" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#mEducation">
+                                    <i class="fa fa-plus"></i>
+                                    Public Health Service Workers
+                                </button>
+                            </app-admin>
+                        </div>
+                        <br>&nbsp;&nbsp;
+                        <div class="table-responsive">
+                            <table class="table table-light table-striped">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: center;">ITEM</th>
+                                        <th style="text-align: center;">Description/Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td scope="col">Municipality/City:</td>
+                                        <td style="text-align: center;">Municipality of {{munCityName}}</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td scope="col">No. of Barangay Health Workers:</td>
+                                        <td style="text-align: center;">{{data.healthWorkersNo}}</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td scope="col">Doctors(MD/MHO/RHP):</td>
+                                        <td style="text-align: center;">{{data.doctorsNo}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="col">Public Health Nurses:</td>
+                                        <td style="text-align: center;">{{data.nursesNo}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="col">Rural Health Midwives:</td>
+                                        <td style="text-align: center;">{{data.midwivesNo}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="col">Sanitary Inspectors:</td>
+                                        <td style="text-align: center;">{{data.sanitaryInsNo}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="col">Medical Technologists:</td>
+                                        <td style="text-align: center;">{{data.medTechNo}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="col">Dentists:</td>
+                                        <td style="text-align: center;">{{data.dentistNo}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="col">Dental Aides:</td>
+                                        <td style="text-align: center;">{{data.denAidesNo}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="col">Nutritionists:</td>
+                                        <td style="text-align: center;">{{data.nutriNo}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="col">Traditional Birth Attendants:</td>
+                                        <td style="text-align: center;">{{data.birthAttnNo}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="col">Lying-in Personnel:</td>
+                                        <td style="text-align: center;">{{data.lyingPerNo}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="col">Non-Technical Personnels:</td>
+                                        <td style="text-align: center;">{{data.nonTechPerNo}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div *ngIf="hasData" class="form-inline float-right ">
+                            <div class="d-inline-flex">
                                 <app-admin>
-                                    <button class="btn btn-sm btn-primary" style="display: inline-block;"
-                                        (click)="addData=data; updateForm=true" data-toggle="modal" data-target="#mAdd">
-                                        <i class="fa fa-edit" style="font-size:20px"></i>
+                                    <button (click)="isAdd = false" class="btn btn-info btn-circle" data-toggle="modal"
+                                        data-target="#mEducation"><i class="fa fa-pen"></i>
                                     </button>
-                                    <button class="btn btn-sm btn-danger"
-                                        style="display: inline-block; margin-right: 10px;"
-                                        (click)="DeleteHealthWorkers(data.transId)">
-                                        <i class="fa fa-trash" style="font-size:20px"></i>
+                                    &nbsp;
+                                </app-admin>
+                                <app-admin>
+                                    <button type="button" title="Delete" class="btn btn-warning btn-circle"
+                                        (click)="DeleteHealthWorkers(data.transId)"><i class="fa fa-trash"></i>
                                     </button>
                                 </app-admin>
                             </div>
-                        </tr>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -99,22 +107,26 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="mAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
+
+<div class="modal fade" id="mEducation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title text-dark" id="exampleModalLabel">Public Health Service Workers</h5>
-                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                <br>
+                <button type="button" #closebutton class="btn-close" data-bs-dismiss="modal" aria-hidden="true"
+                    aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form class="user collapse show" id="collapseExample">
+
                     <div class="row">
                         <div class="col-lg-3">
                             No. of Barangay Health Workers :<br>
                         </div>
                         <div class="col-lg-9">
                             <input type="number" class="form-control" id="" placeholder=""
-                                [(ngModel)]="addData.healthWorkersNo" [ngModelOptions]="{ standalone: true }"
+                                [(ngModel)]="data.healthWorkersNo" [ngModelOptions]="{ standalone: true }"
                                 pattern="^\d*\.?\d+$">
                         </div>
                     </div><br>
@@ -123,9 +135,8 @@
                             Doctors (MD/ MHO/ RHP) :
                         </div>
                         <div class="col-lg-9  ">
-                            <input type="number" class="form-control" id="" placeholder=""
-                                [(ngModel)]="addData.doctorsNo" [ngModelOptions]="{ standalone: true }"
-                                pattern="^\d*\.?\d+$">
+                            <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.doctorsNo"
+                                [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
                         </div>
                     </div><br>
                     <div class="row">
@@ -133,9 +144,8 @@
                             Public Health Nurses :
                         </div>
                         <div class="col-lg-9">
-                            <input type="number" class="form-control" id="" placeholder=""
-                                [(ngModel)]="addData.nursesNo" [ngModelOptions]="{ standalone: true }"
-                                pattern="^\d*\.?\d+$">
+                            <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.nursesNo"
+                                [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
                         </div>
                     </div><br>
                     <div class="row">
@@ -143,9 +153,8 @@
                             Rural Health Midwives :
                         </div>
                         <div class="col-lg-9">
-                            <input type="number" class="form-control" id="" placeholder=""
-                                [(ngModel)]="addData.midwivesNo" [ngModelOptions]="{ standalone: true }"
-                                pattern="^\d*\.?\d+$">
+                            <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.midwivesNo"
+                                [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
                         </div>
                     </div><br>
                     <div class="row">
@@ -154,7 +163,7 @@
                         </div>
                         <div class="col-lg-9">
                             <input type="number" class="form-control" id="" placeholder=""
-                                [(ngModel)]="addData.sanitaryInsNo" [ngModelOptions]="{ standalone: true }"
+                                [(ngModel)]="data.sanitaryInsNo" [ngModelOptions]="{ standalone: true }"
                                 pattern="^\d*\.?\d+$">
                         </div>
                     </div><br>
@@ -163,9 +172,8 @@
                             Medical Technologists :
                         </div>
                         <div class="col-lg-9">
-                            <input type="number" class="form-control" id="" placeholder=""
-                                [(ngModel)]="addData.medTechNo" [ngModelOptions]="{ standalone: true }"
-                                pattern="^\d*\.?\d+$">
+                            <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.medTechNo"
+                                [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
                         </div>
                     </div><br>
                     <div class="row">
@@ -173,9 +181,8 @@
                             Dentists :
                         </div>
                         <div class="col-lg-9">
-                            <input type="number" class="form-control" id="" placeholder=""
-                                [(ngModel)]="addData.dentistNo" [ngModelOptions]="{ standalone: true }"
-                                pattern="^\d*\.?\d+$">
+                            <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.dentistNo"
+                                [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
                         </div>
                     </div><br>
                     <div class="row">
@@ -183,9 +190,8 @@
                             Dental Aides :
                         </div>
                         <div class="col-lg-9">
-                            <input type="number" class="form-control" id="" placeholder=""
-                                [(ngModel)]="addData.denAidesNo" [ngModelOptions]="{ standalone: true }"
-                                pattern="^\d*\.?\d+$">
+                            <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.denAidesNo"
+                                [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
                         </div>
                     </div><br>
                     <div class="row">
@@ -193,7 +199,7 @@
                             Nutritionists :
                         </div>
                         <div class="col-lg-9">
-                            <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="addData.nutriNo"
+                            <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.nutriNo"
                                 [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
                         </div>
                     </div><br>
@@ -203,7 +209,7 @@
                         </div>
                         <div class="col-lg-9">
                             <input type="number" class="form-control" id="" placeholder=""
-                                [(ngModel)]="addData.birthAttnNo" [ngModelOptions]="{ standalone: true }"
+                                [(ngModel)]="data.birthAttnNo" [ngModelOptions]="{ standalone: true }"
                                 pattern="^\d*\.?\d+$">
                         </div>
                     </div><br>
@@ -212,9 +218,8 @@
                             Lying-in Personnel :
                         </div>
                         <div class="col-lg-9">
-                            <input type="number" class="form-control" id="" placeholder=""
-                                [(ngModel)]="addData.lyingPerNo" [ngModelOptions]="{ standalone: true }"
-                                pattern="^\d*\.?\d+$">
+                            <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.lyingPerNo"
+                                [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
                         </div>
                     </div><br>
                     <div class="row">
@@ -223,18 +228,39 @@
                         </div>
                         <div class="col-lg-9">
                             <input type="number" class="form-control" id="" placeholder=""
-                                [(ngModel)]="addData.nonTechPerNo" [ngModelOptions]="{ standalone: true }"
+                                [(ngModel)]="data.nonTechPerNo" [ngModelOptions]="{ standalone: true }"
                                 pattern="^\d*\.?\d+$">
                         </div>
                     </div><br>
                 </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-school" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary"
+                    (click)="isAdd? AddHealthWorkers(): EditHealthWorkers()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal area -->
+<div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">SEPS GEOLOCATION TAGGING</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <app-gmap></app-gmap>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" *ngIf="updateForm==false" (click)="AddHealthWorkers(addData)"
-                    class="btn btn-primary">Submit</button>
-                <button type="button" *ngIf="updateForm==true" (click)="EditHealthWorkers(addData)"
-                    class="btn btn-primary">Update</button>
+                <button type="button" class="btn btn-primary" (click)="EditHealthWorkers()">Save changes</button>
             </div>
         </div>
     </div>

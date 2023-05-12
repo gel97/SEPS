@@ -1,42 +1,35 @@
 <div class="">
-  <div class="card o-hidden border-0 shadow-sm my-5">
+  <div class="card o-hidden border-2 shadow-sm my-5">
     <div class="card-body p-0">
       <!-- Nested Row within Card Body -->
       <div class="row">
         <div class="col-lg-12">
           <div class="p-5">
-            <div class="">
-              <button class="btn btn-outline-primary btn-circle float-right" type="button" data-toggle="collapse"
-                data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
-                <i class="fa fa-minus" aria-hidden="true"></i>
-              </button>
-            </div>
+
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-4">Provincial/ District - Government Hospitals</h1>
             </div>
-            <br>
-            <app-admin>
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mAdd"
-                (click)="resetForm(); updateForm = false">
-                ADD
-              </button>
-            </app-admin>
-            <br>
-            <br>
-            <label>List of Government Hospitals: </label>
-            <br>
-            <br>
-            <div class="">
-              <table class="table table-striped" style="border-collapse: collapse; box-shadow: 0 0 20px rgba(9, 9, 10, 0.15);
-            border-radius: 15px;">
-                <thead style="background-color: #555656;
-              color: #ffffff;
-              text-align: left;
-              border-radius: 15px;">
-                  <tr style="background-color: #414242;
-                color: #cac6c6;
-                text-align: left;
-                border-radius: 15px;">
+
+            <form class="user collapse show" id="collapseExample">
+              <div class="form-inline float-right ">
+                <app-admin>
+                  <button type="button" (click)="clearData()" class="btn btn-labeled btn-primary" data-toggle="modal"
+                    data-target="#exampleModal">
+                    <i class="fa fa-plus"></i> Government Hospitals
+                  </button>
+                </app-admin>
+              </div>
+            </form>
+            <br />
+            <div class="row">
+              <div class="col-lg-6">
+                <p>List of Provincial/ District - Government Hospitals</p>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
                     <th scope="col">#</th>
                     <th scope="col" style="text-align: center;">Name</th>
                     <th scope="col" style="text-align: center;">Facilities/Remarks</th>
@@ -46,44 +39,54 @@
                     <th scope="col" style="text-align: center;">Contact Person/Designation</th>
                     <th scope="col" style="text-align: center;">Contact Numbers</th>
                     <th scope="col" style="text-align: center;">Location</th>
-                    <th style="text-align: center;">Action</th>
                     <th scope="col" style="text-align: center; padding: 12px 15px;">Geo-Coord.(Long.Lat)</th>
+
+                    <th style="text-align: center;"></th>
+
+
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let data of listData; let i = index;">
-                    <td style="text-align: center;">{{ i + 1 }}</td>
-                    <td style="text-align: center;">{{data.name}}</td>
-                    <td style="text-align: center;">{{data.remarks}}</td>
-                    <td style="text-align: center;">{{data.capacity}}</td>
-                    <td style="text-align: center;">{{data.rate}}</td>
-                    <td style="text-align: center;">{{data.avgPatient}}</td>
-                    <td style="text-align: center;">{{data.contactPerson}}</td>
-                    <td style="text-align: center;">{{data.contactNo}}</td>
-                    <td style="text-align: center;">{{data.location}}</td>
-                    <td style="text-align: center; padding: 12px 15px;">
-                      <div class="flex-container">
-                        <div class="flex-button">
-                          <button class="btn btn-sm btn-danger" style="display: inline-block; margin-right: 10px; "
-                            (click)="DeleteHealthHospital(data.transId)">
-                            <i class="fa fa-trash"></i>
-                          </button>
-                        </div>
+                  <tr *ngFor="let dataItem of dataList; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td style="text-align: center;">{{dataItem.name}}</td>
+                    <td style="text-align: center;">{{dataItem.remarks}}</td>
+                    <td style="text-align: center;">{{dataItem.capacity}}</td>
+                    <td style="text-align: center;">{{dataItem.rate}}</td>
+                    <td style="text-align: center;">{{dataItem.avgPatient}}</td>
+                    <td style="text-align: center;">{{dataItem.contactPerson}}</td>
+                    <td style="text-align: center;">{{dataItem.contactNo}}</td>
+                    <td style="text-align: center;">{{dataItem.location}}</td>
+                    <td style="text-align: center;">{{ dataItem.longtitude }},<br>
+                      {{ dataItem.latitude }}</td>
+
+                    <td style="text-align: center; padding: 12px 15px; ">
+                      <app-admin>
                         <div class="flex-container">
-                          <button (click)="SetMarker(data); addData = data" data-toggle="modal" data-target="#gmapModal"
-                            class="btn btn-sm btn-success" style="display: inline-block; margin-right: 10px; ">
-                            <i class="fas fa-globe"></i></button>
+
+                          <div class="flex-button">
+                            <button (click)="SetMarker(dataItem); addData = dataItem" data-toggle="modal"
+                              data-target="#gmapModal" class="btn btn-success"
+                              style="display: inline-block; margin-right: 10px; ">
+                              <i class="fas fa-globe"></i></button>
+                          </div>
+                          <div class="flex-button">
+                            <button (click)="addData = dataItem" data-toggle="modal" (click)="editToggle()"
+                              data-target="#exampleModal" class="btn btn-primary"
+                              style="display: inline-block; margin-right: 10px; ">
+                              <i class="fas fa-edit"></i></button>
+                          </div>
+                          <div class="flex-button">
+                            <button class="btn btn-danger" style="display: inline-block; margin-right: 10px; "
+                              (click)="DeleteHealthHospital(dataItem)">
+                              <i class="fas fa-trash"></i>
+                            </button>
+                          </div>
+
                         </div>
-                        <div class="flex-button">
-                          <button class="btn btn-sm btn-primary" style="display: inline-block;  margin-right: 10px;"
-                            (click)="addData=data; updateForm=true" data-toggle="modal" data-target="#mAdd">
-                            <i class="fa fa-edit"></i>
-                          </button>
-                        </div>
-                      </div>
+                      </app-admin>
                     </td>
-                    <td>{{ data.longtitude }},
-                      {{ data.latitude }}</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -95,93 +98,81 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="mAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title text-dark" id="exampleModalLabel">Provincial/ District - Government Hospitals</h5>
-        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        <button type="button" #closebutton class="btn-close" data-toggle="modal" data-target="#exampleModal"
+          aria-hidden="true" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form class="user collapse show" id="collapseExample">
-          <div class="form-group">
+        <div class="row">
+        </div>
+        <div class="form-group">
+          <div class="">
+            <div class="">
+              <label for="exampleFormControlInput1">Name :</label>
+
+
+              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.name"
+                [(ngModel)]="dummy_addData.name" [ngClass]="toValidate.name?'is-invalid':''"
+                (keyup)="toValidate.name=false" />
+            </div>
+            <br />
+            <div class="">
+              <label for="exampleFormControlInput1">Facilities/ Remarks :</label>
+              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.remarks"
+                [(ngModel)]="dummy_addData.remarks" />
+            </div>
+            <br />
             <div class="row">
-              <div class="col-lg-3">
-
-                Name :<br>
+              <div class="col-lg-4">
+                <label for="exampleFormControlInput1">Bed Capacity :</label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.capacity"
+                  [(ngModel)]="dummy_addData.capacity" />
               </div>
-              <div class="col-lg-9">
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.name"
-                  [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$" required>
-
+              <br />
+              <div class="col-lg-4">
+                <label for="exampleFormControlInput1">Occupancy Rate :</label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.rate"
+                  [(ngModel)]="dummy_addData.rate" />
               </div>
-            </div><br>
-
-            <div class="row">
-              <div class="col-lg-3">
-                Facilities/ Remarks :<br>
+              <br />
+              <div class="col-lg-4">
+                <label for="exampleFormControlInput1">Ave. In-Patient :</label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.avgPatient"
+                  [(ngModel)]="dummy_addData.avgPatient" />
               </div>
-              <div class="col-lg-9">
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.remarks"
-                  [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$" required>
-              </div>
-            </div><br>
-          </div>
-          <div class="row">
-            <div class="col-lg-3">
-              Bed Capacity :<br>
+              <br />
             </div>
-            <div class="col-lg-9">
-              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.capacity"
-                [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$" required>
-            </div>
-          </div><br>
-          <div class="row">
-            <div class="col-lg-3">
-              Occupancy Rate :<br>
-            </div>
-            <div class="col-lg-9">
-              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.rate"
-                [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$" required>
-            </div>
-          </div><br>
-          <div class="row">
-            <div class="col-lg-3">
-              Ave. In-Patient :<br>
-            </div>
-            <div class="col-lg-9">
-              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.avgPatient"
-                [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$" required>
-            </div>
-          </div><br>
-          <div class="row">
-            <div class="col-lg-3">
-              Contact Person/Designation :<br>
-            </div>
-            <div class="col-lg-9">
+            <br />
+            <div class="">
+              <label for="exampleFormControlInput1">Contact Person/Designation :</label>
               <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.contactPerson"
-                [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$" required>
+                [(ngModel)]="dummy_addData.contactPerson" />
             </div>
-          </div><br>
-          <div class="row">
-            <div class="col-lg-3">
-              Contact Number :<br>
-            </div>
-            <div class="col-lg-9">
+            <br />
+
+            <div class="">
+              <label for="exampleFormControlInput1">Contact Number :</label>
               <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.contactNo"
-                [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$" required>
+                [(ngModel)]="dummy_addData.contactNo" />
             </div>
-          </div><br>
-          <div class="row">
-            <div class="col-lg-3">
-              Location :<br>
-            </div>
-            <div class="col-lg-9">
+            <br />
+            <div class="">
+              <label for="exampleFormControlInput1">Location :</label>
               <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.location"
-                [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$" required>
+                [(ngModel)]="dummy_addData.location" />
             </div>
-          </div><br>
-        </form>
+            <br />
+
+          </div>
+        </div>
+
+        <br />
       </div>
       <div class="modal-footer">
         <div class="left-absolute" *ngIf="visible">
@@ -193,12 +184,55 @@
             </label>
           </div>
         </div>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>&nbsp;
-        <button type="button" *ngIf="updateForm==false" (click)="AddHealthHospital(addData)"
-          class="btn btn-primary">Submit</button>
-        <button type="button" *ngIf="updateForm==true" (click)="EditHealthHospital(addData)"
-          class="btn btn-primary">Update</button>
+        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal"
+          aria-hidden="true">
+          <i class="fas fa-times">&nbsp;</i>Close
+        </button>
+        <button type="button" *ngIf="visible" (click)="AddHealthHospital()" id="closeModal" class="btn btn-success">
+          <i class="fas fa-plane-departure">&nbsp;</i>ADD
+        </button>
+        <button type="button" *ngIf="not_visible" (click)="EditHealthHospital()" data-toggle="modal"
+          data-target="#exampleModal" aria-hidden="true" class="btn btn-primary">
+          <i class="fas fa-edit">&nbsp;</i>UPDATE
+        </button>
       </div>
     </div>
   </div>
 </div>
+
+<!-- modal area GEO -->
+<div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">SEPS GEOLOCATION TAGGING</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-gmap></app-gmap>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="EditHealthHospital()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  body {
+    margin: 0;
+    padding: 1em;
+    font-family: arial;
+  }
+
+  .flex-container {
+    width: 10%;
+    height: auto;
+    display: flex;
+    margin: 10px;
+  }
+</style>
