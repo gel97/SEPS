@@ -219,6 +219,21 @@ export class ApiUrl {
     post_safety_tanod     = ()=>`/SafetyTanod`;
     put_safety_tanod      = ()=>`/SafetyTanod`;
     delete_safety_tanod   = (transId:any)=>`/SafetyTanod/${transId}`;
+//ENVIRONMENT
+    get_list_environment = (menuId :any, setYear  :any,munCityId :any)=>`/Environment/${menuId}/${setYear}/${munCityId}`;
+    post_environment     = ()=>`/Environment`;
+    put_environment      = ()=>`/Environment`;
+    delete_environment   = (transId:any)=>`/Environment/${transId}`;
+          //Environment Act
+    get_list_environment_activities = (setYear:any, munCityId:any) => `/EnvironmentAct/${setYear}/${munCityId}`;
+    post_environment_activities     = ()=>`/EnvironmentAct`;
+    put_environment_activities      = ()=>`/EnvironmentAct`;
+    delete_environment_activities   = (transId:any)=>`/EnvironmentAct/${transId}`;
+          //Environmen Profile
+    get_list_environment_profile = (setYear:any, munCityId:any) => `/EnvironmentProfile/${setYear}/${munCityId}`;
+    post_environment_profile     = ()=>`/EnvironmentProfile`;
+    put_environment_profile      = ()=>`/EnvironmentProfile`;
+    delete_environment_profile   = (transId:any)=>`/EnvironmentProfile/${transId}`;
 
 //INFRASTRUCTURE & UTILITIES
 

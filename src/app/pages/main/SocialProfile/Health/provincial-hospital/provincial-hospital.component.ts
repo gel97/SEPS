@@ -12,29 +12,42 @@ import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 })
 export class ProvincialHospitalComponent implements OnInit {
 
-  constructor(private Auth: AuthService, private service: HealthHospitalService) { }
+  constructor(private Auth: AuthService, private Service: HealthHospitalService) { }
+
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;
-  menuId = 7;
-  setYear = Number(this.Auth.activeSetYear);
-  munCityId = this.Auth.munCityId;
+
+  isCheck: boolean = false;
+
+  onChange(isCheck: boolean) {
+    this.isCheck = isCheck;
+    console.log("isCheck:", this.isCheck);
+  }
+
   munCityName: string = this.Auth.munCityName;
-  listData: any = [];
+  menuId = "1";
+  dataList: any = [];
+  setYear = this.Auth.activeSetYear;
+  munCityId = this.Auth.munCityId;
+  barangayList: any = [];
   addData: any = {};
-  editData: any = {};
-  listMunicipal: any = [];
+  dummy_addData: any = {};
+  dummyData: any = {};
   visible: boolean = true;
   not_visible: boolean = true;
-  idCounter: number = 1;
-  isCheck: boolean = false;
+  //required == not_visible
+  required: boolean = true;
   latitude: any
   longtitude: any
   checker_brgylist: any = {};
+  toValidate: any = {};
+
 
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void; }; };
 
   markerObj: any = {};
+
   SetMarker(data: any = {}) {
     console.log("lnglat: ", data.longtitude + " , " + data.latitude)
 
@@ -47,9 +60,9 @@ export class ProvincialHospitalComponent implements OnInit {
     this.markerObj = {
       lat: data.latitude,
       lng: data.longtitude,
-      label: data.brgyName.charAt(0),
-      brgyName: data.brgyName,
-      munCityName: this.munCityName,
+      brgyName: data.name,
+      label: data.name.charAt(0),
+      munCityName: null,
       draggable: true
     };
     this.gmapComponent.setMarker(this.markerObj);
@@ -57,165 +70,139 @@ export class ProvincialHospitalComponent implements OnInit {
   }
 
 
-  onChange(isCheck: boolean) {
-    this.isCheck = isCheck;
-    console.log("isCheck:", this.isCheck);
-  }
-  updateForm: boolean = false;
-
   ngOnInit(): void {
-    this.resetForm();
     this.GetHealthHospital();
-
-  }
-  resetForm(): void {
-    this.addData = {}; // Reset the form fields here
-    this.not_visible = false;
-    this.visible = true;
+    this.ListOfBarangay();
   }
 
-  GetHealthHospital(): void {
-    this.service.GetHealtHospital(this.setYear).subscribe({
-      next: (response) => {
-        this.listData = response;
-        //console.log(this.listMunicipal);
-      },
-      error: (err) => {
-        console.log(err);
-      },
-      complete: () => {
-        console.log('GetHealthhospital() completed.');
-      },
-    });
+  GetHealthHospital() {
+    this.Service.GetHealtHospital(this.setYear).subscribe(response => {
+      this.dataList = (<any>response);
+      console.log("check", response);
+    })
   }
 
-  AddHealthHospital(addData: any): void {
-    addData.setYear = Number(this.setYear);
-    // console.log(addData);
-    this.service.AddHealthHospital(addData).subscribe({
-      next: (response) => {
-        this.listData.push(response);
-        console.log(response);
-        this.resetForm();
+
+  ListOfBarangay() {
+    this.Service.ListOfBarangay(this.munCityId).subscribe(response => {
+      this.barangayList = (<any>response);
+      console.log("barangay", response);
+    })
+
+  }
+
+
+
+  AddHealthHospital() {
+
+    this.toValidate.name = this.addData.name == "" || this.addData.name == undefined ? true : false;
+    console.log("trap", this.addData);
+
+    this.dummy_addData = this.addData;
+    console.log("trap_2", this.dummy_addData);
+    if (!this.toValidate.name) {
+      this.addData.setYear = this.setYear;
+      this.addData.munCityId = this.munCityId;
+      this.addData.menuId = this.menuId;
+      console.log("brgylist", this.barangayList);
+
+
+      this.longtitude;
+      this.addData.longtitude = this.longtitude;
+      console.log("long", this.longtitude);
+      this.latitude;
+      this.addData.latitude = this.latitude;
+      console.log("lat", this.latitude);
+
+      this.Service.AddHealthHospital(this.addData).subscribe(request => {
+        if (!this.isCheck) {
+          this.closebutton.nativeElement.click();
+        }
+        console.log("add", request);
+        this.clearData();
+        this.GetHealthHospital();
         Swal.fire({
-          position: 'center',
+          position: 'top-end',
           icon: 'success',
           title: 'Your work has been saved',
           showConfirmButton: false,
-          timer: 1000,
-        });
-        this.GetHealthHospital();
-      },
+          timer: 1500
+        })
+      })
+    }
+    else {
+      this.required = true;
+      Swal.fire({
+        icon: 'warning',
+        title: 'Oops...',
+        text: 'Missing data!',
 
-
-      error: (err) => {
-        console.log(err);
-        Swal.fire({
-          position: 'center',
-          icon: 'error',
-          title: 'Something went wrong!',
-          text: err.message,
-          showConfirmButton: false,
-          timer: 3000,
-        });
-      },
-      complete: () => {
-        console.log('AddHealthHospital() completed.');
-      },
-    });
+      })
+    }
   }
 
-  EditHealthHospital(addData: any): void {
-    this.service.EditHealthHospital(addData).subscribe({
-
-      next: (response) => {
-        this.GetHealthHospital();
-        //this.GetHealthProfile();
-        //this.listData.push(response);
-        // console.log(response);
-        console.log(response);
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'Your work has been updated',
-          showConfirmButton: false,
-          timer: 1000,
-        });
-        this.resetForm();
-      },
-      error: (err) => {
-        console.log(err);
-        Swal.fire({
-          position: 'center',
-          icon: 'error',
-          title: 'Something went wrong!',
-          text: err.message,
-          showConfirmButton: false,
-          timer: 3000,
-        });
-      },
-      complete: () => {
-        console.log('UpdateHealthHospital() completed.');
-      },
-    });
-  }
-
-  DeleteHealthHospital(id: any): void {
+  EditHealthHospital() {
     Swal.fire({
-      title: 'Are you sure you want to delete this health facility?',
-      text: 'This action cannot be undone.',
+      title: 'Do you want to save the changes?',
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      denyButtonText: `Don't save`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+
+        this.addData.longtitude = this.gmapComponent.markers.lng;
+        this.addData.latitude = this.gmapComponent.markers.lat;
+
+        this.addData.setYear = this.setYear;
+        this.addData.munCityId = this.munCityId;
+        this.addData.menuId = this.menuId;
+        this.addData.tag = 1;
+        console.log("edit", this.addData);
+        this.Service.EditHealthHospital(this.addData).subscribe(request => {
+          console.log("edit", request);
+          this.GetHealthHospital();
+        })
+        Swal.fire('Saved!', '', 'success')
+      } else if (result.isDenied) {
+        Swal.fire('Changes are not saved', '', 'info')
+      }
+    })
+  }
+
+  DeleteHealthHospital(dataItem: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.service.DeleteHealtHospital(id).subscribe({
-          next: (response) => {
-            const index = this.listData.findIndex((d: any) => d.transId === id);
-            //console.log(index);
-
-            this.deleteData(id);
-            this.listData.splice(index, 1);
-            console.log(response);
-            Swal.fire({
-              position: 'center',
-              icon: 'success',
-              title: 'The health facility has been deleted',
-              showConfirmButton: false,
-              timer: 1000,
-            });
-          },
-          error: (err) => {
-            console.log(err);
-            Swal.fire({
-              position: 'center',
-              icon: 'error',
-              title: 'Something went wrong!',
-              text: err.message,
-              showConfirmButton: false,
-              timer: 3000,
-            });
-          },
-          complete: () => {
-            console.log('DeleteHealthHospital() completed.');
-          },
-        });
+        this.Service.DeleteHealtHospital(dataItem.transId).subscribe(request => {
+          this.GetHealthHospital();
+        })
+        Swal.fire(
+          'Deleted!',
+          'Your file has been deleted.',
+          'success'
+        )
       }
-    });
+    })
   }
 
-  deleteData(id: number) {
-    this.listData = this.listData.filter(
-      (data: { id: number }) => data.id !== id
-    );
+  clearData() {
+    this.addData = {};
+    this.not_visible = false;
+    this.visible = true;
+    this.required = false;
   }
 
   editToggle() {
     this.not_visible = true;
     this.visible = false;
   }
-
-}
+} 

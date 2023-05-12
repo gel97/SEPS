@@ -1,65 +1,172 @@
-
 <div class="">
-
-  <div class="card o-hidden border-2 shadow-sm my-5">
-      <div class="card-body p-0">
-          <!-- Nested Row within Card Body -->
-          <div class="row">
-
-              <div class="col-lg-12">
-                  <div class="p-5">
-                      <div class="">
-                          <button class="btn btn-outline-primary btn-circle float-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
-                              <i class="fa fa-minus" aria-hidden="true"></i>
-
-                            </button>
-                      </div>
-                      <div class="text-center">
-                          <h1 class="h4 text-gray-900 mb-4">Environmental Hazards</h1>
-                      </div>
-
-
-                      <form class="user collapse show" id="collapseExample">
-                          <div class="form-group">
-                              <div class="row">
-                                    <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1">Flooding :</label>
-                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                                     </div>
-                                     <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1">Landslides :</label>
-                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                                     </div>
-                                     <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1">Coastal/ Storm Surges :</label>
-                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                                     </div>
-                                     <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1">Geologic Hazards :</label>
-                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                                     </div>
-                                     <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1">Man-made Hazards :</label>
-                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                                     </div>
-                                     <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1">Others Hazards/ Remarks :</label>
-                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                                     </div>
-
-
-                                    </div>
-                                     </div>
-                                     <br>
-                            <button type="button" class="btn btn-primary">SAVE</button>&nbsp;
-                            <button type="button" class="btn btn-primary">RESET</button>
-                      </form>
-                      <br>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
-
+    <div class="card o-hidden border-2 shadow-sm my-5">
+        <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="p-5">
+                        <div class=""></div>
+                        <div class="text-center">
+                            <h1 class="h4 text-gray-900 mb-4">Environmental Hazards</h1>
+                        </div>
+                        <form class="user collapse show" id="collapseExample">
+                            <div class="form-group">
+                                <div class="row">
+                                    <app-admin>
+                                        <div class="text-right">
+                                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                data-target="#exampleModal" (click)="resetForm(); updateForm=false"
+                                                *ngIf="!listHazard || listHazard.length === 0"><i
+                                                    class="fa fa-plus"></i>Environment Hazard</button>
+                                        </div>
+                                    </app-admin>
+                                    <tr *ngFor="let desc of listHazard; let i=index">
+                                        <div class="col-lg-12">
+                                            <div class="col-lg-12"><br>
+                                                <label for="floodinghaz">Flooding :</label>
+                                                <textarea class="form-control" id="desc1" rows="4" name="desc1"
+                                                    [(ngModel)]="desc.desc1" disabled>
+                                        </textarea>
+                                            </div>
+                                            <div class="col-lg-12"><br>
+                                                <label for="landslidehaz">Landslides :</label>
+                                                <textarea class="form-control" id="desc2" rows="4" name="desc2"
+                                                    [(ngModel)]="desc.desc2" disabled>
+                                        </textarea>
+                                            </div>
+                                            <div class="col-lg-12"><br>
+                                                <label for="coastalhaz">Coastal/ Storm Surges :</label>
+                                                <textarea class="form-control" id="desc3" rows="4" name="desc3"
+                                                    [(ngModel)]="desc.desc3" disabled>
+                                        </textarea>
+                                            </div>
+                                            <div class="col-lg-12"><br>
+                                                <label for="geologichaz">Geologic Hazards :</label>
+                                                <textarea class="form-control" id="desc4" rows="4" name="desc4"
+                                                    [(ngModel)]="desc.desc4" disabled>
+                                        </textarea>
+                                            </div>
+                                            <div class="col-lg-12"><br>
+                                                <label for="manmadehaz">Man-made Hazards :</label>
+                                                <textarea class="form-control" id="desc5" rows="4" name="desc5"
+                                                    [(ngModel)]="desc.desc5" disabled>
+                                        </textarea>
+                                            </div>
+                                            <div class="col-lg-12"><br>
+                                                <label for="otherremarks">Others Hazards/ Remarks :</label>
+                                                <textarea class="form-control" id="desc6" rows="4" name="desc6"
+                                                    [(ngModel)]="desc.desc6" disabled>
+                                        </textarea>
+                                            </div>
+                                            ***End of Report***
+                                            <app-admin>
+                                                <div class="text-right">
+                                                    <button type="button" class="btn btn-info btn-circle"
+                                                        style="background-color:rgb(14, 171, 243);"
+                                                        *ngFor="let desc of listHazard;"
+                                                        (click)="addData = desc; updateForm = true" data-toggle="modal"
+                                                        data-target="#exampleModal">
+                                                        <i class="fa fa-pen"></i>
+                                                    </button>&nbsp;
+                                                    <button type="button" class="btn btn-warning btn-circle"
+                                                        style="background-color:rgb(255, 208, 0);"
+                                                        *ngFor="let desc of listHazard;"
+                                                        (click)="DeleteDescription(desc.transId)">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </app-admin>
+                                        </div>
+                                    </tr>
+                                </div>
+                            </div>
+                        </form>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
+<!-- Modal -->
+
+<div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog"
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Environmental Hazard</h1>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+
+                        <div class="col-lg-12">
+                            <label for="exampleFormControlTextarea1">Flooding :</label>
+                            <textarea class="form-control" id="desc1" name="desc1" placeholder=""
+                                [(ngModel)]="addData.desc1" [ngModelOptions]="{ standalone: true }"
+                                (keyup)="onKey($event)">
+                </textarea>
+                        </div>
+
+                        <div class="col-lg-12"><br>
+                            <label for="exampleFormControlTextarea1">Landslides :</label>
+                            <textarea class="form-control" id="desc2" name="desc2" placeholder=""
+                                [(ngModel)]="addData.desc2" [ngModelOptions]="{ standalone: true }"
+                                (keyup)="onKey($event)">
+                </textarea>
+                        </div>
+
+                        <div class="col-lg-12"><br>
+                            <label for="exampleFormControlTextarea1">Coastal / Storm Surges :</label>
+                            <textarea class="form-control" id="desc3" name="desc3" placeholder=""
+                                [(ngModel)]="addData.desc3" [ngModelOptions]="{ standalone: true }"
+                                (keyup)="onKey($event)">
+                </textarea>
+                        </div>
+
+                        <div class="col-lg-12"><br>
+                            <label for="exampleFormControlTextarea1">Geologic Hazards :</label>
+                            <textarea class="form-control" id="desc4" name="desc4" placeholder=""
+                                [(ngModel)]="addData.desc4" [ngModelOptions]="{ standalone: true }"
+                                (keyup)="onKey($event)">
+                </textarea>
+                        </div>
+
+                        <div class="col-lg-12"><br>
+                            <label for="exampleFormControlTextarea1">Man-made Hazards :</label>
+                            <textarea class="form-control" id="desc5" name="desc5" placeholder=""
+                                [(ngModel)]="addData.desc5" [ngModelOptions]="{ standalone: true }"
+                                (keyup)="onKey($event)">
+                </textarea>
+                        </div>
+
+                        <div class="col-lg-12"><br>
+                            <label for="exampleFormControlTextarea1">Other Hazard/Remarks :</label>
+                            <textarea class="form-control" id="desc6" name="desc6" placeholder=""
+                                [(ngModel)]="addData.desc6" [ngModelOptions]="{ standalone: true }"
+                                (keyup)="onKey($event)">
+                </textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="background-color: gray;">
+                    Close</button>
+                <button type="button" *ngIf="updateForm == false" (click)="AddDescription(addData)"
+                    class="btn btn-primary" (click)="buttonClick()" [disabled]="click" style="background-color: blue;"
+                    data-dismiss="modal">
+                    Add
+                </button>
+                <button type="button" *ngIf="updateForm == true" (click)="EditDescription(addData)"
+                    class="btn btn-primary" data-dismiss="modal" style="background-color: blue;" (click)="buttonClick()"
+                    [disabled]="click">
+                    Save Changes
+                </button>
+            </div>
+        </div>
+    </div> 
+</div>

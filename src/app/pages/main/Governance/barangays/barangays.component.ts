@@ -59,12 +59,11 @@ export class BarangaysComponent implements OnInit {
       error: (error) => {
       },
       complete: () => {
-        this.FilterList();
       }
     });
   }
 
-  FilterList() {
+  get FilterList() {
     let isExist;
     this.listBarangay.forEach((a: any) => {
       this.ViewBarangayOfficial.forEach((b: any) => {
@@ -85,6 +84,8 @@ export class BarangaysComponent implements OnInit {
       }
 
     });
+
+    return this.listData;
   }
 
   AddData() {
