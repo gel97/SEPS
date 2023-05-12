@@ -21,7 +21,8 @@ export class TransportTerminalsComponent implements OnInit {
   TerminalList: any={};
   BarangayList: any=[];
   isNew : boolean=true;
-  
+  toValidate:any={};
+
 TransportType:any=[
     {id:101,transpotypename:'Bus'},
     {id:102,transpotypename:'Jeepney'},
@@ -41,7 +42,7 @@ TransportType:any=[
 
   SetMarker(data: any = {}) {
     console.log("lnglat: ", data.longtitude+ " , " + data.latitude)
-  
+
     this.markerObj = {
       lat: data.latitude,
       lng: data.longtitude,
@@ -52,7 +53,7 @@ TransportType:any=[
     };
     this.gmapComponent.setMarker(this.markerObj);
   }
-  
+
 
 
   getListTranspoTerminal(){
@@ -60,7 +61,7 @@ TransportType:any=[
       this.service.get_list_barangay().subscribe(data=>{
         this.BarangayList = (<any>data);
       })
-  
+
       this.service.get_list_transpo_terminal().subscribe(data=>{
         this.TranspoTerminalList = (<any>data);
 
@@ -70,19 +71,27 @@ TransportType:any=[
               i.transpotypename = t.transpotypename;
               break;
              }
-              
+
             }
-        
-          
+
+
         }
       })
     }
-  
+
   saveTerminalList(){
+    this.toValidate.company = this.TerminalList.company=="" || this.TerminalList.company ==undefined?true:false;
+    this.toValidate.transportType = this.TerminalList.transportType=="" || this.TerminalList.transportType ==null?true:false;
+    this.toValidate.unitsNo = this.TerminalList.unitsNo=="" || this.TerminalList.unitsNo ==undefined?true:false;
+    this.toValidate.routes = this.TerminalList.routes=="" || this.TerminalList.routes ==null?true:false;
+
+
       this.TerminalList.setYear=Number(this.auth.activeSetYear);
       this.TerminalList.tag=1;
       this.TerminalList.transportType=Number(this.TerminalList.transportType)
       console.log (this.TerminalList);
+      if(!this.toValidate.company && !this.toValidate.transportType && !this.toValidate.unitsNo && !this.toValidate.routes)
+    {
       this.service.post_save_transpo_terminal(this.TerminalList).subscribe(data=>{
         Swal.fire(
           'Saved!',
@@ -94,30 +103,54 @@ TransportType:any=[
            (<any>data).transpotypename = t.transpotypename;
            break;
           }
-           
+
          }
         this.TranspoTerminalList.push(<any>data);
-        
+
       },error=>{
         alert ("ERROR")
       })
-  
-    
+    }
+    else
+    {
+      Swal.fire(
+        'Missing Data!',
+        'Please fill out the required fields.',
+        'warning'
+        );
+    }
+
     }
 
   updateTerminalList(){
+    this.toValidate.company = this.TerminalList.company=="" || this.TerminalList.company ==undefined?true:false;
+    this.toValidate.transportType = this.TerminalList.transportType=="" || this.TerminalList.transportType ==null?true:false;
+    this.toValidate.unitsNo = this.TerminalList.unitsNo=="" || this.TerminalList.unitsNo ==undefined?true:false;
+    this.toValidate.routes = this.TerminalList.routes=="" || this.TerminalList.routes ==null?true:false;
+
     this.TerminalList.longtitude = this.gmapComponent.markers.lng;
     this.TerminalList.latitude = this.gmapComponent.markers.lat;
+    if(!this.toValidate.company && !this.toValidate.transportType && !this.toValidate.unitsNo && !this.toValidate.routes)
+    {
     this.service.put_update_transpo_terminal(this.TerminalList).subscribe(data=>{
       Swal.fire(
         'Updated!',
         'Data successfully updated.',
         'success'
       )
-      
+
     },err=>{
       alert ("ERROR")
     })
+  }
+  else
+  {
+    Swal.fire(
+      'Missing Data!',
+      'Please fill out the required fields.',
+      'warning'
+      );
+  }
   }
 
   deleteTerminalList(transId:any="", index:any=""){
@@ -128,7 +161,7 @@ TransportType:any=[
         'success'
       )
       this.TranspoTerminalList.splice(index,1)
-      
+
     },err=>{
       alert ("ERROR")
     })

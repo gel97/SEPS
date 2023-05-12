@@ -16,23 +16,25 @@ export class BridgesComponent implements OnInit {
 
   constructor(private service:TrasportationService, private auth: AuthService) { }
   munCityName:string = this.auth.munCityName;
-
+  toValidate:any={};
   TranspoBridgeList:any=[];
   BridgeList: any={};
   BarangayList: any=[];
   isNew : boolean=true;
-  
+
 
   ngOnInit(): void {
-    
+
     this.getListTranspoBridge();
   }
+  munCityId:string = this.auth.munCityId;
+  setYear:string = this.auth.setYear;
 
   markerObj: any = {};
 
   SetMarker(data: any = {}) {
     console.log("lnglat: ", data.longtitude+ " , " + data.latitude)
-  
+
     this.markerObj = {
       lat: data.latitude,
       lng: data.longtitude,
@@ -43,7 +45,7 @@ export class BridgesComponent implements OnInit {
     };
     this.gmapComponent.setMarker(this.markerObj);
   }
-  
+
 
 
   getListTranspoBridge(){
@@ -58,9 +60,18 @@ export class BridgesComponent implements OnInit {
   }
 
   saveBridgeList(){
-    this.BridgeList.setYear = this.auth.activeSetYear;
+    this.toValidate.name = this.BridgeList.name=="" || this.BridgeList.name ==undefined?true:false;
+    this.toValidate.brgyId = this.BridgeList.brgyId=="" || this.BridgeList.brgyId ==null?true:false;
+    this.toValidate.condition = this.BridgeList.condition=="" || this.BridgeList.condition ==undefined?true:false;
+    this.toValidate.pavement = this.BridgeList.pavement=="" || this.BridgeList.pavement ==null?true:false;
+
+
+    this.BridgeList.setYear   = this.setYear;
+    this.BridgeList.munCityId = this.munCityId;
     this.BridgeList.tag=1;
-  
+
+    if(!this.toValidate.name && !this.toValidate.brgyId && !this.toValidate.condition && !this.toValidate.pavement)
+    {
     this.service.post_save_transpo_bridge(this.BridgeList).subscribe(data=>{
       Swal.fire(
         'Saved!',
@@ -68,28 +79,54 @@ export class BridgesComponent implements OnInit {
         'success'
       )
       this.TranspoBridgeList.push(<any>data);
-      
+
     },error=>{
       alert ("ERROR")
     })
 
-  
+  }
+  else
+  {
+    Swal.fire(
+      'Missing Data!',
+      'Please fill out the required fields.',
+      'warning'
+      );
+  }
+
   }
 
   updateBridgeList(){
+    this.toValidate.name = this.BridgeList.name=="" || this.BridgeList.name ==undefined?true:false;
+    this.toValidate.brgyId = this.BridgeList.brgyId=="" || this.BridgeList.brgyId ==null?true:false;
+    this.toValidate.condition = this.BridgeList.condition=="" || this.BridgeList.condition ==undefined?true:false;
+    this.toValidate.pavement = this.BridgeList.pavement=="" || this.BridgeList.pavement ==null?true:false;
+
 
     this.BridgeList.longtitude = this.gmapComponent.markers.lng;
     this.BridgeList.latitude = this.gmapComponent.markers.lat;
+
+    if(!this.toValidate.name && !this.toValidate.brgyId && !this.toValidate.condition && !this.toValidate.pavement)
+    {
     this.service.put_update_transpo_bridge(this.BridgeList).subscribe(data=>{
       Swal.fire(
         'Updated!',
         'Data successfully updated.',
         'success'
       )
-      
+
     },err=>{
       alert ("ERROR")
     })
+  }
+  else
+  {
+    Swal.fire(
+      'Missing Data!',
+      'Please fill out the required fields.',
+      'warning'
+      );
+  }
   }
 
   deleteBridgeList(transId:any="", index:any=""){
@@ -100,7 +137,7 @@ export class BridgesComponent implements OnInit {
         'success'
       )
       this.TranspoBridgeList.splice(index,1)
-      
+
     },err=>{
       alert ("ERROR")
     })

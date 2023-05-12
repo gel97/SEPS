@@ -105,13 +105,15 @@ export class TelecommunicationComponent implements OnInit {
   Add_Tel()
   {
     this.toValidate.telco = this.telco.telco=="" || this.telco.telco ==undefined?true:false;
-    this.toValidate.type = this.telco.type=="" || this.telco.type ==undefined?true:false;
+    this.toValidate.type = this.telco.type=="" || this.telco.type ==null?true:false;
     this.toValidate.brgyId = this.telco.brgyId=="" || this.telco.brgyId ==null?true:false;
+    this.toValidate.installed = this.telco.installed=="" || this.telco.installed ==undefined?true:false;
+    this.toValidate.subscribed = this.telco.subscribed=="" || this.telco.subscribed ==undefined?true:false;
 
     this.telco.setYear   = this.setYear;
     this.telco.munCityId = this.munCityId;
 
-    if(!this.toValidate.telco && !this.toValidate.brgyId  && !this.toValidate.type)
+    if(!this.toValidate.telco && !this.toValidate.brgyId  && !this.toValidate.type && !this.toValidate.installed  && !this.toValidate.subscribed)
     {
       this.service.Add_telcom (this.telco).subscribe({ next: (request) => {
 
@@ -137,6 +139,7 @@ export class TelecommunicationComponent implements OnInit {
               'success'
               );
               this.telco = {};
+              this.GetList_Telco();
           }
         }
       )
@@ -155,6 +158,11 @@ export class TelecommunicationComponent implements OnInit {
 
   Update_Tel()
   {
+    this.toValidate.telco = this.telco.telco=="" || this.telco.telco ==undefined?true:false;
+    this.toValidate.type = this.telco.type=="" || this.telco.type ==null?true:false;
+    this.toValidate.brgyId = this.telco.brgyId=="" || this.telco.brgyId ==null?true:false;
+    this.toValidate.installed = this.telco.installed=="" || this.telco.installed ==undefined?true:false;
+    this.toValidate.subscribed = this.telco.subscribed=="" || this.telco.subscribed ==undefined?true:false;
 
     this.telco.longtitude = this.gmapComponent.markers.lng;
     this.telco.latitude  = this.gmapComponent.markers.lat;
@@ -162,6 +170,8 @@ export class TelecommunicationComponent implements OnInit {
     this.telco.setYear   = this.setYear;
     this.telco.munCityId = this.munCityId;
 
+    if(!this.toValidate.telco && !this.toValidate.brgyId  && !this.toValidate.type && !this.toValidate.installed  && !this.toValidate.subscribed)
+    {
     this.service.Update_telcom(this.telco).subscribe(
       {
         next: (request) => {
@@ -187,6 +197,15 @@ export class TelecommunicationComponent implements OnInit {
         }
       }
     )
+  }
+  else
+  {
+    Swal.fire(
+      '',
+      'Please fill out the required fields.',
+      'warning'
+      );
+  }
   }
 
   Delete_Tel(transId:any)

@@ -122,31 +122,28 @@
               <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="cell.tower"
                 [ngClass]="toValidate.tower?'is-invalid':''" (keyup)="toValidate.tower=false">
             </div>
-            <div class="col-lg-12"><br>
-              <label for="exampleFormControlTextarea1">Remarks :</label>
-              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="cell.remarks">
-            </div>
-            <div class="col-lg-4"><br>
+
+            <div class="col-lg-6"><br>
               <label for="exampleFormControlTextarea1">Contact Person/ Designation :</label>
               <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="cell.contactPerson">
             </div>
-            <div class="col-lg-4"><br>
+            <div class="col-lg-6"><br>
               <label for="exampleFormControlTextarea1">Contact Details :</label>
               <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="cell.contactNo">
             </div>
-            <div class="col-lg-4"><br>
+            <div class="col-lg-6"><br>
               <label for="exampleFormControlTextarea1">Location (Sitio/Purok) :</label>
               <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="cell.location">
             </div>
-            <div class="col-lg-4"><br>
+            <!-- <div class="col-lg-4"><br>
               <label for="exampleFormControlTextarea1">Geo Coordinates - Longitude:</label>
               <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="cell.longtitude">
             </div>
             <div class="col-lg-4"><br>
               <label for="exampleFormControlTextarea1"> Latitude : </label>
               <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="cell.latitude">
-            </div>
-            <div class="col-lg-4"><br>
+            </div> -->
+            <div class="col-lg-6"><br>
               <label for="category">Barangay :</label>
               <select class="form-select" aria-label="Default select example" [(ngModel)]="cell.brgyId"
                 [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false">
@@ -159,6 +156,10 @@
                       <label class="form-check-label" for="">Commercial Establishment</label>
                       </div>
                       </form> -->
+            </div>
+            <div class="col-lg-12"><br>
+              <label for="exampleFormControlTextarea1">Remarks :</label>
+              <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" [(ngModel)]="cell.remarks"></textarea>
             </div>
           </div>
         </div>
@@ -182,6 +183,7 @@
     </div>
   </div>
 </div>
+
 
 <!-- modal area -->
 <div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"

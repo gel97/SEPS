@@ -54,7 +54,7 @@ export class ExpressMailComponent implements OnInit {
     this.GetListData();
   }
 
-  GetListBarangay() 
+  GetListBarangay()
   {
     this.service.ListOfBarangay(this.auth.munCityId).subscribe(data => {
       this.listBarangay = (<any>data);
@@ -87,11 +87,11 @@ export class ExpressMailComponent implements OnInit {
   AddData()
   {
     this.toValidate.name = this.data.name=="" || this.data.name ==null?true:false;
-    this.toValidate.brgyId = this.data.brgyId=="" || this.data.brgyId ==null?true:false; 
-    
+    this.toValidate.brgyId = this.data.brgyId=="" || this.data.brgyId ==null?true:false;
+
     this.data.setYear   = this.setYear;
     this.data.munCityId = this.munCityId;
-   
+
     if(!this.toValidate.name && !this.toValidate.brgyId)
     {
       this.service.AddExpressMail(this.data).subscribe(
@@ -129,12 +129,14 @@ export class ExpressMailComponent implements OnInit {
         'warning'
         );
     }
-   
+
 
   }
 
   EditData()
   {
+    this.toValidate.name = this.data.name=="" || this.data.name ==null?true:false;
+    this.toValidate.brgyId = this.data.brgyId=="" || this.data.brgyId ==null?true:false;
 
     this.data.longtitude = this.gmapComponent.markers.lng;
     this.data.latitude  = this.gmapComponent.markers.lat;
@@ -142,6 +144,8 @@ export class ExpressMailComponent implements OnInit {
     this.data.setYear   = this.setYear;
     this.data.munCityId = this.munCityId;
 
+    if(!this.toValidate.name && !this.toValidate.brgyId)
+    {
     this.service.EditExpressMail(this.data).subscribe(
       {
         next: (request) => {
@@ -165,6 +169,15 @@ export class ExpressMailComponent implements OnInit {
         }
       }
     )
+  }
+  else
+  {
+    Swal.fire(
+      'Missing Data!',
+      'Please fill out the required fields.',
+      'warning'
+      );
+  }
   }
 
   DeleteData(transId:any)

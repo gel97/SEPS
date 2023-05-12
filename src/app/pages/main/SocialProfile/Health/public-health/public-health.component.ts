@@ -1,191 +1,181 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { HealthWorkersService } from 'src/app/shared/SocialProfile/Health/healthWorkers.service';
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
+import { isEmptyObject } from 'jquery';
 @Component({
   selector: 'app-public-health',
   templateUrl: './public-health.component.html',
   styleUrls: ['./public-health.component.css'],
 })
 export class PublicHealthComponent implements OnInit {
-  constructor(
-    private Auth: AuthService,
-    private service: HealthWorkersService
-  ) { }
+  munCityName:string = this.auth.munCityName;
+  constructor(private service: HealthWorkersService, private auth: AuthService) { }
+  toValidate:any = {};
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void; }; };
+  isCheck: boolean = false;
 
-  menuId = 7;
-  setYear = Number(this.Auth.activeSetYear);
-  munCityId = this.Auth.munCityId;
-  munCityName = this.Auth.munCityName;
+  onChange(isCheck: boolean) {
+    this.isCheck = isCheck;
+  }
 
-  listData: any = [];
-  addData: any = {};
-  editData: any = {};
-  listMunicipal: any = [];
-  listBarangayData: any = [];
-
-  idCounter: number = 1;
-
-  updateForm: boolean = false;
 
   ngOnInit(): void {
-    this.resetForm();
+    this.Init();
+  }
+  munCityId:string = this.auth.munCityId;
+  setYear:string = this.auth.setYear;
+  menuId = "1";
+  data:any = {};
+
+  isAdd:boolean = true;
+  hasData:boolean = false;
+  irrigation:any = {};
+  vieIrrig:any={};
+
+  Init()
+  {
     this.GetHealthWorkers();
-    this.getListOfMunicipality();
-    this.getListOfBarangay();
-    this.listMunicipal();
-  }
-  resetForm(): void {
-    this.addData = {}; // Reset the form fields here
   }
 
-  GetHealthWorkers(): void {
-    this.service.GetHealthWorkers(this.setYear, this.munCityId).subscribe({
-      next: (response) => {
-        this.listData = response;
+  GetHealthWorkers()
+  {
+    console.log(this.munCityId+ " | "+this.setYear)
 
-        //console.log(this.listMunicipal);
+    this.service.GetHealthWorkers( this.setYear,this.munCityId).subscribe({
+      next: (response) =>
+      {
+        console.log(response)
+        if(response.length >0)
+        {
+          this.data =  (<any> response[0]);
+          console.log("data: ", this.data)
+
+          this.hasData = true;
+        }
+        else{
+          this.hasData = false;
+        }
+
       },
-      error: (err) => {
-        console.log(err);
+      error: (error) =>
+      {
+        Swal.fire(
+          'Oops!',
+          'Something went wrong.',
+          'error'
+          );
       },
-      complete: () => {
-        console.log('GetHealthWorkers() completed.');
-      },
-    });
+      complete: () =>
+      {
+
+      }
+    })
+
   }
 
-  AddHealthWorkers(addData: any): void {
-    addData.setYear = Number(this.setYear);
-    addData.munCityId = String(this.munCityId);
-    // console.log(addData);
-    this.service.AddHealthWorkers(addData).subscribe({
-      next: (response) => {
-        this.listData.push(response);
+  AddHealthWorkers()
+  {
 
-        console.log(response);
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'Your work has been saved',
-          showConfirmButton: false,
-          timer: 1000,
-        });
-        this.GetHealthWorkers();
-      },
-      error: (err) => {
-        console.log(err);
-        Swal.fire({
-          position: 'center',
-          icon: 'error',
-          title: 'Something went wrong!',
-          text: err.message,
-          showConfirmButton: false,
-          timer: 3000,
-        });
-      },
-      complete: () => {
-        console.log('AddHealthWorkers() completed.');
-      },
-    });
+
+    if(!isEmptyObject(this.data))
+    {
+      this.data.setYear   = this.setYear;
+      this.data.munCityId = this.munCityId;
+      this.service.AddHealthWorkers(this.data).subscribe(
+        {
+
+          next: (request) => {
+            this.GetHealthWorkers();
+          },
+          error:(error)=>{
+            Swal.fire(
+              'Oops!',
+              'Something went wrong.',
+              'error'
+              );
+          },
+          complete: () =>
+          {
+            if (!this.isCheck) {
+              this.closebutton.nativeElement.click();
+            }
+            this.data = {};
+             Swal.fire(
+              'Good job!',
+              'Data Added Successfully!',
+              'success'
+              );
+          }
+        }
+      )
+    }
+    else
+    {
+      Swal.fire(
+        'Missing Data!',
+        'Please fill out the input fields.',
+        'warning'
+        );
+    }
+
+
   }
 
-  EditHealthWorkers(addData: any): void {
-    this.service.EditHealthWorkers(addData).subscribe({
-      next: (response) => {
-        //this.GetHealthProfile();
-        //this.listData.push(response);
-        // console.log(response);
-        console.log(response);
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'Your work has been updated',
-          showConfirmButton: false,
-          timer: 1000,
-        });
-        this.resetForm();
-      },
-      error: (err) => {
-        console.log(err);
-        Swal.fire({
-          position: 'center',
-          icon: 'error',
-          title: 'Something went wrong!',
-          text: err.message,
-          showConfirmButton: false,
-          timer: 3000,
-        });
-      },
-      complete: () => {
-        console.log('UpdateHealthWorkers() completed.');
-      },
-    });
+  EditHealthWorkers()
+  {
+
+    this.data.setYear   = this.setYear;
+    this.data.munCityId = this.munCityId;
+    this.service.EditHealthWorkers(this.data).subscribe(
+      {
+        next: (request) => {
+          this.GetHealthWorkers();
+        },
+        error:(error)=>{
+          Swal.fire(
+            'Oops!',
+            'Something went wrong.',
+            'error'
+            );
+        },
+        complete: () =>
+        {
+          this.closebutton.nativeElement.click();
+           Swal.fire(
+            'Good job!',
+            'Data Updated Successfully!',
+            'success'
+            );
+        }
+      }
+    )
   }
 
-  DeleteHealthWorkers(id: any): void {
+  DeleteHealthWorkers(transId:any)
+  {
     Swal.fire({
-      title: 'Are you sure you want to delete this health facility?',
-      text: 'This action cannot be undone.',
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.service.DeleteHealthWorkers(id).subscribe({
-          next: (response) => {
-            const index = this.listData.findIndex((d: any) => d.transId === id);
-            //console.log(index);
-            this.deleteData(id);
-            this.listData.splice(index, 1);
-            console.log(response);
-            Swal.fire({
-              position: 'center',
-              icon: 'success',
-              title: 'The health facility has been deleted',
-              showConfirmButton: false,
-              timer: 1000,
-            });
-          },
-          error: (err) => {
-            console.log(err);
-            Swal.fire({
-              position: 'center',
-              icon: 'error',
-              title: 'Something went wrong!',
-              text: err.message,
-              showConfirmButton: false,
-              timer: 3000,
-            });
-          },
-          complete: () => {
-            console.log('DeleteHealthWorkers() completed.');
-          },
-        });
+        this.service.DeleteHealthWorkers(transId).subscribe(request => {
+          this.Init();
+          this.data = {};
+        })
+        Swal.fire(
+          'Deleted!',
+          'Your file has been deleted.',
+          'success'
+        )
       }
-    });
-  }
-
-  deleteData(id: number) {
-    this.listData = this.listData.filter(
-      (data: { id: number }) => data.id !== id
-    );
-  }
-  getListOfBarangay(): void {
-    this.service.ListOfBarangay(this.munCityId).subscribe((response) => {
-      console.log('Barangay: ', response);
-      this.listBarangayData = response;
-    });
-  }
-
-  getListOfMunicipality(): void {
-    this.service.ListOfMunicipality().subscribe((response) => {
-      console.log('Municipal: ', response);
-      this.listMunicipal = response;
-    });
+    })
   }
 }
