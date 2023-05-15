@@ -1,99 +1,180 @@
-
 <div class="">
-
   <div class="card o-hidden border-0 shadow-sm my-5">
-      <div class="card-body p-0">
-          <!-- Nested Row within Card Body -->
-          <div class="row">
-
-              <div class="col-lg-12">
-                  <div class="p-5">
-                      <div class="">
-                          <button class="btn btn-outline-primary btn-circle float-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
-                              <i class="fa fa-minus" aria-hidden="true"></i>
-
-                            </button>
-                      </div>
-                      <div class="text-center">
-                          <h1 class="h4 text-gray-900 mb-4">Crime Statistics</h1>
-                      </div>
-
-
-                      <form class="user collapse show" id="collapseExample">
-                          <div class="form-group">
-                              <div class="row">
-                                  <div class="col-lg-12"><br>
-                                      <label for="exampleFormControlInput1">Number of Blotters :</label>
-                                      <input type="text" class="form-control" id="" placeholder="">
-                                       </div>
-
-                                       <div class="col-lg-12"><br>
-                                        <label for="exampleFormControlInput1">Number of Index Crimes :</label>
-                                        <input type="text" class="form-control" id="" placeholder="">
-                                         </div>
-
-                                         <div class="col-lg-12"><br>
-                                          <label for="exampleFormControlInput1">Non Index Crimes :</label>
-                                          <input type="text" class="form-control" id="" placeholder="">
-                                           </div>
-                                           <div class="col-lg-12"><br>
-                                            <label for="exampleFormControlInput1">Solved Cases :</label>
-                                            <input type="text" class="form-control" id="" placeholder="">
-                                             </div>
-                                             <div class="col-lg-12"><br>
-                                              <label for="exampleFormControlInput1">Unsolved Cases :</label>
-                                              <input type="text" class="form-control" id="" placeholder="">
-                                               </div>
-                                               <div class="col-lg-12"><br>
-                                                <label for="exampleFormControlInput1">Crime Solution Efficiency Rate:</label>
-                                                <input type="text" class="form-control" id="" placeholder="">
-                                                 </div>
-                                                 <div class="col-lg-12"><br>
-                                                  <label for="exampleFormControlInput1">Average Monthly Crime Rate : (per 100,000 Population)</label>
-                                                  <input type="text" class="form-control" id="" placeholder="">
-                                                   </div>
-                                    <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1">Remarks :</label>
-                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                                     </div>
-                                    </div>
-                                     </div>
-                                     <br>
-
-                                <br>
-
-
-
-                                  <br>
-                            <button type="button" class="btn btn-primary">SAVE</button>&nbsp;
-                            <button type="button" class="btn btn-primary">RESET</button>
-                      </form>
-                      <br>
-                      <table class="table table-condensed table-bordered" >
-                        <thead>
-                            <tr>
-                              <th colspan  ="2" style="text-align:center">Crime Incidence</th>
-                              <th colspan  ="2" style="text-align:center">Crime Solution Efficiency</th>
-                            <tr>
-                              <td style="text-align:center;">Type of Crime</td>
-                              <td style="text-align:center;">Volume of Crime</td>
-                              <td style="text-align:center;">Crime Indicator</td>
-                              <td style="text-align:center;">%</td>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <td> </td>
-                            <td></td>
-                            <td></td>
-
-
-                           </tbody>
-                           </table>
-                  </div>
+    <div class="card-body p-0">
+      <!-- Nested Row within Card Body -->
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="p-5">
+            <div class="">
+            </div>
+            <div class="text-center">
+              <h1 class="h4 text-gray-900 mb-4">Crime Statistics</h1>
+            </div>
+            <div class="form-inline float-right ">
+              <app-admin>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mAdd"
+                  (click)="resetForm(); updateForm=false">            
+                  <i class="fa fa-plus"></i>&nbsp;Crime Statistics
+                </button>
+              </app-admin>
+            </div> 
+            <br>
+            <br>
+            <table class="table table-bordered ">
+              <thead>
+                <tr class="thead-dark">
+                  <th style="text-align: center;">ITEM</th>
+                  <th style="text-align: center;">Description/Value</th>
+                </tr>
+              </thead>
+              <tr *ngFor="let data of listData">
+                <th scope="col">Municipality/City:</th>
+                <th>Municipality of {{munCityName}}</th>
+              </tr>
+              <tr *ngFor="let data of listData">
+                <th scope="col">No. of Blotters:</th>
+                <th>{{data.blottersNo}}</th>
+              </tr>
+              <tr *ngFor="let data of listData">
+                <th scope="col">No. of index Crimes:</th>
+                <th>{{data.indexCrimeNo}}</th>
+              </tr>
+              <tr *ngFor="let data of listData">
+                <th scope="col">No.of Solved Cases:</th>
+                <th>{{data.solvedCasesNo}}</th>
+              </tr>
+              <tr *ngFor="let data of listData">
+                <th scope="col">No.of Unsolved Cases:</th>
+                <th>{{data.unsolvedCasesNo}}</th>
+              </tr>
+              <tr *ngFor="let data of listData">
+                <th scope="col">Crime Solution Efficiency:</th>
+                <th>{{data.efficiencyRate}}</th>
+              </tr>
+              <tr *ngFor="let data of listData">
+                <th scope="col">Average Monthly Crime Rate (per 100,000 population):</th>
+                <th>{{data.avgCrimeRate}}</th>
+              </tr>
+              <tr *ngFor="let data of listData">
+                <th scope="col">Remarks:</th>
+                <th>{{data.remarks}}</th>
+              </tr>
+            </table>
+            <tr style=" float:right;" *ngFor="let data of listData">
+              <div>
+                <app-admin>
+                  <button class="btn btn-info btn-circle" style="display: inline-block;"
+                    (click)="addData=data; updateForm=true" data-toggle="modal" data-target="#mAdd">
+                    <i class="fa fa-pen"></i>
+                  </button>
+                  &nbsp;
+                  <button class="btn btn-warning btn-circle" style="display: inline-block;"
+                    (click)="DeleteSafetyStatistics(data.transId)">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </app-admin>
               </div>
+            </tr>
           </div>
+        </div>
       </div>
+    </div>
   </div>
-
 </div>
 
+<!-- Modal -->
+
+<div class="modal fade" id="mAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-dark" id="exampleModalLabel">Crime Statistics</h5>
+        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form class="user collapse show" id="collapseExample">
+          <div class="row">
+            <div class="col-lg-3">
+              Number of Blotters :<br>
+            </div>
+            <div class="col-lg-9">
+              <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="addData.blottersNo"
+                [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
+            </div>
+          </div><br>
+          <div class="row">
+            <div class="col-lg-3">
+              Number of Index Crimes :
+            </div>
+            <div class="col-lg-9  ">
+              <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="addData.indexCrimeNo"
+                [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
+            </div>
+          </div><br>
+          <div class="row">
+            <div class="col-lg-3">
+              Non Index Crimes :
+            </div>
+            <div class="col-lg-9">
+              <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="addData.nonIndexCrimeNo"
+                [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
+            </div>
+          </div><br>
+          <div class="row">
+            <div class="col-lg-3">
+              Solved Cases :
+            </div>
+            <div class="col-lg-9">
+              <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="addData.solvedCasesNo"
+                [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
+            </div>
+          </div><br>
+          <div class="row">
+            <div class="col-lg-3">
+              Unsolved Cases :
+            </div>
+            <div class="col-lg-9">
+              <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="addData.unsolvedCasesNo"
+                [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
+            </div>
+          </div><br>
+          <div class="row">
+            <div class="col-lg-3">
+              Crime Solution Efficiency Rate :
+            </div>
+            <div class="col-lg-9">
+              <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="addData.efficiencyRate"
+                [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
+            </div>
+          </div><br>
+          <div class="row">
+            <div class="col-lg-3">
+              Average Monthly Crime Rate (per 100,000 Population)
+            </div>
+            <div class="col-lg-9">
+              <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="addData.avgCrimeRate"
+                [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-3">
+              Remarks
+            </div>
+            <div class="col-lg-9">
+              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.remarks"
+                [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
+            </div>
+          </div><br>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" *ngIf="updateForm==false" (click)="AddSafetyStatistics(addData)"
+          class="btn btn-primary">Submit</button>
+        <button type="button" *ngIf="updateForm==true" (click)="EditSafetyStatistics(addData)"
+          class="btn btn-primary">Update</button>
+      </div>
+    </div>
+  </div>
+</div>

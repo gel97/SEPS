@@ -213,7 +213,11 @@ export class ApiUrl {
     post_safety_services     = ()=>`/SafetyServices`;
     put_safety_services      = ()=>`/SafetyServices`;
     delete_safety_services   = (transId:any)=>`/SafetyServices/${transId}`;
-
+    // Safety -> SafetyStatistics
+    get_safety_statistics     = ( setYear  :any,munCityId :any)=>`/SafetyStatistics/${setYear}/${munCityId}`;
+    post_safety_statistics    = ()=>`/SafetyStatistics`;
+    put_safety_statistics     = ()=>`/SafetyStatistics`;
+    delete_safety_statistics  = (transId:any)=>`/SafetyStatistics/${transId}`;
     // Safety -> SafetyTanod
     get_list_safety_tanod = ( setYear  :any,munCityId :any)=>`/SafetyTanod/${setYear}/${munCityId}`;
     post_safety_tanod     = ()=>`/SafetyTanod`;
