@@ -42,6 +42,7 @@ export class BarangaysComponent implements OnInit {
     this.service.GetBarangay().subscribe({
       next: (response) => {
         this.ViewBarangayOfficial = (<any>response);
+        console.log(this.ViewBarangayOfficial);
       },
       error: (error) => {
       },
@@ -59,12 +60,15 @@ export class BarangaysComponent implements OnInit {
       error: (error) => {
       },
       complete: () => {
+        this.FilterList();
       }
     });
   }
 
-  get FilterList() {
+   FilterList() {
     let isExist;
+    this.listData = [];
+
     this.listBarangay.forEach((a: any) => {
       this.ViewBarangayOfficial.forEach((b: any) => {
         if (a.brgyId == b.brgyId) {
@@ -82,10 +86,7 @@ export class BarangaysComponent implements OnInit {
           'brgyName': a.brgyName
         });
       }
-
     });
-
-    return this.listData;
   }
 
   AddData() {
