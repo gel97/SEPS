@@ -157,7 +157,7 @@ export class BarangaysComponent implements OnInit {
     }
   }
 
-  DeleteData(transId: any, index: any) {
+  DeleteData(transId: any, index: any, data:any) {
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -179,10 +179,9 @@ export class BarangaysComponent implements OnInit {
             )
           },
           complete: () => {
-            let index = this.listData.findIndex((obj: any) => obj.transId === transId);
             this.listData[index] = {};
-            this.listData[index].brgyId = this.data.brgyId;
-            this.listData[index].brgyName = this.data.brgyName;
+            this.listData[index].brgyId = data.brgyId;
+            this.listData[index].brgyName = data.brgyName;
             Swal.fire(
               'Deleted!',
               'Your file has been deleted.',

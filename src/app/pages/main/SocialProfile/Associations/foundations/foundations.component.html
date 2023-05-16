@@ -51,28 +51,30 @@
                     <td style="text-align: center;">{{ dataItem.brgyName }}</td>
                     <td style="text-align: center;">{{ dataItem.longtitude }}, <br>{{ dataItem.latitude }}</td>
                     <td style="text-align: center; padding: 12px 15px; ">
-                      <app-admin>
                         <div class="flex-container">
-                          <div class="flex-button">
-                            <button (click)="addData = dataItem" data-toggle="modal" (click)="editToggle()"
-                              data-target="#exampleModal" class="btn btn-info btn-circle"
-                              style="display: inline-block; margin-right: 10px; ">
-                              <i class="fas fa-pen"></i></button>
-                          </div>
+                          <app-admin>
+                            <div class="flex-button">
+                              <button (click)="addData = dataItem" data-toggle="modal" (click)="editToggle()"
+                                data-target="#exampleModal" class="btn btn-info btn-circle"
+                                style="display: inline-block; margin-right: 10px; ">
+                                <i class="fas fa-pen"></i></button>
+                            </div>
+                          </app-admin>                    
                           <div class="flex-button">
                             <button (click)="SetMarker(dataItem); addData = dataItem" data-toggle="modal"
                               data-target="#gmapModal" class="btn btn-success btn-circle"
                               style="display: inline-block; margin-right: 10px; ">
                               <i class="fas fa-globe"></i></button>
                           </div>
-                          <div class="flex-button">
-                            <button class="btn btn-warning btn-circle" style="display: inline-block; margin-right: 10px; "
-                              (click)="DeleteAssociation(dataItem)">
-                              <i class="fas fa-trash"></i>
-                            </button>
-                          </div>
+                          <app-admin>
+                            <div class="flex-button">
+                              <button class="btn btn-warning btn-circle" style="display: inline-block; margin-right: 10px; "
+                                (click)="DeleteAssociation(dataItem)">
+                                <i class="fas fa-trash"></i>
+                              </button>
+                            </div>
+                          </app-admin>            
                         </div>
-                      </app-admin>
                     </td>
                   </tr>
                 </tbody>
@@ -186,7 +188,9 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="EditAssociation()">Save changes</button>
+        <app-admin>
+          <button type="button" class="btn btn-primary" (click)="EditAssociation()">Save changes</button>
+        </app-admin>
       </div>
     </div>
   </div>

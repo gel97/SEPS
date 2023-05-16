@@ -1,235 +1,214 @@
 <div class="">
     <div class="card o-hidden border-2 shadow-sm my-5">
-        <div class="card-body p-0">
-            <!-- Nested Row within Card Body -->
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="p-5">
-                        <div class="">
-                        </div>
-                        <div class="text-center">
-                            <h1 class="h4 text-gray-900 mb-4">Provincial Health Profile</h1>
-                        </div>
-                        <app-admin>
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mAdd"
-                                (click)="resetForm(); updateForm=false">ADD</button>
-                        </app-admin>
-                        <label> Summary of General Health Profile </label>
-                        <table class="table table-light table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col"></th>
-                                    <th scope="col" style="text-align: center;">#</th>
-                                    <th scope="col" style="text-align: center;">Municipality/ City</th>
-                                    <th scope="col" style="text-align: center;">Crude Birth Rate</th>
-                                    <th scope="col" style="text-align: center;">Percentage of Birth Assisted by Trained
-                                        Health Personel
-                                    </th>
-                                    <th scope="col" style="text-align: center;">Percentage of Birth Delivered at Home
-                                    </th>
-                                    <th scope="col" style="text-align: center;">Infant Mortality Rate</th>
-                                    <th scope="col" style="text-align: center;">Percentage of Pre-Natal with Tetanous
-                                        Toxoid (TT2+)
-                                        Immunization</th>
-                                    <th scope="col" style="text-align: center;">Number of Fully Immunized Children</th>
-                                    <th scope="col" style="text-align: center;">Percentage of Fully Immunized Children
-                                    </th>
-                                    <th scope="col" style="text-align: center;">Number of Maternal Deaths</th>
-                                    <th scope="col" style="text-align: center;">Crude Death Rate</th>
-                                    <th scope="col" style="text-align: center;">Total Number of Deaths</th>
-                                    <th scope="col" style="text-align: center;">No. of Deaths with Medical Assistance
-                                    </th>
-                                    <th scope="col" style="text-align: center;">No. of Dengue Cases</th>
-                                    <th scope="col" style="text-align: center;">No. of Dengue Mortality</th>
-                                    <th scope="col" style="text-align: center;">No. of Modern Family Planning Method
-                                        Users</th>
-                                    <th style="text-align: center;">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let data of listData; let i = index;">
-                                    <td style="text-align: center;"></td>
-                                    <td style="text-align: center;">{{ i + 1 }}</td>
-                                    <td style="text-align: center;">{{ data.munCityName }}</td>
-                                    <td style="text-align: center;">{{ data.birthRate }}</td>
-                                    <td style="text-align: center;">{{ data.birthAssisted }}</td>
-                                    <td style="text-align: center;">{{ data.birthHome }}</td>
-                                    <td style="text-align: center;">{{ data.infantMort }}</td>
-                                    <td style="text-align: center;">{{ data.preNatal }}</td>
-                                    <td style="text-align: center;">{{ data.immunizedNo }}</td>
-                                    <td style="text-align: center;">{{ data.immunizedPrcnt }}</td>
-                                    <td style="text-align: center;">{{ data.matDeathNo }}</td>
-                                    <td style="text-align: center;">{{ data.deathRate }}</td>
-                                    <td style="text-align: center;">{{ data.deathNo }}</td>
-                                    <td style="text-align: center;">{{ data.deathMedAssNo }}</td>
-                                    <td style="text-align: center;">{{ data.dengueNo }}</td>
-                                    <td style="text-align: center;">{{ data.dengueMortNo }}</td>
-                                    <td style="text-align: center;">{{ data.famPlanNo }}</td>
-                                    <td style="text-align: center;">
-                                        <app-admin>
-                                            <button class="btn btn-sm btn-primary" style="display: inline-block;"
-                                                (click)="addData=data; updateForm=true" data-toggle="modal"
-                                                data-target="#mAdd">
-                                                <i class="fa fa-edit"></i>
-                                            </button><button class="btn btn-sm btn-danger"
-                                                style="display: inline-block; margin-right: 10px;"
-                                                (click)="DeleteHealthFacilities(data.transId)">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </app-admin>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+      <div class="card-body p-0">
+        <!-- Nested Row within Card Body -->
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="p-5">
+              <div class="">
+              </div>
+              <div class="text-center">
+                <h1 class="h4 mb-4">Provincial Health Profile</h1>
+                <label><strong>Province of Davao Del Norte</strong></label><br />
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-lg-9"><br>
+                  <p>List of Barangays</p>
                 </div>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="row">
+                  </div>
+                  <div class="table-responsive">
+                    <table class="table table-framed table-hover table-striped">
+                      <thead class="table-dark">
+                        <tr>
+                          <th scope="col" style="text-align: center;">Municipality/ City</th>
+                          <th scope="col" style="text-align: center;">Crude Birth Rate</th>
+                          <th scope="col" style="text-align: center;">Percentage of Birth Assisted by Trained Health
+                            Personel
+                          </th>
+                          <th scope="col" style="text-align: center;">Percentage of Birth Delivered at Home</th>
+                          <th scope="col" style="text-align: center;">Infant Mortality Rate</th>
+                          <th scope="col" style="text-align: center;">Percentage of Pre-Natal with Tetanous Toxoid (TT2+)
+                            Immunization</th>
+                          <th scope="col" style="text-align: center;">Number of Fully Immunized Children</th>
+                          <th scope="col" style="text-align: center;">Percentage of Fully Immunized Children</th>
+                          <th scope="col" style="text-align: center;">Number of Maternal Deaths</th>
+                          <th scope="col" style="text-align: center;">Crude Death Rate</th>
+                          <th scope="col" style="text-align: center;">Total Number of Deaths</th>
+                          <th scope="col" style="text-align: center;">No. of Deaths with Medical Assistance</th>
+                          <th scope="col" style="text-align: center;">No. of Dengue Cases</th>
+                          <th scope="col" style="text-align: center;">No. of Dengue Mortality</th>
+                          <th scope="col" style="text-align: center;">No. of Modern Family Planning Method Users</th>
+                          <th style="text-align: center;">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of listData; index as i">
+                          <td><b>{{item.munCityName}}</b></td>
+                          <td style="text-align: center;">{{ item.birthRate }}</td>
+                          <td style="text-align: center;">{{ item.birthAssisted }}</td>
+                          <td style="text-align: center;">{{ item.birthHome }}</td>
+                          <td style="text-align: center;">{{ item.infantMort }}</td>
+                          <td style="text-align: center;">{{ item.preNatal }}</td>
+                          <td style="text-align: center;">{{ item.immunizedNo }}</td>
+                          <td style="text-align: center;">{{ item.immunizedPrcnt }}</td>
+                          <td style="text-align: center;">{{ item.matDeathNo }}</td>
+                          <td style="text-align: center;">{{ item.deathRate }}</td>
+                          <td style="text-align: center;">{{ item.deathNo }}</td>
+                          <td style="text-align: center;">{{ item.deathMedAssNo }}</td>
+                          <td style="text-align: center;">{{ item.dengueNo }}</td>
+                          <td style="text-align: center;">{{ item.dengueMortNo }}</td>
+                          <td style="text-align: center;">{{ item.famPlanNo }}</td>
+                          <td *ngIf="item.transId && item.munCityId == o_munCityId else isADD ">
+                            <div class="d-inline-flex">
+                              <app-admin>
+                                <button (click)="data=item;isAdd = false" class="btn btn-info btn-circle"
+                                  data-toggle="modal" data-target="#openModal"><i class="fa fa-pen"></i>
+                                </button> &nbsp;            
+                                <button type="button" title="Delete" class="btn btn-warning btn-circle"
+                                  (click)="DeleteData(item.transId,i,item)"><i class="fa fa-trash"></i> </button>&nbsp; 
+                                </app-admin>
+                            </div>
+                          </td>
+                          <ng-template #isADD>
+                            <td>
+                              <app-admin>
+                                <button *ngIf="item.munCityId == o_munCityId" (click)="data = item; isAdd = true" type="button"
+                                  class="btn btn-primary btn-circle" data-toggle="modal" data-target="#openModal ">
+                                  <i class="fa fa-plus"></i>
+                                </button>
+                              </app-admin>
+                            </td>
+                          </ng-template>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="mAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
+  
+    <!-- Modal -->
+    <div class="modal fade bd-example-modal-lg" id="openModal" tabindex="-1" role="dialog"
+      aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title text-dark" id="exampleModalLabel">Provincial Health Profile</h5>
-                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form class="user collapse show" id="collapseExample">
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <label for="category">Municipality :</label>
-                                <select class="form-select" aria-label="Default select example"
-                                    [(ngModel)]="addData.muncityId" [ngModelOptions]="{ standalone: true }">
-                                    <option selected>Select Category</option>
-                                    <option *ngFor="let municipal of listMunicipal" [value]="municipal.munCityId">
-                                        {{municipal.munCityName}}</option>
-                                </select>
-                                <br>
-                            </div>
-                            <div class="col-lg-6">
-                                <label for="exampleFormControlInput1">Crude Birth Rate : </label>
-                                <input type="number" class="form-control" id="" placeholder=""
-                                    [(ngModel)]="addData.birthRate" [ngModelOptions]="{ standalone: true }"
-                                    pattern="^\d*\.?\d+$">
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <label for="exampleFormControlInput1">Percentage of Birth Assisted by Trained Health
-                                        Personel:</label>
-                                    <input type="number" class="form-control" id="" placeholder=""
-                                        [(ngModel)]="addData.birthAssisted" [ngModelOptions]="{ standalone: true }"
-                                        pattern="^\d*\.?\d+$">
-                                </div>
-                                <div class="col-lg-6">
-                                    <label for="exampleFormControlInput1">Percentage of Birth Delivered at Home
-                                        :</label>
-                                    <input type="number" class="form-control" id="" placeholder=""
-                                        [(ngModel)]="addData.birthHome" [ngModelOptions]="{ standalone: true }"
-                                        pattern="^\d*\.?\d+$">
-                                </div>
-                            </div>
-                            <br>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <label for="exampleFormControlInput1">Infant Mortality Rate :</label>
-                                <input type="number" class="form-control" id="" placeholder=""
-                                    [(ngModel)]="addData.infantMort" [ngModelOptions]="{ standalone: true }"
-                                    pattern="^\d*\.?\d+$">
-                            </div>
-                            <div class="col-lg-6">
-                                <label for="exampleFormControlInput1"> Percentage of Pre-Natal with Tetanous Toxoid
-                                    (TT2+) Immunization
-                                    :</label>
-                                <input type="number" class="form-control" id="" placeholder=""
-                                    [(ngModel)]="addData.preNatal" [ngModelOptions]="{ standalone: true }"
-                                    pattern="^\d*\.?\d+$">
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <label for="exampleFormControlInput1">Number of Fully Immunized Children :</label>
-                                <input type="number" class="form-control" id="" placeholder=""
-                                    [(ngModel)]="addData.immunizedNo" [ngModelOptions]="{ standalone: true }"
-                                    pattern="^\d*\.?\d+$">
-                            </div>
-                            <div class="col-lg-6">
-                                <label for="exampleFormControlInput1"> Percentage of Fully Immunized Children :</label>
-                                <input type="number" class="form-control" id="" placeholder=""
-                                    [(ngModel)]="addData.immunizedPrcnt" [ngModelOptions]="{ standalone: true }"
-                                    pattern="^\d*\.?\d+$">
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <label for="exampleFormControlInput1">Number of Maternal Deaths : </label>
-                                <input type="number" class="form-control" id="" placeholder=""
-                                    [(ngModel)]="addData.matDeathNo" [ngModelOptions]="{ standalone: true }"
-                                    pattern="^\d*\.?\d+$">
-                            </div>
-                            <div class="col-lg-6">
-                                <label for="exampleFormControlInput1">Crude Death Rate : </label>
-                                <input type="number" class="form-control" id="" placeholder=""
-                                    [(ngModel)]="addData.deathRate" [ngModelOptions]="{ standalone: true }"
-                                    pattern="^\d*\.?\d+$">
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <label for="exampleFormControlInput1">Total Number of Deaths : </label>
-                                <input type="number" class="form-control" id="" placeholder=""
-                                    [(ngModel)]="addData.deathNo" [ngModelOptions]="{ standalone: true }"
-                                    pattern="^\d*\.?\d+$">
-                            </div>
-                            <div class="col-lg-6">
-                                <label for="exampleFormControlInput1">No. of Deaths with Medical Assistance : </label>
-                                <input type="number" class="form-control" id="" placeholder=""
-                                    [(ngModel)]="addData.deathMedAssNo" [ngModelOptions]="{ standalone: true }"
-                                    pattern="^\d*\.?\d+$">
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-lg-3">
-                                <label for="exampleFormControlInput1">No. of Dengue Cases : </label>
-                                <input type="number" class="form-control" id="" placeholder=""
-                                    [(ngModel)]="addData.dengueNo" [ngModelOptions]="{ standalone: true }"
-                                    pattern="^\d*\.?\d+$">
-                            </div>
-                            <div class="col-lg-4">
-                                <label for="exampleFormControlInput1">No. of Dengue Mortality : </label>
-                                <input type="number" class="form-control" id="" placeholder=""
-                                    [(ngModel)]="addData.dengueMortNo" [ngModelOptions]="{ standalone: true }"
-                                    pattern="^\d*\.?\d+$">
-                            </div>
-                            <div class="col-lg-5">
-                                <label for="exampleFormControlInput1">No. of Modern Family Planning Method Users :
-                                </label>
-                                <input type="number" class="form-control" id="" placeholder=""
-                                    [(ngModel)]="addData.famPlanNo" [ngModelOptions]="{ standalone: true }"
-                                    pattern="^\d*\.?\d+$">
-                            </div>
-                        </div>
-                    </div>
-                </form>
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalScrollableTitle">Person with Disability
+            </h5>
+            <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <div class="row">
+                <div class="col-lg-6">
+                  <label for="exampleFormControlInput1">Crude Birth Rate : </label>
+                  <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.birthRate"
+                    [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
+                </div>
+                <div class="col-lg-6">
+                  <label for="exampleFormControlInput1">Percentage of Birth Assisted by Trained Health Personel:</label>
+                  <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.birthAssisted"
+                    [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-lg-6">
+                  <label for="exampleFormControlInput1">Percentage of Birth Delivered at Home :</label>
+                  <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.birthHome"
+                    [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
+                </div>
+                <div class="col-lg-6">
+                  <label for="exampleFormControlInput1">Infant Mortality Rate :</label>
+                  <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.infantMort"
+                    [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-lg-6">
+                  <label for="exampleFormControlInput1"> Percentage of Pre-Natal with Tetanous Toxoid (TT2+) Immunization
+                    :</label>
+                  <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.preNatal"
+                    [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
+                </div>
+                <div class="col-lg-6">
+                  <label for="exampleFormControlInput1">Number of Fully Immunized Children :</label>
+                  <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.immunizedNo"
+                    [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-lg-6">
+                  <label for="exampleFormControlInput1"> Percentage of Fully Immunized Children :</label>
+                  <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.immunizedPrcnt"
+                    [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
+                </div>
+                <div class="col-lg-6">
+                  <label for="exampleFormControlInput1">Number of Maternal Deaths : </label>
+                  <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.matDeathNo"
+                    [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
+                </div>
+    
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-lg-6">
+                  <label for="exampleFormControlInput1">Crude Death Rate : </label>
+                  <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.deathRate"
+                    [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
+                </div>
+                <div class="col-lg-6">
+                  <label for="exampleFormControlInput1">Total Number of Deaths : </label>
+                  <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.deathNo"
+                    [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-lg-6">
+                  <label for="exampleFormControlInput1">No. of Deaths with Medical Assistance : </label>
+                  <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.deathMedAssNo"
+                    [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
+                </div>
+                <div class="col-lg-6">
+                  <label for="exampleFormControlInput1">No. of Dengue Cases : </label>
+                  <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.dengueNo"
+                    [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-lg-6">
+                  <label for="exampleFormControlInput1">No. of Dengue Mortality : </label>
+                  <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.dengueMortNo"
+                    [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
+                </div>
+                <div class="col-lg-6">
+                  <label for="exampleFormControlInput1">No. of Modern Family Planning Method Users : </label>
+                  <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.famPlanNo"
+                    [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
+                </div>
+              </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" *ngIf="updateForm==false" (click)="AddHealthProfile(addData)"
-                    class="btn btn-primary">Submit</button>
-                <button type="button" *ngIf="updateForm==true" (click)="EditHealthFacilities(addData)"
-                    class="btn btn-primary">Update</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" (click)="isAdd ? AddData():EditData()">
+                Save Changes</button>
             </div>
+          </div>
         </div>
-    </div>
+      </div>
+  </div>

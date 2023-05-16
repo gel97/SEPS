@@ -11,77 +11,79 @@
                 Rural Health Units/ Community Hospital
               </h1>
             </div>
+            <div class="form-inline float-right ">
             <app-admin>
-              <button type="button" (click)="clearData()" class="btn btn-labeled btn-success" data-toggle="modal"
+              <button type="button" (click)="clearData()" class="btn btn-labeled btn-primary" data-toggle="modal"
                 data-target="#exampleModal">
-                <span class="btn-label"><i class="fa fa-check"></i></span>Add
+                <i class="fa fa-plus"></i> Hospital
               </button>
             </app-admin>
+            </div>
             <br />
             <label>List of Rural Health Units/ Community Hospital </label>
             <div class="table-responsive">
-              <table class="table table-light table-striped">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col" style="text-align: center">
-                      Name of Hospitals
-                    </th>
-                    <th scope="col" style="text-align: center">
-                      Facilities/Remarks
-                    </th>
-                    <th scope="col" style="text-align: center">Bed Capacity</th>
-                    <th scope="col" style="text-align: center">Occupancy Rate</th>
-                    <th scope="col" style="text-align: center">
-                      Contact Person/Designation
-                    </th>
-                    <th scope="col" style="text-align: center">
-                      Contact Numbers
-                    </th>
-                    <th scope="col" style="text-align: center">Location</th>
-                    <th scope="col" style="text-align: center">Barangay</th>
-                    <th scope="col" style="text-align: center">
-                      Geo-Coord.(Long.Lat)
-                    </th>
-                    <th style="text-align: center">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let dataItem of dataList; let i = index">
-                    <td style="text-align: center">{{ i + 1 }}</td>
-                    <td style="text-align: center">{{ dataItem.name }}</td>
-                    <td style="text-align: center">{{ dataItem.remarks }}</td>
-                    <td style="text-align: center">{{ dataItem.capacity }}</td>
-                    <td style="text-align: center">{{ dataItem.rate }}</td>
-                    <td style="text-align: center">{{ dataItem.contactPerson }}</td>
-                    <td style="text-align: center">{{ dataItem.contactNo }}</td>
-                    <td style="text-align: center">{{ dataItem.location }}</td>
-                    <td style="text-align: center">{{ dataItem.brgyName }}</td>
-                    <td style="text-align: center">{{ dataItem.longtitude }}, {{ dataItem.latitude }}</td>
-                    <td style="text-align: center;">
-                      <div class="d-inline-flex">
-                        <app-admin>
-                          <button (click)="addData = dataItem" data-toggle="modal" (click)="editToggle()"
-                            data-target="#exampleModal" class="btn btn-primary">
-                            <i class="fas fa-edit"></i>
-                          </button>
-                        </app-admin>
-                        &nbsp;
-                        <button (click)="SetMarker(dataItem); addData = dataItem" data-toggle="modal"
-                          data-target="#gmapModal" class="btn btn-success">
-                          <i class="fas fa-globe"></i>
+            <table class="table table-light table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col" style="text-align: center">
+                    Name of Hospitals
+                  </th>
+                  <th scope="col" style="text-align: center">
+                    Facilities/Remarks
+                  </th>
+                  <th scope="col" style="text-align: center">Bed Capacity</th>
+                  <th scope="col" style="text-align: center">Occupancy Rate</th>
+                  <th scope="col" style="text-align: center">
+                    Contact Person/Designation
+                  </th>
+                  <th scope="col" style="text-align: center">
+                    Contact Numbers
+                  </th>
+                  <th scope="col" style="text-align: center">Location</th>
+                  <th scope="col" style="text-align: center">Barangay</th>
+                  <th scope="col" style="text-align: center">
+                    Geo-Coord.(Long.Lat)
+                  </th>
+                  <th style="text-align: center">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let dataItem of dataList; let i = index">
+                  <td style="text-align: center">{{ i + 1 }}</td>
+                  <td style="text-align: center">{{ dataItem.name }}</td>
+                  <td style="text-align: center">{{ dataItem.remarks }}</td>
+                  <td style="text-align: center">{{ dataItem.capacity }}</td>
+                  <td style="text-align: center">{{ dataItem.rate }}</td>
+                  <td style="text-align: center">{{ dataItem.contactPerson }}</td>
+                  <td style="text-align: center">{{ dataItem.contactNo }}</td>
+                  <td style="text-align: center">{{ dataItem.location }}</td>
+                  <td style="text-align: center">{{ dataItem.brgyName }}</td>
+                  <td style="text-align: center">{{ dataItem.longtitude }}, {{ dataItem.latitude }}</td>
+                  <td style="text-align: center;">
+                    <div class="d-inline-flex">
+                      <app-admin>
+                        <button (click)="addData = dataItem" data-toggle="modal" (click)="editToggle()"
+                          data-target="#exampleModal" class="btn btn-info btn-circle">
+                          <i class="fas fa-pen"></i>
                         </button>
-                        &nbsp;
-                        <app-admin>
-                          <button class="btn btn-danger" (click)="DeleteHealthFacilities(dataItem)">
-                            <i class="fas fa-trash"></i>
-                          </button>
-                        </app-admin>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+                      </app-admin>
+                      &nbsp;
+                      <button (click)="SetMarker(dataItem); addData = dataItem" data-toggle="modal"
+                        data-target="#gmapModal" class="btn btn-success btn-circle">
+                        <i class="fas fa-globe"></i>
+                      </button>
+                      &nbsp;
+                      <app-admin>
+                        <button class="btn btn-warning btn-circle" (click)="DeleteHealthFacilities(dataItem)">
+                          <i class="fas fa-trash"></i>
+                        </button>
+                      </app-admin>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
             </div>
           </div>
         </div>

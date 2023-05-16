@@ -57,21 +57,20 @@
                       <div class="d-inline-flex">
                         <app-admin>
                           <button (click)="addData = dataItem" data-toggle="modal" (click)="editToggle()"
-                            data-target="#exampleModal" class="btn btn-primary">
-                            <i class="fas fa-edit"></i></button>
+                            data-target="#exampleModal" class="btn btn-info btn-circle">
+                            <i class="fas fa-pen"></i></button>
                         </app-admin>
                         &nbsp;
                         <button (click)="SetMarker(dataItem); addData = dataItem" data-toggle="modal"
-                          data-target="#gmapModal" class="btn btn-success">
+                          data-target="#gmapModal" class="btn btn-success btn-circle">
                           <i class="fas fa-globe"></i></button>&nbsp;
                         <app-admin>
-                          <button class="btn btn-danger" (click)="DeleteHealthFacilities(dataItem)">
+                          <button class="btn btn-warning btn-circle" (click)="DeleteHealthFacilities(dataItem)">
                             <i class="fas fa-trash"></i>
                           </button>
                         </app-admin>
                       </div>
                     </td>
-
                   </tr>
                 </tbody>
               </table>
