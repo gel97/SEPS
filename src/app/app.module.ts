@@ -133,6 +133,7 @@ import {
   SocialAuthServiceConfig,
 } from 'angularx-social-login';
 import { NotificationComponent } from './pages/main/Tools/notification/notification.component';
+import { PdfComponent } from './components/pdf/pdf.component';
 
 
 
@@ -254,6 +255,7 @@ import { NotificationComponent } from './pages/main/Tools/notification/notificat
     NewsComponent,
     HoursAgoOrDatePipe,
     NotificationComponent,
+    PdfComponent,
 
 
   ],
