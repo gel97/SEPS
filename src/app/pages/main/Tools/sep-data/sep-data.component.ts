@@ -13,11 +13,11 @@ export class SepDataComponent implements OnInit {
   set_year:any;
   muncity_id:any;
   muncity:any =  {};
+  list_sep_year:any = [];
 
   constructor(private service:SepDataService,private auth:AuthService) { }
 
   ngOnInit(): void {
-    //console.log("SEPDATA");
     this.set_year = this.auth.setYear;
     this.muncity_id = this.auth.munCityId;
     this.Init();
@@ -27,7 +27,10 @@ export class SepDataComponent implements OnInit {
   Init(){
     this.service.ListMunCity().subscribe(data=>{
       this.list_muncity =(<any>data);         
-     })
+     });
+     this.service.ListSepYear().subscribe(data=>{
+      this.list_sep_year =(<any>data);         
+     });
   }
   onChange(value: any) {
   }

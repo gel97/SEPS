@@ -10,9 +10,7 @@
         <div class="modal-body">
             <label class="text-dark">SEP Year:</label>
             <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" [(ngModel)]="set_year">
-                <option value="2022">2022</option>
-                <option value="2021">2021</option>
-                <option value="2020">2020</option>
+                <option *ngFor="let item of list_sep_year" value={{item.setYear}}>{{item.setYear}}</option>  
             </select>
             <label class="text-dark">Muncipality / City:</label>
             <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" [(ngModel)]="muncity_id">

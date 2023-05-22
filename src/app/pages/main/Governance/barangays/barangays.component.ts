@@ -4,6 +4,9 @@ import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/services/auth.service';
 import { BarangayOfficialService } from 'src/app/shared/Governance/barangay-official.service';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
+import { PdfComponent } from 'src/app/components/pdf/pdf.component';
+import { PdfService } from 'src/app/services/pdf.service';
+import { ReportsService } from 'src/app/shared/Tools/reports.service';
 @Component({
   selector: 'app-barangays',
   templateUrl: './barangays.component.html',
@@ -12,10 +15,15 @@ import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 export class BarangaysComponent implements OnInit {
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;
+  @ViewChild(PdfComponent)
+  private pdfComponent!: PdfComponent;
+
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void; }; };
 
   constructor(
+    private pdfService: PdfService, 
+    private reportService: ReportsService,
     private service: BarangayOfficialService,
     private auth: AuthService) { }
 
@@ -28,6 +36,9 @@ export class BarangaysComponent implements OnInit {
 
   listData: any = [];
   data: any = {};
+  reports:any = [];
+
+
 
   ngOnInit(): void {
     this.Init();
@@ -36,6 +47,31 @@ export class BarangaysComponent implements OnInit {
   Init() {
     this.GetBarangay();
     this.GetListBarangay();
+  }
+
+  GeneratePDF(){
+    const tableHeaders = [
+      "#",
+      "Barangay",
+      "Punong Barangay",
+      "Land Area",
+      "Barangay Location",
+      "Contact Details",
+      "No. of Puroks",
+    ]
+    this.reportService.GetBarangayReport(this.pdfComponent.data).subscribe({
+     next: (response)=>{
+      this.reports = (<any>response);
+     },
+     error:(error)=>{
+      console.log(error);
+     },
+     complete:()=>{
+      this.pdfService.GeneratePdf(this.reports, tableHeaders);
+      console.log(this.reports);
+     } 
+    });
+
   }
 
   GetBarangay() {
