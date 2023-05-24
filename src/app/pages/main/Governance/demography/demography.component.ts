@@ -104,12 +104,13 @@ export class DemographyComponent implements OnInit {
         'Data Added Successfully!',
         'success'
       );
-      if (this.isCheck) {
-        document.getElementById("ModalAdd")?.click();
-      }
+      // if (this.isCheck) {
+      //   document.getElementById("ModalAdd")?.click();
+      // }
       console.log(_data);
       this.clearData();
-
+       this.Init();
+       document.getElementById("ModalAdd")?.click();
     },err=>{
       Swal.fire(
         'ERROR!',
