@@ -51,7 +51,6 @@ export class BarangaysComponent implements OnInit {
 
   GeneratePDF(){
     const tableHeaders = [
-      "#",
       "Barangay",
       "Punong Barangay",
       "Land Area",
