@@ -72,10 +72,11 @@ export class CityOfficialsComponent implements OnInit {
 
 
   addOfficial() {
-    this.toValidate.name = this.city.name == "" || this.city.name == null ? true : false;
-    this.toValidate.seqNo = this.city.seqNo == "" || this.city.seqNo == undefined ? true : false;
-
-    if (this.toValidate.name == true || this.toValidate.seqNo == true) {
+    this.toValidate.name = this.editModal.name == "" || this.editModal.name == null ? true : false;
+    this.toValidate.seqNo = this.editModal.seqNo == "" || this.editModal.seqNo == undefined ? true : false;
+    this.toValidate.term = this.editModal.term == "" || this.editModal.term == null ? true : false;
+    this.toValidate.contact = this.editModal.contact == "" || this.editModal.contact == undefined ? true : false;
+    if (this.toValidate.name == true || this.toValidate.seqNo == true ||this.toValidate.term == true || this.toValidate.contact == true) {
       Swal.fire(
         'Missing Data!',
         'Please fill out the required fields',
@@ -117,8 +118,9 @@ export class CityOfficialsComponent implements OnInit {
   update() {
     this.toValidate.name = this.editModal.name == "" || this.editModal.name == null ? true : false;
     this.toValidate.seqNo = this.editModal.seqNo == "" || this.editModal.seqNo == undefined ? true : false;
-
-    if (this.toValidate.name == true || this.toValidate.seqNo == true) {
+    this.toValidate.term = this.editModal.term == "" || this.editModal.term == null ? true : false;
+    this.toValidate.contact = this.editModal.contact == "" || this.editModal.contact == undefined ? true : false;
+    if (this.toValidate.name == true || this.toValidate.seqNo == true ||this.toValidate.term == true || this.toValidate.contact == true) {
       Swal.fire(
         'Missing Data!',
         'Please fill out the required fields',

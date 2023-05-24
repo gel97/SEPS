@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./barangay-peacekeeping.component.css']
 })
 export class BarangayPeacekeepingComponent implements OnInit {
-
+  munCityName = this.Auth.munCityName;
   constructor(
     private Auth: AuthService,
     private service: SafetyTanodService
@@ -59,7 +59,7 @@ export class BarangayPeacekeepingComponent implements OnInit {
 
     if (this.toValidate.brgyId == true) {
       Swal.fire(
-        '',
+        'Missing Data!',
         'Please fill out the required fields',
         'warning'
       );
@@ -70,14 +70,13 @@ export class BarangayPeacekeepingComponent implements OnInit {
         next: (response) => {
           this.listData.push(response);
           console.log(response);
-          Swal.fire({
-            position: 'center',
-            icon: 'success',
-            title: 'Your work has been saved',
-            showConfirmButton: false,
-            timer: 1000,
-          });
-          this.resetForm();
+          Swal.fire(
+            'Good job!',
+            'Data Added Successfully!',
+            'success'
+          );
+          document.getElementById("mAdd")?.click();
+          // this.resetForm();
         },
         error: (err) => {
           console.log(err);
@@ -92,7 +91,7 @@ export class BarangayPeacekeepingComponent implements OnInit {
           this.resetForm();
         },
         complete: () => {
-          console.log('AddSafetyTanod() completed.');
+          // console.log('AddSafetyTanod() completed.');
         },
       });
     }
@@ -149,15 +148,16 @@ export class BarangayPeacekeepingComponent implements OnInit {
         //this.listData.push(response);
         // console.log(response);
         console.log(response);
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: '',
-          text: 'Your work has been updated',
-          showConfirmButton: false,
-          timer: 1000,
-        });
-        this.resetForm();
+
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'Your work has been updated',
+      showConfirmButton: false,
+      timer: 1000
+    });
+        document.getElementById("mAdd")?.click();
+        // this.resetForm();
       },
       error: (err) => {
         console.log(err);
@@ -171,7 +171,7 @@ export class BarangayPeacekeepingComponent implements OnInit {
         });
       },
       complete: () => {
-        console.log('UpdateSafetyTanod() completed.');
+        // console.log('UpdateSafetyTanod() completed.');
       },
     });
   }
@@ -197,14 +197,19 @@ export class BarangayPeacekeepingComponent implements OnInit {
             this.deleteData(id);
             this.listData.splice(index, 1);
             console.log(response);
-            Swal.fire({
-              position: 'center',
-              icon: 'success',
-              title: '',
-              text: 'The Peacekeeping Patrol (Tanod) Record has been deleted',
-              showConfirmButton: false,
-              timer: 1000,
-            });
+            Swal.fire(
+              'Deleted!',
+              'Your file has been removed.',
+              'success'
+            );
+            // Swal.fire({
+            //   position: 'center',
+            //   icon: 'success',
+            //   title: '',
+            //   text: 'The Peacekeeping Patrol (Tanod) Record has been deleted',
+            //   showConfirmButton: false,
+            //   timer: 1000,
+            // });
           },
           error: (err) => {
             console.log(err);

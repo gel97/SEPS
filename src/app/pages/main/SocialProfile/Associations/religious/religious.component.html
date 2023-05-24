@@ -7,6 +7,7 @@
           <div class="p-5">
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-4">Religious Organizations</h1>
+              <label><strong>Housing - Municipality of {{munCityName}} </strong></label><br>
             </div>
             <div class ="form-inline float-right ">
               <app-admin>
@@ -17,7 +18,7 @@
                 </button>
               </app-admin>
             </div>
-           
+
             <br>
             <label>List of Religious Organizations</label>
             <div class="table-responsive">
@@ -68,8 +69,8 @@
                           (click)="DeleteAssociation(data.transId)"><i class="fa fa-trash"></i>
                         </button>&nbsp;
                       </app-admin>
-                      </div> 
-                   
+                      </div>
+
                     </td>
                   </tr>
                 </tbody>
@@ -88,7 +89,7 @@
   <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title text-dark" id="exampleModalLabel">Religios Organizations</h5>
+        <h5 class="modal-title text-dark" id="exampleModalLabel">Religious Organizations</h5>
         <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -108,7 +109,43 @@
                    [ngModelOptions]="{ standalone: true }">
                 </div>
               </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <label for="category">Total Assets :</label>
+                    <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="addData.totalAssets"
+                      [ngModelOptions]="{ standalone: true }">
+                  </div>
+                  <div class="col-lg-6">
+                    <label for="category">Barangay :</label>
+                    <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.brgyId"
+                      [ngModelOptions]="{ standalone: true }" [ngClass]="toValidate.brgyId?'is-invalid':''"
+                      (ngModelChange)="toValidate.brgyId=false">
+                      <option *ngFor="let barangay of listBarangayData" [value]="barangay.brgyId">{{barangay.brgyName}}
+                      </option>
+                    </select>
+                  </div>
+
+                </div>
+              </div>
               <br>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <label for="exampleFormControlInput1">Contact Person :</label>
+                    <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.contactPerson"
+                      [ngModelOptions]="{ standalone: true }">
+                  </div>
+                  <div class="col-lg-6">
+                    <label for="category">Contact Details :</label>
+                    <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.contactNo"
+                      [ngModelOptions]="{ standalone: true }">
+                  </div>
+
+                </div>
+              </div>
+
+
               <div class="row">
                 <div class="col-lg-12">
                   <label for="exampleFormControlInput1">Remarks :</label>
@@ -117,47 +154,19 @@
                 </div>
               </div>
             </div>
-            <div class="form-group">
-              <div class="row">
-                <div class="col-lg-4">
-                  <label for="exampleFormControlInput1">Contact Person :</label>
-                  <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.contactPerson"
-                    [ngModelOptions]="{ standalone: true }">
-                </div>
-                <div class="col-lg-4">
-                  <label for="category">Contact Details :</label>
-                  <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.contactNo"
-                    [ngModelOptions]="{ standalone: true }">
-                </div>
-                <div class="col-lg-4">
-                  <label for="category">Total Assets :</label>
-                  <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="addData.totalAssets"
-                    [ngModelOptions]="{ standalone: true }">
-                </div>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="row">
-                <div class="col-lg-4">
-                  <label for="category">Barangay :</label>
-                  <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.brgyId"
-                    [ngModelOptions]="{ standalone: true }" [ngClass]="toValidate.brgyId?'is-invalid':''"
-                    (keyup)="toValidate.brgyId=false">
-                    <option *ngFor="let barangay of listBarangayData" [value]="barangay.brgyId">{{barangay.brgyName}}
-                    </option>
-                  </select>
-                </div>
-              </div>
-            </div>
+
+
           </app-admin>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button type="button" *ngIf="updateForm==false" (click)="AddAssociation()"
-          class="btn btn-primary">Submit</button>
+          class="btn btn-primary">Save</button>
+        <button type="button" *ngIf="updateForm==false" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
         <button type="button" *ngIf="updateForm==true" (click)="EditAssociation()"
-          class="btn btn-primary">Update</button>
+          class="btn btn-primary">Save changes</button>
+          <button type="button"  *ngIf="updateForm==true"  class="btn btn-secondary" data-dismiss="modal">Cancel</button>
       </div>
     </div>
   </div>

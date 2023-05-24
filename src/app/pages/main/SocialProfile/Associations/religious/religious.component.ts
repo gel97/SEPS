@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 export class ReligiousComponent implements OnInit {
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;
+  munCityName: string = this.Auth.munCityName;
 
   constructor(
     private Auth: AuthService,
@@ -77,11 +78,11 @@ export class ReligiousComponent implements OnInit {
 
   AddAssociation(): void {
     this.toValidate.brgyId = this.addData.brgyId == "" || this.addData.brgyId == null ? true : false;
-    this.toValidate.name = this.addData.estabName == "" || this.addData.name == undefined ? true : false;
+    this.toValidate.name = this.addData.name == "" || this.addData.name == undefined ? true : false;
 
     if (this.toValidate.brgyId == true || this.toValidate.name == true) {
       Swal.fire(
-        '',
+        'Missing Data!',
         'Please fill out the required fields',
         'warning'
       );
@@ -103,6 +104,7 @@ export class ReligiousComponent implements OnInit {
             showConfirmButton: false,
             timer: 1000,
           });
+          document.getElementById("mAdd")?.click();
           this.resetForm();
         },
         error: (err) => {
@@ -126,19 +128,16 @@ export class ReligiousComponent implements OnInit {
   }
 
   EditAssociation(): void {
-
     this.toValidate.brgyId = this.addData.brgyId == "" || this.addData.brgyId == null ? true : false;
-    this.toValidate.name = this.addData.estabName === '' || this.addData.name == undefined ? true : false;
-
+    this.toValidate.name = this.addData.name == "" || this.addData.name == undefined ? true : false;
 
     if (this.toValidate.brgyId == true || this.toValidate.name == true) {
       Swal.fire(
-        '',
+        'Missing Data!',
         'Please fill out the required fields',
         'warning'
       );
     } else {
-
       this.addData.longtitude = this.gmapComponent.markers.lng;
       this.addData.latitude = this.gmapComponent.markers.lat;
 
@@ -157,6 +156,7 @@ export class ReligiousComponent implements OnInit {
             timer: 1000,
           });
           this.resetForm();
+          document.getElementById("mAdd")?.click();
         },
         error: (err) => {
           console.log(err);
