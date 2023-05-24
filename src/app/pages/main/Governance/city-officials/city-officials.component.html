@@ -19,7 +19,7 @@
             Press the button above to import SEP Data from previous year.
           </p>
         </div>
-        <div class="col-lg-12 text-center">
+        <div class="col-lg-12 text-center" >
         <app-admin>
           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd ">
             <i class="fa fa-plus"></i>
@@ -52,13 +52,13 @@
               <div class="col-lg-10"><br>
                 <p>List of Municipal Officials:</p>
               </div>
-              <div class="col-lg-2">
+              <div class="form-inline float-right">
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd "><i
                     class="fa fa-plus"></i>
                   City Officials
                 </button>
               </div>
-            </div>
+            </div><br>
 
             <div class="form-group">
               <div class="row">
@@ -170,7 +170,7 @@
           <div class="col-lg-12"><br>
             <label for="exampleFormControlTextarea1">Term of Office :</label>
 
-            <input type="text" class="form-control" name="Term" [(ngModel)]="city.term" id="Term" placeholder="">
+            <input type="text" class="form-control" name="Term" [(ngModel)]="city.term" id="Term"[ngClass]="toValidate.term?'is-invalid':''" (keyup)="toValidate.term=false" placeholder="">
           </div>
           <!-- <div class ="col-lg-12"><br>
            <label for="exampleFormControlTextarea1" >Position :</label>
@@ -183,7 +183,7 @@
           </div>
           <div class="col-lg-12">
             <input type="text" class="form-control" id="contact" name="contact" [(ngModel)]="city.contact"
-              placeholder="">
+            [ngClass]="toValidate.contact?'is-invalid':''" (keyup)="toValidate.contact=false" placeholder="">
           </div>
 
         </div>

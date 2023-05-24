@@ -7,6 +7,7 @@
           <div class="p-5">
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-4">Police Services</h1>
+              <label><strong>Public Order and Safety - Municipality of {{munCityName}} </strong></label><br>
             </div>
             <div *ngIf="!hasData" class="form-inline float-right ">
               <app-admin>
@@ -20,7 +21,7 @@
             <br>&nbsp;&nbsp;
             <div class="table-responsive">
               <table class="table table-light table-striped">
-                <thead>
+                <thead  class="table-dark">
                   <tr>
                     <th >Item</th>
                     <th style="text-align: center;">Description/Value</th>
@@ -150,8 +151,8 @@
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-school" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="isAdd? AddSafetyServices(): EditSafetyServices()">Save
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
+        <button type="button" class="btn btn-primary" (click)="isAdd? AddSafetyServices(): EditSafetyServices()"><i class="fa fa-check"></i>Save
           changes</button>
       </div>
     </div>
