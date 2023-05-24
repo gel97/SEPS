@@ -130,6 +130,8 @@ export class ProvincialCropsHarvestedComponent implements OnInit {
         timer: 1000
         });
         this.commo={};
+        document.getElementById("ModalAdd")?.click();
+
       }
     }
 

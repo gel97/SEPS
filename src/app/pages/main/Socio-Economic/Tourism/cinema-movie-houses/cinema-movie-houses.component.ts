@@ -186,7 +186,10 @@ export class CinemaMovieHousesComponent implements OnInit {
           this.GetListTourism();
         })
         Swal.fire('Saved!', '', 'success')
-      } else if (result.isDenied) {
+        document.getElementById("exampleModal")?.click();
+
+      }
+      else if (result.isDenied) {
         Swal.fire('Changes are not saved', '', 'info')
       }
     })

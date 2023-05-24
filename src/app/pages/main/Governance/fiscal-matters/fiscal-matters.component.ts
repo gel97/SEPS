@@ -155,7 +155,6 @@ export class FiscalMattersComponent implements OnInit {
       next: (_data) => {
         this.Init();
         this.editmodal = {};
-
       },
     });
 
@@ -166,6 +165,7 @@ export class FiscalMattersComponent implements OnInit {
       showConfirmButton: false,
       timer: 1000
     });
+    document.getElementById("Edit")?.click();
 
   }}
 

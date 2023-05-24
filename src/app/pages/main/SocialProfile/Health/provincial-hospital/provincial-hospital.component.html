@@ -7,6 +7,7 @@
           <div class="p-5">
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-4">Provincial/ District - Government Hospitals</h1>
+              <label><strong> Health - Municipality of {{munCityName}}</strong></label><br>
             </div>
             <form class="user collapse show" id="collapseExample">
               <div class="form-inline float-right ">
@@ -26,17 +27,17 @@
             </div>
             <div class="table-responsive">
               <table class="table table-striped">
-                <thead>
+                <thead class="table-dark">
                   <tr>
                     <th scope="col">#</th>
-                    <th scope="col" style="text-align: center; min-width: 300px;">Name</th>
-                    <th scope="col" style="text-align: center; min-width: 300px;">Facilities/Remarks</th>
+                    <th scope="col" style="text-align: center; ">Name of Hospital</th>
+                    <th scope="col" style="text-align: center;">Facilities/Remarks</th>
                     <th scope="col" style="text-align: center;">Bed Capacity</th>
                     <th scope="col" style="text-align: center;">Occupancy Rate</th>
                     <th scope="col" style="text-align: center;">Ave. In-Patient</th>
-                    <th scope="col" style="text-align: center; min-width: 300px;">Contact Person/Designation</th>
+                    <th scope="col" style="text-align: center; ">Contact Person/Designation</th>
                     <th scope="col" style="text-align: center;">Contact Numbers</th>
-                    <th scope="col" style="text-align: center; min-width: 300px;">Location</th>
+                    <th scope="col" style="text-align: center; ">Location</th>
                     <th scope="col" style="text-align: center; padding: 12px 15px;">Geo-Coord.(Long.Lat)</th>
                     <th style="text-align: center;"></th>
                   </tr>
@@ -103,7 +104,7 @@
         <div class="form-group">
           <div class="">
             <div class="">
-              <label for="exampleFormControlInput1">Name :</label>
+              <label for="exampleFormControlInput1">Name of Hospital :</label>
               <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.name"
                 [(ngModel)]="dummy_addData.name" [ngClass]="toValidate.name?'is-invalid':''"
                 (keyup)="toValidate.name=false" />
@@ -112,7 +113,8 @@
             <div class="">
               <label for="exampleFormControlInput1">Facilities/ Remarks :</label>
               <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.remarks"
-                [(ngModel)]="dummy_addData.remarks" />
+                [(ngModel)]="dummy_addData.remarks"  [ngClass]="toValidate.remarks?'is-invalid':''"
+                (keyup)="toValidate.remarks=false"/>
             </div>
             <br />
             <div class="row">
@@ -176,8 +178,7 @@
         <button type="button" *ngIf="visible" (click)="AddHealthHospital()" id="closeModal" class="btn btn-primary">
           Submit
         </button>
-        <button type="button" *ngIf="not_visible" (click)="EditHealthHospital()" data-toggle="modal"
-          data-target="#exampleModal" aria-hidden="true" class="btn btn-primary">
+        <button type="button" *ngIf="not_visible" (click)="EditHealthHospital()" aria-hidden="true" class="btn btn-primary">
           Save changes
         </button>
       </div>

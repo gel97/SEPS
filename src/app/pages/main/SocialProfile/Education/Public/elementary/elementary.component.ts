@@ -90,6 +90,10 @@ export class ElementaryComponent implements OnInit {
   AddPublicElemSchool()
   {
     this.toValidate.name = this.elementary.name=="" || this.elementary.name ==null?true:false;
+    this.toValidate.schoolId = this.elementary.schoolId=="" || this.elementary.schoolId ==null?true:false;
+    this.toValidate.teacherNo = this.elementary.teacherNo=="" || this.elementary.teacherNo ==null?true:false;
+    this.toValidate.classroomNo = this.elementary.classroomNo=="" || this.elementary.classroomNo ==null?true:false;
+    this.toValidate.classesNo = this.elementary.classesNo=="" || this.elementary.classesNo ==null?true:false;
     this.toValidate.brgyId = this.elementary.brgyId=="" || this.elementary.brgyId ==null?true:false;
 
     this.elementary.menuId    = this.menuId;
@@ -168,12 +172,14 @@ export class ElementaryComponent implements OnInit {
         },
         complete: () =>
         {
-          this.closebutton.nativeElement.click();
+          // this.closebutton.nativeElement.click();
            Swal.fire(
             'Good job!',
             'Data Updated Successfully!',
             'success'
             );
+            document.getElementById("mEducation")?.click();
+
         }
 
       }

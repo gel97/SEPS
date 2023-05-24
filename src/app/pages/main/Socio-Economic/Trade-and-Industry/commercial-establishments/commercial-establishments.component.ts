@@ -173,10 +173,9 @@ UpdateCommercial(){
     );
   }else{
   this.service.Update_Com_Estab(this.editmodal).subscribe({next:(_data)=>{
-    if (!this.isCheck) {
-      this.closebutton.nativeElement.click();
-    }
-
+    // if (!this.isCheck) {
+    //   this.closebutton.nativeElement.click();
+    // }
     this.clearData();
     this.GetListCommercialEstab();
     this.editmodal ={};
@@ -190,6 +189,7 @@ UpdateCommercial(){
   showConfirmButton: false,
   timer: 1000
   });
+  document.getElementById("ModalEdit")?.click();
   this.editmodal ={};
   }
 }

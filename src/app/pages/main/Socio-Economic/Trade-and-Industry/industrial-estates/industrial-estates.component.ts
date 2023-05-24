@@ -200,6 +200,7 @@ list_of_barangay(){
     showConfirmButton: false,
     timer: 1000
     });
+    document.getElementById("ModalEdit")?.click();
     this.editmodal ={};
 
     }

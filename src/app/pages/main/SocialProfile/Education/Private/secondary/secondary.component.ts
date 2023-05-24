@@ -178,6 +178,8 @@ export class SecondaryComponent implements OnInit {
             'Data Updated Successfully!',
             'success'
             );
+            document.getElementById("mEducation")?.click();
+
         }
       }
     )

@@ -123,6 +123,7 @@ export class CellSitesComponent implements OnInit {
               'Data Added Successfully!',
               'success'
               );
+              this.GetList_CellSites();
               this.cell = {};
           }
         }
@@ -142,6 +143,9 @@ export class CellSitesComponent implements OnInit {
 
   Update_CellSites()
   {
+    this.toValidate.telcom = this.cell.telcom=="" || this.cell.telcom ==undefined?true:false;
+    this.toValidate.tower = this.cell.tower=="" || this.cell.tower ==undefined?true:false;
+    this.toValidate.brgyId = this.cell.brgyId=="" || this.cell.brgyId ==null?true:false;
 
     this.cell.longtitude = this.gmapComponent.markers.lng;
     this.cell.latitude  = this.gmapComponent.markers.lat;
@@ -149,6 +153,8 @@ export class CellSitesComponent implements OnInit {
     this.cell.setYear   = this.setYear;
     this.cell.munCityId = this.munCityId;
 
+    if(!this.toValidate.telcom && !this.toValidate.brgyId  && !this.toValidate.tower)
+    {
     this.service.Update_CellSites(this.cell).subscribe(
       {
         next: (request) => {
@@ -172,6 +178,17 @@ export class CellSitesComponent implements OnInit {
         }
       }
     )
+  }
+  else
+  {
+
+    Swal.fire(
+      '',
+      'Please fill out the required fields.',
+      'warning'
+      );
+  }
+
   }
 
   Delete_CellSites(transId:any)

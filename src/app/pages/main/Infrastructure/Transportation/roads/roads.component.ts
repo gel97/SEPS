@@ -11,11 +11,12 @@ import Swal from 'sweetalert2';
 export class RoadsComponent implements OnInit {
 
   constructor(private service:TrasportationService, private auth: AuthService) { }
-
+  munCityName:string = this.auth.munCityName;
+  toValidate:any={};
   TranspoRoadList:any=[];
   RoadList: any={};
   isNew : boolean=true;
-  
+
 RoadType:any=[
   {id:'rt01',roadtypename:'National Roads'},
   {id:'rt02',roadtypename:'Provincial Roads'},
@@ -37,7 +38,7 @@ RoadType:any=[
   getListTranspoRoad(){
     this.service.get_list_transpo_road().subscribe(data=>{
       this.TranspoRoadList = (<any>data);
-      
+
       for (let i of this.TranspoRoadList) {
         for (let r of this.RoadType) {
          if (i.roadType == r.id){
@@ -52,11 +53,20 @@ RoadType:any=[
   }
 
   saveRoadList(){
+
+    this.toValidate.roadType = this.RoadList.roadType=="" || this.RoadList.roadType ==null?true:false;
+    this.toValidate.concrete = this.RoadList.concrete=="" || this.RoadList.concrete ==undefined?true:false;
+    this.toValidate.asphalt = this.RoadList.asphalt=="" || this.RoadList.asphalt ==null?true:false;
+    this.toValidate.gravel = this.RoadList.gravel=="" || this.RoadList.gravel ==undefined?true:false;
+    this.toValidate.earth = this.RoadList.earth=="" || this.RoadList.earth ==undefined?true:false;
+
     this.RoadList.setYear = this.auth.activeSetYear;
     this.RoadList.munCityId = this.auth.munCityId;
     this.RoadList.tag=1;
     this.RoadList.totalLength = String(Number(this.RoadList.concrete)+Number(this.RoadList.asphalt)+Number(this.RoadList.gravel)+Number(this.RoadList.earth));
-  
+
+    if(!this.toValidate.roadType && !this.toValidate.concrete && !this.toValidate.asphalt && !this.toValidate.gravel&& !this.toValidate.earth)
+    {
     this.service.post_save_transpo_road(this.RoadList).subscribe(data=>{
       Swal.fire(
         'Saved!',
@@ -70,31 +80,57 @@ RoadType:any=[
           break;
 
         }
-         
+
        }
 
       this.TranspoRoadList.push(<any>data);
-      
+
     },error=>{
       alert ("ERROR")
     })
+  }
+  else
+  {
+    Swal.fire(
+      'Missing Data!',
+      'Please fill out the required fields.',
+      'warning'
+      );
+  }
 
-  
   }
 
   updateRoadList(){
+    this.toValidate.roadType = this.RoadList.roadType=="" || this.RoadList.roadType ==null?true:false;
+    this.toValidate.concrete = this.RoadList.concrete=="" || this.RoadList.concrete ==undefined?true:false;
+    this.toValidate.asphalt = this.RoadList.asphalt=="" || this.RoadList.asphalt ==null?true:false;
+    this.toValidate.gravel = this.RoadList.gravel=="" || this.RoadList.gravel ==undefined?true:false;
+    this.toValidate.earth = this.RoadList.earth=="" || this.RoadList.earth ==undefined?true:false;
+
 
     this.RoadList.totalLength = String(Number(this.RoadList.concrete)+Number(this.RoadList.asphalt)+Number(this.RoadList.gravel)+Number(this.RoadList.earth));
+    if(!this.toValidate.roadType && !this.toValidate.concrete && !this.toValidate.asphalt && !this.toValidate.gravel&& !this.toValidate.earth)
+    {
     this.service.put_update_transpo_road(this.RoadList).subscribe(data=>{
       Swal.fire(
         'Updated!',
         'Data successfully updated.',
         'success'
       )
-      
+
     },err=>{
       alert ("ERROR")
     })
+  }
+  else
+  {
+    Swal.fire(
+      'Missing Data!',
+      'Please fill out the required fields.',
+      'warning'
+      );
+  }
+
   }
 
   deleteRoadList(transId:any="", index:any=""){
@@ -105,7 +141,7 @@ RoadType:any=[
         'success'
       )
       this.TranspoRoadList.splice(index,1)
-      
+
     },err=>{
       alert ("ERROR")
     })

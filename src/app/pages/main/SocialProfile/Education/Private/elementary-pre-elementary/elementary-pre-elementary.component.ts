@@ -136,7 +136,7 @@ export class ElementaryPreElementaryComponent implements OnInit {
     else
     {
       Swal.fire(
-        '',
+        'Missing Data!',
         'Please fill out the required fields.',
         'warning'
         );
@@ -179,12 +179,12 @@ export class ElementaryPreElementaryComponent implements OnInit {
         },
         complete: () =>
         {
-          this.closebutton.nativeElement.click();
            Swal.fire(
             'Good job!',
             'Data Updated Successfully!',
             'success'
             );
+            document.getElementById("mEducation")?.click();
         }
       }
     )
@@ -192,7 +192,7 @@ export class ElementaryPreElementaryComponent implements OnInit {
   else
   {
     Swal.fire(
-      '',
+        'Missing Data!',
       'Please fill out the required fields.',
       'warning'
       );

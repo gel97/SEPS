@@ -140,6 +140,7 @@ onChangeSearch(e:any) {
     showConfirmButton: false,
     timer: 1000
     });
+    document.getElementById("ModalEdit")?.click();
     this.editmodal ={};
     }
   }

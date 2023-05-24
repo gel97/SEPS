@@ -134,6 +134,8 @@ Edit_Crops(){
     timer: 1000
     });
     this.crop = {};
+    document.getElementById("ModalAdd")?.click();
+
   }
 }
 

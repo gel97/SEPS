@@ -227,6 +227,7 @@ export class RiceCropsProductionComponent implements OnInit {
 
         })
         Swal.fire('Saved!', '', 'success')
+        document.getElementById("exampleModal")?.click();
       } else if (result.isDenied) {
         Swal.fire('Changes are not saved', '', 'info')
       }

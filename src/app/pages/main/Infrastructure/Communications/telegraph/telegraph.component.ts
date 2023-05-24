@@ -54,7 +54,7 @@ export class TelegraphComponent implements OnInit {
     this.GetListData();
   }
 
-  GetListBarangay() 
+  GetListBarangay()
   {
     this.service.ListOfBarangay(this.auth.munCityId).subscribe(data => {
       this.listBarangay = (<any>data);
@@ -86,13 +86,18 @@ export class TelegraphComponent implements OnInit {
 
   AddData()
   {
-    this.toValidate.station = this.data.station=="" || this.data.station ==null?true:false;
-    this.toValidate.brgyId = this.data.brgyId=="" || this.data.brgyId ==null?true:false; 
-    
+    this.toValidate.station = this.data.station=="" || this.data.station ==undefined?true:false;
+    this.toValidate.brgyId = this.data.brgyId=="" || this.data.brgyId ==null?true:false;
+    this.toValidate.facilities = this.data.facilities=="" || this.data.facilities ==undefined?true:false;
+    this.toValidate.services = this.data.services=="" || this.data.services ==undefined?true:false;
+    this.toValidate.equipment = this.data.equipment=="" || this.data.equipment ==undefined?true:false;
+    this.toValidate.frequency = this.data.frequency=="" || this.data.frequency ==undefined?true:false;
+
+
     this.data.setYear   = this.setYear;
     this.data.munCityId = this.munCityId;
-   
-    if(!this.toValidate.station && !this.toValidate.brgyId)
+
+    if(!this.toValidate.station && !this.toValidate.brgyId && !this.toValidate.facilities && !this.toValidate.services && !this.toValidate.equipment && !this.toValidate.frequency)
     {
       this.service.AddTelegraph(this.data).subscribe(
         {
@@ -129,12 +134,19 @@ export class TelegraphComponent implements OnInit {
         'warning'
         );
     }
-   
+
 
   }
 
   EditData()
   {
+    this.toValidate.station = this.data.station=="" || this.data.station ==undefined?true:false;
+    this.toValidate.brgyId = this.data.brgyId=="" || this.data.brgyId ==null?true:false;
+    this.toValidate.facilities = this.data.facilities=="" || this.data.facilities ==undefined?true:false;
+    this.toValidate.services = this.data.services=="" || this.data.services ==undefined?true:false;
+    this.toValidate.equipment = this.data.equipment=="" || this.data.equipment ==undefined?true:false;
+    this.toValidate.frequency = this.data.frequency=="" || this.data.frequency ==undefined?true:false;
+
 
     this.data.longtitude = this.gmapComponent.markers.lng;
     this.data.latitude  = this.gmapComponent.markers.lat;
@@ -142,6 +154,8 @@ export class TelegraphComponent implements OnInit {
     this.data.setYear   = this.setYear;
     this.data.munCityId = this.munCityId;
 
+    if(!this.toValidate.station && !this.toValidate.brgyId && !this.toValidate.facilities && !this.toValidate.services && !this.toValidate.equipment && !this.toValidate.frequency)
+    {
     this.service.EditTelegraph(this.data).subscribe(
       {
         next: (request) => {
@@ -165,6 +179,16 @@ export class TelegraphComponent implements OnInit {
         }
       }
     )
+  }
+  else
+  {
+    Swal.fire(
+      'Missing Data!',
+      'Please fill out the required fields.',
+      'warning'
+      );
+  }
+
   }
 
   DeleteData(transId:any)

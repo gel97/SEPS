@@ -54,7 +54,7 @@ export class InternetServiceComponent implements OnInit {
     this.GetListData();
   }
 
-  GetListBarangay() 
+  GetListBarangay()
   {
     this.service.ListOfBarangay(this.auth.munCityId).subscribe(data => {
       this.listBarangay = (<any>data);
@@ -86,13 +86,16 @@ export class InternetServiceComponent implements OnInit {
 
   AddData()
   {
-    this.toValidate.name = this.data.name=="" || this.data.name ==null?true:false;
-    this.toValidate.brgyId = this.data.brgyId=="" || this.data.brgyId ==null?true:false; 
-    
+    this.toValidate.name = this.data.name=="" || this.data.name ==undefined?true:false;
+    this.toValidate.brgyId = this.data.brgyId=="" || this.data.brgyId ==null?true:false;
+    this.toValidate.bandwidth = this.data.bandwidth=="" || this.data.bandwidth ==undefined?true:false;
+    this.toValidate.subscribersNo = this.data.subscribersNo=="" || this.data.subscribersNo ==undefined?true:false;
+
+
     this.data.setYear   = this.setYear;
     this.data.munCityId = this.munCityId;
-   
-    if(!this.toValidate.name && !this.toValidate.brgyId)
+
+    if(!this.toValidate.name && !this.toValidate.brgyId && !this.toValidate.bandwidth && !this.toValidate.subscribersNo)
     {
       this.service.AddISP(this.data).subscribe(
         {
@@ -129,19 +132,24 @@ export class InternetServiceComponent implements OnInit {
         'warning'
         );
     }
-   
+
 
   }
 
   EditData()
   {
+    this.toValidate.name = this.data.name=="" || this.data.name ==undefined?true:false;
+    this.toValidate.brgyId = this.data.brgyId=="" || this.data.brgyId ==null?true:false;
+    this.toValidate.bandwidth = this.data.bandwidth=="" || this.data.bandwidth ==undefined?true:false;
+    this.toValidate.subscribersNo = this.data.subscribersNo=="" || this.data.subscribersNo ==undefined?true:false;
 
     this.data.longtitude = this.gmapComponent.markers.lng;
     this.data.latitude  = this.gmapComponent.markers.lat;
 
     this.data.setYear   = this.setYear;
     this.data.munCityId = this.munCityId;
-
+    if(!this.toValidate.name && !this.toValidate.brgyId && !this.toValidate.bandwidth && !this.toValidate.subscribersNo)
+    {
     this.service.EditISP(this.data).subscribe(
       {
         next: (request) => {
@@ -165,6 +173,15 @@ export class InternetServiceComponent implements OnInit {
         }
       }
     )
+  }
+  else
+  {
+    Swal.fire(
+      'Missing Data!',
+      'Please fill out the required fields.',
+      'warning'
+      );
+  }
   }
 
   DeleteData(transId:any)

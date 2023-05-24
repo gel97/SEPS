@@ -1,10 +1,12 @@
 import { MunCityLocService } from './../../../../shared/Governance/mun-city-loc.service';
 import { CityOfficialService } from '../../../../shared/Governance/city-official.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/services/auth.service';
 import { GeoProfileService } from 'src/app/shared/Governance/geo-profile.service';
+import { GmapComponent } from 'src/app/components/gmap/gmap.component';
+
 
 @Component({
   selector: 'app-geo-profile',
@@ -12,8 +14,10 @@ import { GeoProfileService } from 'src/app/shared/Governance/geo-profile.service
   styleUrls: ['./geo-profile.component.css']
 })
 export class GeoProfileComponent implements OnInit {
+  @ViewChild(GmapComponent)
+  private gmapComponent!: GmapComponent;
 
-constructor( private service:GeoProfileService, private auth:AuthService) { }
+constructor( private service:GeoProfileService, private gmap:MunCityLocService, private auth:AuthService) { }
 munCityName:string = this.auth.munCityName;
 
 ViewGeo: any =[];
@@ -22,17 +26,34 @@ updategeo:any ={};
 inputDisabled:boolean=false;
 editgeo:any ={};
 toValidate:any={};
-
+isAdd:boolean = true;
+MunLoc:any=[];
+munCity:any = {};
 
   date = new DatePipe('en-PH')
+
   ngOnInit(): void {
-  this.Init();
+    this.GmapLocation();
+    this.Init();
 }
 
-Init(){
-  this.geo.munCityId=this.auth.munCityId;
-  this.geo.activeSetYear=this.auth.activeSetYear;
+markerObj: any = {};
 
+ SetMarker(data: any = {}) {
+ console.log("lnglat: ", data.longtitude + " , " + data.latitude)
+
+   this.markerObj = {
+     lat: data.latitude,
+     lng: data.longtitude,
+     label: null,
+     brgyName:null,
+     munCityName: null,
+     draggable: true
+   };
+   this.gmapComponent.setMarker(this.markerObj);
+ }
+
+Init(){
   this.service.GetGeo().subscribe(data=>{
   this.ViewGeo=(<any>data);
   //textfield(enable/disabled)
@@ -45,6 +66,25 @@ Init(){
   console.log(this.ViewGeo)
  })
 }
+
+
+
+GmapLocation(){
+  this.gmap.GetMunCity().subscribe({
+    next: (response)=>{
+      this.MunLoc=(<any>response);
+    },
+    error: (error)=>{
+    },
+    complete: ()=> {
+      this.munCity = this.MunLoc.find((a: { munCityId: any; }) => a.munCityId == this.auth.munCityId);
+      // this.SetMarker(this.munCity);
+      // console.log(this.munCity);
+    }
+
+   })
+ }
+
 
   AddGeo() {
   this.toValidate.totalLandArea = this.geo.totalLandArea=="" || this.geo.totalLandArea ==null?true:false;
@@ -137,6 +177,7 @@ Init(){
   showConfirmButton: false,
   timer: 1000
   });
+  document.getElementById("exampleModalLong")?.click();
   this.editgeo ={};
   }
 }

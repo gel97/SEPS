@@ -46,8 +46,7 @@ export class PoliceServicesComponent implements OnInit {
     console.log(this.munCityId+ " | "+this.setYear)
 
     this.service.GetSafetyServices(this.menuId, this.setYear,this.munCityId).subscribe({
-      next: (response) =>
-      {
+      next: (response) => {
         console.log(response)
         if(response.length >0)
         {
@@ -77,17 +76,17 @@ export class PoliceServicesComponent implements OnInit {
 
   }
 
+
   AddSafetyServices()
   {
-   
+
 
     if(!isEmptyObject(this.data))
     {
       this.data.setYear   = this.setYear;
       this.data.munCityId = this.munCityId;
       this.data.menuId = this.menuId;
-      this.service.AddSafetyServices(this.data).subscribe(
-        {
+      this.service.AddSafetyServices(this.data).subscribe({
 
           next: (request) => {
             this.GetSafetyServices();
@@ -182,4 +181,4 @@ export class PoliceServicesComponent implements OnInit {
     })
   }
 }
-  
+

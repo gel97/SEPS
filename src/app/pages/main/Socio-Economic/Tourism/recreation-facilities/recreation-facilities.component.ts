@@ -196,6 +196,8 @@ export class RecreationFacilitiesComponent implements OnInit {
           this.GetListTourism();
         })
         Swal.fire('Saved!', '', 'success')
+        document.getElementById("exampleModal")?.click();
+
       } else if (result.isDenied) {
         Swal.fire('Changes are not saved', '', 'info')
       }

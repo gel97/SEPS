@@ -40,7 +40,7 @@ export class SanitaryFacilitiesComponent implements OnInit {
   toValidate: any = {};
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
-  
+
   ngOnInit(): void {
     this.GetHealthSanitary();
     this.GetBarangayList();
@@ -73,11 +73,11 @@ export class SanitaryFacilitiesComponent implements OnInit {
     console.log('brgyid', this.addData.brgyId);
     this.dummy_addData = this.addData;
     console.log('trap_2', this.dummy_addData);
-    this.toValidate.brgyId =
-      this.addData.brgyId == '' || this.addData.brgyId == null ? true : false;
+    this.toValidate.brgyId = this.addData.brgyId == '' || this.addData.brgyId == null ? true : false;
+    this.toValidate.householdNo = this.addData.householdNo == '' || this.addData.householdNo == null ? true : false;
 
-    if (this.toValidate.brgyId == true) {
-      Swal.fire('', 'Please fill out the required fields', 'warning');
+    if (this.toValidate.brgyId == true || this.toValidate.householdNo == true) {
+      Swal.fire('Missing Data!', 'Please fill out the required fields', 'warning');
     } else {
       if (
         JSON.stringify(this.dummy_addData) != JSON.stringify(this.dummyData) &&
@@ -122,6 +122,12 @@ export class SanitaryFacilitiesComponent implements OnInit {
   }
 
   EditHealthSanitary() {
+    this.toValidate.brgyId = this.addData.brgyId == '' || this.addData.brgyId == null ? true : false;
+    this.toValidate.householdNo = this.addData.householdNo == '' || this.addData.householdNo == null ? true : false;
+
+    if (this.toValidate.brgyId == true || this.toValidate.householdNo == true) {
+      Swal.fire('Missing Data!', 'Please fill out the required fields', 'warning');
+    } else {
     Swal.fire({
       title: 'Do you want to save the changes?',
       showDenyButton: true,
@@ -140,11 +146,13 @@ export class SanitaryFacilitiesComponent implements OnInit {
           this.GetHealthSanitary();
         });
         Swal.fire('Saved!', '', 'success');
+        document.getElementById("exampleModal")?.click();
       } else if (result.isDenied) {
         Swal.fire('Changes are not saved', '', 'info');
       }
     });
   }
+}
   DeleteHealthSanitary(dataItem: any) {
     Swal.fire({
       title: 'Are you sure?',

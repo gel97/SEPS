@@ -205,6 +205,7 @@ SetMarker(data: any = {}) {
     showConfirmButton: false,
     timer: 1000
     });
+    document.getElementById("exampleModal_EDIT")?.click();
     this.editmodal ={};
     this.GetListFinancial();
     }

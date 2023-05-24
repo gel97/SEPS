@@ -136,13 +136,15 @@ export class OSchoolYouthComponent implements OnInit {
 
   EditOsy()
   {
+    this.toValidate.brgyId = this.osy.brgyId=="" || this.osy.brgyId ==null?true:false;
 
     this.osy.longtitude = this.gmapComponent.markers.lng;
     this.osy.latitude  = this.gmapComponent.markers.lat;
 
     this.osy.setYear   = this.setYear;
     this.osy.munCityId = this.munCityId;
-
+    if(!this.toValidate.brgyId)
+    {
     this.service.EditEducationOsy(this.osy).subscribe(
       {
         next: (request) => {
@@ -163,9 +165,20 @@ export class OSchoolYouthComponent implements OnInit {
             'Data Updated Successfully!',
             'success'
             );
+            document.getElementById("mEducation")?.click();
+
         }
       }
     )
+  }
+  else
+  {
+    Swal.fire(
+      'Missing Data!',
+      'Please fill out the required fields.',
+      'warning'
+      );
+  }
   }
 
   DeleteOsy(transId:any)

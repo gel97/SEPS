@@ -7,6 +7,8 @@
             <div class="p-5">
               <div class="text-center">
                 <h1 class="h4 text-gray-900 mb-4"> Out-of-School Youth</h1>
+                <label><strong>Education - Municipality of {{munCityName}} </strong></label><br>
+
               </div>
               <div class ="form-inline float-right ">
                 <app-admin>
@@ -137,9 +139,8 @@
                 </label>
             </div>
         </div>
-          <button type="button" class="btn btn-school" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary"
-            (click)="isAdd? AddOsy(): EditOsy()">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>&nbsp;
+          <button type="button" class="btn btn-primary" (click)="isAdd?AddOsy():EditOsy()"><i class="fa fa-check"></i> Save changes</button>
         </div>
       </div>
     </div>
@@ -160,8 +161,8 @@
           <app-gmap></app-gmap>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" (click)="EditOsy()">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal"> <i class="fa fa-times"></i>Close</button>&nbsp;
+          <button type="button" class="btn btn-primary" (click)="EditOsy()"><i class="fa fa-check"></i>Save changes</button>
         </div>
       </div>
     </div>
