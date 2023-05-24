@@ -1,69 +1,155 @@
-
 <div class="">
-
-  <div class="card o-hidden border-2 shadow-sm my-5">
-      <div class="card-body p-0">
-          <!-- Nested Row within Card Body -->
-          <div class="row">
-
-              <div class="col-lg-12">
-                  <div class="p-5">
-                      <div class="">
-                          <button class="btn btn-outline-primary btn-circle float-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
-                              <i class="fa fa-minus" aria-hidden="true"></i>
-
-                            </button>
-                      </div>
-                      <div class="text-center">
-                          <h1 class="h4 text-gray-900 mb-4">Social Condition and Vulnerability</h1>
-                      </div>
-
-
-                      <form class="user collapse show" id="collapseExample">
-                          <div class="form-group">
-                              <div class="row">
-                                    <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1">Vulnerability of Population to Environmental Hazards :</label>
-                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                                     </div>
-                                     <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1">General Characteristics of Population :</label>
-                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                                     </div>
-                                     <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1">Dependency Ratio :</label>
-                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                                     </div>
-                                     <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1">Poverty Incidence :</label>
-                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                                     </div>
-                                     <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1">Employment/ Unemployment :</label>
-                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                                     </div>
-                                     <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1">Urbanization and Migration Patterns :</label>
-                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                                     </div>
-                                     <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1">Others/ Remarks :</label>
-                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                                     </div>
-
-
-                                    </div>
-                                     </div>
-                                     <br>
-                            <button type="button" class="btn btn-primary">SAVE</button>&nbsp;
-                            <button type="button" class="btn btn-primary">RESET</button>
-                      </form>
-                      <br>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
-
+    <div class="card o-hidden border-2 shadow-sm my-5">
+        <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="p-5">
+                        <div class="">
+                        </div>
+                        <div class="text-center">
+                            <h1 class="h4 text-gray-900 mb-4">Social Condition and Vulnerability</h1>
+                        </div>
+                        <app-admin>
+                            <div class="text-right">
+                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#exampleModalLong" (click)="resetForm(); updateForm=false"
+                                    style="font-size: 15px;"><i class="fa fa-plus"></i> Social
+                                    Condition and Vulnerability</button>
+                            </div>
+                        </app-admin>
+                        <form class="user collapse show" id="collapseExample">
+                            <div class="form-group">
+                                <div class="row">
+                                    <tr *ngFor="let desc of listSocialcondition; let i=index">
+                                        <div class="col-lg-12"><br>
+                                            <label for="exampleFormControlTextarea1">Vulnerability of Population to
+                                                Environmental Hazards
+                                                :</label>
+                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"
+                                                readonly>{{ desc.desc1 }}</textarea>
+                                        </div>
+                                        <div class="col-lg-12"><br>
+                                            <label for="exampleFormControlTextarea1">General Characteristics of
+                                                Population :</label>
+                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"
+                                                readonly>{{ desc.desc2 }}</textarea>
+                                        </div>
+                                        <div class="col-lg-12"><br>
+                                            <label for="exampleFormControlTextarea1">Dependency Ratio :</label>
+                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"
+                                                readonly>{{ desc.desc3 }}</textarea>
+                                        </div>
+                                        <div class="col-lg-12"><br>
+                                            <label for="exampleFormControlTextarea1">Poverty Incidence :</label>
+                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"
+                                                readonly>{{ desc.desc4 }}</textarea>
+                                        </div>
+                                        <div class="col-lg-12"><br>
+                                            <label for="exampleFormControlTextarea1">Employment/ Unemployment :</label>
+                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"
+                                                readonly>{{ desc.desc5 }}</textarea>
+                                        </div>
+                                        <div class="col-lg-12"><br>
+                                            <label for="exampleFormControlTextarea1">Urbanization and Migration Patterns
+                                                :</label>
+                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"
+                                                readonly>{{ desc.desc6 }}</textarea>
+                                        </div>
+                                        <div class="col-lg-12"><br>
+                                            <label for="exampleFormControlTextarea1">Others/ Remarks :</label>
+                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"
+                                                readonly>{{ desc.desc7 }}</textarea>
+                                        </div> <br>
+                                        <div class="d-flex justify-content-end">
+                                            <button *ngFor="let desc of listSocialcondition"
+                                                (click)="addDescription = desc; updateForm=true"
+                                                class="btn btn-info btn-circle" data-bs-toggle="modal"
+                                                data-bs-target="#exampleModalLong">
+                                                <i class="fas fa-pen"></i>
+                                            </button>&nbsp;
+                                            <button (click)="DeleteSocial(desc.transId)"
+                                                class="btn btn-warning btn-circle">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                </div>
+                            </div>
+                            <br>
+                        </form>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg  modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="h4 text-gray-900 mb-4" id="exampleModalLongTitle">Social Condition and Vulnerability</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12">
+                    <label for="exampleFormControlTextarea1" class="h6 text-gray-900 mb-1">Vulnerability of Population
+                        to
+                        Environmental Hazards :</label>
+                    <textarea input type="text" class="form-control" id="desc1" [(ngModel)]="addDescription.desc1"
+                        name="desc1" [ngModelOptions]="{ standalone: true }" (keyup)="onKey($event)"></textarea>
+                </div>
+                <div class="col-lg-12">
+                    <label for="exampleFormControlTextarea1" class="h6 text-gray-900 mb-1">General Characteristics of
+                        Population
+                        :</label>
+                    <textarea input type="text" class="form-control" id="desc2" [(ngModel)]="addDescription.desc2"
+                        name="desc2" [ngModelOptions]="{ standalone: true }" (keyup)="onKey($event)"></textarea>
+                </div>
+                <div class="col-lg-12">
+                    <label for="exampleFormControlTextarea1" class="h6 text-gray-900 mb-1">Dependency Ratio :</label>
+                    <textarea input type="text" class="form-control" id="desc3" [(ngModel)]="addDescription.desc3"
+                        name="desc3" [ngModelOptions]="{ standalone: true }" (keyup)="onKey($event)"></textarea>
+                </div>
+                <div class="col-lg-12">
+                    <label for="exampleFormControlTextarea1" class="h6 text-gray-900 mb-1">Poverty Incidence:</label>
+                    <textarea input type="text" class="form-control" id="desc4" [(ngModel)]="addDescription.desc4"
+                        name="desc4" [ngModelOptions]="{ standalone: true }" (keyup)="onKey($event)"></textarea>
+                </div>
+                <div class="col-lg-12">
+                    <label for="exampleFormControlTextarea1" class="h6 text-gray-900 mb-1">Employment/ Unemployment
+                        :</label>
+                    <textarea input type="text" class="form-control" id="desc5" [(ngModel)]="addDescription.desc5"
+                        name="desc5" [ngModelOptions]="{ standalone: true }" (keyup)="onKey($event)"></textarea>
+                </div>
+                <div class="col-lg-12">
+                    <label for="exampleFormControlTextarea1" class="h6 text-gray-900 mb-1">Urbanization and Migration
+                        Patterns
+                        :</label>
+                    <textarea input type="text" class="form-control" id="desc6" [(ngModel)]="addDescription.desc6"
+                        name="desc6" [ngModelOptions]="{ standalone: true }" (keyup)="onKey($event)"></textarea>
+                </div>
+                <div class="col-lg-12">
+                    <label for="exampleFormControlTextarea1" class="h6 text-gray-900 mb-1">Others/ Remarks :</label>
+                    <textarea input type="text" class="form-control" id="desc7" [(ngModel)]="addDescription.desc7"
+                        name="desc7" [ngModelOptions]="{ standalone: true }" (keyup)="onKey($event)"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    style="font-size: 15px;">Close</button>
+                <button type="button" class="btn btn-primary" *ngIf="updateForm == false"
+                    (click)="AddSocial(addDescription)" (click)="buttonClick()" [disabled]="click"
+                    style="font-size: 15px;">Save</button>
+                <button type="button" class="btn btn-primary" *ngIf="updateForm == true"
+                    (click)="EditSocial(addDescription)" (click)="buttonClick()" [disabled]="click"
+                    style="font-size: 15px;">Update</button>
+            </div>
+        </div>
+    </div>
+</div>

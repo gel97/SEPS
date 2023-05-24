@@ -47,7 +47,7 @@
                                 <th scope="col" class="text-center" >Business Type	</th>
                                 <th scope="col" class="text-center" >Count	</th>
                                 <th scope="col" class="text-center">Remarks	</th>
-                                <th width="8%"></th>
+                                <th ></th>
                               </tr>
                             </thead>
                             <tbody>
@@ -69,12 +69,12 @@
                                     </div>
                                   </td>
                                   <td class="text-center" >{{text.count}}</td>
-                                  <td width="30%" class="text-center"> {{text.remarks}}</td>
+                                  <td > {{text.remarks}}</td>
 
                                   <td>
-                                    <div class="d-inline-flex">
+                                    <div class="d-inline-flex"  class="form-inline float-right">
                                     <app-admin>
-                                    <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info btn-circle" data-toggle="modal" data-target="#exampleModal_EDIT" ><i class="fa fa-pen"></i> </button>&nbsp;
+                                    <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info btn-circle" data-toggle="modal" data-target="#exampleModal_EDIT" ><i class="fa fa-pen"></i> </button> &nbsp;
                                     <!-- <button type="button"  onclick="initialize()" (click)="editmodal=text"  class="btn btn-success" data-toggle="modal"data-target="#exampleModal"><i  class="fa fa-globe"></i> </button>&nbsp; -->
                                     <button type="button" title="Delete" class="btn btn-warning btn-circle" (click)="delete(text.transId,i)"><i class="fa fa-trash"></i>  </button>&nbsp;
                                   </app-admin>
@@ -226,7 +226,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" (click)="UpdateSummary_Estab()"   ><i class="fa fa-check"></i>Save Changes</button>&nbsp;
-        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Cancel</button>
 
       </div>
     </div>

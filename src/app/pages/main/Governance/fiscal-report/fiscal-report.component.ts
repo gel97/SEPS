@@ -168,6 +168,7 @@ update(){
   showConfirmButton: false,
   timer: 1000
   });
+  document.getElementById("Edit")?.click();
   this.editmodal ={};
   }
   }

@@ -3,6 +3,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { DemographyService } from 'src/app/shared/Governance/demography.service';
 import Swal from 'sweetalert2';
+import { GmapComponent } from 'src/app/components/gmap/gmap.component';
+
 
 @Component({
   selector: 'app-demography',
@@ -10,7 +12,9 @@ import Swal from 'sweetalert2';
   styleUrls: ['./demography.component.css']
 })
 export class DemographyComponent implements OnInit {
-  // DemographyService: any;
+  @ViewChild(GmapComponent)
+  private gmapComponent!: GmapComponent;
+  searchText: string= "";
 
   constructor(private service:DemographyService, private auth:AuthService) { }
   demo:any={};
@@ -33,6 +37,21 @@ export class DemographyComponent implements OnInit {
     this.isCheck = isCheck;
     console.log("isCheck:", this.isCheck);
   }
+  markerObj: any = {};
+
+  SetMarker(data: any = {}) {
+    console.log("lnglat: ", data.longtitude + " , " + data.latitude)
+
+    this.markerObj = {
+      lat: data.latitude,
+      lng: data.longtitude,
+      label: data.brgyName.charAt(0),
+      brgyName: data.brgyName,
+      munCityName: this.munCityName,
+      draggable: true
+    };
+    this.gmapComponent.setMarker(this.markerObj);
+  }
 
 
   date = new DatePipe('en-PH')
@@ -40,8 +59,6 @@ export class DemographyComponent implements OnInit {
 
   this.Init();
   this.list_of_barangay();
-
-
  }
 
   Init(){
@@ -82,20 +99,16 @@ export class DemographyComponent implements OnInit {
     this.demo.munCityId=this.auth.munCityId;
     this.demo.setYear=this.auth.activeSetYear;
     this.service.AddDemography(this.demo).subscribe(_data=>{
-      if (!this.isCheck) {
-        this.closebutton.nativeElement.click();
-      }
-      console.log(_data);
-      this.clearData();
-      this.Init();
-
       Swal.fire(
         'Good job!',
         'Data Added Successfully!',
         'success'
       );
-      this.Init();
-      this.demo = {};
+      if (this.isCheck) {
+        document.getElementById("ModalAdd")?.click();
+      }
+      console.log(_data);
+      this.clearData();
 
     },err=>{
       Swal.fire(
@@ -137,9 +150,9 @@ export class DemographyComponent implements OnInit {
       );
     } else {
     this.service.UpdateDemography(this.editmodal).subscribe((_data)=>{
-      if (!this.isCheck) {
-        this.closebutton.nativeElement.click();
-      }
+      // if (this.isCheck) {
+
+      // }
       this.clearData();
       this.Init();
 
@@ -150,7 +163,8 @@ export class DemographyComponent implements OnInit {
         showConfirmButton: false,
         timer: 1000
         });
-    this.Init();
+        document.getElementById("ModalEdit")?.click();
+        this.Init();
     },
     );
 

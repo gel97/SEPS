@@ -96,17 +96,16 @@ export class ProvincialHospitalComponent implements OnInit {
   AddHealthHospital() {
 
     this.toValidate.name = this.addData.name == "" || this.addData.name == undefined ? true : false;
+    this.toValidate.remarks = this.addData.remarks == "" || this.addData.remarks == undefined ? true : false;
     console.log("trap", this.addData);
 
     this.dummy_addData = this.addData;
     console.log("trap_2", this.dummy_addData);
-    if (!this.toValidate.name) {
+    if (!this.toValidate.name || !this.toValidate.remarks) {
       this.addData.setYear = this.setYear;
       this.addData.munCityId = this.munCityId;
       this.addData.menuId = this.menuId;
       console.log("brgylist", this.barangayList);
-
-
       this.longtitude;
       this.addData.longtitude = this.longtitude;
       console.log("long", this.longtitude);
@@ -121,27 +120,26 @@ export class ProvincialHospitalComponent implements OnInit {
         console.log("add", request);
         this.clearData();
         this.GetHealthHospital();
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'Your work has been saved',
-          showConfirmButton: false,
-          timer: 1500
-        })
+        Swal.fire(
+          'Good job!',
+          'Data Added Successfully!',
+          'success'
+          );
       })
     }
     else {
       this.required = true;
-      Swal.fire({
-        icon: 'warning',
-        title: 'Oops...',
-        text: 'Missing data!',
-
-      })
+      Swal.fire('Missing Data!', 'Please fill out the required fields', 'warning');
     }
   }
 
   EditHealthHospital() {
+    this.toValidate.remarks = this.addData.remarks == '' || this.addData.remarks == null ? true : false;
+  this.toValidate.name =  this.addData.name == '' || this.addData.name == undefined ? true : false;
+
+  if (this.toValidate.remarks == true || this.toValidate.name == true) {
+    Swal.fire('Missing Data!', 'Please fill out the required fields', 'warning');
+  } else {
     Swal.fire({
       title: 'Do you want to save the changes?',
       showDenyButton: true,
@@ -165,11 +163,13 @@ export class ProvincialHospitalComponent implements OnInit {
           this.GetHealthHospital();
         })
         Swal.fire('Saved!', '', 'success')
+        document.getElementById("exampleModal")?.click();
       } else if (result.isDenied) {
         Swal.fire('Changes are not saved', '', 'info')
       }
     })
   }
+}
 
   DeleteHealthHospital(dataItem: any) {
     Swal.fire({
@@ -205,4 +205,4 @@ export class ProvincialHospitalComponent implements OnInit {
     this.not_visible = true;
     this.visible = false;
   }
-} 
+}

@@ -150,6 +150,7 @@ UpdateSummary_Estab(){
   showConfirmButton: false,
   timer: 1000
   });
+  document.getElementById("exampleModal_EDIT")?.click();
   this.editmodal ={};
   this.GetList_Summary_CommercialEstab();
   }

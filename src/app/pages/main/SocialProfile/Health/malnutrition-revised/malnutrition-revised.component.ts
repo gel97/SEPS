@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { HealthMalnutritionService } from 'src/app/shared/SocialProfile/Health/healthMalnutrition.service';
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
+import { isEmptyObject } from 'jquery';
 
 @Component({
   selector: 'app-malnutrition-revised',
@@ -10,165 +11,172 @@ import { Observable } from 'rxjs';
   styleUrls: ['./malnutrition-revised.component.css'],
 })
 export class MalnutritionRevisedComponent implements OnInit {
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void; }; };
+
   constructor(
-    private Auth: AuthService,
+    private auth: AuthService,
     private service: HealthMalnutritionService
   ) {}
 
-  setYear = Number(this.Auth.activeSetYear);
-  munCityId = this.Auth.munCityId;
+  munCityName: string = this.auth.munCityName;
+  listHealthMalnut: any = [];
+  listBarangay: any = [];
+
+  isAdd: boolean = false;
   listData: any = [];
-  addData: any = {};
-  editData: any = {};
-  listBarangayData: any = [];
-  idCounter: number = 1;
-  updateForm: boolean = false;
+  data: any = {};
 
   ngOnInit(): void {
-    this.resetForm();
+    this.Init();
+  }
+
+  Init() {
     this.GetHealthMalnutrition();
-    this.getListOfBarangay();
-  }
-  resetForm(): void {
-    this.addData = {}; // Reset the form fields here
+    this.GetListBarangay();
   }
 
-  GetHealthMalnutrition(): void {
-    this.service.GetHealthMalnutrition(this.setYear, this.munCityId).subscribe({
+  GetHealthMalnutrition() {
+    this.service
+      .GetHealthMalnutrition(this.auth.setYear, this.auth.munCityId)
+      .subscribe({
+        next: (response) => {
+          this.listHealthMalnut = (<any>response);
+          console.log(this.listHealthMalnut);
+        },
+        error: (error) => {
+        },
+        complete: () => {
+          this.GetListBarangay();
+        }
+      });
+  }
+
+  GetListBarangay() {
+    this.service.ListOfBarangay(this.auth.munCityId).subscribe({
       next: (response) => {
-        this.listData = response;
+        this.listBarangay = (<any>response);
       },
-      error: (err) => {
-        console.log(err);
+      error: (error) => {
       },
       complete: () => {
-        console.log('GetHealthMalnutrition() completed.');
-      },
-    });
-  }
-
-  AddHealthMalnutrition(addData: any): void {
-    addData.setYear = Number(this.setYear);
-    addData.id = this.idCounter++;
-    // console.log(addData);
-    this.service.AddHealthMalnutrition(addData).subscribe({
-      next: (response) => {
-        this.listData.push(response);
-        console.log(response);
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'Your work has been saved',
-          showConfirmButton: false,
-          timer: 1000,
-        });
-      },
-      error: (err) => {
-        console.log(err);
-        Swal.fire({
-          position: 'center',
-          icon: 'error',
-          title: 'Something went wrong!',
-          text: err.message,
-          showConfirmButton: false,
-          timer: 3000,
-        });
-      },
-      complete: () => {
-        console.log('AddHealthMalnutrition() completed.');
-      },
-    });
-  }
-
-  EditHealthMalnutrition(addData: any): void {
-    this.service.EditHealthMalnutrition(addData).subscribe({
-      next: (response) => {
-        this.GetHealthMalnutrition();
-        //this.listData.push(response);
-        // console.log(response);
-        console.log(response);
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'Your work has been updated',
-          showConfirmButton: false,
-          timer: 1000,
-        });
-        this.resetForm();
-      },
-      error: (err) => {
-        console.log(err);
-        Swal.fire({
-          position: 'center',
-          icon: 'error',
-          title: 'Something went wrong!',
-          text: err.message,
-          showConfirmButton: false,
-          timer: 3000,
-        });
-      },
-      complete: () => {
-        console.log('UpdateHealthMalnutrition() completed.');
-      },
-    });
-  }
-
-  DeleteHealthMalnutrition(id: any): void {
-    Swal.fire({
-      title: 'Are you sure you want to delete this health facility?',
-      text: 'This action cannot be undone.',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'Cancel',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.service.DeleteHealthMalnutrition(id).subscribe({
-          next: (response) => {
-            const index = this.listData.findIndex((d: any) => d.transId === id);
-            //console.log(index);
-            this.deleteData(id);
-            this.listData.splice(index, 1);
-            console.log(response);
-            Swal.fire({
-              position: 'center',
-              icon: 'success',
-              title: 'The health facility has been deleted',
-              showConfirmButton: false,
-              timer: 1000,
-            });
-          },
-          error: (err) => {
-            console.log(err);
-            Swal.fire({
-              position: 'center',
-              icon: 'error',
-              title: 'Something went wrong!',
-              text: err.message,
-              showConfirmButton: false,
-              timer: 3000,
-            });
-          },
-          complete: () => {
-            console.log('DeleteHealthMalnutrition() completed.');
-          },
-        });
+        this.FilterList();
       }
     });
   }
 
-  deleteData(id: number) {
-    this.listData = this.listData.filter(
-      (data: { id: number }) => data.id !== id
-    );
-  }
+  FilterList() {
+    let isExist;
+    this.listData = [];
 
-  getListOfBarangay(): void {
-    this.service.ListOfBarangay(this.munCityId).subscribe((response) => {
-      console.log('Barangay: ', response);
-      this.listBarangayData = response;
+    this.listBarangay.forEach((a: any) => {
+      this.listHealthMalnut.forEach((b: any) => {
+        if (a.brgyId == b.brgyId) {
+          isExist = this.listData.filter((x: any) => x.brgyId == a.brgyId);
+          if (isExist.length == 0) {
+            this.listData.push(b);
+          }
+        }
+      });
+
+      isExist = this.listData.filter((x: any) => x.brgyId == a.brgyId);
+      if (isExist.length == 0) {
+        this.listData.push({
+          'brgyId': a.brgyId,
+          'brgyName': a.brgyName
+        });
+      } 
     });
   }
+
+  AddData() {
+    if(isEmptyObject(this.data)){
+      Swal.fire(
+        'Missing Data!',
+        'Please fill out the required fields',
+        'warning'
+      );
+    }
+    else{
+      this.data.munCityId = this.auth.munCityId;
+      this.data.setYear = this.auth.activeSetYear;
+      this.service.AddHealthMalnutrition(this.data).subscribe({
+        next: (request) => {
+          let index = this.listData.findIndex((obj: any) => obj.brgyId === this.data.brgyId);
+          this.listData[index] = request;
+        },
+        complete: () => {
+          this.data = {};
+          this.closebutton.nativeElement.click();
+
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Your work has been saved',
+            showConfirmButton: false,
+            timer: 1000
+          });
+        }
+      });
+    }
+  }
+
+  EditData() {
+      this.data.setYear = this.auth.activeSetYear;
+      this.service.EditHealthMalnutrition(this.data).subscribe({
+        next: (request) => {
+          this.closebutton.nativeElement.click();
+          this.data = {};
+        },
+        complete: () => {
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Your work has been updated',
+            showConfirmButton: false,
+            timer: 1000
+          });
+        }
+      });
+}
+
+DeleteData(transId: any, index: any, data:any) {
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.service.DeleteHealthMalnutrition(transId).subscribe({
+        next: (_data) => {
+        },
+        error: (err) => {
+          Swal.fire(
+            'Oops!',
+            'Something went wrong.',
+            'error'
+          )
+        },
+        complete: () => {
+          this.listData[index] = {};
+          this.listData[index].brgyId = data.brgyId;
+          this.listData[index].brgyName = data.brgyName;
+          Swal.fire(
+            'Deleted!',
+            'Your file has been deleted.',
+            'success'
+          )
+        }
+
+      });
+
+    }
+  })
+}
+  
+
 }

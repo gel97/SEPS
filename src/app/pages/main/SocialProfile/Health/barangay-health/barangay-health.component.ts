@@ -108,7 +108,7 @@ export class BarangayHealthComponent implements OnInit {
     this.toValidate.name =
       this.addData.name == '' || this.addData.name == undefined ? true : false;
     if (this.toValidate.brgyId == true || this.toValidate.name == true) {
-      Swal.fire('', 'Please fill out the required fields', 'warning');
+      Swal.fire('Missing Data!', 'Please fill out the required fields', 'warning');
     } else {
       if (
         JSON.stringify(this.dummy_addData) != JSON.stringify(this.dummyData) &&
@@ -154,6 +154,11 @@ export class BarangayHealthComponent implements OnInit {
   }
 
   EditHealthFacilities() {
+    this.toValidate.brgyId=this.addData.brgyId == '' || this.addData.brgyId == null ? true : false;
+  this.toValidate.name = this.addData.name == '' || this.addData.name == undefined ? true : false;
+  if (this.toValidate.brgyId == true || this.toValidate.name == true) {
+    Swal.fire('Missing Data!', 'Please fill out the required fields', 'warning');
+  } else {
     Swal.fire({
       title: 'Do you want to save the changes?',
       showDenyButton: true,
@@ -176,11 +181,14 @@ export class BarangayHealthComponent implements OnInit {
           this.GetHealthFacilities();
         });
         Swal.fire('Saved!', '', 'success');
+        document.getElementById("exampleModal")?.click();
+
       } else if (result.isDenied) {
         Swal.fire('Changes are not saved', '', 'info');
       }
     });
   }
+}
   DeleteHealthFacilities(dataItem: any) {
     Swal.fire({
       title: 'Are you sure?',

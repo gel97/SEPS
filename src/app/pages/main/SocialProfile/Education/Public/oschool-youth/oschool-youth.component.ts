@@ -137,7 +137,6 @@ export class OSchoolYouthComponent implements OnInit {
   EditOsy()
   {
     this.toValidate.brgyId = this.osy.brgyId=="" || this.osy.brgyId ==null?true:false;
-    this.toValidate.
 
     this.osy.longtitude = this.gmapComponent.markers.lng;
     this.osy.latitude  = this.gmapComponent.markers.lat;
@@ -166,6 +165,8 @@ export class OSchoolYouthComponent implements OnInit {
             'Data Updated Successfully!',
             'success'
             );
+            document.getElementById("mEducation")?.click();
+
         }
       }
     )

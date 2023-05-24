@@ -5,11 +5,10 @@
       <div class="row">
         <div class="col-lg-12">
           <div class="p-5">
-
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-4">Provincial/ District - Government Hospitals</h1>
+              <label><strong> Health - Municipality of {{munCityName}}</strong></label><br>
             </div>
-
             <form class="user collapse show" id="collapseExample">
               <div class="form-inline float-right ">
                 <app-admin>
@@ -28,22 +27,19 @@
             </div>
             <div class="table-responsive">
               <table class="table table-striped">
-                <thead>
+                <thead class="table-dark">
                   <tr>
                     <th scope="col">#</th>
-                    <th scope="col" style="text-align: center;">Name</th>
+                    <th scope="col" style="text-align: center; ">Name of Hospital</th>
                     <th scope="col" style="text-align: center;">Facilities/Remarks</th>
                     <th scope="col" style="text-align: center;">Bed Capacity</th>
                     <th scope="col" style="text-align: center;">Occupancy Rate</th>
                     <th scope="col" style="text-align: center;">Ave. In-Patient</th>
-                    <th scope="col" style="text-align: center;">Contact Person/Designation</th>
+                    <th scope="col" style="text-align: center; ">Contact Person/Designation</th>
                     <th scope="col" style="text-align: center;">Contact Numbers</th>
-                    <th scope="col" style="text-align: center;">Location</th>
+                    <th scope="col" style="text-align: center; ">Location</th>
                     <th scope="col" style="text-align: center; padding: 12px 15px;">Geo-Coord.(Long.Lat)</th>
-
                     <th style="text-align: center;"></th>
-
-
                   </tr>
                 </thead>
                 <tbody>
@@ -59,32 +55,26 @@
                     <td style="text-align: center;">{{dataItem.location}}</td>
                     <td style="text-align: center;">{{ dataItem.longtitude }},<br>
                       {{ dataItem.latitude }}</td>
-
                     <td style="text-align: center; padding: 12px 15px; ">
-                      <app-admin>
-                        <div class="flex-container">
-
-                          <div class="flex-button">
-                            <button (click)="SetMarker(dataItem); addData = dataItem" data-toggle="modal"
-                              data-target="#gmapModal" class="btn btn-success"
-                              style="display: inline-block; margin-right: 10px; ">
-                              <i class="fas fa-globe"></i></button>
-                          </div>
-                          <div class="flex-button">
-                            <button (click)="addData = dataItem" data-toggle="modal" (click)="editToggle()"
-                              data-target="#exampleModal" class="btn btn-primary"
-                              style="display: inline-block; margin-right: 10px; ">
-                              <i class="fas fa-edit"></i></button>
-                          </div>
-                          <div class="flex-button">
-                            <button class="btn btn-danger" style="display: inline-block; margin-right: 10px; "
-                              (click)="DeleteHealthHospital(dataItem)">
-                              <i class="fas fa-trash"></i>
-                            </button>
-                          </div>
-
-                        </div>
-                      </app-admin>
+                      <div class="d-inline-flex">
+                        <app-admin>
+                          <button (click)="addData = dataItem" data-toggle="modal" (click)="editToggle()"
+                            data-target="#exampleModal" class="btn btn-info btn-circle">
+                            <i class="fas fa-pen"></i>
+                          </button>
+                        </app-admin>
+                        &nbsp;
+                        <button (click)="SetMarker(dataItem); addData = dataItem" data-toggle="modal"
+                          data-target="#gmapModal" class="btn btn-success btn-circle">
+                          <i class="fas fa-globe"></i>
+                        </button>
+                        &nbsp;
+                        <app-admin>
+                          <button class="btn btn-warning btn-circle" (click)="DeleteHealthHospital(dataItem)">
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        </app-admin>
+                      </div>
                     </td>
                   </tr>
                 </tbody>
@@ -114,9 +104,7 @@
         <div class="form-group">
           <div class="">
             <div class="">
-              <label for="exampleFormControlInput1">Name :</label>
-
-
+              <label for="exampleFormControlInput1">Name of Hospital :</label>
               <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.name"
                 [(ngModel)]="dummy_addData.name" [ngClass]="toValidate.name?'is-invalid':''"
                 (keyup)="toValidate.name=false" />
@@ -125,7 +113,8 @@
             <div class="">
               <label for="exampleFormControlInput1">Facilities/ Remarks :</label>
               <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.remarks"
-                [(ngModel)]="dummy_addData.remarks" />
+                [(ngModel)]="dummy_addData.remarks"  [ngClass]="toValidate.remarks?'is-invalid':''"
+                (keyup)="toValidate.remarks=false"/>
             </div>
             <br />
             <div class="row">
@@ -168,10 +157,8 @@
                 [(ngModel)]="dummy_addData.location" />
             </div>
             <br />
-
           </div>
         </div>
-
         <br />
       </div>
       <div class="modal-footer">
@@ -188,12 +175,11 @@
           aria-hidden="true">
           <i class="fas fa-times">&nbsp;</i>Close
         </button>
-        <button type="button" *ngIf="visible" (click)="AddHealthHospital()" id="closeModal" class="btn btn-success">
-          <i class="fas fa-plane-departure">&nbsp;</i>ADD
+        <button type="button" *ngIf="visible" (click)="AddHealthHospital()" id="closeModal" class="btn btn-primary">
+          Submit
         </button>
-        <button type="button" *ngIf="not_visible" (click)="EditHealthHospital()" data-toggle="modal"
-          data-target="#exampleModal" aria-hidden="true" class="btn btn-primary">
-          <i class="fas fa-edit">&nbsp;</i>UPDATE
+        <button type="button" *ngIf="not_visible" (click)="EditHealthHospital()" aria-hidden="true" class="btn btn-primary">
+          Save changes
         </button>
       </div>
     </div>

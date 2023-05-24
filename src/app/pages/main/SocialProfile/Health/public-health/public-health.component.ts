@@ -71,14 +71,11 @@ export class PublicHealthComponent implements OnInit {
   }
 
   AddHealthWorkers() {
-
-
     if (!isEmptyObject(this.data)) {
       this.data.setYear = this.setYear;
       this.data.munCityId = this.munCityId;
       this.service.AddHealthWorkers(this.data).subscribe(
         {
-
           next: (request) => {
             this.GetHealthWorkers();
           },
@@ -111,8 +108,8 @@ export class PublicHealthComponent implements OnInit {
       );
     }
 
+}
 
-  }
 
   EditHealthWorkers() {
 
@@ -137,6 +134,7 @@ export class PublicHealthComponent implements OnInit {
             'Data Updated Successfully!',
             'success'
           );
+          document.getElementById("mEducation")?.click();
         }
       }
     )

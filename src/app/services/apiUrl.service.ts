@@ -152,7 +152,11 @@ export class ApiUrl {
     delete_agriculture   = (transId:any) => `/Agriculture/${transId}`;
 
 // SOCIAL-PROFILE
-
+    // Association
+    post_association      = ()=> `/Associations`;
+    put_association       = ()=> `/Associations`;
+    get_list_associations = (menuId:any, setYear:any, munCityId:any) => `/Associations/${menuId}/${setYear}/${munCityId}`;
+    delete_association    = (transId:any) => `/Associations/${transId}`;  
     // Education
     get_list_education = (menuId :any, setYear  :any,munCityId :any)=>`/Education/${menuId}/${setYear}/${munCityId}`;
     get_education      = (transId:any,)=>`/Education/${transId}`;
@@ -223,6 +227,16 @@ export class ApiUrl {
     post_safety_tanod     = ()=>`/SafetyTanod`;
     put_safety_tanod      = ()=>`/SafetyTanod`;
     delete_safety_tanod   = (transId:any)=>`/SafetyTanod/${transId}`;
+    //Housing -> HousingProject
+    get_list_housing_project = ( setYear  :any,munCityId :any)=>`/HousingProject/${setYear}/${munCityId}`;
+    post_housing_project     = ()=>`/HousingProject`;
+    put_housing_project      = ()=>`/HousingProject`;
+    delete_housing_project   = (transId:any)=>`/HousingProject/${transId}`;
+    //Housing -> HousingSubdv
+    get_list_housing_subdivision = ( setYear  :any,munCityId :any)=>`/HousingSubdv/${setYear}/${munCityId}`;
+    post_housing_subdivision     = ()=>`/HousingSubdv`;
+    put_housing_subdivision      = ()=>`/HousingSubdv`;
+    delete_housing_subdivision   = (transId:any)=>`/HousingSubdv/${transId}`;
 //ENVIRONMENT
     get_list_environment = (menuId :any, setYear  :any,munCityId :any)=>`/Environment/${menuId}/${setYear}/${munCityId}`;
     post_environment     = ()=>`/Environment`;
@@ -254,21 +268,26 @@ export class ApiUrl {
     delete_facilities   = (transId:any)=>`/ServiceFacilities/${transId}`;
 
 
-//Manufacturing Establishment
-get_list_transpo_road=(setYear:any, munCityId:any)=>`/TranspoRoads/${setYear}/${munCityId}`;
-post_save_transpo_road=()=>`/TranspoRoads`;
-put_update_transpo_road=()=>`/TranspoRoads`;
-delete_transpo_road=(transId:any)=>`/TranspoRoads/${transId}`;
+    //Manufacturing Establishment
+    get_list_transpo_road=(setYear:any, munCityId:any)=>`/TranspoRoads/${setYear}/${munCityId}`;
+    post_save_transpo_road=()=>`/TranspoRoads`;
+    put_update_transpo_road=()=>`/TranspoRoads`;
+    delete_transpo_road=(transId:any)=>`/TranspoRoads/${transId}`;
 
-get_list_transpo_bridge=(setYear:any, munCityId:any)=>`/TranspoBridges/${setYear}/${munCityId}`;
-post_save_transpo_bridge=()=>`/TranspoBridges`;
-put_update_transpo_bridge=()=>`/TranspoBridges`;
-delete_transpo_bridge=(transId:any)=>`/TranspoBridges/${transId}`;
+    get_list_transpo_bridge=(setYear:any, munCityId:any)=>`/TranspoBridges/${setYear}/${munCityId}`;
+    post_save_transpo_bridge=()=>`/TranspoBridges`;
+    put_update_transpo_bridge=()=>`/TranspoBridges`;
+    delete_transpo_bridge=(transId:any)=>`/TranspoBridges/${transId}`;
 
-get_list_transpo_terminal=(setYear:any, munCityId:any)=>`/TranspoTerminals/${setYear}/${munCityId}`;
-post_save_transpo_terminal=()=>`/TranspoTerminals`;
-put_update_transpo_terminal=()=>`/TranspoTerminals`;
-delete_transpo_terminal=(transId:any)=>`/TranspoTerminals/${transId}`;
+    get_list_transpo_terminal=(setYear:any, munCityId:any)=>`/TranspoTerminals/${setYear}/${munCityId}`;
+    post_save_transpo_terminal=()=>`/TranspoTerminals`;
+    put_update_transpo_terminal=()=>`/TranspoTerminals`;
+    delete_transpo_terminal=(transId:any)=>`/TranspoTerminals/${transId}`;
+    
+    post_port     = ()=> `/TranspoPorts`;
+    put_port      = ()=> `/TranspoPorts`;
+    get_list_port = (setYear :any, munCityId :any)=> `/TranspoPorts/${setYear }/${munCityId  }`;
+    delete_port   = (transId :any) => `/TranspoPorts/${transId}`;  
 
     // Service_Station
     get_list_station = (menuId :any, setYear  :any,munCityId :any)=>`/ServiceStations/${menuId}/${setYear}/${munCityId}`;

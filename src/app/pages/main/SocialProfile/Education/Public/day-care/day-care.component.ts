@@ -177,7 +177,7 @@ export class DayCareComponent implements OnInit {
         },
         complete: () =>
         {
-          this.closebutton.nativeElement.click();
+          // this.closebutton.nativeElement.click();
           Swal.fire({
             position: 'center',
             icon: 'success',
@@ -185,6 +185,8 @@ export class DayCareComponent implements OnInit {
             showConfirmButton: false,
             timer: 1000
             });
+            document.getElementById("mEducation")?.click();
+
         }
       }
     )

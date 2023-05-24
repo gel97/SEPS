@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { HealthHandicapService } from 'src/app/shared/SocialProfile/Health/healthHandicap.service';
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
+import { isEmptyObject } from 'jquery';
 
 @Component({
   selector: 'app-person-disability',
@@ -10,165 +11,194 @@ import { Observable } from 'rxjs';
   styleUrls: ['./person-disability.component.css'],
 })
 export class PersonDisabilityComponent implements OnInit {
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void; }; };
+
   constructor(
-    private Auth: AuthService,
+    private auth: AuthService,
     private service: HealthHandicapService
   ) {}
 
-  setYear = Number(this.Auth.activeSetYear);
-  munCityId = this.Auth.munCityId;
+  list_of_type = [
+    { id: 1, type: 'Hearing Impaired' },
+    { id: 2, type: 'Visually Impaired - Blindness' },
+    { id: 3, type: 'Visually Impaired - Low Vision' },
+    { id: 4, type: 'Intellectually Disabled' },
+    { id: 5, type: 'Physically Handicapped' },
+    { id: 6, type: 'Communication Disorder' },
+    { id: 7, type: 'Cerebral Palsy' },
+    { id: 8, type: 'Special Health Problem' },
+    { id: 9, type: 'Hairlip' },
+    { id: 10, type: 'Amputee' },
+    { id: 11, type: 'Polio' },
+    { id: 12, type: 'Orthopedic' },
+    { id: 13, type: 'Down Syndrom' },
+    { id: 14, type: 'Hearing & Speech Disability' },
+    { id: 15, type: 'Down Syndrom' },
+    { id: 16, type: 'Autism' },
+    { id: 17, type: 'Psychosocial Disability' },
+    { id: 18, type: 'Speech Impairment' },
+    { id: 19, type: 'Chronic Illness due to Mastectomy' },
+    { id: 20, type: 'Learning Disability' },
+    { id: 21, type: 'Dwarfism' },
+    { id: 22, type: "Gifted & Talented (hearing impaired, visually impaired, CWA, LD, intellectual disability)"},
+    { id: 23, type: 'Not Specified' },
+  ];
+
+  munCityName: string = this.auth.munCityName;
+  listHandi: any = [];
+  listBarangay: any = [];
+  isAdd: boolean = false;
   listData: any = [];
-  addData: any = {};
-  editData: any = {};
-  listBarangayData: any = [];
-  idCounter: number = 1;
-  updateForm: boolean = false;
-
+  data: any = {};
   ngOnInit(): void {
-    this.resetForm();
+    this.Init();
+  }
+
+  Init() {
     this.GetHealthHandicap();
-    this.getListOfBarangay();
-  }
-  resetForm(): void {
-    this.addData = {}; // Reset the form fields here
+    this.GetListBarangay();
   }
 
-  GetHealthHandicap(): void {
-    this.service.GetHealthHandicap(this.setYear, this.munCityId).subscribe({
+  GetHealthHandicap() {
+    this.service
+      .GetHealthHandicap(this.auth.setYear, this.auth.munCityId)
+      .subscribe({
+        next: (response) => {
+          this.listHandi = (<any>response);
+        },
+        error: (error) => {
+        },
+        complete: () => {
+          this.GetListBarangay();
+        }
+      });
+  }
+
+  GetListBarangay() {
+    this.service.ListOfBarangay(this.auth.munCityId).subscribe({
       next: (response) => {
-        this.listData = response;
+        this.listBarangay = (<any>response);
       },
-      error: (err) => {
-        console.log(err);
+      error: (error) => {
       },
       complete: () => {
-        console.log('GetHealthHandicap() completed.');
-      },
-    });
-  }
-
-  AddHealthHandicap(addData: any): void {
-    addData.setYear = Number(this.setYear);
-    addData.id = this.idCounter++;
-    // console.log(addData);
-    this.service.AddHealthHandicap(addData).subscribe({
-      next: (response) => {
-        this.listData.push(response);
-        console.log(response);
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'Your work has been saved',
-          showConfirmButton: false,
-          timer: 1000,
-        });
-      },
-      error: (err) => {
-        console.log(err);
-        Swal.fire({
-          position: 'center',
-          icon: 'error',
-          title: 'Something went wrong!',
-          text: err.message,
-          showConfirmButton: false,
-          timer: 3000,
-        });
-      },
-      complete: () => {
-        console.log('AddHealthHandicap() completed.');
-      },
-    });
-  }
-
-  EditHealthHandicap(addData: any): void {
-    this.service.EditHealthHandicap(addData).subscribe({
-      next: (response) => {
-        this.GetHealthHandicap();
-        //this.listData.push(response);
-        // console.log(response);
-        console.log(response);
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'Your work has been updated',
-          showConfirmButton: false,
-          timer: 1000,
-        });
-        this.resetForm();
-      },
-      error: (err) => {
-        console.log(err);
-        Swal.fire({
-          position: 'center',
-          icon: 'error',
-          title: 'Something went wrong!',
-          text: err.message,
-          showConfirmButton: false,
-          timer: 3000,
-        });
-      },
-      complete: () => {
-        console.log('UpdateHealthMalnutrition() completed.');
-      },
-    });
-  }
-
-  DeleteHealthHandicap(id: any): void {
-    Swal.fire({
-      title: 'Are you sure you want to delete this health facility?',
-      text: 'This action cannot be undone.',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'Cancel',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.service.DeleteHealthHandicap(id).subscribe({
-          next: (response) => {
-            const index = this.listData.findIndex((d: any) => d.transId === id);
-            //console.log(index);
-            this.deleteData(id);
-            this.listData.splice(index, 1);
-            console.log(response);
-            Swal.fire({
-              position: 'center',
-              icon: 'success',
-              title: 'The health facility has been deleted',
-              showConfirmButton: false,
-              timer: 1000,
-            });
-          },
-          error: (err) => {
-            console.log(err);
-            Swal.fire({
-              position: 'center',
-              icon: 'error',
-              title: 'Something went wrong!',
-              text: err.message,
-              showConfirmButton: false,
-              timer: 3000,
-            });
-          },
-          complete: () => {
-            console.log('DeleteHealthHandicap() completed.');
-          },
-        });
+        this.FilterList();
       }
     });
   }
 
-  deleteData(id: number) {
-    this.listData = this.listData.filter(
-      (data: { id: number }) => data.id !== id
-    );
-  }
+  FilterList() {
+    let isExist;
+    this.listData = [];
 
-  getListOfBarangay(): void {
-    this.service.ListOfBarangay(this.munCityId).subscribe((response) => {
-      console.log('Barangay: ', response);
-      this.listBarangayData = response;
+    this.listBarangay.forEach((a: any) => {
+      this.listHandi.forEach((b: any) => {
+        if (a.brgyId == b.brgyId) {
+          isExist = this.listData.filter((x: any) => x.brgyId == a.brgyId);
+          if (isExist.length == 0) {
+            this.listData.push(b);
+          }
+        }
+      });
+
+      isExist = this.listData.filter((x: any) => x.brgyId == a.brgyId);
+      if (isExist.length == 0) {
+        this.listData.push({
+          'brgyId': a.brgyId,
+          'brgyName': a.brgyName
+        });
+      } 
     });
   }
+
+  AddData() {
+    if(isEmptyObject(this.data)){
+      Swal.fire(
+        'Missing Data!',
+        'Please fill out the required fields',
+        'warning'
+      );
+    }
+    else{
+      this.data.munCityId = this.auth.munCityId;
+      this.data.setYear = this.auth.activeSetYear;
+      this.service.AddHealthHandicap(this.data).subscribe({
+        next: (request) => {
+          let index = this.listData.findIndex((obj: any) => obj.brgyId === this.data.brgyId);
+          this.listData[index] = request;
+        },
+        complete: () => {
+          this.data = {};
+          this.closebutton.nativeElement.click();
+
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Your work has been saved',
+            showConfirmButton: false,
+            timer: 1000
+          });
+        }
+      });
+    }
+  }
+
+  EditData() {
+      this.data.setYear = this.auth.activeSetYear;
+      this.service.EditHealthHandicap(this.data).subscribe({
+        next: (request) => {
+          this.closebutton.nativeElement.click();
+          this.data = {};
+        },
+        complete: () => {
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Your work has been updated',
+            showConfirmButton: false,
+            timer: 1000
+          });
+        }
+      });
+}
+
+DeleteData(transId: any, index: any, data:any) {
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.service.DeleteHealthHandicap(transId).subscribe({
+        next: (_data) => {
+        },
+        error: (err) => {
+          Swal.fire(
+            'Oops!',
+            'Something went wrong.',
+            'error'
+          )
+        },
+        complete: () => {
+          this.listData[index] = {};
+          this.listData[index].brgyId = data.brgyId;
+          this.listData[index].brgyName = data.brgyName;
+          Swal.fire(
+            'Deleted!',
+            'Your file has been deleted.',
+            'success'
+          )
+        }
+
+      });
+
+    }
+  })
+}
+
 }

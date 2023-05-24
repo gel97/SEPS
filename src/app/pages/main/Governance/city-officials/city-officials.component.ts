@@ -138,6 +138,7 @@ export class CityOfficialsComponent implements OnInit {
       showConfirmButton: false,
       timer: 1000
     });
+    document.getElementById("exampleModalLong")?.click();
     this. getOfficials();
   }
 }

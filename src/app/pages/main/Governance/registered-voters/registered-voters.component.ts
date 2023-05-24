@@ -143,6 +143,8 @@ export class RegisteredVotersComponent implements OnInit {
       timer: 1000
     });
     this.editmodal = {};
+    document.getElementById("ModalEdit")?.click();
+
   }
 }
 

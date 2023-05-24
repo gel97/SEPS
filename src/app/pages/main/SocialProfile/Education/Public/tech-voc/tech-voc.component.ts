@@ -176,12 +176,14 @@ export class TechVocComponent implements OnInit {
         },
         complete: () =>
         {
-          this.closebutton.nativeElement.click();
+          // this.closebutton.nativeElement.click();
            Swal.fire(
             'Good job!',
             'Data Updated Successfully!',
             'success'
             );
+            document.getElementById("mEducation")?.click();
+
         }
       }
     )

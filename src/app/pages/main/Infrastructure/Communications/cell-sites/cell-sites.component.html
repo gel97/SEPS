@@ -175,10 +175,10 @@
             </label>
           </div>
         </div>
-
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="Add_cell?   Add_CellSites(): Update_CellSites()">Save
+        <button type="button" class="btn btn-primary" (click)="Add_cell?   Add_CellSites(): Update_CellSites()"><i class ="fa fa-check"></i>Save
           changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i clas ="fa fa-times"></i>Cancel</button>
+
       </div>
     </div>
   </div>
@@ -201,8 +201,9 @@
       </div>
       <div class="modal-footer">
         <app-admin>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="Update_CellSites()">Save changes</button>
+          <button type="button" class="btn btn-primary" (click)="Update_CellSites()"><i class ="fa fa-check"></i>Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class ="fa fa-times"></i>Close</button>
+
       </app-admin>
       </div>
     </div>

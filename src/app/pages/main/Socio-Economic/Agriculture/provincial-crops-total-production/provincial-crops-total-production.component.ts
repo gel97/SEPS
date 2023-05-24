@@ -131,6 +131,7 @@ toValidate:any={};
       showConfirmButton: false,
       timer: 1000
       });
+      document.getElementById("ModalAdd")?.click();
       this.commo = {};
     }
   }

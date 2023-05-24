@@ -94,7 +94,6 @@ export class PubSecondaryComponent implements OnInit {
     this.toValidate.classesNo = this.secondary.classesNo=="" || this.secondary.classesNo ==null?true:false;
     this.toValidate.brgyId = this.secondary.brgyId=="" || this.secondary.brgyId ==null?true:false;
 
-
     this.secondary.menuId    = this.menuId;
     this.secondary.setYear   = this.setYear;
     this.secondary.munCityId = this.munCityId;
@@ -172,12 +171,14 @@ export class PubSecondaryComponent implements OnInit {
         },
         complete: () =>
         {
-          this.closebutton.nativeElement.click();
+          // this.closebutton.nativeElement.click();
            Swal.fire(
             'Good job!',
             'Data Updated Successfully!',
             'success'
             );
+            document.getElementById("mEducation")?.click();
+
         }
       }
     )

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { HealthSanitaryService } from 'src/app/shared/SocialProfile/Health/healthSanitary.service';
 import Swal from 'sweetalert2';
@@ -12,165 +12,176 @@ import { Observable } from 'rxjs';
 export class SanitaryFacilitiesComponent implements OnInit {
   constructor(
     private Auth: AuthService,
-    private service: HealthSanitaryService
-  ) { }
+    private Service: HealthSanitaryService
+  ) {}
 
-  setYear = Number(this.Auth.activeSetYear);
+  isCheck: boolean = false;
+
+  onChange(isCheck: boolean) {
+    this.isCheck = isCheck;
+    console.log('isCheck:', this.isCheck);
+  }
+
+  munCityName: string = this.Auth.munCityName;
+  dataList: any = [];
+  setYear = this.Auth.activeSetYear;
   munCityId = this.Auth.munCityId;
-
-  listData: any = [];
+  barangayList: any = [];
   addData: any = {};
-  editData: any = {};
-  listBarangayData: any = [];
-  idCounter: number = 1;
-
-  updateForm: boolean = false;
+  dummy_addData = 'string';
+  dummyData: any = {};
+  visible: boolean = true;
+  not_visible: boolean = true;
+  //required == not_visible
+  required: boolean = true;
+  latitude: any;
+  longtitude: any;
+  checker_brgylist: any = {};
+  toValidate: any = {};
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void } };
 
   ngOnInit(): void {
-    this.resetForm();
     this.GetHealthSanitary();
-    this.getListOfBarangay();
-  }
-  resetForm(): void {
-    this.addData = {}; // Reset the form fields here
+    this.GetBarangayList();
   }
 
-  GetHealthSanitary(): void {
-    this.service.GetHealthSanitary(this.setYear, this.munCityId).subscribe({
-      next: (response) => {
-        this.listData = response;
-      },
-      error: (err) => {
-        console.log(err);
-      },
-      complete: () => {
-        console.log('GetHealthSanitary() completed.');
-      },
+  GetHealthSanitary() {
+    this.Service.GetHealthSanitary(this.setYear, this.munCityId).subscribe(
+      (response) => {
+        this.dataList = <any>response;
+        console.log('check', response);
+      }
+    );
+  }
+
+  GetBarangayList() {
+    this.Service.ListOfBarangay(this.munCityId).subscribe((response) => {
+      this.barangayList = <any>response;
+      console.log('barangay', response);
     });
   }
 
-  AddHealthSanitary(addData: any): void {
-    addData.setYear = Number(this.setYear);
-    addData.id = this.idCounter++;
-    // console.log(addData);
-    this.service.AddHealthSanitary(addData).subscribe({
-      next: (response) => {
-        this.listData.push(response);
-        console.log(response);
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'Your work has been saved',
-          showConfirmButton: false,
-          timer: 1000,
-        });
-      },
-      error: (err) => {
-        console.log(err);
-        Swal.fire({
-          position: 'center',
-          icon: 'error',
-          title: 'Something went wrong!',
-          text: err.message,
-          showConfirmButton: false,
-          timer: 3000,
-        });
-      },
-      complete: () => {
-        console.log('AddHealthSanitary() completed.');
-      },
-    });
+  findBrgyId(brgyId: any) {
+    return this.barangayList.find(
+      (item: { brgyId: any }) => item.brgyId === brgyId
+    );
   }
 
-  EditHealthSanitary(addData: any): void {
-    this.service.EditHealthSanitary(addData).subscribe({
-      next: (response) => {
-        this.GetHealthSanitary();
-        //this.listData.push(response);
-        // console.log(response);
-        console.log(response);
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'Your work has been updated',
-          showConfirmButton: false,
-          timer: 1000,
+  AddHealthSanitary() {
+    console.log('trap', this.addData);
+    console.log('brgyid', this.addData.brgyId);
+    this.dummy_addData = this.addData;
+    console.log('trap_2', this.dummy_addData);
+    this.toValidate.brgyId = this.addData.brgyId == '' || this.addData.brgyId == null ? true : false;
+    this.toValidate.householdNo = this.addData.householdNo == '' || this.addData.householdNo == null ? true : false;
+
+    if (this.toValidate.brgyId == true || this.toValidate.householdNo == true) {
+      Swal.fire('Missing Data!', 'Please fill out the required fields', 'warning');
+    } else {
+      if (
+        JSON.stringify(this.dummy_addData) != JSON.stringify(this.dummyData) &&
+        this.addData.brgyId != undefined
+      ) {
+        this.addData.setYear = this.setYear;
+        this.addData.munCityId = this.munCityId;
+        console.log('brgylist', this.barangayList);
+
+        const result = this.findBrgyId(this.addData.brgyId);
+        this.longtitude = result.longitude;
+        this.addData.longtitude = this.longtitude;
+        console.log('long', this.longtitude);
+        this.latitude = result.latitude;
+        this.addData.latitude = this.latitude;
+        console.log('lat', this.latitude);
+
+        this.Service.AddHealthSanitary(this.addData).subscribe((request) => {
+          if (!this.isCheck) {
+            this.closebutton.nativeElement.click();
+          }
+          console.log('add', request);
+          this.clearData();
+          this.GetHealthSanitary();
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Your work has been saved',
+            showConfirmButton: false,
+            timer: 1500,
+          });
         });
-        this.resetForm();
-      },
-      error: (err) => {
-        console.log(err);
+      } else {
+        this.required = true;
         Swal.fire({
-          position: 'center',
-          icon: 'error',
-          title: 'Something went wrong!',
-          text: err.message,
-          showConfirmButton: false,
-          timer: 3000,
+          icon: 'warning',
+          title: 'Oops...',
+          text: 'Missing data!',
         });
-      },
-      complete: () => {
-        console.log('UpdateHealthSanitary() completed.');
-      },
-    });
+      }
+    }
   }
 
-  DeleteHealthSanitary(id: any): void {
+  EditHealthSanitary() {
+    this.toValidate.brgyId = this.addData.brgyId == '' || this.addData.brgyId == null ? true : false;
+    this.toValidate.householdNo = this.addData.householdNo == '' || this.addData.householdNo == null ? true : false;
+
+    if (this.toValidate.brgyId == true || this.toValidate.householdNo == true) {
+      Swal.fire('Missing Data!', 'Please fill out the required fields', 'warning');
+    } else {
     Swal.fire({
-      title: 'Are you sure you want to delete this health facility?',
-      text: 'This action cannot be undone.',
+      title: 'Do you want to save the changes?',
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      denyButtonText: `Don't save`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        this.addData.setYear = this.setYear;
+        this.addData.munCityId = this.munCityId;
+        this.addData.tag = 1;
+        console.log('edit', this.addData);
+        this.Service.EditHealthSanitary(this.addData).subscribe((request) => {
+          console.log('edit', request);
+          this.GetHealthSanitary();
+        });
+        Swal.fire('Saved!', '', 'success');
+        document.getElementById("exampleModal")?.click();
+      } else if (result.isDenied) {
+        Swal.fire('Changes are not saved', '', 'info');
+      }
+    });
+  }
+}
+  DeleteHealthSanitary(dataItem: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'Cancel',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.service.DeleteHealthSanitary(id).subscribe({
-          next: (response) => {
-            const index = this.listData.findIndex((d: any) => d.transId === id);
-            //console.log(index);
-            this.deleteData(id);
-            this.listData.splice(index, 1);
-            console.log(response);
-            Swal.fire({
-              position: 'center',
-              icon: 'success',
-              title: 'The health facility has been deleted',
-              showConfirmButton: false,
-              timer: 1000,
-            });
-          },
-          error: (err) => {
-            console.log(err);
-            Swal.fire({
-              position: 'center',
-              icon: 'error',
-              title: 'Something went wrong!',
-              text: err.message,
-              showConfirmButton: false,
-              timer: 3000,
-            });
-          },
-          complete: () => {
-            console.log('DeleteHealthSanitary() completed.');
-          },
-        });
+        this.Service.DeleteHealthSanitary(dataItem.transId).subscribe(
+          (request) => {}
+        );
+        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+        this.ngOnInit();
       }
     });
   }
 
-  deleteData(id: number) {
-    this.listData = this.listData.filter(
-      (data: { id: number }) => data.id !== id
-    );
+  clearData() {
+    this.addData = {};
+    this.not_visible = false;
+    this.visible = true;
+    this.required = false;
   }
 
-  getListOfBarangay(): void {
-    this.service.ListOfBarangay(this.munCityId).subscribe((response) => {
-      console.log('Barangay: ', response);
-      this.listBarangayData = response;
-    });
+  editToggle() {
+    this.not_visible = true;
+    this.visible = false;
   }
 }

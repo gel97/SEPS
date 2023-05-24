@@ -190,6 +190,7 @@ edit_estab(edit_estab:any={}) {
     showConfirmButton: false,
     timer: 1000
     });
+    document.getElementById("ModalEdit")?.click();
     this.editmodal ={};
     }
   }

@@ -156,15 +156,16 @@
                 </div>
                 <app-admin>
                   <button type="button" *ngIf="visible" (click)="AddTourism()" id="closeModal" class="btn btn-primary ">
-                    <i class="fas fa-check">&nbsp;</i>Save
-                </button>
+                    <i class="fas fa-check"></i>Save
+                </button>&nbsp;
+                <button type="button" *ngIf="not_visible" (click)="EditTourism()"aria-hidden="true" class="btn btn-primary">
+                  <i class="fas fa-check"></i>Save Changes
+              </button>&nbsp;
                 <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal"
                     aria-hidden="true">
-                    <i class="fas fa-times">&nbsp;</i>Close
+                    <i class="fas fa-times">&nbsp;</i>Cancel
                 </button>
-                <button type="button" *ngIf="not_visible" (click)="EditTourism()"aria-hidden="true" class="btn btn-primary">
-                    <i class="fas fa-edit">&nbsp;</i>UPDATE
-                </button>
+
               </app-admin>
             </div>
         </div>
