@@ -31,6 +31,7 @@ export class CrimeStatComponent implements OnInit {
 
   idCounter: number = 1;
   updateForm: boolean = false;
+  hasData:boolean = false;
 
 
 
@@ -47,7 +48,15 @@ export class CrimeStatComponent implements OnInit {
   GetSafetyStatistics(): void {
     this.service.GetSafetyStatistics(this.setYear, this.munCityId).subscribe({
       next: (response) => {
-        this.listData = response;
+        if(response.length >0)
+        {
+          this.listData = response;
+
+          this.hasData = true;
+        }
+        else{
+          this.hasData = false;
+        }
       },
       error: (err) => {
         console.log(err);
@@ -153,6 +162,7 @@ export class CrimeStatComponent implements OnInit {
             const index = this.listData.findIndex((d: any) => d.transId === id);
             this.deleteData(id);
             this.listData.splice(index, 1);
+            this.hasData = false;
             Swal.fire({
               position: 'center',
               icon: 'success',
