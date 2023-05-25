@@ -90,7 +90,8 @@
                 [ngClass]="toValidate.name?'is-invalid':''" (keyup)="toValidate.name=false" />
             </div>
             <br />
-            <div class="">
+            <div class="row">
+            <div class="col-lg-4">
               <label for="category">Barangay :</label>
               <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.brgyId"
                 [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false">
@@ -99,11 +100,12 @@
                 </option>
               </select>
             </div><br>
-            <div class="">
+            <div class="col-lg-8">
               <label for="exampleFormControlTextarea1">Location (Street/Purok/Barangay) :</label>
-              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
+              <textarea class="form-control" id="exampleFormControlTextarea1" rows="2"
                 [(ngModel)]="addData.location"></textarea>
             </div>
+          </div>
           </div>
         </div>
         <div class="row">

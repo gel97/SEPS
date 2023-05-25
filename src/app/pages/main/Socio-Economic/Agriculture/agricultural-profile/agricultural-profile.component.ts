@@ -95,15 +95,16 @@ AddAgricultureProfile() {
       'Good job!',
       'Data Added Successfully!',
       'success'
-
     );
+
     if (this.isCheck) {
       document.getElementById("mEducation")?.click();
     }
     console.log(_data);
     this.clearData();
-    this.addData();
+    // this.addData();
     this.GetListAgricultureProfile();
+
 
 
   },err=>{

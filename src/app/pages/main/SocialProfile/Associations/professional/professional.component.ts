@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 })
 
 export class ProfessionalComponent implements OnInit {
+  munCityName: string = this.Auth.munCityName;
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;
 
@@ -77,7 +78,7 @@ export class ProfessionalComponent implements OnInit {
 
   AddAssociation(addData: any): void {
     this.toValidate.brgyId = this.addData.brgyId == "" || this.addData.brgyId == null ? true : false;
-    this.toValidate.name = this.addData.estabName == "" || this.addData.name == undefined ? true : false;
+    this.toValidate.name = this.addData.name == "" || this.addData.name == undefined ? true : false;
 
 
     if (this.toValidate.brgyId == true || this.toValidate.name == true) {
@@ -104,7 +105,9 @@ export class ProfessionalComponent implements OnInit {
                 showConfirmButton: false,
                 timer: 1000,
             });
+            this.GetAssociation();
             this.resetForm();
+            document.getElementById("mAdd")?.click();
         },
         error: (err) => {
             console.log(err);
@@ -128,7 +131,7 @@ export class ProfessionalComponent implements OnInit {
 
   EditAssociation(): void {
     this.toValidate.brgyId = this.addData.brgyId == "" || this.addData.brgyId == null ? true : false;
-    this.toValidate.name = this.addData.estabName === '' || this.addData.name == undefined ? true : false;
+    this.toValidate.name = this.addData.name === '' || this.addData.name == undefined ? true : false;
     if (this.toValidate.brgyId == true || this.toValidate.name == true) {
       Swal.fire(
         '',
@@ -153,6 +156,7 @@ export class ProfessionalComponent implements OnInit {
             showConfirmButton: false,
             timer: 1000,
           });
+          document.getElementById("mAdd")?.click();
           this.resetForm();
         },
         error: (err) => {

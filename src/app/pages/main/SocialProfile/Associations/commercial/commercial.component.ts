@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 })
 
 export class CommercialComponent implements OnInit {
+  munCityName: string = this.Auth.munCityName;
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;
 
@@ -57,7 +58,7 @@ export class CommercialComponent implements OnInit {
       data.longtitude = this.longtitude;
       data.latitude = this.latitude;
     }
-    
+
     this.markerObj = {
       lat: data.latitude,
       lng: data.longtitude,
@@ -95,12 +96,12 @@ export class CommercialComponent implements OnInit {
 
   AddAssociation(addData: any): void {
     this.toValidate.brgyId = this.addData.brgyId == "" || this.addData.brgyId == null ? true : false;
-    this.toValidate.name = this.addData.estabName == "" || this.addData.name == undefined ? true : false;
+    this.toValidate.name = this.addData.name == "" || this.addData.name == undefined ? true : false;
 
 
     if (this.toValidate.brgyId == true || this.toValidate.name == true) {
       Swal.fire(
-        '',
+        ' Missing Data!',
         'Please fill out the required fields',
         'warning'
       );
@@ -123,6 +124,7 @@ export class CommercialComponent implements OnInit {
                 timer: 1000,
             });
             this.resetForm();
+            document.getElementById("mAdd")?.click();
         },
         error: (err) => {
             console.log(err);
@@ -189,12 +191,12 @@ export class CommercialComponent implements OnInit {
   EditAssociation(): void {
 
     this.toValidate.brgyId = this.addData.brgyId == "" || this.addData.brgyId == null ? true : false;
-    this.toValidate.name = this.addData.estabName === '' || this.addData.name == undefined ? true : false;
+    this.toValidate.name = this.addData.name === '' || this.addData.name == undefined ? true : false;
 
 
     if (this.toValidate.brgyId == true || this.toValidate.name == true) {
       Swal.fire(
-        '',
+        'Missing Data!',
         'Please fill out the required fields',
         'warning'
       );
@@ -227,6 +229,7 @@ export class CommercialComponent implements OnInit {
             showConfirmButton: false,
             timer: 1000,
           });
+          document.getElementById("mAdd")?.click();
           this.resetForm();
         },
         error: (err) => {

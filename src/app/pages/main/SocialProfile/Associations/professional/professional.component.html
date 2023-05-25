@@ -7,6 +7,7 @@
           <div class="p-5">
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-4">Professional Organizations</h1>
+              <label><strong>Associations / NGOs - Municipality of {{munCityName}} </strong></label><br>
             </div>
             <div class="form-inline float-right ">
               <app-admin>
@@ -16,7 +17,7 @@
                 </button>
               </app-admin>
             </div>
-            
+
             <br>
             <label>List of Professional Organizations</label>
             <div class="table-responsive">
@@ -67,7 +68,7 @@
                           (click)="DeleteAssociation(data.transId)"><i class="fa fa-trash"></i>
                         </button>&nbsp;
                       </app-admin>
-                      </div>       
+                      </div>
                       <!-- <div class="d-inline-flex">
                         <app-admin>
                           <button class="btn btn-info btn-circle" style="display: inline-block"
@@ -129,35 +130,7 @@
               </div>
               <br>
               <div class="row">
-                <div class="col-lg-12">
-                  <label for="exampleFormControlInput1">Remarks :</label>
-                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" [(ngModel)]="addData.remarks"
-                    [ngModelOptions]="{ standalone: true }"></textarea>
-                </div>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="row">
-                <div class="col-lg-4">
-                  <label for="exampleFormControlInput1">Contact Person :</label>
-                  <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.contactPerson"
-                    [ngModelOptions]="{ standalone: true }">
-                </div>
-                <div class="col-lg-4">
-                  <label for="category">Contact Details :</label>
-                  <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.contactNo"
-                    [ngModelOptions]="{ standalone: true }">
-                </div>
-                <div class="col-lg-4">
-                  <label for="category">Total Assets :</label>
-                  <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="addData.totalAssets"
-                    [ngModelOptions]="{ standalone: true }">
-                </div>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="row">
-                <div class="col-lg-4">
+                <div class="col-lg-6">
                   <label for="category">Barangay :</label>
                   <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.brgyId"
                     [ngModelOptions]="{ standalone: true }" [ngClass]="toValidate.brgyId?'is-invalid':''"
@@ -166,18 +139,50 @@
                     </option>
                   </select>
                 </div>
+                <div class="col-lg-6">
+                  <label for="category">Total Assets :</label>
+                  <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="addData.totalAssets"
+                    [ngModelOptions]="{ standalone: true }">
+                </div>
+              </div>
+
+
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-lg-6">
+                  <label for="exampleFormControlInput1">Contact Person :</label>
+                  <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.contactPerson"
+                    [ngModelOptions]="{ standalone: true }">
+                </div>
+                <div class="col-lg-6">
+                  <label for="category">Contact Details :</label>
+                  <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.contactNo"
+                    [ngModelOptions]="{ standalone: true }">
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-12">
+                    <label for="exampleFormControlInput1">Remarks :</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" [(ngModel)]="addData.remarks"
+                      [ngModelOptions]="{ standalone: true }"></textarea>
+                  </div>
+                </div>
               </div>
             </div>
+
           </app-admin>
-    
+
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button type="button" *ngIf="updateForm==false" (click)="AddAssociation(addData)"
-          class="btn btn-primary">Submit</button>
+        class="btn btn-primary"><i class="fa fa-check"></i>Save</button>
+        <button type="button"  *ngIf="updateForm==false" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
+
         <button type="button" *ngIf="updateForm==true" (click)="EditAssociation()"
-          class="btn btn-primary">Update</button>
+          class="btn btn-primary"><i class="fa fa-check"></i>Save changes</button>
+          <button type="button"  *ngIf="updateForm==true" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Cancel</button>
       </div>
     </div>
   </div>
