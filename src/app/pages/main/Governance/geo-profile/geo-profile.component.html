@@ -30,222 +30,265 @@
 
     </div> -->
 
-   <!-- gmap modal area -->
-   <div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-   aria-hidden="true">
-   <div class="modal-dialog modal-lg" role="document">
-     <div class="modal-content">
-       <div class="modal-header">
-         <h5 class="modal-title" id="exampleModalLabel">SEPS GEOLOCATION TAGGING</h5>
-         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-           <span aria-hidden="true">&times;</span>
-         </button>
-       </div>
-       <div class="modal-body">
-         <app-gmap></app-gmap>
-       </div>
-     </div>
-   </div>
- </div>
+    <!-- gmap modal area -->
+    <div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">SEPS GEOLOCATION TAGGING</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <app-gmap></app-gmap>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="card-body p-0">
-          <!-- Nested Row within Card Body -->
-          <div class="row">
-              <div class="col-lg-12">
-                  <div class="p-5">
-                      <div class="col-lg-12">
-                        <div class="p-5">
+      <!-- Nested Row within Card Body -->
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="p-5">
+            <div class="col-lg-12">
+              <div class="p-5">
 
-                            <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4"> Physical / Geographic Profile</h1>
-                                <label><strong>Governance - Municipality of {{munCityName}} </strong></label><br>
-                            </div>
-                            <br>
-                          <form class= "user collapse show" id="collapseExample">
-                          <label class="labelTitles"><strong>1. Existing Land Use - Municipality of Asuncion</strong></label>
+                <div class="text-center">
+                  <h1 class="h4 text-gray-900 mb-4"> Physical / Geographic Profile</h1>
+                  <label><strong>Governance - Municipality of {{munCityName}} </strong></label><br>
+                </div>
+                <br>
+                <div class="table-responsive">
+                  <table class="table table-striped">
+                    <thead class="table-dark">
+                      <tr>
+                        <th style="width: 400px;">
+                          <strong>1. Existing Land Use - Municipality of Asuncion</strong>
+                        </th>
+                        <th>
 
-                              <div class="form-group">
-                                  <div class="row">
-                                      <div class="col-lg-3">
-                                          <label class="labelForm" for="geo_TLandArea">Total Land Area (Has):</label>
-                                      </div>
-                                      <div class="col-lg-9">
-                                        <input type="number" class="form-control" id="totalLandArea"  name ="totalLandArea"  [(ngModel)]="geo.totalLandArea" [disabled]="inputDisabled"   placeholder="" [ngClass]="toValidate.totalLandArea?'is-invalid':''" (keyup)="toValidate.totalLandArea=false">
-                                      </div><br>
-                                  </div><br>
-                                  <div class="row">
-                                      <div class="col-lg-3">
-                                          <label class="labelForm" for="geo_1AsOfYear">As of Year : </label>
-                                      </div>
-                                      <div class="col-lg-9">
-                                        <input type="number" class="form-control" id="setYear"  name ="setYear" [(ngModel)]="geo.setYear" [disabled]="inputDisabled" placeholder="" [(ngModel)]="geo.setYear" [disabled]="inputDisabled"   placeholder="" [ngClass]="toValidate.setYear?'is-invalid':''" (keyup)="toValidate.setYear=false">
-                                      </div><br>
-                                  </div>
-                                  <label class="labelTitles"><strong>Area in Hectares</strong></label>
-                                  <div class="row">
-                                      <div class="col-lg-3">
-                                          <label class="labelForm" for="geo_residential">a. Residential : </label>
-                                      </div>
-                                      <div class="col-lg-9">
-                                        <input type="number" class="form-control" id="residential"  name ="residential" [(ngModel)]="geo.residential" [disabled]="inputDisabled" placeholder="" [ngClass]="toValidate.residential?'is-invalid':''" (keyup)="toValidate.residential=false">
-                                      </div>
-                                  </div><br>
-                                  <div class="row">
-                                      <div class="col-lg-3">
-                                          <label class="labelForm" for="geo_Commercial">b. Commercial: </label>
-                                      </div>
-                                      <div class="col-lg-9">
-                                        <input type="number" class="form-control" id="commercial"  name ="commercial" [(ngModel)]="geo.commercial" [disabled]="inputDisabled" placeholder="" [ngClass]="toValidate.commercial?'is-invalid':''" (keyup)="toValidate.commercial=false">
-                                      </div>
-                                  </div><br>
-                                  <div class="row">
-                                      <div class="col-lg-3">
-                                          <label class="labelForm" for="geo_Industrial">c. Industrial : </label>
-                                      </div>
-                                      <div class="col-lg-9">
-                                        <input type="number" class="form-control" id="industrial"  name ="industrial" [(ngModel)]="geo.industrial" [disabled]="inputDisabled"   placeholder="" [ngClass]="toValidate.industrial?'is-invalid':''" (keyup)="toValidate.industrial=false">
-                                      </div>
-                                  </div><br>
-                                  <div class="row">
-                                      <div class="col-lg-3">
-                                          <label class="labelForm" for="geo_Agricultural">d. Agricultural: </label>
-                                      </div>
-                                      <div class="col-lg-9">
-                                        <input type="number" class="form-control" id="agricultural"  name ="agricultural" [(ngModel)]="geo.agricultural" [disabled]="inputDisabled"   placeholder="" [ngClass]="toValidate.agricultural?'is-invalid':''" (keyup)="toValidate.agricultural=false">
-                                      </div>
-                                  </div><br>
-                                  <div class="row">
-                                      <div class="col-lg-3">
-                                          <label class="labelForm" for="geo_Institutional">e. Institutional : </label>
-                                      </div>
-                                      <div class="col-lg-9">
-                                        <input type="number" class="form-control" id="institutional"  name ="institutional" [(ngModel)]="geo.institutional" [disabled]="inputDisabled"   placeholder="" [ngClass]="toValidate.institutional?'is-invalid':''" (keyup)="toValidate.institutional=false">
-                                      </div>
-                                  </div><br>
-                                  <div class="row">
-                                      <div class="col-lg-3">
-                                          <label class="labelForm" for="geo_ForestLands">f. Forest Lands : </label>
-                                      </div>
-                                      <div class="col-lg-9">
-                                        <input type="number" class="form-control" id="forestLand"  name ="forestLand" [(ngModel)]="geo.forestLand" [disabled]="inputDisabled"   placeholder="" [ngClass]="toValidate.forestLand?'is-invalid':''" (keyup)="toValidate.forestLand=false">
-                                      </div>
-                                  </div><br>
-                                  <div class="row">
-                                      <div class="col-lg-3">
-                                          <label class="labelForm" for="geo_OpenSpaces">g. Open Spaces : </label>
-                                      </div>
-                                      <div class="col-lg-9">
-                                        <input type="number" class="form-control" id="openSpaces"  name ="openSpaces" [(ngModel)]="geo.openSpaces" [disabled]="inputDisabled"  placeholder="" [ngClass]="toValidate.openSpaces?'is-invalid':''" (keyup)="toValidate.openSpaces=false">
-                                      </div>
-                                  </div><br>
-                                  <div class="row">
-                                      <div class="col-lg-3">
-                                          <label class="labelForm" for="geo_Fishpond">h. Fishpond : </label>
-                                      </div>
-                                      <div class="col-lg-9">
-                                        <input type="number" class="form-control" id="fishpond"  name ="fishpond" [(ngModel)]="geo.fishpond" [disabled]="inputDisabled"  placeholder="" [ngClass]="toValidate.fishpond?'is-invalid':''" (keyup)="toValidate.fishpond=false">
-                                      </div>
-                                  </div><br>
-                                  <div class="row">
-                                      <div class="col-lg-3">
-                                          <label class="labelForm" for="geo_QuarryAreas">i. Quarry Areas : </label>
-                                      </div>
-                                      <div class="col-lg-9">
-                                        <input type="number" class="form-control" id="quarryAreas"  name ="quarryAreas" [(ngModel)]="geo.quarryAreas" [disabled]="inputDisabled"   placeholder="" [ngClass]="toValidate.quarryAreas?'is-invalid':''" (keyup)="toValidate.quarryAreas=false">
-                                      </div>
-                                  </div><br>
-                                  <div class="row">
-                                      <div class="col-lg-3">
-                                          <label class="labelForm" for="geo_OtherUses">j. Other Uses : </label>
-                                      </div>
-                                      <div class="col-lg-9">
-                                        <input type="text" class="form-control" id="otherUses"  name ="otherUses" [(ngModel)]="geo.otherUses" [disabled]="inputDisabled"   placeholder="" [ngClass]="toValidate.otherUses?'is-invalid':''" (keyup)="toValidate.otherUses=false">
-                                      </div>
-                                  </div><br>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <label class="labelForm" for="geo_TLandArea">Total Land Area (Has):</label>
 
-                                  <label class="labelTitles"><strong>2. Land Reclassification</strong></label>
-                                  <div class="row">
-                                      <div class="col-lg-3">
-                                          <label class="labelForm" for="geo_TAreaReclassified">Total Area Reclassified : </label>
-                                      </div>
-                                      <div class="col-lg-9">
-                                        <input type="text" class="form-control" id="reclassified"  name ="reclassified" [(ngModel)]="geo.reclassified" [disabled]="inputDisabled"   placeholder="" [ngClass]="toValidate.reclassified?'is-invalid':''" (keyup)="toValidate.reclassified=false">
-                                      </div><br>
-                                  </div><br>
-                                  <!-- <div class="row">
-                                      <div class="col-lg-3">
-                                          <label class="labelForm" for="geo_2AsOfYear">As of Year : </label>
-                                      </div>
-                                      <div class="col-lg-9">
-                                          <input  type="number"class="seqInputBox" id="geo_2AsOfYear">
-                                      </div><br>
-                                  </div><br> -->
-                                  <div class="row">
-                                      <div class="col-lg-3">
-                                          <label class="labelForm" for="geo_Remarks">Remarks : </label>
-                                      </div>
-                                      <div class="col-lg-9">
-                                        <input type="text"  class="form-control" id="remarks" name = "remarks" [(ngModel)]="geo.remarks" [disabled]="inputDisabled"  placeholder="" >
-                                      </div><br>
-                                  </div><br>
-                              </div>
-                            </form>
-                            <div class ="form-inline float-right ">
-                            <div class="d-inline-flex">
-                                <button type="button" class="btn btn-primary" *ngIf="!ViewGeo"
-                                (click)="AddGeo()" ><i class ="fa fa-plus"></i>Save Data</button>
-                                <div *ngIf="ViewGeo">
-                                  <button type="button" title="Edit" (click)="editgeo=geo" class="btn btn-info btn-circle" data-toggle="modal" data-target="#exampleModalLong" ><i class="fa fa-pen"></i> </button>&nbsp;
-                                  <button type="button" title="Delete" (click)="delete(geo.transId)" class="btn btn-warning btn-circle "><i class="fa fa-trash"></i></button>&nbsp;
-                                <button (click)="SetMarker(munCity)" class="btn btn-success btn-circle" role="button"
-                                data-toggle="modal" data-target="#gmapModal"><i class="fa fa-globe"></i></button>
-                                </div>
-                                </div>
-                                </div>
+                        </td>
+                        <td>
+                          <input type="number" class="form-control" id="totalLandArea" name="totalLandArea"
+                            [(ngModel)]="geo.totalLandArea" [disabled]="inputDisabled" placeholder=""
+                            [ngClass]="toValidate.totalLandArea?'is-invalid':''"
+                            (keyup)="toValidate.totalLandArea=false">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <label class="labelForm" for="geo_1AsOfYear">As of Year : </label>
+                        </td>
+                        <td>
+                          <input type="number" class="form-control" id="setYear" name="setYear"
+                            [(ngModel)]="geo.setYear" [disabled]="inputDisabled" placeholder=""
+                            [(ngModel)]="geo.setYear" [disabled]="inputDisabled" placeholder=""
+                            [ngClass]="toValidate.setYear?'is-invalid':''" (keyup)="toValidate.setYear=false">
 
-                        </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table class="table table-striped">
+                    <thead class="table-dark">
+                      <tr>
+                        <th style="width: 400px;">
+                          <strong><strong>Area in Hectares</strong></strong>
+                        </th>
+                        <th>
+
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <label class="labelForm" for="geo_residential">a. Residential : </label>
+
+                        </td>
+                        <td>
+                          <input type="number" class="form-control" id="residential" name="residential"
+                            [(ngModel)]="geo.residential" [disabled]="inputDisabled" placeholder=""
+                            [ngClass]="toValidate.residential?'is-invalid':''" (keyup)="toValidate.residential=false">
+
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <label class="labelForm" for="geo_Commercial">b. Commercial: </label>
+
+                        </td>
+                        <td>
+                          <input type="number" class="form-control" id="commercial" name="commercial"
+                            [(ngModel)]="geo.commercial" [disabled]="inputDisabled" placeholder=""
+                            [ngClass]="toValidate.commercial?'is-invalid':''" (keyup)="toValidate.commercial=false">
+
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <label class="labelForm" for="geo_Industrial">c. Industrial : </label>
+
+                        </td>
+                        <td>
+                          <input type="number" class="form-control" id="industrial" name="industrial"
+                            [(ngModel)]="geo.industrial" [disabled]="inputDisabled" placeholder=""
+                            [ngClass]="toValidate.industrial?'is-invalid':''" (keyup)="toValidate.industrial=false">
+
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <label class="labelForm" for="geo_Agricultural">d. Agricultural: </label>
+
+                        </td>
+                        <td>
+                          <input type="number" class="form-control" id="agricultural" name="agricultural"
+                            [(ngModel)]="geo.agricultural" [disabled]="inputDisabled" placeholder=""
+                            [ngClass]="toValidate.agricultural?'is-invalid':''" (keyup)="toValidate.agricultural=false">
+
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <label class="labelForm" for="geo_Institutional">e. Institutional : </label>
+
+                        </td>
+                        <td>
+                          <input type="number" class="form-control" id="institutional" name="institutional"
+                            [(ngModel)]="geo.institutional" [disabled]="inputDisabled" placeholder=""
+                            [ngClass]="toValidate.institutional?'is-invalid':''"
+                            (keyup)="toValidate.institutional=false">
+
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <label class="labelForm" for="geo_ForestLands">f. Forest Lands : </label>
+
+                        </td>
+                        <td>
+                          <input type="number" class="form-control" id="forestLand" name="forestLand"
+                            [(ngModel)]="geo.forestLand" [disabled]="inputDisabled" placeholder=""
+                            [ngClass]="toValidate.forestLand?'is-invalid':''" (keyup)="toValidate.forestLand=false">
+
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <label class="labelForm" for="geo_OpenSpaces">g. Open Spaces : </label>
+
+                        </td>
+                        <td>
+                          <input type="number" class="form-control" id="openSpaces" name="openSpaces"
+                            [(ngModel)]="geo.openSpaces" [disabled]="inputDisabled" placeholder=""
+                            [ngClass]="toValidate.openSpaces?'is-invalid':''" (keyup)="toValidate.openSpaces=false">
+
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <label class="labelForm" for="geo_Fishpond">h. Fishpond : </label>
+
+                        </td>
+                        <td>
+                          <input type="number" class="form-control" id="fishpond" name="fishpond"
+                            [(ngModel)]="geo.fishpond" [disabled]="inputDisabled" placeholder=""
+                            [ngClass]="toValidate.fishpond?'is-invalid':''" (keyup)="toValidate.fishpond=false">
+
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <label class="labelForm" for="geo_QuarryAreas">i. Quarry Areas : </label>
+
+                        </td>
+                        <td>
+                          <input type="number" class="form-control" id="quarryAreas" name="quarryAreas"
+                            [(ngModel)]="geo.quarryAreas" [disabled]="inputDisabled" placeholder=""
+                            [ngClass]="toValidate.quarryAreas?'is-invalid':''" (keyup)="toValidate.quarryAreas=false">
+
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <label class="labelForm" for="geo_OtherUses">j. Other Uses : </label>
+
+                        </td>
+                        <td>
+                          <input type="text" class="form-control" id="otherUses" name="otherUses"
+                            [(ngModel)]="geo.otherUses" [disabled]="inputDisabled" placeholder=""
+                            [ngClass]="toValidate.otherUses?'is-invalid':''" (keyup)="toValidate.otherUses=false">
+
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table class="table table-striped">
+                    <thead class="table-dark">
+                      <tr>
+                        <th style="width: 400px;">
+                          <strong>2. Land Reclassification</strong>
+                        </th>
+                        <th>
+
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <label class="labelForm" for="geo_TAreaReclassified">Total Area Reclassified : </label>
+
+                        </td>
+                        <td>
+                          <input type="text" class="form-control" id="reclassified" name="reclassified"
+                            [(ngModel)]="geo.reclassified" [disabled]="inputDisabled" placeholder=""
+                            [ngClass]="toValidate.reclassified?'is-invalid':''" (keyup)="toValidate.reclassified=false">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <label class="labelForm" for="geo_Remarks">Remarks : </label>
+                        </td>
+                        <td>
+                          <input type="text" class="form-control" id="remarks" name="remarks" [(ngModel)]="geo.remarks"
+                            [disabled]="inputDisabled" placeholder="">
+
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                </div>
+
+                <div class="form-inline float-right ">
+                  <div class="d-inline-flex">
+                    <button type="button" class="btn btn-primary" *ngIf="!ViewGeo" (click)="AddGeo()"><i
+                        class="fa fa-plus"></i>Save Data</button>
+                    <div *ngIf="ViewGeo">
+                      <button type="button" title="Edit" (click)="editgeo=geo" class="btn btn-info btn-circle"
+                        data-toggle="modal" data-target="#exampleModalLong"><i class="fa fa-pen"></i> </button>&nbsp;
+                      <button type="button" title="Delete" (click)="delete(geo.transId)"
+                        class="btn btn-warning btn-circle "><i class="fa fa-trash"></i></button>&nbsp;
+                      <button (click)="SetMarker(munCity)" class="btn btn-success btn-circle" role="button"
+                        data-toggle="modal" data-target="#gmapModal"><i class="fa fa-globe"></i></button>
                     </div>
+                  </div>
+                </div>
 
-                      <div class="form-group">
-                        <div class ="row">
-                          <div class="row">
-
-                            </div>
-                        <!-- <table class="table table-framed table-hover table-striped">
-                            <thead>
-                                <tr>
-                                  <th></th>
-
-                                  <th scope="col">#</th>
-                                  <th scope="col">Name</th>
-                                  <th scope="col">Position</th>
-                                  <th scope="col">Contact Details</th>
-                                  <th scope="col">Term of Office</th>
-                                  <th></th>
-
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-
-                                  <td>{{ViewGeo.totalLandArea}}</td>
-                                  <td>{{ViewGeo.setYear}} </td>
-                                  <td>{{ViewGeo.residential}}</td>
-                                  <td>{{ViewGeo.commercial}} </td>
-                                  <td>{{ViewGeo.industrial}}</td>
-                                  <td>
-                                    <button type="button" title="Edit" (click)="geo=ViewGeo" class="btn btn-info" data-toggle="modal" data-target="#exampleModalLong" ><i class="fa fa-edit"></i> </button>&nbsp;
-
-
-                                  </td>
-                                </tr>
-                              </tbody>
-                          </table> -->
-
-
-
-                        </div>
-                         </div>
-
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -255,8 +298,9 @@
 
 
 <!-- Modal For Update -->
-<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle">Update your Data</h5>
@@ -265,143 +309,107 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="form-group">
-          <div class ="row">
+        <div class="row">
+          <div class="col-lg-6">
+            <label class="labelForm" for="geo_TLandArea">Total Land Area (Has): </label>
+            <input type="number" class="form-control mb-2" id="totalLandArea" name="totalLandArea"
+              [(ngModel)]="editgeo.totalLandArea" placeholder="" [ngClass]="toValidate.totalLandArea?'is-invalid':''"
+              (keyup)="toValidate.totalLandArea=false">
           </div>
-          <div class="row">
-
-            <div class="row">
-              <div class="col-lg-3"><br>
-                  <label class="labelForm" for="geo_TLandArea">Total Land Area (Has): </label>
-              </div>
-              <div class="col-lg-9"><br>
-                <input type="number" class="form-control" id="totalLandArea"  name ="totalLandArea"  [(ngModel)]="editgeo.totalLandArea"  placeholder="" [ngClass]="toValidate.totalLandArea?'is-invalid':''" (keyup)="toValidate.totalLandArea=false">
-              </div><br>
-          </div><br>
-          <div class="row">
-              <div class="col-lg-3"><br>
-                  <label class="labelForm" for="geo_1AsOfYear">As of Year : </label>
-              </div>
-              <div class="col-lg-9"><br>
-                <input type="number" class="form-control" id="setYear"  name ="setYear" [(ngModel)]="editgeo.setYear"  placeholder="" [ngClass]="toValidate.setYear?'is-invalid':''" (keyup)="toValidate.setYear=false">
-              </div><br>
+          <div class="col-lg-6">
+            <label class="labelForm" for="geo_1AsOfYear">As of Year : </label>
+            <input type="number" class="form-control mb-2" id="setYear" name="setYear" [(ngModel)]="editgeo.setYear"
+              placeholder="" [ngClass]="toValidate.setYear?'is-invalid':''" (keyup)="toValidate.setYear=false">
           </div>
-          <label class="labelTitles"><strong>Area in Hectares</strong></label>
-          <div class="row">
-              <div class="col-lg-3"><br>
-                  <label class="labelForm" for="geo_residential">a. Residential : </label>
-              </div>
-              <div class="col-lg-9"><br>
-                <input type="number" class="form-control" id="residential"  name ="residential" [(ngModel)]="editgeo.residential"  placeholder="" [ngClass]="toValidate.residential?'is-invalid':''" (keyup)="toValidate.residential=false">
-              </div>
-          </div><br>
-          <div class="row">
-              <div class="col-lg-3"><br>
-                  <label class="labelForm" for="geo_Commercial">b. Commercial: </label>
-              </div>
-              <div class="col-lg-9"><br>
-                <input type="number" class="form-control" id="commercial"  name ="commercial" [(ngModel)]="editgeo.commercial"  placeholder="" [ngClass]="toValidate.commercial?'is-invalid':''" (keyup)="toValidate.commercial=false">
-              </div>
-          </div><br>
-          <div class="row">
-              <div class="col-lg-3"><br>
-                  <label class="labelForm" for="geo_Industrial">c. Industrial : </label>
-              </div>
-              <div class="col-lg-9"><br>
-                <input type="number" class="form-control" id="industrial"  name ="industrial" [(ngModel)]="editgeo.industrial"  placeholder="" [ngClass]="toValidate.industrial?'is-invalid':''" (keyup)="toValidate.industrial=false">
-              </div>
-          </div><br>
-          <div class="row">
-              <div class="col-lg-3"><br>
-                  <label class="labelForm" for="geo_Agricultural">d. Agricultural: </label>
-              </div>
-              <div class="col-lg-9"><br>
-                <input type="number" class="form-control" id="agricultural"  name ="agricultural" [(ngModel)]="editgeo.agricultural"  placeholder="" [ngClass]="toValidate.agricultural?'is-invalid':''" (keyup)="toValidate.agricultural=false">
-              </div>
-          </div><br>
-          <div class="row">
-              <div class="col-lg-3"><br>
-                  <label class="labelForm" for="geo_Institutional">e. Institutional : </label>
-              </div>
-              <div class="col-lg-9"><br>
-                <input type="number" class="form-control" id="institutional"  name ="institutional" [(ngModel)]="editgeo.institutional"  placeholder="" [ngClass]="toValidate.institutional?'is-invalid':''" (keyup)="toValidate.institutional=false">
-              </div>
-          </div><br>
-          <div class="row">
-              <div class="col-lg-3"><br>
-                  <label class="labelForm" for="geo_ForestLands">f. Forest Lands : </label>
-              </div>
-              <div class="col-lg-9"><br>
-                <input type="number" class="form-control" id="forestLand"  name ="forestLand" [(ngModel)]="editgeo.forestLand"  placeholder="" [ngClass]="toValidate.forestLand?'is-invalid':''" (keyup)="toValidate.forestLand=false">
-              </div>
-          </div><br>
-          <div class="row">
-              <div class="col-lg-3"><br>
-                  <label class="labelForm" for="geo_OpenSpaces">g. Open Spaces : </label>
-              </div>
-              <div class="col-lg-9"><br>
-                <input type="number" class="form-control" id="openSpaces"  name ="openSpaces" [(ngModel)]="editgeo.openSpaces"  placeholder="" [ngClass]="toValidate.openSpaces?'is-invalid':''" (keyup)="toValidate.openSpaces=false">
-              </div>
-          </div><br>
-          <div class="row">
-              <div class="col-lg-3"><br>
-                  <label class="labelForm" for="geo_Fishpond">h. Fishpond : </label>
-              </div>
-              <div class="col-lg-9"><br>
-                <input type="number" class="form-control" id="fishpond"  name ="fishpond" [(ngModel)]="editgeo.fishpond"  placeholder="" [ngClass]="toValidate.fishpond?'is-invalid':''" (keyup)="toValidate.fishpond=false">
-              </div>
-          </div><br>
-          <div class="row">
-              <div class="col-lg-3"><br>
-                  <label class="labelForm" for="geo_QuarryAreas">i. Quarry Areas : </label>
-              </div>
-              <div class="col-lg-9"><br>
-                <input type="number" class="form-control" id="quarryAreas"  name ="quarryAreas" [(ngModel)]="editgeo.quarryAreas"  placeholder="" [ngClass]="toValidate.quarryAreas?'is-invalid':''" (keyup)="toValidate.quarryAreas=false">
-              </div>
-          </div><br>
-          <div class="row">
-              <div class="col-lg-3"><br>
-                  <label class="labelForm" for="geo_OtherUses">j. Other Uses : </label>
-              </div>
-              <div class="col-lg-9"><br>
-                <input type="text" class="form-control" id="otherUses"  name ="otherUses" [(ngModel)]="editgeo.otherUses"  placeholder="" [ngClass]="toValidate.otherUses?'is-invalid':''" (keyup)="toValidate.otherUses=false">
-              </div><br>
-          </div><br>
+        </div>
+        <label class="labelTitles"><strong>Area in Hectares</strong></label>
+        <div class="row">
+          <div class="col-lg-6">
+            <label class="labelForm" for="geo_residential">a. Residential : </label>
+            <input type="number" class="form-control mb-2" id="residential" name="residential"
+              [(ngModel)]="editgeo.residential" placeholder="" [ngClass]="toValidate.residential?'is-invalid':''"
+              (keyup)="toValidate.residential=false">
+          </div>
+          <div class="col-lg-6">
+            <label class="labelForm" for="geo_Commercial">b. Commercial: </label>
+            <input type="number" class="form-control mb-2" id="commercial" name="commercial" [(ngModel)]="editgeo.commercial"
+              placeholder="" [ngClass]="toValidate.commercial?'is-invalid':''" (keyup)="toValidate.commercial=false">
+          </div>
+          <div class="col-lg-6">
+            <label class="labelForm" for="geo_Industrial">c. Industrial : </label>
+            <input type="number" class="form-control mb-2" id="industrial" name="industrial" [(ngModel)]="editgeo.industrial"
+              placeholder="" [ngClass]="toValidate.industrial?'is-invalid':''" (keyup)="toValidate.industrial=false">
 
-          <label class="labelTitles"><strong>2. Land Reclassification</strong></label>
-          <div class="row">
-              <div class="col-lg-3"><br>
-                  <label class="labelForm" for="geo_TAreaReclassified">Total Area Reclassified : </label>
-              </div>
-              <div class="col-lg-9"><br>
-                <input type="text" class="form-control" id="reclassified"  name ="reclassified" [(ngModel)]="editgeo.reclassified"   placeholder="" [ngClass]="toValidate.reclassified?'is-invalid':''" (keyup)="toValidate.reclassified=false">
-              </div><br>
-          </div><br>
-          <!-- <div class="row"><br>
-              <div class="col-lg-3">
-                  <label class="labelForm" for="geo_2AsOfYear">As of Year : </label>
-              </div>
-              <div class="col-lg-9">
-                  <input class="seqInputBox" id="geo_2AsOfYear" type="text">
-              </div><br>
-          </div><br> -->
-          <div class="row"><br>
-              <div class="col-lg-3">
-                  <label class="labelForm" for="geo_Remarks">Remarks : </label>
-              </div>
-              <div class="col-lg-9">
-                <input type="text"  class="form-control" id="remarks" name = "remarks" [(ngModel)]="editgeo.remarks"  placeholder="">
-              </div><br>
-                  </div>
-                   </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="update_Geo(); updategeo=true;" ><i class="fa fa-check"></i>Save Changes</button>&nbsp;
-        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Cancel</button>
+          </div>
+          <div class="col-lg-6">
+            <label class="labelForm" for="geo_Agricultural">d. Agricultural: </label>
+            <input type="number" class="form-control mb-2" id="agricultural" name="agricultural"
+              [(ngModel)]="editgeo.agricultural" placeholder="" [ngClass]="toValidate.agricultural?'is-invalid':''"
+              (keyup)="toValidate.agricultural=false">
 
+          </div>
+          <div class="col-lg-6">
+            <label class="labelForm" for="geo_Institutional">e. Institutional : </label>
+            <input type="number" class="form-control mb-2" id="institutional" name="institutional"
+              [(ngModel)]="editgeo.institutional" placeholder="" [ngClass]="toValidate.institutional?'is-invalid':''"
+              (keyup)="toValidate.institutional=false">
+
+          </div>
+          <div class="col-lg-6">
+            <label class="labelForm" for="geo_ForestLands">f. Forest Lands : </label>
+            <input type="number" class="form-control mb-2" id="forestLand" name="forestLand" [(ngModel)]="editgeo.forestLand"
+              placeholder="" [ngClass]="toValidate.forestLand?'is-invalid':''" (keyup)="toValidate.forestLand=false">
+
+          </div>
+          <div class="col-lg-6">
+            <label class="labelForm" for="geo_OpenSpaces">g. Open Spaces : </label>
+            <input type="number" class="form-control mb-2" id="openSpaces" name="openSpaces" [(ngModel)]="editgeo.openSpaces"
+              placeholder="" [ngClass]="toValidate.openSpaces?'is-invalid':''" (keyup)="toValidate.openSpaces=false">
+
+          </div>
+          <div class="col-lg-6">
+            <label class="labelForm" for="geo_Fishpond">h. Fishpond : </label>
+            <input type="number" class="form-control mb-2" id="fishpond" name="fishpond" [(ngModel)]="editgeo.fishpond"
+              placeholder="" [ngClass]="toValidate.fishpond?'is-invalid':''" (keyup)="toValidate.fishpond=false">
+
+          </div>
+          <div class="col-lg-6">
+            <label class="labelForm" for="geo_QuarryAreas">i. Quarry Areas : </label>
+            <input type="number" class="form-control mb-2" id="quarryAreas" name="quarryAreas"
+              [(ngModel)]="editgeo.quarryAreas" placeholder="" [ngClass]="toValidate.quarryAreas?'is-invalid':''"
+              (keyup)="toValidate.quarryAreas=false">
+
+          </div>
+          <div class="col-lg-6">
+            <label class="labelForm" for="geo_OtherUses">j. Other Uses : </label>
+            <input type="text" class="form-control mb-2" id="otherUses" name="otherUses" [(ngModel)]="editgeo.otherUses"
+              placeholder="" [ngClass]="toValidate.otherUses?'is-invalid':''" (keyup)="toValidate.otherUses=false">
+
+          </div>
+        </div>
+        <label class="labelTitles"><strong>2. Land Reclassification</strong></label>
+        <div class="row">
+          <div class="col-lg-6">
+            <label class="labelForm" for="geo_TAreaReclassified">Total Area Reclassified : </label>
+            <input type="text" class="form-control mb-2" id="reclassified" name="reclassified"
+              [(ngModel)]="editgeo.reclassified" placeholder="" [ngClass]="toValidate.reclassified?'is-invalid':''"
+              (keyup)="toValidate.reclassified=false">
+          </div>
+          <div class="col-lg-6">
+            <label class="labelForm" for="geo_Remarks">Remarks : </label>
+            <input type="text" class="form-control mb-2" id="remarks" name="remarks" [(ngModel)]="editgeo.remarks"
+              placeholder="">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="update_Geo(); updategeo=true;"><i
+              class="fa fa-check"></i>Save Changes</button>&nbsp;
+          <button type="button" class="btn btn-secondary" data-dismiss="modal"><i
+              class="fa fa-times"></i>Cancel</button>
+
+        </div>
       </div>
     </div>
   </div>
 </div>
-</div>
-
-

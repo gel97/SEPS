@@ -6,16 +6,13 @@
         <div class="col-lg-12">
           <div class="p-5">
             <div class="col-lg-12">
-              <div class="p-5">
+              <div class="">
                 <div class="text-center">
-                  <h1 class="h4 text-gray-900 mb-4">
+                  <h1 class="h4 text-gray-900 mb-1">
                     Organization/ Staffing Pattern
                   </h1>
-                  <label
-                    ><strong
-                      >Governance - Municipality of {{ munCityName }}
-                    </strong></label
-                  >
+                  <label><strong>Governance - Municipality of {{ munCityName }}
+                    </strong></label>
                 </div>
 
                 <form class="user collapse show" id="collapseExample">
@@ -23,9 +20,7 @@
                     <div class="row"></div>
                     <div class="row">
                       <div class="col-lg-12">
-                        <label for="exampleFormControlTextarea1"
-                          >Organizational Chart</label
-                        >
+                        <label for="exampleFormControlTextarea1">Organizational Chart</label>
                         <form action="/action_page.php">
                           <input type="file" id="myFile" name="filename" />
                         </form>
@@ -39,11 +34,9 @@
                                 Number of Employees
                               </th>
                               <th>
-  
+
                               </th>
                             </tr>
-                            
-
                           </thead>
                           <tbody>
                             <tr>
@@ -51,36 +44,21 @@
                                 Permanent :
                               </td>
                               <td>
-                                <input
-                                type="number"
-                                class="form-control"
-                                id="permanent"
-                                name="permanent"
-                                [(ngModel)]="org.permanentNo"
-                                [disabled]="inputDisabled"
-                                placeholder=""
-                                [ngClass]="toValidate.permanentNo ? 'is-invalid' : ''"
-                                (keyup)="toValidate.permanentNo = false"
-                              />
+                                <input type="number" class="form-control mb-2" id="permanent" name="permanent"
+                                  [(ngModel)]="org.permanentNo" [disabled]="inputDisabled" placeholder=""
+                                  [ngClass]="toValidate.permanentNo ? 'is-invalid' : ''"
+                                  (keyup)="toValidate.permanentNo = false" />
                               </td>
                             </tr>
-                              <tr>
-                               
+                            <tr>
                               <td>
                                 Temporary :
                               </td>
                               <td>
-                                <input
-                                type="number"
-                                class="form-control"
-                                id="temporary"
-                                name="temporary"
-                                [(ngModel)]="org.temporary"
-                                [disabled]="inputDisabled"
-                                placeholder=""
-                                [ngClass]="toValidate.temporary ? 'is-invalid' : ''"
-                                (keyup)="toValidate.temporary = false"
-                              />
+                                <input type="number" class="form-control" id="temporary" name="temporary"
+                                  [(ngModel)]="org.temporary" [disabled]="inputDisabled" placeholder=""
+                                  [ngClass]="toValidate.temporary ? 'is-invalid' : ''"
+                                  (keyup)="toValidate.temporary = false" />
                               </td>
                             </tr>
                             <tr>
@@ -88,17 +66,10 @@
                                 Co-Terminus :
                               </td>
                               <td>
-                                <input
-                                type="number"
-                                class="form-control"
-                                id="coTerminus"
-                                name="coTerminus"
-                                [(ngModel)]="org.coTerminus"
-                                [disabled]="inputDisabled"
-                                placeholder=""
-                                [ngClass]="toValidate.coTerminus ? 'is-invalid' : ''"
-                                (keyup)="toValidate.coTerminus = false"
-                              />
+                                <input type="number" class="form-control" id="coTerminus" name="coTerminus"
+                                  [(ngModel)]="org.coTerminus" [disabled]="inputDisabled" placeholder=""
+                                  [ngClass]="toValidate.coTerminus ? 'is-invalid' : ''"
+                                  (keyup)="toValidate.coTerminus = false" />
                               </td>
                             </tr>
                             <tr>
@@ -106,17 +77,10 @@
                                 Elected :
                               </td>
                               <td>
-                                <input
-                                type="number"
-                                class="form-control"
-                                id="elected"
-                                name="elected"
-                                [(ngModel)]="org.elected"
-                                [disabled]="inputDisabled"
-                                placeholder=""
-                                [ngClass]="toValidate.elected ? 'is-invalid' : ''"
-                                (keyup)="toValidate.elected = false"
-                              />
+                                <input type="number" class="form-control" id="elected" name="elected"
+                                  [(ngModel)]="org.elected" [disabled]="inputDisabled" placeholder=""
+                                  [ngClass]="toValidate.elected ? 'is-invalid' : ''"
+                                  (keyup)="toValidate.elected = false" />
                               </td>
                             </tr>
                             <tr>
@@ -124,17 +88,10 @@
                                 Casual :
                               </td>
                               <td>
-                                <input
-                                type="number"
-                                class="form-control"
-                                id="casual"
-                                name="casual"
-                                [(ngModel)]="org.casual"
-                                [disabled]="inputDisabled"
-                                placeholder=""
-                                [ngClass]="toValidate.casual ? 'is-invalid' : ''"
-                                (keyup)="toValidate.casual = false"
-                              />
+                                <input type="number" class="form-control" id="casual" name="casual"
+                                  [(ngModel)]="org.casual" [disabled]="inputDisabled" placeholder=""
+                                  [ngClass]="toValidate.casual ? 'is-invalid' : ''"
+                                  (keyup)="toValidate.casual = false" />
                               </td>
                             </tr>
                             <tr>
@@ -142,17 +99,10 @@
                                 Job Order :
                               </td>
                               <td>
-                                <input
-                                type="number"
-                                class="form-control"
-                                id="jobOrder"
-                                name="jobOrder"
-                                [(ngModel)]="org.jobOrder"
-                                [disabled]="inputDisabled"
-                                placeholder=""
-                                [ngClass]="toValidate.jobOrder ? 'is-invalid' : ''"
-                                (keyup)="toValidate.jobOrder = false"
-                              />
+                                <input type="number" class="form-control" id="jobOrder" name="jobOrder"
+                                  [(ngModel)]="org.jobOrder" [disabled]="inputDisabled" placeholder=""
+                                  [ngClass]="toValidate.jobOrder ? 'is-invalid' : ''"
+                                  (keyup)="toValidate.jobOrder = false" />
                               </td>
                             </tr>
                             <tr>
@@ -160,17 +110,10 @@
                                 Contractual :
                               </td>
                               <td>
-                                <input
-                                type="number"
-                                class="form-control"
-                                id="contractual"
-                                name="contractual"
-                                [(ngModel)]="org.contractual"
-                                [disabled]="inputDisabled"
-                                placeholder=""
-                                [ngClass]="toValidate.contractual ? 'is-invalid' : ''"
-                                (keyup)="toValidate.contractual = false"
-                              />
+                                <input type="number" class="form-control" id="contractual" name="contractual"
+                                  [(ngModel)]="org.contractual" [disabled]="inputDisabled" placeholder=""
+                                  [ngClass]="toValidate.contractual ? 'is-invalid' : ''"
+                                  (keyup)="toValidate.contractual = false" />
                               </td>
                             </tr>
                             <tr>
@@ -178,17 +121,10 @@
                                 Casual SEF :
                               </td>
                               <td>
-                                <input
-                                type="number"
-                                class="form-control"
-                                id="casualSef"
-                                name="casualSef"
-                                [(ngModel)]="org.casualSef"
-                                [disabled]="inputDisabled"
-                                placeholder=""
-                                [ngClass]="toValidate.casualSef ? 'is-invalid' : ''"
-                                (keyup)="toValidate.casualSef = false"
-                              />
+                                <input type="number" class="form-control" id="casualSef" name="casualSef"
+                                  [(ngModel)]="org.casualSef" [disabled]="inputDisabled" placeholder=""
+                                  [ngClass]="toValidate.casualSef ? 'is-invalid' : ''"
+                                  (keyup)="toValidate.casualSef = false" />
                               </td>
                             </tr>
                             <tr>
@@ -196,17 +132,10 @@
                                 School Board :
                               </td>
                               <td>
-                                <input
-                                type="number"
-                                class="form-control"
-                                id="schoolBoard"
-                                name="schoolBoard"
-                                [(ngModel)]="org.schoolBoard"
-                                [disabled]="inputDisabled"
-                                placeholder=""
-                                [ngClass]="toValidate.schoolBoard ? 'is-invalid' : ''"
-                                (keyup)="toValidate.schoolBoard = false"
-                              />
+                                <input type="number" class="form-control" id="schoolBoard" name="schoolBoard"
+                                  [(ngModel)]="org.schoolBoard" [disabled]="inputDisabled" placeholder=""
+                                  [ngClass]="toValidate.schoolBoard ? 'is-invalid' : ''"
+                                  (keyup)="toValidate.schoolBoard = false" />
                               </td>
                             </tr>
                             <tr>
@@ -214,19 +143,10 @@
                                 Contract of Services :
                               </td>
                               <td>
-                                <input
-                                type="number"
-                                class="form-control"
-                                id="contractService"
-                                name="contractService"
-                                [(ngModel)]="org.contractService"
-                                [disabled]="inputDisabled"
-                                placeholder=""
-                                [ngClass]="
+                                <input type="number" class="form-control" id="contractService" name="contractService"
+                                  [(ngModel)]="org.contractService" [disabled]="inputDisabled" placeholder="" [ngClass]="
                                   toValidate.contractService ? 'is-invalid' : ''
-                                "
-                                (keyup)="toValidate.contractService = false"
-                              />
+                                " (keyup)="toValidate.contractService = false" />
                               </td>
                             </tr>
                             <tr>
@@ -234,59 +154,34 @@
                                 Others :
                               </td>
                               <td>
-                                <input
-                                type="text"
-                                class="form-control"
-                                id="others"
-                                name="others"
-                                [(ngModel)]="org.others"
-                                [disabled]="inputDisabled"
-                                placeholder=""
-                                [ngClass]="toValidate.others ? 'is-invalid' : ''"
-                                (keyup)="toValidate.others = false"
-                              />
+                                <input type="text" class="form-control" id="others" name="others"
+                                  [(ngModel)]="org.others" [disabled]="inputDisabled" placeholder=""
+                                  [ngClass]="toValidate.others ? 'is-invalid' : ''"
+                                  (keyup)="toValidate.others = false" />
                               </td>
-                           
+
                           </tbody>
 
                         </table>
 
-                      </div>            
+                      </div>
                     </div>
                   </div>
 
                   <div class="form-inline float-right">
                     <app-admin>
-                      <button
-                        type="button"
-                        class="btn btn-primary"
-                        *ngIf="!vieworg"
-                        (click)="AddOrg()"
-                      >
-                        <i class="fa fa-plus"></i>Save Data</button
-                      >&nbsp;
+                      <button type="button" class="btn btn-primary" *ngIf="!vieworg" (click)="AddOrg()">
+                        <i class="fa fa-plus"></i>Save Data</button>&nbsp;
                     </app-admin>
 
                     <app-admin>
                       <div *ngIf="vieworg">
-                        <button
-                          type="button"
-                          title="Edit"
-                          (click)="editO = org"
-                          class="btn btn-info btn-circle"
-                          data-toggle="modal"
-                          data-target="#exampleModalLong"
-                        >
-                          <i class="fa fa-pen"></i></button
-                        >&nbsp;
-                        <button
-                          type="button"
-                          title="Delete"
-                          class="btn btn-warning btn-circle"
-                          (click)="delete(org.transId)"
-                        >
-                          <i class="fa fa-trash"></i></button
-                        >&nbsp;
+                        <button type="button" title="Edit" (click)="editO = org" class="btn btn-info btn-circle"
+                          data-toggle="modal" data-target="#exampleModalLong">
+                          <i class="fa fa-pen"></i></button>&nbsp;
+                        <button type="button" title="Delete" class="btn btn-warning btn-circle"
+                          (click)="delete(org.transId)">
+                          <i class="fa fa-trash"></i></button>&nbsp;
                       </div>
                     </app-admin>
                   </div>
@@ -299,29 +194,15 @@
     </div>
 
     <!-- Modal For Update -->
-    <div
-      class="modal fade"
-      id="exampleModalLong"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="exampleModalLongTitle"
-      aria-hidden="true"
-    >
-      <div
-        class="modal-dialog modal-lg"
-        role="document"
-      >
+    <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+      aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLongTitle">
               UPDATE
             </h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -329,167 +210,80 @@
             <div class="row">
               <div class="col-lg-6">
                 <label>Permanent :</label>
-                <input
-                type="number"
-                class="form-control"
-                id="permanent"
-                name="permanent"
-                [(ngModel)]="editO.permanentNo"
-                placeholder=""
-                [ngClass]="toValidate.permanentNo ? 'is-invalid' : ''"
-                (keyup)="toValidate.permanentNo = false"
-              />
+                <input type="number" class="form-control mb-2" id="permanent" name="permanent"
+                  [(ngModel)]="editO.permanentNo" placeholder="" [ngClass]="toValidate.permanentNo ? 'is-invalid' : ''"
+                  (keyup)="toValidate.permanentNo = false" />
               </div>
               <div class="col-lg-6">
-                <label>Temporary :  </label>      
-                <input
-                type="number"
-                class="form-control"
-                id="temporary"
-                name="temporary"
-                [(ngModel)]="editO.temporary"
-                placeholder=""
-                [ngClass]="toValidate.temporary ? 'is-invalid' : ''"
-                (keyup)="toValidate.temporary = false"
-              />
+                <label>Temporary : </label>
+                <input type="number" class="form-control mb-2" id="temporary" name="temporary" [(ngModel)]="editO.temporary"
+                  placeholder="" [ngClass]="toValidate.temporary ? 'is-invalid' : ''"
+                  (keyup)="toValidate.temporary = false" />
               </div>
               <div class="col-lg-6">
-                <label>                Co-Terminus :
+                <label> Co-Terminus :
                 </label>
-                <input
-                type="number"
-                class="form-control"
-                id="coTerminus"
-                name="coTerminus"
-                [(ngModel)]="editO.coTerminus"
-                placeholder=""
-                [ngClass]="toValidate.coTerminus ? 'is-invalid' : ''"
-                (keyup)="toValidate.coTerminus = false"
-              />
+                <input type="number" class="form-control mb-2" id="coTerminus" name="coTerminus"
+                  [(ngModel)]="editO.coTerminus" placeholder="" [ngClass]="toValidate.coTerminus ? 'is-invalid' : ''"
+                  (keyup)="toValidate.coTerminus = false" />
               </div>
               <div class="col-lg-6">
-               <label>Elected :</label>
-               <input
-               type="number"
-               class="form-control"
-               id="elected"
-               name="elected"
-               [(ngModel)]="editO.elected"
-               placeholder=""
-               [ngClass]="toValidate.elected ? 'is-invalid' : ''"
-               (keyup)="toValidate.elected = false"
-             />
+                <label>Elected :</label>
+                <input type="number" class="form-control mb-2" id="elected" name="elected" [(ngModel)]="editO.elected"
+                  placeholder="" [ngClass]="toValidate.elected ? 'is-invalid' : ''"
+                  (keyup)="toValidate.elected = false" />
               </div>
               <div class="col-lg-6">
                 <label>
                   Casual :
                 </label>
-               
-                <input
-                type="number"
-                class="form-control"
-                id="casual"
-                name="casual"
-                [(ngModel)]="editO.casual"
-                placeholder=""
-                [ngClass]="toValidate.casual ? 'is-invalid' : ''"
-                (keyup)="toValidate.casual = false"
-              />
+
+                <input type="number" class="form-control mb-2" id="casual" name="casual" [(ngModel)]="editO.casual"
+                  placeholder="" [ngClass]="toValidate.casual ? 'is-invalid' : ''"
+                  (keyup)="toValidate.casual = false" />
               </div>
               <div class="col-lg-6">
-                <label for="exampleFormControlTextarea1">Job Order :</label>
-                <input
-                type="number"
-                class="form-control"
-                id="jobOrder"
-                name="jobOrder"
-                [(ngModel)]="editO.jobOrder"
-                placeholder=""
-                [ngClass]="toValidate.jobOrder ? 'is-invalid' : ''"
-                (keyup)="toValidate.jobOrder = false"
-              />
+                <label>Job Order :</label>
+                <input type="number" class="form-control mb-2" id="jobOrder" name="jobOrder" [(ngModel)]="editO.jobOrder"
+                  placeholder="" [ngClass]="toValidate.jobOrder ? 'is-invalid' : ''"
+                  (keyup)="toValidate.jobOrder = false" />
               </div>
               <div class="col-lg-6">
-                <label for="exampleFormControlTextarea1">Contractual :</label>
-                <input
-                type="number"
-                class="form-control"
-                id="contractual"
-                name="contractual"
-                [(ngModel)]="org.contractual"
-                placeholder=""
-                [ngClass]="toValidate.contractual ? 'is-invalid' : ''"
-                (keyup)="toValidate.contractual = false"
-              />
+                <label>Contractual :</label>
+                <input type="number" class="form-control mb-2" id="contractual" name="contractual"
+                  [(ngModel)]="org.contractual" placeholder="" [ngClass]="toValidate.contractual ? 'is-invalid' : ''"
+                  (keyup)="toValidate.contractual = false" />
               </div>
               <div class="col-lg-6">
-                <label for="exampleFormControlTextarea1">Casual SEF :</label>
-                <input
-                type="number"
-                class="form-control"
-                id="casualSef"
-                name="casualSef"
-                [(ngModel)]="editO.casualSef"
-                placeholder=""
-                [ngClass]="toValidate.casualSef ? 'is-invalid' : ''"
-                (keyup)="toValidate.casualSef = false"
-              />
+                <label>Casual SEF :</label>
+                <input type="number" class="form-control mb-2" id="casualSef" name="casualSef" [(ngModel)]="editO.casualSef"
+                  placeholder="" [ngClass]="toValidate.casualSef ? 'is-invalid' : ''"
+                  (keyup)="toValidate.casualSef = false" />
               </div>
               <div class="col-lg-6">
-                <label for="exampleFormControlTextarea1"
-                    >School Board :</label
-                  >
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="schoolBoard"
-                    name="schoolBoard"
-                    [(ngModel)]="editO.schoolBoard"
-                    placeholder=""
-                    [ngClass]="toValidate.schoolBoard ? 'is-invalid' : ''"
-                    (keyup)="toValidate.schoolBoard = false"
-                  />
+                <label>School Board :</label>
+                <input type="number" class="form-control mb-2" id="schoolBoard" name="schoolBoard"
+                  [(ngModel)]="editO.schoolBoard" placeholder="" [ngClass]="toValidate.schoolBoard ? 'is-invalid' : ''"
+                  (keyup)="toValidate.schoolBoard = false" />
               </div>
               <div class="col-lg-6">
-                <label for="exampleFormControlTextarea1"
-                >Contract of Services :</label
-              >
-              <input
-                    type="number"
-                    class="form-control"
-                    id="contractService"
-                    name="contractService"
-                    [(ngModel)]="editO.contractService"
-                    placeholder=""
-                    [ngClass]="toValidate.contractService ? 'is-invalid' : ''"
-                    (keyup)="toValidate.contractService = false"
-                  />
+                <label>Contract of Services :</label>
+                <input type="number" class="form-control mb-2" id="contractService" name="contractService"
+                  [(ngModel)]="editO.contractService" placeholder=""
+                  [ngClass]="toValidate.contractService ? 'is-invalid' : ''"
+                  (keyup)="toValidate.contractService = false" />
               </div>
               <div class="col-lg-6">
-                <label for="exampleFormControlTextarea1"
-                >Others :</label
-              >
-              <input
-              type="text"
-              class="form-control"
-              id="others"
-              name="others"
-              [(ngModel)]="editO.others"
-              placeholder=""
-              [ngClass]="toValidate.others ? 'is-invalid' : ''"
-              (keyup)="toValidate.others = false"
-            />
+                <label>Others :</label>
+                <input type="text" class="form-control mb-2" id="others" name="others" [(ngModel)]="editO.others"
+                  placeholder="" [ngClass]="toValidate.others ? 'is-invalid' : ''"
+                  (keyup)="toValidate.others = false" />
               </div>
-            </div><br/>
+            </div><br />
             <div class="modal-footer">
               <button type="button" class="btn btn-primary" (click)="update()">
-                <i class="fa fa-check"></i>Save Changes</button
-              >&nbsp;
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-dismiss="modal"
-              >
+                <i class="fa fa-check"></i>Save Changes</button>&nbsp;
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">
                 <i class="fa fa-times"></i>Cancel
               </button>
             </div>
