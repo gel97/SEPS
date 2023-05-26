@@ -72,10 +72,10 @@ export class CityOfficialsComponent implements OnInit {
 
 
   addOfficial() {
-    this.toValidate.name = this.editModal.name == "" || this.editModal.name == null ? true : false;
-    this.toValidate.seqNo = this.editModal.seqNo == "" || this.editModal.seqNo == undefined ? true : false;
-    this.toValidate.term = this.editModal.term == "" || this.editModal.term == null ? true : false;
-    this.toValidate.contact = this.editModal.contact == "" || this.editModal.contact == undefined ? true : false;
+    this.toValidate.name = this.city.name == "" || this.city.name == null ? true : false;
+    this.toValidate.seqNo = this.city.seqNo == "" || this.city.seqNo == undefined ? true : false;
+    this.toValidate.term = this.city.term == "" || this.city.term == null ? true : false;
+    this.toValidate.contact = this.city.contact == "" || this.city.contact == undefined ? true : false;
     if (this.toValidate.name == true || this.toValidate.seqNo == true ||this.toValidate.term == true || this.toValidate.contact == true) {
       Swal.fire(
         'Missing Data!',

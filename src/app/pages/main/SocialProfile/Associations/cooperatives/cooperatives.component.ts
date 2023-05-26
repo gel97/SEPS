@@ -41,7 +41,7 @@ export class CooperativesComponent implements OnInit {
   longtitude: any
   checker_brgylist: any = {};
   toValidate: any = {};
-
+  updateForm:boolean=false;
 
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void; }; };
