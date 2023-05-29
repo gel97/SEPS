@@ -16,7 +16,7 @@ import { request } from 'http';
 })
 export class LoginComponent implements OnInit {
   title = 'loginGoogle';
-
+  isLogin = false;
   auth2: any;
 
   @ViewChild('loginRef', {static: true }) loginElement!: ElementRef;
@@ -58,17 +58,31 @@ loginWithFacebook(): void {
 }
 
 signIn (){
-  console.log(this.user);
-  this.service.signin(this.user).subscribe(data=>{
-      if(data.token!= null){
-        this.router.navigate(['/']);
-      }
-  },
-  err => {
-     console.log(err.error)
-      this.errorLogin = err.error;
-  }
-  );
+  this.isLogin =true;
+  this.service.signin(this.user).subscribe({
+   next:(response)=>{
+    if(response.token!= null){
+            this.router.navigate(['/']);
+          }
+   },
+   error:(error)=>{
+    this.isLogin =false;
+   },
+   complete: () => {
+    this.isLogin =false;
+   }
+}
+);
+  // this.service.signin(this.user).subscribe(data=>{
+  //     if(data.token!= null){
+  //       this.router.navigate(['/']);
+  //     }
+  // },
+  // err => {
+  //    console.log(err.error)
+  //     this.errorLogin = err.error;
+  // }
+  // );
 }
 callLoginButton() {
 
