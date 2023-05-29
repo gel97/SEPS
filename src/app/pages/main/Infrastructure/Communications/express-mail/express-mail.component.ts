@@ -3,6 +3,7 @@ import Swal from 'sweetalert2';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { ExpressMailService } from 'src/app/shared/Infrastructure/Utilities/Communication/express-mail.service';
+import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 @Component({
   selector: 'app-express-mail',
   templateUrl: './express-mail.component.html',
@@ -10,7 +11,13 @@ import { ExpressMailService } from 'src/app/shared/Infrastructure/Utilities/Comm
 })
 export class ExpressMailComponent implements OnInit {
   munCityName:string = this.auth.munCityName;
-  constructor(private service: ExpressMailService, private auth: AuthService) { }
+  constructor(private service: ExpressMailService, private auth: AuthService,
+    private modifyService: ModifyCityMunService
+  ) {}
+
+  modifyCityMun(cityMunName: string) {
+    return this.modifyService.ModifyText(cityMunName);
+  }
 
   toValidate:any = {};
   @ViewChild(GmapComponent)

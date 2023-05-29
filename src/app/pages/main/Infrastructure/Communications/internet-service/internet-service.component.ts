@@ -3,6 +3,7 @@ import Swal from 'sweetalert2';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { InternetServiceService } from 'src/app/shared/Infrastructure/Utilities/Communication/internet-service.service';
+import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 @Component({
   selector: 'app-internet-service',
   templateUrl: './internet-service.component.html',
@@ -10,7 +11,13 @@ import { InternetServiceService } from 'src/app/shared/Infrastructure/Utilities/
 })
 export class InternetServiceComponent implements OnInit {
   munCityName:string = this.auth.munCityName;
-  constructor(private service: InternetServiceService, private auth: AuthService) { }
+  constructor(private service: InternetServiceService, private auth: AuthService,
+    private modifyService: ModifyCityMunService
+  ) {}
+
+  modifyCityMun(cityMunName: string) {
+    return this.modifyService.ModifyText(cityMunName);
+  }
 
   toValidate:any = {};
   @ViewChild(GmapComponent)

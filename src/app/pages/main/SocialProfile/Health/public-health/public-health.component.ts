@@ -4,6 +4,7 @@ import { HealthWorkersService } from 'src/app/shared/SocialProfile/Health/health
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import { isEmptyObject } from 'jquery';
+import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 @Component({
   selector: 'app-public-health',
   templateUrl: './public-health.component.html',
@@ -11,23 +12,31 @@ import { isEmptyObject } from 'jquery';
 })
 export class PublicHealthComponent implements OnInit {
   munCityName: string = this.auth.munCityName;
-  constructor(private service: HealthWorkersService, private auth: AuthService) { }
+  constructor(
+    private service: HealthWorkersService,
+    private auth: AuthService,
+    private modifyService: ModifyCityMunService
+  ) {}
+
+  modifyCityMun(cityMunName: string) {
+    return this.modifyService.ModifyText(cityMunName);
+  }
+
   toValidate: any = {};
   @ViewChild('closebutton')
-  closebutton!: { nativeElement: { click: () => void; }; };
+  closebutton!: { nativeElement: { click: () => void } };
   isCheck: boolean = false;
 
   onChange(isCheck: boolean) {
     this.isCheck = isCheck;
   }
 
-
   ngOnInit(): void {
     this.Init();
   }
   munCityId: string = this.auth.munCityId;
   setYear: string = this.auth.setYear;
-  menuId = "1";
+  menuId = '1';
   data: any = {};
 
   isAdd: boolean = true;
@@ -40,104 +49,71 @@ export class PublicHealthComponent implements OnInit {
   }
 
   GetHealthWorkers() {
-    console.log(this.munCityId + " | " + this.setYear)
+    console.log(this.munCityId + ' | ' + this.setYear);
 
     this.service.GetHealthWorkers(this.setYear, this.munCityId).subscribe({
       next: (response) => {
-        console.log(response)
+        console.log(response);
         if (response.length > 0) {
-          this.data = (<any>response[0]);
-          console.log("data: ", this.data)
+          this.data = <any>response[0];
+          console.log('data: ', this.data);
 
           this.hasData = true;
-        }
-        else {
+        } else {
           this.hasData = false;
         }
-
       },
       error: (error) => {
-        Swal.fire(
-          'Oops!',
-          'Something went wrong.',
-          'error'
-        );
+        Swal.fire('Oops!', 'Something went wrong.', 'error');
       },
-      complete: () => {
-
-      }
-    })
-
+      complete: () => {},
+    });
   }
 
   AddHealthWorkers() {
     if (!isEmptyObject(this.data)) {
       this.data.setYear = this.setYear;
       this.data.munCityId = this.munCityId;
-      this.service.AddHealthWorkers(this.data).subscribe(
-        {
-          next: (request) => {
-            this.GetHealthWorkers();
-          },
-          error: (error) => {
-            Swal.fire(
-              'Oops!',
-              'Something went wrong.',
-              'error'
-            );
-          },
-          complete: () => {
-            if (!this.isCheck) {
-              this.closebutton.nativeElement.click();
-            }
-            this.data = {};
-            Swal.fire(
-              'Good job!',
-              'Data Added Successfully!',
-              'success'
-            );
+      this.service.AddHealthWorkers(this.data).subscribe({
+        next: (request) => {
+          this.GetHealthWorkers();
+        },
+        error: (error) => {
+          Swal.fire('Oops!', 'Something went wrong.', 'error');
+        },
+        complete: () => {
+          if (!this.isCheck) {
+            this.closebutton.nativeElement.click();
           }
-        }
-      )
-    }
-    else {
+          this.data = {};
+          Swal.fire('Good job!', 'Data Added Successfully!', 'success');
+        },
+      });
+    } else {
       Swal.fire(
         'Missing Data!',
         'Please fill out the input fields.',
         'warning'
       );
     }
-
-}
-
+  }
 
   EditHealthWorkers() {
-
     this.data.setYear = this.setYear;
     this.data.munCityId = this.munCityId;
-    this.service.EditHealthWorkers(this.data).subscribe(
-      {
-        next: (request) => {
-          this.GetHealthWorkers();
-        },
-        error: (error) => {
-          Swal.fire(
-            'Oops!',
-            'Something went wrong.',
-            'error'
-          );
-        },
-        complete: () => {
-          this.closebutton.nativeElement.click();
-          Swal.fire(
-            'Good job!',
-            'Data Updated Successfully!',
-            'success'
-          );
-          document.getElementById("mEducation")?.click();
-        }
-      }
-    )
+    this.service.EditHealthWorkers(this.data).subscribe({
+      next: (request) => {
+        this.GetHealthWorkers();
+      },
+      error: (error) => {
+        Swal.fire('Oops!', 'Something went wrong.', 'error');
+      },
+      complete: () => {
+        this.closebutton.nativeElement.click();
+        Swal.fire('Good job!', 'Data Updated Successfully!', 'success');
+        document.getElementById('mEducation')?.click();
+      },
+    });
   }
 
   DeleteHealthWorkers(transId: any) {
@@ -148,19 +124,15 @@ export class PublicHealthComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.service.DeleteHealthWorkers(transId).subscribe(request => {
+        this.service.DeleteHealthWorkers(transId).subscribe((request) => {
           this.Init();
           this.data = {};
-        })
-        Swal.fire(
-          'Deleted!',
-          'Your file has been deleted.',
-          'success'
-        )
+        });
+        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
       }
-    })
+    });
   }
 }

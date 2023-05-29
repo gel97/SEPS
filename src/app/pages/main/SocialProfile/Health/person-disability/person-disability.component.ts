@@ -4,6 +4,7 @@ import { HealthHandicapService } from 'src/app/shared/SocialProfile/Health/healt
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import { isEmptyObject } from 'jquery';
+import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 
 @Component({
   selector: 'app-person-disability',
@@ -12,12 +13,17 @@ import { isEmptyObject } from 'jquery';
 })
 export class PersonDisabilityComponent implements OnInit {
   @ViewChild('closebutton')
-  closebutton!: { nativeElement: { click: () => void; }; };
+  closebutton!: { nativeElement: { click: () => void } };
 
   constructor(
     private auth: AuthService,
-    private service: HealthHandicapService
+    private service: HealthHandicapService,
+    private modifyService: ModifyCityMunService
   ) {}
+
+  modifyCityMun(cityMunName: string) {
+    return this.modifyService.ModifyText(cityMunName);
+  }
 
   list_of_type = [
     { id: 1, type: 'Hearing Impaired' },
@@ -41,7 +47,10 @@ export class PersonDisabilityComponent implements OnInit {
     { id: 19, type: 'Chronic Illness due to Mastectomy' },
     { id: 20, type: 'Learning Disability' },
     { id: 21, type: 'Dwarfism' },
-    { id: 22, type: "Gifted & Talented (hearing impaired, visually impaired, CWA, LD, intellectual disability)"},
+    {
+      id: 22,
+      type: 'Gifted & Talented (hearing impaired, visually impaired, CWA, LD, intellectual disability)',
+    },
     { id: 23, type: 'Not Specified' },
   ];
 
@@ -65,26 +74,24 @@ export class PersonDisabilityComponent implements OnInit {
       .GetHealthHandicap(this.auth.setYear, this.auth.munCityId)
       .subscribe({
         next: (response) => {
-          this.listHandi = (<any>response);
+          this.listHandi = <any>response;
         },
-        error: (error) => {
-        },
+        error: (error) => {},
         complete: () => {
           this.GetListBarangay();
-        }
+        },
       });
   }
 
   GetListBarangay() {
     this.service.ListOfBarangay(this.auth.munCityId).subscribe({
       next: (response) => {
-        this.listBarangay = (<any>response);
+        this.listBarangay = <any>response;
       },
-      error: (error) => {
-      },
+      error: (error) => {},
       complete: () => {
         this.FilterList();
-      }
+      },
     });
   }
 
@@ -105,27 +112,28 @@ export class PersonDisabilityComponent implements OnInit {
       isExist = this.listData.filter((x: any) => x.brgyId == a.brgyId);
       if (isExist.length == 0) {
         this.listData.push({
-          'brgyId': a.brgyId,
-          'brgyName': a.brgyName
+          brgyId: a.brgyId,
+          brgyName: a.brgyName,
         });
-      } 
+      }
     });
   }
 
   AddData() {
-    if(isEmptyObject(this.data)){
+    if (isEmptyObject(this.data)) {
       Swal.fire(
         'Missing Data!',
         'Please fill out the required fields',
         'warning'
       );
-    }
-    else{
+    } else {
       this.data.munCityId = this.auth.munCityId;
       this.data.setYear = this.auth.activeSetYear;
       this.service.AddHealthHandicap(this.data).subscribe({
         next: (request) => {
-          let index = this.listData.findIndex((obj: any) => obj.brgyId === this.data.brgyId);
+          let index = this.listData.findIndex(
+            (obj: any) => obj.brgyId === this.data.brgyId
+          );
           this.listData[index] = request;
         },
         complete: () => {
@@ -137,68 +145,56 @@ export class PersonDisabilityComponent implements OnInit {
             icon: 'success',
             title: 'Your work has been saved',
             showConfirmButton: false,
-            timer: 1000
+            timer: 1000,
           });
-        }
+        },
       });
     }
   }
 
   EditData() {
-      this.data.setYear = this.auth.activeSetYear;
-      this.service.EditHealthHandicap(this.data).subscribe({
-        next: (request) => {
-          this.closebutton.nativeElement.click();
-          this.data = {};
-        },
-        complete: () => {
-          Swal.fire({
-            position: 'center',
-            icon: 'success',
-            title: 'Your work has been updated',
-            showConfirmButton: false,
-            timer: 1000
-          });
-        }
-      });
-}
+    this.data.setYear = this.auth.activeSetYear;
+    this.service.EditHealthHandicap(this.data).subscribe({
+      next: (request) => {
+        this.closebutton.nativeElement.click();
+        this.data = {};
+      },
+      complete: () => {
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Your work has been updated',
+          showConfirmButton: false,
+          timer: 1000,
+        });
+      },
+    });
+  }
 
-DeleteData(transId: any, index: any, data:any) {
-  Swal.fire({
-    title: 'Are you sure?',
-    text: "You won't be able to revert this!",
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Yes, delete it!'
-  }).then((result) => {
-    if (result.isConfirmed) {
-      this.service.DeleteHealthHandicap(transId).subscribe({
-        next: (_data) => {
-        },
-        error: (err) => {
-          Swal.fire(
-            'Oops!',
-            'Something went wrong.',
-            'error'
-          )
-        },
-        complete: () => {
-          this.listData[index] = {};
-          this.listData[index].brgyId = data.brgyId;
-          this.listData[index].brgyName = data.brgyName;
-          Swal.fire(
-            'Deleted!',
-            'Your file has been deleted.',
-            'success'
-          )
-        }
-
-      });
-
-    }
-  })
-}
-
+  DeleteData(transId: any, index: any, data: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.service.DeleteHealthHandicap(transId).subscribe({
+          next: (_data) => {},
+          error: (err) => {
+            Swal.fire('Oops!', 'Something went wrong.', 'error');
+          },
+          complete: () => {
+            this.listData[index] = {};
+            this.listData[index].brgyId = data.brgyId;
+            this.listData[index].brgyName = data.brgyName;
+            Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+          },
+        });
+      }
+    });
+  }
 }

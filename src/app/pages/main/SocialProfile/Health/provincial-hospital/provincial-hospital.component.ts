@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import { response } from 'express';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
+import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 @Component({
   selector: 'app-provincial-hospital',
   templateUrl: './provincial-hospital.component.html',
@@ -12,7 +13,13 @@ import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 })
 export class ProvincialHospitalComponent implements OnInit {
 
-  constructor(private Auth: AuthService, private Service: HealthHospitalService) { }
+  constructor(private Auth: AuthService, private Service: HealthHospitalService,
+    private modifyService: ModifyCityMunService
+  ) {}
+
+  modifyCityMun(cityMunName: string) {
+    return this.modifyService.ModifyText(cityMunName);
+  }
 
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;

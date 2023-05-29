@@ -11,7 +11,7 @@
                   <h1 class="h4 text-gray-900 mb-1">
                     Organization/ Staffing Pattern
                   </h1>
-                  <label><strong>Governance - Municipality of {{ munCityName }}
+                  <label><strong>Governance - {{modifyCityMun(munCityName)}}
                     </strong></label>
                 </div>
 
@@ -216,8 +216,8 @@
               </div>
               <div class="col-lg-6">
                 <label>Temporary : </label>
-                <input type="number" class="form-control mb-2" id="temporary" name="temporary" [(ngModel)]="editO.temporary"
-                  placeholder="" [ngClass]="toValidate.temporary ? 'is-invalid' : ''"
+                <input type="number" class="form-control mb-2" id="temporary" name="temporary"
+                  [(ngModel)]="editO.temporary" placeholder="" [ngClass]="toValidate.temporary ? 'is-invalid' : ''"
                   (keyup)="toValidate.temporary = false" />
               </div>
               <div class="col-lg-6">
@@ -244,8 +244,8 @@
               </div>
               <div class="col-lg-6">
                 <label>Job Order :</label>
-                <input type="number" class="form-control mb-2" id="jobOrder" name="jobOrder" [(ngModel)]="editO.jobOrder"
-                  placeholder="" [ngClass]="toValidate.jobOrder ? 'is-invalid' : ''"
+                <input type="number" class="form-control mb-2" id="jobOrder" name="jobOrder"
+                  [(ngModel)]="editO.jobOrder" placeholder="" [ngClass]="toValidate.jobOrder ? 'is-invalid' : ''"
                   (keyup)="toValidate.jobOrder = false" />
               </div>
               <div class="col-lg-6">
@@ -256,8 +256,8 @@
               </div>
               <div class="col-lg-6">
                 <label>Casual SEF :</label>
-                <input type="number" class="form-control mb-2" id="casualSef" name="casualSef" [(ngModel)]="editO.casualSef"
-                  placeholder="" [ngClass]="toValidate.casualSef ? 'is-invalid' : ''"
+                <input type="number" class="form-control mb-2" id="casualSef" name="casualSef"
+                  [(ngModel)]="editO.casualSef" placeholder="" [ngClass]="toValidate.casualSef ? 'is-invalid' : ''"
                   (keyup)="toValidate.casualSef = false" />
               </div>
               <div class="col-lg-6">

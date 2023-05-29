@@ -4,6 +4,7 @@ import { HealthFacilitiesService } from 'src/app/shared/SocialProfile/Health/hea
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
+import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 
 @Component({
   selector: 'app-barangay-health',
@@ -13,8 +14,15 @@ import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 export class BarangayHealthComponent implements OnInit {
   constructor(
     private Auth: AuthService,
-    private Service: HealthFacilitiesService
-  ) { }
+    private Service: HealthFacilitiesService,
+    private modifyService: ModifyCityMunService
+  ) {}
+
+  modifyCityMun(cityMunName: string) {
+    return this.modifyService.ModifyText(cityMunName);
+  }
+
+
 
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;

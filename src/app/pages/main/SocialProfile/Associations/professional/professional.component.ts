@@ -5,27 +5,32 @@ import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 
 @Component({
   selector: 'app-professional',
   templateUrl: './professional.component.html',
   styleUrls: ['./professional.component.css'],
 })
-
 export class ProfessionalComponent implements OnInit {
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;
 
   constructor(
     private Auth: AuthService,
-    private service: AssociationService
-  ) { }
+    private service: AssociationService,
+    private modifyService: ModifyCityMunService
+  ) {}
+
+  modifyCityMun(cityMunName: string) {
+    return this.modifyService.ModifyText(cityMunName);
+  }
 
   menuId = '3';
   munCityId = this.Auth.munCityId;
-  munName = (this.Auth.munCityName)+", Davao del Norte";
+  munCityName: string = this.Auth.munCityName;
+  munName = this.Auth.munCityName + ', Davao del Norte';
   setYear = Number(this.Auth.activeSetYear);
-
 
   addData: any = {};
   editData: any = {};
@@ -35,7 +40,6 @@ export class ProfessionalComponent implements OnInit {
   updateForm: boolean = false;
   markerObj: any = {};
   toValidate: any = {};
-
 
   ngOnInit(): void {
     this.resetForm();
@@ -48,7 +52,7 @@ export class ProfessionalComponent implements OnInit {
   }
 
   SetMarker(data: any = {}) {
-    console.log("lnglat: ", data.longtitude + " , " + data.latitude)
+    console.log('lnglat: ', data.longtitude + ' , ' + data.latitude);
 
     this.markerObj = {
       lat: data.latitude,
@@ -56,87 +60,85 @@ export class ProfessionalComponent implements OnInit {
       label: data.brgyName.charAt(0),
       brgyName: data.brgyName,
       munCityName: this.munName,
-      draggable: true
+      draggable: true,
     };
     this.gmapComponent.setMarker(this.markerObj);
   }
 
   GetAssociation(): void {
-    this.service.GetAssociation(this.menuId, this.setYear, this.munCityId).subscribe({
-      next: (response) => {
-        this.listData = response;
-      },
-      error: (err) => {
-        console.log(err);
-      },
-      complete: () => {
-        console.log('GetAssociations() completed.');
-      },
-    });
+    this.service
+      .GetAssociation(this.menuId, this.setYear, this.munCityId)
+      .subscribe({
+        next: (response) => {
+          this.listData = response;
+        },
+        error: (err) => {
+          console.log(err);
+        },
+        complete: () => {
+          console.log('GetAssociations() completed.');
+        },
+      });
   }
 
   AddAssociation(addData: any): void {
-    this.toValidate.brgyId = this.addData.brgyId == "" || this.addData.brgyId == null ? true : false;
-    this.toValidate.name = this.addData.estabName == "" || this.addData.name == undefined ? true : false;
-
+    this.toValidate.brgyId =
+      this.addData.brgyId == '' || this.addData.brgyId == null ? true : false;
+    this.toValidate.name =
+      this.addData.estabName == '' || this.addData.name == undefined
+        ? true
+        : false;
 
     if (this.toValidate.brgyId == true || this.toValidate.name == true) {
-      Swal.fire(
-        '',
-        'Please fill out the required fields',
-        'warning'
-      );
+      Swal.fire('', 'Please fill out the required fields', 'warning');
     } else {
-    this.addData.longtitude = this.gmapComponent.markers.lng;
-    this.addData.latitude = this.gmapComponent.markers.lat;
-    this.addData.setYear = Number(this.setYear);
-    this.addData.menuId = String(this.menuId);
-    this.addData.location = this.munName;
-    this.addData.id = this.idCounter++;
-    this.service.AddAssociation(this.addData).subscribe({
+      this.addData.longtitude = this.gmapComponent.markers.lng;
+      this.addData.latitude = this.gmapComponent.markers.lat;
+      this.addData.setYear = Number(this.setYear);
+      this.addData.menuId = String(this.menuId);
+      this.addData.location = this.munName;
+      this.addData.id = this.idCounter++;
+      this.service.AddAssociation(this.addData).subscribe({
         next: (response) => {
-            this.listData.push(response);
-            console.log(response);
-            Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: 'Your work has been saved',
-                showConfirmButton: false,
-                timer: 1000,
-            });
-            this.resetForm();
+          this.listData.push(response);
+          console.log(response);
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Your work has been saved',
+            showConfirmButton: false,
+            timer: 1000,
+          });
+          this.resetForm();
         },
         error: (err) => {
-            console.log(err);
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Something went wrong!',
-                text: err.message,
-                showConfirmButton: false,
-                timer: 3000,
-            });
+          console.log(err);
+          Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'Something went wrong!',
+            text: err.message,
+            showConfirmButton: false,
+            timer: 3000,
+          });
         },
         complete: () => {
-            console.log('AddAssociations() completed.');
+          console.log('AddAssociations() completed.');
         },
-    });
+      });
     }
-
-
-}
+  }
 
   EditAssociation(): void {
-    this.toValidate.brgyId = this.addData.brgyId == "" || this.addData.brgyId == null ? true : false;
-    this.toValidate.name = this.addData.estabName === '' || this.addData.name == undefined ? true : false;
+    this.toValidate.brgyId =
+      this.addData.brgyId == '' || this.addData.brgyId == null ? true : false;
+    this.toValidate.name =
+      this.addData.estabName === '' || this.addData.name == undefined
+        ? true
+        : false;
     if (this.toValidate.brgyId == true || this.toValidate.name == true) {
-      Swal.fire(
-        '',
-        'Please fill out the required fields',
-        'warning'
-      );
+      Swal.fire('', 'Please fill out the required fields', 'warning');
     } else {
-
       this.addData.longtitude = this.gmapComponent.markers.lng;
       this.addData.latitude = this.gmapComponent.markers.lat;
 
@@ -225,14 +227,10 @@ export class ProfessionalComponent implements OnInit {
     );
   }
 
-
   getListOfBarangay(): void {
     this.service.ListOfBarangay(this.munCityId).subscribe((response) => {
       console.log('Barangay: ', response);
       this.listBarangayData = response;
     });
   }
-
-
-
 }

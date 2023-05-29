@@ -57,7 +57,7 @@
 
                 <div class="text-center">
                   <h1 class="h4 text-gray-900 mb-4"> Physical / Geographic Profile</h1>
-                  <label><strong>Governance - Municipality of {{munCityName}} </strong></label><br>
+                  <label><strong>Governance - {{modifyCityMun(munCityName)}} </strong></label><br>
                 </div>
                 <br>
                 <div class="table-responsive">
@@ -332,13 +332,15 @@
           </div>
           <div class="col-lg-6">
             <label class="labelForm" for="geo_Commercial">b. Commercial: </label>
-            <input type="number" class="form-control mb-2" id="commercial" name="commercial" [(ngModel)]="editgeo.commercial"
-              placeholder="" [ngClass]="toValidate.commercial?'is-invalid':''" (keyup)="toValidate.commercial=false">
+            <input type="number" class="form-control mb-2" id="commercial" name="commercial"
+              [(ngModel)]="editgeo.commercial" placeholder="" [ngClass]="toValidate.commercial?'is-invalid':''"
+              (keyup)="toValidate.commercial=false">
           </div>
           <div class="col-lg-6">
             <label class="labelForm" for="geo_Industrial">c. Industrial : </label>
-            <input type="number" class="form-control mb-2" id="industrial" name="industrial" [(ngModel)]="editgeo.industrial"
-              placeholder="" [ngClass]="toValidate.industrial?'is-invalid':''" (keyup)="toValidate.industrial=false">
+            <input type="number" class="form-control mb-2" id="industrial" name="industrial"
+              [(ngModel)]="editgeo.industrial" placeholder="" [ngClass]="toValidate.industrial?'is-invalid':''"
+              (keyup)="toValidate.industrial=false">
 
           </div>
           <div class="col-lg-6">
@@ -357,14 +359,16 @@
           </div>
           <div class="col-lg-6">
             <label class="labelForm" for="geo_ForestLands">f. Forest Lands : </label>
-            <input type="number" class="form-control mb-2" id="forestLand" name="forestLand" [(ngModel)]="editgeo.forestLand"
-              placeholder="" [ngClass]="toValidate.forestLand?'is-invalid':''" (keyup)="toValidate.forestLand=false">
+            <input type="number" class="form-control mb-2" id="forestLand" name="forestLand"
+              [(ngModel)]="editgeo.forestLand" placeholder="" [ngClass]="toValidate.forestLand?'is-invalid':''"
+              (keyup)="toValidate.forestLand=false">
 
           </div>
           <div class="col-lg-6">
             <label class="labelForm" for="geo_OpenSpaces">g. Open Spaces : </label>
-            <input type="number" class="form-control mb-2" id="openSpaces" name="openSpaces" [(ngModel)]="editgeo.openSpaces"
-              placeholder="" [ngClass]="toValidate.openSpaces?'is-invalid':''" (keyup)="toValidate.openSpaces=false">
+            <input type="number" class="form-control mb-2" id="openSpaces" name="openSpaces"
+              [(ngModel)]="editgeo.openSpaces" placeholder="" [ngClass]="toValidate.openSpaces?'is-invalid':''"
+              (keyup)="toValidate.openSpaces=false">
 
           </div>
           <div class="col-lg-6">

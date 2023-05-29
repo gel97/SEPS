@@ -8,7 +8,7 @@
             <div class=""></div>
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-4">Barangay Health Stations</h1>
-              <label><strong>Health - Municipality of {{munCityName}} </strong></label><br>
+              <label><strong>Health - {{modifyCityMun(munCityName)}} </strong></label><br>
             </div>
             <div class="form-inline float-right ">
               <app-admin>
@@ -156,12 +156,16 @@
             </label>
           </div>
         </div>
-        <button type="button" *ngIf="visible" (click)="AddHealthFacilities()" id="closeModal" class="btn btn-primary"><i class ="fa fa-check"></i> Save </button>&nbsp;
-        <button type="button"  *ngIf="visible" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal" aria-hidden="true"> <i class="fa fa-times"></i>Close</button>&nbsp;
-        <button type="button" *ngIf="not_visible" (click)="EditHealthFacilities()"aria-hidden="true" class="btn btn-primary"><i class="fa fa-check"></i>
+        <button type="button" *ngIf="visible" (click)="AddHealthFacilities()" id="closeModal" class="btn btn-primary"><i
+            class="fa fa-check"></i> Save </button>&nbsp;
+        <button type="button" *ngIf="visible" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal"
+          aria-hidden="true"> <i class="fa fa-times"></i>Close</button>&nbsp;
+        <button type="button" *ngIf="not_visible" (click)="EditHealthFacilities()" aria-hidden="true"
+          class="btn btn-primary"><i class="fa fa-check"></i>
           Save Changes
         </button>
-        <button type="button" *ngIf="not_visible" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal" aria-hidden="true"> <i class="fa fa-times"></i>Cancel</button>&nbsp;
+        <button type="button" *ngIf="not_visible" class="btn btn-secondary" data-toggle="modal"
+          data-target="#exampleModal" aria-hidden="true"> <i class="fa fa-times"></i>Cancel</button>&nbsp;
       </div>
     </div>
   </div>

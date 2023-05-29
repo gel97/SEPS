@@ -7,8 +7,9 @@
           <div class="p-5">
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-4">Irrigation Systems</h1>
+              <label><strong>Utility Services/Structures - {{modifyCityMun(munCityName)}}</strong></label>
             </div>
-            <div *ngIf="!hasData" class ="form-inline float-right ">
+            <div *ngIf="!hasData" class="form-inline float-right ">
               <app-admin>
                 <button (click)="isAdd = true;" class="btn btn-primary mb-2" data-bs-toggle="modal"
                   data-bs-target="#mEducation">
@@ -22,48 +23,48 @@
               <table class="table table-light table-striped">
                 <thead>
                   <tr>
-                    <th scope="col">Service Area:	</th>
+                    <th scope="col">Service Area: </th>
                     <th scope="col">National Irrigation System</th>
-                    <th scope="col">Communal/ Pump Irrigation System</th>               
+                    <th scope="col">Communal/ Pump Irrigation System</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>Irrigable Area (Has) :	</td>
+                    <td>Irrigable Area (Has) : </td>
                     <td>{{irrigation.irrigableNtl}}</td>
                     <td>{{irrigation.irrigableCom}}</td>
                   </tr>
                   <tr>
-                    <td>Irrigated Area (Has) :	</td>
+                    <td>Irrigated Area (Has) : </td>
                     <td>{{irrigation.irrigatedNtl}}</td>
                     <td>{{irrigation.irrigatedCom}}</td>
                   </tr>
                   <tr>
-                    <td>No. of Farmer Beneficiaries :	</td>
+                    <td>No. of Farmer Beneficiaries : </td>
                     <td>{{irrigation.farmerNtl}}</td>
                     <td>{{irrigation.farmerCom}}</td>
                   </tr>
                   <tr>
                     <td>Remarks :</td>
-                    <td colspan="2">{{irrigation.remarks}}</td>          
+                    <td colspan="2">{{irrigation.remarks}}</td>
                   </tr>
                 </tbody>
               </table>
             </div>
-            <div *ngIf="hasData"  class ="form-inline float-right ">
+            <div *ngIf="hasData" class="form-inline float-right ">
               <div class="d-inline-flex">
                 <app-admin>
-                  <button (click)="isAdd = false" class="btn btn-info btn-circle"
-                    data-toggle="modal" data-target="#mEducation"><i class="fa fa-pen"></i>
+                  <button (click)="isAdd = false" class="btn btn-info btn-circle" data-toggle="modal"
+                    data-target="#mEducation"><i class="fa fa-pen"></i>
                   </button>
                   &nbsp;
                 </app-admin>
-              <app-admin>
-                <button type="button" title="Delete" class="btn btn-warning btn-circle"
-                  (click)="DeleteIrrigation(irrigation.transId)"><i class="fa fa-trash"></i>
-                </button>
-              </app-admin>
-              </div>       
+                <app-admin>
+                  <button type="button" title="Delete" class="btn btn-warning btn-circle"
+                    (click)="DeleteIrrigation(irrigation.transId)"><i class="fa fa-trash"></i>
+                  </button>
+                </app-admin>
+              </div>
             </div>
           </div>
         </div>
@@ -84,30 +85,37 @@
           <table class="table table-light table-striped">
             <thead>
               <tr>
-                <th scope="col">Service Area:	</th>
+                <th scope="col">Service Area: </th>
                 <th scope="col">National Irrigation System</th>
-                <th scope="col">Communal/ Pump Irrigation System</th>               
+                <th scope="col">Communal/ Pump Irrigation System</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>Irrigable Area (Has) :	</td>
-                <td><input type="number" class="form-control" id="" placeholder="" [(ngModel)]="irrigation.irrigableNtl"></td>
-                <td><input type="number" class="form-control" id="" placeholder="" [(ngModel)]="irrigation.irrigableCom"></td>
+                <td>Irrigable Area (Has) : </td>
+                <td><input type="number" class="form-control" id="" placeholder=""
+                    [(ngModel)]="irrigation.irrigableNtl"></td>
+                <td><input type="number" class="form-control" id="" placeholder=""
+                    [(ngModel)]="irrigation.irrigableCom"></td>
               </tr>
               <tr>
-                <td>Irrigated Area (Has) :	</td>
-                <td><input type="number" class="form-control" id="" placeholder="" [(ngModel)]="irrigation.irrigatedNtl"></td>
-                <td><input type="number" class="form-control" id="" placeholder="" [(ngModel)]="irrigation.irrigatedCom"></td>
+                <td>Irrigated Area (Has) : </td>
+                <td><input type="number" class="form-control" id="" placeholder=""
+                    [(ngModel)]="irrigation.irrigatedNtl"></td>
+                <td><input type="number" class="form-control" id="" placeholder=""
+                    [(ngModel)]="irrigation.irrigatedCom"></td>
               </tr>
               <tr>
-                <td>No. of Farmer Beneficiaries :	</td>
-                <td><input type="number" class="form-control" id="" placeholder="" [(ngModel)]="irrigation.farmerNtl"></td>
-                <td><input type="number" class="form-control" id="" placeholder="" [(ngModel)]="irrigation.farmerCom"></td>          
+                <td>No. of Farmer Beneficiaries : </td>
+                <td><input type="number" class="form-control" id="" placeholder="" [(ngModel)]="irrigation.farmerNtl">
+                </td>
+                <td><input type="number" class="form-control" id="" placeholder="" [(ngModel)]="irrigation.farmerCom">
+                </td>
               </tr>
               <tr>
                 <td>Remarks :</td>
-                <td colspan="2"><textarea class="form-control" id="exampleFormControlTextarea1" rows="4" [(ngModel)]="irrigation.remarks"></textarea></td>  
+                <td colspan="2"><textarea class="form-control" id="exampleFormControlTextarea1" rows="4"
+                    [(ngModel)]="irrigation.remarks"></textarea></td>
               </tr>
             </tbody>
           </table>
@@ -115,8 +123,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-school" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary"
-          (click)="isAdd? AddIrrigation(): EditIrrigation()">Save changes</button>
+        <button type="button" class="btn btn-primary" (click)="isAdd? AddIrrigation(): EditIrrigation()">Save
+          changes</button>
       </div>
     </div>
   </div>
@@ -143,4 +151,3 @@
     </div>
   </div>
 </div>
-

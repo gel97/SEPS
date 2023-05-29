@@ -7,8 +7,9 @@
           <div class="p-5">
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-4">Sectoral</h1>
+              <label><strong>Associations - {{modifyCityMun(munCityName)}} </strong></label><br>
             </div>
-           <form class="user collapse show" id="collapseExample">
+            <form class="user collapse show" id="collapseExample">
               <div class="form-inline float-right ">
                 <app-admin>
                   <button type="button" (click)="clearData()" class="btn btn-labeled btn-primary" data-toggle="modal"
@@ -51,31 +52,31 @@
                     <td style="text-align: center;">{{ dataItem.brgyName }}</td>
                     <td style="text-align: center;">{{ dataItem.longtitude }}, <br>{{ dataItem.latitude }}</td>
                     <td style="text-align: center; padding: 12px 15px; ">
-                      
-                        <div class="flex-container">
-                          <app-admin>
-                            <div class="flex-button">
-                              <button (click)="addData = dataItem" data-toggle="modal" (click)="editToggle()"
-                                data-target="#exampleModal" class="btn btn-info btn-circle"
-                                style="display: inline-block; ; margin-right: 10px;">
-                                <i class="fas fa-pen"></i></button>
-                            </div>
-                          </app-admin>                         
-                          <div class="">
-                            <button (click)="SetMarker(dataItem); addData = dataItem" data-toggle="modal"
-                              data-target="#gmapModal" class="btn btn-success btn-circle"
-                              style="display: inline-block; margin-right: 10px; ">
-                              <i class="fas fa-globe"></i></button>
-                          </div>  
-                          <app-admin>
-                            <div class="">
-                              <button class="btn btn-warning btn-circle" style="display: inline-block; margin-right: 10px; "
-                                (click)="DeleteAssociation(dataItem)">
-                                <i class="fas fa-trash"></i>
-                              </button>
-                            </div>
-                          </app-admin>
+
+                      <div class="flex-container">
+                        <app-admin>
+                          <div class="flex-button">
+                            <button (click)="addData = dataItem" data-toggle="modal" (click)="editToggle()"
+                              data-target="#exampleModal" class="btn btn-info btn-circle"
+                              style="display: inline-block; ; margin-right: 10px;">
+                              <i class="fas fa-pen"></i></button>
+                          </div>
+                        </app-admin>
+                        <div class="">
+                          <button (click)="SetMarker(dataItem); addData = dataItem" data-toggle="modal"
+                            data-target="#gmapModal" class="btn btn-success btn-circle"
+                            style="display: inline-block; margin-right: 10px; ">
+                            <i class="fas fa-globe"></i></button>
                         </div>
+                        <app-admin>
+                          <div class="">
+                            <button class="btn btn-warning btn-circle"
+                              style="display: inline-block; margin-right: 10px; " (click)="DeleteAssociation(dataItem)">
+                              <i class="fas fa-trash"></i>
+                            </button>
+                          </div>
+                        </app-admin>
+                      </div>
                     </td>
                   </tr>
                 </tbody>

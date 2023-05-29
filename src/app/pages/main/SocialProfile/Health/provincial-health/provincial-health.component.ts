@@ -4,6 +4,7 @@ import { HealthProfileService } from 'src/app/shared/SocialProfile/Health/health
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import { isEmptyObject } from 'jquery';
+import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 @Component({
   selector: 'app-provincial-health',
   templateUrl: './provincial-health.component.html',
@@ -14,10 +15,16 @@ export class ProvincialHealthComponent implements OnInit {
   closebutton!: { nativeElement: { click: () => void; }; };
   constructor(
     private auth: AuthService,
-    private service: HealthProfileService
+    private service: HealthProfileService,
+    private modifyService: ModifyCityMunService
   ) {
     this.o_munCityId = this.auth.o_munCityId;
   }
+
+  modifyCityMun(cityMunName: string) {
+    return this.modifyService.ModifyText(cityMunName);
+  }
+  
 
   munCityName: string = this.auth.munCityName;
   is_update: boolean = false;

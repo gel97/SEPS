@@ -1,87 +1,92 @@
 <div class="">
   <div class="card o-hidden border-2 shadow-sm my-5">
-      <div class="card-body p-0">
-          <!-- Nested Row within Card Body -->
-          <div class="row">
-              <div class="col-lg-12">
-                  <div class="p-5">
-                      <div class="">
-                      </div>
-                      <div class="text-center">
-                        <h1 class="h4 text-gray-900 mb-4">Agricultural Profile of Davao del Norte(Provincial Crops Area Harvested)</h1>
-                        <label><strong>Agriculture - Municipality of {{munCityName}} </strong></label><br>
-                      </div>
-                      <br>
-                      <div class ="form-inline float-right ">
-                        <app-admin>
-                          <button type="button" class="btn btn-primary" (click)="add_Crops_Total=true" data-toggle="modal" data-target="#ModalAdd "><i class="fa fa-plus"></i>
-                          Crops Area Harvested
-                          </button>
-                        </app-admin>
-                      </div>
-                      <br><br>
-                      <br>
-                      <div class="row">
-                        <div class="col-lg-6">
-                            <p>Agricultural Profile of Davao del Norte(Provincial Crops Area Harvested)</p>
-                        </div>
-                        <div class="col-lg-6 ">
-                              <form class="form-inline float-right">
-                                <div class="form-group mb-4">
-                                  <!-- <input type="search input"  class="form-control" width="30%" placeholder="Search" (input)="onChangeSearch($event)"> <label for="" class="btn btn-primary"> <i class="fas fa-search fa-2x"></i></label> -->
-
-                                </div>
-                              </form>
-                        </div>
-                         </div>
-
- <div class="form-group">
-  <div class ="row">
-    <div class="row">
-
-      </div>
-      <div class="table-responsive">
-      <table class="table table-framed table-hover table-striped" >
-        <thead class = "table-dark">
-            <tr>
-
-              <th scope="col">#</th>
-              <th scope="col">Type of Commodities</th>
-              <th scope="col">Total Area Harvested (has.) :</th>
-              <th scope="col">Remarks	</th>
-              <th width="8%"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let text of Commodities, let i = index">
-              <td>{{i + 1}}</td>
-              <td>
-                <div *ngFor="let item of  list_of_Commodities">
-                <span *ngIf="item.name === text.commodities">{{item.name}} </span>
+    <div class="card-body p-0">
+      <!-- Nested Row within Card Body -->
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="p-5">
+            <div class="">
             </div>
-          </td>
-              <!-- <td>{{text.commodities}}</td> -->
-              <td>{{text.area}}</td>
-              <td>{{text.remarks}}</td>
-
-
-
-              <td >
-                <div class="d-inline-flex">
-                  <app-admin>
-                  <button type="button" title="Edit" (click)="commo=text;add_Crops_Total=false"  class="btn btn-info btn-circle" data-toggle="modal" data-target="#ModalAdd" ><i class="fa fa-pen"></i> </button>
-                  </app-admin>&nbsp;
+            <div class="text-center">
+              <h1 class="h4 text-gray-900 mb-4">Agricultural Profile of Davao del Norte(Provincial Crops Area Harvested)
+              </h1>
+              <label><strong>Agriculture - {{modifyCityMun(munCityName)}} </strong></label><br>
+            </div>
+            <br>
+            <div class="form-inline float-right ">
               <app-admin>
-                  <button type="button" title="Delete" (click)="delete(text.transId,i)" class="btn btn-warning btn-circle" ><i class="fa fa-trash"></i>  </button>
-                </app-admin>
-                </div>
-                </td>
+                <button type="button" class="btn btn-primary" (click)="add_Crops_Total=true" data-toggle="modal"
+                  data-target="#ModalAdd "><i class="fa fa-plus"></i>
+                  Crops Area Harvested
+                </button>
+              </app-admin>
+            </div>
+            <br><br>
+            <br>
+            <div class="row">
+              <div class="col-lg-6">
+                <p>Agricultural Profile of Davao del Norte(Provincial Crops Area Harvested)</p>
+              </div>
+              <div class="col-lg-6 ">
+                <form class="form-inline float-right">
+                  <div class="form-group mb-4">
+                    <!-- <input type="search input"  class="form-control" width="30%" placeholder="Search" (input)="onChangeSearch($event)"> <label for="" class="btn btn-primary"> <i class="fas fa-search fa-2x"></i></label> -->
 
-            </tr>
-            </tbody>
-            </table>
-          </div>
-             </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="row">
+                <div class="row">
+
+                </div>
+                <div class="table-responsive">
+                  <table class="table table-framed table-hover table-striped">
+                    <thead class="table-dark">
+                      <tr>
+
+                        <th scope="col">#</th>
+                        <th scope="col">Type of Commodities</th>
+                        <th scope="col">Total Area Harvested (has.) :</th>
+                        <th scope="col">Remarks </th>
+                        <th width="8%"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let text of Commodities, let i = index">
+                        <td>{{i + 1}}</td>
+                        <td>
+                          <div *ngFor="let item of  list_of_Commodities">
+                            <span *ngIf="item.name === text.commodities">{{item.name}} </span>
+                          </div>
+                        </td>
+                        <!-- <td>{{text.commodities}}</td> -->
+                        <td>{{text.area}}</td>
+                        <td>{{text.remarks}}</td>
+
+
+
+                        <td>
+                          <div class="d-inline-flex">
+                            <app-admin>
+                              <button type="button" title="Edit" (click)="commo=text;add_Crops_Total=false"
+                                class="btn btn-info btn-circle" data-toggle="modal" data-target="#ModalAdd"><i
+                                  class="fa fa-pen"></i> </button>
+                            </app-admin>&nbsp;
+                            <app-admin>
+                              <button type="button" title="Delete" (click)="delete(text.transId,i)"
+                                class="btn btn-warning btn-circle"><i class="fa fa-trash"></i> </button>
+                            </app-admin>
+                          </div>
+                        </td>
+
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -91,11 +96,13 @@
 
 
   <!-- ADD MODAL -->
-  <div class="modal fade bd-example-modal-lg"id="ModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade bd-example-modal-lg" id="ModalAdd" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">List of  Provincial Profile on Crops Production and Area Harvested</h5>
+          <h5 class="modal-title" id="exampleModalLabel">List of Provincial Profile on Crops Production and Area
+            Harvested</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -103,20 +110,23 @@
         <div class="modal-body">
           <div class="form-group">
             <div class="row">
-                <div class="">
-                  <label for="category">Type of Crop : </label>
-                  <select class="form-select" aria-label="Default select example"  name="list_of_Commodities" [(ngModel)]="commo.commodities" [ngClass]="toValidate.commodities?'is-invalid':''" (ngModelChange)="toValidate.commodities=false">
-                    <option *ngFor="let list of  list_of_Commodities" value={{list.name}} >{{list.name}}</option>
-                  </select>
-                </div>
+              <div class="">
+                <label for="category">Type of Crop : </label>
+                <select class="form-select" aria-label="Default select example" name="list_of_Commodities"
+                  [(ngModel)]="commo.commodities" [ngClass]="toValidate.commodities?'is-invalid':''"
+                  (ngModelChange)="toValidate.commodities=false">
+                  <option *ngFor="let list of  list_of_Commodities" value={{list.name}}>{{list.name}}</option>
+                </select>
+              </div>
 
             </div>
-           </div>
-         <div class = 'row'>
-          <div class="col-lg-12">
-            <label for="exampleFormControlTextarea1">Total Production (M.T.):</label>
-            <input type="text" class="form-control" id="" rows="4" [(ngModel)]="commo.totalProd" [ngClass]="toValidate.totalProd?'is-invalid':''" (keyup)="toValidate.totalProd=false">
           </div>
+          <div class='row'>
+            <div class="col-lg-12">
+              <label for="exampleFormControlTextarea1">Total Production (M.T.):</label>
+              <input type="text" class="form-control" id="" rows="4" [(ngModel)]="commo.totalProd"
+                [ngClass]="toValidate.totalProd?'is-invalid':''" (keyup)="toValidate.totalProd=false">
+            </div>
 
 
             <!-- <div class="col-lg-6">
@@ -124,31 +134,30 @@
               <input type ="text" class="form-control" id="" rows="4" [(ngModel)]="commo.area" [ngClass]="toValidate.area?'is-invalid':''" (keyup)="toValidate.area=false">
             </div> -->
           </div> <br>
-          <div class = "row">
-          <div class="">
-            <label for="exampleFormControlTextarea1">Remarks:</label>remarks
+          <div class="row">
+            <div class="">
+              <label for="exampleFormControlTextarea1">Remarks:</label>remarks
               <textarea class="form-control" id="" rows="4" [(ngModel)]="commo.remarks"></textarea>
             </div>
           </div>
-           <br>
+          <br>
         </div>
         <div class="modal-footer">
           <div class="left-absolute" *ngIf="visible">
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                    (ngModelChange)="onChange(isCheck)" [(ngModel)]="isCheck">
-                <label class="form-check-label" for="flexCheckDefault">
-                    Several data
-                </label>
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                (ngModelChange)="onChange(isCheck)" [(ngModel)]="isCheck">
+              <label class="form-check-label" for="flexCheckDefault">
+                Several data
+              </label>
             </div>
-        </div>
-          <button type="button" class="btn btn-primary" (click)="add_Crops_Total? Add_Commodities():Edit_Commodities();" ><i class="fa fa-check" ></i>Save</button>&nbsp;
+          </div>
+          <button type="button" class="btn btn-primary"
+            (click)="add_Crops_Total? Add_Commodities():Edit_Commodities();"><i
+              class="fa fa-check"></i>Save</button>&nbsp;
           <!-- <button type ="button" class="btn btn-secondary" *ngIf="updateOfficial" (click) ="city={}"><i class="fa fa-times"></i>Cancel</button> -->
           <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
         </div>
       </div>
     </div>
   </div>
-
-
-

@@ -3,21 +3,30 @@ import Swal from 'sweetalert2';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { EducationOsyService } from 'src/app/shared/SocialProfile/Education/educationOsy.service';
+import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 
 @Component({
   selector: 'app-oschool-youth',
   templateUrl: './oschool-youth.component.html',
-  styleUrls: ['./oschool-youth.component.css']
+  styleUrls: ['./oschool-youth.component.css'],
 })
 export class OSchoolYouthComponent implements OnInit {
-  munCityName:string = this.auth.munCityName;
-  constructor(private service: EducationOsyService, private auth: AuthService) { }
+  munCityName: string = this.auth.munCityName;
+  constructor(
+    private service: EducationOsyService,
+    private auth: AuthService,
+    private modifyService: ModifyCityMunService
+  ) {}
 
-  toValidate:any = {};
+  modifyCityMun(cityMunName: string) {
+    return this.modifyService.ModifyText(cityMunName);
+  }
+
+  toValidate: any = {};
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;
   @ViewChild('closebutton')
-  closebutton!: { nativeElement: { click: () => void; }; };
+  closebutton!: { nativeElement: { click: () => void } };
   isCheck: boolean = false;
   onChange(isCheck: boolean) {
     this.isCheck = isCheck;
@@ -32,7 +41,7 @@ export class OSchoolYouthComponent implements OnInit {
       label: data.brgyName.charAt(0),
       brgyName: data.brgyName,
       munCityName: this.munCityName,
-      draggable: true
+      draggable: true,
     };
 
     this.gmapComponent.setMarker(this.markerObj);
@@ -41,148 +50,103 @@ export class OSchoolYouthComponent implements OnInit {
   ngOnInit(): void {
     this.Init();
   }
-  munCityId:string = this.auth.munCityId;
-  setYear:string = this.auth.setYear;
+  munCityId: string = this.auth.munCityId;
+  setYear: string = this.auth.setYear;
 
-  isAdd:boolean = true;
-  listOsy:any = [];
-  osy:any = {};
-  listBarangay:any = [];
+  isAdd: boolean = true;
+  listOsy: any = [];
+  osy: any = {};
+  listBarangay: any = [];
 
-  Init()
-  {
+  Init() {
     this.GetListBarangay();
     this.GetListOsy();
   }
 
-  GetListBarangay()
-  {
-    this.service.ListOfBarangay(this.auth.munCityId).subscribe(data => {
-      this.listBarangay = (<any>data);
-    })
+  GetListBarangay() {
+    this.service.ListOfBarangay(this.auth.munCityId).subscribe((data) => {
+      this.listBarangay = <any>data;
+    });
   }
 
-  GetListOsy()
-  {
+  GetListOsy() {
     this.service.GetListEducationOsy(this.munCityId, this.setYear).subscribe({
-      next: (response) =>
-      {
-        this.listOsy = (<any> response);
+      next: (response) => {
+        this.listOsy = <any>response;
         console.log(this.listOsy);
       },
-      error: (error) =>
-      {
-        Swal.fire(
-          'Oops!',
-          'Something went wrong.',
-          'error'
-          );
+      error: (error) => {
+        Swal.fire('Oops!', 'Something went wrong.', 'error');
       },
-      complete: () =>
-      {
-
-      }
-    })
-
+      complete: () => {},
+    });
   }
 
-  AddOsy()
-  {
-    this.toValidate.brgyId = this.osy.brgyId=="" || this.osy.brgyId ==null?true:false;
+  AddOsy() {
+    this.toValidate.brgyId =
+      this.osy.brgyId == '' || this.osy.brgyId == null ? true : false;
 
-    this.osy.setYear   = this.setYear;
+    this.osy.setYear = this.setYear;
     this.osy.munCityId = this.munCityId;
 
-    if(!this.toValidate.name && !this.toValidate.brgyId)
-    {
-      this.service.AddEducationOsy(this.osy).subscribe(
-        {
-          next: (request) => {
-            this.GetListOsy();
-          },
-          error:(error)=>{
-            Swal.fire(
-              'Oops!',
-              'Something went wrong.',
-              'error'
-              );
-          },
-          complete: () =>
-          {
-            if (!this.isCheck) {
-              this.closebutton.nativeElement.click();
-            }
-            this.osy = {};
-             Swal.fire(
-              'Good job!',
-              'Data Added Successfully!',
-              'success'
-              );
+    if (!this.toValidate.name && !this.toValidate.brgyId) {
+      this.service.AddEducationOsy(this.osy).subscribe({
+        next: (request) => {
+          this.GetListOsy();
+        },
+        error: (error) => {
+          Swal.fire('Oops!', 'Something went wrong.', 'error');
+        },
+        complete: () => {
+          if (!this.isCheck) {
+            this.closebutton.nativeElement.click();
           }
-        }
-      )
-    }
-    else
-    {
+          this.osy = {};
+          Swal.fire('Good job!', 'Data Added Successfully!', 'success');
+        },
+      });
+    } else {
       Swal.fire(
         'Missing Data!',
         'Please fill out the required fields.',
         'warning'
-        );
+      );
     }
-
-
   }
 
-  EditOsy()
-  {
-    this.toValidate.brgyId = this.osy.brgyId=="" || this.osy.brgyId ==null?true:false;
+  EditOsy() {
+    this.toValidate.brgyId =
+      this.osy.brgyId == '' || this.osy.brgyId == null ? true : false;
 
     this.osy.longtitude = this.gmapComponent.markers.lng;
-    this.osy.latitude  = this.gmapComponent.markers.lat;
+    this.osy.latitude = this.gmapComponent.markers.lat;
 
-    this.osy.setYear   = this.setYear;
+    this.osy.setYear = this.setYear;
     this.osy.munCityId = this.munCityId;
-    if(!this.toValidate.brgyId)
-    {
-    this.service.EditEducationOsy(this.osy).subscribe(
-      {
+    if (!this.toValidate.brgyId) {
+      this.service.EditEducationOsy(this.osy).subscribe({
         next: (request) => {
           this.GetListOsy();
         },
-        error:(error)=>{
-          Swal.fire(
-            'Oops!',
-            'Something went wrong.',
-            'error'
-            );
+        error: (error) => {
+          Swal.fire('Oops!', 'Something went wrong.', 'error');
         },
-        complete: () =>
-        {
+        complete: () => {
           this.closebutton.nativeElement.click();
-           Swal.fire(
-            'Good job!',
-            'Data Updated Successfully!',
-            'success'
-            );
-            document.getElementById("mEducation")?.click();
-
-        }
-      }
-    )
-  }
-  else
-  {
-    Swal.fire(
-      'Missing Data!',
-      'Please fill out the required fields.',
-      'warning'
+          Swal.fire('Good job!', 'Data Updated Successfully!', 'success');
+          document.getElementById('mEducation')?.click();
+        },
+      });
+    } else {
+      Swal.fire(
+        'Missing Data!',
+        'Please fill out the required fields.',
+        'warning'
       );
-  }
+    }
   }
 
-  DeleteOsy(transId:any)
-  {
+  DeleteOsy(transId: any) {
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -190,18 +154,14 @@ export class OSchoolYouthComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.service.DeleteEducationOsy(transId).subscribe(request => {
+        this.service.DeleteEducationOsy(transId).subscribe((request) => {
           this.GetListOsy();
-        })
-        Swal.fire(
-          'Deleted!',
-          'Your file has been deleted.',
-          'success'
-        )
+        });
+        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
       }
-    })
+    });
   }
 }

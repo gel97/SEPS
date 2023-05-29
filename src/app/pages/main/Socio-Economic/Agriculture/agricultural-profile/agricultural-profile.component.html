@@ -7,12 +7,12 @@
           <div class="p-5">
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-4">General Agricultural Profile </h1>
-              <label><strong>Agriculture - Municipality of {{munCityName}} </strong></label><br>
+              <label><strong>Agriculture - {{modifyCityMun(munCityName)}} </strong></label><br>
 
             </div>
             <div *ngIf="!Data" class="form-inline float-right ">
               <app-admin>
-                <button (click)="isAdd = true; isCheck=true"  class="btn btn-primary" data-bs-toggle="modal"
+                <button (click)="isAdd = true; isCheck=true" class="btn btn-primary" data-bs-toggle="modal"
                   data-bs-target="#mEducation">
                   <i class="fa fa-plus"></i>
                   Agriultural Profile
@@ -22,7 +22,7 @@
             <br>&nbsp;&nbsp;
             <div class="table-responsive">
               <table class="table table-light table-striped">
-                <thead class = "table-dark">
+                <thead class="table-dark">
                   <tr>
                     <th style="text-align: center;">Commodities</th>
                     <th style="text-align: center;">No. of Hectares</th>
@@ -31,7 +31,7 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td scope="col"><strong>Municipality of {{munCityName}}</strong></td>
+                    <td scope="col"><strong>{{modifyCityMun(munCityName)}}</strong></td>
                     <td style="text-align: center;"></td>
                     <td></td>
                   <tr>
@@ -125,7 +125,8 @@
               </table>
               <div *ngIf="Data" class="form-inline float-right">
                 <app-admin>
-                  <button (click)="isAdd = false" class="btn btn-info btn-circle" data-toggle="modal" data-target="#mEducation"><i class="fa fa-pen"></i>
+                  <button (click)="isAdd = false" class="btn btn-info btn-circle" data-toggle="modal"
+                    data-target="#mEducation"><i class="fa fa-pen"></i>
                   </button>
                 </app-admin>&nbsp;
                 <app-admin>
@@ -134,7 +135,7 @@
                   </button>
                 </app-admin>
 
-            </div>
+              </div>
             </div>
           </div>
         </div>
@@ -149,20 +150,21 @@
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title text-dark" id="exampleModalLabel">Police Services</h5>
+        <h5 class="modal-title text-dark" id="exampleModalLabel">General Agricultural Profile
+        </h5>
         <br>
-        <button type="button"class="btn-close" data-bs-dismiss="modal" aria-hidden="true"
-          aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form class="user collapse show" id="collapseExample">
 
           <div class="row">
             <div class="col-lg-3">
-            Paddy Rice - Irrigated:<br>
+              Paddy Rice - Irrigated:<br>
             </div>
             <div class="col-lg-9">
-              <input type="number" class="form-control" id="" placeholder="" name ="myData" [(ngModel)]="addData.riceIrrigTotal">
+              <input type="number" class="form-control" id="" placeholder="" name="myData"
+                [(ngModel)]="addData.riceIrrigTotal">
             </div>
           </div><br>
           <div class="row">
@@ -170,7 +172,8 @@
               Paddy Rice - Rain Fed:
             </div>
             <div class="col-lg-9  ">
-              <input type="number" class="form-control" id="" placeholder="" name ="myData" [(ngModel)]="addData.riceRainTotal">
+              <input type="number" class="form-control" id="" placeholder="" name="myData"
+                [(ngModel)]="addData.riceRainTotal">
             </div>
           </div><br>
           <div class="row">
@@ -214,7 +217,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-school" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="isAdd? AddAgricultureProfile(): EditAgricultureProfile()">Save
+        <button type="button" class="btn btn-primary"
+          (click)="isAdd? AddAgricultureProfile(): EditAgricultureProfile()">Save
           changes</button>
       </div>
     </div>

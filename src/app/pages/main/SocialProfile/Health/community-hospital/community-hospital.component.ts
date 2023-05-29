@@ -3,6 +3,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { HealthFacilitiesService } from 'src/app/shared/SocialProfile/Health/healthFacilities.service';
 import Swal from 'sweetalert2';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
+import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 
 @Component({
   selector: 'app-community-hospital',
@@ -12,8 +13,14 @@ import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 export class CommunityHospitalComponent implements OnInit {
   constructor(
     private Auth: AuthService,
-    private Service: HealthFacilitiesService
-  ) { }
+    private Service: HealthFacilitiesService,
+    private modifyService: ModifyCityMunService
+  ) {}
+
+  modifyCityMun(cityMunName: string) {
+    return this.modifyService.ModifyText(cityMunName);
+  }
+
 
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;

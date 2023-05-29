@@ -3,6 +3,7 @@ import { CityOfficialService } from 'src/app/shared/Governance/city-official.ser
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/services/auth.service';
+import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 
 @Component({
   selector: 'app-city-officials',
@@ -20,7 +21,7 @@ export class CityOfficialsComponent implements OnInit {
 
 
 
-  constructor(private service: CityOfficialService, private auth: AuthService) { } // private service: + name of service that you've created
+  constructor(private service: CityOfficialService, private auth: AuthService, private modifyService: ModifyCityMunService) { } // private service: + name of service that you've created
   toValidate: any = {};
   Official: any = [];
   city: any = {};
@@ -57,7 +58,9 @@ export class CityOfficialsComponent implements OnInit {
     this.getOfficials();
 
   }
-
+  modifyCityMun(cityMunName:string){
+    return this.modifyService.ModifyText(cityMunName);
+  }
   getOfficials() {
     this.service.GetOfficial().subscribe(data => {
     this.Official = (<any>data);

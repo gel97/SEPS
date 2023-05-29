@@ -7,12 +7,13 @@
           <div class="p-5">
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-4">Cooperative</h1>
+              <label><strong>Associations - {{modifyCityMun(munCityName)}} </strong></label><br>
             </div>
             <form class="user collapse show" id="collapseExample">
               <div class="form-inline float-right ">
                 <app-admin>
-                  <button type="button" (click)="addData = {}; updateForm = false" class="btn btn-labeled btn-primary" data-toggle="modal"
-                    data-target="#exampleModal">
+                  <button type="button" (click)="addData = {}; updateForm = false" class="btn btn-labeled btn-primary"
+                    data-toggle="modal" data-target="#exampleModal">
                     <i class="fa fa-plus"></i> Cooperative
                   </button>
                 </app-admin>
@@ -28,7 +29,7 @@
             <div class="table-responsive">
               <table class="table table-striped">
                 <thead class="table-dark">
-                  <tr >
+                  <tr>
                     <th scope="col" style="text-align: center;">#</th>
                     <th scope="col" style="text-align: center;">Name</th>
                     <th scope="col" style="text-align: center;">Members</th>
@@ -56,8 +57,8 @@
                       <app-admin>
                         <div class="flex-container">
                           <div class="flex-button">
-                            <button (click)="addData = dataItem; updateForm = true" data-toggle="modal" (click)="editToggle()"
-                              data-target="#exampleModal" class="btn btn-info btn-circle"
+                            <button (click)="addData = dataItem; updateForm = true" data-toggle="modal"
+                              (click)="editToggle()" data-target="#exampleModal" class="btn btn-info btn-circle"
                               style="display: inline-block; margin-right: 10px; ">
                               <i class="fas fa-pen"></i></button>
                           </div>
@@ -108,7 +109,7 @@
             </select>
           </div>
         </div><br>
-       <div class="form-group">
+        <div class="form-group">
           <div class="">
             <div class="">
 
@@ -167,7 +168,8 @@
           aria-hidden="true">
           <i class="fas fa-times">&nbsp;</i>Close
         </button>
-        <button type="submit" *ngIf="updateForm==false" (click)="AddAssociation()" id="closeModal" class="btn btn-primary">
+        <button type="submit" *ngIf="updateForm==false" (click)="AddAssociation()" id="closeModal"
+          class="btn btn-primary">
           Save changes
         </button>
         <button type="button" *ngIf="updateForm==true" (click)="EditAssociation(); " data-toggle="modal"

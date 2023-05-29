@@ -4,20 +4,23 @@ import { SafetyStatisticsService } from 'src/app/shared/SocialProfile/PublicOrde
 import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 import { isEmptyObject } from 'jquery';
-
-
+import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 
 @Component({
   selector: 'app-crime-stat',
   templateUrl: './crime-stat.component.html',
-  styleUrls: ['./crime-stat.component.css']
+  styleUrls: ['./crime-stat.component.css'],
 })
 export class CrimeStatComponent implements OnInit {
-
   constructor(
     private Auth: AuthService,
-    private service: SafetyStatisticsService
-  ) { }
+    private service: SafetyStatisticsService,
+    private modifyService: ModifyCityMunService
+  ) {}
+
+  modifyCityMun(cityMunName: string) {
+    return this.modifyService.ModifyText(cityMunName);
+  }
 
   setYear = Number(this.Auth.activeSetYear);
   menuId = 7;
@@ -31,15 +34,12 @@ export class CrimeStatComponent implements OnInit {
 
   idCounter: number = 1;
   updateForm: boolean = false;
-  hasData:boolean = false;
-
-
+  hasData: boolean = false;
 
   ngOnInit(): void {
     this.resetForm();
     this.GetSafetyStatistics();
     this.listMunicipal();
-
   }
   resetForm(): void {
     this.addData = {}; // Reset the form fields here
@@ -48,34 +48,29 @@ export class CrimeStatComponent implements OnInit {
   GetSafetyStatistics(): void {
     this.service.GetSafetyStatistics(this.setYear, this.munCityId).subscribe({
       next: (response) => {
-        if(response.length >0)
-        {
+        if (response.length > 0) {
           this.listData = response;
 
           this.hasData = true;
-        }
-        else{
+        } else {
           this.hasData = false;
         }
       },
       error: (err) => {
         console.log(err);
       },
-      complete: () => {
-      },
+      complete: () => {},
     });
   }
 
   AddSafetyStatistics(addData: any): void {
-    if(isEmptyObject(addData))
-    {
+    if (isEmptyObject(addData)) {
       Swal.fire(
         'Missing Data!',
         'Please fill out the input fields.',
         'warning'
-        );
-    }
-    else{
+      );
+    } else {
       addData.setYear = Number(this.setYear);
       addData.munCityId = String(this.munCityId);
       this.service.AddSafetyStatistics(addData).subscribe({
@@ -101,22 +96,19 @@ export class CrimeStatComponent implements OnInit {
             timer: 3000,
           });
         },
-        complete: () => {
-        },
+        complete: () => {},
       });
     }
-    
   }
 
   EditSafetyStatistics(addData: any): void {
-    if(isEmptyObject(addData)){
+    if (isEmptyObject(addData)) {
       Swal.fire(
         'Missing Data!',
         'Please fill out the input fields.',
         'warning'
-        );
-    }
-    else{
+      );
+    } else {
       this.service.EditSafetyStatistics(addData).subscribe({
         next: (response) => {
           Swal.fire({
@@ -138,11 +130,9 @@ export class CrimeStatComponent implements OnInit {
             timer: 3000,
           });
         },
-        complete: () => {
-        },
+        complete: () => {},
       });
     }
-    
   }
 
   DeleteSafetyStatistics(id: any): void {
@@ -182,8 +172,7 @@ export class CrimeStatComponent implements OnInit {
               timer: 3000,
             });
           },
-          complete: () => {
-          },
+          complete: () => {},
         });
       }
     });
@@ -200,7 +189,4 @@ export class CrimeStatComponent implements OnInit {
       this.listMunicipal = response;
     });
   }
-
-
-
 }

@@ -3,6 +3,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { HealthFacilitiesService } from 'src/app/shared/SocialProfile/Health/healthFacilities.service';
 import Swal from 'sweetalert2';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
+import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 
 @Component({
   selector: 'app-private-hospital',
@@ -12,8 +13,13 @@ import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 export class PrivateHospitalComponent implements OnInit {
   constructor(
     private Auth: AuthService,
-    private Service: HealthFacilitiesService
+    private Service: HealthFacilitiesService,
+    private modifyService: ModifyCityMunService
   ) {}
+
+  modifyCityMun(cityMunName: string) {
+    return this.modifyService.ModifyText(cityMunName);
+  }
 
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;
@@ -155,11 +161,7 @@ export class PrivateHospitalComponent implements OnInit {
           console.log('add', request);
           this.clearData();
           this.GetHealthFacilities();
-          Swal.fire(
-            'Good job!',
-            'Data Added Successfully!',
-            'success'
-            );
+          Swal.fire('Good job!', 'Data Added Successfully!', 'success');
         });
       } else {
         this.required = true;
@@ -168,50 +170,59 @@ export class PrivateHospitalComponent implements OnInit {
         //   title: 'Oops...',
         //   text: 'Missing data!',
         // });
-        Swal.fire('Missing Data!', 'Please fill out the required fields', 'warning');
+        Swal.fire(
+          'Missing Data!',
+          'Please fill out the required fields',
+          'warning'
+        );
       }
     }
   }
 
   EditHealthFacilities() {
     this.toValidate.brgyId =
-    this.addData.brgyId == '' || this.addData.brgyId == null ? true : false;
-  this.toValidate.name =
-    this.addData.name == '' || this.addData.name == undefined ? true : false;
+      this.addData.brgyId == '' || this.addData.brgyId == null ? true : false;
+    this.toValidate.name =
+      this.addData.name == '' || this.addData.name == undefined ? true : false;
 
-  if (this.toValidate.brgyId == true || this.toValidate.name == true) {
-    Swal.fire('Missing Data!', 'Please fill out the required fields', 'warning');
-  } else {
-    Swal.fire({
-      title: 'Do you want to save the changes?',
-      showDenyButton: true,
-      showCancelButton: true,
-      confirmButtonText: 'Save',
-      denyButtonText: `Don't save`,
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        this.addData.longtitude = this.gmapComponent.markers.lng;
-        this.addData.latitude = this.gmapComponent.markers.lat;
+    if (this.toValidate.brgyId == true || this.toValidate.name == true) {
+      Swal.fire(
+        'Missing Data!',
+        'Please fill out the required fields',
+        'warning'
+      );
+    } else {
+      Swal.fire({
+        title: 'Do you want to save the changes?',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Save',
+        denyButtonText: `Don't save`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          this.addData.longtitude = this.gmapComponent.markers.lng;
+          this.addData.latitude = this.gmapComponent.markers.lat;
 
-        this.addData.setYear = this.setYear;
-        this.addData.munCityId = this.munCityId;
-        this.addData.menuId = this.menuId;
-        this.addData.tag = 1;
-        console.log('edit', this.addData);
-        this.Service.EditHealthFacilities(this.addData).subscribe((request) => {
-          console.log('edit', request);
-          this.GetHealthFacilities();
-        });
-        Swal.fire('Saved!', '', 'success');
-        document.getElementById("exampleModal")?.click();
-      }
-      else if (result.isDenied) {
-        Swal.fire('Changes are not saved', '', 'info');
-      }
-    });
+          this.addData.setYear = this.setYear;
+          this.addData.munCityId = this.munCityId;
+          this.addData.menuId = this.menuId;
+          this.addData.tag = 1;
+          console.log('edit', this.addData);
+          this.Service.EditHealthFacilities(this.addData).subscribe(
+            (request) => {
+              console.log('edit', request);
+              this.GetHealthFacilities();
+            }
+          );
+          Swal.fire('Saved!', '', 'success');
+          document.getElementById('exampleModal')?.click();
+        } else if (result.isDenied) {
+          Swal.fire('Changes are not saved', '', 'info');
+        }
+      });
+    }
   }
-}
   DeleteHealthFacilities(dataItem: any) {
     Swal.fire({
       title: 'Are you sure?',
