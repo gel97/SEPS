@@ -4,13 +4,10 @@ import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/services/auth.service';
 import { BarangayOfficialService } from 'src/app/shared/Governance/barangay-official.service';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
-<<<<<<< HEAD
 import { PdfComponent } from 'src/app/components/pdf/pdf.component';
 import { PdfService } from 'src/app/services/pdf.service';
 import { ReportsService } from 'src/app/shared/Tools/reports.service';
-=======
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
->>>>>>> 2d4fbde8d6b9139020fa71fe5d8d9d307080c26c
 @Component({
   selector: 'app-barangays',
   templateUrl: './barangays.component.html',
