@@ -1,26 +1,23 @@
-
-
-<div class="container" >
+<div class="container">
 
     <!-- Outer Row -->
     <div class="row justify-content-center">
 
         <div class="col-xl-10 col-lg-12 col-md-9">
-           
+
             <div class="card o-hidden border-0 shadow-lg my-5">
-               
+
                 <div class="card-body p-0">
                     <!-- Nested Row within Card Body -->
                     <div class="row">
-                        
-                        <div class="col-lg-6 d-none d-lg-block " 
-                            style="background-image: url('assets/img/lock.png');
+
+                        <div class="col-lg-6 d-none d-lg-block " style="background-image: url('assets/img/lock.png');
                                     background-repeat: no-repeat;
                                     background-size: 100% 100%;         
                             ">
                         </div>
-                       
-                        <div class="col-lg-6">                         
+
+                        <div class="col-lg-6">
                             <div class="p-5">
                                 <div class="text-center">
                                     <!-- <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1> -->
@@ -28,19 +25,19 @@
                                 </div>
                                 <br>
                                 <form class="user">
-                                    
+
                                     <div class="form-group">
-                                        <div class="border-left border-danger bg-error-light text-danger error-dialog" *ngIf="errorLogin.length > 0">
-                                              <div>Invalid Username or Password.</div>
+                                        <div class="bg-error-light text-center text-danger error-dialog"
+                                            *ngIf="errorLogin.length > 0">
+                                            <div>Invalid Username or Password.</div>
                                         </div>
                                         <input type="text" class="form-control form-control-user"
-                                            [(ngModel)]="user.username" name="username"                                         
-                                            placeholder="Enter Username...">
+                                            [(ngModel)]="user.username" name="username" placeholder="Enter Username...">
                                     </div>
                                     <div class="form-group">
                                         <input type="password" class="form-control form-control-user"
-                                            [(ngModel)]="user.password" name="password"
-                                            id="exampleInputPassword" placeholder="Password">
+                                            [(ngModel)]="user.password" name="password" id="exampleInputPassword"
+                                            placeholder="Password">
                                     </div>
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox small">
@@ -51,13 +48,23 @@
                                     </div>
 
                                     <a (click)="signIn()" class="btn btn-primary btn-user btn-block">
-                                        Login
+                                        <div *ngIf="isLogin else login">
+                                            <div class="spinner-border spinner-border-sm" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                              </div>
+                                              Loading...
+                                        </div>
+                                        <ng-template #login>
+                                            Login
+                                        </ng-template>
+                                            
+                                        
                                     </a>
                                     <hr>
-                                   
+
                                     <button class="btn btn-google btn-user btn-block" #loginRef>
-                                        <i class="fab fa-google fa-fw"></i>  Login with Google
-                                      </button>
+                                        <i class="fab fa-google fa-fw"></i> Login with Google
+                                    </button>
                                     <a (click)="loginWithFacebook()" class="btn btn-facebook btn-user btn-block">
                                         <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
                                     </a>
@@ -67,7 +74,7 @@
                                     <a class="small" href="forgot-password.html">Forgot Password?</a>
                                 </div>
                                 <div class="text-center">
-                                    <a class="small" routerLink="/seps/register">Create an Account!</a>
+                                    <a class="small" routerLink="register">Create an Account!</a>
                                 </div>
                             </div>
                         </div>

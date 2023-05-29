@@ -3,18 +3,27 @@ import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/services/auth.service';
 import { isEmptyObject } from 'jquery';
 import { PostalServicesService } from 'src/app/shared/Infrastructure/Utilities/Communication/postal-services.service';
+import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 @Component({
   selector: 'app-postal-services',
   templateUrl: './postal-services.component.html',
-  styleUrls: ['./postal-services.component.css']
+  styleUrls: ['./postal-services.component.css'],
 })
 export class PostalServicesComponent implements OnInit {
-  munCityName:string = this.auth.munCityName;
-  constructor(private service: PostalServicesService, private auth: AuthService) { }
+  munCityName: string = this.auth.munCityName;
+  constructor(
+    private service: PostalServicesService,
+    private auth: AuthService,
+    private modifyService: ModifyCityMunService
+  ) {}
 
-  toValidate:any = {};
+  modifyCityMun(cityMunName: string) {
+    return this.modifyService.ModifyText(cityMunName);
+  }
+  
+  toValidate: any = {};
   @ViewChild('closebutton')
-  closebutton!: { nativeElement: { click: () => void; }; };
+  closebutton!: { nativeElement: { click: () => void } };
   isCheck: boolean = false;
 
   onChange(isCheck: boolean) {
@@ -24,130 +33,79 @@ export class PostalServicesComponent implements OnInit {
   ngOnInit(): void {
     this.Init();
   }
-  munCityId:string = this.auth.munCityId;
-  setYear:string = this.auth.setYear;
+  munCityId: string = this.auth.munCityId;
+  setYear: string = this.auth.setYear;
 
-  isAdd:boolean = true;
-  hasData:boolean = false;
-  data:any = {};
+  isAdd: boolean = true;
+  hasData: boolean = false;
+  data: any = {};
 
-  Init()
-  {
+  Init() {
     this.GetData();
   }
 
-  GetData()
-  {
+  GetData() {
     this.service.GetPostal(this.setYear, this.munCityId).subscribe({
-      next: (response) =>
-      {
-        console.log(response)
-        if(response!== null)
-        {
-          this.data = (<any> response);
+      next: (response) => {
+        console.log(response);
+        if (response !== null) {
+          this.data = <any>response;
           this.hasData = true;
-        }
-        else{
+        } else {
           this.hasData = false;
         }
-        
       },
-      error: (error) =>
-      {
-        Swal.fire(
-          'Oops!',
-          'Something went wrong.',
-          'error'
-          );
+      error: (error) => {
+        Swal.fire('Oops!', 'Something went wrong.', 'error');
       },
-      complete: () =>
-      {
-
-      }
-    })
-
+      complete: () => {},
+    });
   }
 
-  AddData()
-  {
-
-    if(!isEmptyObject(this.data))
-    {
-      this.data.setYear   = this.setYear;
+  AddData() {
+    if (!isEmptyObject(this.data)) {
+      this.data.setYear = this.setYear;
       this.data.munCityId = this.munCityId;
 
-      this.service.AddPostal(this.data).subscribe(
-        {
-          next: (request) => {
-            this.GetData();
-          },
-          error:(error)=>{
-            Swal.fire(
-              'Oops!',
-              'Something went wrong.',
-              'error'
-              );
-          },
-          complete: () =>
-          {
-            if (!this.isCheck) {
-              this.closebutton.nativeElement.click();
-            }
-            this.data = {};
-             Swal.fire(
-              'Good job!',
-              'Data Added Successfully!',
-              'success'
-              );
-          }
-        }
-      )
-    }
-    else
-    {
-      Swal.fire(
-        'Empty Fields.',
-        'Please fill out the input fields',
-        'warning'
-        );
-    }
-   
-
-  }
-
-  EditData()
-  {
-
-    this.data.setYear   = this.setYear;
-    this.data.munCityId = this.munCityId;
-
-    this.service.EditPostal(this.data).subscribe(
-      {
+      this.service.AddPostal(this.data).subscribe({
         next: (request) => {
           this.GetData();
         },
-        error:(error)=>{
-          Swal.fire(
-            'Oops!',
-            'Something went wrong.',
-            'error'
-            );
+        error: (error) => {
+          Swal.fire('Oops!', 'Something went wrong.', 'error');
         },
-        complete: () =>
-        {
-          this.closebutton.nativeElement.click();
-           Swal.fire(
-            'Good job!',
-            'Data Updated Successfully!',
-            'success'
-            );
-        }
-      }
-    )
+        complete: () => {
+          if (!this.isCheck) {
+            this.closebutton.nativeElement.click();
+          }
+          this.data = {};
+          Swal.fire('Good job!', 'Data Added Successfully!', 'success');
+        },
+      });
+    } else {
+      Swal.fire('Empty Fields.', 'Please fill out the input fields', 'warning');
+    }
   }
 
-  DeleteData(transId:any)
-  {
+  EditData() {
+    this.data.setYear = this.setYear;
+    this.data.munCityId = this.munCityId;
+
+    this.service.EditPostal(this.data).subscribe({
+      next: (request) => {
+        this.GetData();
+      },
+      error: (error) => {
+        Swal.fire('Oops!', 'Something went wrong.', 'error');
+      },
+      complete: () => {
+        this.closebutton.nativeElement.click();
+        Swal.fire('Good job!', 'Data Updated Successfully!', 'success');
+      },
+    });
+  }
+
+  DeleteData(transId: any) {
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -155,19 +113,15 @@ export class PostalServicesComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.service.DeletePostal(transId).subscribe(request => {
+        this.service.DeletePostal(transId).subscribe((request) => {
           this.Init();
           this.data = {};
-        })
-        Swal.fire(
-          'Deleted!',
-          'Your file has been deleted.',
-          'success'
-        )
+        });
+        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
       }
-    })
+    });
   }
 }

@@ -9,7 +9,7 @@
             </div>
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-4">Manufacturing Establishments</h1>
-              <label><strong>Trade and Industry - Municipality of {{munCityName}} </strong></label><br>
+              <label><strong>Trade and Industry - {{modifyCityMun(munCityName)}} </strong></label><br>
 
             </div>
             <br>
@@ -22,13 +22,13 @@
                   </button>
                 </app-admin>
               </form>
-            </div><br><br>
+            </div><br>
             <br>
             <div class="row">
               <div class="col-lg-6">
                 <p>List of Manufacturing Establishments </p>
               </div>
-              <div class="col-lg-6 ">
+              <!-- <div class="col-lg-6 ">
                 <form class="form-inline float-right">
                   <div class="form-group mb-6">
                     <input type="search input" class="form-control" width="30%" placeholder="Search"
@@ -36,7 +36,7 @@
                         class="fas fa-search fa-2x"></i></label>
                   </div>
                 </form>
-              </div>
+              </div> -->
             </div><br>
             <div class="table-responsive">
               <table class="table table-framed table-hover table-striped">
@@ -268,15 +268,15 @@
           <div class="form-group">
             <div class="form-group mb-1">
               <label class="" for="exampleFormControlInput1">Name of Establishment :</label>
-              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.name"  [ngClass]="toValidate.name?'is-invalid':''"
-              (keyup)="toValidate.name=false">
+              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.name"
+                [ngClass]="toValidate.name?'is-invalid':''" (keyup)="toValidate.name=false">
             </div>
           </div>
           <div class="row">
             <div class="col-lg-12">
               <label for="type">Select Category:</label>
               <select class="form-select" aria-label="Default select example" name="list_of_category"
-                [(ngModel)]="editmodal.category"  [ngClass]="toValidate.category?'is-invalid':''"
+                [(ngModel)]="editmodal.category" [ngClass]="toValidate.category?'is-invalid':''"
                 (ngModelChange)="toValidate.category=false">
                 <option *ngFor="let list of list_of_category" value={{list.id}}>{{list.name_category}}</option>
               </select>
@@ -286,7 +286,7 @@
             <div class="col-lg12"> <br>
               <label for="type">Business Type :</label>
               <select class="form-select" aria-label="Default select example" name="list_of_Business"
-                [(ngModel)]="editmodal.type"  [ngClass]="toValidate.type?'is-invalid':''"
+                [(ngModel)]="editmodal.type" [ngClass]="toValidate.type?'is-invalid':''"
                 (keyup)="toValidate.type=false">
                 <option *ngFor="let list of EDITfilteredItems" value={{list.id}}>{{list.name_business}}</option>
               </select>
@@ -307,8 +307,8 @@
           <br>
           <div class="col-lg-12"> <br>
             <label>No. of Workers :</label>
-            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.workersNo"  [ngClass]="toValidate.workersNo?'is-invalid':''"
-            (keyup)="toValidate.workersNo=false">
+            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.workersNo"
+              [ngClass]="toValidate.workersNo?'is-invalid':''" (keyup)="toValidate.workersNo=false">
           </div>
           <br>
 
@@ -319,8 +319,8 @@
           <br>
           <div class="col-lg-12"> <br>
             <label for="type">Barangay :</label>
-            <select class="form-select" aria-label="Default select example" [(ngModel)]="editmodal.brgyId"  [ngClass]="toValidate.brgyId?'is-invalid':''"
-            (ngModelChange)="toValidate.brgyId=false">
+            <select class="form-select" aria-label="Default select example" [(ngModel)]="editmodal.brgyId"
+              [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false">
               <option *ngFor="let item  of barangays" value={{item.brgyId}}>{{item.brgyName}}</option>
             </select>
           </div>
@@ -336,10 +336,10 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="UpdateManEstab()" ><i
-            class="fa fa-check"></i>Save Changes</button>&nbsp;
+        <button type="button" class="btn btn-primary" (click)="UpdateManEstab()"><i class="fa fa-check"></i>Save
+          Changes</button>&nbsp;
         <!-- <button type ="button" class="btn btn-secondary" *ngIf="updateOfficial" (click) ="city={}"><i class="fa fa-times"></i>Cancel</button> -->
-        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Cancel</button>
       </div>
     </div>
   </div>

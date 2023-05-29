@@ -3,6 +3,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { HealthFacilitiesService } from 'src/app/shared/SocialProfile/Health/healthFacilities.service';
 import Swal from 'sweetalert2';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
+import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 
 @Component({
   selector: 'app-private-hospital',
@@ -12,8 +13,13 @@ import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 export class PrivateHospitalComponent implements OnInit {
   constructor(
     private Auth: AuthService,
-    private Service: HealthFacilitiesService
+    private Service: HealthFacilitiesService,
+    private modifyService: ModifyCityMunService
   ) {}
+
+  modifyCityMun(cityMunName: string) {
+    return this.modifyService.ModifyText(cityMunName);
+  }
 
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;
@@ -46,17 +52,22 @@ export class PrivateHospitalComponent implements OnInit {
   comm: any = {};
 
   list_of_type = [
-    { id: 1, type_hosp: 'Type 1' },
-    { id: 2, type_hosp: 'Type 2' },
-    { id: 3, type_hosp: 'Type 3' },
-    { id: 4, type_hosp: 'Type 4' },
+    { id: 1, type_hosp: 'Diagnostic Clinic' },
+    { id: 2, type_hosp: 'Dental Clinic' },
+    { id: 3, type_hosp: 'Medical Clinic' },
+    { id: 4, type_hosp: 'Medical Laboratory' },
+    { id: 5, type_hosp: 'Nursing homes' },
+    { id: 6, type_hosp: 'Optical clinic' },
+    { id: 7, type_hosp: 'Veterinary Clinic/ products and services' },
+    { id: 8, type_hosp: 'Private Hospital' },
+    { id: 9, type_hosp: 'Veterinary Supplies retailers' },
   ];
 
   hospital_category = [
-    { id: 1, name_category: 'Category 1' },
-    { id: 2, name_category: 'Category 2' },
-    { id: 3, name_category: 'Category 3' },
-    { id: 4, name_category: 'Category 4' },
+    { id: 1, name_category: 'Not Specified' },
+    { id: 2, name_category: 'Primary' },
+    { id: 3, name_category: 'Secondary' },
+    { id: 4, name_category: 'Tertiary' },
   ];
 
   @ViewChild('closebutton')
@@ -150,52 +161,67 @@ export class PrivateHospitalComponent implements OnInit {
           console.log('add', request);
           this.clearData();
           this.GetHealthFacilities();
-          Swal.fire({
-            position: 'top-end',
-            icon: 'success',
-            title: 'Your work has been saved',
-            showConfirmButton: false,
-            timer: 1500,
-          });
+          Swal.fire('Good job!', 'Data Added Successfully!', 'success');
         });
       } else {
         this.required = true;
-        Swal.fire({
-          icon: 'warning',
-          title: 'Oops...',
-          text: 'Missing data!',
-        });
+        // Swal.fire({
+        //   icon: 'warning',
+        //   title: 'Oops...',
+        //   text: 'Missing data!',
+        // });
+        Swal.fire(
+          'Missing Data!',
+          'Please fill out the required fields',
+          'warning'
+        );
       }
     }
   }
 
   EditHealthFacilities() {
-    Swal.fire({
-      title: 'Do you want to save the changes?',
-      showDenyButton: true,
-      showCancelButton: true,
-      confirmButtonText: 'Save',
-      denyButtonText: `Don't save`,
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        this.addData.longtitude = this.gmapComponent.markers.lng;
-        this.addData.latitude = this.gmapComponent.markers.lat;
+    this.toValidate.brgyId =
+      this.addData.brgyId == '' || this.addData.brgyId == null ? true : false;
+    this.toValidate.name =
+      this.addData.name == '' || this.addData.name == undefined ? true : false;
 
-        this.addData.setYear = this.setYear;
-        this.addData.munCityId = this.munCityId;
-        this.addData.menuId = this.menuId;
-        this.addData.tag = 1;
-        console.log('edit', this.addData);
-        this.Service.EditHealthFacilities(this.addData).subscribe((request) => {
-          console.log('edit', request);
-          this.GetHealthFacilities();
-        });
-        Swal.fire('Saved!', '', 'success');
-      } else if (result.isDenied) {
-        Swal.fire('Changes are not saved', '', 'info');
-      }
-    });
+    if (this.toValidate.brgyId == true || this.toValidate.name == true) {
+      Swal.fire(
+        'Missing Data!',
+        'Please fill out the required fields',
+        'warning'
+      );
+    } else {
+      Swal.fire({
+        title: 'Do you want to save the changes?',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Save',
+        denyButtonText: `Don't save`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          this.addData.longtitude = this.gmapComponent.markers.lng;
+          this.addData.latitude = this.gmapComponent.markers.lat;
+
+          this.addData.setYear = this.setYear;
+          this.addData.munCityId = this.munCityId;
+          this.addData.menuId = this.menuId;
+          this.addData.tag = 1;
+          console.log('edit', this.addData);
+          this.Service.EditHealthFacilities(this.addData).subscribe(
+            (request) => {
+              console.log('edit', request);
+              this.GetHealthFacilities();
+            }
+          );
+          Swal.fire('Saved!', '', 'success');
+          document.getElementById('exampleModal')?.click();
+        } else if (result.isDenied) {
+          Swal.fire('Changes are not saved', '', 'info');
+        }
+      });
+    }
   }
   DeleteHealthFacilities(dataItem: any) {
     Swal.fire({

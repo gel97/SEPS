@@ -3,6 +3,7 @@ import { CityOfficialService } from 'src/app/shared/Governance/city-official.ser
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/services/auth.service';
+import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 
 @Component({
   selector: 'app-city-officials',
@@ -20,7 +21,7 @@ export class CityOfficialsComponent implements OnInit {
 
 
 
-  constructor(private service: CityOfficialService, private auth: AuthService) { } // private service: + name of service that you've created
+  constructor(private service: CityOfficialService, private auth: AuthService, private modifyService: ModifyCityMunService) { } // private service: + name of service that you've created
   toValidate: any = {};
   Official: any = [];
   city: any = {};
@@ -57,7 +58,9 @@ export class CityOfficialsComponent implements OnInit {
     this.getOfficials();
 
   }
-
+  modifyCityMun(cityMunName:string){
+    return this.modifyService.ModifyText(cityMunName);
+  }
   getOfficials() {
     this.service.GetOfficial().subscribe(data => {
     this.Official = (<any>data);
@@ -74,8 +77,9 @@ export class CityOfficialsComponent implements OnInit {
   addOfficial() {
     this.toValidate.name = this.city.name == "" || this.city.name == null ? true : false;
     this.toValidate.seqNo = this.city.seqNo == "" || this.city.seqNo == undefined ? true : false;
-
-    if (this.toValidate.name == true || this.toValidate.seqNo == true) {
+    this.toValidate.term = this.city.term == "" || this.city.term == null ? true : false;
+    this.toValidate.contact = this.city.contact == "" || this.city.contact == undefined ? true : false;
+    if (this.toValidate.name == true || this.toValidate.seqNo == true ||this.toValidate.term == true || this.toValidate.contact == true) {
       Swal.fire(
         'Missing Data!',
         'Please fill out the required fields',
@@ -117,8 +121,9 @@ export class CityOfficialsComponent implements OnInit {
   update() {
     this.toValidate.name = this.editModal.name == "" || this.editModal.name == null ? true : false;
     this.toValidate.seqNo = this.editModal.seqNo == "" || this.editModal.seqNo == undefined ? true : false;
-
-    if (this.toValidate.name == true || this.toValidate.seqNo == true) {
+    this.toValidate.term = this.editModal.term == "" || this.editModal.term == null ? true : false;
+    this.toValidate.contact = this.editModal.contact == "" || this.editModal.contact == undefined ? true : false;
+    if (this.toValidate.name == true || this.toValidate.seqNo == true ||this.toValidate.term == true || this.toValidate.contact == true) {
       Swal.fire(
         'Missing Data!',
         'Please fill out the required fields',
@@ -138,6 +143,7 @@ export class CityOfficialsComponent implements OnInit {
       showConfirmButton: false,
       timer: 1000
     });
+    document.getElementById("exampleModalLong")?.click();
     this. getOfficials();
   }
 }

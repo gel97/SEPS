@@ -3,6 +3,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import Swal from 'sweetalert2';
 import { AssociationService } from 'src/app/shared/SocialProfile/Association/association.service';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
+import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 
 @Component({
   selector: 'app-cooperatives',
@@ -12,7 +13,14 @@ import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 
 export class CooperativesComponent implements OnInit {
 
-  constructor(private Auth: AuthService, private Service: AssociationService) { }
+  constructor(private Auth: AuthService, private Service: AssociationService,
+    private modifyService: ModifyCityMunService
+  ) {}
+
+  modifyCityMun(cityMunName: string) {
+    return this.modifyService.ModifyText(cityMunName);
+  }
+  
 
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;
@@ -41,7 +49,7 @@ export class CooperativesComponent implements OnInit {
   longtitude: any
   checker_brgylist: any = {};
   toValidate: any = {};
-
+  updateForm:boolean=false;
 
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void; }; };

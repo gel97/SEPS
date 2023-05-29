@@ -12,7 +12,6 @@
               <h1 class="h4 text-gray-900 mb-4">Locations of Municipalities/ Cities Administrative Buildings</h1>
               <label><strong>Governance - Locations of Municipalities/ Cities Administrative
                   Buildings</strong></label><br>
-               >
             </div>
             <br>
 
@@ -32,33 +31,34 @@
 
                 </div>
                 <div class="table-responsive">
-                <table class="table table-framed table-hover table-striped">
-                  <thead class="table-dark">
-                    <tr>
-                      <th scope="col"></th>
-                      <th scope="col">Municipality/City</th>
-                      <th scope="col">Geo-Coord. (Long, Lat)</th>
-                      <th width ="8%"></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let text of MunLoc | paginate:{
-              itemsPerPage: tableSize,
-              currentPage: p,
-              totalItems:count};">
-                      <td></td>
-                      <td>{{text.munCityName}}</td>
-                      <td>{{text.longtitude}}, {{text.latitude}}</td>
-                      <td>
+                  <table class="table table-framed table-hover table-striped">
+                    <thead class="table-dark">
+                      <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Municipality/City</th>
+                        <th scope="col">Geo-Coord. (Long, Lat)</th>
+                        <th width="8%"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let text of MunLoc | paginate:{
+                          itemsPerPage: tableSize,
+                          currentPage: p,
+                          totalItems:count};">
+                        <td></td>
+                        <td>{{text.munCityName}}</td>
+                        <td>{{text.longtitude}}, {{text.latitude}}</td>
+                        <td>
 
-                        <button type="button" (click)="SetMarker(text);editmodal=text" class="btn btn-success btn-circle"
-                          data-toggle="modal" data-target="#exampleModal"><i class="fa fa-globe"></i> </button>&nbsp;
+                          <button type="button" (click)="SetMarker(text);editmodal=text"
+                            class="btn btn-success btn-circle" data-toggle="modal" data-target="#exampleModal"><i
+                              class="fa fa-globe"></i> </button>&nbsp;
 
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
 
                 <!-- Pagination Control -->
 
@@ -103,9 +103,9 @@
       </div>
       <div class="modal-footer">
         <app-admin>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="updateM()">Save changes</button>
-      </app-admin>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" (click)="updateM()">Save changes</button>
+        </app-admin>
       </div>
     </div>
   </div>

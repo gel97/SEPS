@@ -108,35 +108,35 @@ import { DepartmentStoreComponent } from './pages/main/Infrastructure/Utility/de
 import { MemorialParksComponent } from './pages/main/Infrastructure/Utility/memorial-parks/memorial-parks.component';
 import { FiscalMattersComponent } from './pages/main/Governance/fiscal-matters/fiscal-matters.component';
 import { NewsComponent } from './pages/main/Tools/news/news.component';
-const socioEconomic_TradeIndustry:string = 'seps/socio-economic/trade-and-industry/';
-const socioEconomic_Tourism:string = 'seps/socio-economic/Tourism/';
-const socioEconomic_Agriculture:string = 'seps/socio-economic/Agriculture/';
-const SocialProfile_Education:string = 'seps/socialProfile/education';
-const SocialProfile_Health:string ='seps/socialProfile/health';
-const SocialProfile_PublicOrder:string='seps/socialProfile/PublicOrder';
-const SocialProfile_Housing: string ='seps/socialProfile/Housing';
-const SocialProfile_Associations: string = 'seps/socialProfile/Associations';
-const Environment:string ='seps/Environment';
-const Infrastructure_Transportation: string = 'seps/Insfrastructure/Transportation';
-const Infrastructure_Communications: string = 'seps/Infrastructure/Communications';
-const Infrastructure_Utility: string ='seps/Infrastructure/Utility';
-const Governance:string ='seps/Governance';
-const Tools:string ='seps/Tools/';
+const socioEconomic_TradeIndustry:string = 'socio-economic/trade-and-industry/';
+const socioEconomic_Tourism:string = 'socio-economic/Tourism/';
+const socioEconomic_Agriculture:string = 'socio-economic/Agriculture/';
+const SocialProfile_Education:string = 'socialProfile/education';
+const SocialProfile_Health:string ='socialProfile/health';
+const SocialProfile_PublicOrder:string='socialProfile/PublicOrder';
+const SocialProfile_Housing: string ='socialProfile/Housing';
+const SocialProfile_Associations: string = 'socialProfile/Associations';
+const Environment:string ='Environment';
+const Infrastructure_Transportation: string = 'Insfrastructure/Transportation';
+const Infrastructure_Communications: string = 'Infrastructure/Communications';
+const Infrastructure_Utility: string ='Infrastructure/Utility';
+const Governance:string ='Governance';
+const Tools:string ='Tools/';
 
 const routes: Routes = [
   {
-    path: 'seps/guest',
+    path: 'guest',
     component: GuestLayoutComponent,
     children: [
       {path:'home',component:GuestHomeComponent},
     ]
   },
   {
-    path: 'seps/login',
+    path: 'login',
     component:LoginComponent
   },
   {
-    path: 'seps/register',
+    path: 'register',
     component:RegisterComponent
   },
   {
@@ -145,10 +145,10 @@ const routes: Routes = [
     children:
     [
       {path: '',component:DashboardComponent},
-      {path: 'seps/gov_cityOfficials',component:CityOfficialsComponent},
-      {path: 'seps/gov_Barangays',component:BarangaysComponent},
-      {path: 'seps/gov_geoProfile',component:GeoProfileComponent},
-      {path:'seps/admin/add_user',component:AddUserComponent},
+      {path: 'gov_cityOfficials',component:CityOfficialsComponent},
+      {path: 'gov_Barangays',component:BarangaysComponent},
+      {path: 'gov_geoProfile',component:GeoProfileComponent},
+      {path:'admin/add_user',component:AddUserComponent},
       {path: Tools+ 'news',component:NewsComponent},
       {path: socioEconomic_TradeIndustry+ 'major-economic-activities',component:MajorEconomicActivitiesComponent},
       {path: socioEconomic_TradeIndustry+ 'manufacturing-establishments',component:ManufacturingEstablishmentsComponent},

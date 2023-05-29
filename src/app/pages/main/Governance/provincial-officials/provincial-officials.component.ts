@@ -153,6 +153,7 @@ title: 'Your work has been updated',
 showConfirmButton: false,
 timer: 1000
 });
+document.getElementById("exampleModalLong")?.click();
 this.editModal ={};
 }
 }

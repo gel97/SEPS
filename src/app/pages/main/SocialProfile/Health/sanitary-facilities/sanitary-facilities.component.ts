@@ -3,6 +3,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { HealthSanitaryService } from 'src/app/shared/SocialProfile/Health/healthSanitary.service';
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
+import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 
 @Component({
   selector: 'app-sanitary-facilities',
@@ -12,8 +13,13 @@ import { Observable } from 'rxjs';
 export class SanitaryFacilitiesComponent implements OnInit {
   constructor(
     private Auth: AuthService,
-    private Service: HealthSanitaryService
+    private Service: HealthSanitaryService,
+    private modifyService: ModifyCityMunService
   ) {}
+
+  modifyCityMun(cityMunName: string) {
+    return this.modifyService.ModifyText(cityMunName);
+  }
 
   isCheck: boolean = false;
 
@@ -40,7 +46,7 @@ export class SanitaryFacilitiesComponent implements OnInit {
   toValidate: any = {};
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
-  
+
   ngOnInit(): void {
     this.GetHealthSanitary();
     this.GetBarangayList();
@@ -75,9 +81,17 @@ export class SanitaryFacilitiesComponent implements OnInit {
     console.log('trap_2', this.dummy_addData);
     this.toValidate.brgyId =
       this.addData.brgyId == '' || this.addData.brgyId == null ? true : false;
+    this.toValidate.householdNo =
+      this.addData.householdNo == '' || this.addData.householdNo == null
+        ? true
+        : false;
 
-    if (this.toValidate.brgyId == true) {
-      Swal.fire('', 'Please fill out the required fields', 'warning');
+    if (this.toValidate.brgyId == true || this.toValidate.householdNo == true) {
+      Swal.fire(
+        'Missing Data!',
+        'Please fill out the required fields',
+        'warning'
+      );
     } else {
       if (
         JSON.stringify(this.dummy_addData) != JSON.stringify(this.dummyData) &&
@@ -122,28 +136,44 @@ export class SanitaryFacilitiesComponent implements OnInit {
   }
 
   EditHealthSanitary() {
-    Swal.fire({
-      title: 'Do you want to save the changes?',
-      showDenyButton: true,
-      showCancelButton: true,
-      confirmButtonText: 'Save',
-      denyButtonText: `Don't save`,
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        this.addData.setYear = this.setYear;
-        this.addData.munCityId = this.munCityId;
-        this.addData.tag = 1;
-        console.log('edit', this.addData);
-        this.Service.EditHealthSanitary(this.addData).subscribe((request) => {
-          console.log('edit', request);
-          this.GetHealthSanitary();
-        });
-        Swal.fire('Saved!', '', 'success');
-      } else if (result.isDenied) {
-        Swal.fire('Changes are not saved', '', 'info');
-      }
-    });
+    this.toValidate.brgyId =
+      this.addData.brgyId == '' || this.addData.brgyId == null ? true : false;
+    this.toValidate.householdNo =
+      this.addData.householdNo == '' || this.addData.householdNo == null
+        ? true
+        : false;
+
+    if (this.toValidate.brgyId == true || this.toValidate.householdNo == true) {
+      Swal.fire(
+        'Missing Data!',
+        'Please fill out the required fields',
+        'warning'
+      );
+    } else {
+      Swal.fire({
+        title: 'Do you want to save the changes?',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Save',
+        denyButtonText: `Don't save`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          this.addData.setYear = this.setYear;
+          this.addData.munCityId = this.munCityId;
+          this.addData.tag = 1;
+          console.log('edit', this.addData);
+          this.Service.EditHealthSanitary(this.addData).subscribe((request) => {
+            console.log('edit', request);
+            this.GetHealthSanitary();
+          });
+          Swal.fire('Saved!', '', 'success');
+          document.getElementById('exampleModal')?.click();
+        } else if (result.isDenied) {
+          Swal.fire('Changes are not saved', '', 'info');
+        }
+      });
+    }
   }
   DeleteHealthSanitary(dataItem: any) {
     Swal.fire({

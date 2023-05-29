@@ -1,98 +1,162 @@
-
 <div class="">
-
-  <div class="card o-hidden border-0 shadow-sm my-5">
-      <div class="card-body p-0">
-          <!-- Nested Row within Card Body -->
-          <div class="row">
-
-              <div class="col-lg-12">
-                  <div class="p-5">
-                      <div class="">
-                          <button class="btn btn-outline-primary btn-circle float-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
-                              <i class="fa fa-minus" aria-hidden="true"></i>
-
-                            </button>
-                      </div>
-                      <div class="text-center">
-                          <h1 class="h4 text-gray-900 mb-4">Informal Settlers</h1>
-                      </div>
-
-
-                      <form class="user collapse show" id="collapseExample">
-                          <div class="form-group">
-                              <div class="row">
-                                <br>
-                                  <div class="col-lg-12"> <br>
-                                      <label for="exampleFormControlInput1">Location (St./Purok):</label>
-                                      <input type="text" class="form-control" id="" placeholder="">
-                                       </div>
-
-                                       <div class="col-lg-12"> <br>
-                                        <label for="exampleFormControlInput1">No. of Dwelling Units :</label>
-                                        <input type="text" class="form-control" id="" placeholder="">
-                                         </div>
-
-                                         <div class="col-lg-12"><br>
-                                          <label for="exampleFormControlInput1">No. of Families :</label>
-                                          <input type="text" class="form-control" id="" placeholder="">
-                                           </div>
-
-                                    <div class ="col-lg-12"><br>
-                                      <label for="exampleFormControlTextarea1">Remarks :</label>
-                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                                     </div>
-                                    </div>
-                                     </div>
-                                     <br>
-                                <div class="row">
-                                  <div class="col-lg-4">
-                                    <label for="exampleFormControlInput1">Geo Coordinates - Longitude : </label>
-                                    <input type="text" class="form-control" id="" placeholder="">
-                                </div>
-                                  <div class="col-lg-4">
-                                      <label for="exampleFormControlInput1">Latitude :   </label>
-                                      <input type="text" class="form-control" id="" placeholder="">
-                                  </div>
-                                  <div class="col-lg-4">
-                                    <label for="category">Barangay :</label>
-                                    <select class="form-select" aria-label="Default select example">
-                                        <option selected>Select Category</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
-                                      </select>
-                                      <br>
-                                </div>
-                                </div>
-
-
-                                  <br>
-                            <button type="button" class="btn btn-primary">ADD</button>
-                      </form>
-                      <br>
-
-                      <label >List of Informal Settlers Location
-
-                      </label>
-                      <table class="table table-light table-striped">
-                          <thead>
-                              <tr>
-                                <th scope="col"></th>
-                                <th scope="col">Location</th>
-                                <th scope="col">No. of Dwelling Units</th>
-                                <th scope="col">No. of Families</th>
-
-                              </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                  </div>
+  <div class="card o-hidden border-2 shadow-sm my-5">
+    <div class="card-body p-0">
+      <!-- Nested Row within Card Body -->
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="p-5">
+            <div class="">
+            </div>
+            <div class="text-center">
+              <h1 class="h4 text-gray-900">Informal Settlers
+              </h1>
+              <label><strong>Housing - {{modifyCityMun(munCityName)}} </strong></label>
+            </div>
+            <div class="row">
+              <div class="col-lg-9">
+                <p>List of Barangays</p>
               </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="row">
+                </div>
+                <div class="table-responsive">
+                  <table class="table table-framed table-hover table-striped">
+                    <thead class="table-dark">
+                      <tr>
+                        <th style="text-align: center;">Barangay</th>
+                        <th style="text-align: center;">Location of Informal Settlers</th>
+                        <th style="text-align: center;">No. of Dweeling Units</th>
+                        <th style="text-align: center;">No. of Families</th>
+                        <th style="text-align: center;">Remarks</th>
+                        <th style="text-align: center;">Geo-Coord.</th>
+                        <th style="text-align: center;">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of listData; index as i">
+                        <td><b>{{item.brgyName}}</b></td>
+                        <td style="text-align: center;">{{ item.location }}</td>
+                        <td style="text-align: center;">{{ item.unitsNo }}</td>
+                        <td style="text-align: center;">{{ item.familiesNo }}</td>
+                        <td style="text-align: center;">{{ item.remarks }}</td>
+                        <td style="text-align: center;">{{ item.longtitude }}, {{ item.latitude }}</td>
+                        <td *ngIf="item.transId else isADD">
+                          <div class="d-inline-flex">
+                            <app-admin>
+                              <button (click)="data=item;isAdd = false" class="btn btn-info btn-circle"
+                                data-toggle="modal" data-target="#openModal"><i class="fa fa-pen"></i>
+                              </button> &nbsp;
+                              <button type="button" title="Delete" class="btn btn-warning btn-circle"
+                                (click)="DeleteData(item.transId,i,item)"><i class="fa fa-trash"></i> </button>&nbsp;
+                              <button (click)="SetMarker(item); editmodal = item" class="btn btn-success btn-circle"
+                                role="button" data-toggle="modal" data-target="#gmapModal">
+                                <i class="fa fa-globe"> </i>
+                              </button>
+                            </app-admin>
+                          </div>
+                        </td>
+                        <ng-template #isADD>
+                          <td>
+                            <app-admin>
+                              <button (click)="data = item; isAdd = true" type="button"
+                                class="btn btn-primary btn-circle" data-toggle="modal" data-target="#openModal ">
+                                <i class="fa fa-plus"></i>
+                              </button>
+                            </app-admin>
+                          </td>
+                        </ng-template>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
           </div>
+        </div>
       </div>
+    </div>
   </div>
 
-</div>
+  <!-- Modal -->
+  <div class="modal fade bd-example-modal-lg" id="openModal" tabindex="-1" role="dialog"
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalScrollableTitle">Informal Settlers </h5>
+          <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-12">
+              <label> Barangay:</label>
+              <input type="text" class="form-control mb-2" [(ngModel)]="data.brgyName" readonly>
+            </div>
+            <div class="row">
+              <div class="col-lg-12">
+                <br />
+                <label for="exampleFormControlTextarea1">Location of Informal Settlers</label>
+                <input type="text" class="form-control" id="location" name="location" [(ngModel)]="data.location"
+                  placeholder="" />
+              </div>
+              <div class="col-lg-12">
+                <br />
+                <label for="exampleFormControlTextarea1">No. of Dweeling Units</label>
+                <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.unitsNo"
+                  pattern="^\d*\.?\d+$">
+              </div>
+              <div class="col-lg-12">
+                <br />
+                <label for="exampleFormControlTextarea1">No. of Families:</label>
+                <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.familiesNo"
+                  pattern="^\d*\.?\d+$">
+              </div>
+              <div class="col-lg-12">
+                <br />
+                <label for="exampleFormControlTextarea1"> Remarks</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" [(ngModel)]="data.remarks"
+                  [ngModelOptions]="{ standalone: true }"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" (click)="isAdd ? AddData():EditData()">
+              Save Changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
+  <!-- modal area -->
+  <div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">
+            SEPS GEOLOCATION TAGGING
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <app-gmap></app-gmap>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <button type="button" class="btn btn-primary" (click)="updateM(); UpdateBarangay = true">
+            Save changes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

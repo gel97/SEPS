@@ -3,6 +3,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { HealthFacilitiesService } from 'src/app/shared/SocialProfile/Health/healthFacilities.service';
 import Swal from 'sweetalert2';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
+import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 
 @Component({
   selector: 'app-community-hospital',
@@ -12,8 +13,14 @@ import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 export class CommunityHospitalComponent implements OnInit {
   constructor(
     private Auth: AuthService,
-    private Service: HealthFacilitiesService
-  ) { }
+    private Service: HealthFacilitiesService,
+    private modifyService: ModifyCityMunService
+  ) {}
+
+  modifyCityMun(cityMunName: string) {
+    return this.modifyService.ModifyText(cityMunName);
+  }
+
 
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;
@@ -98,17 +105,17 @@ export class CommunityHospitalComponent implements OnInit {
   }
 
   AddHealthFacilities() {
-    console.log('trap', this.addData);
-    console.log('brgyid', this.addData.brgyId);
-    this.dummy_addData = this.addData;
-    console.log('trap_2', this.dummy_addData);
-    this.toValidate.brgyId =
-      this.addData.brgyId == '' || this.addData.brgyId == null ? true : false;
-    this.toValidate.name =
-      this.addData.name == '' || this.addData.name == undefined ? true : false;
+    // console.log('trap', this.addData);
+    // console.log('brgyid', this.addData.brgyId);
+    // this.dummy_addData = this.addData;
+    // console.log('trap_2', this.dummy_addData);
+    this.toValidate.brgyId = this.addData.brgyId == '' || this.addData.brgyId == null ? true : false;
+    this.toValidate.name =this.addData.name == '' || this.addData.name == undefined ? true : false;
 
     if (this.toValidate.brgyId == true || this.toValidate.name == true) {
-      Swal.fire('', 'Please fill out the required fields', 'warning');
+      Swal.fire('Missing Data!',
+      'Please fill out the required fields',
+       'warning');
     } else {
       if (
         JSON.stringify(this.dummy_addData) != JSON.stringify(this.dummyData) &&
@@ -154,6 +161,19 @@ export class CommunityHospitalComponent implements OnInit {
   }
 
   EditHealthFacilities() {
+    this.toValidate.brgyId = this.addData.brgyId == '' || this.addData.brgyId == null ? true : false;
+    this.toValidate.name =this.addData.name == '' || this.addData.name == undefined ? true : false;
+
+    if (this.toValidate.brgyId == true || this.toValidate.name == true) {
+      Swal.fire(
+      'Missing Data!',
+      'Please fill out the required fields',
+       'warning');
+    } else {
+      this.Service.EditHealthFacilities(this.addData).subscribe((request) => {
+        // console.log('edit', request);
+        this.GetHealthFacilities();
+      });
     Swal.fire({
       title: 'Do you want to save the changes?',
       showDenyButton: true,
@@ -170,17 +190,18 @@ export class CommunityHospitalComponent implements OnInit {
         this.addData.munCityId = this.munCityId;
         this.addData.menuId = this.menuId;
         this.addData.tag = 1;
-        console.log('edit', this.addData);
-        this.Service.EditHealthFacilities(this.addData).subscribe((request) => {
-          console.log('edit', request);
-          this.GetHealthFacilities();
-        });
+        // console.log('edit', this.addData);
+
         Swal.fire('Saved!', '', 'success');
+        document.getElementById("exampleModal")?.click();
       } else if (result.isDenied) {
         Swal.fire('Changes are not saved', '', 'info');
       }
     });
   }
+}
+
+
   DeleteHealthFacilities(dataItem: any) {
     Swal.fire({
       title: 'Are you sure?',

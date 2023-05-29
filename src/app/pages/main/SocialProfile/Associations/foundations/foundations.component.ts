@@ -3,17 +3,23 @@ import { AuthService } from 'src/app/services/auth.service';
 import Swal from 'sweetalert2';
 import { AssociationService } from 'src/app/shared/SocialProfile/Association/association.service';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
-
+import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 
 @Component({
   selector: 'app-foundations',
   templateUrl: './foundations.component.html',
-  styleUrls: ['./foundations.component.css']
+  styleUrls: ['./foundations.component.css'],
 })
 export class FoundationsComponent implements OnInit {
+  constructor(
+    private Auth: AuthService,
+    private Service: AssociationService,
+    private modifyService: ModifyCityMunService
+  ) {}
 
-
-  constructor(private Auth: AuthService, private Service: AssociationService) { }
+  modifyCityMun(cityMunName: string) {
+    return this.modifyService.ModifyText(cityMunName);
+  }
 
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;
@@ -22,11 +28,11 @@ export class FoundationsComponent implements OnInit {
 
   onChange(isCheck: boolean) {
     this.isCheck = isCheck;
-    console.log("isCheck:", this.isCheck);
+    console.log('isCheck:', this.isCheck);
   }
 
   munCityName: string = this.Auth.munCityName;
-  menuId = "6";
+  menuId = '6';
   dataList: any = [];
   setYear = this.Auth.activeSetYear;
   munCityId = this.Auth.munCityId;
@@ -38,20 +44,18 @@ export class FoundationsComponent implements OnInit {
   not_visible: boolean = true;
   //required == not_visible
   required: boolean = true;
-  latitude: any
-  longtitude: any
+  latitude: any;
+  longtitude: any;
   checker_brgylist: any = {};
   toValidate: any = {};
 
-
   @ViewChild('closebutton')
-  closebutton!: { nativeElement: { click: () => void; }; };
+  closebutton!: { nativeElement: { click: () => void } };
 
   markerObj: any = {};
 
   SetMarker(data: any = {}) {
-    console.log("lnglat: ", data.longtitude + " , " + data.latitude)
-
+    console.log('lnglat: ', data.longtitude + ' , ' + data.latitude);
 
     if (data.longtitude == undefined && data.latitude == undefined) {
       data.longtitude = this.longtitude;
@@ -64,84 +68,74 @@ export class FoundationsComponent implements OnInit {
       label: data.brgyName.charAt(0),
       brgyName: data.brgyName,
       munCityName: this.munCityName,
-      draggable: true
+      draggable: true,
     };
     this.gmapComponent.setMarker(this.markerObj);
-    console.log("marker", this.markerObj);
+    console.log('marker', this.markerObj);
   }
-
 
   ngOnInit(): void {
     this.GetListAssociation();
     this.GetBarangayList();
   }
 
-
-
   GetListAssociation() {
-    this.Service.GetAssociation(this.menuId, this.setYear, this.munCityId).subscribe(response => {
-
-      this.dataList = (<any>response);
-      console.log("check", response);
-    })
+    this.Service.GetAssociation(
+      this.menuId,
+      this.setYear,
+      this.munCityId
+    ).subscribe((response) => {
+      this.dataList = <any>response;
+      console.log('check', response);
+    });
   }
 
-
   GetBarangayList() {
-    this.Service.ListOfBarangay(this.munCityId).subscribe(response => {
-      this.barangayList = (<any>response);
-      console.log("barangay", response);
-    })
-
+    this.Service.ListOfBarangay(this.munCityId).subscribe((response) => {
+      this.barangayList = <any>response;
+      console.log('barangay', response);
+    });
   }
 
   findBrgyId(brgyId: any) {
-    return this.barangayList.find((item: { brgyId: any; }) => item.brgyId === brgyId);
+    return this.barangayList.find(
+      (item: { brgyId: any }) => item.brgyId === brgyId
+    );
   }
 
-
   AddAssociation() {
-    this.toValidate.brgyId = this.addData.brgyId == "" || this.addData.brgyId == null ? true : false;
-    this.toValidate.name = this.addData.name == "" || this.addData.name == undefined ? true : false;
+    this.toValidate.brgyId =
+      this.addData.brgyId == '' || this.addData.brgyId == null ? true : false;
+    this.toValidate.name =
+      this.addData.name == '' || this.addData.name == undefined ? true : false;
 
     // this.toValidate.status = this.comm.status =="" || this.comm.status == undefined?true:false;
 
-
-
     if (this.toValidate.brgyId == true || this.toValidate.name == true) {
-      Swal.fire(
-        '',
-        'Please fill out the required fields',
-        'warning'
-      );
+      Swal.fire('', 'Please fill out the required fields', 'warning');
     } else {
-
       this.addData.setYear = this.setYear;
       this.addData.munCityId = this.munCityId;
       this.addData.menuId = this.menuId;
-      console.log("brgylist", this.barangayList);
+      console.log('brgylist', this.barangayList);
 
       const result = this.findBrgyId(this.addData.brgyId);
       this.longtitude = result.longitude;
       this.addData.longtitude = this.longtitude;
-      console.log("long", this.longtitude);
+      console.log('long', this.longtitude);
       this.latitude = result.latitude;
       this.addData.latitude = this.latitude;
-      console.log("lat", this.latitude);
-      this.Service.AddAssociation(this.addData).subscribe(request => {
+      console.log('lat', this.latitude);
+      this.Service.AddAssociation(this.addData).subscribe((request) => {
         if (!this.isCheck) {
           this.closebutton.nativeElement.click();
         }
         console.log(request);
-        Swal.fire(
-          'Good job!',
-          'Data Added Successfully!',
-          'success'
-        );
+        Swal.fire('Good job!', 'Data Added Successfully!', 'success');
 
         this.addData = {};
         this.dataList.push(request);
-      },);
+      });
     }
   }
 
@@ -155,7 +149,6 @@ export class FoundationsComponent implements OnInit {
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-
         this.addData.longtitude = this.gmapComponent.markers.lng;
         this.addData.latitude = this.gmapComponent.markers.lat;
 
@@ -163,16 +156,16 @@ export class FoundationsComponent implements OnInit {
         this.addData.munCityId = this.munCityId;
         this.addData.menuId = this.menuId;
         this.addData.tag = 1;
-        console.log("edit", this.addData);
-        this.Service.EditAssociation(this.addData).subscribe(request => {
-          console.log("edit", request);
+        console.log('edit', this.addData);
+        this.Service.EditAssociation(this.addData).subscribe((request) => {
+          console.log('edit', request);
           this.GetListAssociation();
-        })
-        Swal.fire('Saved!', '', 'success')
+        });
+        Swal.fire('Saved!', '', 'success');
       } else if (result.isDenied) {
-        Swal.fire('Changes are not saved', '', 'info')
+        Swal.fire('Changes are not saved', '', 'info');
       }
-    })
+    });
   }
 
   DeleteAssociation(dataItem: any) {
@@ -183,19 +176,17 @@ export class FoundationsComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.Service.DeleteAssociation(dataItem.transId).subscribe(request => {
-          this.GetListAssociation();
-        })
-        Swal.fire(
-          'Deleted!',
-          'Your file has been deleted.',
-          'success'
-        )
+        this.Service.DeleteAssociation(dataItem.transId).subscribe(
+          (request) => {
+            this.GetListAssociation();
+          }
+        );
+        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
       }
-    })
+    });
   }
 
   clearData() {
@@ -209,5 +200,4 @@ export class FoundationsComponent implements OnInit {
     this.not_visible = true;
     this.visible = false;
   }
-
 }

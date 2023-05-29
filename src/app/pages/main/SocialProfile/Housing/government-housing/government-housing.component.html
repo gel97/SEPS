@@ -6,20 +6,20 @@
         <div class="col-lg-12">
           <div class="p-5">
             <div class="text-center">
-              <h1 class="h4 text-gray-900 mb-4"> Government Housing Projects</h1>
+              <h1 class="h4 text-gray-900 "> Government Housing Projects</h1>
+              <label><strong>Housing - {{modifyCityMun(munCityName)}} </strong></label>
             </div>
             <div class="text-right">
               <form class="user collapse show" id="collapseExample">
                 <button type="button" (click)="clearData()" class="btn btn-labeled btn btn-primary" data-toggle="modal"
                   data-target="#exampleModal">
-                  <span class="btn-label"><i class="fa fa-plus"></i></span> Housing Project</button>
+                  <span class="btn-label"><i class="fa fa-plus"></i></span> Housing Project</button><br>
               </form>
             </div>
-            <br>
             <label>List of Government Housing Projects
             </label>
             <table class="table table-light table-striped">
-              <thead>
+              <thead class="table-dark">
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">Name of Housing Project</th>
@@ -47,15 +47,12 @@
                   <td>
                     <div class="d-inline-flex">
                       <button (click)="addData = dataItem" data-toggle="modal" (click)="editToggle()"
-                        data-target="#exampleModal" class="btn btn-info btn-circle"
-                        >
+                        data-target="#exampleModal" class="btn btn-info btn-circle">
                         <i class="fas fa-pen"></i></button> &nbsp;
                       <button (click)="SetMarker(dataItem); addData = dataItem" data-toggle="modal"
-                        data-target="#gmapModal" class="btn btn-success btn-circle"
-                        >
+                        data-target="#gmapModal" class="btn btn-success btn-circle">
                         <i class="fas fa-globe"></i></button> &nbsp;
-                      <button class="btn btn-warning btn-circle"
-                        (click)="DeleteData(dataItem)">
+                      <button class="btn btn-warning btn-circle" (click)="DeleteData(dataItem)">
                         <i class="fas fa-trash"></i></button>
                     </div>
                   </td>
@@ -86,12 +83,21 @@
             <div class="">
               <label for="exampleFormControlInput1">Name of Housing Project:</label>
               <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.name"
-                [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false" />
+                [ngClass]="toValidate.name?'is-invalid':''" (keyup)="toValidate.name=false" />
             </div>
             <br />
             <div class="">
+              <label for="category">Barangay :</label>
+              <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.brgyId"
+                [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false">
+                <option *ngFor="let item of barangayList" [value]="item.brgyId">
+                  {{ item.brgyName }}
+                </option>
+              </select>
+            </div><br>
+            <div class="">
               <label for="exampleFormControlTextarea1">Location (Street/Purok/Barangay) :</label>
-              <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"
+              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
                 [(ngModel)]="addData.location"></textarea>
             </div>
           </div>
@@ -109,19 +115,13 @@
             <label>Number of Families:</label>
             <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.familiesNo" />
           </div>
-          <div class="col-lg-4">
+          <div class="">
             <label>Remarks:</label>
-            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.remarks" />
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
+              [(ngModel)]="addData.remarks"></textarea>
+            <!-- <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.remarks" /> -->
           </div>
-          <div class="col-lg-6">
-            <label for="category">Barangay :</label>
-            <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.brgyId"
-              [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false">
-              <option *ngFor="let item of barangayList" [value]="item.brgyId">
-                {{ item.brgyName }}
-              </option>
-            </select>
-          </div>
+
         </div>
         <br />
       </div>
@@ -133,8 +133,7 @@
         <button type="button" *ngIf="visible" (click)="AddData()" id="closeModal" class="btn btn-primary">
           Submit
         </button>
-        <button type="button" *ngIf="not_visible" (click)="EditData()" data-toggle="modal" data-target="#exampleModal"
-          aria-hidden="true" class="btn btn-primary">
+        <button type="button" *ngIf="not_visible" (click)="EditData()" aria-hidden="true" class="btn btn-primary">
           Save changes
         </button>
       </div>

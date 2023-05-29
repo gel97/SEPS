@@ -26,37 +26,37 @@
                                                 <label for="floodinghaz">Flooding :</label>
                                                 <textarea class="form-control" id="desc1" rows="4" name="desc1"
                                                     [(ngModel)]="desc.desc1" disabled>
-                                        </textarea>
+                                                </textarea>
                                             </div>
                                             <div class="col-lg-12"><br>
                                                 <label for="landslidehaz">Landslides :</label>
                                                 <textarea class="form-control" id="desc2" rows="4" name="desc2"
                                                     [(ngModel)]="desc.desc2" disabled>
-                                        </textarea>
+                                                </textarea>
                                             </div>
                                             <div class="col-lg-12"><br>
                                                 <label for="coastalhaz">Coastal/ Storm Surges :</label>
                                                 <textarea class="form-control" id="desc3" rows="4" name="desc3"
                                                     [(ngModel)]="desc.desc3" disabled>
-                                        </textarea>
+                                                </textarea>
                                             </div>
                                             <div class="col-lg-12"><br>
                                                 <label for="geologichaz">Geologic Hazards :</label>
                                                 <textarea class="form-control" id="desc4" rows="4" name="desc4"
                                                     [(ngModel)]="desc.desc4" disabled>
-                                        </textarea>
+                                                </textarea>
                                             </div>
                                             <div class="col-lg-12"><br>
                                                 <label for="manmadehaz">Man-made Hazards :</label>
                                                 <textarea class="form-control" id="desc5" rows="4" name="desc5"
                                                     [(ngModel)]="desc.desc5" disabled>
-                                        </textarea>
+                                                </textarea>
                                             </div>
                                             <div class="col-lg-12"><br>
                                                 <label for="otherremarks">Others Hazards/ Remarks :</label>
                                                 <textarea class="form-control" id="desc6" rows="4" name="desc6"
                                                     [(ngModel)]="desc.desc6" disabled>
-                                        </textarea>
+                                                </textarea>
                                             </div>
                                             ***End of Report***
                                             <app-admin>
@@ -102,53 +102,47 @@
             <div class="modal-body">
                 <div class="form-group">
                     <div class="row">
-
                         <div class="col-lg-12">
                             <label for="exampleFormControlTextarea1">Flooding :</label>
                             <textarea class="form-control" id="desc1" name="desc1" placeholder=""
                                 [(ngModel)]="addData.desc1" [ngModelOptions]="{ standalone: true }"
                                 (keyup)="onKey($event)">
-                </textarea>
+                            </textarea>
                         </div>
-
                         <div class="col-lg-12"><br>
                             <label for="exampleFormControlTextarea1">Landslides :</label>
                             <textarea class="form-control" id="desc2" name="desc2" placeholder=""
                                 [(ngModel)]="addData.desc2" [ngModelOptions]="{ standalone: true }"
                                 (keyup)="onKey($event)">
-                </textarea>
+                            </textarea>
                         </div>
-
                         <div class="col-lg-12"><br>
                             <label for="exampleFormControlTextarea1">Coastal / Storm Surges :</label>
                             <textarea class="form-control" id="desc3" name="desc3" placeholder=""
                                 [(ngModel)]="addData.desc3" [ngModelOptions]="{ standalone: true }"
                                 (keyup)="onKey($event)">
-                </textarea>
+                            </textarea>
                         </div>
-
                         <div class="col-lg-12"><br>
                             <label for="exampleFormControlTextarea1">Geologic Hazards :</label>
                             <textarea class="form-control" id="desc4" name="desc4" placeholder=""
                                 [(ngModel)]="addData.desc4" [ngModelOptions]="{ standalone: true }"
                                 (keyup)="onKey($event)">
-                </textarea>
+                            </textarea>
                         </div>
-
                         <div class="col-lg-12"><br>
                             <label for="exampleFormControlTextarea1">Man-made Hazards :</label>
                             <textarea class="form-control" id="desc5" name="desc5" placeholder=""
                                 [(ngModel)]="addData.desc5" [ngModelOptions]="{ standalone: true }"
                                 (keyup)="onKey($event)">
-                </textarea>
+                            </textarea>
                         </div>
-
                         <div class="col-lg-12"><br>
                             <label for="exampleFormControlTextarea1">Other Hazard/Remarks :</label>
                             <textarea class="form-control" id="desc6" name="desc6" placeholder=""
                                 [(ngModel)]="addData.desc6" [ngModelOptions]="{ standalone: true }"
                                 (keyup)="onKey($event)">
-                </textarea>
+                            </textarea>
                         </div>
                     </div>
                 </div>
@@ -159,7 +153,7 @@
                 <button type="button" *ngIf="updateForm == false" (click)="AddDescription(addData)"
                     class="btn btn-primary" (click)="buttonClick()" [disabled]="click" style="background-color: blue;"
                     data-dismiss="modal">
-                    Add
+                    Save Changes
                 </button>
                 <button type="button" *ngIf="updateForm == true" (click)="EditDescription(addData)"
                     class="btn btn-primary" data-dismiss="modal" style="background-color: blue;" (click)="buttonClick()"
@@ -168,5 +162,5 @@
                 </button>
             </div>
         </div>
-    </div> 
+    </div>
 </div>

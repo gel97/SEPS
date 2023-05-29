@@ -49,18 +49,18 @@
                           <label><strong>Governance -  Provincial Officials</strong></label><br>
                       </div>
 
-
-                     <div class ="row">
-                      <div class="col-lg-10"><br>
-                        <p>List of Provincial Officials:</p>
-                      </div>
-                      <div class ="col-lg-2">
+                      <div class ="form-inline float-right ">
                         <app-admin>
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd "><i class="fa fa-plus"></i>
                           Provincial Officials
                         </button>
                       </app-admin>
+                      </div><br>
+                     <div class ="row">
+                      <div class="col-lg-8"><br>
+                        <p>List of Provincial Officials:</p>
                       </div>
+
                      </div>
 
                           <div class="form-group">
@@ -267,7 +267,7 @@
                    </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" (click)="update()" ><i class="fa fa-check"></i>Save changes</button>&nbsp;
-        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Cancel</button>
 
       </div>
     </div>

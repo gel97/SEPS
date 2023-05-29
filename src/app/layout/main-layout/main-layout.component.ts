@@ -17,6 +17,7 @@ import {
   FacebookLoginProvider,
   SocialUser,
 } from 'angularx-social-login';
+import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 
 
 @Component({
@@ -41,7 +42,7 @@ export class MainLayoutComponent implements OnInit {
 
 
   constructor(private service: AuthService, private router: Router, private baseUrl: BaseUrl, private imagesService: ImagesService,
-    private socialAuthService: SocialAuthService) { 
+    private socialAuthService: SocialAuthService, private modifyService: ModifyCityMunService) { 
     console.log(router.url);
 
     this.router.events.pipe(
@@ -79,6 +80,10 @@ export class MainLayoutComponent implements OnInit {
     });
   }
 
+  modifyCityMun(cityMunName:string){
+    return this.modifyService.ModifyText(cityMunName);
+  }
+  
   dataURItoBlob(dataURI: any) {
     const byteString = atob(dataURI.split(',')[1]);
     const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
@@ -156,7 +161,7 @@ export class MainLayoutComponent implements OnInit {
     //localStorage.removeItem('token'); 
     this.service.clearSession();
     this.socialAuthService.signOut();
-    this.router.navigate(['/seps/guest/home']);
+    this.router.navigate(['guest/home']);
   }
 
   toggleSidebar() {

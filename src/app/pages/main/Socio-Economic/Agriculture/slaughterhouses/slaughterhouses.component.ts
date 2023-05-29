@@ -3,15 +3,22 @@ import { AuthService } from 'src/app/services/auth.service';
 import { AgricultureService } from 'src/app/shared/Socio-Economic/Agriculture/agriculture.service';
 import Swal from 'sweetalert2';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
+import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 
 @Component({
   selector: 'app-slaughterhouses',
   templateUrl: './slaughterhouses.component.html',
-  styleUrls: ['./slaughterhouses.component.css']
+  styleUrls: ['./slaughterhouses.component.css'],
 })
 export class SlaughterhousesComponent implements OnInit {
+  constructor(private Auth: AuthService, private Service: AgricultureService,
+    private modifyService: ModifyCityMunService
+  ) {}
 
-  constructor(private Auth: AuthService, private Service: AgricultureService) { }
+  modifyCityMun(cityMunName: string) {
+    return this.modifyService.ModifyText(cityMunName);
+  }
+
 
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;
@@ -20,38 +27,39 @@ export class SlaughterhousesComponent implements OnInit {
 
   onChange(isCheck: boolean) {
     this.isCheck = isCheck;
-    console.log("isCheck:", this.isCheck);
+    console.log('isCheck:', this.isCheck);
   }
 
   munCityName: string = this.Auth.munCityName;
 
-  menuId = "7";
-  toValidate:any={};
+  menuId = '7';
+  toValidate: any = {};
   dataList: any = [];
   addData: any = {};
   barangayList: any = [];
-  listofOwnership: any = [{ id: `1`, type: `Government` }, { id: `2`, type: `Private` }];
+  listofOwnership: any = [
+    { id: `1`, type: `Government` },
+    { id: `2`, type: `Private` },
+  ];
   visible: boolean = true;
   not_visible: boolean = true;
   dummy_addData: any = {};
   dummyData: any = {};
 
   required: boolean = true;
-  latitude: any
-  longtitude: any
-
+  latitude: any;
+  longtitude: any;
 
   setYear = this.Auth.activeSetYear;
   munCityId = this.Auth.munCityId;
 
   @ViewChild('closebutton')
-  closebutton!: { nativeElement: { click: () => void; }; };
+  closebutton!: { nativeElement: { click: () => void } };
 
   markerObj: any = {};
 
   SetMarker(data: any = {}) {
-    console.log("lnglat: ", data.longtitude + " , " + data.latitude)
-
+    console.log('lnglat: ', data.longtitude + ' , ' + data.latitude);
 
     if (data.longtitude == undefined && data.latitude == undefined) {
       data.longtitude = this.longtitude;
@@ -64,10 +72,10 @@ export class SlaughterhousesComponent implements OnInit {
       label: data.brgyName.charAt(0),
       brgyName: data.brgyName,
       munCityName: this.munCityName,
-      draggable: true
+      draggable: true,
     };
     this.gmapComponent.setMarker(this.markerObj);
-    console.log("marker", this.markerObj);
+    console.log('marker', this.markerObj);
   }
 
   ngOnInit(): void {
@@ -76,80 +84,93 @@ export class SlaughterhousesComponent implements OnInit {
   }
 
   GetListAgriculture() {
-    this.Service.GetListAgriculture(this.menuId, this.setYear, this.munCityId).subscribe(response => {
-      this.dataList = (<any>response);
-      console.log("check", response);
-    })
+    this.Service.GetListAgriculture(
+      this.menuId,
+      this.setYear,
+      this.munCityId
+    ).subscribe((response) => {
+      this.dataList = <any>response;
+      console.log('check', response);
+    });
   }
 
   GetBarangayList() {
-    this.Service.GetBarangayList(this.munCityId).subscribe(response => {
-      this.barangayList = (<any>response);
-      console.log("barangay", response);
-    })
-
+    this.Service.GetBarangayList(this.munCityId).subscribe((response) => {
+      this.barangayList = <any>response;
+      console.log('barangay', response);
+    });
   }
 
   findBrgyId(brgyId: any) {
-    return this.barangayList.find((item: { brgyId: any; }) => item.brgyId === brgyId);
+    return this.barangayList.find(
+      (item: { brgyId: any }) => item.brgyId === brgyId
+    );
   }
 
   AddAgriculture() {
-    this.toValidate.brgyId = this.addData.brgyId == "" || this.addData.brgyId == null ? true : false;
-    this.toValidate.capacity= this.addData.capacity== "" || this.addData.capacity == undefined ? true : false;
-    this.toValidate.area = this.addData.area == "" || this.addData.area == undefined ? true : false;
-    this.toValidate.name = this.addData.name == "" || this.addData.name == undefined ? true : false;
-    this.toValidate.ownershipType = this.addData.ownershipType == "" || this.addData.name == null ? true : false;
-    if (this.toValidate.brgyId  == true ||this.toValidate.name==true || this.toValidate.ownershipType == true || this.toValidate.capacity ==true || this.toValidate.area == true ){
+    this.toValidate.brgyId =
+      this.addData.brgyId == '' || this.addData.brgyId == null ? true : false;
+    this.toValidate.capacity =
+      this.addData.capacity == '' || this.addData.capacity == undefined
+        ? true
+        : false;
+    this.toValidate.area =
+      this.addData.area == '' || this.addData.area == undefined ? true : false;
+    this.toValidate.name =
+      this.addData.name == '' || this.addData.name == undefined ? true : false;
+    this.toValidate.ownershipType =
+      this.addData.ownershipType == '' || this.addData.name == null
+        ? true
+        : false;
+    if (
+      this.toValidate.brgyId == true ||
+      this.toValidate.name == true ||
+      this.toValidate.ownershipType == true ||
+      this.toValidate.capacity == true ||
+      this.toValidate.area == true
+    ) {
       Swal.fire(
         'Missing Data!',
         'Please fill out the required fields',
         'warning'
       );
     } else {
-    this.dummy_addData = this.addData;
-    if (JSON.stringify(this.dummy_addData) != JSON.stringify(this.dummyData) && this.addData.brgyId != undefined) {
+      this.dummy_addData = this.addData;
+      if (
+        JSON.stringify(this.dummy_addData) != JSON.stringify(this.dummyData) &&
+        this.addData.brgyId != undefined
+      ) {
+        this.addData.setYear = this.setYear;
+        this.addData.munCityId = this.munCityId;
+        this.addData.menuId = this.menuId;
 
-      this.addData.setYear = this.setYear;
-      this.addData.munCityId = this.munCityId;
-      this.addData.menuId = this.menuId;
+        const result = this.findBrgyId(this.addData.brgyId);
+        this.longtitude = result.longitude;
+        this.addData.longtitude = this.longtitude;
+        console.log('long', this.longtitude);
+        this.latitude = result.latitude;
+        this.addData.latitude = this.latitude;
+        console.log('lat', this.latitude);
 
-      const result = this.findBrgyId(this.addData.brgyId);
-      this.longtitude = result.longitude;
-      this.addData.longtitude = this.longtitude;
-      console.log("long", this.longtitude);
-      this.latitude = result.latitude;
-      this.addData.latitude = this.latitude;
-      console.log("lat", this.latitude);
+        this.Service.AddAgriculture(this.addData).subscribe((request) => {
+          if (!this.isCheck) {
+            this.closebutton.nativeElement.click();
+          }
 
-      this.Service.AddAgriculture(this.addData).subscribe(request => {
-
-        if (!this.isCheck) {
-          this.closebutton.nativeElement.click();
-        }
-
-        console.log("add", request);
-        this.GetListAgriculture();
-        Swal.fire(
-          'Good job!',
-          'Data Added Successfully!',
-          'success'
-        );
-      })
-
-    }
-
-    else {
-      this.required = true;
-      Swal.fire({
-        icon: 'warning',
-        title: 'Oops...',
-        text: 'Missing data!',
-
-      })
+          console.log('add', request);
+          this.GetListAgriculture();
+          Swal.fire('Good job!', 'Data Added Successfully!', 'success');
+        });
+      } else {
+        this.required = true;
+        Swal.fire({
+          icon: 'warning',
+          title: 'Oops...',
+          text: 'Missing data!',
+        });
+      }
     }
   }
-}
 
   clearData() {
     this.addData = {};
@@ -164,49 +185,64 @@ export class SlaughterhousesComponent implements OnInit {
   }
 
   EditAgriculture() {
-    this.toValidate.brgyId = this.addData.brgyId == "" || this.addData.brgyId == null ? true : false;
-    this.toValidate.capacity= this.addData.capacity== "" || this.addData.capacity == undefined ? true : false;
-    this.toValidate.area = this.addData.area == "" || this.addData.area == undefined ? true : false;
-    this.toValidate.ownershipType = this.addData.ownershipType == "" || this.addData.ownershipType == undefined ? true : false;
-    this.toValidate.name = this.addData.name == "" || this.addData.name == undefined ? true : false;
+    this.toValidate.brgyId =
+      this.addData.brgyId == '' || this.addData.brgyId == null ? true : false;
+    this.toValidate.capacity =
+      this.addData.capacity == '' || this.addData.capacity == undefined
+        ? true
+        : false;
+    this.toValidate.area =
+      this.addData.area == '' || this.addData.area == undefined ? true : false;
+    this.toValidate.ownershipType =
+      this.addData.ownershipType == '' ||
+      this.addData.ownershipType == undefined
+        ? true
+        : false;
+    this.toValidate.name =
+      this.addData.name == '' || this.addData.name == undefined ? true : false;
 
-    if (this.toValidate.brgyId  == true || this.toValidate.name == true || this.toValidate.ownershipType == true || this.toValidate.capacity ==true || this.toValidate.area == true ){
+    if (
+      this.toValidate.brgyId == true ||
+      this.toValidate.name == true ||
+      this.toValidate.ownershipType == true ||
+      this.toValidate.capacity == true ||
+      this.toValidate.area == true
+    ) {
       Swal.fire(
         'Missing Data!',
         'Please fill out the required fields',
         'warning'
       );
     } else {
-    Swal.fire({
-      title: 'Do you want to save the changes?',
-      showDenyButton: true,
-      showCancelButton: true,
-      confirmButtonText: 'Save',
-      denyButtonText: `Don't save`,
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
+      Swal.fire({
+        title: 'Do you want to save the changes?',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Save',
+        denyButtonText: `Don't save`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          this.addData.longtitude = this.gmapComponent.markers.lng;
+          this.addData.latitude = this.gmapComponent.markers.lat;
 
-        this.addData.longtitude = this.gmapComponent.markers.lng;
-        this.addData.latitude = this.gmapComponent.markers.lat;
-
-
-        this.addData.setYear = this.setYear;
-        this.addData.munCityId = this.munCityId;
-        this.addData.menuId = this.menuId;
-        this.addData.tag = 1;
-        console.log("edit", this.addData);
-        this.Service.EditAgriculture(this.addData).subscribe(request => {
-          console.log("edit", request);
-          this.GetListAgriculture();
-        })
-        Swal.fire('Saved!', '', 'success')
-      } else if (result.isDenied) {
-        Swal.fire('Changes are not saved', '', 'info')
-      }
-    })
+          this.addData.setYear = this.setYear;
+          this.addData.munCityId = this.munCityId;
+          this.addData.menuId = this.menuId;
+          this.addData.tag = 1;
+          console.log('edit', this.addData);
+          this.Service.EditAgriculture(this.addData).subscribe((request) => {
+            console.log('edit', request);
+            this.GetListAgriculture();
+          });
+          Swal.fire('Saved!', '', 'success');
+          document.getElementById('exampleModal')?.click();
+        } else if (result.isDenied) {
+          Swal.fire('Changes are not saved', '', 'info');
+        }
+      });
+    }
   }
-}
 
   DeleteAgriculture(dataItem: any) {
     Swal.fire({
@@ -216,19 +252,16 @@ export class SlaughterhousesComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.Service.DeleteAgriculture(dataItem.transId).subscribe(request => {
-          this.GetListAgriculture();
-        })
-        Swal.fire(
-          'Deleted!',
-          'Your file has been deleted.',
-          'success'
-        )
+        this.Service.DeleteAgriculture(dataItem.transId).subscribe(
+          (request) => {
+            this.GetListAgriculture();
+          }
+        );
+        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
       }
-    })
+    });
   }
-
 }

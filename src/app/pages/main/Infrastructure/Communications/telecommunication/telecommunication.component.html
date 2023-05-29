@@ -8,7 +8,7 @@
           <div class="p-5">
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-4">Telecommunication Systems</h1>
-              <label><strong>Communications Services - Municipality of {{munCityName}}</strong></label>
+              <label><strong>Communications Services - {{modifyCityMun(munCityName)}}</strong></label>
 
 
             </div>
@@ -121,41 +121,46 @@
             </div>
             <div class="col-lg-12"><br>
               <label for="exampleFormControlTextarea1">Type of Exchange/ Facilities :</label>
+              <!-- <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="telco.type"   [ngClass]="toValidate.type?'is-invalid':''" (keyup)="toValidate.type=false"> -->
+
               <select class="form-select" aria-label="Default select example" name="list_of_type"
                 [(ngModel)]="telco.type" [ngClass]="toValidate.type?'is-invalid':''"
                 (ngModelChange)="toValidate.type=false">
                 <option *ngFor="let list of list_of_type" value={{list.id}}>{{list.name}}</option>
               </select>
             </div>
-            <div class="col-lg-12"><br>
+            <div class="row">
+            <div class="col-lg-6"><br>
               <label for="exampleFormControlTextarea1"> Total Installed Lines :</label>
-              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="telco.installed">
+              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="telco.installed"   [ngClass]="toValidate.installed?'is-invalid':''" (keyup)="toValidate.installed=false">
             </div>
-            <div class="col-lg-12"><br>
+            <div class="col-lg-6"><br>
               <label for="exampleFormControlTextarea1">Total Subscribed Lines :</label>
-              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="telco.subscribed">
+              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="telco.subscribed"  [ngClass]="toValidate.subscribed?'is-invalid':''" (keyup)="toValidate.subscribed=false">
             </div>
-            <div class="col-lg-4"><br>
+          </div>
+            <div class="col-lg-6"><br>
               <label for="exampleFormControlTextarea1">Contact Person/ Designation :</label>
               <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="telco.contactPerson">
             </div>
-            <div class="col-lg-4"><br>
+            <div class="col-lg-6"><br>
               <label for="exampleFormControlTextarea1">Contact Details :</label>
               <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="telco.contactNo">
             </div>
-            <div class="col-lg-4"><br>
+            <div class="col-lg-6"><br>
               <label for="exampleFormControlTextarea1">Location (Sitio/Purok) :</label>
               <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="telco.location">
             </div>
-            <div class="col-lg-4"><br>
+            <!-- <div class="col-lg-4"><br>
               <label for="exampleFormControlTextarea1">Geo Coordinates - Longitude:</label>
               <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="telco.longtitude">
             </div>
             <div class="col-lg-4"><br>
               <label for="exampleFormControlTextarea1"> Latitude : </label>
               <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="telco.latitude">
-            </div>
-            <div class="col-lg-4"><br>
+            </div> -->
+
+            <div class="col-lg-6"><br>
               <label for="category">Barangay :</label>
               <select class="form-select" aria-label="Default select example" [(ngModel)]="telco.brgyId"
                 [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false">

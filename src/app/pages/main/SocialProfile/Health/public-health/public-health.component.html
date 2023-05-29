@@ -7,29 +7,30 @@
                     <div class="p-5">
                         <div class="text-center">
                             <h1 class="h4 text-gray-900 mb-4">Public Health Service Workers</h1>
+                            <label><strong> Health - {{modifyCityMun(munCityName)}}</strong></label><br>
                         </div>
                         <div *ngIf="!hasData" class="form-inline float-right ">
                             <app-admin>
                                 <button (click)="isAdd = true;" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#mEducation">
                                     <i class="fa fa-plus"></i>
-                                    Public Health Service Workers
+                                  Service Workers
                                 </button>
                             </app-admin>
                         </div>
                         <br>&nbsp;&nbsp;
                         <div class="table-responsive">
                             <table class="table table-light table-striped">
-                                <thead>
+                                <thead class="table-dark">
                                     <tr>
-                                        <th style="text-align: center;">ITEM</th>
+                                        <th >ITEM</th>
                                         <th style="text-align: center;">Description/Value</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td scope="col">Municipality/City:</td>
-                                        <td style="text-align: center;">Municipality of {{munCityName}}</td>
+                                        <td scope="col"><strong>Municipality/City:</strong></td>
+                                        <td style="text-align: center;"><strong>Municipality of {{munCityName}}</strong></td>
 
                                     </tr>
                                     <tr>
@@ -102,9 +103,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+
 
 <!-- Modal -->
 
@@ -127,7 +126,7 @@
                         <div class="col-lg-9">
                             <input type="number" class="form-control" id="" placeholder=""
                                 [(ngModel)]="data.healthWorkersNo" [ngModelOptions]="{ standalone: true }"
-                                pattern="^\d*\.?\d+$">
+                                pattern="^\d*\.?\d+$"  [ngClass]="data.name?'is-invalid':''" (keyup)="data.name=false">
                         </div>
                     </div><br>
                     <div class="row">
@@ -236,32 +235,34 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-school" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
                 <button type="button" class="btn btn-primary"
-                    (click)="isAdd? AddHealthWorkers(): EditHealthWorkers()">Save</button>
+                    (click)="isAdd? AddHealthWorkers(): EditHealthWorkers()"><i class="fa fa-check"></i>Save Changes</button>
             </div>
         </div>
     </div>
 </div>
 
+
+
 <!-- modal area -->
 <div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">SEPS GEOLOCATION TAGGING</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <app-gmap></app-gmap>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" (click)="EditHealthWorkers()">Save changes</button>
-            </div>
-        </div>
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">SEPS GEOLOCATION TAGGING</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-gmap></app-gmap>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="EditHealthWorkers()">Save changes</button>
+      </div>
     </div>
+  </div>
 </div>
