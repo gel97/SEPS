@@ -67,22 +67,13 @@ signIn (){
    },
    error:(error)=>{
     this.isLogin =false;
+    this.errorLogin = error.error;
    },
    complete: () => {
     this.isLogin =false;
    }
 }
 );
-  // this.service.signin(this.user).subscribe(data=>{
-  //     if(data.token!= null){
-  //       this.router.navigate(['/']);
-  //     }
-  // },
-  // err => {
-  //    console.log(err.error)
-  //     this.errorLogin = err.error;
-  // }
-  // );
 }
 callLoginButton() {
 
