@@ -59,9 +59,9 @@ export class PrivateHospitalComponent implements OnInit {
 
   hospital_category = [
     { id: 1, name_category: 'Not Specified' },
-    { id: 2, name_category: 'Primary' },
-    { id: 3, name_category: 'Secondary' },
-    { id: 4, name_category: 'Tertiary' },
+    { id: 2, name_category: 'Level 1' },
+    { id: 3, name_category: 'Level 2' },
+    { id: 4, name_category: 'Level 3' },
   ];
 
   @ViewChild('closebutton')

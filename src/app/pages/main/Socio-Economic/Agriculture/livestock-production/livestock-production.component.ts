@@ -30,15 +30,17 @@ export class LivestockProductionComponent implements OnInit {
   dataList: any = [];
   addData: any = {};
   barangayList: any = [];
-  listofPoultry: any = [{ id: `1`, type: `Chicken - Broilers` }, { id: `2`, type: `Chicken - Layers` }, { id: `3`, type: `Ducks/ Gees` },
-                        { id: `4`, type: `Hogs` }, { id: `5`, type: `Goat/ Sheep` }, { id: `6`, type: `Cattles` },
-                        { id: `7`, type: `Carabao` }, { id: `8`, type: `Crocs` }, { id: `9`, type: `Avaboy - halal` } ,
-                        { id: `10`, type: `Chicken - Native` }, { id: `11`, type: `Turkey` }, { id: `12`, type: `Swine` },
-                        { id: `13`, type: `Dog` }, { id: `14`, type: `Others` }, ];
+  listofPoultry: any = [{ id: `1`, type: `Carabao` }, { id: `2`, type: `Cattle` }, { id: `3`, type: `Goat` },
+                        { id: `4`, type: `Swine` },];
+                        // { id: `5`, type: `Goat/ Sheep` }, { id: `6`, type: `Cattles` },
+                        // { id: `7`, type: `Carabao` }, { id: `8`, type: `Crocs` }, { id: `9`, type: `Avaboy - halal` } ,
+                        // { id: `10`, type: `Chicken - Native` }, { id: `11`, type: `Turkey` }, { id: `12`, type: `Swine` },
+                        // { id: `13`, type: `Dog` }, { id: `14`, type: `Others` },
   visible: boolean = true;
   not_visible: boolean = true;
   dummy_addData: any = {};
   dummyData: any = {};
+
 
   required: boolean = true;
   latitude: any
@@ -85,6 +87,12 @@ export class LivestockProductionComponent implements OnInit {
     this.Service.GetListAgriculture(this.menuId, this.setYear, this.munCityId).subscribe(response => {
       this.dataList = (<any>response);
       console.log("check", response);
+      this.dataList.sort((n1:any,n2:any)=>{
+        if (n1.brgyName < n2.brgyName) return -1;
+        if (n1.brgyName > n2.brgyName) return 1;
+        else return 0;
+      })
+
     })
   }
 
@@ -102,59 +110,77 @@ export class LivestockProductionComponent implements OnInit {
 
   AddAgriculture() {
     this.toValidate.brgyId = this.addData.brgyId == "" || this.addData.brgyId == null ? true : false;
-    this.toValidate.name = this.addData.name== "" || this.addData.name == undefined ? true : false;
-    this.toValidate.area = this.addData.area == "" || this.addData.area == null ? true : false;
-    this.toValidate.headRaiseNo = this.addData.headRaiseNo== "" || this.addData.headRaiseNo == undefined ? true : false;
 
-    if (this.toValidate.brgyId  == true || this.toValidate.name == true || this.toValidate.area == true || this.toValidate.headRaiseNo == true) {
-      Swal.fire(
-        'Missing Data!',
-        'Please fill out the required fields',
-        'warning'
-      );
-    } else {
-    this.dummy_addData = this.addData;
-    if (JSON.stringify(this.dummy_addData) != JSON.stringify(this.dummyData) && this.addData.brgyId != undefined) {
-
-      this.addData.setYear = this.setYear;
-      this.addData.munCityId = this.munCityId;
-      this.addData.menuId = this.menuId;
-
-      const result = this.findBrgyId(this.addData.brgyId);
-      this.longtitude = result.longitude;
-      this.addData.longtitude = this.longtitude;
-      console.log("long", this.longtitude);
-      this.latitude = result.latitude;
-      this.addData.latitude = this.latitude;
-      console.log("lat", this.latitude);
-
-      this.Service.AddAgriculture(this.addData).subscribe(request => {
-
-        if (!this.isCheck) {
-          this.closebutton.nativeElement.click();
-        }
-
-        console.log("add", request);
-        this.GetListAgriculture();
-        Swal.fire(
-          'Good job!',
-          'Data Added Successfully!',
-          'success'
+    let isNew = false;
+     for(let i of this.dataList){
+      if( i.brgyId == this.addData.brgyId && i.type == this.addData.id){
+         isNew= true;
+         Swal.fire(
+          'Duplicate Data!',
+          '',
+          'warning'
         );
-      })
+        break;
+      }
+     }
+    //  if(isNew){
+    //   this.EditAgriculture() ;
+    //  }
+     if(!isNew){
+      if (this.toValidate.brgyId  == true ) {
+        Swal.fire(
+          'Missing Data!',
+          'Please fill out the required fields',
+          'warning'
+        );
+      } else {
+      this.dummy_addData = this.addData;
+      if (JSON.stringify(this.dummy_addData) != JSON.stringify(this.dummyData) && this.addData.brgyId != undefined) {
 
+        this.addData.setYear = this.setYear;
+        this.addData.munCityId = this.munCityId;
+        this.addData.menuId = this.menuId;
+
+        const result = this.findBrgyId(this.addData.brgyId);
+        this.longtitude = result.longitude;
+        this.addData.longtitude = this.longtitude;
+        console.log("long", this.longtitude);
+        this.latitude = result.latitude;
+        this.addData.latitude = this.latitude;
+        console.log("lat", this.latitude);
+
+        this.Service.AddAgriculture(this.addData).subscribe(request => {
+
+          if (!this.isCheck) {
+            this.closebutton.nativeElement.click();
+          }
+
+          console.log("add", request);
+          this.GetListAgriculture();
+          Swal.fire(
+            'Good job!',
+            'Data Added Successfully!',
+            'success'
+          );
+        })
+
+      }
+
+      else {
+        this.required = true;
+        Swal.fire({
+          icon: 'warning',
+          title: 'Oops...',
+          text: 'Missing data!',
+
+        })
+      }
     }
 
-    else {
-      this.required = true;
-      Swal.fire({
-        icon: 'warning',
-        title: 'Oops...',
-        text: 'Missing data!',
 
-      })
-    }
-  }
+     }
+
+
   }
   clearData() {
     this.addData = {};
@@ -170,11 +196,11 @@ export class LivestockProductionComponent implements OnInit {
 
   EditAgriculture() {
     this.toValidate.brgyId = this.addData.brgyId == "" || this.addData.brgyId == null ? true : false;
-    this.toValidate.name = this.addData.name== "" || this.addData.name == undefined ? true : false;
-    this.toValidate.area = this.addData.area == "" || this.addData.area == null ? true : false;
-    this.toValidate.headRaiseNo = this.addData.headRaiseNo== "" || this.addData.headRaiseNo == undefined ? true : false;
+    // this.toValidate.name = this.addData.name== "" || this.addData.name == undefined ? true : false;
+    // this.toValidate.area = this.addData.area == "" || this.addData.area == null ? true : false;
+    // this.toValidate.headRaiseNo = this.addData.headRaiseNo== "" || this.addData.headRaiseNo == undefined ? true : false;
 
-    if (this.toValidate.brgyId  == true || this.toValidate.name == true || this.toValidate.area == true || this.toValidate.headRaiseNo == true) {
+    if (this.toValidate.brgyId  == true ) {
       Swal.fire(
         'Missing Data!',
         'Please fill out the required fields',

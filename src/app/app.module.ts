@@ -133,6 +133,10 @@ import {
   SocialAuthServiceConfig,
 } from 'angularx-social-login';
 import { NotificationComponent } from './pages/main/Tools/notification/notification.component';
+import { PublicSchoolsComponent } from './pages/main/SocialProfile/Education/Facilities/public-schools/public-schools.component';
+import { PrivateSchoolsComponent } from './pages/main/SocialProfile/Education/Facilities/private-schools/private-schools.component';
+import { TertiaryInstitutionsComponent } from './pages/main/SocialProfile/Education/Facilities/tertiary-institutions/tertiary-institutions.component';
+import { TechnicalVocationalInstitutionsComponent } from './pages/main/SocialProfile/Education/Facilities/technical-vocational-institutions/technical-vocational-institutions.component';
 
 
 
@@ -254,6 +258,10 @@ import { NotificationComponent } from './pages/main/Tools/notification/notificat
     NewsComponent,
     HoursAgoOrDatePipe,
     NotificationComponent,
+    PublicSchoolsComponent,
+    PrivateSchoolsComponent,
+    TertiaryInstitutionsComponent,
+    TechnicalVocationalInstitutionsComponent,
 
 
   ],

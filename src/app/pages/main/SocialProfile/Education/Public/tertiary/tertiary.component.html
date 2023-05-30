@@ -27,16 +27,16 @@
                     <th scope="col">#</th>
                     <th scope="col">School ID#</th>
                     <th scope="col">Name of School</th>
-                    <th scope="col">Courses Offered/ Remarks</th>
-                    <th scope="col">No. of Instructors</th>
+                    <!-- <th scope="col">Courses Offered/ Remarks</th> -->
+                    <!-- <th scope="col">No. of Instructors</th>
                     <th scope="col">No. Classrooms</th>
                     <th scope="col">Total Enrollments	</th>
                     <th scope="col">No. Classes</th>
                     <th scope="col"> Contact Person</th>
-                    <th scope="col"> Contact Numbers</th>
+                    <th scope="col"> Contact Numbers</th> -->
                     <th scope="col"> Location</th>
-                    <th scope="col">Barangay</th>
-                    <th scope="col">Geo Coordinates</th>
+                    <!-- <th scope="col">Barangay</th> -->
+                    <!-- <th scope="col">Geo Coordinates</th> -->
                     <th></th>
                   </tr>
                 </thead>
@@ -45,16 +45,16 @@
                     <td>{{i+1}}</td>
                     <td>{{data.schoolId}}</td>
                     <td>{{data.name}}</td>
-                    <td>{{data.remarks}}</td>
+                    <!-- <td>{{data.remarks}}</td>
                     <td>{{data.teacherNo}}</td>
                     <td>{{data.classroomNo}}</td>
                     <td>{{data.enrollyNo}}</td>
                     <td>{{data.classesNo}}</td>
                     <td>{{data.contactPerson}}</td>
-                    <td>{{data.contactNo}}</td>
-                    <td>{{data.location}}</td>
-                    <td>{{data.brgyName}}</td>
-                    <td>{{data.longtitude}},<br>{{data.latitude}}</td>
+                    <td>{{data.contactNo}}</td> -->
+                    <td>{{data.location}},{{data.brgyName}}</td>
+                    <!-- <td></td> -->
+                    <!-- <td>{{data.longtitude}},<br>{{data.latitude}}</td> -->
                     <td>
                       <div class="d-inline-flex">
                         <app-admin>
@@ -98,17 +98,9 @@
 
       <div class="modal-body">
         <div class="form-group">
-          <div class="row">
-            <div class="col-lg-12">
-              <label for="category">Barangay :</label>
-              <select class="form-select" name="brgyId" id="brgyId" aria-label="Default select example"
-                [(ngModel)]="school.brgyId" [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false">
-                <option *ngFor="let item of listBarangay" [value]="item.brgyId">
-                  {{ item.brgyName }}
-                </option>
-              </select>
-            </div>
-            </div><br>
+
+
+
           <div class="row">
             <div class="col-lg-8">
               <label for="exampleFormControlInput1">School Name : </label>
@@ -119,13 +111,13 @@
               <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="school.schoolId"  [ngClass]="toValidate.schoolId?'is-invalid':''" (keyup)="toValidate.schoolId=false">
             </div>
           </div>
-          <div class ="col-lg-12"><br>
+          <!-- <div class ="col-lg-12"><br>
             <label for="exampleFormControlTextarea1">Courses Offered/ Remarks :</label>
             <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" [(ngModel)]="school.remarks"></textarea>
-           </div>
+           </div> -->
         </div>
 
-        <div class="row">
+        <!-- <div class="row">
           <div class="col-lg-3">
             <label for="exampleFormControlInput1">No. of Teachers :</label>
             <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="school.teacherNo"  [ngClass]="toValidate.teacherNo?'is-invalid':''" (keyup)="toValidate.teacherNo=false">
@@ -142,9 +134,9 @@
             <label>No. of Classes :</label>
             <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="school.classesNo"  [ngClass]="toValidate.classesNo?'is-invalid':''" (keyup)="toValidate.classesNo=false">
           </div>
-        </div><br>
+        </div><br> -->
 
-        <div class="row">
+        <!-- <div class="row">
           <div class="col-lg-4">
             <label for="exampleFormControlInput1">Contact Person/ Designation : </label>
             <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="school.contactPerson">
@@ -153,13 +145,23 @@
             <label for="exampleFormControlInput1">Contact Details: </label>
             <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="school.contactNo">
           </div>
+        </div><br> -->
+
+        <div class="row">
           <div class="col-lg-4">
             <label for="exampleFormControlInput1">Location (#/Bldg/St./Purok) : </label>
             <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="school.location">
           </div>
-        </div><br>
+          <div class="col-lg-12">
+            <label for="category">Barangay :</label>
+            <select class="form-select" name="brgyId" id="brgyId" aria-label="Default select example"
+              [(ngModel)]="school.brgyId" [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false">
+              <option *ngFor="let item of listBarangay" [value]="item.brgyId">
+                {{ item.brgyName }}
+              </option>
+            </select>
+          </div>
 
-        <div class="row">
           <!-- <div class="col-lg-4">
               <label for="exampleFormControlInput1">Geo Coordinates - Longitude : </label>
               <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="school.">

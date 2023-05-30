@@ -30,37 +30,46 @@
                   <th scope="col" style="text-align: center">
                     Name of Hospitals
                   </th>
-                  <th scope="col" style="text-align: center">
-                    Facilities/Remarks
-                  </th>
-                  <th scope="col" style="text-align: center">Bed Capacity</th>
-                  <th scope="col" style="text-align: center">Occupancy Rate</th>
-                  <th scope="col" style="text-align: center">
+                  <th scope="col" style="text-align: center">Location</th>
+                  <th scope="col" style="text-align: center">Available Bed Capacity</th>
+                  <th scope="col" style="text-align: center ">Service Capability</th>
+                  <th scope="col" style="text-align: center"> Classification </th>
+                  <th></th>
+
+                  <!-- <th scope="col" style="text-align: center">
                     Contact Person/Designation
                   </th>
                   <th scope="col" style="text-align: center">
                     Contact Numbers
                   </th>
-                  <th scope="col" style="text-align: center">Location</th>
+
                   <th scope="col" style="text-align: center">Barangay</th>
                   <th scope="col" style="text-align: center">
                     Geo-Coord.(Long.Lat)
                   </th>
-                  <th style="text-align: center">Action</th>
+                  <th style="text-align: center">Action</th> -->
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let dataItem of dataList; let i = index">
                   <td style="text-align: center">{{ i + 1 }}</td>
                   <td style="text-align: center">{{ dataItem.name }}</td>
-                  <td style="text-align: center">{{ dataItem.remarks }}</td>
+                  <td style="text-align: center">{{ dataItem.location }},&nbsp;{{ dataItem.brgyName }}</td>
                   <td style="text-align: center">{{ dataItem.capacity }}</td>
-                  <td style="text-align: center">{{ dataItem.rate }}</td>
-                  <td style="text-align: center">{{ dataItem.contactPerson }}</td>
-                  <td style="text-align: center">{{ dataItem.contactNo }}</td>
-                  <td style="text-align: center">{{ dataItem.location }}</td>
-                  <td style="text-align: center">{{ dataItem.brgyName }}</td>
-                  <td style="text-align: center">{{ dataItem.longtitude }}, {{ dataItem.latitude }}</td>
+                  <td style="text-align: center">
+                    <div *ngFor="let category of hospital_category">
+                      <span *ngIf="category.id === dataItem.category">{{ category.name_category }}</span>
+                    </div>
+                  </td>
+                  <!-- <td style="text-align: center">{{ dataItem.rate }}</td> -->
+                  <td style="text-align: center">{{ dataItem.remarks }}</td>
+
+
+                  <!-- <td style="text-align: center">{{ dataItem.contactPerson }}</td>
+                  <td style="text-align: center">{{ dataItem.contactNo }}</td> -->
+
+                  <!-- <td style="text-align: center"></td>
+                  <td style="text-align: center">{{ dataItem.longtitude }}, {{ dataItem.latitude }}</td> -->
                   <td style="text-align: center;">
                     <div class="d-inline-flex">
                       <app-admin>
@@ -70,11 +79,11 @@
                         </button>
                       </app-admin>
                       &nbsp;
-                      <button (click)="SetMarker(dataItem); addData = dataItem" data-toggle="modal"
+                      <!-- <button (click)="SetMarker(dataItem); addData = dataItem" data-toggle="modal"
                         data-target="#gmapModal" class="btn btn-success btn-circle">
                         <i class="fas fa-globe"></i>
-                      </button>
-                      &nbsp;
+                      </button> -->
+
                       <app-admin>
                         <button class="btn btn-warning btn-circle" (click)="DeleteHealthFacilities(dataItem)">
                           <i class="fas fa-trash"></i>
@@ -103,60 +112,56 @@
         <h5 class="modal-title text-dark" id="exampleModalLabel">
           Rural Health Units/ Community Hospital
         </h5>
-        <button type="button" class="btn-close" data-toggle="modal" data-target="#exampleModal"
+        <button type="button" #closebutton class="btn-close" data-toggle="modal" data-target="#exampleModal"
           aria-hidden="true" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <div class="row">
-          <div class="col-lg-12"> <br>
-            <label for="type">Barangay :</label>
-            <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.brgyId"
-              [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false">
-              <option *ngFor="let item  of barangayList" value={{item.brgyId}}>{{item.brgyName}}</option>
-            </select>
-          </div>
-        </div>
-        <br />
         <div class="form-group">
           <div class="">
-            <div class="">
-              <label for="exampleFormControlInput1">Name of Hospital :</label>
-              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.name"
-                [(ngModel)]="dummy_addData.name" [ngClass]="toValidate.name?'is-invalid':''"
-                (keyup)="toValidate.name=false" />
+            <div class="row">
+              <div class="col-lg-12">
+                <label for="exampleFormControlInput1">Name of Hospital :</label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.name"
+                  [(ngModel)]="dummy_addData.name" [ngClass]="toValidate.name?'is-invalid':''"
+                  (keyup)="toValidate.name=false" />
+              </div>
+            </div><br>
+            <div class="row"><br>
+              <div class="col-lg-6">
+                <label>Location (#/Bldg/St./Purok) :</label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.location" />
+              </div>
+              <div class="col-lg-6">
+                <label for="type">Barangay :</label>
+                <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.brgyId"
+                  [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false">
+                  <option *ngFor="let item  of barangayList" value={{item.brgyId}}>{{item.brgyName}}</option>
+                </select>
+              </div>
             </div>
-            <br />
-            <div class="">
-              <label for="exampleFormControlTextarea1">Existing Facilities/Remarks: Accreditation :</label>
-              <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"
-                [(ngModel)]="addData.remarks"></textarea>
-            </div>
-            <br />
+
             <div class="row">
               <div class="col-lg-6">
-                <label for="exampleFormControlInput1">Bed Capacity :</label>
+                <label for="exampleFormControlInput1">Available Bed Capacity :</label>
                 <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.capacity" />
               </div>
               <div class="col-lg-6">
-                <label for="exampleFormControlInput1"> Occupancy:</label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.rate" />
+                <label for="type">Service Capability</label>
+                <select class="form-select" aria-label="Default select example" name="list_of_category"
+                  [(ngModel)]="addData.category">
+                  <option *ngFor="let list of hospital_category" value={{list.id}}>{{list.name_category}}</option>
+                </select>
               </div>
             </div>
           </div>
         </div>
         <div class="row">
-          <div class="col-lg-4">
-            <label for="exampleFormControlInput1">Contact Person/ Designation :</label>
-            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.contactPerson" />
+          <div class="">
+            <label for="exampleFormControlTextarea1">Classification:</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="1"
+              [(ngModel)]="addData.remarks"></textarea>
           </div>
-          <div class="col-lg-4">
-            <label for="exampleFormControlInput1">Contact Number :</label>
-            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.contactNo" />
-          </div>
-          <div class="col-lg-4">
-            <label>Location (#/Bldg/St./Purok) :</label>
-            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.location" />
-          </div>
+
         </div>
         <br />
       </div>
@@ -170,46 +175,19 @@
             </label>
           </div>
         </div>
-        <button type="button" *ngIf="visible" (click)="AddHealthFacilities()" id="closeModal" class="btn btn-primary">
-          <i class="fas fa-check"></i>Save </button>&nbsp;
-        <button type="button" *ngIf="visible" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal"
-          aria-hidden="true"><i class="fas fa-times"></i>Close </button>&nbsp;
-        <button type="button" *ngIf="not_visible" (click)="EditHealthFacilities()" aria-hidden="true" class="btn btn-primary">
-          <i class="fas fa-edit">&nbsp;</i>Save Changes
+        <button type="button" *ngIf="visible" (click)="AddHealthFacilities()" id="closeModal" class="btn btn-primary"><i class="fa fa-check"></i>
+          Save
+        </button>&nbsp;
+        <button type="button" *ngIf="visible"  class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal"
+          aria-hidden="true">
+          <i class="fas fa-times"></i>Close
+        </button>&nbsp;
+        <button type="button" *ngIf="not_visible" (click)="EditHealthFacilities()" aria-hidden="true" class="btn btn-primary"><i class="fa fa-check"></i>
+          Save Changes
         </button>
-        <button type="button"  *ngIf="not_visible" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal"
+        <button type="button" *ngIf="not_visible" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal"
         aria-hidden="true">
-        <i class="fa fa-times"></i>Cancel</button>&nbsp;
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- modal area GEO -->
-<div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">
-          SEPS GEOLOCATION TAGGING
-        </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <app-gmap></app-gmap>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-          Close
-        </button>
-        <app-admin>
-          <button type="button" class="btn btn-primary" (click)="EditHealthFacilities()">
-            Save changes
-          </button>
-        </app-admin>
+        <i class="fas fa-times"></i>Cancel</button>&nbsp;
       </div>
     </div>
   </div>

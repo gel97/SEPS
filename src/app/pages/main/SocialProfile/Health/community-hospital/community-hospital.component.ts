@@ -25,6 +25,13 @@ export class CommunityHospitalComponent implements OnInit {
     console.log('isCheck:', this.isCheck);
   }
 
+  hospital_category = [
+    { id: 1, name_category: 'Not Specified' },
+    { id: 2, name_category: 'Level 1' },
+    { id: 3, name_category: 'Level 2' },
+    { id: 4, name_category: 'Level 3' },
+  ];
+
   munCityName: string = this.Auth.munCityName;
   menuId = '2';
   dataList: any = [];
@@ -126,13 +133,12 @@ export class CommunityHospitalComponent implements OnInit {
         this.latitude = result.latitude;
         this.addData.latitude = this.latitude;
         console.log('lat', this.latitude);
-
         this.Service.AddHealthFacilities(this.addData).subscribe((request) => {
           if (!this.isCheck) {
             this.closebutton.nativeElement.click();
           }
-          console.log('add', request);
-          this.clearData();
+          // console.log('add', request);
+          // this.clearData();
           this.GetHealthFacilities();
           Swal.fire({
             position: 'top-end',
@@ -154,19 +160,12 @@ export class CommunityHospitalComponent implements OnInit {
   }
 
   EditHealthFacilities() {
-    this.toValidate.brgyId = this.addData.brgyId == '' || this.addData.brgyId == null ? true : false;
-    this.toValidate.name =this.addData.name == '' || this.addData.name == undefined ? true : false;
+    this.toValidate.brgyId=this.addData.brgyId == '' || this.addData.brgyId == null ? true : false;
+    this.toValidate.name=this.addData.name == '' || this.addData.name == undefined ? true : false;
 
-    if (this.toValidate.brgyId == true || this.toValidate.name == true) {
-      Swal.fire(
-      'Missing Data!',
-      'Please fill out the required fields',
-       'warning');
-    } else {
-      this.Service.EditHealthFacilities(this.addData).subscribe((request) => {
-        // console.log('edit', request);
-        this.GetHealthFacilities();
-      });
+  if (this.toValidate.brgyId == true || this.toValidate.name == true) {
+    Swal.fire('Missing Data!', 'Please fill out the required fields', 'warning');
+  } else {
     Swal.fire({
       title: 'Do you want to save the changes?',
       showDenyButton: true,
@@ -176,18 +175,22 @@ export class CommunityHospitalComponent implements OnInit {
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        this.addData.longtitude = this.gmapComponent.markers.lng;
-        this.addData.latitude = this.gmapComponent.markers.lat;
+        // this.addData.longtitude = this.gmapComponent.markers.lng;
+        // this.addData.latitude = this.gmapComponent.markers.lat;
 
         this.addData.setYear = this.setYear;
         this.addData.munCityId = this.munCityId;
         this.addData.menuId = this.menuId;
         this.addData.tag = 1;
-        // console.log('edit', this.addData);
-
+        console.log('edit', this.addData);
+        this.Service.EditHealthFacilities(this.addData).subscribe((request) => {
+          console.log('edit', request);
+          this.GetHealthFacilities();
+        });
         Swal.fire('Saved!', '', 'success');
         document.getElementById("exampleModal")?.click();
-      } else if (result.isDenied) {
+      }
+      else if (result.isDenied) {
         Swal.fire('Changes are not saved', '', 'info');
       }
     });

@@ -2,7 +2,7 @@
 <!-- Page Wrapper -->
 <div id="wrapper">
 
-    <!-- Sidebar --> 
+    <!-- Sidebar -->
     <ul class="navbar-nav  sidebar sidebar-dark accordion shadow-sm" aria-expanded="true"
         id="accordionSidebar">
 
@@ -221,6 +221,22 @@
     <div id="collapseEducation" class="collapse" aria-labelledby="headingUtilities"
         data-parent="#collapseSocialProfile">
         <div class="bg-lightblue py-2 collapse-inner rounded">
+                      <!-- ========== FACILITIES========== -->
+<li class="nav-item">
+  <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePriSchools" aria-expanded="true"
+      aria-controls="collapseUtilities">
+      <i class="fas fa-fw fa-lock"></i>
+      <span>Facilities</span>
+  </a>
+  <div id="collapsePriSchools" class="collapse" aria-labelledby="headingUtilities" data-parent="#collapseEducation">
+      <div class="bg-lightblue py-2 collapse-inner rounded">
+          <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/education/public-schools/public-schools">Public Schools</a>
+          <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/education/private-schools/private-schools">Private Schools</a>
+          <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/education/tertiary-institutions/tertiary-institutions">Tertiary Institutions</a>
+          <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/education/technical-vocational-institutions/technical-vocational-institutions">Technical Vocational Institutions</a>
+      </div>
+  </div>
+</li>
             <!-- ========== PRIVATE SCHOOLS ========== -->
 <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePriSchools" aria-expanded="true"
@@ -453,7 +469,7 @@
    <li class="nav-item" routerLinkActive="active">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTools"
         aria-expanded="true" aria-controls="collapseTwo">
-        <i class="fa fa-fw fa-wrench"></i> 
+        <i class="fa fa-fw fa-wrench"></i>
         <span>Tools</span>
     </a>
     <div id="collapseTools" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -556,9 +572,9 @@
 
                 <!-- Nav Item - Alerts -->
                 <app-notification>
-                    
+
                 </app-notification>
-                
+
                 <div class="topbar-divider d-none d-sm-block"></div>
                 <!-- SEP DATA -->
                 <li class="nav-item dropdown no-arrow mx-1">

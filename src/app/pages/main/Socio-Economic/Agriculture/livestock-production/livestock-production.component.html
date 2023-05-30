@@ -43,34 +43,34 @@
                 <thead class="table-dark">
                   <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Farm Name</th>
-                    <th scope="col">Livestock/Poultry Type</th>
+                    <th scope="col">Barangay</th>
+                    <!-- <th scope="col">Farm Name</th> -->
+                    <th scope="col">Commodities</th>
                     <th scope="col">No. of Heads Raised</th>
-                    <th scope="col">Farm/Poultry Area</th>
+                    <!-- <th scope="col">Farm/Poultry Area</th>
                     <th scope="col">Contact Person</th>
                     <th scope="col">Contact Details</th>
-                    <th scope="col">Location</th>
-                    <th scope="col">Barangay</th>
-                    <th scope="col">Geo-Coord.(Long,Lat)</th>
+                    <th scope="col">Location</th> -->
+                    <!-- <th scope="col">Geo-Coord.(Long,Lat)</th> -->
                     <th width="11.4%"></th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let dataItem of dataList; let i = index">
                     <td>{{i+1}}</td>
-                    <td>{{dataItem.name}}</td>
+                    <td>{{dataItem.brgyName}}</td>
+                    <!-- <td>{{dataItem.name}}</td> -->
                     <td>
                       <div *ngFor="let item of listofPoultry">
-                        <span *ngIf="item.id == dataItem.type">{{item.type}}</span>
+                     <strong>   <span *ngIf="item.id == dataItem.type">{{item.type}}</span></strong>
                       </div>
                     </td>
                     <td>{{dataItem.headRaiseNo}}</td>
-                    <td>{{dataItem.area}}</td>
+                    <!-- <td>{{dataItem.area}}</td>
                     <td>{{dataItem.contactPerson}}</td>
                     <td>{{dataItem.contactNo}}</td>
-                    <td>{{dataItem.location}}</td>
-                    <td>{{dataItem.brgyName}}</td>
-                    <td>{{dataItem.longtitude}},<br> {{dataItem.latitude}}</td>
+                    <td>{{dataItem.location}}</td> -->
+                    <!-- <td>{{dataItem.longtitude}},<br> {{dataItem.latitude}}</td> -->
                     <td>
                       <div class="d-inline-flex">
                       <app-admin>
@@ -111,12 +111,12 @@
         <div class="modal-body">
           <div class="form-group">
             <div class="row">
-              <div class="col-lg-8">
+              <!-- <div class="col-lg-8">
                 <label for="exampleFormControlInput1">Farm Name/ Owner's Name :</label>
                 <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.name"  [ngClass]="toValidate.name?'is-invalid':''" (keyup)="toValidate.name=false">
-              </div>
+              </div> -->
 
-              <div class="col-lg-4">
+              <div class="col-lg-12">
                 <label for="category">Barangay :</label>
                 <!-- <label *ngIf="required" style="color: red;" for="category">&nbsp;&nbsp;<i
                     class="fas fa-asterisk"></i>Required</label> -->
@@ -127,23 +127,24 @@
                 </select>
               </div>
             </div><br>
-            <div class="row">
-              <div class="col-lg-4">
+            <!-- <div class="row"> -->
+              <div class="col-lg-12" bold-text>
                 <label for="exampleFormControlInput1">Farm/ Poultry Type :</label>
-                <select class="form-select" aria-label="Default select example"  name="listofPoultry" [(ngModel)]="addData.type" [ngClass]="toValidate.type?'is-invalid':''" (keyup)="toValidate.type=false">
-                  <option *ngFor="let list of listofPoultry" value={{list.id}} >{{list.type}}</option>
+                <select class="form-select" aria-label="Default select example"  name="listofPoultry" [(ngModel)]="addData.type">
+               <option *ngFor="let list of listofPoultry" value={{list.id}} >{{list.type}}</option>
                 </select>
-              </div>
-              <div class="col-lg-4">
-                <label for="exampleFormControlInput1">No. of Heads Raised :</label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.headRaiseNo" [ngClass]="toValidate.headRaiseNo?'is-invalid':''" (keyup)="toValidate.headRaiseNo=false">
-              </div>
-              <div class="col-lg-4">
+              </div><br>
+
+              <!-- <div class="col-lg-4">
                 <label>Farm/Poultry Area(Has) :</label>
                 <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.area" [ngClass]="toValidate.area?'is-invalid':''" (keyup)="toValidate.area=false">
-              </div>
-            </div><br>
-            <div class="row">
+              </div> -->
+            <!-- </div><br> -->
+            <div class="col-lg-12">
+              <label for="exampleFormControlInput1">No. of Heads Raised :</label>
+              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.headRaiseNo">
+            </div>
+            <!-- <div class="row">
               <div class="col-lg-4">
                 <label for="exampleFormControlInput1">Contact Person:</label>
                 <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.contactPerson">
@@ -156,7 +157,7 @@
                 <label for="exampleFormControlInput1">Location (#/St./Purok) : </label>
                 <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.location">
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="modal-footer">

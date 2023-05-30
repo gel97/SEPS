@@ -89,19 +89,19 @@ export class TechVocComponent implements OnInit {
   {
 ;
     this.toValidate.name = this.school.name=="" || this.school.name ==null?true:false;
-    this.toValidate.schoolId = this.school.schoolId=="" || this.school.schoolId ==null?true:false;
-    this.toValidate.teacherNo = this.school.teacherNo=="" || this.school.teacherNo ==null?true:false;
-    this.toValidate.classroomNo = this.school.classroomNo=="" || this.school.classroomNo ==null?true:false;
-    this.toValidate.classesNo = this.school.classesNo=="" || this.school.classesNo ==null?true:false;
-    this.toValidate.brgyId = this.school.brgyId=="" || this.school.brgyId ==null?true:false;
-    this.toValidate.enrollyNo = this.school.enrollyNo=="" || this.school.enrollyNo ==null?true:false;
+    // this.toValidate.schoolId = this.school.schoolId=="" || this.school.schoolId ==null?true:false;
+    // this.toValidate.teacherNo = this.school.teacherNo=="" || this.school.teacherNo ==null?true:false;
+    // this.toValidate.classroomNo = this.school.classroomNo=="" || this.school.classroomNo ==null?true:false;
+    // this.toValidate.classesNo = this.school.classesNo=="" || this.school.classesNo ==null?true:false;
+    // this.toValidate.brgyId = this.school.brgyId=="" || this.school.brgyId ==null?true:false;
+    // this.toValidate.enrollyNo = this.school.enrollyNo=="" || this.school.enrollyNo ==null?true:false;
 
 
     this.school.menuId    = this.menuId;
     this.school.setYear   = this.setYear;
     this.school.munCityId = this.munCityId;
 
-    if(!this.toValidate.name && !this.toValidate.brgyId && !this.toValidate.schoolId && !this.toValidate.teacherNo && !this.toValidate.classroomNo && !this.toValidate.classesNo && !this.toValidate.enrollyNo)
+    if(!this.toValidate.name)
     {
       this.service.AddEducation(this.school).subscribe(
         {
@@ -145,12 +145,12 @@ export class TechVocComponent implements OnInit {
   EditSchool()
   {
     this.toValidate.name = this.school.name=="" || this.school.name ==null?true:false;
-    this.toValidate.schoolId = this.school.schoolId=="" || this.school.schoolId ==null?true:false;
-    this.toValidate.teacherNo = this.school.teacherNo=="" || this.school.teacherNo ==null?true:false;
-    this.toValidate.classroomNo = this.school.classroomNo=="" || this.school.classroomNo ==null?true:false;
-    this.toValidate.classesNo = this.school.classesNo=="" || this.school.classesNo ==null?true:false;
-    this.toValidate.brgyId = this.school.brgyId=="" || this.school.brgyId ==null?true:false;
-    this.toValidate.enrollyNo = this.school.enrollyNo=="" || this.school.enrollyNo ==null?true:false;
+    // this.toValidate.schoolId = this.school.schoolId=="" || this.school.schoolId ==null?true:false;
+    // this.toValidate.teacherNo = this.school.teacherNo=="" || this.school.teacherNo ==null?true:false;
+    // this.toValidate.classroomNo = this.school.classroomNo=="" || this.school.classroomNo ==null?true:false;
+    // this.toValidate.classesNo = this.school.classesNo=="" || this.school.classesNo ==null?true:false;
+    // this.toValidate.brgyId = this.school.brgyId=="" || this.school.brgyId ==null?true:false;
+    // this.toValidate.enrollyNo = this.school.enrollyNo=="" || this.school.enrollyNo ==null?true:false;
 
 
     this.school.longtitude = this.gmapComponent.markers.lng;
@@ -160,7 +160,7 @@ export class TechVocComponent implements OnInit {
     this.school.setYear   = this.setYear;
     this.school.munCityId = this.munCityId;
 
- if(!this.toValidate.name && !this.toValidate.brgyId && !this.toValidate.schoolId && !this.toValidate.teacherNo && !this.toValidate.classroomNo && !this.toValidate.classesNo && !this.toValidate.enrollyNo)
+ if(!this.toValidate.name)
     {
     this.service.EditEducation(this.school).subscribe(
       {

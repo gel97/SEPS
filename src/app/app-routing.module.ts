@@ -101,6 +101,10 @@ import { ResortsComponent } from './pages/main/Socio-Economic/Tourism/resorts/re
 import {ElementaryPreElementaryComponent} from'./pages/main/SocialProfile/Education/Private/elementary-pre-elementary/elementary-pre-elementary.component';
 import { DayCareComponent } from './pages/main/SocialProfile/Education/Public/day-care/day-care.component';
 import { PubSecondaryComponent } from './pages/main/SocialProfile/Education/Public/pub-secondary/pub-secondary.component';
+import { PublicSchoolsComponent } from './pages/main/SocialProfile/Education/Facilities/public-schools/public-schools.component';
+import { PrivateSchoolsComponent } from './pages/main/SocialProfile/Education/Facilities/private-schools/private-schools.component';
+import { TertiaryInstitutionsComponent } from './pages/main/SocialProfile/Education/Facilities/tertiary-institutions/tertiary-institutions.component';
+import { TechnicalVocationalInstitutionsComponent } from './pages/main/SocialProfile/Education/Facilities/technical-vocational-institutions/technical-vocational-institutions.component';
 import { PrivateHospitalComponent } from './pages/main/SocialProfile/Health/private-hospital/private-hospital.component';
 import { ProvincialHealthComponent } from './pages/main/SocialProfile/Health/provincial-health/provincial-health.component';
 import { WaterUtilityComponent } from './pages/main/Infrastructure/Utility/water-utility/water-utility.component';
@@ -174,6 +178,11 @@ const routes: Routes = [
       { path: socioEconomic_Agriculture+ 'provincial-crops-harvested',component:ProvincialCropsHarvestedComponent},
       { path: socioEconomic_Agriculture+ 'provincial-crops-total-production',component:ProvincialCropsTotalProductionComponent},
       { path: SocialProfile_Education+ '/private/elementary',component:ElementaryPreElementaryComponent},
+      {path: SocialProfile_Education+ '/public-schools/public-schools',component:PublicSchoolsComponent},
+      {path: SocialProfile_Education+ '/private-schools/private-schools',component:PrivateSchoolsComponent},
+      {path: SocialProfile_Education+ '/tertiary-institutions/tertiary-institutions',component:TertiaryInstitutionsComponent},
+      {path: SocialProfile_Education+ '/technical-vocational-institutions/technical-vocational-institutions',component:TechnicalVocationalInstitutionsComponent},
+
       { path: SocialProfile_Education+ '/private/secondary',component:SecondaryComponent},
       { path: SocialProfile_Education+ '/public/elementary',component:ElementaryComponent},
       { path: SocialProfile_Education+ '/public/day-care',component:DayCareComponent},

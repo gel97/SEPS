@@ -145,12 +145,12 @@ export class TertiaryComponent implements OnInit {
   EditSchool()
   {
     this.toValidate.name = this.school.name=="" || this.school.name ==undefined?true:false;
-    this.toValidate.schoolId = this.school.schoolId=="" || this.school.schoolId ==undefined?true:false;
-    this.toValidate.teacherNo = this.school.teacherNo=="" || this.school.teacherNo ==undefined?true:false;
-    this.toValidate.classroomNo = this.school.classroomNo=="" || this.school.classroomNo ==undefined?true:false;
-    this.toValidate.classesNo = this.school.classesNo=="" || this.school.classesNo ==undefined?true:false;
-    this.toValidate.brgyId = this.school.brgyId=="" || this.school.brgyId ==null?true:false;
-    this.toValidate.enrollyNo = this.school.enrollyNo=="" || this.school.enrollyNo ==undefined?true:false;
+    // this.toValidate.schoolId = this.school.schoolId=="" || this.school.schoolId ==undefined?true:false;
+    // this.toValidate.teacherNo = this.school.teacherNo=="" || this.school.teacherNo ==undefined?true:false;
+    // this.toValidate.classroomNo = this.school.classroomNo=="" || this.school.classroomNo ==undefined?true:false;
+    // this.toValidate.classesNo = this.school.classesNo=="" || this.school.classesNo ==undefined?true:false;
+    // this.toValidate.brgyId = this.school.brgyId=="" || this.school.brgyId ==null?true:false;
+    // this.toValidate.enrollyNo = this.school.enrollyNo=="" || this.school.enrollyNo ==undefined?true:false;
 
 
     this.school.longtitude = this.gmapComponent.markers.lng;
