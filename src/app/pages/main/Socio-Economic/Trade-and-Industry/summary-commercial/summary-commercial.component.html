@@ -1,34 +1,35 @@
 <div class="">
   <div class="card o-hidden border-2 shadow-sm my-5">
-      <div class="card-body p-0">
-          <!-- Nested Row within Card Body -->
-          <div class="row">
-              <div class="col-lg-12">
-                  <div class="p-5">
-                      <div class="">
-                      </div>
-                      <div class="text-center">
-                        <h1 class="h4 text-gray-900 mb-4">Commercial Establishment Summary</h1>
-                        <label><strong>Trade and Industry - Municipality of {{munCityName}} </strong></label><br>
+    <div class="card-body p-0">
+      <!-- Nested Row within Card Body -->
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="p-5">
+            <div class="">
+            </div>
+            <div class="text-center">
+              <h1 class="h4 text-gray-900 mb-4">Commercial Establishment Summary</h1>
+              <label><strong>Trade and Industry - {{modifyCityMun(munCityName)}} </strong></label><br>
 
-                    </div>
-                      <br>
-                      <div class ="form-inline float-right ">
-                        <form class=>
-                          <app-admin>
-                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal "><i class="fa fa-plus"></i>
-                            Commercial Establishment Summary
-                          </button>
-                        </app-admin>
-                        </form>
-                      </div><br><br>
+            </div>
+            <br>
+            <div class="form-inline float-right ">
+              <form class=>
+                <app-admin>
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal "><i
+                      class="fa fa-plus"></i>
+                    Commercial Establishment Summary
+                  </button>
+                </app-admin>
+              </form>
+            </div><br><br>
 
-                      <br>
-                      <div class="row">
-                        <div class="col-lg-6">
-                            <p>List of Commercial Establishments Summary</p>
-                        </div>
-                        <!-- <div class="col-lg-6 ">
+            <br>
+            <div class="row">
+              <div class="col-lg-6">
+                <p>List of Commercial Establishments Summary</p>
+              </div>
+              <!-- <div class="col-lg-6 ">
                               <form class="form-inline float-right">
                                 <div class="form-group mb-4">
                                   <input type="search input"  class="form-control" width="30%" placeholder="Search" (input)="onChangeSearch($event)"> <label for="" class="btn btn-primary"> <i class="fas fa-search fa-2x"></i></label>
@@ -36,83 +37,84 @@
 
                               </form>
                         </div> -->
-                         </div>
+            </div>
 
-                      <div class="table-responsive">
-                      <table class="table table-framed table-hover table-striped" >
-                        <thead class = "table-dark">
-                              <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Category</th>
-                                <th scope="col" class="text-center" >Business Type	</th>
-                                <th scope="col" class="text-center" >Count	</th>
-                                <th scope="col" class="text-center">Remarks	</th>
-                                <th ></th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr *ngFor="let text of Summary | paginate:{ itemsPerPage: tableSize,
+            <div class="table-responsive">
+              <table class="table table-framed table-hover table-striped">
+                <thead class="table-dark">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Category</th>
+                    <th scope="col" class="text-center">Business Type </th>
+                    <th scope="col" class="text-center">Count </th>
+                    <th scope="col" class="text-center">Remarks </th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let text of Summary | paginate:{ itemsPerPage: tableSize,
                                 currentPage: p,
                                 totalItems:count} | filterall: searchText , let i = index ">
-                                <td>{{ i + 1 }}</td>
-                                  <!-- <td class="text-center">{{text.name}}</td> -->
-                                  <td >
-                                      <div *ngFor="let item of list_of_category">
-                                          <span *ngIf="item.id === text.category">{{item.name_category}} </span>
-                                      </div>
-                                  </td>
-                                  <td class="text-center">
-                                    <div *ngFor="let item of list_of_Business">
-                                      <span *ngIf="item.id === text.type">{{item.name_business}}
-
-                                      </span>
-                                    </div>
-                                  </td>
-                                  <td class="text-center" >{{text.count}}</td>
-                                  <td > {{text.remarks}}</td>
-
-                                  <td>
-                                    <div class="d-inline-flex"  class="form-inline float-right">
-                                    <app-admin>
-                                    <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info btn-circle" data-toggle="modal" data-target="#exampleModal_EDIT" ><i class="fa fa-pen"></i> </button> &nbsp;
-                                    <!-- <button type="button"  onclick="initialize()" (click)="editmodal=text"  class="btn btn-success" data-toggle="modal"data-target="#exampleModal"><i  class="fa fa-globe"></i> </button>&nbsp; -->
-                                    <button type="button" title="Delete" class="btn btn-warning btn-circle" (click)="delete(text.transId,i)"><i class="fa fa-trash"></i>  </button>&nbsp;
-                                  </app-admin>
-                                  </div>
-                                  </td>
-                                </tr>
-
-                            </tbody>
-                        </table>
+                    <td>{{ i + 1 }}</td>
+                    <!-- <td class="text-center">{{text.name}}</td> -->
+                    <td>
+                      <div *ngFor="let item of list_of_category">
+                        <span *ngIf="item.id === text.category">{{item.name_category}} </span>
                       </div>
-                          <!-- Pagination Control -->
-    <div class = "row">
-      <div class="col-lg-12">
-      <form class="form-inline float-right ">
-      <pagination-controls
-      previousLabel="Prev"
-      currentPage="Next"
-      (pageChange) ="onTableDataChange($event)">
-      </pagination-controls>
-      <ul>
-      <select (change)="onTableSizeChange($event)">
-        <option *ngFor = "let size of tableSizes ">
-           {{size}}
-        </option>
-         </select>
-        </ul>
-   </form>
-</div>
-</div>
-                  </div>
+                    </td>
+                    <td class="text-center">
+                      <div *ngFor="let item of list_of_Business">
+                        <span *ngIf="item.id === text.type">{{item.name_business}}
+
+                        </span>
+                      </div>
+                    </td>
+                    <td class="text-center">{{text.count}}</td>
+                    <td> {{text.remarks}}</td>
+
+                    <td>
+                      <div class="d-inline-flex" class="form-inline float-right">
+                        <app-admin>
+                          <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info btn-circle"
+                            data-toggle="modal" data-target="#exampleModal_EDIT"><i class="fa fa-pen"></i> </button>
+                          &nbsp;
+                          <!-- <button type="button"  onclick="initialize()" (click)="editmodal=text"  class="btn btn-success" data-toggle="modal"data-target="#exampleModal"><i  class="fa fa-globe"></i> </button>&nbsp; -->
+                          <button type="button" title="Delete" class="btn btn-warning btn-circle"
+                            (click)="delete(text.transId,i)"><i class="fa fa-trash"></i> </button>&nbsp;
+                        </app-admin>
+                      </div>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+            <!-- Pagination Control -->
+            <div class="row">
+              <div class="col-lg-12">
+                <form class="form-inline float-right ">
+                  <pagination-controls previousLabel="Prev" currentPage="Next" (pageChange)="onTableDataChange($event)">
+                  </pagination-controls>
+                  <ul>
+                    <select (change)="onTableSizeChange($event)">
+                      <option *ngFor="let size of tableSizes ">
+                        {{size}}
+                      </option>
+                    </select>
+                  </ul>
+                </form>
               </div>
+            </div>
           </div>
+        </div>
       </div>
+    </div>
   </div>
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -124,34 +126,38 @@
       <div class="modal-body">
         <div class="form-group">
           <div class="row">
-              <div class="col-lg-6">
-                <label for="category">Category :</label>
-                <select class="form-select"  [(ngModel)]="summ.category"  [ngClass]="toValidate.category?'is-invalid':''" (ngModelChange)="toValidate.category=false">
-                    <option selected></option>
-                    <option *ngFor="let list of list_of_category" value={{list.id}} >{{list.name_category}}</option>
+            <div class="col-lg-6">
+              <label for="category">Category :</label>
+              <select class="form-select" [(ngModel)]="summ.category" [ngClass]="toValidate.category?'is-invalid':''"
+                (ngModelChange)="toValidate.category=false">
+                <option selected></option>
+                <option *ngFor="let list of list_of_category" value={{list.id}}>{{list.name_category}}</option>
 
-                  </select>
-              </div>
-              <div class="col-lg-6">
-                  <label for="category">Business Type :</label>
-              <select class="form-select"  [(ngModel)]="summ.type"  [ngClass]="toValidate.type?'is-invalid':''" (ngModelChange)="toValidate.type=false">
-                  <option selected></option>
-                  <option *ngFor="let list of filteredItems" value={{list.id}} >{{list.name_business}}</option>
+              </select>
+            </div>
+            <div class="col-lg-6">
+              <label for="category">Business Type :</label>
+              <select class="form-select" [(ngModel)]="summ.type" [ngClass]="toValidate.type?'is-invalid':''"
+                (ngModelChange)="toValidate.type=false">
+                <option selected></option>
+                <option *ngFor="let list of filteredItems" value={{list.id}}>{{list.name_business}}</option>
 
-                </select>
-              </div>
+              </select>
+            </div>
           </div>
-         </div>
-       <div class = 'row'>
-        <div class="col-lg-12">
-          <label for="exampleFormControlTextarea1">Total Count:</label>
-          <input class="form-control" id="" [(ngModel)]="summ.count"  [ngClass]="toValidate.count?'is-invalid':''" (ngModelChange)="toValidate.count=false">
         </div>
+        <div class='row'>
+          <div class="col-lg-12">
+            <label for="exampleFormControlTextarea1">Total Count:</label>
+            <input class="form-control" id="" [(ngModel)]="summ.count" [ngClass]="toValidate.count?'is-invalid':''"
+              (ngModelChange)="toValidate.count=false">
+          </div>
 
 
           <div class="col-lg-12">
-          <label for="exampleFormControlTextarea1">Remarks:</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" [(ngModel)]="summ.remarks" ></textarea>
+            <label for="exampleFormControlTextarea1">Remarks:</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"
+              [(ngModel)]="summ.remarks"></textarea>
           </div>
         </div> <br>
 
@@ -161,14 +167,15 @@
       <div class="modal-footer">
         <div class="left-absolute" *ngIf="visible">
           <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                  (ngModelChange)="onChange(isCheck)" [(ngModel)]="isCheck">
-              <label class="form-check-label" for="flexCheckDefault">
-                  Several data
-              </label>
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+              (ngModelChange)="onChange(isCheck)" [(ngModel)]="isCheck">
+            <label class="form-check-label" for="flexCheckDefault">
+              Several data
+            </label>
           </div>
-      </div>
-        <button type="button" class="btn btn-primary" (click)="Add_Com_Estab()" ><i class="fa fa-check"></i>Save</button>&nbsp;
+        </div>
+        <button type="button" class="btn btn-primary" (click)="Add_Com_Estab()"><i
+            class="fa fa-check"></i>Save</button>&nbsp;
         <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
 
       </div>
@@ -178,7 +185,8 @@
 
 
 <!--EDIT  Modal -->
-<div class="modal fade" id="exampleModal_EDIT" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal_EDIT" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -190,34 +198,38 @@
       <div class="modal-body">
         <div class="form-group">
           <div class="row">
-              <div class="col-lg-6">
-                <label for="category">Category :</label>
-                <select class="form-select"  [(ngModel)]="editmodal.category" [ngClass]="toValidate.category?'is-invalid':''" (ngModelChange)="toValidate.category=false">
-                    <option selected></option>
-                    <option *ngFor="let list of list_of_category" value={{list.id}} >{{list.name_category}}</option>
+            <div class="col-lg-6">
+              <label for="category">Category :</label>
+              <select class="form-select" [(ngModel)]="editmodal.category"
+                [ngClass]="toValidate.category?'is-invalid':''" (ngModelChange)="toValidate.category=false">
+                <option selected></option>
+                <option *ngFor="let list of list_of_category" value={{list.id}}>{{list.name_category}}</option>
 
-                  </select>
-              </div>
-              <div class="col-lg-6">
-                  <label for="category">Business Type :</label>
-              <select class="form-select"  [(ngModel)]="editmodal.type" [ngClass]="toValidate.type?'is-invalid':''" (ngModelChange)="toValidate.type=false">
-                  <option selected></option>
-                  <option *ngFor="let list of EDTfilteredItems" value={{list.id}} >{{list.name_business}}</option>
+              </select>
+            </div>
+            <div class="col-lg-6">
+              <label for="category">Business Type :</label>
+              <select class="form-select" [(ngModel)]="editmodal.type" [ngClass]="toValidate.type?'is-invalid':''"
+                (ngModelChange)="toValidate.type=false">
+                <option selected></option>
+                <option *ngFor="let list of EDTfilteredItems" value={{list.id}}>{{list.name_business}}</option>
 
-                </select>
-              </div>
+              </select>
+            </div>
           </div>
-         </div>
-       <div class = 'row'>
-        <div class="col-lg-12">
-          <label for="exampleFormControlTextarea1">Total Count:</label>
-          <input class="form-control" id="" [(ngModel)]="editmodal.count" [ngClass]="toValidate.count?'is-invalid':''" (keyup)="toValidate.count=false">
         </div>
+        <div class='row'>
+          <div class="col-lg-12">
+            <label for="exampleFormControlTextarea1">Total Count:</label>
+            <input class="form-control" id="" [(ngModel)]="editmodal.count" [ngClass]="toValidate.count?'is-invalid':''"
+              (keyup)="toValidate.count=false">
+          </div>
 
 
           <div class="col-lg-12">
-          <label for="exampleFormControlTextarea1">Remarks:</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" [(ngModel)]="editmodal.remarks"></textarea>
+            <label for="exampleFormControlTextarea1">Remarks:</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"
+              [(ngModel)]="editmodal.remarks"></textarea>
           </div>
         </div> <br>
 
@@ -225,7 +237,8 @@
         ...
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="UpdateSummary_Estab()"   ><i class="fa fa-check"></i>Save Changes</button>&nbsp;
+        <button type="button" class="btn btn-primary" (click)="UpdateSummary_Estab()"><i class="fa fa-check"></i>Save
+          Changes</button>&nbsp;
         <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Cancel</button>
 
       </div>

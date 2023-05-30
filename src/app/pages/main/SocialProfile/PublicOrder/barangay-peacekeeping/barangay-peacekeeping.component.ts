@@ -3,18 +3,24 @@ import { AuthService } from 'src/app/services/auth.service';
 import { SafetyTanodService } from 'src/app/shared/SocialProfile/PublicOrder/safety-tanod.service';
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
+import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 
 @Component({
   selector: 'app-barangay-peacekeeping',
   templateUrl: './barangay-peacekeeping.component.html',
-  styleUrls: ['./barangay-peacekeeping.component.css']
+  styleUrls: ['./barangay-peacekeeping.component.css'],
 })
 export class BarangayPeacekeepingComponent implements OnInit {
   munCityName = this.Auth.munCityName;
   constructor(
     private Auth: AuthService,
-    private service: SafetyTanodService
-  ) { }
+    private service: SafetyTanodService,
+    private modifyService: ModifyCityMunService
+  ) {}
+
+  modifyCityMun(cityMunName: string) {
+    return this.modifyService.ModifyText(cityMunName);
+  }
 
   setYear = Number(this.Auth.activeSetYear);
   munCityId = this.Auth.munCityId;
@@ -26,8 +32,6 @@ export class BarangayPeacekeepingComponent implements OnInit {
   updateForm: boolean = false;
   toValidate: any = {};
 
-
-
   ngOnInit(): void {
     this.resetForm();
     this.GetSafetyTanod();
@@ -37,7 +41,6 @@ export class BarangayPeacekeepingComponent implements OnInit {
   resetForm(): void {
     this.addData = {};
   }
-
 
   GetSafetyTanod(): void {
     this.service.GetSafetyTanod(this.setYear, this.munCityId).subscribe({
@@ -53,9 +56,9 @@ export class BarangayPeacekeepingComponent implements OnInit {
     });
   }
 
-
   AddSafetyTanod(addData: any): void {
-    this.toValidate.brgyId = this.addData.brgyId == "" || this.addData.brgyId == null ? true : false;
+    this.toValidate.brgyId =
+      this.addData.brgyId == '' || this.addData.brgyId == null ? true : false;
 
     if (this.toValidate.brgyId == true) {
       Swal.fire(
@@ -70,12 +73,8 @@ export class BarangayPeacekeepingComponent implements OnInit {
         next: (response) => {
           this.listData.push(response);
           console.log(response);
-          Swal.fire(
-            'Good job!',
-            'Data Added Successfully!',
-            'success'
-          );
-          document.getElementById("mAdd")?.click();
+          Swal.fire('Good job!', 'Data Added Successfully!', 'success');
+          document.getElementById('mAdd')?.click();
           // this.resetForm();
         },
         error: (err) => {
@@ -95,11 +94,7 @@ export class BarangayPeacekeepingComponent implements OnInit {
         },
       });
     }
-
   }
-
-
-
 
   // AddSafetyTanod(addData: any): void {
   //   addData.setYear = Number(this.setYear);
@@ -136,11 +131,6 @@ export class BarangayPeacekeepingComponent implements OnInit {
   //   });
   // }
 
-
-
-
-
-
   EditSafetyTanod(addData: any): void {
     this.service.EditSafetyTanod(addData).subscribe({
       next: (response) => {
@@ -149,14 +139,14 @@ export class BarangayPeacekeepingComponent implements OnInit {
         // console.log(response);
         console.log(response);
 
-    Swal.fire({
-      position: 'center',
-      icon: 'success',
-      title: 'Your work has been updated',
-      showConfirmButton: false,
-      timer: 1000
-    });
-        document.getElementById("mAdd")?.click();
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Your work has been updated',
+          showConfirmButton: false,
+          timer: 1000,
+        });
+        document.getElementById('mAdd')?.click();
         // this.resetForm();
       },
       error: (err) => {
@@ -175,8 +165,6 @@ export class BarangayPeacekeepingComponent implements OnInit {
       },
     });
   }
-
-
 
   DeleteSafetyTanod(id: any): void {
     Swal.fire({
@@ -197,11 +185,7 @@ export class BarangayPeacekeepingComponent implements OnInit {
             this.deleteData(id);
             this.listData.splice(index, 1);
             console.log(response);
-            Swal.fire(
-              'Deleted!',
-              'Your file has been removed.',
-              'success'
-            );
+            Swal.fire('Deleted!', 'Your file has been removed.', 'success');
             // Swal.fire({
             //   position: 'center',
             //   icon: 'success',
@@ -242,7 +226,4 @@ export class BarangayPeacekeepingComponent implements OnInit {
       this.listBarangayData = response;
     });
   }
-
-
-
 }

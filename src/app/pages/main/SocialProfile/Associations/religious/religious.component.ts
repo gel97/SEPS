@@ -5,11 +5,12 @@ import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 
 @Component({
   selector: 'app-religious',
   templateUrl: './religious.component.html',
-  styleUrls: ['./religious.component.css']
+  styleUrls: ['./religious.component.css'],
 })
 export class ReligiousComponent implements OnInit {
   @ViewChild(GmapComponent)
@@ -18,13 +19,17 @@ export class ReligiousComponent implements OnInit {
 
   constructor(
     private Auth: AuthService,
-    private service: AssociationService
+    private service: AssociationService,
+    private modifyService: ModifyCityMunService
+  ) {}
 
-  ) { }
+  modifyCityMun(cityMunName: string) {
+    return this.modifyService.ModifyText(cityMunName);
+  }
 
   menuId = '2';
   munCityId = this.Auth.munCityId;
-  munName = (this.Auth.munCityName) + ", Davao del Norte";
+  munName = this.Auth.munCityName + ', Davao del Norte';
   setYear = Number(this.Auth.activeSetYear);
 
   addData: any = {};
@@ -47,7 +52,7 @@ export class ReligiousComponent implements OnInit {
   }
 
   SetMarker(data: any = {}) {
-    console.log("lnglat: ", data.longtitude + " , " + data.latitude)
+    console.log('lnglat: ', data.longtitude + ' , ' + data.latitude);
 
     this.markerObj = {
       lat: data.latitude,
@@ -55,30 +60,32 @@ export class ReligiousComponent implements OnInit {
       label: data.brgyName.charAt(0),
       brgyName: data.brgyName,
       munCityName: this.munName,
-      draggable: true
+      draggable: true,
     };
     this.gmapComponent.setMarker(this.markerObj);
   }
 
-
-
   GetAssociation(): void {
-    this.service.GetAssociation(this.menuId, this.setYear, this.munCityId).subscribe({
-      next: (response) => {
-        this.listData = response;
-      },
-      error: (err) => {
-        console.log(err);
-      },
-      complete: () => {
-        console.log('GetAssociations() completed.');
-      },
-    });
+    this.service
+      .GetAssociation(this.menuId, this.setYear, this.munCityId)
+      .subscribe({
+        next: (response) => {
+          this.listData = response;
+        },
+        error: (err) => {
+          console.log(err);
+        },
+        complete: () => {
+          console.log('GetAssociations() completed.');
+        },
+      });
   }
 
   AddAssociation(): void {
-    this.toValidate.brgyId = this.addData.brgyId == "" || this.addData.brgyId == null ? true : false;
-    this.toValidate.name = this.addData.name == "" || this.addData.name == undefined ? true : false;
+    this.toValidate.brgyId =
+      this.addData.brgyId == '' || this.addData.brgyId == null ? true : false;
+    this.toValidate.name =
+      this.addData.name == '' || this.addData.name == undefined ? true : false;
 
     if (this.toValidate.brgyId == true || this.toValidate.name == true) {
       Swal.fire(
@@ -104,7 +111,7 @@ export class ReligiousComponent implements OnInit {
             showConfirmButton: false,
             timer: 1000,
           });
-          document.getElementById("mAdd")?.click();
+          document.getElementById('mAdd')?.click();
           this.resetForm();
         },
         error: (err) => {
@@ -123,13 +130,13 @@ export class ReligiousComponent implements OnInit {
         },
       });
     }
-
-
   }
 
   EditAssociation(): void {
-    this.toValidate.brgyId = this.addData.brgyId == "" || this.addData.brgyId == null ? true : false;
-    this.toValidate.name = this.addData.name == "" || this.addData.name == undefined ? true : false;
+    this.toValidate.brgyId =
+      this.addData.brgyId == '' || this.addData.brgyId == null ? true : false;
+    this.toValidate.name =
+      this.addData.name == '' || this.addData.name == undefined ? true : false;
 
     if (this.toValidate.brgyId == true || this.toValidate.name == true) {
       Swal.fire(
@@ -156,7 +163,7 @@ export class ReligiousComponent implements OnInit {
             timer: 1000,
           });
           this.resetForm();
-          document.getElementById("mAdd")?.click();
+          document.getElementById('mAdd')?.click();
         },
         error: (err) => {
           console.log(err);
@@ -227,7 +234,6 @@ export class ReligiousComponent implements OnInit {
       (data: { id: number }) => data.id !== id
     );
   }
-
 
   getListOfBarangay(): void {
     this.service.ListOfBarangay(this.munCityId).subscribe((response) => {

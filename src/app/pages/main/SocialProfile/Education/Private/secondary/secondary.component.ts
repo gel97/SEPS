@@ -3,22 +3,31 @@ import Swal from 'sweetalert2';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { EducationService } from 'src/app/shared/SocialProfile/Education/education.service';
+import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 
 @Component({
   selector: 'app-secondary',
   templateUrl: './secondary.component.html',
-  styleUrls: ['./secondary.component.css']
+  styleUrls: ['./secondary.component.css'],
 })
 export class SecondaryComponent implements OnInit {
-  menuId:string = "2";
-  munCityName:string = this.auth.munCityName;
-  constructor(private service: EducationService, private auth: AuthService) { }
+  menuId: string = '2';
+  munCityName: string = this.auth.munCityName;
+  constructor(
+    private service: EducationService,
+    private auth: AuthService,
+    private modifyService: ModifyCityMunService
+  ) {}
 
-  toValidate:any = {};
+  modifyCityMun(cityMunName: string) {
+    return this.modifyService.ModifyText(cityMunName);
+  }
+
+  toValidate: any = {};
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;
   @ViewChild('closebutton')
-  closebutton!: { nativeElement: { click: () => void; }; };
+  closebutton!: { nativeElement: { click: () => void } };
   isCheck: boolean = false;
   onChange(isCheck: boolean) {
     this.isCheck = isCheck;
@@ -33,7 +42,7 @@ export class SecondaryComponent implements OnInit {
       label: data.brgyName.charAt(0),
       brgyName: data.brgyName,
       munCityName: this.munCityName,
-      draggable: true
+      draggable: true,
     };
 
     this.gmapComponent.setMarker(this.markerObj);
@@ -42,160 +51,161 @@ export class SecondaryComponent implements OnInit {
   ngOnInit(): void {
     this.Init();
   }
-  munCityId:string = this.auth.munCityId;
-  setYear:string = this.auth.setYear;
+  munCityId: string = this.auth.munCityId;
+  setYear: string = this.auth.setYear;
 
-  isAdd:boolean = true;
-  listElems:any = [];
-  secondary:any = {};
-  listBarangay:any = [];
+  isAdd: boolean = true;
+  listElems: any = [];
+  secondary: any = {};
+  listBarangay: any = [];
 
-  Init()
-  {
+  Init() {
     this.GetListBarangay();
     this.GetListPrivateSecSchool();
   }
 
-  GetListBarangay()
-  {
-    this.service.ListOfBarangay(this.auth.munCityId).subscribe(data => {
-      this.listBarangay = (<any>data);
-    })
+  GetListBarangay() {
+    this.service.ListOfBarangay(this.auth.munCityId).subscribe((data) => {
+      this.listBarangay = <any>data;
+    });
   }
 
-  GetListPrivateSecSchool()
-  {
-    this.service.GetListEducation(this.menuId, this.setYear, this.munCityId).subscribe({
-      next: (response) =>
-      {
-        this.listElems = (<any> response);
-      },
-      error: (error) =>
-      {
-        Swal.fire(
-          'Oops!',
-          'Something went wrong.',
-          'error'
-          );
-      },
-      complete: () =>
-      {
-
-      }
-    })
-
+  GetListPrivateSecSchool() {
+    this.service
+      .GetListEducation(this.menuId, this.setYear, this.munCityId)
+      .subscribe({
+        next: (response) => {
+          this.listElems = <any>response;
+        },
+        error: (error) => {
+          Swal.fire('Oops!', 'Something went wrong.', 'error');
+        },
+        complete: () => {},
+      });
   }
 
-  AddPrivateSecSchool()
-  {
-    this.toValidate.name = this.secondary.name=="" || this.secondary.name ==null?true:false;
-    this.toValidate.schoolId = this.secondary.schoolId=="" || this.secondary.schoolId ==null?true:false;
-    this.toValidate.teacherNo = this.secondary.teacherNo=="" || this.secondary.teacherNo ==null?true:false;
-    this.toValidate.classroomNo = this.secondary.classroomNo=="" || this.secondary.classroomNo ==null?true:false;
-    this.toValidate.classesNo = this.secondary.classesNo=="" || this.secondary.classesNo ==null?true:false;
-    this.toValidate.brgyId = this.secondary.brgyId=="" || this.secondary.brgyId ==null?true:false;
+  AddPrivateSecSchool() {
+    this.toValidate.name =
+      this.secondary.name == '' || this.secondary.name == null ? true : false;
+    this.toValidate.schoolId =
+      this.secondary.schoolId == '' || this.secondary.schoolId == null
+        ? true
+        : false;
+    this.toValidate.teacherNo =
+      this.secondary.teacherNo == '' || this.secondary.teacherNo == null
+        ? true
+        : false;
+    this.toValidate.classroomNo =
+      this.secondary.classroomNo == '' || this.secondary.classroomNo == null
+        ? true
+        : false;
+    this.toValidate.classesNo =
+      this.secondary.classesNo == '' || this.secondary.classesNo == null
+        ? true
+        : false;
+    this.toValidate.brgyId =
+      this.secondary.brgyId == '' || this.secondary.brgyId == null
+        ? true
+        : false;
 
-    this.secondary.menuId    = this.menuId;
-    this.secondary.setYear   = this.setYear;
+    this.secondary.menuId = this.menuId;
+    this.secondary.setYear = this.setYear;
     this.secondary.munCityId = this.munCityId;
 
-    if(!this.toValidate.name && !this.toValidate.brgyId && !this.toValidate.schoolId && !this.toValidate.teacherNo && !this.toValidate.classroomNo && !this.toValidate.classesNo)
-    {
-      this.service.AddEducation(this.secondary).subscribe(
-        {
-          next: (request) => {
-            this.GetListPrivateSecSchool();
-          },
-          error:(error)=>{
-            Swal.fire(
-              'Oops!',
-              'Something went wrong.',
-              'error'
-              );
-          },
-          complete: () =>
-          {
-            if (!this.isCheck) {
-              this.closebutton.nativeElement.click();
-            }
-            this.secondary = {};
-             Swal.fire(
-              'Good job!',
-              'Data Added Successfully!',
-              'success'
-              );
+    if (
+      !this.toValidate.name &&
+      !this.toValidate.brgyId &&
+      !this.toValidate.schoolId &&
+      !this.toValidate.teacherNo &&
+      !this.toValidate.classroomNo &&
+      !this.toValidate.classesNo
+    ) {
+      this.service.AddEducation(this.secondary).subscribe({
+        next: (request) => {
+          this.GetListPrivateSecSchool();
+        },
+        error: (error) => {
+          Swal.fire('Oops!', 'Something went wrong.', 'error');
+        },
+        complete: () => {
+          if (!this.isCheck) {
+            this.closebutton.nativeElement.click();
           }
-        }
-      )
-    }
-    else
-    {
+          this.secondary = {};
+          Swal.fire('Good job!', 'Data Added Successfully!', 'success');
+        },
+      });
+    } else {
       Swal.fire(
         'Missing Data!',
         'Please fill out the required fields.',
         'warning'
-        );
+      );
     }
-
-
   }
 
-  EditPrivateSecSchool()
-  {
-    this.toValidate.name = this.secondary.name=="" || this.secondary.name ==null?true:false;
-    this.toValidate.schoolId = this.secondary.schoolId=="" || this.secondary.schoolId ==null?true:false;
-    this.toValidate.teacherNo = this.secondary.teacherNo=="" || this.secondary.teacherNo ==null?true:false;
-    this.toValidate.classroomNo = this.secondary.classroomNo=="" || this.secondary.classroomNo ==null?true:false;
-    this.toValidate.classesNo = this.secondary.classesNo=="" || this.secondary.classesNo ==null?true:false;
-    this.toValidate.brgyId = this.secondary.brgyId=="" || this.secondary.brgyId ==null?true:false;
+  EditPrivateSecSchool() {
+    this.toValidate.name =
+      this.secondary.name == '' || this.secondary.name == null ? true : false;
+    this.toValidate.schoolId =
+      this.secondary.schoolId == '' || this.secondary.schoolId == null
+        ? true
+        : false;
+    this.toValidate.teacherNo =
+      this.secondary.teacherNo == '' || this.secondary.teacherNo == null
+        ? true
+        : false;
+    this.toValidate.classroomNo =
+      this.secondary.classroomNo == '' || this.secondary.classroomNo == null
+        ? true
+        : false;
+    this.toValidate.classesNo =
+      this.secondary.classesNo == '' || this.secondary.classesNo == null
+        ? true
+        : false;
+    this.toValidate.brgyId =
+      this.secondary.brgyId == '' || this.secondary.brgyId == null
+        ? true
+        : false;
 
     this.secondary.longtitude = this.gmapComponent.markers.lng;
-    this.secondary.latitude  = this.gmapComponent.markers.lat;
+    this.secondary.latitude = this.gmapComponent.markers.lat;
 
-    this.secondary.menuId    = this.menuId;
-    this.secondary.setYear   = this.setYear;
+    this.secondary.menuId = this.menuId;
+    this.secondary.setYear = this.setYear;
     this.secondary.munCityId = this.munCityId;
 
-    if(!this.toValidate.name && !this.toValidate.brgyId && !this.toValidate.schoolId && !this.toValidate.teacherNo && !this.toValidate.classroomNo && !this.toValidate.classesNo)
-    {
-    this.service.EditEducation(this.secondary).subscribe(
-      {
+    if (
+      !this.toValidate.name &&
+      !this.toValidate.brgyId &&
+      !this.toValidate.schoolId &&
+      !this.toValidate.teacherNo &&
+      !this.toValidate.classroomNo &&
+      !this.toValidate.classesNo
+    ) {
+      this.service.EditEducation(this.secondary).subscribe({
         next: (request) => {
           this.GetListPrivateSecSchool();
         },
-        error:(error)=>{
-          Swal.fire(
-            'Oops!',
-            'Something went wrong.',
-            'error'
-            );
+        error: (error) => {
+          Swal.fire('Oops!', 'Something went wrong.', 'error');
         },
-        complete: () =>
-        {
+        complete: () => {
           this.closebutton.nativeElement.click();
-           Swal.fire(
-            'Good job!',
-            'Data Updated Successfully!',
-            'success'
-            );
-            document.getElementById("mEducation")?.click();
-
-        }
-      }
-    )
-  }
-  else
-  {
-    Swal.fire(
-      'Missing Data!',
-      'Please fill out the required fields.',
-      'warning'
+          Swal.fire('Good job!', 'Data Updated Successfully!', 'success');
+          document.getElementById('mEducation')?.click();
+        },
+      });
+    } else {
+      Swal.fire(
+        'Missing Data!',
+        'Please fill out the required fields.',
+        'warning'
       );
-  }
+    }
   }
 
-  DeletePrivateSecSchool(transId:any)
-  {
+  DeletePrivateSecSchool(transId: any) {
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -203,18 +213,14 @@ export class SecondaryComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.service.DeleteEducation(transId).subscribe(request => {
+        this.service.DeleteEducation(transId).subscribe((request) => {
           this.GetListPrivateSecSchool();
-        })
-        Swal.fire(
-          'Deleted!',
-          'Your file has been deleted.',
-          'success'
-        )
+        });
+        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
       }
-    })
+    });
   }
 }

@@ -10,15 +10,15 @@
               <h1 class="h4 text-gray-900 mb-4">
                 Rural Health Units/ Community Hospital
               </h1>
-              <label><strong> Health - Municipality of {{munCityName}}</strong></label><br>
+              <label><strong> Health - {{modifyCityMun(munCityName)}}</strong></label><br>
             </div>
             <div class="form-inline float-right ">
-            <app-admin>
-              <button type="button" (click)="clearData()" class="btn btn-labeled btn-primary" data-toggle="modal"
-                data-target="#exampleModal">
-                <i class="fa fa-plus"></i> Hospital
-              </button>
-            </app-admin>
+              <app-admin>
+                <button type="button" (click)="clearData()" class="btn btn-labeled btn-primary" data-toggle="modal"
+                  data-target="#exampleModal">
+                  <i class="fa fa-plus"></i> Hospital
+                </button>
+              </app-admin>
             </div>
             <br />
             <label>List of Rural Health Units/ Community Hospital </label>
@@ -30,46 +30,37 @@
                   <th scope="col" style="text-align: center">
                     Name of Hospitals
                   </th>
-                  <th scope="col" style="text-align: center">Location</th>
-                  <th scope="col" style="text-align: center">Available Bed Capacity</th>
-                  <th scope="col" style="text-align: center ">Service Capability</th>
-                  <th scope="col" style="text-align: center"> Classification </th>
-                  <th></th>
-
-                  <!-- <th scope="col" style="text-align: center">
+                  <th scope="col" style="text-align: center">
+                    Facilities/Remarks
+                  </th>
+                  <th scope="col" style="text-align: center">Bed Capacity</th>
+                  <th scope="col" style="text-align: center">Occupancy Rate</th>
+                  <th scope="col" style="text-align: center">
                     Contact Person/Designation
                   </th>
                   <th scope="col" style="text-align: center">
                     Contact Numbers
                   </th>
-
+                  <th scope="col" style="text-align: center">Location</th>
                   <th scope="col" style="text-align: center">Barangay</th>
                   <th scope="col" style="text-align: center">
                     Geo-Coord.(Long.Lat)
                   </th>
-                  <th style="text-align: center">Action</th> -->
+                  <th style="text-align: center">Action</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let dataItem of dataList; let i = index">
                   <td style="text-align: center">{{ i + 1 }}</td>
                   <td style="text-align: center">{{ dataItem.name }}</td>
-                  <td style="text-align: center">{{ dataItem.location }},&nbsp;{{ dataItem.brgyName }}</td>
-                  <td style="text-align: center">{{ dataItem.capacity }}</td>
-                  <td style="text-align: center">
-                    <div *ngFor="let category of hospital_category">
-                      <span *ngIf="category.id === dataItem.category">{{ category.name_category }}</span>
-                    </div>
-                  </td>
-                  <!-- <td style="text-align: center">{{ dataItem.rate }}</td> -->
                   <td style="text-align: center">{{ dataItem.remarks }}</td>
-
-
-                  <!-- <td style="text-align: center">{{ dataItem.contactPerson }}</td>
-                  <td style="text-align: center">{{ dataItem.contactNo }}</td> -->
-
-                  <!-- <td style="text-align: center"></td>
-                  <td style="text-align: center">{{ dataItem.longtitude }}, {{ dataItem.latitude }}</td> -->
+                  <td style="text-align: center">{{ dataItem.capacity }}</td>
+                  <td style="text-align: center">{{ dataItem.rate }}</td>
+                  <td style="text-align: center">{{ dataItem.contactPerson }}</td>
+                  <td style="text-align: center">{{ dataItem.contactNo }}</td>
+                  <td style="text-align: center">{{ dataItem.location }}</td>
+                  <td style="text-align: center">{{ dataItem.brgyName }}</td>
+                  <td style="text-align: center">{{ dataItem.longtitude }}, {{ dataItem.latitude }}</td>
                   <td style="text-align: center;">
                     <div class="d-inline-flex">
                       <app-admin>
@@ -79,11 +70,11 @@
                         </button>
                       </app-admin>
                       &nbsp;
-                      <!-- <button (click)="SetMarker(dataItem); addData = dataItem" data-toggle="modal"
+                      <button (click)="SetMarker(dataItem); addData = dataItem" data-toggle="modal"
                         data-target="#gmapModal" class="btn btn-success btn-circle">
                         <i class="fas fa-globe"></i>
-                      </button> -->
-
+                      </button>
+                      &nbsp;
                       <app-admin>
                         <button class="btn btn-warning btn-circle" (click)="DeleteHealthFacilities(dataItem)">
                           <i class="fas fa-trash"></i>
@@ -112,7 +103,7 @@
         <h5 class="modal-title text-dark" id="exampleModalLabel">
           Rural Health Units/ Community Hospital
         </h5>
-        <button type="button" #closebutton class="btn-close" data-toggle="modal" data-target="#exampleModal"
+        <button type="button" class="btn-close" data-toggle="modal" data-target="#exampleModal"
           aria-hidden="true" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -175,19 +166,46 @@
             </label>
           </div>
         </div>
-        <button type="button" *ngIf="visible" (click)="AddHealthFacilities()" id="closeModal" class="btn btn-primary"><i class="fa fa-check"></i>
-          Save
-        </button>&nbsp;
-        <button type="button" *ngIf="visible"  class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal"
-          aria-hidden="true">
-          <i class="fas fa-times"></i>Close
-        </button>&nbsp;
-        <button type="button" *ngIf="not_visible" (click)="EditHealthFacilities()" aria-hidden="true" class="btn btn-primary"><i class="fa fa-check"></i>
-          Save Changes
+        <button type="button" *ngIf="visible" (click)="AddHealthFacilities()" id="closeModal" class="btn btn-primary">
+          <i class="fas fa-check"></i>Save </button>&nbsp;
+        <button type="button" *ngIf="visible" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal"
+          aria-hidden="true"><i class="fas fa-times"></i>Close </button>&nbsp;
+        <button type="button" *ngIf="not_visible" (click)="EditHealthFacilities()" aria-hidden="true" class="btn btn-primary">
+          <i class="fas fa-edit">&nbsp;</i>Save Changes
         </button>
-        <button type="button" *ngIf="not_visible" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal"
+        <button type="button"  *ngIf="not_visible" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal"
         aria-hidden="true">
-        <i class="fas fa-times"></i>Cancel</button>&nbsp;
+        <i class="fa fa-times"></i>Cancel</button>&nbsp;
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal area GEO -->
+<div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          SEPS GEOLOCATION TAGGING
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-gmap></app-gmap>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+        <app-admin>
+          <button type="button" class="btn btn-primary" (click)="EditHealthFacilities()">
+            Save changes
+          </button>
+        </app-admin>
       </div>
     </div>
   </div>

@@ -237,6 +237,11 @@ export class ApiUrl {
     post_housing_subdivision     = ()=>`/HousingSubdv`;
     put_housing_subdivision      = ()=>`/HousingSubdv`;
     delete_housing_subdivision   = (transId:any)=>`/HousingSubdv/${transId}`;
+    //Housing -> HousingSettlers
+    get_list_housing_settlers = ( setYear  :any,munCityId :any)=>`/HousingSettlers/${setYear}/${munCityId}`;
+    post_housing_settlers     = ()=>`/HousingSettlers`;
+    put_housing_settlers      = ()=>`/HousingSettlers`;
+    delete_housing_settlers   = (transId:any)=>`/HousingSettlers/${transId}`;
 //ENVIRONMENT
     get_list_environment = (menuId :any, setYear  :any,munCityId :any)=>`/Environment/${menuId}/${setYear}/${munCityId}`;
     post_environment     = ()=>`/Environment`;

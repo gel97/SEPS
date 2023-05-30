@@ -1,72 +1,74 @@
-
 <div class="">
 
   <div class="card o-hidden border-2 shadow-sm my-5">
-      <div class="card-body p-0">
-          <!-- Nested Row within Card Body -->
-          <div class="row">
+    <div class="card-body p-0">
+      <!-- Nested Row within Card Body -->
+      <div class="row">
 
-              <div class="col-lg-12">
-                  <div class="p-5">
-                      <div class="text-center">
-                          <h1 class="h4 text-gray-900 mb-4">Fiscal Matters</h1>
-                          <label><strong>Governance - Municipality of {{munCityName}}</strong></label>
+        <div class="col-lg-12">
+          <div class="p-5">
+            <div class="text-center">
+              <h1 class="h4 text-gray-900 mb-4">Fiscal Matters</h1>
+              <label><strong>Governance - {{modifyCityMun(munCityName)}}</strong></label>
 
-                      </div>
-                      <br>
-                      <div class ="form-inline float-right ">
-                      <form class=>
-                        <app-admin>
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd "><i class="fa fa-plus"></i>
-                              Fiscal Matters
-                           </button>
-                          </app-admin>
-                      </form>
-                    </div><br><br>
+            </div>
+            <br>
+            <div class="form-inline float-right ">
+              <form class=>
+                <app-admin>
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd "><i
+                      class="fa fa-plus"></i>
+                    Fiscal Matters
+                  </button>
+                </app-admin>
+              </form>
+            </div><br><br>
 
-                      <div class="row">
-                          <div class="col-lg-6">
-                              <p>List of Actual Revenues:</p>
-                          </div>
-                          </div>
-                      <table class="table table-framed table-hover table-striped">
-                        <thead class ="table-dark">
-                              <tr>
-                                <th  scope="col">#</th>
-                                <th scope="col">Year</th>
-                                <th scope="col">Revenue</th>
-                                <th scope="col">Amount(PhP)</th>
-                                <th width ="8%"></th>
+            <div class="row">
+              <div class="col-lg-6">
+                <p>List of Actual Revenues:</p>
+              </div>
+            </div>
+            <table class="table table-framed table-hover table-striped">
+              <thead class="table-dark">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Year</th>
+                  <th scope="col">Revenue</th>
+                  <th scope="col">Amount(PhP)</th>
+                  <th width="8%"></th>
 
-                              </tr>
-                            </thead>
-                            <tbody >
-                              <tr *ngFor="let text of list_revenues| paginate:{
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let text of list_revenues| paginate:{
                                 itemsPerPage: tableSize,
                                 currentPage: p,
-                                totalItems:count}, let i = index;" >
-                                <td>{{i + 1}}</td>
-                              <!-- <td>{{text.category}}</td> -->
-                              <td>{{text.fiscalYear}}</td>
-                              <td>{{text.name}}</td>
-                              <td>{{text.amount}}</td>
+                                totalItems:count}, let i = index;">
+                  <td>{{i + 1}}</td>
+                  <!-- <td>{{text.category}}</td> -->
+                  <td>{{text.fiscalYear}}</td>
+                  <td>{{text.name}}</td>
+                  <td>{{text.amount}}</td>
 
-                              <td>
-                               <div class="d-inline-flex">
-                                <app-admin>
-                                <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info btn-circle" data-toggle="modal" data-target="#Edit" ><i class="fa fa-pen"></i> </button>&nbsp;
-                              </app-admin>&nbsp;
-                               <app-admin>
-                                <button type="button" title="Delete" class="btn btn-warning btn-circle" (click)="delete(text.transId,i)"><i class="fa fa-trash"></i>  </button>
-                              </app-admin>
-                              </div>
-                              </td>
+                  <td>
+                    <div class="d-inline-flex">
+                      <app-admin>
+                        <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info btn-circle"
+                          data-toggle="modal" data-target="#Edit"><i class="fa fa-pen"></i> </button>&nbsp;
+                      </app-admin>&nbsp;
+                      <app-admin>
+                        <button type="button" title="Delete" class="btn btn-warning btn-circle"
+                          (click)="delete(text.transId,i)"><i class="fa fa-trash"></i> </button>
+                      </app-admin>
+                    </div>
+                  </td>
 
-                            </tr>
-                            </tbody>
-                        </table>
- <!-- Pagination Control -->
-    <!-- <div class = "row">
+                </tr>
+              </tbody>
+            </table>
+            <!-- Pagination Control -->
+            <!-- <div class = "row">
       <div class="col-lg-12">
       <form class="form-inline float-right ">
       <pagination-controls
@@ -84,50 +86,52 @@
    </form>
 </div>
  </div> -->
-                        <br><br>
-                        <div class="row">
-                          <div class="col-lg-6">
-                              <p>List of Actual Expenditures:</p>
-                          </div>
-                          </div>
-                          <div class="table-responsive">
-                        <table class="table table-framed table-hover table-striped">
-                          <thead class ="table-dark">
-                              <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Year</th>
-                                <th scope="col">Expenditures</th>
-                                <th scope="col">Amount(PhP)</th>
-                                <th width="8%"></th>
+            <br><br>
+            <div class="row">
+              <div class="col-lg-6">
+                <p>List of Actual Expenditures:</p>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-framed table-hover table-striped">
+                <thead class="table-dark">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Year</th>
+                    <th scope="col">Expenditures</th>
+                    <th scope="col">Amount(PhP)</th>
+                    <th width="8%"></th>
 
-                              </tr>
-                            </thead>
-                            <tbody>
-                            <tr *ngFor="let text of list_expend| paginate:{
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let text of list_expend| paginate:{
                               itemsPerPage: tableSize2,
                               currentPage: p2,
-                              totalItems:count2}, let i = index;" >
-                              <td>{{i + 1}}</td>
-                              <td>{{text.fiscalYear}}</td>
-                              <td>{{text.name}}</td>
-                              <td>{{text.amount}}</td>
+                              totalItems:count2}, let i = index;">
+                    <td>{{i + 1}}</td>
+                    <td>{{text.fiscalYear}}</td>
+                    <td>{{text.name}}</td>
+                    <td>{{text.amount}}</td>
 
-                              <td>
-                                <div class="d-inline-flex">
-                                <app-admin>
-                                <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info btn-circle" data-toggle="modal" data-target="#Edit" ><i class="fa fa-pen"></i> </button>&nbsp;
-                               </app-admin>&nbsp;
-                               <app-admin>
-                                <button type="button" title="Delete" class="btn btn-warning btn-circle" (click)="delete(text.transId,i)"><i class="fa fa-trash"></i>  </button>
-                              </app-admin>
-                              </div>
-                              </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                    <td>
+                      <div class="d-inline-flex">
+                        <app-admin>
+                          <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info btn-circle"
+                            data-toggle="modal" data-target="#Edit"><i class="fa fa-pen"></i> </button>&nbsp;
+                        </app-admin>&nbsp;
+                        <app-admin>
+                          <button type="button" title="Delete" class="btn btn-warning btn-circle"
+                            (click)="delete(text.transId,i)"><i class="fa fa-trash"></i> </button>
+                        </app-admin>
                       </div>
-     <!-- Pagination Control -->
-    <!-- <div class = "row">
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- Pagination Control -->
+            <!-- <div class = "row">
       <div class="col-lg-12">
       <form class="form-inline float-right ">
       <pagination-controls
@@ -145,25 +149,26 @@
    </form>
 </div>
 </div> -->
-                      <br>
-                  </div>
-              </div>
-
+            <br>
           </div>
+        </div>
 
       </div>
+
+    </div>
   </div>
 
 </div>
 
 
 <!-- Add Fiscal (Modal) -->
-<div class="modal fade bd-example-modal-lg"id="ModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade bd-example-modal-lg" id="ModalAdd" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Fiscal Matters Data</h5>
-        <button type="button"  #closebutton class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -171,50 +176,56 @@
         <div class="row">
 
           <div class="row">
-            <div class ="col-lg-12"><br>
-             <label for="exampleFormControlTextarea1" >Category :</label>
-             <select class="form-select" aria-label="Default select example" [(ngModel)]="fiscal.category" placeholder ="Select Category"  [ngClass]="toValidate.category?'is-invalid':''" (ngModelChange)="toValidate.category=false">
-               <option value="1" >Revenue</option>
-               <option value="2">Expenditure</option>
-             </select>
+            <div class="col-lg-12"><br>
+              <label for="exampleFormControlTextarea1">Category :</label>
+              <select class="form-select" aria-label="Default select example" [(ngModel)]="fiscal.category"
+                placeholder="Select Category" [ngClass]="toValidate.category?'is-invalid':''"
+                (ngModelChange)="toValidate.category=false">
+                <option value="1">Revenue</option>
+                <option value="2">Expenditure</option>
+              </select>
+            </div>
+            <div class="col-lg-12"><br>
+              <label for="exampleFormControlTextarea1">Name of Revenues/Expenditures :</label>
+              <input type="text" class="form-control" id="" name="" [(ngModel)]="fiscal.name" placeholder=""
+                [ngClass]="toValidate.name?'is-invalid':''" (keyup)="toValidate.name=false">
+            </div>
+            <div class="col-lg-12"><br>
+              <label for="exampleFormControlTextarea1">Amount (PhP):</label>
+              <input type="text" class="form-control" id="" name="" [(ngModel)]="fiscal.amount" placeholder="">
+            </div>
+            <div class="col-lg-12"><br>
+              <label for="exampleFormControlTextarea1">Fiscal Year:</label>
+              <input type="text" class="form-control" id="" name="" [(ngModel)]="fiscal.fiscalYear" placeholder=""
+                [ngClass]="toValidate.fiscalYear?'is-invalid':''" (keyup)="toValidate.fiscalYear=false">
+            </div>
+
           </div>
-                <div class ="col-lg-12"><br>
-                 <label for="exampleFormControlTextarea1" >Name of Revenues/Expenditures :</label>
-                 <input type="text" class="form-control" id=""  name =""  [(ngModel)]="fiscal.name" placeholder=""  [ngClass]="toValidate.name?'is-invalid':''" (keyup)="toValidate.name=false">
-                </div>
-                <div class ="col-lg-12"><br>
-                 <label for="exampleFormControlTextarea1" >Amount (PhP):</label>
-                 <input type="text" class="form-control" id=""  name =""  [(ngModel)]="fiscal.amount" placeholder="">
-                </div>
-                <div class ="col-lg-12"><br>
-                 <label for="exampleFormControlTextarea1" >Fiscal Year:</label>
-                 <input type="text" class="form-control" id=""  name =""  [(ngModel)]="fiscal.fiscalYear" placeholder=""  [ngClass]="toValidate.fiscalYear?'is-invalid':''" (keyup)="toValidate.fiscalYear=false">
-                </div>
 
-               </div>
-
-         </div>
+        </div>
       </div>
       <div class="modal-footer">
         <div class="left-absolute" *ngIf="visible">
           <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                  (ngModelChange)="onChange(isCheck)" [(ngModel)]="isCheck">
-              <label class="form-check-label" for="flexCheckDefault">
-                  Several data
-              </label>
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+              (ngModelChange)="onChange(isCheck)" [(ngModel)]="isCheck">
+            <label class="form-check-label" for="flexCheckDefault">
+              Several data
+            </label>
           </div>
-      </div>
-        <button type="button" class="btn btn-primary"  (click)=" AddFiscal()"><i class="fa fa-check"></i>Save</button>&nbsp;
+        </div>
+        <button type="button" class="btn btn-primary" (click)=" AddFiscal()"><i
+            class="fa fa-check"></i>Save</button>&nbsp;
         <!-- <button type ="button" class="btn btn-secondary" *ngIf="updateOfficial" (click) ="city={}"><i class="fa fa-times"></i>Cancel</button> -->
-        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times" ></i>Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
       </div>
     </div>
   </div>
 </div>
 
 <!--Edit Fiscal (Modal) -->
-<div class="modal fade" id="Edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+<div class="modal fade" id="Edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+  aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -227,31 +238,32 @@
         <div class="row">
 
           <div class="row">
-                <div class ="col-lg-12"><br>
-                 <label for="exampleFormControlTextarea1" >Name of Revenues/Expenditures:</label>
-                 <input type="text" class="form-control" id=""  name =""  [(ngModel)]="editmodal.name" placeholder=""  [ngClass]="toValidate.name?'is-invalid':''" (keyup)="toValidate.name=false">
-                </div>
-                <div class ="col-lg-12"><br>
-                 <label for="exampleFormControlTextarea1" >Amount (PhP):</label>
-                 <input type="text" class="form-control" id=""  name =""  [(ngModel)]="editmodal.amount" placeholder=""  [ngClass]="toValidate.amount?'is-invalid':''" (keyup)="toValidate.amount=false">
-                </div>
-                <div class ="col-lg-12"><br>
-                 <label for="exampleFormControlTextarea1" >Fiscal Year:</label>
-                 <input type="text" class="form-control" id=""  name =""  [(ngModel)]="editmodal.fiscalYear" placeholder=""  [ngClass]="toValidate.fiscalYear?'is-invalid':''" (keyup)="toValidate.fiscalYear=false">
-                </div>
+            <div class="col-lg-12"><br>
+              <label for="exampleFormControlTextarea1">Name of Revenues/Expenditures:</label>
+              <input type="text" class="form-control" id="" name="" [(ngModel)]="editmodal.name" placeholder=""
+                [ngClass]="toValidate.name?'is-invalid':''" (keyup)="toValidate.name=false">
+            </div>
+            <div class="col-lg-12"><br>
+              <label for="exampleFormControlTextarea1">Amount (PhP):</label>
+              <input type="text" class="form-control" id="" name="" [(ngModel)]="editmodal.amount" placeholder=""
+                [ngClass]="toValidate.amount?'is-invalid':''" (keyup)="toValidate.amount=false">
+            </div>
+            <div class="col-lg-12"><br>
+              <label for="exampleFormControlTextarea1">Fiscal Year:</label>
+              <input type="text" class="form-control" id="" name="" [(ngModel)]="editmodal.fiscalYear" placeholder=""
+                [ngClass]="toValidate.fiscalYear?'is-invalid':''" (keyup)="toValidate.fiscalYear=false">
+            </div>
 
-               </div>
+          </div>
 
-         </div>
+        </div>
       </div>
       <div class="modal-footer">
 
-        <button type="button" class="btn btn-primary"  (click)="update()" ><i class="fa fa-check" ></i>Save Changes</button>&nbsp;
-        <button type="button" class="btn btn-secondary" data-dismiss="modal"> <i class="fa fa-times" ></i>Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="update()"><i class="fa fa-check"></i>Save
+          Changes</button>&nbsp;
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"> <i class="fa fa-times"></i>Cancel</button>
       </div>
     </div>
   </div>
 </div>
-
-
-

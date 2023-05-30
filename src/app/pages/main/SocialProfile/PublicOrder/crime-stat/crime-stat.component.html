@@ -8,11 +8,13 @@
             <div class="">
             </div>
             <div class="text-center">
-              <h1 class="h4 text-gray-900 mb-4">Crime Statistics</h1>
+              <h1 class="h4 text-gray-900">Crime Statistics</h1>
+              <label><strong>Public Order and Safety - {{modifyCityMun(munCityName)}}
+                </strong></label><br>
             </div>
             <div *ngIf="!hasData" class="form-inline float-right ">
               <app-admin>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mAdd"
+                <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target="#mAdd"
                   (click)="resetForm(); updateForm=false">
                   <i class="fa fa-plus"></i>&nbsp;Crime Statistics
                 </button>
@@ -23,13 +25,13 @@
             <table class="table table-bordered ">
               <thead>
                 <tr class="thead-dark">
-                  <th >Item</th>
+                  <th>Item</th>
                   <th style="text-align: center;">Description/Value</th>
                 </tr>
               </thead>
               <tr *ngFor="let data of listData">
                 <th scope="col">Municipality/City:</th>
-                <th>Municipality of {{munCityName}}</th>
+                <th>{{modifyCityMun(munCityName)}}</th>
               </tr>
               <tr *ngFor="let data of listData">
                 <th scope="col">No. of Blotters:</th>

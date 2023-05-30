@@ -9,18 +9,18 @@
 
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-4"> Ricemills</h1>
-              <label><strong>Agriculture - Municipality of {{munCityName}} </strong></label><br>
+              <label><strong>Agriculture - {{modifyCityMun(munCityName)}} </strong></label><br>
 
             </div>
-              <div class="form-inline float-right ">
-            <app-admin>
-            <form class="">
-              <button type="button" (click)="clearData()" class="btn btn-labeled btn-primary" data-toggle="modal"
-                data-target="#exampleModal">
-                <span class="btn-label"><i class="fa fa-plus"></i></span>Ricemills</button>
-            </form>
-           </app-admin>
-          </div> <br><br>
+            <div class="form-inline float-right ">
+              <app-admin>
+                <form class="">
+                  <button type="button" (click)="clearData()" class="btn btn-labeled btn-primary" data-toggle="modal"
+                    data-target="#exampleModal">
+                    <span class="btn-label"><i class="fa fa-plus"></i></span>Ricemills</button>
+                </form>
+              </app-admin>
+            </div> <br><br>
 
 
             <div class="row">
@@ -28,58 +28,58 @@
                 <p>List of Ricemills</p>
               </div>
               <div class="table-responsive">
-              <table class="table table-light table-striped">
-                <thead class="table-dark">
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Name of Ricemill</th>
-                    <th scope="col">Type</th>
-                    <th scope="col">Capacity</th>
-                    <th scope="col">Area</th>
-                    <th scope="col">Contact Person</th>
-                    <th scope="col">Contact Details</th>
-                    <th scope="col">Location</th>
-                    <th scope="col">Barangay</th>
-                    <th scope="col">Geo-Coord.(Long,Lat)</th>
-                    <th width="10%"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let dataItem of dataList; let i = index">
-                    <td>{{i+1}}</td>
-                    <td>{{dataItem.name}}</td>
-                    <td>
-                      <div *ngFor="let item of listofRicemill">
-                        <span *ngIf="item.id == dataItem.type">{{item.type}}</span>
-                      </div>
-                    </td>
-                    <td>{{dataItem.capacity}}</td>
-                    <td>{{dataItem.area}}</td>
-                    <td>{{dataItem.contactPerson}}</td>
-                    <td>{{dataItem.contactNo}}</td>
-                    <td>{{dataItem.location}}</td>
-                    <td>{{dataItem.brgyName}}</td>
-                    <td>{{dataItem.longtitude}},<br> {{dataItem.latitude}}</td>
-                    <td>
-                      <div class="d-inline-flex">
-                      <app-admin>
-                        <button (click)="addData = dataItem" data-toggle="modal" (click)="editToggle()"
-                          data-target="#exampleModal" class="btn btn-info btn-circle">
-                          <i class="fas fa-pen"></i></button></app-admin>&nbsp;
-                        <button (click)="SetMarker(dataItem); addData = dataItem" data-toggle="modal"
-                          data-target="#gmapModal" class="btn btn-success btn-circle">
-                          <i class="fas fa-globe"></i></button>&nbsp;
+                <table class="table table-light table-striped">
+                  <thead class="table-dark">
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Name of Ricemill</th>
+                      <th scope="col">Type</th>
+                      <th scope="col">Capacity</th>
+                      <th scope="col">Area</th>
+                      <th scope="col">Contact Person</th>
+                      <th scope="col">Contact Details</th>
+                      <th scope="col">Location</th>
+                      <th scope="col">Barangay</th>
+                      <th scope="col">Geo-Coord.(Long,Lat)</th>
+                      <th width="10%"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let dataItem of dataList; let i = index">
+                      <td>{{i+1}}</td>
+                      <td>{{dataItem.name}}</td>
+                      <td>
+                        <div *ngFor="let item of listofRicemill">
+                          <span *ngIf="item.id == dataItem.type">{{item.type}}</span>
+                        </div>
+                      </td>
+                      <td>{{dataItem.capacity}}</td>
+                      <td>{{dataItem.area}}</td>
+                      <td>{{dataItem.contactPerson}}</td>
+                      <td>{{dataItem.contactNo}}</td>
+                      <td>{{dataItem.location}}</td>
+                      <td>{{dataItem.brgyName}}</td>
+                      <td>{{dataItem.longtitude}},<br> {{dataItem.latitude}}</td>
+                      <td>
+                        <div class="d-inline-flex">
                           <app-admin>
-                        <button class="btn btn-warning btn-circle" (click)="DeleteAgriculture(dataItem)">
-                          <i class="fas fa-trash"></i>
-                        </button>
-                      </app-admin>
-                    </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+                            <button (click)="addData = dataItem" data-toggle="modal" (click)="editToggle()"
+                              data-target="#exampleModal" class="btn btn-info btn-circle">
+                              <i class="fas fa-pen"></i></button></app-admin>&nbsp;
+                          <button (click)="SetMarker(dataItem); addData = dataItem" data-toggle="modal"
+                            data-target="#gmapModal" class="btn btn-success btn-circle">
+                            <i class="fas fa-globe"></i></button>&nbsp;
+                          <app-admin>
+                            <button class="btn btn-warning btn-circle" (click)="DeleteAgriculture(dataItem)">
+                              <i class="fas fa-trash"></i>
+                            </button>
+                          </app-admin>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -102,13 +102,15 @@
             <div class="row">
               <div class="col-lg-8">
                 <label for="exampleFormControlInput1">Name of Ricemill :</label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.name" [ngClass]="toValidate.name?'is-invalid':''" (keyup)="toValidate.name=false">
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.name"
+                  [ngClass]="toValidate.name?'is-invalid':''" (keyup)="toValidate.name=false">
               </div>
               <div class="col-lg-4">
                 <label for="category">Barangay :</label>
                 <!-- <label *ngIf="required" style="color: red;" for="category">&nbsp;&nbsp;<i
                     class="fas fa-asterisk"></i>Required</label> -->
-                <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.brgyId" [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false">
+                <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.brgyId"
+                  [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false">
                   <option *ngFor="let item of barangayList" [value]="item.brgyId">
                     {{ item.brgyName }}
                   </option>
@@ -118,17 +120,20 @@
             <div class="row">
               <div class="col-lg-4">
                 <label for="exampleFormControlInput1">Type of Ricemill :</label>
-                <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.type" [ngClass]="toValidate.type?'is-invalid':''" (ngModelChange)="toValidate.type=false">
-                  <option *ngFor="let list of listofRicemill" value={{list.id}} >{{list.type}}</option>
+                <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.type"
+                  [ngClass]="toValidate.type?'is-invalid':''" (ngModelChange)="toValidate.type=false">
+                  <option *ngFor="let list of listofRicemill" value={{list.id}}>{{list.type}}</option>
                 </select>
               </div>
               <div class="col-lg-4">
                 <label for="exampleFormControlInput1">Capacity (M/T) :</label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.capacity" [ngClass]="toValidate.capacity?'is-invalid':''" (keyup)="toValidate.capacity=false">
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.capacity"
+                  [ngClass]="toValidate.capacity?'is-invalid':''" (keyup)="toValidate.capacity=false">
               </div>
               <div class="col-lg-4">
                 <label>Area (Sq/m) : </label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.area" [ngClass]="toValidate.area?'is-invalid':''" (keyup)="toValidate.area=false">
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.area"
+                  [ngClass]="toValidate.area?'is-invalid':''" (keyup)="toValidate.area=false">
               </div>
             </div><br>
             <div class="row">
@@ -164,7 +169,8 @@
             aria-hidden="true">
             <i class="fas fa-times">&nbsp;</i>Close
           </button>
-          <button type="button" *ngIf="not_visible" (click)="EditAgriculture()" aria-hidden="true" class="btn btn-primary">
+          <button type="button" *ngIf="not_visible" (click)="EditAgriculture()" aria-hidden="true"
+            class="btn btn-primary">
             <i class="fas fa-edit">&nbsp;</i>UPDATE
           </button>
         </div>
@@ -188,9 +194,10 @@
         </div>
         <div class="modal-footer">
           <app-admin>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" (click)="EditAgriculture()"  data-dismiss="modal">Save changes</button>
-        </app-admin>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" (click)="EditAgriculture()" data-dismiss="modal">Save
+              changes</button>
+          </app-admin>
         </div>
       </div>
     </div>

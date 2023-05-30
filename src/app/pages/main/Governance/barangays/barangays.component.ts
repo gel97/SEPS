@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/services/auth.service';
 import { BarangayOfficialService } from 'src/app/shared/Governance/barangay-official.service';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
+import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 @Component({
   selector: 'app-barangays',
   templateUrl: './barangays.component.html',
@@ -17,8 +18,15 @@ export class BarangaysComponent implements OnInit {
 
   constructor(
     private service: BarangayOfficialService,
-    private auth: AuthService) { }
+    private auth: AuthService,
+    private modifyService: ModifyCityMunService
+  ) {}
 
+  modifyCityMun(cityMunName: string) {
+    return this.modifyService.ModifyText(cityMunName);
+  }
+
+  
   munCityName: string = this.auth.munCityName;
   toValidate: any = {};
   isAdd: boolean = false;

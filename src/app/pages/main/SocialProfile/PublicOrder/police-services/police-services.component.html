@@ -7,7 +7,7 @@
           <div class="p-5">
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-4">Police Services</h1>
-              <label><strong>Public Order and Safety - Municipality of {{munCityName}} </strong></label><br>
+              <label><strong>Public Order and Safety - {{modifyCityMun(munCityName)}} </strong></label><br>
             </div>
             <div *ngIf="!hasData" class="form-inline float-right ">
               <app-admin>
@@ -21,16 +21,16 @@
             <br>&nbsp;&nbsp;
             <div class="table-responsive">
               <table class="table table-light table-striped">
-                <thead  class="table-dark">
+                <thead class="table-dark">
                   <tr>
-                    <th >Item</th>
+                    <th>Item</th>
                     <th style="text-align: center;">Description/Value</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td scope="col">Municipality/City:</td>
-                    <td style="text-align: center;">Municipality of {{munCityName}}</td>
+                    <td style="text-align: center;">{{modifyCityMun(munCityName)}}</td>
                   <tr>
                     <td scope="col">No. of Police Forces:</td>
                     <td style="text-align: center;">{{data.forcesNo}}</td>
@@ -152,7 +152,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
-        <button type="button" class="btn btn-primary" (click)="isAdd? AddSafetyServices(): EditSafetyServices()"><i class="fa fa-check"></i>Save
+        <button type="button" class="btn btn-primary" (click)="isAdd? AddSafetyServices(): EditSafetyServices()"><i
+            class="fa fa-check"></i>Save
           changes</button>
       </div>
     </div>

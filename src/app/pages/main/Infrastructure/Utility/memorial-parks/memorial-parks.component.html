@@ -1,61 +1,62 @@
 <div class="">
-    <div class="card o-hidden border-2 shadow-sm my-5">
-      <div class="card-body p-0">
-        <!-- Nested Row within Card Body -->
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="p-5">
-              <div class="text-center">
-                <h1 class="h4 text-gray-900 mb-4">Cemeteries/ Memorial Parks</h1>
-              </div>
-              <div class ="form-inline float-right ">
-                <app-admin>
-                  <button (click)="isAdd = true; facility = {}" class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#mEducation">
-                    <i class="fa fa-plus"></i>
-                    Cemetery/ Memorial Park
-                  </button>
-                </app-admin>
-              </div>
-              <br>
-              <label>List of Cemeteries/ Memorial Parks</label>
-              <div class="table-responsive">
-                <table class="table table-light table-striped">
-                  <thead>
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">Name</th>
-                      <th scope="col">No. of Lots/ Area</th>
-                      <th scope="col">Lots Sold/ Remarks</th>              
-                      <th scope="col">Contact Person</th>
-                      <th scope="col">Contact Numbers</th>
-                      <th scope="col">Location</th>
-                      <th scope="col">Barangay</th>
-                      <th scope="col">Geo Coordinates</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let data of listFacilities; let i = index;">
-                      <td>{{i+1}}</td>
-                      <td>{{data.name}}</td>
-                      <td>{{data.area}}</td>
-                      <td>{{data.remarks}}</td>           
-                      <td>{{data.contactPerson}}</td>
-                      <td>{{data.contactNo}}</td>
-                      <td>{{data.location}}</td>
-                      <td>{{data.brgyName}}</td>
-                      <td>{{data.longtitude}},<br>{{data.latitude}}</td>
-                      <td>
-                        <div class="d-inline-flex">
-                          <app-admin>
-                            <button (click)="isAdd = false; facility = data" class="btn btn-info btn-circle"
-                              data-toggle="modal" data-target="#mEducation"><i class="fa fa-pen"></i>
-                            </button>
-                          </app-admin>
-                          &nbsp;
-                          <button (click)="SetMarker(data); facility=data" class="btn btn-success btn-circle" role="button" data-toggle="modal"
-                          data-target="#gmapModal">
+  <div class="card o-hidden border-2 shadow-sm my-5">
+    <div class="card-body p-0">
+      <!-- Nested Row within Card Body -->
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="p-5">
+            <div class="text-center">
+              <h1 class="h4 text-gray-900 mb-4">Cemeteries/ Memorial Parks</h1>
+              <label><strong>Utility Services/Structures - {{modifyCityMun(munCityName)}}</strong></label>
+            </div>
+            <div class="form-inline float-right ">
+              <app-admin>
+                <button (click)="isAdd = true; facility = {}" class="btn btn-primary" data-bs-toggle="modal"
+                  data-bs-target="#mEducation">
+                  <i class="fa fa-plus"></i>
+                  Cemetery/ Memorial Park
+                </button>
+              </app-admin>
+            </div>
+            <br>
+            <label>List of Cemeteries/ Memorial Parks</label>
+            <div class="table-responsive">
+              <table class="table table-light table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">No. of Lots/ Area</th>
+                    <th scope="col">Lots Sold/ Remarks</th>
+                    <th scope="col">Contact Person</th>
+                    <th scope="col">Contact Numbers</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Barangay</th>
+                    <th scope="col">Geo Coordinates</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of listFacilities; let i = index;">
+                    <td>{{i+1}}</td>
+                    <td>{{data.name}}</td>
+                    <td>{{data.area}}</td>
+                    <td>{{data.remarks}}</td>
+                    <td>{{data.contactPerson}}</td>
+                    <td>{{data.contactNo}}</td>
+                    <td>{{data.location}}</td>
+                    <td>{{data.brgyName}}</td>
+                    <td>{{data.longtitude}},<br>{{data.latitude}}</td>
+                    <td>
+                      <div class="d-inline-flex">
+                        <app-admin>
+                          <button (click)="isAdd = false; facility = data" class="btn btn-info btn-circle"
+                            data-toggle="modal" data-target="#mEducation"><i class="fa fa-pen"></i>
+                          </button>
+                        </app-admin>
+                        &nbsp;
+                        <button (click)="SetMarker(data); facility=data" class="btn btn-success btn-circle"
+                          role="button" data-toggle="modal" data-target="#gmapModal">
                           <i class="fa fa-globe">
                           </i>
                         </button>
@@ -65,115 +66,116 @@
                             (click)="DeleteFacility(data.transId)"><i class="fa fa-trash"></i>
                           </button>&nbsp;
                         </app-admin>
-                        </div>                    
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  
-  <div class="modal fade" id="mEducation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title text-dark" id="exampleModalLabel">Cemetery/ Memorial Park</h5>
-          <button type="button" #closebutton class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="form-group">
-            <div class="row">
-              <div class="col-lg-12">
-                <label for="exampleFormControlInput1">Name : </label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="facility.name" [ngClass]="toValidate.name?'is-invalid':''" (keyup)="toValidate.name=false">
-             <br>
-              </div>  
-            </div>
-            <div class="row">
-              <div class="col-lg-12">
-                <label for="exampleFormControlInput1">No. of Lots/ Area : </label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="facility.area">      
-              </div>
-            </div>
-            <div class ="col-lg-12"><br>
-              <label for="exampleFormControlTextarea1">Lots Sold/ Remarks :</label>
-              <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" [(ngModel)]="facility.remarks"></textarea>
-             </div>
-          </div>
-         
+</div>
+
+<div class="modal fade" id="mEducation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-dark" id="exampleModalLabel">Cemetery/ Memorial Park</h5>
+        <button type="button" #closebutton class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
           <div class="row">
-            <div class="col-lg-6">
-              <label for="exampleFormControlInput1">Contact Person/ Designation : </label>
-              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="facility.contactPerson">
-            </div>
-            <div class="col-lg-6">
-              <label for="exampleFormControlInput1">Contact Details: </label>
-              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="facility.contactNo">
-            </div>
-            
-          </div><br>
-  
-          <div class="row">
-            <div class="col-lg-6">
-              <label for="exampleFormControlInput1">Location (#/Bldg/St./Purok) : </label>
-              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="facility.location">
-            </div>
-            <div class="col-lg-6">
-              <label for="category">Barangay :</label>
-              <select class="form-select" name="brgyId" id="brgyId" aria-label="Default select example"
-                [(ngModel)]="facility.brgyId" [ngClass]="toValidate.brgyId?'is-invalid':''" (keyup)="toValidate.brgyId=false">
-                <option *ngFor="let item of listBarangay" [value]="item.brgyId">
-                  {{ item.brgyName }}
-                </option>
-              </select>
+            <div class="col-lg-12">
+              <label for="exampleFormControlInput1">Name : </label>
+              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="facility.name"
+                [ngClass]="toValidate.name?'is-invalid':''" (keyup)="toValidate.name=false">
               <br>
             </div>
           </div>
-          <br>
-        </div>
-        <div class="modal-footer">
-          <div class="left-absolute" *ngIf="isAdd">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                    (ngModelChange)="onChange(isCheck)" [(ngModel)]="isCheck">
-                <label class="form-check-label" for="flexCheckDefault">
-                    Several data
-                </label>
+          <div class="row">
+            <div class="col-lg-12">
+              <label for="exampleFormControlInput1">No. of Lots/ Area : </label>
+              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="facility.area">
             </div>
+          </div>
+          <div class="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1">Lots Sold/ Remarks :</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"
+              [(ngModel)]="facility.remarks"></textarea>
+          </div>
         </div>
-          <button type="button" class="btn btn-school" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary"
-            (click)="isAdd? AddFacility(): EditFacility()">Save changes</button>
+
+        <div class="row">
+          <div class="col-lg-6">
+            <label for="exampleFormControlInput1">Contact Person/ Designation : </label>
+            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="facility.contactPerson">
+          </div>
+          <div class="col-lg-6">
+            <label for="exampleFormControlInput1">Contact Details: </label>
+            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="facility.contactNo">
+          </div>
+
+        </div><br>
+
+        <div class="row">
+          <div class="col-lg-6">
+            <label for="exampleFormControlInput1">Location (#/Bldg/St./Purok) : </label>
+            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="facility.location">
+          </div>
+          <div class="col-lg-6">
+            <label for="category">Barangay :</label>
+            <select class="form-select" name="brgyId" id="brgyId" aria-label="Default select example"
+              [(ngModel)]="facility.brgyId" [ngClass]="toValidate.brgyId?'is-invalid':''"
+              (keyup)="toValidate.brgyId=false">
+              <option *ngFor="let item of listBarangay" [value]="item.brgyId">
+                {{ item.brgyName }}
+              </option>
+            </select>
+            <br>
+          </div>
         </div>
+        <br>
+      </div>
+      <div class="modal-footer">
+        <div class="left-absolute" *ngIf="isAdd">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+              (ngModelChange)="onChange(isCheck)" [(ngModel)]="isCheck">
+            <label class="form-check-label" for="flexCheckDefault">
+              Several data
+            </label>
+          </div>
+        </div>
+        <button type="button" class="btn btn-school" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="isAdd? AddFacility(): EditFacility()">Save
+          changes</button>
       </div>
     </div>
   </div>
-  
-  <!-- modal area -->
-  <div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">SEPS GEOLOCATION TAGGING</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <app-gmap></app-gmap>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" (click)="EditFacility()">Save changes</button>
-        </div>
+</div>
+
+<!-- modal area -->
+<div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">SEPS GEOLOCATION TAGGING</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-gmap></app-gmap>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="EditFacility()">Save changes</button>
       </div>
     </div>
   </div>
-  
-  
+</div>
