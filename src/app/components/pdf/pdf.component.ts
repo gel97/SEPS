@@ -18,10 +18,11 @@ export class PdfComponent implements OnInit {
   @Output() myEvent = new EventEmitter<any>();
 
   constructor(private sepDataService:SepDataService, private authService:AuthService) {
-    this.data.start = this.authService.activeSetYear - 1;
-    this.data.end = this.authService.activeSetYear - 1;
+    // this.data.start = this.authService.activeSetYear - 1;
+    // this.data.end = this.authService.activeSetYear - 1;
+    this.data.year = this.authService.activeSetYear - 1;
+    this.data.allMunCity = true;
     this.data.munCityId = this.authService.munCityId;
-
   }
 
   ngOnInit(): void {
@@ -29,7 +30,7 @@ export class PdfComponent implements OnInit {
   }
 
   generatePdf() {
-    this.data.isRange     = this.data.isRange? 1:0;
+    //this.data.isRange     = this.data.isRange? 1:0;
     this.data.allMunCity  = this.data.allMunCity? 1:0;
     this.myEvent.emit();
   }

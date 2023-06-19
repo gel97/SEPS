@@ -14,6 +14,10 @@ export class ModifyCityMunService {
     const matchFound: boolean = cityMunName.includes("City");
     const matchFoundSamal: boolean = cityMunName.includes("Samal");
 
+    if(cityMunName == "Province of Davao del Norte"){
+      return cityMunName;
+    }
+
     if(matchFound){
       if(!matchFoundSamal){
         const modifiedText: string = cityMunName.replace("City", '');

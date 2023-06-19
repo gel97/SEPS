@@ -89,7 +89,7 @@
                 </div>
             </div>
         </li>
-
+        <app-menu>
         <!-- Nav Item - Socio-Economic Activities -->
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSocio-Economic"
@@ -201,273 +201,278 @@
         </li>
 </div>
 </div>
-</li>
-<!-- Nav Item - Social Profile -->
-<li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSocialProfile"
-        aria-expanded="true" aria-controls="collapsePages">
-        <i class="fas fa-fw fa-folder"></i>
-        <span>Social Profile</span>
-    </a>
-    <div id="collapseSocialProfile" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-        <div class="bg-lightblue py-2 collapse-inner rounded">
-            <!-- ======== EDUCATION ============ -->
-<li class="nav-item" routerLinkActive="active">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEducation" aria-expanded="true"
-        aria-controls="collapseUtilities">
-        <i class="fas fa-fw fa-university"></i>
-        <span>Education</span>
-    </a>
-    <div id="collapseEducation" class="collapse" aria-labelledby="headingUtilities"
-        data-parent="#collapseSocialProfile">
-        <div class="bg-lightblue py-2 collapse-inner rounded">
-            <!-- ========== PRIVATE SCHOOLS ========== -->
-<li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePriSchools" aria-expanded="true"
-        aria-controls="collapseUtilities">
-        <i class="fas fa-fw fa-lock"></i>
-        <span>Private Schools</span>
-    </a>
-    <div id="collapsePriSchools" class="collapse" aria-labelledby="headingUtilities" data-parent="#collapseEducation">
-        <div class="bg-lightblue py-2 collapse-inner rounded">
-            <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/education/private/elementary">Elementary/
-                Pre-elementary</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/education/private/secondary">Secondary</a>
-        </div>
-    </div>
-</li>
-<!-- ========= PUBLIC SCHOOLS =========== -->
-<li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePubSchools" aria-expanded="true"
-        aria-controls="collapseUtilities">
-        <i class="fas fa-fw fa-unlock"></i>
-        <span>Public Schools</span>
-    </a>
-    <div id="collapsePubSchools" class="collapse" aria-labelledby="headingUtilities" data-parent="#collapseEducation">
-        <div class="bg-lightblue py-2 collapse-inner rounded">
-            <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/education/public/day-care">Day Care Centers</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/education/public/elementary">Elementary/
-                Pre-elementary</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/education/public/pub-secondary">Secondary</a>
-        </div>
-    </div>
-</li>
-<a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/education/public/tech-voc">Technical/Vocational Schools</a>
-<a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/education/public/tertiary">Tertiary Schools</a>
-<a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/education/public/training-center">Training Centers</a>
-<a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/education/public/spedenrolments">SPED Enrolments</a>
-<a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/education/public/oschool-youth">Out of School Youth</a>
-</div>
-</div>
-</li>
-<!-- ========= Health =========== -->
-<li class="nav-item" routerLinkActive="active">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseHealth" aria-expanded="true"
-        aria-controls="collapseUtilities">
-        <i class="fas fa-fw fa-plus-square"></i>
-        <span>Health</span>
-    </a>
-    <div id="collapseHealth" class="collapse" aria-labelledby="headingUtilities" data-parent="#collapseSocialProfile">
-        <div class="bg-lightblue py-2 collapse-inner rounded">
-            <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/health/public-health">Public Health Service
-                Workers</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/health/community-hospital">RHU / Community
-                Hospital</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/health/barangay-health">Barangay Health Stations</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/health/private-hospital">Private Hospitals/
-                Clinics</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/health/sanitary-facilities">Sanitary/Water
-                Facilities</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/health/malnutrition">Malnutrition</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/health/malnutrition-revised">Malnutrition (Revised
-                Form)</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/health/person-disability">Persons with
-                Disability</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/health/provincial-hospital">Provincial/ District
-                Hospitals</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/health/provincial-health">Provincial Health
-                Profile</a>
-        </div>
-    </div>
-</li>
-<!-- ========= Public order and Safety =========== -->
-<li class="nav-item" routerLinkActive="active">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePubSafety" aria-expanded="true"
-        aria-controls="collapseUtilities">
-        <i class='fas fa-shield-alt'></i>
-        <span>Public Order and Safety</span>
-    </a>
-    <div id="collapsePubSafety" class="collapse" aria-labelledby="headingUtilities"
-        data-parent="#collapseSocialProfile">
-        <div class="bg-lightblue py-2 collapse-inner rounded">
-            <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/PublicOrder/police-services">Police Services</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/PublicOrder/fire-protection">Fire Protection
-                Services</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/PublicOrder/barangay-peacekeeping">Barangay
-                Peacekeeping/ Tanod</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/PublicOrder/crime-stat">Crime Statistics</a>
-        </div>
-    </div>
-</li>
-<!-- ========= Housing =========== -->
-<li class="nav-item" routerLinkActive="active">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseHousing" aria-expanded="true"
-        aria-controls="collapseUtilities">
-        <i class='fa fa-home'></i>
-        <span>Housing</span>
-    </a>
-    <div id="collapseHousing" class="collapse" aria-labelledby="headingUtilities" data-parent="#collapseSocialProfile">
-        <div class="bg-lightblue py-2 collapse-inner rounded">
-            <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/Housing/informal-settlers">Informal Settlers</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/Housing/government-housing">Government Housing
-                Projects</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/Housing/subdivisions">Subdivisions</a>
-        </div>
-    </div>
-</li>
+        </li>
 
-<!-- ========= Associations/ Accredited NGOs =========== -->
-<li class="nav-item" routerLinkActive="active">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAssociations"
-        aria-expanded="true" aria-controls="collapseUtilities">
-        <i class='fas fa-place-of-worship'></i>
-        <span>Association/ Accredited NGO</span>
-    </a>
-    <div id="collapseAssociations" class="collapse" aria-labelledby="headingUtilities"
-        data-parent="#collapseSocialProfile">
-        <div class="bg-lightblue py-2 collapse-inner rounded">
-            <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/Associations/civic-org">Civic Organizations</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/Associations/religious">Religious</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/Associations/professional">Professional</a>
-            <a class="collapse-item"
-                routerLinkActive="active" routerLink="socialProfile/Associations/commercial">Commercial/Industrial/Labor</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/Associations/cooperatives">Cooperatives</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/Associations/foundations">Foundations</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/Associations/sectoral">Sectoral</a>
+        <!-- Nav Item - Social Profile -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSocialProfile"
+                aria-expanded="true" aria-controls="collapsePages">
+                <i class="fas fa-fw fa-folder"></i>
+                <span>Social Profile</span>
+            </a>
+            <div id="collapseSocialProfile" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div class="bg-lightblue py-2 collapse-inner rounded">
+                    <!-- ======== EDUCATION ============ -->
+        <li class="nav-item" routerLinkActive="active">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEducation" aria-expanded="true"
+                aria-controls="collapseUtilities">
+                <i class="fas fa-fw fa-university"></i>
+                <span>Education</span>
+            </a>
+            <div id="collapseEducation" class="collapse" aria-labelledby="headingUtilities"
+                data-parent="#collapseSocialProfile">
+                <div class="bg-lightblue py-2 collapse-inner rounded">
+                    <!-- ========== PRIVATE SCHOOLS ========== -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePriSchools" aria-expanded="true"
+                aria-controls="collapseUtilities">
+                <i class="fas fa-fw fa-lock"></i>
+                <span>Private Schools</span>
+            </a>
+            <div id="collapsePriSchools" class="collapse" aria-labelledby="headingUtilities" data-parent="#collapseEducation">
+                <div class="bg-lightblue py-2 collapse-inner rounded">
+                    <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/education/private/elementary">Elementary/
+                        Pre-elementary</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/education/private/secondary">Secondary</a>
+                </div>
+            </div>
+        </li>
+        <!-- ========= PUBLIC SCHOOLS =========== -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePubSchools" aria-expanded="true"
+                aria-controls="collapseUtilities">
+                <i class="fas fa-fw fa-unlock"></i>
+                <span>Public Schools</span>
+            </a>
+            <div id="collapsePubSchools" class="collapse" aria-labelledby="headingUtilities" data-parent="#collapseEducation">
+                <div class="bg-lightblue py-2 collapse-inner rounded">
+                    <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/education/public/day-care">Day Care Centers</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/education/public/elementary">Elementary/
+                        Pre-elementary</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/education/public/pub-secondary">Secondary</a>
+                </div>
+            </div>
+        </li>
+        <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/education/public/tech-voc">Technical/Vocational Schools</a>
+        <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/education/public/tertiary">Tertiary Schools</a>
+        <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/education/public/training-center">Training Centers</a>
+        <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/education/public/spedenrolments">SPED Enrolments</a>
+        <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/education/public/oschool-youth">Out of School Youth</a>
         </div>
-    </div>
-</li>
-</div>
-</div>
-</li>
-<!-- Nav Item - Environment -->
-<li class="nav-item" routerLinkActive="active">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEnvironment"
-        aria-expanded="true" aria-controls="collapsePages">
-        <i class='fas fa-feather-alt'></i>
-        <span>Environment</span>
-    </a>
-    <div id="collapseEnvironment" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-        <div class="bg-lightblue py-2 collapse-inner rounded">
-            <a class="collapse-item" routerLinkActive="active" routerLink="Environment/physical-environment">Physical Environment Profile</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="Environment/natural-resources">Natural/ Biological Resources</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="Environment/environmental-activities">Environmental Activities</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="Environment/urban-environment">Urban Environment Quality</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="Environment/environmental-hazards">Environmental Hazards</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="Environment/social-condition">Social Condition/ Vulnerabilty</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="Environment/historical-disaster">Historical Disaster Profile</a>
         </div>
-    </div>
-</li>
-<!-- Nav Item - Infrastructure and Utilities -->
-<li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseInfrastructure"
-        aria-expanded="true" aria-controls="collapsePages">
-        <i class='fa fa-road'></i>
-        <span>Infrastructure and Utilities</span>
-    </a>
-    <div id="collapseInfrastructure" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-        <div class="bg-lightblue py-2 collapse-inner rounded">
-            <!-- Nav Item - Transport & Communications  -->
+        </li>
+        <!-- ========= Health =========== -->
+        <li class="nav-item" routerLinkActive="active">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseHealth" aria-expanded="true"
+                aria-controls="collapseUtilities">
+                <i class="fas fa-fw fa-plus-square"></i>
+                <span>Health</span>
+            </a>
+            <div id="collapseHealth" class="collapse" aria-labelledby="headingUtilities" data-parent="#collapseSocialProfile">
+                <div class="bg-lightblue py-2 collapse-inner rounded">
+                    <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/health/public-health">Public Health Service
+                        Workers</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/health/community-hospital">RHU / Community
+                        Hospital</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/health/barangay-health">Barangay Health Stations</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/health/private-hospital">Private Hospitals/
+                        Clinics</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/health/sanitary-facilities">Sanitary/Water
+                        Facilities</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/health/malnutrition">Malnutrition</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/health/malnutrition-revised">Malnutrition (Revised
+                        Form)</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/health/person-disability">Persons with
+                        Disability</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/health/provincial-hospital">Provincial/ District
+                        Hospitals</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/health/provincial-health">Provincial Health
+                        Profile</a>
+                </div>
+            </div>
+        </li>
+        <!-- ========= Public order and Safety =========== -->
+        <li class="nav-item" routerLinkActive="active">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePubSafety" aria-expanded="true"
+                aria-controls="collapseUtilities">
+                <i class='fas fa-shield-alt'></i>
+                <span>Public Order and Safety</span>
+            </a>
+            <div id="collapsePubSafety" class="collapse" aria-labelledby="headingUtilities"
+                data-parent="#collapseSocialProfile">
+                <div class="bg-lightblue py-2 collapse-inner rounded">
+                    <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/PublicOrder/police-services">Police Services</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/PublicOrder/fire-protection">Fire Protection
+                        Services</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/PublicOrder/barangay-peacekeeping">Barangay
+                        Peacekeeping/ Tanod</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/PublicOrder/crime-stat">Crime Statistics</a>
+                </div>
+            </div>
+        </li>
+        <!-- ========= Housing =========== -->
+        <li class="nav-item" routerLinkActive="active">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseHousing" aria-expanded="true"
+                aria-controls="collapseUtilities">
+                <i class='fa fa-home'></i>
+                <span>Housing</span>
+            </a>
+            <div id="collapseHousing" class="collapse" aria-labelledby="headingUtilities" data-parent="#collapseSocialProfile">
+                <div class="bg-lightblue py-2 collapse-inner rounded">
+                    <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/Housing/informal-settlers">Informal Settlers</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/Housing/government-housing">Government Housing
+                        Projects</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/Housing/subdivisions">Subdivisions</a>
+                </div>
+            </div>
+        </li>
 
-<li class="nav-item" routerLinkActive="active">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCommunications"
-        aria-expanded="true" aria-controls="collapsePages">
-        <i class='fas fa-broadcast-tower'></i>
-        <span>Communications Services</span>
-    </a>
-    <div id="collapseCommunications" class="collapse" aria-labelledby="headingPages"
-    data-parent="#collapseInfrastructure">
-        <div class="bg-lightblue collapse-inner rounded">
-            <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Communications/telecommunication">Telecommunication
-                Systems</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Communications/cell-sites">Cell Sites/ Towers</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Communications/telegraph">Telegraph Facilities</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Communications/express-mail">Express Mail</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Communications/postal-services">Postal Services</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Communications/internet-service">Internet Service
-                Providers</a>
+        <!-- ========= Associations/ Accredited NGOs =========== -->
+        <li class="nav-item" routerLinkActive="active">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAssociations"
+                aria-expanded="true" aria-controls="collapseUtilities">
+                <i class='fas fa-place-of-worship'></i>
+                <span>Association/ Accredited NGO</span>
+            </a>
+            <div id="collapseAssociations" class="collapse" aria-labelledby="headingUtilities"
+                data-parent="#collapseSocialProfile">
+                <div class="bg-lightblue py-2 collapse-inner rounded">
+                    <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/Associations/civic-org">Civic Organizations</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/Associations/religious">Religious</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/Associations/professional">Professional</a>
+                    <a class="collapse-item"
+                        routerLinkActive="active" routerLink="socialProfile/Associations/commercial">Commercial/Industrial/Labor</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/Associations/cooperatives">Cooperatives</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/Associations/foundations">Foundations</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/Associations/sectoral">Sectoral</a>
+                </div>
+            </div>
+        </li>
         </div>
-    </div>
-</li>
-<li class="nav-item" routerLinkActive="active">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTransportation"
-        aria-expanded="true" aria-controls="collapsePages">
-        <i class="fa fa-fw fa-bus"></i>
-        <span>Transportation</span>
-    </a>
-    <div id="collapseTransportation" class="collapse" aria-labelledby="headingPages"
-    data-parent="#collapseInfrastructure">
-        <div class="bg-lightblue py-2 collapse-inner rounded">
-            <a class="collapse-item" routerLinkActive="active" routerLink="Insfrastructure/Transportation/roads">Roads</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="Insfrastructure/Transportation/bridges">Bridges</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="Insfrastructure/Transportation/transport-terminals">Transport
-                Terminals</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="Insfrastructure/Transportation/ports">Ports</a>
         </div>
-    </div>
-</li>
-<li class="nav-item" routerLinkActive="active">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtility" aria-expanded="true"
-        aria-controls="collapsePages">
-        <i class='fa fa-building'></i>
-        <span> Utility Services/ Structures</span>
-    </a>
-    <div id="collapseUtility" class="collapse" aria-labelledby="headingPages" data-parent="#collapseInfrastructure">
-        <div class="bg-lightblue py-2 collapse-inner rounded">
-            <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Utility/water-utility">Water Utility Service
-                Provider</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Utility/water-pump">Water Pump Stations</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Utility/irrigation-system">Irrigation Systems</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Utility/power-system">Power System Utilities</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Utility/power-sub">Power Sub-stations</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Utility/waste-management">Waste Management
-                Facilities</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Utility/ice-plant">Ice Plant/ Cold Storage</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Utility/market-supermarkets">Market/
-                Supermarkets</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Utility/department-store">Department Stores</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Utility/ memorial-parks">Cemetery/ Memorial
-                Parks</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Utility/worship-houses">Churches/ Worship
-                Houses</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Utility/other-structure">Other Structures</a>
-        </div>
-    </div>
-</li>
-</div>
-</div>
-</li>
+        </li>
 
-   <!-- Nav Item - Tools -->
-   <li class="nav-item" routerLinkActive="active">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTools"
-        aria-expanded="true" aria-controls="collapseTwo">
-        <i class="fa fa-fw fa-wrench"></i> 
-        <span>Tools</span>
-    </a>
-    <div id="collapseTools" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-        <div class="bg-lightblue collapse-inner rounded" >
-            <a class="collapse-item" routerLinkActive="active" routerLink="Tools/news">News/ Announcements</a>
-        </div>
-    </div>
-</li>
+        <!-- Nav Item - Environment -->
+        <li class="nav-item" routerLinkActive="active">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEnvironment"
+                aria-expanded="true" aria-controls="collapsePages">
+                <i class='fas fa-feather-alt'></i>
+                <span>Environment</span>
+            </a>
+            <div id="collapseEnvironment" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div class="bg-lightblue py-2 collapse-inner rounded">
+                    <a class="collapse-item" routerLinkActive="active" routerLink="Environment/physical-environment">Physical Environment Profile</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="Environment/natural-resources">Natural/ Biological Resources</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="Environment/environmental-activities">Environmental Activities</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="Environment/urban-environment">Urban Environment Quality</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="Environment/environmental-hazards">Environmental Hazards</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="Environment/social-condition">Social Condition/ Vulnerabilty</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="Environment/historical-disaster">Historical Disaster Profile</a>
+                </div>
+            </div>
+        </li>
 
+        <!-- Nav Item - Infrastructure and Utilities -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseInfrastructure"
+                aria-expanded="true" aria-controls="collapsePages">
+                <i class='fa fa-road'></i>
+                <span>Infrastructure and Utilities</span>
+            </a>
+            <div id="collapseInfrastructure" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div class="bg-lightblue py-2 collapse-inner rounded">
+                    <!-- Nav Item - Transport & Communications  -->
+
+        <li class="nav-item" routerLinkActive="active">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCommunications"
+                aria-expanded="true" aria-controls="collapsePages">
+                <i class='fas fa-broadcast-tower'></i>
+                <span>Communications Services</span>
+            </a>
+            <div id="collapseCommunications" class="collapse" aria-labelledby="headingPages"
+            data-parent="#collapseInfrastructure">
+                <div class="bg-lightblue collapse-inner rounded">
+                    <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Communications/telecommunication">Telecommunication
+                        Systems</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Communications/cell-sites">Cell Sites/ Towers</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Communications/telegraph">Telegraph Facilities</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Communications/express-mail">Express Mail</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Communications/postal-services">Postal Services</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Communications/internet-service">Internet Service
+                        Providers</a>
+                </div>
+            </div>
+        </li>
+        <li class="nav-item" routerLinkActive="active">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTransportation"
+                aria-expanded="true" aria-controls="collapsePages">
+                <i class="fa fa-fw fa-bus"></i>
+                <span>Transportation</span>
+            </a>
+            <div id="collapseTransportation" class="collapse" aria-labelledby="headingPages"
+            data-parent="#collapseInfrastructure">
+                <div class="bg-lightblue py-2 collapse-inner rounded">
+                    <a class="collapse-item" routerLinkActive="active" routerLink="Insfrastructure/Transportation/roads">Roads</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="Insfrastructure/Transportation/bridges">Bridges</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="Insfrastructure/Transportation/transport-terminals">Transport
+                        Terminals</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="Insfrastructure/Transportation/ports">Ports</a>
+                </div>
+            </div>
+        </li>
+        <li class="nav-item" routerLinkActive="active">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtility" aria-expanded="true"
+                aria-controls="collapsePages">
+                <i class='fa fa-building'></i>
+                <span> Utility Services/ Structures</span>
+            </a>
+            <div id="collapseUtility" class="collapse" aria-labelledby="headingPages" data-parent="#collapseInfrastructure">
+                <div class="bg-lightblue py-2 collapse-inner rounded">
+                    <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Utility/water-utility">Water Utility Service
+                        Provider</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Utility/water-pump">Water Pump Stations</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Utility/irrigation-system">Irrigation Systems</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Utility/power-system">Power System Utilities</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Utility/power-sub">Power Sub-stations</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Utility/waste-management">Waste Management
+                        Facilities</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Utility/ice-plant">Ice Plant/ Cold Storage</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Utility/market-supermarkets">Market/
+                        Supermarkets</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Utility/department-store">Department Stores</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Utility/ memorial-parks">Cemetery/ Memorial
+                        Parks</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Utility/worship-houses">Churches/ Worship
+                        Houses</a>
+                    <a class="collapse-item" routerLinkActive="active" routerLink="Infrastructure/Utility/other-structure">Other Structures</a>
+                </div>
+            </div>
+        </li>
+        </div>
+        </div>
+        </li>
+        </app-menu>
+
+        <!-- Nav Item - Tools -->
+        <li class="nav-item" routerLinkActive="active">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTools"
+                aria-expanded="true" aria-controls="collapseTwo">
+                <i class="fa fa-fw fa-wrench"></i> 
+                <span>Tools</span>
+            </a>
+            <div id="collapseTools" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-lightblue collapse-inner rounded" >
+                    <a class="collapse-item" routerLinkActive="active" routerLink="Tools/news">News/ Announcements</a>
+                </div>
+            </div>
+        </li>
+
+        
 <!-- Divider -->
 <hr class="sidebar-divider d-none d-md-block">
 
-
-<!-- Heading -->
+<app-ddn>
+     <!-- Heading -->
 <div class="sidebar-heading">
     ADMIN PANEL
 </div>
@@ -487,7 +492,9 @@
 
         </div>
     </div>
-</li>
+</li>       
+</app-ddn>
+
 
 <!-- Sidebar Toggler (Sidebar) -->
 <div class="text-center d-none d-md-inline">

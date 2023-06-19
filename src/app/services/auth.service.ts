@@ -23,7 +23,7 @@ export class AuthService {
   activeSetYear:any = localStorage.getItem("activeSetYear");
   setYear:any       = localStorage.getItem("setYear");
   userId:any        = localStorage.getItem("userId");
-
+  designation:any   = localStorage.getItem("designation");
   activesetYear: any;
 
   signin(user:any): Observable<any> {
@@ -44,6 +44,7 @@ export class AuthService {
       localStorage.setItem("setYear",response.activeSetYear);
       localStorage.setItem("userData", JSON.stringify(response));
       localStorage.setItem("expire",response.expire);
+      localStorage.setItem("designation",response.designation);
 
       //console.log(localStorage.getItem("userData"));
       this.token         = localStorage.getItem("token");
@@ -54,6 +55,7 @@ export class AuthService {
       this.o_munCityName = localStorage.getItem("o_munCityName");
       this.activeSetYear = localStorage.getItem("activeSetYear");
       this.setYear       = localStorage.getItem("setYear");
+      this.designation   = localStorage.getItem("designation");
       console.log(this.munCityId);
 
     }));
