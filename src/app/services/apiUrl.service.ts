@@ -19,7 +19,7 @@ export class ApiUrl {
     post_update_barangay        = () => `/Barangay/Update`;
     post_list_barangay          = (munCityId:any) => `/Barangay/ListBarangays?munCityId=${munCityId}`;
     delete_barangay             = (transId:any)   => `/Barangay/${transId}`;
-
+    post_barangay_report        = () => `/Barangay/Reports`;
         //Physical Geographic Profile
     get_get_geo    = (munCityId:any, setYear:any) => `/PhyGeoProf/${setYear}/${munCityId}`;
     post_save_geo  = () => `/PhyGeoProf`;
@@ -353,5 +353,6 @@ export class ApiUrl {
 
     get_notif_seen      = (userId:any)=>`/NotifSeen/${userId}`;
     post_notif_seen     = ()=>`/NotifSeen`;
-
+    
+    get_sep_year  = ()=>`/SepYear`;
 }

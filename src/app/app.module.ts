@@ -135,6 +135,7 @@ import {
 import { NotificationComponent } from './pages/main/Tools/notification/notification.component';
 import { DdnComponent } from './Admin/ddn/ddn.component';
 import { MenuComponent } from './Admin/menu/menu.component';
+import { PdfComponent } from './components/pdf/pdf.component';
 
 
 
@@ -258,8 +259,7 @@ import { MenuComponent } from './Admin/menu/menu.component';
     NotificationComponent,
     DdnComponent,
     MenuComponent,
-
-
+    PdfComponent
   ],
   imports: [
     MdbCollapseModule,

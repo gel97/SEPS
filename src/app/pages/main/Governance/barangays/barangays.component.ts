@@ -4,6 +4,9 @@ import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/services/auth.service';
 import { BarangayOfficialService } from 'src/app/shared/Governance/barangay-official.service';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
+import { PdfComponent } from 'src/app/components/pdf/pdf.component';
+import { PdfService } from 'src/app/services/pdf.service';
+import { ReportsService } from 'src/app/shared/Tools/reports.service';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 @Component({
   selector: 'app-barangays',
@@ -13,10 +16,15 @@ import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 export class BarangaysComponent implements OnInit {
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;
+  @ViewChild(PdfComponent)
+  private pdfComponent!: PdfComponent;
+
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void; }; };
 
   constructor(
+    private pdfService: PdfService, 
+    private reportService: ReportsService,
     private service: BarangayOfficialService,
     private auth: AuthService,
     private modifyService: ModifyCityMunService
@@ -36,6 +44,9 @@ export class BarangaysComponent implements OnInit {
 
   listData: any = [];
   data: any = {};
+  reports:any = [];
+
+
 
   ngOnInit(): void {
     this.Init();
@@ -44,6 +55,93 @@ export class BarangaysComponent implements OnInit {
   Init() {
     this.GetBarangay();
     this.GetListBarangay();
+  }
+
+  GeneratePDF(){
+
+    let data:any = [];
+
+    this.reportService.GetBarangayReport(this.pdfComponent.data).subscribe({
+
+     next: (response)=>{
+      this.reports = (<any>response);
+
+      const groupedData = this.reports.reduce((groups:any, item:any) => {
+        const { munCityName, setYear } = item;
+        const groupKey = `${munCityName}-${setYear}`;
+        if (!groups[groupKey]) {
+          groups[groupKey] = [];
+        }
+        groups[groupKey].push(item);
+        return groups;
+      }, {}); 
+
+      // Iterate over each group and add it to the PDF
+      for (const groupKey in groupedData) {
+        const group = groupedData[groupKey];
+        const [cityName, year] = groupKey.split('-');
+        data.push({
+          margin: [0, 50, 0, 0],
+          columns: [
+            {
+              text: cityName,
+              fontSize: 14,
+              bold:true,       
+            },
+            {
+              text: `Year: ${year}`,
+              fontSize: 14,
+              bold:true,   
+              alignment: 'right'
+            }
+          ],
+        }
+         );
+
+        // Create the table
+        const tableData:any = [];
+        tableData.push( [
+          { text: 'Barangay', fillColor: 'black',color: 'white',bold: true, alignment: 'center' },
+          { text: 'Punong Barangay', fillColor: 'black',color: 'white',bold: true, alignment: 'center'},
+          { text: 'Contact #', fillColor: 'black',color: 'white',bold: true, alignment: 'center'},
+          { text: 'Barangay Location', fillColor: 'black',color: 'white',bold: true, alignment: 'center'},
+          { text: 'Land Area', fillColor: 'black',color: 'white',bold: true, alignment: 'center'},
+          { text: 'No. of Puroks', fillColor: 'black',color: 'white',bold: true, alignment: 'center'},
+        ]);
+        group.forEach((item:any, index:any) => {
+          tableData.push([
+        { text: item.brgyName, fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF' },
+        { text: item.punongBrgy, fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF' },
+        { text: item.contactNo, fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF' },
+        { text: item.address, fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF' },
+        { text: item.landArea, fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF' },
+        { text: item.purokNo, fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF' },
+          ]);
+        });
+        const table = {
+          margin: [0, 10, 0, 0],
+          table: {
+            widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
+            body: tableData,
+          },
+          layout: 'lightHorizontalLines',
+        };
+        
+        data.push(table);
+
+      }
+     
+     },
+     error:(error)=>{
+      console.log(error);
+     },
+     complete:()=>{
+      this.pdfService.GeneratePdf(data);
+      console.log(data);
+
+     } 
+    });
+
   }
 
   GetBarangay() {
@@ -215,5 +313,27 @@ export class BarangaysComponent implements OnInit {
     };
     this.gmapComponent.setMarker(this.markerObj);
   }
+  pdfMake: any;
 
+  async loadPdfMaker() {
+    if (!this.pdfMake) {
+      const pdfMakeModule = await import("pdfmake/build/pdfmake");
+      const pdfFontsModule = await import("pdfmake/build/vfs_fonts");
+      this.pdfMake = pdfMakeModule;
+      this.pdfMake.vfs = pdfFontsModule.pdfMake.vfs;
+    }
+  }
+
+  async GeneratePdf() {
+    await this.loadPdfMaker();
+       
+    const def = {
+    	content: [
+        'hello',
+        'hi'
+      ],
+    
+    };
+   this.pdfMake.createPdf(def).open();
+  }
 }

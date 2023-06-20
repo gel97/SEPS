@@ -15,6 +15,10 @@ export class SepDataService {
         return this.Http.get<any[]>(this.Base.url + this.ApiUrl.get_all_muncity(), { responseType: 'json' });
     }
 
+    ListSepYear () {
+        return this.Http.get<any[]>(this.Base.url + this.ApiUrl.get_sep_year(), { responseType: 'json' });
+    }
+
 }
 
 
