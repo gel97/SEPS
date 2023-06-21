@@ -37,4 +37,7 @@ export class HealthSanitaryService {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay(munCityId), { responseType: 'json' });
  
   }
+  Import():Observable<any[]> {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_import_health_sanitary(), { responseType: 'json' });
+  }
 }

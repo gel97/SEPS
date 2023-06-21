@@ -40,6 +40,8 @@ export class HealthHospitalService {
   ListOfMunicipality(){
     return this.http.get<any[]>(this.Base.url + this.ApiUrl.get_all_muncity(), { responseType: 'json' });
   }
-
+  Import():Observable<any[]> {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_import_health_hospital(), { responseType: 'json' });
+  }
 
 }

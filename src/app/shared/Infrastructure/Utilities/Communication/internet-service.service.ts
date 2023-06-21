@@ -32,5 +32,12 @@ export class InternetServiceService {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay(munCityId), { responseType: 'json' });
  
   }
+  Report():Observable<any[]> {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_com_isp(), { responseType: 'json' });
+  }
+
+  Import():Observable<any[]> {
+      return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_import_com_isp(), { responseType: 'json' });
+  }
 
 }

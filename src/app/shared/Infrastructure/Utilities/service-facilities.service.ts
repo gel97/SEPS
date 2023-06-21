@@ -32,5 +32,12 @@ export class ServiceFacilitiesService {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay(munCityId), { responseType: 'json' });
  
   }
+  Report():Observable<any[]> {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_service_facility(), { responseType: 'json' });
+  }
+
+  Import(menuId :any,):Observable<any[]> {
+      return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_import_service_facility(menuId), { responseType: 'json' });
+  }
 
 }

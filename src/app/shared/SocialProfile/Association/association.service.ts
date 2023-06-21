@@ -40,4 +40,8 @@ export class AssociationService {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay(munCityId), { responseType: 'json' });
 
   }
+  Import(menuId :any,):Observable<any[]> {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_import_association(menuId), { responseType: 'json' });
+  }
+
 }

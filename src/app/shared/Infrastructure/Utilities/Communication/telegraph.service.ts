@@ -30,5 +30,12 @@ export class TelegraphService {
   {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay(munCityId), { responseType: 'json' }); 
   }
+  Report():Observable<any[]> {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_com_telfacility(), { responseType: 'json' });
+  }
+
+  Import():Observable<any[]> {
+      return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_import_com_telfacility(), { responseType: 'json' });
+  }
 
 }

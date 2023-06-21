@@ -26,4 +26,12 @@ export class PostalServicesService {
     return this.http.delete(this.Base.url + this.ApiUrl.delete_com_postal(transId), { responseType: 'text' });
   }
 
+  Report():Observable<any[]> {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_com_postal(), { responseType: 'json' });
+  }
+
+  Import():Observable<any[]> {
+      return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_import_com_postal(), { responseType: 'json' });
+  }
+
 }

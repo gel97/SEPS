@@ -31,5 +31,12 @@ export class MajorEconomicService {
   DeleteMajorEco(transId:any) {
     return this.Http.delete(this.Base.url + this.ApiUrl.delete_major_eco(transId), { responseType: 'json' });
   }
+  
+  Report():Observable<any[]> {
+    return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_report_major_eco(), { responseType: 'json' });
+  }
 
+  Import():Observable<any[]> {
+      return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_import_major_eco(), { responseType: 'json' });
+  }
 }
