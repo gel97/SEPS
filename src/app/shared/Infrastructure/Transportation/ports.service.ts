@@ -31,4 +31,12 @@ export class PortsService {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay(munCityId), { responseType: 'json' }); 
   }
 
+  Report():Observable<any[]> {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_port(), { responseType: 'json' });
+  }
+
+  Import():Observable<any[]> {
+      return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_import_port(), { responseType: 'json' });
+  }
+
 }

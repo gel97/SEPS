@@ -31,6 +31,14 @@ export class CityOfficialService {
     return this.Http.get(this.Base.url + this.ApiUrl.get_mun_position(), { responseType: 'json' });
   }
 
+  Report():Observable<any[]> {
+    return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_report_officials(), { responseType: 'json' });
+  }
+
+  Import():Observable<any[]> {
+      return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_import_officials(), { responseType: 'json' });
+  }
+  
 }
 
 

@@ -35,5 +35,7 @@ export class EducationOsyService {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay(munCityId), { responseType: 'json' });
 
   }
-
+  Import():Observable<any[]> {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_education_osy(), { responseType: 'json' });
+  }
 }

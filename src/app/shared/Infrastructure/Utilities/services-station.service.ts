@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { BaseUrl } from 'src/app/services/baseUrl.service';
 import { ApiUrl } from 'src/app/services/apiUrl.service';
+import { Observable } from 'rxjs/internal/Observable';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +32,13 @@ List_Station(menuId:any,setYear:any,munCityId :any) {
 
   ListBarangay(){
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay(this.auth.munCityId), { responseType: 'json' });
-}
+  }
+  Report():Observable<any[]> {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_station(), { responseType: 'json' });
+  }
+
+  Import(menuId :any,):Observable<any[]> {
+      return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_import_station(menuId), { responseType: 'json' });
+  }
 
 }

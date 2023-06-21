@@ -29,7 +29,13 @@ export class OrgStaffingService {
       return this.Http.delete(this.Base.url + this.ApiUrl.delete_org(transId), { responseType: 'json' });
     }
 
-
+    Report():Observable<any[]> {
+      return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_report_org(), { responseType: 'json' });
+    }
+  
+    Import():Observable<any[]> {
+        return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_import_org(), { responseType: 'json' });
+    }
 }
 
 

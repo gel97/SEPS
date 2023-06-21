@@ -30,6 +30,14 @@ export class IndustrialEstatesService {
 
   ListBarangay(){
     return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay(this.Auth.munCityId), { responseType: 'json' });
-}
+  }
+
+  Report():Observable<any[]> {
+    return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_report_Industrial(), { responseType: 'json' });
+  }
+
+  Import():Observable<any[]> {
+      return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_import_Industrial(), { responseType: 'json' });
+  }
 
 }

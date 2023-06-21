@@ -28,5 +28,12 @@ export class AgricultureProfileService {
   EditAgricultureProfile(agricultureprofile:any) {
     return this.http.put<any[]>(this.Base.url + this.ApiUrl.put_agriculture_profile(), agricultureprofile, { responseType: 'json' });
   }
+  Report():Observable<any[]> {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_agriculture_profile(), { responseType: 'json' });
+  }
+
+  Import():Observable<any[]> {
+      return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_import_agriculture_profile(), { responseType: 'json' });
+  }
 
 }

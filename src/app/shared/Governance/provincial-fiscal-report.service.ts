@@ -27,7 +27,9 @@ export class ProvincialFiscalReportService {
   Delete(transId:any) {
     return this.Http.delete(this.Base.url + this.ApiUrl.delete_provincialFical (transId), { responseType: 'json' });
   }
-
+  Report():Observable<any[]> {
+    return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_import_prov_officials(), { responseType: 'json' });
+  }
 }
 
 
