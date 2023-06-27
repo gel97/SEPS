@@ -1,135 +1,148 @@
 <div class="">
+  <ng-template #isEmpty>
+    <app-import [data]="message" (testEvent)="parentMethod()"></app-import>
+  </ng-template>
+  <div *ngIf="TranspoRoadList.length>0  ; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
+    <div class="card-body p-0">
+      <!-- Nested Row within Card Body -->
+      <div class="row">
 
-  <div class="card o-hidden border-2 shadow-sm my-5">
-      <div class="card-body p-0">
-          <!-- Nested Row within Card Body -->
-          <div class="row">
+        <div class="col-lg-12">
+          <div class="p-5">
 
-              <div class="col-lg-12">
-                  <div class="p-5">
+            <div class="text-center">
+              <h1 class="h4 text-gray-900 mb-4">Roads</h1>
+              <label><strong>Transportation - {{modifyCityMun(munCityName)}}</strong></label>
 
-                      <div class="text-center">
-                          <h1 class="h4 text-gray-900 mb-4">Roads</h1>
-                          <label><strong>Transportation - {{modifyCityMun(munCityName)}}</strong></label>
+            </div>
 
-                      </div>
-
-                    <div class="row">
-                        <div class="col-lg-11"></div>
-                        <div class="col-lg-1">
-                        <button class="btn btn-primary font-weight-bold" (click)="isNew=true; RoadList={}" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa fa-plus"></i> Roads</button>
-                        </div>
-                    </div>
-
-                      <br>
-                      <div class="row">
-                          <div class="col-lg-6">
-                              <p>Road Length (Kms.)</p>
-                          </div>
-                          <div class="col-lg-6 ">
-
-                          </div>
-                      </div>
-                      <div class="table-responsive">
-                      <table class="table table-sm table-hover">
-                          <thead style="background-color: #000000;color:white;">
-                              <tr>
-                                <th scope="col"></th>
-                                <th scope="col">	Classification</th>
-                                <th scope="col">	Concrete</th>
-                                <th scope="col">	Asphalt</th>
-                                <th scope="col">	Gravel</th>
-                                <th scope="col">	Earth</th>
-                                <th scope="col">	Total (Kms)</th>
-                                <th width="10%"></th>
-
-                              </tr>
-                            </thead>
-                            <tbody>
-                                        <tr *ngFor="let i of TranspoRoadList; let a = index">
-                                                <td>{{a+1}}</td>
-                                                <td>{{i .roadtypename}}</td>
-                                                <td>{{i .concrete}}</td>
-                                                <td>{{i .asphalt}}</td>
-                                                <td>{{i .gravel}}</td>
-                                                <td>{{i .earth}}</td>
-                                                <td>{{i .totalLength}}</td>
-
-                                                <td>
-                                                    <div class="d-inline-flex">
-                                                      <app-admin>
-                                               <button class="btn btn-info btn-circle" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="RoadList=i; isNew=false"><i class="fa fa-pen"></i></button>&nbsp;
-                                              </app-admin>
-                                              <app-admin>
-                                               <button class="btn btn-warning btn-circle" title="Delete" (click)="deleteRoadList(i.transId)"><i class="fa fa-trash"></i></button>
-                                              </app-admin>
-                                              </div>
-                                                </td>
-                                        </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                      <br>
-                  </div>
+            <div class="row">
+              <div class="col-lg-11"></div>
+              <div class="col-lg-1">
+                <button class="btn btn-primary font-weight-bold" (click)="isNew=true; RoadList={}" type="button"
+                  data-bs-toggle="modal" data-bs-target="#ModalAdd"><i class="fa fa-plus"></i> Roads</button>
               </div>
+            </div>
+
+            <br>
+            <div class="row">
+              <div class="col-lg-6">
+                <p>Road Length (Kms.)</p>
+              </div>
+              <div class="col-lg-6 ">
+
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-sm table-hover">
+                <thead style="background-color: #000000;color:white;">
+                  <tr>
+                    <th scope="col"></th>
+                    <th scope="col"> Classification</th>
+                    <th scope="col"> Concrete</th>
+                    <th scope="col"> Asphalt</th>
+                    <th scope="col"> Gravel</th>
+                    <th scope="col"> Earth</th>
+                    <th scope="col"> Total (Kms)</th>
+                    <th width="10%"></th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let i of TranspoRoadList; let a = index">
+                    <td>{{a+1}}</td>
+                    <td>{{i .roadtypename}}</td>
+                    <td>{{i .concrete}}</td>
+                    <td>{{i .asphalt}}</td>
+                    <td>{{i .gravel}}</td>
+                    <td>{{i .earth}}</td>
+                    <td>{{i .totalLength}}</td>
+
+                    <td>
+                      <div class="d-inline-flex">
+                        <app-admin>
+                          <button class="btn btn-info btn-circle" title="Edit" data-bs-toggle="modal"
+                            data-bs-target="#ModalAdd" (click)="RoadList=i; isNew=false"><i
+                              class="fa fa-pen"></i></button>&nbsp;
+                        </app-admin>
+                        <app-admin>
+                          <button class="btn btn-warning btn-circle" title="Delete"
+                            (click)="deleteRoadList(i.transId)"><i class="fa fa-trash"></i></button>
+                        </app-admin>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <br>
           </div>
+        </div>
       </div>
+    </div>
   </div>
 
 </div>
 
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title text-dark" id="exampleModalLabel">Roads</h5>
-            <button type="close" #closebutton class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<div class="modal fade" id="ModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-dark" id="exampleModalLabel">Roads</h5>
+        <button type="close" #closebutton class="btn-close" data-bs-dismiss="modal" data-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <div class="form-group">
+          <div class="row">
+            <div class="col-lg-12"><br>
+              <label for="exampleFormControlTextarea1">Road Type :</label>
+              <select [(ngModel)]="RoadList.roadType" class="form-select" aria-label="Default select example"
+                [ngClass]="toValidate.roadType?'is-invalid':''" (ngModelChange)="toValidate.roadType=false">
+
+                <option selected disabled>- Select -</option>
+                <option *ngFor="let i of RoadType" value="{{i.id}}">{{i.roadtypename}}</option>
+
+              </select>
+            </div>
+            <div class="col-lg-12"><br>
+              <label for="exampleFormControlTextarea1">Total Length per Pavement Classification (in Kms) :</label>
+            </div>
+
+            <div class="col-lg-3" align="center"><br>
+              <label for="exampleFormControlTextarea1">Concrete :</label>
+              <input type="text" [(ngModel)]="RoadList.concrete" class="form-control" id="" placeholder=""
+                [ngClass]="toValidate.concrete?'is-invalid':''" (ngModelChange)="toValidate.concrete=false">
+            </div>
+            <div class="col-lg-3" align="center"><br>
+              <label for="exampleFormControlTextarea1">Asphalt :</label>
+              <input type="text" [(ngModel)]="RoadList.asphalt" class="form-control" id="" placeholder=""
+                [ngClass]="toValidate.asphalt?'is-invalid':''" (ngModelChange)="toValidate.asphalt=false">
+            </div>
+            <div class="col-lg-3" align="center"><br>
+              <label for="exampleFormControlTextarea1">Gravel :</label>
+              <input type="text" [(ngModel)]="RoadList.gravel" class="form-control" id="" placeholder=""
+                [ngClass]="toValidate.gravel?'is-invalid':''" (ngModelChange)="toValidate.gravel=false">
+            </div>
+            <div class="col-lg-3" align="center"><br>
+              <label for="exampleFormControlTextarea1">Earth :</label>
+              <input type="text" [(ngModel)]="RoadList.earth" class="form-control" id="" placeholder=""
+                [ngClass]="toValidate.earth?'is-invalid':''" (ngModelChange)="toValidate.earth=false">
+            </div>
           </div>
-            <div class="modal-body">
-
-                    <div class="form-group">
-                        <div class="row">
-                               <div class ="col-lg-12"><br>
-                                <label for="exampleFormControlTextarea1">Road Type :</label>
-                                <select [(ngModel)]="RoadList.roadType" class="form-select" aria-label="Default select example"   [ngClass]="toValidate.roadType?'is-invalid':''" (ngModelChange)="toValidate.roadType=false">
-
-                                  <option selected disabled>- Select -</option>
-                                  <option *ngFor="let i of RoadType" value="{{i.id}}">{{i.roadtypename}}</option>
-
-                                </select>
-                              </div>
-                              <div class ="col-lg-12"><br>
-                                <label for="exampleFormControlTextarea1">Total Length per Pavement Classification (in Kms) :</label>
-                               </div>
-
-                               <div class ="col-lg-3" align="center"><br>
-                                <label for="exampleFormControlTextarea1" >Concrete :</label>
-                                <input type="text" [(ngModel)]="RoadList.concrete" class="form-control" id="" placeholder=""  [ngClass]="toValidate.concrete?'is-invalid':''" (ngModelChange)="toValidate.concrete=false">
-                               </div>
-                               <div class ="col-lg-3" align="center"><br>
-                                <label for="exampleFormControlTextarea1">Asphalt :</label>
-                                <input type="text" [(ngModel)]="RoadList.asphalt" class="form-control" id="" placeholder=""  [ngClass]="toValidate.asphalt?'is-invalid':''" (ngModelChange)="toValidate.asphalt=false">                                     </div>
-                               <div class ="col-lg-3" align="center"><br>
-                                <label for="exampleFormControlTextarea1">Gravel :</label>
-                                <input type="text" [(ngModel)]="RoadList.gravel" class="form-control" id="" placeholder=""  [ngClass]="toValidate.gravel?'is-invalid':''" (ngModelChange)="toValidate.gravel=false">
-                               </div>
-                               <div class ="col-lg-3" align="center"><br>
-                                <label for="exampleFormControlTextarea1">Earth :</label>
-                                <input type="text" [(ngModel)]="RoadList.earth" class="form-control" id="" placeholder=""  [ngClass]="toValidate.earth?'is-invalid':''" (ngModelChange)="toValidate.earth=false">
-                               </div>
-                              </div>
-                            </div>
-                            <br>
-
-                        </div>
-                 <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
-                <button class="btn btn-primary" type="button" *ngIf="isNew" (click)="saveRoadList()" >Save</button>
-                <button class="btn btn-primary" type="button" *ngIf="!isNew" (click)="updateRoadList()">Update</button></div>
         </div>
+        <br>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal" data-dismiss="modal">Close</button>
+        <button class="btn btn-primary" type="button" *ngIf="isNew" (click)="saveRoadList()">Save</button>
+        <button class="btn btn-primary" type="button" *ngIf="!isNew" (click)="updateRoadList()">Update</button>
+      </div>
     </div>
+  </div>
 </div>
-
-

@@ -10,7 +10,9 @@ import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
   styleUrls: ['./ports.component.css'],
 })
 export class PortsComponent implements OnInit {
-  constructor(private service: PortsService, private auth: AuthService,
+  constructor(
+    private service: PortsService,
+    private auth: AuthService,
     private modifyService: ModifyCityMunService
   ) {}
 
@@ -18,7 +20,7 @@ export class PortsComponent implements OnInit {
     return this.modifyService.ModifyText(cityMunName);
   }
 
-
+  message = 'Ports';
   munCityName: string = this.auth.munCityName;
 
   toValidate: any = {};
@@ -27,6 +29,7 @@ export class PortsComponent implements OnInit {
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
   isCheck: boolean = false;
+  showTemplate: boolean = false;
   onChange(isCheck: boolean) {
     this.isCheck = isCheck;
   }
@@ -105,12 +108,14 @@ export class PortsComponent implements OnInit {
     if (!this.toValidate.station && !this.toValidate.brgyId) {
       this.service.AddPort(this.data).subscribe({
         next: (request) => {
+          // this.showTemplate = true;
           this.GetListData();
         },
         error: (error) => {
           Swal.fire('Oops!', 'Something went wrong.', 'error');
         },
         complete: () => {
+          // this.showTemplate = false;
           if (!this.isCheck) {
             this.closebutton.nativeElement.click();
           }

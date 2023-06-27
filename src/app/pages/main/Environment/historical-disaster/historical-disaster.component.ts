@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import Swal from 'sweetalert2';
 import { EnvironmentProfileService } from 'src/app/shared/Environment/environment-profile.service';
@@ -6,17 +6,23 @@ import { EnvironmentProfileService } from 'src/app/shared/Environment/environmen
 @Component({
   selector: 'app-historical-disaster',
   templateUrl: './historical-disaster.component.html',
-  styleUrls: ['./historical-disaster.component.css']
+  styleUrls: ['./historical-disaster.component.css'],
 })
-
 export class HistoricalDisasterComponent implements OnInit {
-
-  constructor(private service: EnvironmentProfileService, private Auth: AuthService) { }
+  constructor(
+    private service: EnvironmentProfileService,
+    private Auth: AuthService
+  ) {}
 
   menuId = 7;
   setYear = Number(this.Auth.activeSetYear);
   munCityId = this.Auth.munCityId;
   userId = this.Auth.userId;
+
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void } };
+
+  message = 'Historical Disaster Profile';
 
   listHis: any = [];
   addData: any = {};
@@ -37,7 +43,7 @@ export class HistoricalDisasterComponent implements OnInit {
     { id: 10, type_disas: 'Volcanic Eruptions ' },
     { id: 11, type_disas: 'Severe Drought/Heatwave ' },
     { id: 12, type_disas: 'Strong Wind ' },
-    { id: 13, type_disas: 'Southeast Monsoon/Habagat ' }
+    { id: 13, type_disas: 'Southeast Monsoon/Habagat ' },
   ];
 
   ngOnInit() {
@@ -48,8 +54,17 @@ export class HistoricalDisasterComponent implements OnInit {
     this.addData = {};
   }
 
+  parentMethod() {
+    // alert('parent Method');
+    this.addData = {};
+    // this.not_visible = false;
+    this.updateForm = false;
+    this.resetForm();
+    // this.required = false;
+  }
+
   GetData(): void {
-    this.service.GetEnvironmentProfile(this.setYear, this.munCityId,).subscribe({
+    this.service.GetEnvironmentProfile(this.setYear, this.munCityId).subscribe({
       next: (response) => {
         this.listHis = response;
       },
@@ -62,13 +77,13 @@ export class HistoricalDisasterComponent implements OnInit {
     });
   }
 
-  AddDescription(addData: any): void {
-    addData.setYear = Number(this.setYear);
-    addData.menuId = String(this.menuId);
-    addData.id = this.idCounter++;
-    addData.userId = this.userId;
-    addData.munCityId = this.munCityId;
-    this.service.AddEnvironmentProile(addData).subscribe({
+  AddDescription(): void {
+    this.addData.setYear = Number(this.setYear);
+    this.addData.menuId = String(this.menuId);
+    // addData.id = this.idCounter++;
+    this.addData.userId = this.userId;
+    this.addData.munCityId = this.munCityId;
+    this.service.AddEnvironmentProile(this.addData).subscribe({
       next: (response) => {
         this.listHis.push(response);
         console.log(response);
@@ -92,14 +107,14 @@ export class HistoricalDisasterComponent implements OnInit {
         });
       },
       complete: () => {
+        this.closebutton.nativeElement.click();
         console.log('AddHistoricalDiaster() completed.');
-      }
+      },
     });
   }
 
-
-  EditDescription(addData: any): void {
-    this.service.EditEnvironmentProfile(addData).subscribe({
+  EditDescription(): void {
+    this.service.EditEnvironmentProfile(this.addData).subscribe({
       next: (response) => {
         this.GetData();
         //this.listData.push(response);
@@ -126,11 +141,11 @@ export class HistoricalDisasterComponent implements OnInit {
         });
       },
       complete: () => {
+        this.closebutton.nativeElement.click();
         console.log('UpdateHistoricalDisaster() completed.');
       },
     });
   }
-
 
   deleteDescription(id: number) {
     this.listHis = this.listHis.filter(
@@ -183,5 +198,4 @@ export class HistoricalDisasterComponent implements OnInit {
       }
     });
   }
-
 }

@@ -23,7 +23,17 @@ export class TransportTerminalsComponent implements OnInit {
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
   }
-  
+
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void } };
+
+  message = 'Transport Terminals';
+
+  parentMethod() {
+    // alert('parent Method');
+    this.isNew = true;
+  }
+
   munCityName: string = this.auth.munCityName;
   TranspoTerminalList: any = [];
   TerminalList: any = {};
@@ -68,6 +78,9 @@ export class TransportTerminalsComponent implements OnInit {
 
     this.service.get_list_transpo_terminal().subscribe((data) => {
       this.TranspoTerminalList = <any>data;
+      // if(this.TranspoTerminalList.length>0){
+
+      // }
 
       for (let i of this.TranspoTerminalList) {
         for (let t of this.TransportType) {
@@ -112,6 +125,7 @@ export class TransportTerminalsComponent implements OnInit {
       this.service.post_save_transpo_terminal(this.TerminalList).subscribe(
         (data) => {
           Swal.fire('Saved!', 'Data successfully saved.', 'success');
+          this.closebutton.nativeElement.click();
           for (let t of this.TransportType) {
             if ((<any>data).transportType == t.id) {
               (<any>data).transpotypename = t.transpotypename;
@@ -162,6 +176,7 @@ export class TransportTerminalsComponent implements OnInit {
     ) {
       this.service.put_update_transpo_terminal(this.TerminalList).subscribe(
         (data) => {
+          this.closebutton.nativeElement.click();
           Swal.fire('Updated!', 'Data successfully updated.', 'success');
         },
         (err) => {

@@ -4,11 +4,12 @@ import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/services/auth.service';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
+import { ImportComponent } from 'src/app/components/import/import.component';
 
 @Component({
   selector: 'app-city-officials',
   templateUrl: './city-officials.component.html',
-  styleUrls: ['./city-officials.component.css']
+  styleUrls: ['./city-officials.component.css'],
 })
 export class CityOfficialsComponent implements OnInit {
   isLoading: boolean = true;
@@ -17,11 +18,16 @@ export class CityOfficialsComponent implements OnInit {
   not_visible: boolean = true;
   // required: boolean = true;
 
+  showTemplate: boolean = false;
 
+  @ViewChild(ImportComponent)
+  private importComponent!: ImportComponent;
 
-
-
-  constructor(private service: CityOfficialService, private auth: AuthService, private modifyService: ModifyCityMunService) { } // private service: + name of service that you've created
+  constructor(
+    private service: CityOfficialService,
+    private auth: AuthService,
+    private modifyService: ModifyCityMunService
+  ) {} // private service: + name of service that you've created
   toValidate: any = {};
   Official: any = [];
   city: any = {};
@@ -31,7 +37,7 @@ export class CityOfficialsComponent implements OnInit {
   editModal: any = {};
   AddModal: any = {};
   positions: any = [];
-  munCityName:string = this.auth.munCityName;
+  munCityName: string = this.auth.munCityName;
 
   pageSize = 25;
   p: string | number | undefined;
@@ -39,16 +45,23 @@ export class CityOfficialsComponent implements OnInit {
   tableSize: number = 5;
   tableSizes: any = [5, 10, 15, 25, 50, 100];
 
+  importMethod() {
+    console.log('importData');
+    this.showTemplate = true;
+  }
+
   @ViewChild('closebutton')
-  closebutton!: { nativeElement: { click: () => void; }; };
+  closebutton!: { nativeElement: { click: () => void } };
+
+  @ViewChild('closeImport')
+  closeImport!: { nativeElement: { click: () => void } };
 
   onChange(isCheck: boolean) {
     this.isCheck = isCheck;
-    console.log("isCheck:", this.isCheck);
+    console.log('isCheck:', this.isCheck);
   }
 
-
-  date = new DatePipe('en-PH')
+  date = new DatePipe('en-PH');
   ngOnInit(): void {
     this.Init();
   }
@@ -56,30 +69,46 @@ export class CityOfficialsComponent implements OnInit {
   Init() {
     this.getPositions();
     this.getOfficials();
-
   }
-  modifyCityMun(cityMunName:string){
+  modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
   }
   getOfficials() {
-    this.service.GetOfficial().subscribe(data => {
-    this.Official = (<any>data);
-    })
+    this.service.GetOfficial().subscribe((data) => {
+      this.Official = <any>data;
+      // this.import();
+    });
+  }
+
+  message = 'City Officials';
+
+  // importData: string = 'City Official';
+  import() {
+    let importData = 'City Official';
+    this.importComponent.import(importData);
   }
 
   getPositions() {
-    this.service.GetMunPosition().subscribe(data => {
+    this.service.GetMunPosition().subscribe((data) => {
       this.positions = <any>data;
-    })
+    });
   }
 
-
   addOfficial() {
-    this.toValidate.name = this.city.name == "" || this.city.name == null ? true : false;
-    this.toValidate.seqNo = this.city.seqNo == "" || this.city.seqNo == undefined ? true : false;
-    this.toValidate.term = this.city.term == "" || this.city.term == null ? true : false;
-    this.toValidate.contact = this.city.contact == "" || this.city.contact == undefined ? true : false;
-    if (this.toValidate.name == true || this.toValidate.seqNo == true ||this.toValidate.term == true || this.toValidate.contact == true) {
+    this.toValidate.name =
+      this.city.name == '' || this.city.name == null ? true : false;
+    this.toValidate.seqNo =
+      this.city.seqNo == '' || this.city.seqNo == undefined ? true : false;
+    this.toValidate.term =
+      this.city.term == '' || this.city.term == null ? true : false;
+    this.toValidate.contact =
+      this.city.contact == '' || this.city.contact == undefined ? true : false;
+    if (
+      this.toValidate.name == true ||
+      this.toValidate.seqNo == true ||
+      this.toValidate.term == true ||
+      this.toValidate.contact == true
+    ) {
       Swal.fire(
         'Missing Data!',
         'Please fill out the required fields',
@@ -91,99 +120,101 @@ export class CityOfficialsComponent implements OnInit {
       this.city.transId = this.date.transform(Date.now(), 'YYMM');
       this.city.tag = 1;
       this.city.setYear = this.auth.activeSetYear;
-      this.city.position = "";
-      this.service.AddOfficial(this.city).subscribe(_data => {
-        if (!this.isCheck) {
-          this.closebutton.nativeElement.click();
+      this.city.position = '';
+      this.service.AddOfficial(this.city).subscribe(
+        (_data) => {
+          if (!this.isCheck) {
+            this.closebutton.nativeElement.click();
+          }
+          console.log(_data);
+          this.clearData();
+          this.getOfficials();
+          Swal.fire('Good job!', 'Data Added Successfully!', 'success');
+          this.getOfficials();
+          this.city = {};
+        },
+        (err) => {
+          Swal.fire('ERROR!', 'Data Already Exist', 'error');
         }
-        console.log(_data);
-        this.clearData();
-        this.getOfficials();
-        Swal.fire(
-          'Good job!',
-          'Data Added Successfully!',
-          'success'
-        );
-        this.getOfficials();
-        this.city = {};
-
-      }, err => {
-        Swal.fire(
-          'ERROR!',
-          'Data Already Exist',
-          'error'
-        );
-      });
+      );
     }
   }
 
   //for modal
   update() {
-    this.toValidate.name = this.editModal.name == "" || this.editModal.name == null ? true : false;
-    this.toValidate.seqNo = this.editModal.seqNo == "" || this.editModal.seqNo == undefined ? true : false;
-    this.toValidate.term = this.editModal.term == "" || this.editModal.term == null ? true : false;
-    this.toValidate.contact = this.editModal.contact == "" || this.editModal.contact == undefined ? true : false;
-    if (this.toValidate.name == true || this.toValidate.seqNo == true ||this.toValidate.term == true || this.toValidate.contact == true) {
+    this.toValidate.name =
+      this.editModal.name == '' || this.editModal.name == null ? true : false;
+    this.toValidate.seqNo =
+      this.editModal.seqNo == '' || this.editModal.seqNo == undefined
+        ? true
+        : false;
+    this.toValidate.term =
+      this.editModal.term == '' || this.editModal.term == null ? true : false;
+    this.toValidate.contact =
+      this.editModal.contact == '' || this.editModal.contact == undefined
+        ? true
+        : false;
+    if (
+      this.toValidate.name == true ||
+      this.toValidate.seqNo == true ||
+      this.toValidate.term == true ||
+      this.toValidate.contact == true
+    ) {
       Swal.fire(
         'Missing Data!',
         'Please fill out the required fields',
         'warning'
       );
-    }else {
-    this.service.UpdateOfficial(this.editModal).subscribe({ next: (_data) => {
-        this.getOfficials();
-        this.editModal = {};
-      },
-    });
+    } else {
+      this.service.UpdateOfficial(this.editModal).subscribe({
+        next: (_data) => {
+          this.getOfficials();
+          this.editModal = {};
+        },
+      });
 
-    Swal.fire({
-      position: 'center',
-      icon: 'success',
-      title: 'Your work has been updated',
-      showConfirmButton: false,
-      timer: 1000
-    });
-    document.getElementById("exampleModalLong")?.click();
-    this. getOfficials();
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Your work has been updated',
+        showConfirmButton: false,
+        timer: 1000,
+      });
+      document.getElementById('exampleModalLong')?.click();
+      this.getOfficials();
+    }
   }
-}
 
   delete(official2: any = {}) {
     Swal.fire({
-
       text: 'Do you want to remove this file?',
       icon: 'warning',
       showConfirmButton: true,
       showCancelButton: true,
-      confirmButtonText: 'Yes, remove it!'
+      confirmButtonText: 'Yes, remove it!',
     }).then((result) => {
       if (result.value) {
         official2.tag = -1;
-        this.service.UpdateOfficial(official2).subscribe(_data => {
-          Swal.fire(
-            'Deleted!',
-            'Your file has been removed.',
-            'success'
-          );
+        this.service.UpdateOfficial(official2).subscribe((_data) => {
+          Swal.fire('Deleted!', 'Your file has been removed.', 'success');
           this.Init();
           this.city = {};
-        })
+        });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-
       }
       this.Init();
       this.city = {};
-    })
+    });
   }
 
-
-  onTableDataChange(page: any) { //paginate
-    console.log(page)
+  onTableDataChange(page: any) {
+    //paginate
+    console.log(page);
     this.p = page;
     this.Init();
-
   }
-  onTableSizeChange(event: any) { //paginate
+  onTableSizeChange(event: any) {
+    //paginate
     this.tableSize = event.target.value;
     this.p = 1;
     this.Init();
@@ -194,6 +225,4 @@ export class CityOfficialsComponent implements OnInit {
     this.visible = true;
     // this.required = false;
   }
-
-
 }

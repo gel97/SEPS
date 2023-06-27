@@ -22,7 +22,9 @@ export class DepartmentStoreComponent implements OnInit {
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
   }
-  
+
+  message = 'Department Stores';
+
   toValidate: any = {};
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;

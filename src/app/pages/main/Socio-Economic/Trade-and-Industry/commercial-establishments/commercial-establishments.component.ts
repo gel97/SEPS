@@ -25,7 +25,9 @@ export class CommercialEstablishmentsComponent implements OnInit {
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
   }
-  
+
+  message = 'Commercial Establishments';
+
   munCityName: string = this.auth.munCityName;
 
   toValidate: any = {};

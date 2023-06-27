@@ -22,7 +22,9 @@ export class MemorialParksComponent implements OnInit {
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
   }
-  
+
+  message = 'Cemeteries/ Memorial Parks';
+
   toValidate: any = {};
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;

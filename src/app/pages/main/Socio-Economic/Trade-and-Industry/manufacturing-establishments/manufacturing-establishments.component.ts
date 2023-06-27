@@ -27,6 +27,8 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
     );
   }
 
+  message = 'Manufacturing Establishments';
+
   constructor(
     private service: ManEstabService,
     private auth: AuthService,

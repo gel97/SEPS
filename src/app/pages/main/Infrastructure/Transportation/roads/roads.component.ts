@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 import { TrasportationService } from 'src/app/shared/Trasportation/trasportation.service';
@@ -16,10 +16,20 @@ export class RoadsComponent implements OnInit {
     private modifyService: ModifyCityMunService
   ) {}
 
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void } };
+
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
   }
-  
+
+  message = 'Roads';
+
+  parentMethod() {
+    // alert('parent Method');
+    this.isNew = true;
+  }
+
   munCityName: string = this.auth.munCityName;
   toValidate: any = {};
   TranspoRoadList: any = [];
@@ -45,7 +55,11 @@ export class RoadsComponent implements OnInit {
   getListTranspoRoad() {
     this.service.get_list_transpo_road().subscribe((data) => {
       this.TranspoRoadList = <any>data;
-
+      // if (this.TranspoRoadList.length > 0) {
+      //   this.isNew = true;
+      // } else {
+      //   this.isNew = false;
+      // }
       for (let i of this.TranspoRoadList) {
         for (let r of this.RoadType) {
           if (i.roadType == r.id) {
@@ -99,7 +113,7 @@ export class RoadsComponent implements OnInit {
       this.service.post_save_transpo_road(this.RoadList).subscribe(
         (data) => {
           Swal.fire('Saved!', 'Data successfully saved.', 'success');
-
+          this.closebutton.nativeElement.click();
           for (let r of this.RoadType) {
             if ((<any>data).roadType == r.id) {
               (<any>data).roadtypename = r.roadtypename;
@@ -160,6 +174,7 @@ export class RoadsComponent implements OnInit {
       this.service.put_update_transpo_road(this.RoadList).subscribe(
         (data) => {
           Swal.fire('Updated!', 'Data successfully updated.', 'success');
+          this.closebutton.nativeElement.click();
         },
         (err) => {
           alert('ERROR');

@@ -5,6 +5,7 @@ import { DemographyService } from 'src/app/shared/Governance/demography.service'
 import Swal from 'sweetalert2';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
+import { ImportComponent } from 'src/app/components/import/import.component';
 
 @Component({
   selector: 'app-demography',
@@ -37,6 +38,9 @@ export class DemographyComponent implements OnInit {
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
 
+  @ViewChild(ImportComponent)
+  private importComponent!: ImportComponent;
+
   onChange(isCheck: boolean) {
     this.isCheck = isCheck;
     console.log('isCheck:', this.isCheck);
@@ -67,11 +71,14 @@ export class DemographyComponent implements OnInit {
     this.list_of_barangay();
   }
 
+  message = 'Demography';
+
   Init() {
     this.demo.munCityId = this.auth.munCityId;
     this.demo.setYear = this.auth.activeSetYear;
     this.service.GetDemography().subscribe((data) => {
       this.Demo = <any>data;
+      this.import();
       this.Demo.sort((n1: any, n2: any) => {
         //order by Descending
         if (n1.setYear < n2.setYear) return 1;
@@ -80,6 +87,11 @@ export class DemographyComponent implements OnInit {
       });
       console.log(this.Demo);
     });
+  }
+
+  import() {
+    let importData = 'Demography';
+    this.importComponent.import(importData);
   }
 
   list_of_barangay() {
@@ -123,6 +135,7 @@ export class DemographyComponent implements OnInit {
           }
           console.log(_data);
           this.clearData();
+          this.Init();
         },
         (err) => {
           Swal.fire('ERROR!', 'Error', 'error');
@@ -210,6 +223,7 @@ export class DemographyComponent implements OnInit {
         for (let i = 0; i < this.Demo.length; i++) {
           if (this.Demo[i].transId == transId) {
             this.Demo.splice(i, 1);
+            this.Init();
             Swal.fire('Deleted!', 'Your file has been removed.', 'success');
           }
         }

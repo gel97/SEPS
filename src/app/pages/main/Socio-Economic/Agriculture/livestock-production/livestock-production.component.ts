@@ -34,6 +34,8 @@ export class LivestockProductionComponent implements OnInit {
   munCityName: string = this.Auth.munCityName;
 
   menuId = '4';
+
+  message = 'Livestock/ Poultry Production';
   toValidate: any = {};
   dataList: any = [];
   addData: any = {};
@@ -187,6 +189,14 @@ export class LivestockProductionComponent implements OnInit {
     this.required = false;
   }
 
+  parentMethod() {
+    // alert('parent Method');
+    this.addData = {};
+    this.not_visible = false;
+    this.visible = true;
+    this.required = false;
+  }
+
   editToggle() {
     this.not_visible = true;
     this.visible = false;
@@ -227,6 +237,8 @@ export class LivestockProductionComponent implements OnInit {
         if (result.isConfirmed) {
           this.addData.longtitude = this.gmapComponent.markers.lng;
           this.addData.latitude = this.gmapComponent.markers.lat;
+
+          this.closebutton.nativeElement.click();
 
           this.addData.setYear = this.setYear;
           this.addData.munCityId = this.munCityId;

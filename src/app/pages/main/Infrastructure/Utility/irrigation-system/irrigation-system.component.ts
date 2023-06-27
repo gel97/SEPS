@@ -22,6 +22,14 @@ export class IrrigationSystemComponent implements OnInit {
     return this.modifyService.ModifyText(cityMunName);
   }
 
+  message = 'Irrigation Systems';
+
+  viewData: boolean = true;
+  parentMethod() {
+    // alert('parent Method');
+    this.viewData = true;
+  }
+
   toValidate: any = {};
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
@@ -55,8 +63,10 @@ export class IrrigationSystemComponent implements OnInit {
         if (response !== null) {
           this.irrigation = <any>response;
           this.hasData = true;
+          this.viewData = true;
         } else {
           this.hasData = false;
+          this.viewData = false;
         }
       },
       error: (error) => {
@@ -78,9 +88,9 @@ export class IrrigationSystemComponent implements OnInit {
           Swal.fire('Oops!', 'Something went wrong.', 'error');
         },
         complete: () => {
-          if (!this.isCheck) {
-            this.closebutton.nativeElement.click();
-          }
+          // if (!this.isCheck) {
+          this.closebutton.nativeElement.click();
+          // }
           this.irrigation = {};
           Swal.fire('Good job!', 'Data Added Successfully!', 'success');
         },

@@ -1,6 +1,8 @@
 <div class="">
-
-  <div class="card o-hidden border-2 shadow-sm my-5">
+  <ng-template #isEmpty>
+    <app-import [data]="message" (testEvent)="parentMethod()"></app-import>
+  </ng-template>
+  <div *ngIf="TranspoBridgeList.length>0  ; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
     <div class="card-body p-0">
       <!-- Nested Row within Card Body -->
       <div class="row">
@@ -15,7 +17,7 @@
               <div class="col-lg-11"></div>
               <div class="col-lg-1">
                 <button class="btn btn-primary font-weight-bold" (click)="isNew=true; BridgeList={}" type="button"
-                  data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa fa-plus"></i>Bridges</button>
+                  data-bs-toggle="modal" data-bs-target="#ModalAdd"><i class="fa fa-plus"></i>Bridges</button>
               </div>
             </div>
 
@@ -54,7 +56,7 @@
                       <div class="d-inline-flex">
                         <app-admin>
                           <button class="btn btn-info btn-circle" title="Edit" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal" (click)="BridgeList=i; isNew=false"><i
+                            data-bs-target="#ModalAdd" (click)="BridgeList=i; isNew=false"><i
                               class="fa fa-pen"></i></button>&nbsp;
                         </app-admin>
 
@@ -78,19 +80,21 @@
           </div>
         </div>
       </div>
-
     </div>
+  </div>
+</div>
 
 
 
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="ModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
   aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title text-dark" id="exampleModalLabel"> Bridges</h5>
-        <button type="close" #closebutton class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="close" #closebutton class="btn-close" data-bs-dismiss="modal" data-dismiss="modal"
+          aria-label="Close"></button>
       </div>
       <div class="modal-body">
 
@@ -139,7 +143,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal" data-dismiss="modal">Close</button>
         <button class="btn btn-primary" type="button" *ngIf="isNew" (click)="saveBridgeList()"><i
             class="fa fa-chek"></i>Save</button>
         <button class="btn btn-primary" type="button" *ngIf="!isNew" (click)="updateBridgeList()"><i
@@ -150,26 +154,26 @@
 </div>
 
 
-    <!-- modal area -->
-    <div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-      aria-hidden="true">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">SEPS GEOLOCATION TAGGING</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <app-gmap></app-gmap>
-          </div>
-          <div class="modal-footer">
-            <app-admin>
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>&nbsp;
-              <button type="button" class="btn btn-primary" (click)="updateBridgeList()">Save changes</button>
-            </app-admin>
-          </div>
-        </div>
+<!-- modal area -->
+<div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">SEPS GEOLOCATION TAGGING</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-gmap></app-gmap>
+      </div>
+      <div class="modal-footer">
+        <app-admin>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>&nbsp;
+          <button type="button" class="btn btn-primary" (click)="updateBridgeList()">Save changes</button>
+        </app-admin>
       </div>
     </div>
+  </div>
+</div>

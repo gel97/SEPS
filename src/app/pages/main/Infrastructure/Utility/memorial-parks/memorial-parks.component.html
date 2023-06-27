@@ -1,5 +1,8 @@
 <div class="">
-  <div class="card o-hidden border-2 shadow-sm my-5">
+  <ng-template #isEmpty>
+    <app-import [data]="message"></app-import>
+  </ng-template>
+  <div *ngIf="listFacilities.length>0  ; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
     <div class="card-body p-0">
       <!-- Nested Row within Card Body -->
       <div class="row">
@@ -12,7 +15,7 @@
             <div class="form-inline float-right ">
               <app-admin>
                 <button (click)="isAdd = true; facility = {}" class="btn btn-primary" data-bs-toggle="modal"
-                  data-bs-target="#mEducation">
+                  data-bs-target="#ModalAdd">
                   <i class="fa fa-plus"></i>
                   Cemetery/ Memorial Park
                 </button>
@@ -51,7 +54,7 @@
                       <div class="d-inline-flex">
                         <app-admin>
                           <button (click)="isAdd = false; facility = data" class="btn btn-info btn-circle"
-                            data-toggle="modal" data-target="#mEducation"><i class="fa fa-pen"></i>
+                            data-toggle="modal" data-target="#ModalAdd"><i class="fa fa-pen"></i>
                           </button>
                         </app-admin>
                         &nbsp;
@@ -79,12 +82,13 @@
   </div>
 </div>
 
-<div class="modal fade" id="mEducation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="ModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title text-dark" id="exampleModalLabel">Cemetery/ Memorial Park</h5>
-        <button type="button" #closebutton class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" #closebutton class="btn-close" data-bs-dismiss="modal" data-dismiss="modal"
+          aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div class="form-group">
@@ -150,7 +154,7 @@
             </label>
           </div>
         </div>
-        <button type="button" class="btn btn-school" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-school" data-bs-dismiss="modal" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" (click)="isAdd? AddFacility(): EditFacility()">Save
           changes</button>
       </div>

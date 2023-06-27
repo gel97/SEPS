@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
+import { ImportComponent } from 'src/app/components/import/import.component';
 
 @Component({
   selector: 'app-sk-voters',
@@ -20,7 +21,7 @@ export class SkVotersComponent implements OnInit {
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
   }
-  
+
   munCityName: string = this.auth.munCityName;
 
   toValidate: any = {};
@@ -35,6 +36,9 @@ export class SkVotersComponent implements OnInit {
 
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
+
+  @ViewChild(ImportComponent)
+  private importComponent!: ImportComponent;
 
   onChange(isCheck: boolean) {
     this.isCheck = isCheck;
@@ -58,8 +62,16 @@ export class SkVotersComponent implements OnInit {
     this.voter.setYear = this.auth.activeSetYear;
     this.service.GetSKVoter().subscribe((data) => {
       this.Voter = <any>data;
+      // this.import();
       console.log(this.Voter);
     });
+  }
+
+  message = 'Polling Precincts and SK Registered Voters';
+
+  import() {
+    let importData = 'Polling Precincts and SK Registered Voters';
+    this.importComponent.import(importData);
   }
 
   list_of_barangay() {
@@ -94,6 +106,7 @@ export class SkVotersComponent implements OnInit {
     } else {
       this.voter.munCityId = this.auth.munCityId;
       this.voter.setYear = this.auth.activeSetYear;
+      this.voter.setYear = parseInt(this.voter.setYear);
       this.service.AddSKVoter(this.voter).subscribe(
         (_data) => {
           if (!this.isCheck) {

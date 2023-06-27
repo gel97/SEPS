@@ -12,7 +12,9 @@ import Swal from 'sweetalert2';
 })
 export class CellSitesComponent implements OnInit {
   munCityName: string = this.auth.munCityName;
-  constructor(private service: CellSitesService, private auth: AuthService,
+  constructor(
+    private service: CellSitesService,
+    private auth: AuthService,
     private modifyService: ModifyCityMunService
   ) {}
 
@@ -30,6 +32,8 @@ export class CellSitesComponent implements OnInit {
     this.isCheck = isCheck;
     console.log('isCheck:', this.isCheck);
   }
+
+  message = 'Communication Towers/ Cell-sites';
 
   markerObj: any = {};
 

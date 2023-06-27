@@ -52,6 +52,8 @@ export class TelegraphComponent implements OnInit {
   munCityId: string = this.auth.munCityId;
   setYear: string = this.auth.setYear;
 
+  message = 'Telegraph Facilities';
+
   isAdd: boolean = true;
   listData: any = [];
   data: any = {};

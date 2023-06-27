@@ -23,7 +23,12 @@ export class WaterUtilityComponent implements OnInit {
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
   }
-  
+
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void } };
+
+  message = 'Water System Facilities';
+
   add_service: boolean = true;
 
   menuId: string = '1';
@@ -99,6 +104,7 @@ export class WaterUtilityComponent implements OnInit {
       this.water.munCityId = this.munCityId;
       this.service.Add_Services(this.water).subscribe((data) => {
         console.log('checke_data', data);
+        this.closebutton.nativeElement.click();
         Swal.fire('Good job!', 'Data Added Successfully!', 'success');
         this.List_services();
         this.water = {};
@@ -111,6 +117,7 @@ export class WaterUtilityComponent implements OnInit {
     this.water.latitude = this.gmapComponent.markers.lat;
     this.service.Update_Services(this.water).subscribe({
       next: (_data) => {
+        this.closebutton.nativeElement.click();
         this.List_services();
       },
     });

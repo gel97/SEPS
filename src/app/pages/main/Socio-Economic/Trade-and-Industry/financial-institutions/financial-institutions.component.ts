@@ -48,6 +48,8 @@ export class FinancialInstitutionsComponent implements OnInit {
   financial: any = {};
   editmodal: any = {};
 
+  message = 'Financial Institutions';
+
   //Updatelocation:any={};
 
   // Pagination

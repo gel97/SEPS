@@ -4,6 +4,7 @@ import { DatePipe } from '@angular/common';
 import { RegVoterService } from './../../../../shared/Governance/reg-voter.service';
 import Swal from 'sweetalert2';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
+import { ImportComponent } from 'src/app/components/import/import.component';
 
 @Component({
   selector: 'app-registered-voters',
@@ -11,13 +12,15 @@ import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
   styleUrls: ['./registered-voters.component.css'],
 })
 export class RegisteredVotersComponent implements OnInit {
-  constructor(private service: RegVoterService, private auth: AuthService,
+  constructor(
+    private service: RegVoterService,
+    private auth: AuthService,
     private modifyService: ModifyCityMunService
   ) {}
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
   }
-  
+
   munCityName: string = this.auth.munCityName;
 
   toValidate: any = {};
@@ -32,6 +35,9 @@ export class RegisteredVotersComponent implements OnInit {
 
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
+
+  @ViewChild(ImportComponent)
+  private importComponent!: ImportComponent;
 
   onChange(isCheck: boolean) {
     this.isCheck = isCheck;
@@ -50,12 +56,20 @@ export class RegisteredVotersComponent implements OnInit {
     this.Init();
     this.list_of_barangay();
   }
+
+  message = 'Polling Precincts and Registered Voters';
   Init() {
     this.voter.munCityId = this.auth.munCityId;
     this.service.GetRegVoter().subscribe((data) => {
+      // this.import();
       this.Voter = <any>data;
       console.log(this.Voter);
     });
+  }
+
+  import() {
+    let importData = 'Polling Precincts and Registered Voters';
+    this.importComponent.import(importData);
   }
 
   list_of_barangay() {

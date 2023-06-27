@@ -1,5 +1,8 @@
 <div class="">
-  <div class="card o-hidden border-2 shadow-sm my-5">
+  <ng-template #isEmpty>
+    <app-import [data]="message" (testEvent)="parentMethod()"></app-import>
+  </ng-template>
+  <div *ngIf="viewData ; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
     <div class="card-body p-0">
       <!-- Nested Row within Card Body -->
       <div class="row">
@@ -108,7 +111,8 @@
             </div>
             <div class="col-lg-12">
               <label>Punong Barangay:</label>
-              <input type="text" class="form-control mb-2" [(ngModel)]="data.punongBrgy" [ngClass]="toValidate.punongBrgy?'is-invalid':''" (keyup)="toValidate.punongBrgy=false">
+              <input type="text" class="form-control mb-2" [(ngModel)]="data.punongBrgy"
+                [ngClass]="toValidate.punongBrgy?'is-invalid':''" (keyup)="toValidate.punongBrgy=false">
             </div>
             <div class="col-lg-12">
               <label>Contact Number:</label>
@@ -116,7 +120,8 @@
             </div>
             <div class="col-lg-12">
               <label>Location of Barangay Hall:</label>
-              <input type="text" class="form-control mb-2" [(ngModel)]="data.address" [ngClass]="toValidate.address?'is-invalid':''" (keyup)="toValidate.address=false">
+              <input type="text" class="form-control mb-2" [(ngModel)]="data.address"
+                [ngClass]="toValidate.address?'is-invalid':''" (keyup)="toValidate.address=false">
             </div>
             <div class="col-lg-12">
               <label>Number of Puroks:</label>
@@ -128,9 +133,11 @@
             </div><br><br>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" (click)="isAdd ? AddData():EditData()"><i class="fa fa-check"></i>
+            <button type="button" class="btn btn-primary" (click)="isAdd ? AddData():EditData()"><i
+                class="fa fa-check"></i>
               Save Changes</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-time"></i>Close</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal"><i
+                class="fa fa-time"></i>Close</button>
 
           </div>
         </div>

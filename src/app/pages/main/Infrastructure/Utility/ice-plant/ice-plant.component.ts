@@ -22,7 +22,9 @@ export class IcePlantComponent implements OnInit {
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
   }
-  
+
+  message = 'Ice Plant / Cold Storage Facilities';
+
   toValidate: any = {};
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;

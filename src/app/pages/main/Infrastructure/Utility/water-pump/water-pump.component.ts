@@ -34,6 +34,8 @@ export class WaterPumpComponent implements OnInit {
     console.log('isCheck:', this.isCheck);
   }
 
+  message = 'Water Pump Stations';
+
   markerObj: any = {};
 
   SetMarker(data: any = {}) {

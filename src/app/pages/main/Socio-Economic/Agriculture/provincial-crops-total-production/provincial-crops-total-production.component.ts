@@ -24,6 +24,8 @@ export class ProvincialCropsTotalProductionComponent implements OnInit {
   commo: any = {};
   toValidate: any = {};
 
+  message = 'Provincial Crops Total Production';
+
   list_of_Commodities = [
     { id: 1, name: 'Rice' },
     { id: 2, name: 'Corn' },
@@ -72,6 +74,14 @@ export class ProvincialCropsTotalProductionComponent implements OnInit {
 
   ngOnInit(): void {
     this.List_Commodities();
+  }
+
+  parentMethod() {
+    // alert('parent Method');
+    this.commo = {};
+    this.not_visible = false;
+    this.visible = true;
+    // this.required = false;
   }
 
   List_Commodities() {
@@ -146,6 +156,7 @@ export class ProvincialCropsTotalProductionComponent implements OnInit {
         next: (_data) => {
           this.List_Commodities();
           this.clearData();
+          this.closebutton.nativeElement.click();
         },
       });
 

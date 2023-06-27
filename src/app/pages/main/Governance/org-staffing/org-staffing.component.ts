@@ -1,10 +1,11 @@
 import { CityOfficialService } from '../../../../shared/Governance/city-official.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/services/auth.service';
 import { OrgStaffingService } from 'src/app/shared/Governance/org-staffing.service';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
+import { ImportComponent } from 'src/app/components/import/import.component';
 
 @Component({
   selector: 'app-org-staffing',
@@ -12,13 +13,18 @@ import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
   styleUrls: ['./org-staffing.component.css'],
 })
 export class OrgStaffingComponent implements OnInit {
-  constructor(private service: OrgStaffingService, private auth: AuthService,
+  constructor(
+    private service: OrgStaffingService,
+    private auth: AuthService,
     private modifyService: ModifyCityMunService
   ) {}
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
   }
-  
+
+  @ViewChild(ImportComponent)
+  private importComponent!: ImportComponent;
+
   munCityName: string = this.auth.munCityName;
   toValidate: any = {};
   org: any = {};
@@ -31,11 +37,26 @@ export class OrgStaffingComponent implements OnInit {
     this.Init();
   }
 
+  viewData: boolean = false;
+  parentMethod() {
+    // alert('parent Method');
+    this.viewData = true;
+  }
+
+  message = 'Organization & Staffing Pattern';
+
+  import() {
+    let importData = 'Organization / Staffing Pattern';
+    // this.view = this.importComponent.viewData;
+    this.importComponent.import(importData);
+  }
+
   Init() {
     this.org.munCityId = this.auth.munCityId;
     this.org.setYear = this.auth.activeSetYear;
     this.service.GetOrg().subscribe((data) => {
       this.vieworg = <any>data;
+      // this.import();
       //textfield(enable/disabled)
       this.inputDisabled = this.vieworg != null ? true : false;
       if (this.vieworg !== null) {

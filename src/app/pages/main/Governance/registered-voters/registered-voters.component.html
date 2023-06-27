@@ -1,5 +1,8 @@
 <div class="">
-  <div class="card o-hidden border-2 shadow-sm my-5">
+  <ng-template #isEmpty>
+    <app-import [data]="message"></app-import>
+  </ng-template>
+  <div *ngIf="Voter.length>0; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
     <div class="card-body p-0">
       <!-- Nested Row within Card Body -->
       <div class="row">

@@ -21,6 +21,8 @@ export class MajorEconomicActivitiesComponent implements OnInit {
     return this.modifyService.ModifyText(cityMunName);
   }
 
+  message = 'Major Economic Activities';
+
   munCityName: string = this.auth.munCityName;
 
   toValidate: any = {};

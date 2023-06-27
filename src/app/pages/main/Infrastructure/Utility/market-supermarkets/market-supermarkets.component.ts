@@ -35,6 +35,8 @@ export class MarketSupermarketsComponent implements OnInit {
 
   markerObj: any = {};
 
+  message = 'Market / Supermarkets';
+
   SetMarker(data: any = {}) {
     this.markerObj = {
       lat: data.latitude,

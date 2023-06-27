@@ -30,6 +30,8 @@ export class FestivalAttractionsComponent implements OnInit {
     console.log('isCheck:', this.isCheck);
   }
 
+  message = 'Fiestas/ Fiestival Tourist Attractions';
+
   munCityName: string = this.Auth.munCityName;
   toValidate: any = {};
   menuId = '7';
@@ -181,6 +183,7 @@ export class FestivalAttractionsComponent implements OnInit {
           this.addData.longtitude = this.gmapComponent.markers.lng;
           this.addData.latitude = this.gmapComponent.markers.lat;
 
+          this.closebutton.nativeElement.click();
           this.addData.setYear = this.setYear;
           this.addData.munCityId = this.munCityId;
           this.addData.menuId = this.menuId;
@@ -219,6 +222,14 @@ export class FestivalAttractionsComponent implements OnInit {
   }
 
   clearData() {
+    this.addData = {};
+    this.not_visible = false;
+    this.visible = true;
+    this.required = false;
+  }
+
+  parentMethod() {
+    // alert('parent Method');
     this.addData = {};
     this.not_visible = false;
     this.visible = true;

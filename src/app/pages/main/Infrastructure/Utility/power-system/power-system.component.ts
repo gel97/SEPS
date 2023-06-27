@@ -22,7 +22,11 @@ export class PowerSystemComponent implements OnInit {
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
   }
-  
+
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void } };
+
+  message = 'Power System Facilities';
   add_service: boolean = true;
 
   menuId: string = '4';
@@ -98,6 +102,7 @@ export class PowerSystemComponent implements OnInit {
       this.power.munCityId = this.munCityId;
       this.service.Add_Services(this.power).subscribe((data) => {
         console.log('checke_data', data);
+        this.closebutton.nativeElement.click();
         Swal.fire('Good job!', 'Data Added Successfully!', 'success');
         this.List_services();
         this.power = {};
@@ -110,6 +115,7 @@ export class PowerSystemComponent implements OnInit {
     this.power.latitude = this.gmapComponent.markers.lat;
     this.service.Update_Services(this.power).subscribe({
       next: (_data) => {
+        this.closebutton.nativeElement.click();
         this.List_services();
       },
     });

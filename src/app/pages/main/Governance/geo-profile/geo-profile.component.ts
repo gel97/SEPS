@@ -1,12 +1,13 @@
 import { MunCityLocService } from './../../../../shared/Governance/mun-city-loc.service';
 import { CityOfficialService } from '../../../../shared/Governance/city-official.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/services/auth.service';
 import { GeoProfileService } from 'src/app/shared/Governance/geo-profile.service';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
+import { ImportComponent } from 'src/app/components/import/import.component';
 
 @Component({
   selector: 'app-geo-profile',
@@ -17,6 +18,9 @@ export class GeoProfileComponent implements OnInit {
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;
 
+  @ViewChild(ImportComponent)
+  private importComponent!: ImportComponent;
+
   constructor(
     private service: GeoProfileService,
     private gmap: MunCityLocService,
@@ -26,7 +30,7 @@ export class GeoProfileComponent implements OnInit {
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
   }
-  
+
   munCityName: string = this.auth.munCityName;
 
   ViewGeo: any = [];
@@ -46,6 +50,12 @@ export class GeoProfileComponent implements OnInit {
     this.Init();
   }
 
+  viewData: boolean = false;
+  parentMethod() {
+    // alert('parent Method');
+    this.viewData = true;
+  }
+
   markerObj: any = {};
 
   SetMarker(data: any = {}) {
@@ -61,10 +71,12 @@ export class GeoProfileComponent implements OnInit {
     };
     this.gmapComponent.setMarker(this.markerObj);
   }
-
+  message = 'Physical / Geographic Profile';
   Init() {
     this.service.GetGeo().subscribe((data) => {
       this.ViewGeo = <any>data;
+      console.log('viewgeo', this.ViewGeo);
+      // this.import();
       //textfield(enable/disabled)
       this.inputDisabled = this.ViewGeo != null ? true : false;
 
@@ -72,7 +84,19 @@ export class GeoProfileComponent implements OnInit {
         this.geo = this.ViewGeo;
       }
       console.log(this.ViewGeo);
+      if (this.ViewGeo != null) {
+        this.viewData = true;
+        console.log('tru or false', this.viewData);
+      } else {
+        this.viewData = false;
+      }
     });
+  }
+
+  import() {
+    let importData = 'Physical / Geographic Profile';
+    // this.view = this.importComponent.viewData;
+    this.importComponent.import(importData);
   }
 
   GmapLocation() {
@@ -163,13 +187,13 @@ export class GeoProfileComponent implements OnInit {
       this.service.AddGeoP(this.geo).subscribe(
         (_data) => {
           Swal.fire('Good job!', 'Data Added Successfully!', 'success');
+          // this.geo = {};
           this.Init();
-          this.geo = {};
         },
         (_err) => {
           Swal.fire('ERROR!', 'Error', 'error');
-          this.Init();
           this.geo = {};
+          this.Init();
         }
       );
     }

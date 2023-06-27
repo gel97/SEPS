@@ -24,9 +24,11 @@ export class IndustrialEstatesComponent implements OnInit {
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
   }
-  
+
   munCityName: string = this.auth.munCityName;
   searchText: string = '';
+
+  message = 'Industrial Estates';
 
   // status = "Completed"
   // disabledValue = false;

@@ -20,7 +20,7 @@ export class PostalServicesComponent implements OnInit {
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
   }
-  
+
   toValidate: any = {};
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
@@ -44,6 +44,14 @@ export class PostalServicesComponent implements OnInit {
     this.GetData();
   }
 
+  message = 'Postal Service Facilities';
+
+  viewData: boolean = false;
+  parentMethod() {
+    // alert('parent Method');
+    this.viewData = true;
+  }
+
   GetData() {
     this.service.GetPostal(this.setYear, this.munCityId).subscribe({
       next: (response) => {
@@ -51,8 +59,10 @@ export class PostalServicesComponent implements OnInit {
         if (response !== null) {
           this.data = <any>response;
           this.hasData = true;
+          this.viewData = true;
         } else {
           this.hasData = false;
+          this.viewData = false;
         }
       },
       error: (error) => {

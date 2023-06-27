@@ -1,5 +1,8 @@
 <div class="">
-  <div class="card o-hidden border-2 shadow-sm my-5">
+  <ng-template #isEmpty>
+    <app-import [data]="message"></app-import>
+  </ng-template>
+  <div *ngIf="ComEstab.length>0; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
     <div class="card-body p-0">
       <!-- Nested Row within Card Body -->
       <div class="row">
@@ -15,7 +18,7 @@
             <div class="form-inline float-right ">
               <form class=>
                 <app-admin>
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal"><i
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd"><i
                       class="fa fa-plus"></i>
                     Commercial Establishments
                   </button>
@@ -143,255 +146,235 @@
                 </div>
               </div>
             </div>
-
-
-            <!-- ADD MODAL -->
-            <div class="modal fade bd-example-modal-lg" id="Modal" tabindex="-1" role="dialog"
-              aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <!-- <div class="modal-dialog modal-dialog-scrollable" role="document"> -->
-              <div class="modal-dialog modal-lg">
-
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Commercial Establishments
-                    </h5>
-                    <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <div class="row">
-                      <div class="form-group">
-                        <div class="row">
-                          <div class="col-lg-6">
-                            <label for="exampleFormControlInput1">Business Permit ID/No :</label>
-                            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="comm.permitNo"
-                              [ngClass]="toValidate.permitNo?'is-invalid':''" (keyup)="toValidate.permitNo=false">
-                          </div>
-                          <div class="col-lg-6">
-                            <label for="category">Status :</label>
-                            <select class="form-select" aria-label="Default select example" [(ngModel)]="comm.status"
-                              [ngClass]="toValidate.lineBusiness?'is-invalid':''"
-                              (ngModelChange)="toValidate.lineBusiness=false">
-                              <option *ngFor="let list of list_of_status" value={{list.id}}>{{list.status}}</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-lg-6"><br>
-                            <label for="exampleFormControlInput1">Name of Owner :</label>
-                            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="comm.owner"
-                              [ngClass]="toValidate.owner?'is-invalid':''" (keyup)="toValidate.owner=false">
-                          </div>
-
-                          <div class="col-lg-6"><br>
-                            <label for="exampleFormControlInput1">Name of Establishment :</label>
-                            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="comm.estabName"
-                              [ngClass]="toValidate.estabName?'is-invalid':''" (keyup)="toValidate.estabName=false">
-                          </div>
-
-
-                        </div><br>
-                        <div class="row">
-                          <div class="col-lg-6">
-                            <label for="type">Select Category:</label>
-                            <select class="form-select" aria-label="Default select example" name="list_of_category"
-                              [(ngModel)]="comm.category" [ngClass]="toValidate.category?'is-invalid':''"
-                              (ngModelChange)="toValidate.category=false">
-                              <option *ngFor="let list of list_of_category" value={{list.id}}>{{list.name_category}}
-                              </option>
-                            </select>
-
-                          </div>
-                          <div class="col-lg-6">
-                            <label for="type">Line of Business :</label>
-                            <select class="form-select" aria-label="Default select example" name="list_of_Business"
-                              [(ngModel)]="comm.lineBusiness" [ngClass]="toValidate.lineBusiness?'is-invalid':''"
-                              (ngModelChange)="toValidate.lineBusiness=false">
-                              <option *ngFor="let list of filteredItems" value={{list.id}}>{{list.name_business}}
-                              </option>
-                            </select>
-
-                          </div>
-
-                        </div><br>
-                        <div class="row">
-                          <div class="col-lg-6">
-                            <label>Contact Person/ Designation :</label>
-                            <input type="text" class="form-control" id="" placeholder=""
-                              [(ngModel)]="comm.contactPerson">
-                          </div>
-                          <div class="col-lg-6">
-                            <label>Contact Numbers :</label>
-                            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="comm.contactNo">
-
-                          </div>
-                        </div><br>
-                        <div class="row">
-                          <div class="col-lg-6">
-                            <label>Location (#/Bldg/St./Purok) :</label>
-                            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="comm.location">
-                          </div>
-                          <div class="col-lg-6"> <br>
-                            <label for="type">Barangay :</label>
-                            <select class="form-select" aria-label="Default select example" [(ngModel)]="comm.brgyId"
-                              [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false">
-                              <option *ngFor="let item  of barangays" value={{item.brgyId}}>{{item.brgyName}}</option>
-                            </select>
-                          </div>
-
-                        </div><br>
-                        <!-- <div class="row">
-        <div class="col-lg-6">
-            <label>Geo Coordinates - Longitude:</label>
-            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="comm.longtitude">
-        </div>
-        <div class="col-lg-6">
-            <label for="type">Latitude : </label>
-            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="comm.latitude">
           </div>
-        </div> -->
-                      </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
+<!-- edit (Modal) -->
+<div class="modal fade bd-example-modal-lg" id="ModalEdit" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <!-- <div class="modal-dialog modal-dialog-scrollable" role="document"> -->
+  <div class="modal-dialog modal-lg  " role="document">
 
-                      <div class="modal-footer">
-                        <div class="left-absolute" *ngIf="visible">
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                              (ngModelChange)="onChange(isCheck)" [(ngModel)]="isCheck">
-                            <label class="form-check-label" for="flexCheckDefault">
-                              Several data
-                            </label>
-                          </div>
-                        </div>
-
-                        <button type="button" class="btn btn-primary" (click)="Add_Com_Estab()"><i
-                            class="fa fa-check"></i>Save</button>&nbsp;
-                        <!-- <button type ="button" class="btn btn-secondary" *ngIf="updateOfficial" (click) ="city={}"><i class="fa fa-times"></i>Cancel</button> -->
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i
-                            class="fa fa-times"></i>Close</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Commercial Establishments
+        </h5>
+        <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
+          <!-- <button type="button"  class="close" data-dismiss="modal" aria-label="Close"> -->
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="form-group">
+            <div class="row">
+              <div class="col-lg-6">
+                <label for="exampleFormControlInput1">Business Permit ID/No :</label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.permitNo"
+                  [ngClass]="toValidate.permitNo?'is-invalid':''" (keyup)="toValidate.permitNo=false">
               </div>
+              <div class="col-lg-6">
+                <label for="category">Status :</label>
+                <select class="form-select" aria-label="Default select example" [(ngModel)]="editmodal.status"
+                  [ngClass]="toValidate.lineBusiness?'is-invalid':''" (ngModelChange)="toValidate.lineBusiness=false">
+                  <option *ngFor="let list of list_of_status" value={{list.id}}>{{list.status}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <label for="exampleFormControlInput1">Name of Owner :</label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.owner"
+                  [(ngModel)]="comm.owner" [ngClass]="toValidate.owner?'is-invalid':''"
+                  (keyup)="toValidate.owner=false">
+              </div>
+              <div class="col-lg-6">
+                <label for="exampleFormControlInput1">Name of Establishment :</label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.estabName"
+                  [ngClass]="toValidate.estabName?'is-invalid':''" (keyup)="toValidate.estabName=false">
+              </div>
+
+            </div><br>
+            <div class="row">
+              <div class="col-lg-6">
+                <label for="type">Select Category:</label>
+                <select class="form-select" aria-label="Default select example" name="list_of_category"
+                  [(ngModel)]="editmodal.category" [ngClass]="toValidate.category?'is-invalid':''"
+                  (ngModelChange)="toValidate.category=false">
+                  <option *ngFor="let list of list_of_category" value={{list.id}}>{{list.name_category}}</option>
+                </select>
+
+              </div>
+              <div class="col-lg-6">
+                <label for="type">Line of Business :</label>
+                <select class="form-select" aria-label="Default select example" name="list_of_Business"
+                  [(ngModel)]="editmodal.lineBusiness" [ngClass]="toValidate.lineBusiness?'is-invalid':''"
+                  (ngModelChange)="toValidate.lineBusiness=false">
+                  <option *ngFor="let list of EDTfilteredItems" value={{list.id}}>{{list.name_business}}</option>
+                </select>
+              </div>
+
+            </div><br>
+            <div class="row">
+              <div class="col-lg-6">
+                <label>Contact Person/ Designation :</label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.contactPerson">
+              </div>
+              <div class="col-lg-6">
+                <label>Contact Numbers :</label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.contactNo">
+
+              </div>
+            </div><br>
+            <div class="row">
+              <div class="col-lg-6">
+                <label>Location (#/Bldg/St./Purok) :</label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.location">
+              </div>
+              <div class="col-lg-6"> <br>
+                <label for="type">Barangay :</label>
+                <select class="form-select" aria-label="Default select example" [(ngModel)]="editmodal.brgyId"
+                  [ngClass]="toValidate.permitNo?'is-invalid':''" (keyup)="toValidate.permitNo=false">
+                  <option *ngFor="let item  of barangays" value={{item.brgyId}}>{{item.brgyName}}</option>
+                </select>
+              </div>
+
+            </div><br>
+            <div class="row">
+              <div class="col-lg-6">
+                <label>Geo Coordinates - Longitude:</label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.longtitude">
+              </div>
+              <div class="col-lg-6">
+                <label for="type">Latitude : </label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.latitude">
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" (click)="UpdateCommercial()"><i class="fa fa-check"></i>Save
+                Changes</button>&nbsp;
+              <!-- <button type ="button" class="btn btn-secondary" *ngIf="updateOfficial" (click) ="city={}"><i class="fa fa-times"></i>Cancel</button> -->
+              <button type="button" class="btn btn-secondary" data-dismiss="modal"><i
+                  class="fa fa-times"></i>Cancel</button>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
+</div>
 
+<!-- ADD MODAL -->
+<div class="modal fade bd-example-modal-lg" id="ModalAdd" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <!-- <div class="modal-dialog modal-dialog-scrollable" role="document"> -->
+  <div class="modal-dialog modal-lg">
 
-    <!-- edit (Modal) -->
-    <div class="modal fade bd-example-modal-lg" id="ModalEdit" tabindex="-1" role="dialog"
-      aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <!-- <div class="modal-dialog modal-dialog-scrollable" role="document"> -->
-      <div class="modal-dialog modal-lg  " role="document">
-
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Commercial Establishments
-            </h5>
-            <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
-              <!-- <button type="button"  class="close" data-dismiss="modal" aria-label="Close"> -->
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Commercial Establishments
+        </h5>
+        <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="form-group">
             <div class="row">
-              <div class="form-group">
-                <div class="row">
-                  <div class="col-lg-6">
-                    <label for="exampleFormControlInput1">Business Permit ID/No :</label>
-                    <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.permitNo"
-                      [ngClass]="toValidate.permitNo?'is-invalid':''" (keyup)="toValidate.permitNo=false">
-                  </div>
-                  <div class="col-lg-6">
-                    <label for="category">Status :</label>
-                    <select class="form-select" aria-label="Default select example" [(ngModel)]="editmodal.status"
-                      [ngClass]="toValidate.lineBusiness?'is-invalid':''"
-                      (ngModelChange)="toValidate.lineBusiness=false">
-                      <option *ngFor="let list of list_of_status" value={{list.id}}>{{list.status}}</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-lg-6">
-                    <label for="exampleFormControlInput1">Name of Owner :</label>
-                    <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.owner"
-                      [(ngModel)]="comm.owner" [ngClass]="toValidate.owner?'is-invalid':''"
-                      (keyup)="toValidate.owner=false">
-                  </div>
-                  <div class="col-lg-6">
-                    <label for="exampleFormControlInput1">Name of Establishment :</label>
-                    <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.estabName"
-                      [ngClass]="toValidate.estabName?'is-invalid':''" (keyup)="toValidate.estabName=false">
-                  </div>
-
-                </div><br>
-                <div class="row">
-                  <div class="col-lg-6">
-                    <label for="type">Select Category:</label>
-                    <select class="form-select" aria-label="Default select example" name="list_of_category"
-                      [(ngModel)]="editmodal.category" [ngClass]="toValidate.category?'is-invalid':''"
-                      (ngModelChange)="toValidate.category=false">
-                      <option *ngFor="let list of list_of_category" value={{list.id}}>{{list.name_category}}</option>
-                    </select>
-
-                  </div>
-                  <div class="col-lg-6">
-                    <label for="type">Line of Business :</label>
-                    <select class="form-select" aria-label="Default select example" name="list_of_Business"
-                      [(ngModel)]="editmodal.lineBusiness" [ngClass]="toValidate.lineBusiness?'is-invalid':''"
-                      (ngModelChange)="toValidate.lineBusiness=false">
-                      <option *ngFor="let list of EDTfilteredItems" value={{list.id}}>{{list.name_business}}</option>
-                    </select>
-                  </div>
-
-                </div><br>
-                <div class="row">
-                  <div class="col-lg-6">
-                    <label>Contact Person/ Designation :</label>
-                    <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.contactPerson">
-                  </div>
-                  <div class="col-lg-6">
-                    <label>Contact Numbers :</label>
-                    <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.contactNo">
-
-                  </div>
-                </div><br>
-                <div class="row">
-                  <div class="col-lg-6">
-                    <label>Location (#/Bldg/St./Purok) :</label>
-                    <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.location">
-                  </div>
-                  <div class="col-lg-6"> <br>
-                    <label for="type">Barangay :</label>
-                    <select class="form-select" aria-label="Default select example" [(ngModel)]="editmodal.brgyId"
-                      [ngClass]="toValidate.permitNo?'is-invalid':''" (keyup)="toValidate.permitNo=false">
-                      <option *ngFor="let item  of barangays" value={{item.brgyId}}>{{item.brgyName}}</option>
-                    </select>
-                  </div>
-
-                </div><br>
-                <div class="row">
-                  <div class="col-lg-6">
-                    <label>Geo Coordinates - Longitude:</label>
-                    <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.longtitude">
-                  </div>
-                  <div class="col-lg-6">
-                    <label for="type">Latitude : </label>
-                    <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.latitude">
-                  </div>
-                </div>
-
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-primary" (click)="UpdateCommercial()"><i
-                      class="fa fa-check"></i>Save Changes</button>&nbsp;
-                  <!-- <button type ="button" class="btn btn-secondary" *ngIf="updateOfficial" (click) ="city={}"><i class="fa fa-times"></i>Cancel</button> -->
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal"><i
-                      class="fa fa-times"></i>Cancel</button>
-                </div>
+              <div class="col-lg-6">
+                <label for="exampleFormControlInput1">Business Permit ID/No :</label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="comm.permitNo"
+                  [ngClass]="toValidate.permitNo?'is-invalid':''" (keyup)="toValidate.permitNo=false">
+              </div>
+              <div class="col-lg-6">
+                <label for="category">Status :</label>
+                <select class="form-select" aria-label="Default select example" [(ngModel)]="comm.status"
+                  [ngClass]="toValidate.lineBusiness?'is-invalid':''" (ngModelChange)="toValidate.lineBusiness=false">
+                  <option *ngFor="let list of list_of_status" value={{list.id}}>{{list.status}}</option>
+                </select>
               </div>
             </div>
+            <div class="row">
+              <div class="col-lg-6"><br>
+                <label for="exampleFormControlInput1">Name of Owner :</label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="comm.owner"
+                  [ngClass]="toValidate.owner?'is-invalid':''" (keyup)="toValidate.owner=false">
+              </div>
+              <div class="col-lg-6"><br>
+                <label for="exampleFormControlInput1">Name of Establishment :</label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="comm.estabName"
+                  [ngClass]="toValidate.estabName?'is-invalid':''" (keyup)="toValidate.estabName=false">
+              </div>
+            </div><br>
+            <div class="row">
+              <div class="col-lg-6">
+                <label for="type">Select Category:</label>
+                <select class="form-select" aria-label="Default select example" name="list_of_category"
+                  [(ngModel)]="comm.category" [ngClass]="toValidate.category?'is-invalid':''"
+                  (ngModelChange)="toValidate.category=false">
+                  <option *ngFor="let list of list_of_category" value={{list.id}}>{{list.name_category}}
+                  </option>
+                </select>
+              </div>
+              <div class="col-lg-6">
+                <label for="type">Line of Business :</label>
+                <select class="form-select" aria-label="Default select example" name="list_of_Business"
+                  [(ngModel)]="comm.lineBusiness" [ngClass]="toValidate.lineBusiness?'is-invalid':''"
+                  (ngModelChange)="toValidate.lineBusiness=false">
+                  <option *ngFor="let list of filteredItems" value={{list.id}}>{{list.name_business}}
+                  </option>
+                </select>
+              </div>
+            </div><br>
+            <div class="row">
+              <div class="col-lg-6">
+                <label>Contact Person/ Designation :</label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="comm.contactPerson">
+              </div>
+              <div class="col-lg-6">
+                <label>Contact Numbers :</label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="comm.contactNo">
+              </div>
+            </div><br>
+            <div class="row">
+              <div class="col-lg-6">
+                <label>Location (#/Bldg/St./Purok) :</label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="comm.location">
+              </div>
+              <div class="col-lg-6"> <br>
+                <label for="type">Barangay :</label>
+                <select class="form-select" aria-label="Default select example" [(ngModel)]="comm.brgyId"
+                  [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false">
+                  <option *ngFor="let item  of barangays" value={{item.brgyId}}>{{item.brgyName}}</option>
+                </select>
+              </div>
+            </div><br>
           </div>
+          <div class="modal-footer">
+            <div class="left-absolute" *ngIf="visible">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                  (ngModelChange)="onChange(isCheck)" [(ngModel)]="isCheck">
+                <label class="form-check-label" for="flexCheckDefault">
+                  Several data
+                </label>
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-primary" (click)="Add_Com_Estab()"><i
+                class="fa fa-check"></i>Save</button>&nbsp;
+            <!-- <button type ="button" class="btn btn-secondary" *ngIf="updateOfficial" (click) ="city={}"><i class="fa fa-times"></i>Cancel</button> -->
+            <button type="button" class="btn btn-secondary" data-dismiss="modal"><i
+                class="fa fa-times"></i>Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

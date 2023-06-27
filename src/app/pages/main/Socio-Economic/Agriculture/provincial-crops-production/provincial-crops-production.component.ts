@@ -20,6 +20,7 @@ export class ProvincialCropsProductionComponent implements OnInit {
     return this.modifyService.ModifyText(cityMunName);
   }
 
+  message = 'Provincial Crops Production';
   Crops: any = [];
   crop: any = {};
   listofCrop: any = [
@@ -90,6 +91,14 @@ export class ProvincialCropsProductionComponent implements OnInit {
   }
 
   clearData() {
+    this.crop = {};
+    this.not_visible = false;
+    this.visible = true;
+    // this.required = false;
+  }
+
+  parentMethod() {
+    // alert('parent Method');
     this.crop = {};
     this.not_visible = false;
     this.visible = true;

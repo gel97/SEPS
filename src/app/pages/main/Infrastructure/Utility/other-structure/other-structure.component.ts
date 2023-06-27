@@ -22,6 +22,8 @@ export class OtherStructureComponent implements OnInit {
     return this.modifyService.ModifyText(cityMunName);
   }
 
+  message = 'Other Structures';
+
   toValidate: any = {};
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;

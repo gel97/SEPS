@@ -34,6 +34,8 @@ export class WasteManagementComponent implements OnInit {
 
   markerObj: any = {};
 
+  message = 'Waste Management Facilities';
+
   SetMarker(data: any = {}) {
     this.markerObj = {
       lat: data.latitude,

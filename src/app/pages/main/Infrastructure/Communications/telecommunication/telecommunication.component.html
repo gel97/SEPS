@@ -1,6 +1,8 @@
 <div class="">
-
-  <div class="card o-hidden border-2 shadow-sm my-5">
+  <ng-template #isEmpty>
+    <app-import [data]="message" (testEvent)="parentMethod()"></app-import>
+  </ng-template>
+  <div *ngIf="Telco123.length>0; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
     <div class="card-body p-0">
       <!-- Nested Row within Card Body -->
       <div class="row">
@@ -15,7 +17,7 @@
             <div class="form-inline float-right ">
               <app-admin>
                 <button class="btn btn-primary" (click)="Add_tel = true" data-bs-toggle="modal"
-                  data-bs-target="#Water_Utility">
+                  data-bs-target="#ModalAdd">
                   <i class="fa fa-plus"></i>
                   Telecommunication
                 </button>
@@ -55,12 +57,12 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let text of Telco; let i = index">
+                  <tr *ngFor="let text of Telco123; let i = index">
                     <td>{{i +1}}</td>
                     <td>{{text.telco}}</td>
                     <td class="text-justify" width="10%">
                       <div *ngFor="let item of list_of_type">
-                        <span *ngIf="item.id === text.type">{{item.name}}
+                        <span *ngIf="text.type == item.id">{{item.name}}
 
                         </span>
                       </div>
@@ -77,7 +79,7 @@
                       <div class="d-inline-flex">
                         <app-admin>
                           <button type="button" title="Edit" (click)="telco = text; Add_tel=false"
-                            class="btn btn-info btn-circle" data-toggle="modal" data-target="#Water_Utility"><i
+                            class="btn btn-info btn-circle" data-toggle="modal" data-target="#ModalAdd"><i
                               class="fa fa-pen"></i> </button>&nbsp;
                         </app-admin>&nbsp;
                         <button (click)="SetMarker(text);telco=text" class="btn btn-success btn-circle" role="button"
@@ -102,12 +104,13 @@
   </div>
 </div>
 
-<div class="modal fade" id="Water_Utility" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="ModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title text-dark" id="exampleModalLabel"> Telecommunication Systems</h5>
-        <button type="close" #closebutton class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="close" #closebutton class="btn-close" data-bs-dismiss="modal" data-dismiss="modal"
+          aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div class="form-group">
@@ -130,15 +133,17 @@
               </select>
             </div>
             <div class="row">
-            <div class="col-lg-6"><br>
-              <label for="exampleFormControlTextarea1"> Total Installed Lines :</label>
-              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="telco.installed"   [ngClass]="toValidate.installed?'is-invalid':''" (keyup)="toValidate.installed=false">
+              <div class="col-lg-6"><br>
+                <label for="exampleFormControlTextarea1"> Total Installed Lines :</label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="telco.installed"
+                  [ngClass]="toValidate.installed?'is-invalid':''" (keyup)="toValidate.installed=false">
+              </div>
+              <div class="col-lg-6"><br>
+                <label for="exampleFormControlTextarea1">Total Subscribed Lines :</label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="telco.subscribed"
+                  [ngClass]="toValidate.subscribed?'is-invalid':''" (keyup)="toValidate.subscribed=false">
+              </div>
             </div>
-            <div class="col-lg-6"><br>
-              <label for="exampleFormControlTextarea1">Total Subscribed Lines :</label>
-              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="telco.subscribed"  [ngClass]="toValidate.subscribed?'is-invalid':''" (keyup)="toValidate.subscribed=false">
-            </div>
-          </div>
             <div class="col-lg-6"><br>
               <label for="exampleFormControlTextarea1">Contact Person/ Designation :</label>
               <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="telco.contactPerson">
@@ -189,7 +194,7 @@
           </div>
         </div>
 
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" (click)="Add_tel?   Add_Tel(): Update_Tel()">Save changes</button>
       </div>
     </div>
@@ -212,9 +217,9 @@
       </div>
       <div class="modal-footer">
         <app-admin>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="Update_Tel()">Save changes</button>
-      </app-admin>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" (click)="Update_Tel()">Save changes</button>
+        </app-admin>
       </div>
     </div>
   </div>

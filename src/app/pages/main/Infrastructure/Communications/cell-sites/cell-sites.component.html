@@ -1,8 +1,8 @@
-
-
 <div class="">
-
-  <div class="card o-hidden border-2 shadow-sm my-5">
+  <ng-template #isEmpty>
+    <app-import [data]="message"></app-import>
+  </ng-template>
+  <div *ngIf="CellSites.length>0; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
     <div class="card-body p-0">
       <!-- Nested Row within Card Body -->
       <div class="row">
@@ -17,7 +17,7 @@
             <div class="form-inline float-right ">
               <app-admin>
                 <button class="btn btn-primary" (click)="Add_cell = true" data-bs-toggle="modal"
-                  data-bs-target="#Water_Utility">
+                  data-bs-target="#ModalAdd">
                   <i class="fa fa-plus"></i>
                   Towers/ Cell-sites
                 </button>
@@ -38,7 +38,7 @@
             </div>
             <div class="table-responsive">
               <table class="table table-light table-striped">
-                <thead class = "table-dark">
+                <thead class="table-dark">
                   <tr>
 
                     <th scope="col"></th>
@@ -70,7 +70,7 @@
 
                         <app-admin>
                           <button type="button" title="Edit" (click)="cell = text; Add_cell=false"
-                            class="btn btn-info btn-circle" data-toggle="modal" data-target="#Water_Utility"><i
+                            class="btn btn-info btn-circle" data-toggle="modal" data-target="#ModalAdd"><i
                               class="fa fa-pen"></i> </button>&nbsp;
 
                         </app-admin>
@@ -100,12 +100,13 @@
   </div>
 </div>
 
-<div class="modal fade" id="Water_Utility" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="ModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title text-dark" id="exampleModalLabel">Communication Towers/ Cell-sites</h5>
-        <button type="close" #closebutton class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="close" #closebutton class="btn-close" data-bs-dismiss="modal" data-dismiss="modal"
+          aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div class="form-group">
@@ -159,7 +160,8 @@
             </div>
             <div class="col-lg-12"><br>
               <label for="exampleFormControlTextarea1">Remarks :</label>
-              <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" [(ngModel)]="cell.remarks"></textarea>
+              <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"
+                [(ngModel)]="cell.remarks"></textarea>
             </div>
           </div>
         </div>
@@ -175,9 +177,11 @@
             </label>
           </div>
         </div>
-        <button type="button" class="btn btn-primary" (click)="Add_cell?   Add_CellSites(): Update_CellSites()"><i class ="fa fa-check"></i>Save
+        <button type="button" class="btn btn-primary" (click)="Add_cell?   Add_CellSites(): Update_CellSites()"><i
+            class="fa fa-check"></i>Save
           changes</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i clas ="fa fa-times"></i>Cancel</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-dismiss="modal"><i
+            clas="fa fa-times"></i>Cancel</button>
 
       </div>
     </div>
@@ -201,10 +205,11 @@
       </div>
       <div class="modal-footer">
         <app-admin>
-          <button type="button" class="btn btn-primary" (click)="Update_CellSites()"><i class ="fa fa-check"></i>Save changes</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class ="fa fa-times"></i>Close</button>
+          <button type="button" class="btn btn-primary" (click)="Update_CellSites()"><i class="fa fa-check"></i>Save
+            changes</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
 
-      </app-admin>
+        </app-admin>
       </div>
     </div>
   </div>

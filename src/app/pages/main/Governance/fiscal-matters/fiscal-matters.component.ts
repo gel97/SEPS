@@ -5,6 +5,7 @@ import { DatePipe } from '@angular/common';
 import { FilterPipe } from 'src/app/pipes/filter.pipe';
 import Swal from 'sweetalert2';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
+import { ImportComponent } from 'src/app/components/import/import.component';
 
 @Component({
   selector: 'app-fiscal-matters',
@@ -19,6 +20,9 @@ export class FiscalMattersComponent implements OnInit {
     private modifyService: ModifyCityMunService
   ) {}
   munCityName: string = this.auth.munCityName;
+
+  @ViewChild(ImportComponent)
+  private importComponent!: ImportComponent;
 
   toValidate: any = {};
   fiscal: any = {};
@@ -68,12 +72,17 @@ export class FiscalMattersComponent implements OnInit {
     return this.modifyService.ModifyText(cityMunName);
   }
 
+  message = 'Fiscal Matters';
+
+  allList: any = [];
   Init() {
     this.list_revenues = [];
     this.list_expend = [];
     this.fiscal.munCityId = this.auth.munCityId;
     //this.fiscal.activeSetYear=this.auth.activeSetYear;
     this.service.GetFiscal().subscribe((data) => {
+      // this.import();
+      this.allList = <any>data;
       for (var item of data) {
         if (item.category == '1') {
           this.list_revenues.push(item);
@@ -96,6 +105,11 @@ export class FiscalMattersComponent implements OnInit {
         else return 0;
       });
     });
+  }
+
+  import() {
+    let importData = 'Fiscal Matters';
+    this.importComponent.import(importData);
   }
 
   AddFiscal() {

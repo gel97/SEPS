@@ -1,4 +1,7 @@
 <div class="">
+  <ng-template #isEmpty>
+    <app-import [data]="message" (testEvent)="parentMethod()"></app-import>
+  </ng-template>
   <!-- <ng-template #isEmpty>
     <div class="center-div">
       <div class="row">
@@ -24,7 +27,11 @@
   </ng-template>
   <div *ngIf="ViewGeo !== null ; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
        -->
-  <div class="card o-hidden border-2 shadow-sm my-5">
+  <!-- <app-import (testEvent)="parentMethod()"></app-import> -->
+
+  <!-- <app-import [data]="message"></app-import> -->
+
+  <div *ngIf="viewData ; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
     <!-- <div>
       <app-gmap></app-gmap>
 

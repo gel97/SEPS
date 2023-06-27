@@ -24,6 +24,8 @@ export class SummaryCommercialComponent implements OnInit {
 
   munCityName: string = this.auth.munCityName;
 
+  message = 'Commercial Establishment Summary';
+
   toValidate: any = {};
   Summary: any = [];
   summ: any = {};

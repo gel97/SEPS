@@ -21,7 +21,9 @@ export class WorshipHousesComponent implements OnInit {
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
   }
-  
+
+  message = 'Churches/ Worship Houses';
+
   toValidate: any = {};
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;

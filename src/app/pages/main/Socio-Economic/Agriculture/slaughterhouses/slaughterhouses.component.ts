@@ -11,14 +11,15 @@ import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
   styleUrls: ['./slaughterhouses.component.css'],
 })
 export class SlaughterhousesComponent implements OnInit {
-  constructor(private Auth: AuthService, private Service: AgricultureService,
+  constructor(
+    private Auth: AuthService,
+    private Service: AgricultureService,
     private modifyService: ModifyCityMunService
   ) {}
 
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
   }
-
 
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;
@@ -31,6 +32,8 @@ export class SlaughterhousesComponent implements OnInit {
   }
 
   munCityName: string = this.Auth.munCityName;
+
+  message = 'Slaughterhouses';
 
   menuId = '7';
   toValidate: any = {};
@@ -179,6 +182,14 @@ export class SlaughterhousesComponent implements OnInit {
     this.required = false;
   }
 
+  parentMethod() {
+    // alert('parent Method');
+    this.addData = {};
+    this.not_visible = false;
+    this.visible = true;
+    this.required = false;
+  }
+
   editToggle() {
     this.not_visible = true;
     this.visible = false;
@@ -228,6 +239,7 @@ export class SlaughterhousesComponent implements OnInit {
 
           this.addData.setYear = this.setYear;
           this.addData.munCityId = this.munCityId;
+          this.closebutton.nativeElement.click();
           this.addData.menuId = this.menuId;
           this.addData.tag = 1;
           console.log('edit', this.addData);
