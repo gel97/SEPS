@@ -45,5 +45,7 @@ ListBarangay(){
   return localStorage.getItem('token');
   }
 
-
+  Report():Observable<any[]> {
+    return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_report_demography(), { responseType: 'json' });
+  }
 }

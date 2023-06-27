@@ -33,6 +33,14 @@ export class ManEstabService {
 
   ListBarangay(){
     return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay(this.Auth.munCityId), { responseType: 'json' });
-}
+  }
+
+  Report():Observable<any[]> {
+    return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_report_manuf_estab(), { responseType: 'json' });
+  }
+
+  Import():Observable<any[]> {
+      return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_import_manuf_estab(), { responseType: 'json' });
+  }
 
 }

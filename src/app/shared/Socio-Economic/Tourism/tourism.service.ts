@@ -35,4 +35,8 @@ export class TourismService {
         return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay(munCityId), { responseType: `json` });
     }
 
+    Import(menuId: any):Observable<any[]> {
+        return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_import_tourism(menuId), { responseType: 'json' });
+    }
+    
 }

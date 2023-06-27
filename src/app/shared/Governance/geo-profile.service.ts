@@ -29,6 +29,14 @@ export class GeoProfileService {
     return this.Http.delete(this.Base.url + this.ApiUrl.delete_geo(transId), { responseType: 'json' });
   }
 
+  Report():Observable<any[]> {
+    return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_report_geo(), { responseType: 'json' });
+  }
+
+  Import():Observable<any[]> {
+      return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_import_geo(), { responseType: 'json' });
+  }
+  
 
 }
 

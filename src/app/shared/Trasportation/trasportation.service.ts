@@ -28,6 +28,13 @@ export class TrasportationService {
   delete_transpo_road(transId:any="") {
     return this.Http.delete(this.Base.url + this.ApiUrl.delete_transpo_road(transId), { responseType: 'text' });
   }
+  post_import_transpo_road():Observable<any[]> {
+    return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_import_transpo_road(), { responseType: 'json' });
+  }
+
+  post_report_transpo_road():Observable<any[]> {
+      return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_report_transpo_road(), { responseType: 'json' });
+  }
 
 
   get_list_barangay():Observable<any[]> {
@@ -50,7 +57,13 @@ export class TrasportationService {
   delete_transpo_bridge(transId:any="") {
     return this.Http.delete(this.Base.url + this.ApiUrl.delete_transpo_bridge(transId), { responseType: 'text' });
   }
+  post_import_transpo_bridge():Observable<any[]> {
+    return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_import_transpo_bridge(), { responseType: 'json' });
+  }
 
+  post_report_transpo_bridge():Observable<any[]> {
+      return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_report_transpo_bridge(), { responseType: 'json' });
+  }
 
   get_list_transpo_terminal():Observable<any[]> {
     return this.Http.get<any[]>(this.Base.url + this.ApiUrl.get_list_transpo_terminal(this.Auth.setYear, this.Auth.munCityId), { responseType: 'json' });
@@ -65,6 +78,13 @@ export class TrasportationService {
   delete_transpo_terminal(transId:any="") {
     return this.Http.delete(this.Base.url + this.ApiUrl.delete_transpo_terminal(transId), { responseType: 'text' });
 
+  }
+  post_import_transpo_terminal():Observable<any[]> {
+    return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_import_transpo_terminal(), { responseType: 'json' });
+  }
+
+  post_report_transpo_terminal():Observable<any[]> {
+      return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_report_transpo_terminal(), { responseType: 'json' });
   }
 
 }

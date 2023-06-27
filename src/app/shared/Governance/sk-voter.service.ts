@@ -35,5 +35,12 @@ export class SkVoterService {
     return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay(this.Auth.munCityId), { responseType: 'json' });
   }
 
+  Report():Observable<any[]> {
+    return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_report_skVoter(), { responseType: 'json' });
+  }
+
+  Import():Observable<any[]> {
+      return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_import_skVoter(), { responseType: 'json' });
+  }
 
 }

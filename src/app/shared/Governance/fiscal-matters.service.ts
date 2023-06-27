@@ -29,6 +29,10 @@ export class FiscalMattersService {
     return this.Http.delete(this.Base.url + this.ApiUrl.delete_fiscal(transId), { responseType: 'json' });
   }
 
+  Report():Observable<any[]> {
+    return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_report_fiscal(), { responseType: 'json' });
+  }
+
 }
 
 

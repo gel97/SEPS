@@ -34,4 +34,8 @@ export class HealthFacilitiesService {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay(munCityId), { responseType: 'json' });
  
   }
+  Import(menuId :any):Observable<any[]> {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_import_health_facility(menuId), { responseType: 'json' });
+  }
+
 }

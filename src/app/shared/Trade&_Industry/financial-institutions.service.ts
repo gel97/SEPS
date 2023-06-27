@@ -31,6 +31,10 @@ export class FinancialInstitutionsService {
 
   ListBarangay(){
     return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay(this.Auth.munCityId), { responseType: 'json' });
-}
+  }
+
+  Import():Observable<any[]> {
+    return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_import_financial_Ins(), { responseType: 'json' });
+  }
 
 }

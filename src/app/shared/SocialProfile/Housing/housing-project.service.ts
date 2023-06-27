@@ -33,6 +33,12 @@ export class HousingProjectService {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay(munCityId), { responseType: `json` });
   }
 
+  Report():Observable<any[]> {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_housing_project(), { responseType: 'json' });
+  }
 
+  Import():Observable<any[]> {
+      return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_import_housing_project(), { responseType: 'json' });
+  }
 
 }
