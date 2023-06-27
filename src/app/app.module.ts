@@ -140,6 +140,8 @@ import { ImportComponent } from './components/import/import.component';
 
 @NgModule({
   declarations: [
+    PdfComponent,
+    ImportComponent,
     AppComponent,
     MainLayoutComponent,
     GuestLayoutComponent,
