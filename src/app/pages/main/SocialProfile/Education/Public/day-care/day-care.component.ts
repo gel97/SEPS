@@ -1,10 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import { EducationService } from 'src/app/shared/SocialProfile/Education/education.service';
 import Swal from 'sweetalert2';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
-
+import { EducationSchoolsService } from 'src/app/shared/SocialProfile/Education/educationSchools.service';
 @Component({
   selector: 'app-day-care',
   templateUrl: './day-care.component.html',
@@ -14,7 +13,7 @@ export class DayCareComponent implements OnInit {
   menuId: string = '3';
   munCityName: string = this.auth.munCityName;
   constructor(
-    private service: EducationService,
+    private service: EducationSchoolsService,
     private auth: AuthService,
     private modifyService: ModifyCityMunService
   ) {}
@@ -74,7 +73,7 @@ export class DayCareComponent implements OnInit {
 
   GetListDcarechool() {
     this.service
-      .GetListEducation(this.menuId, this.setYear, this.munCityId)
+      .GetListEducationSchools(this.menuId, this.setYear, this.munCityId)
       .subscribe({
         next: (response) => {
           this.listDaycare = <any>response;
@@ -89,22 +88,7 @@ export class DayCareComponent implements OnInit {
   AddDcareSchool() {
     this.toValidate.name =
       this.daycare.name == '' || this.daycare.name == null ? true : false;
-    this.toValidate.schoolId =
-      this.daycare.schoolId == '' || this.daycare.schoolId == null
-        ? true
-        : false;
-    this.toValidate.teacherNo =
-      this.daycare.teacherNo == '' || this.daycare.teacherNo == null
-        ? true
-        : false;
-    this.toValidate.classroomNo =
-      this.daycare.classroomNo == '' || this.daycare.classroomNo == null
-        ? true
-        : false;
-    this.toValidate.classesNo =
-      this.daycare.classesNo == '' || this.daycare.classesNo == null
-        ? true
-        : false;
+   
     this.toValidate.brgyId =
       this.daycare.brgyId == '' || this.daycare.brgyId == null ? true : false;
 
@@ -114,13 +98,9 @@ export class DayCareComponent implements OnInit {
 
     if (
       !this.toValidate.name &&
-      !this.toValidate.brgyId &&
-      !this.toValidate.schoolId &&
-      !this.toValidate.teacherNo &&
-      !this.toValidate.classroomNo &&
-      !this.toValidate.classesNo
+      !this.toValidate.brgyId 
     ) {
-      this.service.AddEducation(this.daycare).subscribe({
+      this.service.AddEducationSchool(this.daycare).subscribe({
         next: (request) => {
           this.GetListDcarechool();
         },
@@ -147,22 +127,7 @@ export class DayCareComponent implements OnInit {
   EditDcareSchool() {
     this.toValidate.name =
       this.daycare.name == '' || this.daycare.name == null ? true : false;
-    this.toValidate.schoolId =
-      this.daycare.schoolId == '' || this.daycare.schoolId == null
-        ? true
-        : false;
-    this.toValidate.teacherNo =
-      this.daycare.teacherNo == '' || this.daycare.teacherNo == null
-        ? true
-        : false;
-    this.toValidate.classroomNo =
-      this.daycare.classroomNo == '' || this.daycare.classroomNo == null
-        ? true
-        : false;
-    this.toValidate.classesNo =
-      this.daycare.classesNo == '' || this.daycare.classesNo == null
-        ? true
-        : false;
+  
     this.toValidate.brgyId =
       this.daycare.brgyId == '' || this.daycare.brgyId == null ? true : false;
 
@@ -175,13 +140,9 @@ export class DayCareComponent implements OnInit {
 
     if (
       !this.toValidate.name &&
-      !this.toValidate.brgyId &&
-      !this.toValidate.schoolId &&
-      !this.toValidate.teacherNo &&
-      !this.toValidate.classroomNo &&
-      !this.toValidate.classesNo
+      !this.toValidate.brgyId 
     ) {
-      this.service.EditEducation(this.daycare).subscribe({
+      this.service.EditEducationSchool(this.daycare).subscribe({
         next: (request) => {
           this.GetListDcarechool();
           this.daycare = {};
@@ -221,7 +182,7 @@ export class DayCareComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.service.DeleteEducation(transId).subscribe((request) => {
+        this.service.DeleteEducationSchool(transId).subscribe((request) => {
           this.GetListDcarechool();
         });
         Swal.fire('Deleted!', 'Your file has been deleted.', 'success');

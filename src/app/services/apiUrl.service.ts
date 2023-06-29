@@ -209,6 +209,7 @@ export class ApiUrl {
     get_list_education_techvoc_stat    = (setYear  :any,munCityId :any)=>`/EducationTechVocStat/${setYear}/${munCityId}`;
     get_education_techvoc_stat         = (transId:any,)=>`/EducationTechVocStat/${transId}`;
     post_education_techvoc_stat        = ()=>`/EducationTechVocStat`;
+    post_list_education_techvoc_stat   = ()=>`/EducationTechVocStat/SaveList`;
     put_education_techvoc_stat         = ()=>`/EducationTechVocStat`;
     delete_education_techvoc_stat      = (transId:any)=>`/EducationTechVocStat/${transId}`;
     post_report_education_techvoc_stat = ()=>`/EducationTechVocStat/Reports`;

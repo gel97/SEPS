@@ -108,6 +108,14 @@ import { DepartmentStoreComponent } from './pages/main/Infrastructure/Utility/de
 import { MemorialParksComponent } from './pages/main/Infrastructure/Utility/memorial-parks/memorial-parks.component';
 import { FiscalMattersComponent } from './pages/main/Governance/fiscal-matters/fiscal-matters.component';
 import { NewsComponent } from './pages/main/Tools/news/news.component';
+import { PublicPrivateComponent } from './pages/main/SocialProfile/Education/Facilities/public-private/public-private.component';
+import { TertiaryInsComponent } from './pages/main/SocialProfile/Education/Facilities/tertiary-ins/tertiary-ins.component';
+import { TechvocInsComponent } from './pages/main/SocialProfile/Education/Facilities/techvoc-ins/techvoc-ins.component';
+import { TertiaryEnrolmentComponent } from './pages/main/SocialProfile/Education/Public/tertiary-enrolment/tertiary-enrolment.component';
+import { TertiaryGradComponent } from './pages/main/SocialProfile/Education/Public/tertiary-grad/tertiary-grad.component';
+import { TechvocProgramsComponent } from './pages/main/SocialProfile/Education/Public/techvoc-programs/techvoc-programs.component';
+import { TechvocEnrolGradComponent } from './pages/main/SocialProfile/Education/Public/techvoc-enrol-grad/techvoc-enrol-grad.component';
+
 const socioEconomic_TradeIndustry:string = 'socio-economic/trade-and-industry/';
 const socioEconomic_Tourism:string = 'socio-economic/Tourism/';
 const socioEconomic_Agriculture:string = 'socio-economic/Agriculture/';
@@ -173,13 +181,20 @@ const routes: Routes = [
       { path: socioEconomic_Agriculture+ 'provincial-crops-production',component:ProvincialCropsProductionComponent},
       { path: socioEconomic_Agriculture+ 'provincial-crops-harvested',component:ProvincialCropsHarvestedComponent},
       { path: socioEconomic_Agriculture+ 'provincial-crops-total-production',component:ProvincialCropsTotalProductionComponent},
+      { path: SocialProfile_Education+ '/facilities/public-private',component:PublicPrivateComponent},
+      { path: SocialProfile_Education+ '/facilities/tertiary-institutions',component:TertiaryInsComponent},
+      { path: SocialProfile_Education+ '/facilities/techvoc-institutions',component:TechvocInsComponent},
       { path: SocialProfile_Education+ '/private/elementary',component:ElementaryPreElementaryComponent},
       { path: SocialProfile_Education+ '/private/secondary',component:SecondaryComponent},
       { path: SocialProfile_Education+ '/public/elementary',component:ElementaryComponent},
       { path: SocialProfile_Education+ '/public/day-care',component:DayCareComponent},
       { path: SocialProfile_Education+ '/public/pub-secondary',component:PubSecondaryComponent},
       { path: SocialProfile_Education+ '/public/tech-voc',component:TechVocComponent},
+      { path: SocialProfile_Education+ '/public/tech-voc/programs',component:TechvocProgramsComponent},
+      { path: SocialProfile_Education+ '/public/tech-voc/enrolment-graduates',component:TechvocEnrolGradComponent},
       { path: SocialProfile_Education+ '/public/tertiary',component:TertiaryComponent},
+      { path: SocialProfile_Education+ '/public/tertiary-enrolment',component:TertiaryEnrolmentComponent},
+      { path: SocialProfile_Education+ '/public/tertiary-graduates',component:TertiaryGradComponent},
       { path: SocialProfile_Education+ '/public/training-center',component:TrainingCenterComponent},
       { path: SocialProfile_Education+ '/public/spedenrolments',component:SPEDEnrolmentsComponent},
       { path: SocialProfile_Education+ '/public/spedenrolments',component:SPEDEnrolmentsComponent},

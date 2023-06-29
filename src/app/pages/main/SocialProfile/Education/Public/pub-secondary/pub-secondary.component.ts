@@ -2,8 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import Swal from 'sweetalert2';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 import { AuthService } from 'src/app/services/auth.service';
-import { EducationService } from 'src/app/shared/SocialProfile/Education/education.service';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
+import { EducationSchoolsService } from 'src/app/shared/SocialProfile/Education/educationSchools.service';
 @Component({
   selector: 'app-pub-secondary',
   templateUrl: './pub-secondary.component.html',
@@ -13,7 +13,7 @@ export class PubSecondaryComponent implements OnInit {
   menuId: string = '5';
   munCityName: string = this.auth.munCityName;
   constructor(
-    private service: EducationService,
+    private service: EducationSchoolsService,
     private auth: AuthService,
     private modifyService: ModifyCityMunService
   ) {}
@@ -71,7 +71,7 @@ export class PubSecondaryComponent implements OnInit {
 
   GetListPublicSecSchool() {
     this.service
-      .GetListEducation(this.menuId, this.setYear, this.munCityId)
+      .GetListEducationSchools(this.menuId, this.setYear, this.munCityId)
       .subscribe({
         next: (response) => {
           this.listElems = <any>response;
@@ -90,18 +90,6 @@ export class PubSecondaryComponent implements OnInit {
       this.secondary.schoolId == '' || this.secondary.schoolId == null
         ? true
         : false;
-    this.toValidate.teacherNo =
-      this.secondary.teacherNo == '' || this.secondary.teacherNo == null
-        ? true
-        : false;
-    this.toValidate.classroomNo =
-      this.secondary.classroomNo == '' || this.secondary.classroomNo == null
-        ? true
-        : false;
-    this.toValidate.classesNo =
-      this.secondary.classesNo == '' || this.secondary.classesNo == null
-        ? true
-        : false;
     this.toValidate.brgyId =
       this.secondary.brgyId == '' || this.secondary.brgyId == null
         ? true
@@ -114,12 +102,9 @@ export class PubSecondaryComponent implements OnInit {
     if (
       !this.toValidate.name &&
       !this.toValidate.brgyId &&
-      !this.toValidate.schoolId &&
-      !this.toValidate.teacherNo &&
-      !this.toValidate.classroomNo &&
-      !this.toValidate.classesNo
+      !this.toValidate.schoolId
     ) {
-      this.service.AddEducation(this.secondary).subscribe({
+      this.service.AddEducationSchool(this.secondary).subscribe({
         next: (request) => {
           this.GetListPublicSecSchool();
         },
@@ -150,18 +135,6 @@ export class PubSecondaryComponent implements OnInit {
       this.secondary.schoolId == '' || this.secondary.schoolId == null
         ? true
         : false;
-    this.toValidate.teacherNo =
-      this.secondary.teacherNo == '' || this.secondary.teacherNo == null
-        ? true
-        : false;
-    this.toValidate.classroomNo =
-      this.secondary.classroomNo == '' || this.secondary.classroomNo == null
-        ? true
-        : false;
-    this.toValidate.classesNo =
-      this.secondary.classesNo == '' || this.secondary.classesNo == null
-        ? true
-        : false;
     this.toValidate.brgyId =
       this.secondary.brgyId == '' || this.secondary.brgyId == null
         ? true
@@ -176,12 +149,10 @@ export class PubSecondaryComponent implements OnInit {
     if (
       !this.toValidate.name &&
       !this.toValidate.brgyId &&
-      !this.toValidate.schoolId &&
-      !this.toValidate.teacherNo &&
-      !this.toValidate.classroomNo &&
-      !this.toValidate.classesNo
+      !this.toValidate.schoolId 
+ 
     ) {
-      this.service.EditEducation(this.secondary).subscribe({
+      this.service.EditEducationSchool(this.secondary).subscribe({
         next: (request) => {
           this.GetListPublicSecSchool();
         },
@@ -214,7 +185,7 @@ export class PubSecondaryComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.service.DeleteEducation(transId).subscribe((request) => {
+        this.service.DeleteEducationSchool(transId).subscribe((request) => {
           this.GetListPublicSecSchool();
         });
         Swal.fire('Deleted!', 'Your file has been deleted.', 'success');

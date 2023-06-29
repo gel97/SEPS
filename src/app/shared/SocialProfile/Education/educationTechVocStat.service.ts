@@ -14,19 +14,23 @@ export class EducationTechVocStatService {
     this.api = this.Base.url;
   }
 
-  GetListEducationTertiaryGrad( setYear:any, munCityId:any) :Observable<any[]> {
+  GetListEducationTechVocStat( setYear:any, munCityId:any) :Observable<any[]> {
     return this.http.get<any[]>(this.Base.url + this.ApiUrl.get_list_education_techvoc_stat(setYear, munCityId ), { responseType: 'json' });
   }
 
-  AddEducationTertiaryGrad(education:any) {
+  AddEducationTechVocStat(education:any) {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_education_techvoc_stat(), education, { responseType: 'json' });
   }
 
-  EditEducationTertiaryGrad(education:any) {
+  AddListEducationTechVocStat(education:any = []) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_list_education_techvoc_stat(), education, { responseType: 'json' });
+  }
+
+  EditEducationTechVocStat(education:any) {
     return this.http.put<any[]>(this.Base.url + this.ApiUrl.put_education_techvoc_stat(), education, { responseType: 'json' });
   }
 
-  DeleteEducationTertiaryGrad(transId:any) {
+  DeleteEducationTechVocStat(transId:any) {
     return this.http.delete(this.Base.url + this.ApiUrl.delete_education_techvoc_stat(transId), { responseType: 'text' });
   }
 
@@ -35,6 +39,15 @@ export class EducationTechVocStatService {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay(munCityId), { responseType: 'json' });
 
   }
+
+  GetListEducationTechVoc( setYear:any, munCityId:any) :Observable<any[]> {
+    return this.http.get<any[]>(this.Base.url + this.ApiUrl.get_list_education_techvoc(setYear, munCityId ), { responseType: 'json' });
+  }
+
+  GetListEducationTechVocPrograms() :Observable<any[]> {
+    return this.http.get<any[]>(this.Base.url + this.ApiUrl.get_list_education_programs_techvoc(), { responseType: 'json' });
+  }
+
   Report():Observable<any[]> {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_education_techvoc_stat(), { responseType: 'json' });
   }

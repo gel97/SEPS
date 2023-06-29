@@ -136,6 +136,13 @@ import { NotificationComponent } from './pages/main/Tools/notification/notificat
 import { DdnComponent } from './Admin/ddn/ddn.component';
 import { MenuComponent } from './Admin/menu/menu.component';
 import { PdfComponent } from './components/pdf/pdf.component';
+import { PublicPrivateComponent } from './pages/main/SocialProfile/Education/Facilities/public-private/public-private.component';
+import { TertiaryInsComponent } from './pages/main/SocialProfile/Education/Facilities/tertiary-ins/tertiary-ins.component';
+import { TechvocInsComponent } from './pages/main/SocialProfile/Education/Facilities/techvoc-ins/techvoc-ins.component';
+import { TertiaryEnrolmentComponent } from './pages/main/SocialProfile/Education/Public/tertiary-enrolment/tertiary-enrolment.component';
+import { TertiaryGradComponent } from './pages/main/SocialProfile/Education/Public/tertiary-grad/tertiary-grad.component';
+import { TechvocProgramsComponent } from './pages/main/SocialProfile/Education/Public/techvoc-programs/techvoc-programs.component';
+import { TechvocEnrolGradComponent } from './pages/main/SocialProfile/Education/Public/techvoc-enrol-grad/techvoc-enrol-grad.component';
 
 
 
@@ -260,6 +267,13 @@ import { PdfComponent } from './components/pdf/pdf.component';
     DdnComponent,
     MenuComponent,
     PdfComponent,
+    PublicPrivateComponent,
+    TertiaryInsComponent,
+    TechvocInsComponent,
+    TertiaryEnrolmentComponent,
+    TertiaryGradComponent,
+    TechvocProgramsComponent,
+    TechvocEnrolGradComponent,
   ],
   imports: [
     MdbCollapseModule,
