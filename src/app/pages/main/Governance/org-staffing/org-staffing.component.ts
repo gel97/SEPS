@@ -43,6 +43,53 @@ export class OrgStaffingComponent implements OnInit {
     this.viewData = true;
   }
 
+  public showOverlay = false;
+  importMethod() {
+    this.showOverlay = true;
+    this.service.Import().subscribe({
+      next: (data) => {
+        this.Init();
+      },
+      error: (error) => {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'warning',
+          title: 'Something went wrong',
+        });
+      },
+      complete: () => {
+        this.showOverlay = false;
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'success',
+          title: 'Imported Successfully',
+        });
+      },
+    });
+  }
+
   message = 'Organization & Staffing Pattern';
 
   import() {
@@ -59,8 +106,11 @@ export class OrgStaffingComponent implements OnInit {
       // this.import();
       //textfield(enable/disabled)
       this.inputDisabled = this.vieworg != null ? true : false;
-      if (this.vieworg !== null) {
+      if (this.vieworg != null) {
         this.org = this.vieworg;
+        this.viewData = true;
+      } else {
+        this.viewData = false;
       }
 
       console.log(data);

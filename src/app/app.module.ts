@@ -137,6 +137,7 @@ import { DdnComponent } from './Admin/ddn/ddn.component';
 import { MenuComponent } from './Admin/menu/menu.component';
 import { PdfComponent } from './components/pdf/pdf.component';
 import { ImportComponent } from './components/import/import.component';
+import { ImportLoadingComponent } from './components/import-loading/import-loading.component';
 
 @NgModule({
   declarations: [
@@ -260,6 +261,7 @@ import { ImportComponent } from './components/import/import.component';
     NotificationComponent,
     DdnComponent,
     MenuComponent,
+    ImportLoadingComponent,
   ],
   imports: [
     MdbCollapseModule,

@@ -3,6 +3,13 @@
     <app-import [data]="message" (importData)="importMethod()"></app-import>
   </ng-template>
 
+  <div *ngIf="showOverlay">
+    <app-import-loading></app-import-loading>
+  </div>
+  <!-- <div class="my-overlay" *ngIf="showOverlay">
+    <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+  </div> -->
+
   <div *ngIf="Official.length > 0 ; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
     <div class="card-body p-0">
       <!-- Nested Row within Card Body -->
@@ -108,58 +115,6 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- <ng-template [ngIf]="showTemplate">
-  <app-import-loading></app-import-loading>
-</ng-template> -->
-
-
-
-<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-  Launch static backdrop modal
-</button> -->
-
-<!-- staticBackdrop Importing-->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-  aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">Importing...</h1>
-        <button #closeImport hidden type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="d-flex justify-content-center">
-          <div class="spinner-grow text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-          <div class="spinner-grow text-secondary" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-          <div class="spinner-grow text-success" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-          <div class="spinner-grow text-danger" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-          <div class="spinner-grow text-warning" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-          <div class="spinner-grow text-info" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-          <div class="spinner-grow text-dark" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button hidden type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button hidden type="button" class="btn btn-primary">Understood</button>
       </div>
     </div>
   </div>
@@ -302,93 +257,3 @@
     </div>
   </div>
 </div>
-
-<!--
-<div class="container" style="width: 100%; " >
-
-  <div class="text-center">
-    <h1 class="h4 text-gray-900 mb-4">Organization/ Staffing Pattern</h1>
-</div>
-
-    <div class="box red">
-!-- <h2>Asuncion - City Officials</h2>
-        <br>        <
-        <form style="margin-top: -10px">
-            <div class="form-group">
-                <div class="row">
-                    <div class="col-lg-3">
-                        <label class="labelForm" for="perSeqNumber">Sequence Number: </label>
-                    </div>
-                    <div class="col-lg-9">
-                        <input class="seqInputBox" id="perSeqNumber" type="text">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-3">
-                        <label class="labelForm" for="perPosition">Position : </label>
-                    </div>
-                    <div class="col-lg-9">
-                        <input class="seqInputBox" id="perPosition" type="text" >
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-3">
-                        <label class="labelForm" for="perName">Name : </label>
-                    </div>
-                    <div class="col-lg-9">
-                        <input class="seqInputBox" id="perName" type="text">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-3">
-                        <label class="labelForm" for="perContactNumber">Contact Details: </label>
-                    </div>
-                    <div class="col-lg-9">
-                        <input class="seqInputBox" id="perContactNumber" type="text">
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-lg-3"></div>
-                    <div class="col-lg-5">
-                        <button class="button-60" role="button"><i class="fa fa-plus"><span>ADD</span></i></button>
-                    </div>
-                </div>
-            </div>
-        </form>
-
-        <hr />
-        <label class="labelTitles" for="tbl_Officials"><strong>List of Municipal Officials</strong></label>
-        <div class="table-responsive" style="display:block;" id="tbl_Officials">
-            <div class="my-custom-scrollbar" style="height: 50vh">
-                <table class="table table-hover">
-                    <thead class="tableHeader">
-                        <tr class="tableHeaderText">
-                            <th class="">
-                                #
-                            </th>
-                            <th class="">
-                                Position
-                            </th>
-                            <th>
-                                Name
-                            </th>
-                            <th class="">
-                                Contact Details
-                            </th>
-                            <th class="">
-                            </th>
-
-                        </tr>
-                    </thead>
-                    <tbody class="labelForm">
-
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-</div>
-
- -->

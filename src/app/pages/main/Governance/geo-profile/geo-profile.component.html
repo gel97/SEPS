@@ -1,42 +1,13 @@
 <div class="">
   <ng-template #isEmpty>
-    <app-import [data]="message" (testEvent)="parentMethod()"></app-import>
+    <app-import [data]="message" (importData)="importMethod()" (testEvent)="parentMethod()"></app-import>
   </ng-template>
-  <!-- <ng-template #isEmpty>
-    <div class="center-div">
-      <div class="row">
-        <div class="col-lg-12">
-          <img src="assets/img/empty-box.png" class="rounded mx-auto d-block" height="200">
 
-        </div>
-        <div class="col-lg-12">
-          <p class="text-center text-lg text-primary font-weight-bold">NO DATA FOUND.</p>
-        </div>
-        <div class="col-lg-12 text-center p-lg-2">
-          <button class="btn btn-primary">
-            Import
-          </button>
-        </div>
-        <div class="col-lg-12 text-center">
-          <p class="text-center text-sm text-gray-800 font-weight-normal">
-            Press the button above to import SEP Data from previous year.
-          </p>
-        </div>
-      </div>
-    </div>
-  </ng-template>
-  <div *ngIf="ViewGeo !== null ; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
-       -->
-  <!-- <app-import (testEvent)="parentMethod()"></app-import> -->
-
-  <!-- <app-import [data]="message"></app-import> -->
+  <div *ngIf="showOverlay">
+    <app-import-loading></app-import-loading>
+  </div>
 
   <div *ngIf="viewData ; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
-    <!-- <div>
-      <app-gmap></app-gmap>
-
-    </div> -->
-
     <!-- gmap modal area -->
     <div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
       aria-hidden="true">
@@ -288,7 +259,7 @@
                         data-toggle="modal" data-target="#exampleModalLong"><i class="fa fa-pen"></i> </button>&nbsp;
                       <button type="button" title="Delete" (click)="delete(geo.transId)"
                         class="btn btn-warning btn-circle "><i class="fa fa-trash"></i></button>&nbsp;
-                      <button (click)="SetMarker(munCity)" class="btn btn-success btn-circle" role="button"
+                      <button hidden (click)="SetMarker(munCity)" class="btn btn-success btn-circle" role="button"
                         data-toggle="modal" data-target="#gmapModal"><i class="fa fa-globe"></i></button>
                     </div>
                   </div>

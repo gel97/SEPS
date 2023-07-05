@@ -1,10 +1,25 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+  Renderer2,
+} from '@angular/core';
 import { CityOfficialService } from 'src/app/shared/Governance/city-official.service'; // import service
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/services/auth.service';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 import { ImportComponent } from 'src/app/components/import/import.component';
+
+import {
+  Router,
+  Event as RouterEvent,
+  NavigationStart,
+  NavigationEnd,
+  NavigationCancel,
+  NavigationError,
+} from '@angular/router';
 
 @Component({
   selector: 'app-city-officials',
@@ -18,16 +33,22 @@ export class CityOfficialsComponent implements OnInit {
   not_visible: boolean = true;
   // required: boolean = true;
 
-  showTemplate: boolean = false;
-
   @ViewChild(ImportComponent)
   private importComponent!: ImportComponent;
+  navigationInterceptor: any;
 
   constructor(
     private service: CityOfficialService,
     private auth: AuthService,
-    private modifyService: ModifyCityMunService
-  ) {} // private service: + name of service that you've created
+    private modifyService: ModifyCityMunService,
+    private renderer: Renderer2,
+    private closebuttons: ElementRef,
+    private router: Router
+  ) {
+    router.events.subscribe((event: RouterEvent) => {
+      this.navigationInterceptor(event);
+    });
+  } // private service: + name of service that you've created
   toValidate: any = {};
   Official: any = [];
   city: any = {};
@@ -45,16 +66,55 @@ export class CityOfficialsComponent implements OnInit {
   tableSize: number = 5;
   tableSizes: any = [5, 10, 15, 25, 50, 100];
 
+  public showOverlay = false;
   importMethod() {
-    console.log('importData');
-    this.showTemplate = true;
+    this.showOverlay = true;
+    this.service.Import().subscribe({
+      next: (data) => {
+        this.Init();
+      },
+      error: (error) => {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'warning',
+          title: 'Something went wrong',
+        });
+      },
+      complete: () => {
+        this.showOverlay = false;
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'success',
+          title: 'Imported Successfully',
+        });
+      },
+    });
   }
 
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
-
-  @ViewChild('closeImport')
-  closeImport!: { nativeElement: { click: () => void } };
 
   onChange(isCheck: boolean) {
     this.isCheck = isCheck;
