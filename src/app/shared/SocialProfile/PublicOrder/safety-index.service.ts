@@ -12,8 +12,8 @@ export class SafetyIndexService {
   constructor(private http: HttpClient, private ApiUrl: ApiUrl, private Base:BaseUrl ) {
   }
 
-  GetListSafetyIndex(setYear  :any, munCityId :any) {
-    return this.http.get<any[]>(this.Base.url + this.ApiUrl.get_list_safety_index(setYear, munCityId), { responseType: 'json' });
+  GetListSafetyIndex(setYear  :any) {
+    return this.http.get<any[]>(this.Base.url + this.ApiUrl.get_list_safety_index(setYear), { responseType: 'json' });
   }
 
   AddSafetyIndex(data: any={}) {
@@ -33,6 +33,9 @@ export class SafetyIndexService {
   {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay(munCityId), { responseType: 'json' });
 
+  }
+  ListOfMunicipality(){
+    return this.http.get<any[]>(this.Base.url + this.ApiUrl.get_all_muncity(), { responseType: 'json' });
   }
   Report():Observable<any[]> {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_import_safety_index(), { responseType: 'json' });

@@ -3,19 +3,19 @@ import Swal from 'sweetalert2';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
-import { SafetyFireService } from 'src/app/shared/SocialProfile/PublicOrder/safety-fire.service';
+import { EducationTechVocService } from 'src/app/shared/SocialProfile/Education/educationTechVoc.service';
 @Component({
-  selector: 'app-fire-protection',
-  templateUrl: './fire-protection.component.html',
-  styleUrls: ['./fire-protection.component.css'],
+  selector: 'app-techvoc-ins',
+  templateUrl: './techvoc-ins.component.html',
+  styleUrls: ['./techvoc-ins.component.css']
 })
-export class FireProtectionComponent implements OnInit {
+export class TechvocInsComponent implements OnInit {
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;
   
   munCityName: string = this.auth.munCityName;
   constructor(
-    private service: SafetyFireService,
+    private service: EducationTechVocService,
     private auth: AuthService,
     private modifyService: ModifyCityMunService
   ) {}
@@ -77,7 +77,7 @@ export class FireProtectionComponent implements OnInit {
 
   GetListData() {
     this.service
-      .GetListSafetyFire( this.setYear, this.munCityId)
+      .GetListEducationTechVoc( this.setYear, this.munCityId)
       .subscribe({
         next: (response) => {
           this.list = <any>response;
@@ -91,14 +91,16 @@ export class FireProtectionComponent implements OnInit {
   }
 
   AddData() {
-    this.toValidate.fireStation =
-      this.data.fireStation == '' || this.data.fireStation == null ? true : false;
-   
+    this.toValidate.name =
+      this.data.name == '' || this.data.name == null ? true : false;
+    this.toValidate.brgyId =
+      this.data.brgyId == '' || this.data.brgyId == null ? true : false;
+
     this.data.setYear = this.setYear;
     this.data.munCityId = this.munCityId;
 
-    if (!this.toValidate.fireStation) {
-      this.service.AddSafetyFire(this.data).subscribe({
+    if (!this.toValidate.name && !this.toValidate.brgyId) {
+      this.service.AddEducationTechVoc(this.data).subscribe({
         next: (request) => {
           this.GetListData();
         },
@@ -131,7 +133,7 @@ export class FireProtectionComponent implements OnInit {
     this.data.setYear = this.setYear;
     this.data.munCityId = this.munCityId;
 
-    this.service.EditSafetyFire(this.data).subscribe({
+    this.service.EditEducationTechVoc(this.data).subscribe({
       next: (request) => {
         this.GetListData();
       },
@@ -156,7 +158,7 @@ export class FireProtectionComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.service.DeleteSafetyFire(transId).subscribe((request) => {
+        this.service.DeleteEducationTechVoc(transId).subscribe((request) => {
           this.GetListData();
         });
         Swal.fire('Deleted!', 'Your file has been deleted.', 'success');

@@ -209,6 +209,7 @@ export class ApiUrl {
     get_list_education_techvoc_stat    = (setYear  :any,munCityId :any)=>`/EducationTechVocStat/${setYear}/${munCityId}`;
     get_education_techvoc_stat         = (transId:any,)=>`/EducationTechVocStat/${transId}`;
     post_education_techvoc_stat        = ()=>`/EducationTechVocStat`;
+    post_list_education_techvoc_stat   = ()=>`/EducationTechVocStat/SaveList`;
     put_education_techvoc_stat         = ()=>`/EducationTechVocStat`;
     delete_education_techvoc_stat      = (transId:any)=>`/EducationTechVocStat/${transId}`;
     post_report_education_techvoc_stat = ()=>`/EducationTechVocStat/Reports`;
@@ -314,6 +315,13 @@ export class ApiUrl {
     put_safety_services      = ()=>`/SafetyServices`;
     delete_safety_services   = (transId:any)=>`/SafetyServices/${transId}`;
 
+    // Safety -> Safety Crime Types
+    get_list_safety_crime_types = ()=>`/SafetyCrimeTypes/List`;
+    get_safety_crime_types      = (recNo:any,)=>`/SafetyCrimeTypes/${recNo}`;
+    post_safety_crime_types     = ()=>`/SafetyCrimeTypes`;
+    put_safety_crime_types      = ()=>`/SafetyCrimeTypes`;
+    delete_safety_crime_types   = (recNo:any)=>`/SafetyCrimeTypes/${recNo}`;
+
     // Safety -> SafetyStatistics
     get_safety_statistics     = ( setYear  :any,munCityId :any)=>`/SafetyStatistics/${setYear}/${munCityId}`;
     post_safety_statistics    = ()=>`/SafetyStatistics`;
@@ -329,7 +337,7 @@ export class ApiUrl {
     post_report_safety_fire  = ()=>`/SafetyFireProtection/Reports`;
 
     // Safety -> Police Service
-    get_list_safety_police     = ( setYear  :any,munCityId :any)=>`/SafetyPoliceServices/${setYear}/${munCityId}`;
+    get_list_safety_police     = ( setYear  :any)=>`/SafetyPoliceServices/List/${setYear}`;
     post_safety_police         = ()=>`/SafetyPoliceServices`;
     put_safety_police          = ()=>`/SafetyPoliceServices`;
     delete_safety_police       = (transId:any)=>`/SafetyPoliceServices/${transId}`;
@@ -337,7 +345,7 @@ export class ApiUrl {
     post_report_safety_police  = ()=>`/SafetyPoliceServices/Reports`;
 
     // Safety -> Index Crime
-    get_list_safety_index     = ( setYear  :any,munCityId :any)=>`/SafetyIndexCrime/${setYear}/${munCityId}`;
+    get_list_safety_index     = ( setYear  :any)=>`/SafetyIndexCrime/List/${setYear}`;
     post_safety_index         = ()=>`/SafetyIndexCrime`;
     put_safety_index          = ()=>`/SafetyIndexCrime`;
     delete_safety_index       = (transId:any)=>`/SafetyIndexCrime/${transId}`;

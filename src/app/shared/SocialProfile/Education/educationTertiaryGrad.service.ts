@@ -30,6 +30,10 @@ export class EducationTertiaryGradService {
     return this.http.delete(this.Base.url + this.ApiUrl.delete_education_tertiary_grad(transId), { responseType: 'text' });
   }
 
+  GetListCourse(){
+    return this.http.get<any[]>(this.Base.url + this.ApiUrl.get_list_education_programs(), { responseType: 'json' });
+  }
+
   ListOfBarangay(munCityId:any)
   {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay(munCityId), { responseType: 'json' });

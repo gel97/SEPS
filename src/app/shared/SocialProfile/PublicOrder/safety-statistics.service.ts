@@ -37,6 +37,10 @@ export class SafetyStatisticsService {
     return this.http.get<any[]>(this.Base.url + this.ApiUrl.get_all_muncity(), { responseType: 'json'});
    }
 
+  GetListCrimeTypes(){
+    return this.http.get<any[]>(this.Base.url + this.ApiUrl.get_list_safety_crime_types(), { responseType: 'json' });
+
+  }
 
 
 }

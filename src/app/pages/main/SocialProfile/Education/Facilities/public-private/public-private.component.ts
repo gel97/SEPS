@@ -2,20 +2,18 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import Swal from 'sweetalert2';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 import { AuthService } from 'src/app/services/auth.service';
+import { isEmptyObject } from 'jquery';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
-import { SafetyFireService } from 'src/app/shared/SocialProfile/PublicOrder/safety-fire.service';
+import { EducationStatService } from 'src/app/shared/SocialProfile/Education/educationStat.service';
 @Component({
-  selector: 'app-fire-protection',
-  templateUrl: './fire-protection.component.html',
-  styleUrls: ['./fire-protection.component.css'],
+  selector: 'app-public-private',
+  templateUrl: './public-private.component.html',
+  styleUrls: ['./public-private.component.css']
 })
-export class FireProtectionComponent implements OnInit {
-  @ViewChild(GmapComponent)
-  private gmapComponent!: GmapComponent;
-  
+export class PublicPrivateComponent implements OnInit {
   munCityName: string = this.auth.munCityName;
   constructor(
-    private service: SafetyFireService,
+    private service: EducationStatService,
     private auth: AuthService,
     private modifyService: ModifyCityMunService
   ) {}
@@ -23,17 +21,15 @@ export class FireProtectionComponent implements OnInit {
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
   }
-  
+
   toValidate: any = {};
- 
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
   isCheck: boolean = false;
+
   onChange(isCheck: boolean) {
     this.isCheck = isCheck;
   }
-
- 
 
   ngOnInit(): void {
     this.Init();
@@ -42,65 +38,41 @@ export class FireProtectionComponent implements OnInit {
   setYear: string = this.auth.setYear;
 
   isAdd: boolean = true;
+  hasData: boolean = false;
   list: any = [];
   data: any = {};
-  listBarangay: any = [];
 
   Init() {
-    this.GetListBarangay();
-    this.GetListData();
+    this.GetData();
   }
 
-  markerObj: any = {};
+  GetData() {
+    console.log(this.munCityId + ' | ' + this.setYear);
 
-  SetMarker(item: any = {}) {
-    console.log(item);
-    console.log(this.data);
-
-    this.markerObj = {
-      lat: item.latitude,
-      lng: item.longtitude,
-      label: item.brgyName.charAt(0),
-      brgyName: item.brgyName,
-      munCityName: this.munCityName,
-      draggable: true,
-    };
-
-    this.gmapComponent.setMarker(this.markerObj);
-  }
-
-  GetListBarangay() {
-    this.service.ListOfBarangay(this.auth.munCityId).subscribe((data) => {
-      this.listBarangay = <any>data;
+    this.service.GetListEducationStat(this.setYear, this.munCityId).subscribe({
+      next: (response) => {
+        console.log(response);
+        if (response.length > 0) {
+          this.data = <any>response[0];
+          this.hasData = true;
+        } else {
+          this.hasData = false;
+        }
+      },
+      error: (error) => {
+        Swal.fire('Oops!', 'Something went wrong.', 'error');
+      },
+      complete: () => {},
     });
   }
 
-  GetListData() {
-    this.service
-      .GetListSafetyFire( this.setYear, this.munCityId)
-      .subscribe({
-        next: (response) => {
-          this.list = <any>response;
-          console.log(this.list );
-        },
-        error: (error) => {
-          Swal.fire('Oops!', 'Something went wrong.', 'error');
-        },
-        complete: () => {},
-      });
-  }
-
   AddData() {
-    this.toValidate.fireStation =
-      this.data.fireStation == '' || this.data.fireStation == null ? true : false;
-   
-    this.data.setYear = this.setYear;
-    this.data.munCityId = this.munCityId;
-
-    if (!this.toValidate.fireStation) {
-      this.service.AddSafetyFire(this.data).subscribe({
+    if (!isEmptyObject(this.data)) {
+      this.data.setYear = this.setYear;
+      this.data.munCityId = this.munCityId;
+      this.service.AddEducationStat(this.data).subscribe({
         next: (request) => {
-          this.GetListData();
+          this.GetData();
         },
         error: (error) => {
           Swal.fire('Oops!', 'Something went wrong.', 'error');
@@ -116,24 +88,19 @@ export class FireProtectionComponent implements OnInit {
     } else {
       Swal.fire(
         'Missing Data!',
-        'Please fill out the required fields.',
+        'Please fill out the input fields.',
         'warning'
       );
     }
   }
 
   EditData() {
-    console.log(this.data);
-
-    this.data.longtitude = this.gmapComponent.markers.lng;
-    this.data.latitude = this.gmapComponent.markers.lat;
-
     this.data.setYear = this.setYear;
     this.data.munCityId = this.munCityId;
 
-    this.service.EditSafetyFire(this.data).subscribe({
+    this.service.EditEducationStat(this.data).subscribe({
       next: (request) => {
-        this.GetListData();
+        this.GetData();
       },
       error: (error) => {
         Swal.fire('Oops!', 'Something went wrong.', 'error');
@@ -156,8 +123,9 @@ export class FireProtectionComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.service.DeleteSafetyFire(transId).subscribe((request) => {
-          this.GetListData();
+        this.service.DeleteEducationStat(transId).subscribe((request) => {
+          this.Init();
+          this.data = {};
         });
         Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
       }

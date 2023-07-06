@@ -138,6 +138,14 @@ import { MenuComponent } from './Admin/menu/menu.component';
 import { PdfComponent } from './components/pdf/pdf.component';
 import { ImportComponent } from './components/import/import.component';
 import { ImportLoadingComponent } from './components/import-loading/import-loading.component';
+import { PublicPrivateComponent } from './pages/main/SocialProfile/Education/Facilities/public-private/public-private.component';
+import { TertiaryInsComponent } from './pages/main/SocialProfile/Education/Facilities/tertiary-ins/tertiary-ins.component';
+import { TechvocInsComponent } from './pages/main/SocialProfile/Education/Facilities/techvoc-ins/techvoc-ins.component';
+import { TertiaryEnrolmentComponent } from './pages/main/SocialProfile/Education/Public/tertiary-enrolment/tertiary-enrolment.component';
+import { TertiaryGradComponent } from './pages/main/SocialProfile/Education/Public/tertiary-grad/tertiary-grad.component';
+import { TechvocProgramsComponent } from './pages/main/SocialProfile/Education/Public/techvoc-programs/techvoc-programs.component';
+import { TechvocEnrolGradComponent } from './pages/main/SocialProfile/Education/Public/techvoc-enrol-grad/techvoc-enrol-grad.component';
+import { IndexCrimeComponent } from './pages/main/SocialProfile/PublicOrder/index-crime/index-crime.component';
 
 @NgModule({
   declarations: [
@@ -262,6 +270,15 @@ import { ImportLoadingComponent } from './components/import-loading/import-loadi
     DdnComponent,
     MenuComponent,
     ImportLoadingComponent,
+    PdfComponent,
+    PublicPrivateComponent,
+    TertiaryInsComponent,
+    TechvocInsComponent,
+    TertiaryEnrolmentComponent,
+    TertiaryGradComponent,
+    TechvocProgramsComponent,
+    TechvocEnrolGradComponent,
+    IndexCrimeComponent,
   ],
   imports: [
     MdbCollapseModule,

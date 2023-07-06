@@ -1,11 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { error } from 'console';
 import { AuthService } from 'src/app/services/auth.service';
-import { EducationService } from 'src/app/shared/SocialProfile/Education/education.service';
 import Swal from 'sweetalert2';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
-
+import { EducationSchoolsService } from 'src/app/shared/SocialProfile/Education/educationSchools.service';
 @Component({
   selector: 'app-elementary-pre-elementary',
   templateUrl: './elementary-pre-elementary.component.html',
@@ -15,7 +14,7 @@ export class ElementaryPreElementaryComponent implements OnInit {
   menuId: string = '1';
   munCityName: string = this.auth.munCityName;
   constructor(
-    private service: EducationService,
+    private service: EducationSchoolsService,
     private auth: AuthService,
     private modifyService: ModifyCityMunService
   ) {}
@@ -77,7 +76,7 @@ export class ElementaryPreElementaryComponent implements OnInit {
 
   GetListPrivateElemSchool() {
     this.service
-      .GetListEducation(this.menuId, this.setYear, this.munCityId)
+      .GetListEducationSchools(this.menuId, this.setYear, this.munCityId)
       .subscribe({
         next: (response) => {
           this.listElems = <any>response;
@@ -96,18 +95,6 @@ export class ElementaryPreElementaryComponent implements OnInit {
       this.elementary.schoolId == '' || this.elementary.schoolId == null
         ? true
         : false;
-    this.toValidate.teacherNo =
-      this.elementary.teacherNo == '' || this.elementary.teacherNo == null
-        ? true
-        : false;
-    this.toValidate.classroomNo =
-      this.elementary.classroomNo == '' || this.elementary.classroomNo == null
-        ? true
-        : false;
-    this.toValidate.classesNo =
-      this.elementary.classesNo == '' || this.elementary.classesNo == null
-        ? true
-        : false;
     this.toValidate.brgyId =
       this.elementary.brgyId == '' || this.elementary.brgyId == null
         ? true
@@ -120,12 +107,9 @@ export class ElementaryPreElementaryComponent implements OnInit {
     if (
       !this.toValidate.name &&
       !this.toValidate.brgyId &&
-      !this.toValidate.schoolId &&
-      !this.toValidate.teacherNo &&
-      !this.toValidate.classroomNo &&
-      !this.toValidate.classesNo
+      !this.toValidate.schoolId     
     ) {
-      this.service.AddEducation(this.elementary).subscribe({
+      this.service.AddEducationSchool(this.elementary).subscribe({
         next: (request) => {
           this.GetListPrivateElemSchool();
         },
@@ -157,23 +141,10 @@ export class ElementaryPreElementaryComponent implements OnInit {
       this.elementary.schoolId == '' || this.elementary.schoolId == null
         ? true
         : false;
-    this.toValidate.teacherNo =
-      this.elementary.teacherNo == '' || this.elementary.teacherNo == null
-        ? true
-        : false;
-    this.toValidate.classroomNo =
-      this.elementary.classroomNo == '' || this.elementary.classroomNo == null
-        ? true
-        : false;
-    this.toValidate.brgyId =
+   this.toValidate.brgyId =
       this.elementary.brgyId == '' || this.elementary.brgyId == null
         ? true
         : false;
-    this.toValidate.classesNo =
-      this.elementary.classesNo == '' || this.elementary.classesNo == null
-        ? true
-        : false;
-
     this.elementary.longtitude = this.gmapComponent.markers.lng;
     this.elementary.latitude = this.gmapComponent.markers.lat;
 
@@ -184,12 +155,9 @@ export class ElementaryPreElementaryComponent implements OnInit {
     if (
       !this.toValidate.name &&
       !this.toValidate.brgyId &&
-      !this.toValidate.schoolId &&
-      !this.toValidate.teacherNo &&
-      !this.toValidate.classroomNo &&
-      !this.toValidate.classesNo
+      !this.toValidate.schoolId 
     ) {
-      this.service.EditEducation(this.elementary).subscribe({
+      this.service.EditEducationSchool(this.elementary).subscribe({
         next: (request) => {
           this.GetListPrivateElemSchool();
         },
@@ -222,7 +190,7 @@ export class ElementaryPreElementaryComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.service.DeleteEducation(transId).subscribe((request) => {
+        this.service.DeleteEducationSchool(transId).subscribe((request) => {
           this.GetListPrivateElemSchool();
         });
         Swal.fire('Deleted!', 'Your file has been deleted.', 'success');

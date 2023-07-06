@@ -7,13 +7,13 @@ import { PdfComponent } from 'src/app/components/pdf/pdf.component';
 import { PdfService } from 'src/app/services/pdf.service';
 import { ReportsService } from 'src/app/shared/Tools/reports.service';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
-import { SafetyStatisticsService } from 'src/app/shared/SocialProfile/PublicOrder/safety-statistics.service';
+import { EducationTertiaryGradService } from 'src/app/shared/SocialProfile/Education/educationTertiaryGrad.service';
 @Component({
-  selector: 'app-crime-stat',
-  templateUrl: './crime-stat.component.html',
-  styleUrls: ['./crime-stat.component.css'],
+  selector: 'app-tertiary-grad',
+  templateUrl: './tertiary-grad.component.html',
+  styleUrls: ['./tertiary-grad.component.css']
 })
-export class CrimeStatComponent implements OnInit {
+export class TertiaryGradComponent implements OnInit {
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;
   @ViewChild(PdfComponent)
@@ -25,7 +25,7 @@ export class CrimeStatComponent implements OnInit {
   constructor(
     private pdfService: PdfService, 
     private reportService: ReportsService,
-    private service: SafetyStatisticsService,
+    private service: EducationTertiaryGradService,
     private auth: AuthService,
     private modifyService: ModifyCityMunService
   ) {}
@@ -34,16 +34,20 @@ export class CrimeStatComponent implements OnInit {
     return this.modifyService.ModifyText(cityMunName);
   }
 
+  
   munCityName: string = this.auth.munCityName;
   toValidate: any = {};
   isAdd: boolean = false;
 
-  listStatistics: any = [];
+  listEductaion: any = [];
   listData: any = [];
-  listCrimeTypes: any = [];
+  listCourse: any = [];
+
 
   data: any = {};
   reports:any = [];
+
+
 
   ngOnInit(): void {
     this.Init();
@@ -51,29 +55,30 @@ export class CrimeStatComponent implements OnInit {
 
   Init() {
     this.GetData();
-    this.GetCrimeTypes();
+    this.GetListCourse();
   }
 
+ 
 
   GetData() {
-    this.service.GetSafetyStatistics(this.auth.setYear, this.auth.munCityId).subscribe({
+    this.service.GetListEducationTertiaryGrad(this.auth.setYear, this.auth.munCityId).subscribe({
       next: (response) => {
-        this.listStatistics = (<any>response);
-        console.log("listStatistics:" , this.listStatistics);
+        this.listEductaion = (<any>response);
+        console.log("Education:" , this.listEductaion);
       },
       error: (error) => {
       },
       complete: () => {
-        this.GetCrimeTypes();
+        this.GetListCourse();
       }
     });
   }
 
-  GetCrimeTypes() {
-    this.service.GetListCrimeTypes().subscribe({
+  GetListCourse() {
+    this.service.GetListCourse().subscribe({
       next: (response) => {
-        this.listCrimeTypes = (<any>response);
-        console.log("Course:" ,this.listCrimeTypes);
+        this.listCourse = (<any>response);
+        console.log("Course:" ,this.listCourse);
 
       },
       error: (error) => {
@@ -89,21 +94,21 @@ export class CrimeStatComponent implements OnInit {
     let isExist;
     this.listData = [];
 
-    this.listCrimeTypes.forEach((a: any) => {
-      this.listStatistics.forEach((b: any) => {
-        if (a.recNo === b.type) {
-          isExist = this.listData.filter((x: any) => x.type === a.type);
+    this.listCourse.forEach((a: any) => {
+      this.listEductaion.forEach((b: any) => {
+        if (a.recNo === b.course) {
+          isExist = this.listData.filter((x: any) => x.course === a.course);
           if (isExist.length === 0) {
             this.listData.push(b);
           }
         }
       });
 
-      isExist = this.listData.filter((x: any) => x.type == a.recNo);
+      isExist = this.listData.filter((x: any) => x.course == a.recNo);
       if (isExist.length === 0) {
         this.listData.push({
-          'type': a.recNo,
-          'crime': a.crime,
+          'course': a.recNo,
+          'program': a.program,
         });
       }
     });
@@ -115,9 +120,9 @@ export class CrimeStatComponent implements OnInit {
       this.data.setYear = this.auth.activeSetYear;
       this.data.munCityId = this.auth.o_munCityId;
       console.log(this.data);
-      this.service.AddSafetyStatistics(this.data).subscribe({
+      this.service.AddEducationTertiaryGrad(this.data).subscribe({
         next: (request) => {
-          let index = this.listData.findIndex((obj: any) => obj.type === this.data.type);
+          let index = this.listData.findIndex((obj: any) => obj.course === this.data.course);
           this.listData[index] = request;
           console.log(request)
         },
@@ -138,8 +143,10 @@ export class CrimeStatComponent implements OnInit {
   }
 
   EditData() {
+
+
       this.data.setYear = this.auth.activeSetYear;
-      this.service.EditSafetyStatistics(this.data).subscribe({
+      this.service.EditEducationTertiaryGrad(this.data).subscribe({
         next: (request) => {
           this.closebutton.nativeElement.click();
           this.data = {};
@@ -168,7 +175,7 @@ export class CrimeStatComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.service.DeleteSafetyStatistics(transId).subscribe({
+        this.service.DeleteEducationTertiaryGrad(transId).subscribe({
           next: (_data) => {
           },
           error: (err) => {
@@ -180,8 +187,8 @@ export class CrimeStatComponent implements OnInit {
           },
           complete: () => {
             this.listData[index] = {};
-            this.listData[index].type = data.type;
-            this.listData[index].crime = data.crime;
+            this.listData[index].course = data.course;
+            this.listData[index].program = data.program;
             Swal.fire(
               'Deleted!',
               'Your file has been deleted.',
@@ -218,5 +225,16 @@ export class CrimeStatComponent implements OnInit {
     }
   }
 
-  
+  async GeneratePdf() {
+    await this.loadPdfMaker();
+       
+    const def = {
+    	content: [
+        'hello',
+        'hi'
+      ],
+    
+    };
+   this.pdfMake.createPdf(def).open();
+  }
 }

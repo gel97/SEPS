@@ -4,7 +4,6 @@ import { HealthFacilitiesService } from 'src/app/shared/SocialProfile/Health/hea
 import Swal from 'sweetalert2';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
-
 @Component({
   selector: 'app-community-hospital',
   templateUrl: './community-hospital.component.html',
