@@ -36,6 +36,8 @@ export class ElementaryPreElementaryComponent implements OnInit {
 
   markerObj: any = {};
 
+  message = 'Private Elementary Schools';
+
   SetMarker(data: any = {}) {
     console.log(data);
     this.markerObj = {
@@ -165,6 +167,7 @@ export class ElementaryPreElementaryComponent implements OnInit {
         complete: () => {
           Swal.fire('Good job!', 'Data Updated Successfully!', 'success');
           document.getElementById('mEducation')?.click();
+          this.closebutton.nativeElement.click();
         },
       });
     } else {

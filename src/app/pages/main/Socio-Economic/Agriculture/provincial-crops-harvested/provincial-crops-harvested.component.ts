@@ -21,6 +21,7 @@ export class ProvincialCropsHarvestedComponent implements OnInit {
   }
 
   Commodities: any = [];
+
   commo: any = {};
   toValidate: any = {};
   add_Crops_Total: boolean = true;
@@ -48,6 +49,16 @@ export class ProvincialCropsHarvestedComponent implements OnInit {
     // this.required = false;
   }
 
+  parentMethod() {
+    // alert('parent Method');
+    this.commo = {};
+    this.not_visible = false;
+    this.visible = true;
+    // this.required = false;
+  }
+
+  message = 'Provincial Crops Production and Area Harvested';
+
   list_of_Commodities = [
     { id: 1, name: 'Rice - Irrigated' },
     { id: 2, name: 'Rice - Rain Fed' },
@@ -68,6 +79,53 @@ export class ProvincialCropsHarvestedComponent implements OnInit {
     this.List_Commodities();
   }
 
+  public showOverlay = false;
+  importMethod() {
+    this.showOverlay = true;
+    this.service.Import(this.menuId).subscribe({
+      next: (data) => {
+        this.ngOnInit();
+      },
+      error: (error) => {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'warning',
+          title: 'Something went wrong',
+        });
+      },
+      complete: () => {
+        this.showOverlay = false;
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'success',
+          title: 'Imported Successfully',
+        });
+      },
+    });
+  }
+
   List_Commodities() {
     this.service
       .GetListAgricultureProd(this.menuId, this.setYear, this.munCityId)
@@ -83,16 +141,13 @@ export class ProvincialCropsHarvestedComponent implements OnInit {
         ? true
         : false;
     this.toValidate.totalProd =
-      this.commo.totalProd == '' || this.commo.totalProd == undefined
-        ? true
-        : false;
-    this.toValidate.area =
-      this.commo.area == '' || this.commo.area == undefined ? true : false;
+      this.commo.totalProd == '' || this.commo.totalProd == null ? true : false;
+    // this.toValidate.area =
+    //   this.commo.area == '' || this.commo.area == undefined ? true : false;
 
     if (
       this.toValidate.commodities == true ||
-      this.toValidate.totalProd == true ||
-      this.toValidate.area == true
+      this.toValidate.totalProd == true
     ) {
       Swal.fire(
         'Missing Data!',
@@ -108,7 +163,7 @@ export class ProvincialCropsHarvestedComponent implements OnInit {
           this.closebutton.nativeElement.click();
         }
 
-        this.List_Commodities();
+        // this.List_Commodities();
 
         console.log('checke_data', data);
         Swal.fire('Good job!', 'Data Added Successfully!', 'success');
@@ -127,13 +182,12 @@ export class ProvincialCropsHarvestedComponent implements OnInit {
       this.commo.totalProd == '' || this.commo.totalProd == undefined
         ? true
         : false;
-    this.toValidate.area =
-      this.commo.area == '' || this.commo.area == undefined ? true : false;
+    // this.toValidate.area =
+    //   this.commo.area == '' || this.commo.area == undefined ? true : false;
 
     if (
       this.toValidate.commodities == true ||
-      this.toValidate.totalProd == true ||
-      this.toValidate.area == true
+      this.toValidate.totalProd == true
     ) {
       Swal.fire(
         'Missing Data!',
@@ -147,7 +201,7 @@ export class ProvincialCropsHarvestedComponent implements OnInit {
           this.clearData();
         },
       });
-
+      this.closebutton.nativeElement.click();
       Swal.fire({
         position: 'center',
         icon: 'success',

@@ -1,5 +1,12 @@
 <div class="">
-  <div class="card o-hidden border-2 shadow-sm my-5">
+  <ng-template #isEmpty>
+    <app-import [data]="message" (testEvent)="parentMethod()" (importData)="importMethod()"></app-import>
+  </ng-template>
+
+  <div *ngIf="showOverlay">
+    <app-import-loading></app-import-loading>
+  </div>
+  <div *ngIf="Commodities.length>0; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
     <div class="card-body p-0">
       <!-- Nested Row within Card Body -->
       <div class="row">
@@ -8,8 +15,7 @@
             <div class="">
             </div>
             <div class="text-center">
-              <h1 class="h4 text-gray-900 mb-4">Values of Production of Major Agricultural Commodities of Davao Del
-                Norte</h1>
+              <h1 class="h4 text-gray-900 mb-4">Provincial Crops Total Production</h1>
               <label><strong>Agriculture - {{modifyCityMun(munCityName)}} </strong></label><br>
 
             </div>
@@ -98,8 +104,7 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">List of Provincial Profile on Crops Production and Area
-            Harvested</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Provincial Crops Total Production</h5>
           <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>

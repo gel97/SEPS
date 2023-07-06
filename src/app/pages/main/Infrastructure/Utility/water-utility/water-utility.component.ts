@@ -23,7 +23,12 @@ export class WaterUtilityComponent implements OnInit {
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
   }
-  
+
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void } };
+
+  message = 'Water System Facilities';
+
   add_service: boolean = true;
 
   menuId: string = '1';
@@ -40,6 +45,53 @@ export class WaterUtilityComponent implements OnInit {
   ngOnInit(): void {
     this.List_services();
     this.list_of_barangay();
+  }
+
+  public showOverlay = false;
+  importMethod() {
+    this.showOverlay = true;
+    this.service.Import(this.menuId).subscribe({
+      next: (data) => {
+        this.ngOnInit();
+      },
+      error: (error) => {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'warning',
+          title: 'Something went wrong',
+        });
+      },
+      complete: () => {
+        this.showOverlay = false;
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'success',
+          title: 'Imported Successfully',
+        });
+      },
+    });
   }
 
   onChange(isCheck: boolean) {
@@ -99,6 +151,7 @@ export class WaterUtilityComponent implements OnInit {
       this.water.munCityId = this.munCityId;
       this.service.Add_Services(this.water).subscribe((data) => {
         console.log('checke_data', data);
+        this.closebutton.nativeElement.click();
         Swal.fire('Good job!', 'Data Added Successfully!', 'success');
         this.List_services();
         this.water = {};
@@ -111,6 +164,7 @@ export class WaterUtilityComponent implements OnInit {
     this.water.latitude = this.gmapComponent.markers.lat;
     this.service.Update_Services(this.water).subscribe({
       next: (_data) => {
+        this.closebutton.nativeElement.click();
         this.List_services();
       },
     });

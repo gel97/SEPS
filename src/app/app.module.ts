@@ -1,14 +1,14 @@
 import { CityOfficialService } from 'src/app/shared/Governance/city-official.service';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthService } from './services/auth.service';
-import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 import { GuestLayoutComponent } from './layout/guest-layout/guest-layout.component';
-import { LoginComponent } from './pages/guest/login/login.component'
+import { LoginComponent } from './pages/guest/login/login.component';
 import { MdbCollapseModule } from 'mdb-angular-ui-kit/collapse';
 import { GuestHomeComponent } from './pages/guest/guest-home/guest-home.component';
 //import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -121,7 +121,7 @@ import { SepDataComponent } from './pages/main/Tools/sep-data/sep-data.component
 import { FilterPipe } from './pipes/filter.pipe';
 import { FilterallPipe } from './pipes/filterall.pipe';
 import { GoogleMapsModule } from '@angular/google-maps';
-import { GmapComponent } from './components/gmap/gmap.component'
+import { GmapComponent } from './components/gmap/gmap.component';
 import { AgmCoreModule } from '@agm/core';
 import { AdminComponent } from './Admin/admin/admin.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
@@ -136,6 +136,8 @@ import { NotificationComponent } from './pages/main/Tools/notification/notificat
 import { DdnComponent } from './Admin/ddn/ddn.component';
 import { MenuComponent } from './Admin/menu/menu.component';
 import { PdfComponent } from './components/pdf/pdf.component';
+import { ImportComponent } from './components/import/import.component';
+import { ImportLoadingComponent } from './components/import-loading/import-loading.component';
 import { PublicPrivateComponent } from './pages/main/SocialProfile/Education/Facilities/public-private/public-private.component';
 import { TertiaryInsComponent } from './pages/main/SocialProfile/Education/Facilities/tertiary-ins/tertiary-ins.component';
 import { TechvocInsComponent } from './pages/main/SocialProfile/Education/Facilities/techvoc-ins/techvoc-ins.component';
@@ -145,10 +147,10 @@ import { TechvocProgramsComponent } from './pages/main/SocialProfile/Education/P
 import { TechvocEnrolGradComponent } from './pages/main/SocialProfile/Education/Public/techvoc-enrol-grad/techvoc-enrol-grad.component';
 import { IndexCrimeComponent } from './pages/main/SocialProfile/PublicOrder/index-crime/index-crime.component';
 
-
-
 @NgModule({
   declarations: [
+    PdfComponent,
+    ImportComponent,
     AppComponent,
     MainLayoutComponent,
     GuestLayoutComponent,
@@ -267,6 +269,7 @@ import { IndexCrimeComponent } from './pages/main/SocialProfile/PublicOrder/inde
     NotificationComponent,
     DdnComponent,
     MenuComponent,
+    ImportLoadingComponent,
     PdfComponent,
     PublicPrivateComponent,
     TertiaryInsComponent,
@@ -280,7 +283,7 @@ import { IndexCrimeComponent } from './pages/main/SocialProfile/PublicOrder/inde
   imports: [
     MdbCollapseModule,
     BrowserModule,
-   // FontAwesomeModule,
+    // FontAwesomeModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
@@ -291,19 +294,18 @@ import { IndexCrimeComponent } from './pages/main/SocialProfile/PublicOrder/inde
     AgmCoreModule.forRoot({
       // please get your own API key here:
       // https://developers.google.com/maps/documentation/javascript/get-api-key?hl=en
-      apiKey: 'AIzaSyBfQJlyD65DekS6HrSDe2z-6-KvoO4aeRk'
+      apiKey: 'AIzaSyBfQJlyD65DekS6HrSDe2z-6-KvoO4aeRk',
     }),
     CKEditorModule,
     SocialLoginModule,
-
-     
-
   ],
-  providers: [AuthService ,CityOfficialService,
+  providers: [
+    AuthService,
+    CityOfficialService,
     {
-     provide: HTTP_INTERCEPTORS,
-     useClass: TokenInterceptorService,
-     multi: true
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptorService,
+      multi: true,
     },
     {
       provide: 'SocialAuthServiceConfig',
@@ -316,9 +318,9 @@ import { IndexCrimeComponent } from './pages/main/SocialProfile/PublicOrder/inde
           },
         ],
       } as SocialAuthServiceConfig,
-    }
+    },
   ],
-    
-  bootstrap: [AppComponent]
+
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

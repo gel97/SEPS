@@ -1,5 +1,8 @@
 <div class="">
-    <div class="card o-hidden border-2 shadow-sm my-5">
+    <ng-template #isEmpty>
+        <app-import [data]="message"></app-import>
+    </ng-template>
+    <div *ngIf="listUrban.length>0; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
         <div class="card-body p-0">
             <!-- Nested Row within Card Body -->
             <div class="row">
@@ -58,7 +61,7 @@
                                                     style="background-color:rgb(0, 194, 243);"
                                                     *ngFor="let desc of listUrban;"
                                                     (click)="addData = desc; updateForm = true" data-toggle="modal"
-                                                    data-target="#exampleModal">
+                                                    data-target="#ModalAdd">
                                                     <i class="fa fa-pen"></i>
                                                 </button>&nbsp;
                                                 <button type="button" class="btn btn-warning btn-circle"
@@ -84,13 +87,14 @@
 
 <!-- Modal -->
 
-<div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" aria-labelledby="myLargeModalLabel"
+<div class="modal fade bd-example-modal-lg" id="ModalAdd" tabindex="-1" aria-labelledby="myLargeModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Urban Environment Quality</h1>
-                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                <button type="button" #closebutton class="btn-close" data-dismiss="modal" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -129,7 +133,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" *ngIf="updateForm == false" (click)="AddUrban(addData)"
                     class="btn btn-primary" data-dismiss="modal" (click)="buttonClick()" [disabled]="click"
                     style="background-color: blue;">

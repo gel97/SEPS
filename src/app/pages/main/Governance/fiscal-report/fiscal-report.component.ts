@@ -6,6 +6,7 @@ import { DatePipe } from '@angular/common';
 import { FilterPipe } from 'src/app/pipes/filter.pipe';
 import Swal from 'sweetalert2';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
+import { ImportComponent } from 'src/app/components/import/import.component';
 
 @Component({
   selector: 'app-fiscal-report',
@@ -50,6 +51,9 @@ export class FiscalReportComponent implements OnInit {
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
 
+  @ViewChild(ImportComponent)
+  private importComponent!: ImportComponent;
+
   onChange(isCheck: boolean) {
     this.isCheck = isCheck;
     console.log('isCheck:', this.isCheck);
@@ -67,12 +71,16 @@ export class FiscalReportComponent implements OnInit {
     this.Init();
   }
 
+  message = 'Provincial Fiscal Report';
+  allList: any = [];
   Init() {
     this.list_revenues = [];
     this.list_expend = [];
     //this.fiscal.setYear=this.auth.activeSetYear;
     //this.fiscal.activeSetYear=this.auth.activeSetYear;
     this.service.GetFiscalReport().subscribe((data) => {
+      // this.import();
+      this.allList = <any>data;
       for (var item of data) {
         if (item.category == '1') {
           this.list_revenues.push(item);
@@ -80,7 +88,8 @@ export class FiscalReportComponent implements OnInit {
           this.list_expend.push(item);
         }
       }
-      console.log(this.list_revenues);
+      console.log('revenue', this.list_revenues);
+      console.log('expend', this.list_expend);
       this.FisView = <any>data;
       this.list_expend.sort((n1: any, n2: any) => {
         //order by Descending
@@ -97,15 +106,20 @@ export class FiscalReportComponent implements OnInit {
     });
   }
 
+  import() {
+    let importData = 'Provincial Fiscal Report';
+    this.importComponent.import(importData);
+  }
+
   AddFiscal() {
     this.toValidate.description =
       this.fiscal.description == '' || this.fiscal.description == null
         ? true
         : false;
-    this.toValidate.fiscalYear =
-      this.fiscal.fiscalYear == '' || this.fiscal.fiscalYear == undefined
-        ? true
-        : false;
+    // this.toValidate.fiscalYear =
+    //   this.fiscal.fiscalYear == '' || this.fiscal.fiscalYear == undefined
+    //     ? true
+    //     : false;
     this.toValidate.category =
       this.fiscal.category == '' || this.fiscal.category == undefined
         ? true
@@ -124,13 +138,14 @@ export class FiscalReportComponent implements OnInit {
     } else {
       this.fiscal.munCityId = this.auth.munCityId;
       this.fiscal.setYear = this.auth.setYear;
+      this.fiscal.fiscalYear = this.auth.setYear;
       this.service.AddfiscalReport(this.fiscal).subscribe(
         (_data) => {
           if (!this.isCheck) {
             this.closebutton.nativeElement.click();
           }
           Swal.fire('Good job!', 'Data Added Successfully!', 'success');
-
+          console.log('status', _data);
           this.Init();
           this.fiscal = {};
         },

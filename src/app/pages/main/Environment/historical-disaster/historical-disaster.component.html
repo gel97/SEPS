@@ -1,5 +1,8 @@
 <div class="">
-  <div class="card o-hidden border-2 shadow-sm my-5">
+  <ng-template #isEmpty>
+    <app-import [data]="message" (testEvent)="parentMethod()"></app-import>
+  </ng-template>
+  <div *ngIf="listHis.length>0; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
     <div class="card-body p-0">
       <!-- Nested Row within Card Body -->
       <div class="row">
@@ -13,7 +16,7 @@
             </div>
             <div class="d-flex justify-content-end">
               <button (click)="resetForm(); updateForm=false" class="btn btn-primary" data-toggle="modal"
-                data-target="#exampleModal">
+                data-target="#ModalAdd">
                 <i class="fa fa-plus"></i>&nbsp;Historical Disaster
               </button>
             </div>
@@ -60,7 +63,7 @@
                       </app-admin>
                       &nbsp;
                       <button (click)="addData = historical; updateForm = true" class="btn btn-info btn-circle"
-                        role="button" data-toggle="modal" data-target="#exampleModal">
+                        role="button" data-toggle="modal" data-target="#ModalAdd">
                         <i class="fa fa-pen">
                         </i>
                       </button>
@@ -89,12 +92,13 @@
 
 <!-- Modal -->
 
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="ModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel">Historical Disaster Profile</h1>
-        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        <button type="button" #closebutton class="btn-close" data-dismiss="modal" data-bs-dismiss="modal"
+          aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form class="user collapse show" id="collapseExample">
@@ -285,14 +289,13 @@
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal">
           Close</button>
 
-        <button type="button" *ngIf="updateForm == true" (click)="EditDescription(addData)" class="btn btn-primary">
+        <button type="button" *ngIf="updateForm == true" (click)="EditDescription()" class="btn btn-primary">
           Update</button>
 
-        <button type="button" *ngIf="updateForm==false" (click)="AddDescription(addData)" class="btn btn-primary"
-          [disabled]="
+        <button type="button" *ngIf="updateForm==false" (click)="AddDescription()" class="btn btn-primary" [disabled]="
         !addData.dateOccurence|| 
         !addData.disasterType|| 
         !addData.areasAffected|| 

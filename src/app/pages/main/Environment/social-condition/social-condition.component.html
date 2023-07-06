@@ -1,5 +1,8 @@
 <div class="">
-    <div class="card o-hidden border-2 shadow-sm my-5">
+    <ng-template #isEmpty>
+        <app-import [data]="message"></app-import>
+    </ng-template>
+    <div *ngIf="listSocialcondition.length>0; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
         <div class="card-body p-0">
             <!-- Nested Row within Card Body -->
             <div class="row">
@@ -12,9 +15,10 @@
                         </div>
                         <app-admin>
                             <div class="text-right">
-                                <button type="button" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#exampleModalLong" (click)="resetForm(); updateForm=false"
-                                    style="font-size: 15px;"><i class="fa fa-plus"></i> Social
+                                <button *ngIf="!listSocialcondition || listSocialcondition.length === 0" type="button"
+                                    class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong"
+                                    (click)="resetForm(); updateForm=false" style="font-size: 15px;"><i
+                                        class="fa fa-plus"></i> Social
                                     Condition and Vulnerability</button>
                             </div>
                         </app-admin>
@@ -65,7 +69,7 @@
                                             <button *ngFor="let desc of listSocialcondition"
                                                 (click)="addDescription = desc; updateForm=true"
                                                 class="btn btn-info btn-circle" data-bs-toggle="modal"
-                                                data-bs-target="#exampleModalLong">
+                                                data-bs-target="#ModalAdd">
                                                 <i class="fas fa-pen"></i>
                                             </button>&nbsp;
                                             <button (click)="DeleteSocial(desc.transId)"
@@ -86,13 +90,14 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+<div class="modal fade" id="ModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
     aria-hidden="true">
     <div class="modal-dialog modal-lg  modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="h4 text-gray-900 mb-4" id="exampleModalLongTitle">Social Condition and Vulnerability</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" #closebutton class="close" data-dismiss="modal" data-bs-dismiss="modal"
+                    aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -141,7 +146,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal"
                     style="font-size: 15px;">Close</button>
                 <button type="button" class="btn btn-primary" *ngIf="updateForm == false"
                     (click)="AddSocial(addDescription)" (click)="buttonClick()" [disabled]="click"

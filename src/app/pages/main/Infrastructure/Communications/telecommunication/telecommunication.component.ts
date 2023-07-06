@@ -24,6 +24,8 @@ export class TelecommunicationComponent implements OnInit {
     return this.modifyService.ModifyText(cityMunName);
   }
 
+  message = 'Telecommunication Systems';
+
   toValidate: any = {};
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;
@@ -65,17 +67,70 @@ export class TelecommunicationComponent implements OnInit {
   ngOnInit(): void {
     this.Init();
   }
+
+  public showOverlay = false;
+  importMethod() {
+    this.showOverlay = true;
+    this.service.Import().subscribe({
+      next: (data) => {
+        this.ngOnInit();
+      },
+      error: (error) => {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'warning',
+          title: 'Something went wrong',
+        });
+      },
+      complete: () => {
+        this.showOverlay = false;
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'success',
+          title: 'Imported Successfully',
+        });
+      },
+    });
+  }
   munCityId: string = this.auth.munCityId;
   setYear: string = this.auth.setYear;
 
   Add_tel: boolean = true;
-  Telco: any = [];
+  Telco123: any = [];
   telco: any = {};
   barangays: any = [];
 
   Init() {
     this.GetListBarangay();
     this.GetList_Telco();
+  }
+
+  parentMethod() {
+    this.telco = {};
+    this.not_visible = false;
+    this.visible = true;
   }
 
   GetListBarangay() {
@@ -87,7 +142,8 @@ export class TelecommunicationComponent implements OnInit {
   GetList_Telco() {
     this.service.List_telcom(this.setYear, this.munCityId).subscribe({
       next: (response) => {
-        this.Telco = <any>response;
+        this.Telco123 = <any>response;
+        console.log('list', this.Telco123);
       },
       error: (error) => {
         Swal.fire('Oops!', 'Something went wrong.', 'error');

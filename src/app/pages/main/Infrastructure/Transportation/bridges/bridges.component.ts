@@ -20,9 +20,20 @@ export class BridgesComponent implements OnInit {
     private modifyService: ModifyCityMunService
   ) {}
 
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void } };
+
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
   }
+
+  message = 'Bridges';
+
+  parentMethod() {
+    // alert('parent Method');
+    this.isNew = true;
+  }
+
   munCityName: string = this.auth.munCityName;
   toValidate: any = {};
   TranspoBridgeList: any = [];
@@ -93,6 +104,7 @@ export class BridgesComponent implements OnInit {
       this.service.post_save_transpo_bridge(this.BridgeList).subscribe(
         (data) => {
           Swal.fire('Saved!', 'Data successfully saved.', 'success');
+          this.closebutton.nativeElement.click();
           this.TranspoBridgeList.push(<any>data);
         },
         (error) => {
@@ -137,6 +149,7 @@ export class BridgesComponent implements OnInit {
     ) {
       this.service.put_update_transpo_bridge(this.BridgeList).subscribe(
         (data) => {
+          this.closebutton.nativeElement.click();
           Swal.fire('Updated!', 'Data successfully updated.', 'success');
         },
         (err) => {

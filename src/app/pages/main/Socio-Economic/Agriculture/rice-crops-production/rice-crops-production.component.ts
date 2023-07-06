@@ -33,6 +33,8 @@ export class RiceCropsProductionComponent implements OnInit {
 
   munCityName: string = this.Auth.munCityName;
 
+  message = 'Rice/ Crops Production';
+
   menuId = '2';
   toValidate: any = {};
   dataList: any = [];
@@ -127,6 +129,53 @@ export class RiceCropsProductionComponent implements OnInit {
     };
     this.gmapComponent.setMarker(this.markerObj);
     console.log('marker', this.markerObj);
+  }
+
+  public showOverlay = false;
+  importMethod() {
+    this.showOverlay = true;
+    this.Service.Import(this.menuId).subscribe({
+      next: (data) => {
+        this.ngOnInit();
+      },
+      error: (error) => {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'warning',
+          title: 'Something went wrong',
+        });
+      },
+      complete: () => {
+        this.showOverlay = false;
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'success',
+          title: 'Imported Successfully',
+        });
+      },
+    });
   }
 
   ngOnInit(): void {
@@ -239,6 +288,13 @@ export class RiceCropsProductionComponent implements OnInit {
     this.required = false;
   }
 
+  parentMethod() {
+    // alert('parent Method');
+    this.addData = {};
+    this.not_visible = false;
+    this.visible = true;
+    this.required = false;
+  }
   editToggle() {
     this.not_visible = true;
     this.visible = false;
@@ -294,6 +350,7 @@ export class RiceCropsProductionComponent implements OnInit {
           this.addData.latitude = this.gmapComponent.markers.lat;
 
           this.addData.setYear = this.setYear;
+          this.closebutton.nativeElement.click();
           this.addData.munCityId = this.munCityId;
           this.addData.menuId = this.menuId;
           this.addData.tag = 1;

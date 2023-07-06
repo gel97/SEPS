@@ -1,6 +1,10 @@
 <div class="">
 
-  <div class="card o-hidden border-2 shadow-sm my-5">
+  <ng-template #isEmpty>
+    <app-import [data]="message"></app-import>
+  </ng-template>
+
+  <div *ngIf="allList.length>0; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
     <div class="card-body p-0">
       <!-- Nested Row within Card Body -->
       <div class="row">
@@ -194,11 +198,11 @@
               <input type="text" class="form-control" id="" name="" [(ngModel)]="fiscal.amount" placeholder=""
                 [ngClass]="toValidate.amount?'is-invalid':''" (keyup)="toValidate.amount=false">
             </div>
-            <div class="col-lg-12"><br>
+            <!-- <div class="col-lg-12"><br>
               <label for="exampleFormControlTextarea1">Fiscal Year:</label>
               <input type="text" class="form-control" id="" name="" [(ngModel)]="fiscal.fiscalYear" placeholder=""
                 [ngClass]="toValidate.fiscalYear?'is-invalid':''" (keyup)="toValidate.fiscalYear=false">
-            </div>
+            </div> -->
 
           </div>
 

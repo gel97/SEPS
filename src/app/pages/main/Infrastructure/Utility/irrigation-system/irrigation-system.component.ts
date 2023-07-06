@@ -22,6 +22,14 @@ export class IrrigationSystemComponent implements OnInit {
     return this.modifyService.ModifyText(cityMunName);
   }
 
+  message = 'Irrigation Systems';
+
+  viewData: boolean = true;
+  parentMethod() {
+    // alert('parent Method');
+    this.viewData = true;
+  }
+
   toValidate: any = {};
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
@@ -33,6 +41,53 @@ export class IrrigationSystemComponent implements OnInit {
 
   ngOnInit(): void {
     this.Init();
+  }
+
+  public showOverlay = false;
+  importMethod() {
+    this.showOverlay = true;
+    this.service.Import().subscribe({
+      next: (data) => {
+        this.ngOnInit();
+      },
+      error: (error) => {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'warning',
+          title: 'Something went wrong',
+        });
+      },
+      complete: () => {
+        this.showOverlay = false;
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'success',
+          title: 'Imported Successfully',
+        });
+      },
+    });
   }
   munCityId: string = this.auth.munCityId;
   setYear: string = this.auth.setYear;
@@ -55,8 +110,10 @@ export class IrrigationSystemComponent implements OnInit {
         if (response !== null) {
           this.irrigation = <any>response;
           this.hasData = true;
+          this.viewData = true;
         } else {
           this.hasData = false;
+          this.viewData = false;
         }
       },
       error: (error) => {
@@ -78,9 +135,9 @@ export class IrrigationSystemComponent implements OnInit {
           Swal.fire('Oops!', 'Something went wrong.', 'error');
         },
         complete: () => {
-          if (!this.isCheck) {
-            this.closebutton.nativeElement.click();
-          }
+          // if (!this.isCheck) {
+          this.closebutton.nativeElement.click();
+          // }
           this.irrigation = {};
           Swal.fire('Good job!', 'Data Added Successfully!', 'success');
         },

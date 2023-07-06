@@ -35,6 +35,8 @@ export class MarketSupermarketsComponent implements OnInit {
 
   markerObj: any = {};
 
+  message = 'Market / Supermarkets';
+
   SetMarker(data: any = {}) {
     this.markerObj = {
       lat: data.latitude,
@@ -50,6 +52,53 @@ export class MarketSupermarketsComponent implements OnInit {
 
   ngOnInit(): void {
     this.Init();
+  }
+
+  public showOverlay = false;
+  importMethod() {
+    this.showOverlay = true;
+    this.service.Import(this.menuId).subscribe({
+      next: (data) => {
+        this.ngOnInit();
+      },
+      error: (error) => {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'warning',
+          title: 'Something went wrong',
+        });
+      },
+      complete: () => {
+        this.showOverlay = false;
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'success',
+          title: 'Imported Successfully',
+        });
+      },
+    });
   }
   munCityId: string = this.auth.munCityId;
   setYear: string = this.auth.setYear;

@@ -1,5 +1,12 @@
 <div class="">
-    <div class="card o-hidden border-2 shadow-sm my-5">
+    <ng-template #isEmpty>
+        <app-import [data]="message" (testEvent)="parentMethod()" (importData)="importMethod()"></app-import>
+    </ng-template>
+
+    <div *ngIf="showOverlay">
+        <app-import-loading></app-import-loading>
+    </div>
+    <div *ngIf="viewData ; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
         <div class="card-body p-0">
             <!-- Nested Row within Card Body -->
             <div class="row">
@@ -11,7 +18,7 @@
                         <div *ngIf="!hasData" class="form-inline float-right ">
                             <app-admin>
                                 <button (click)="isAdd = true;" class="btn btn-primary mb-2" data-bs-toggle="modal"
-                                    data-bs-target="#mEducation">
+                                    data-bs-target="#ModalAdd">
                                     <i class="fa fa-plus"></i>
                                     Postal Service Facility
                                 </button>
@@ -74,7 +81,7 @@
                             <div class="d-inline-flex">
                                 <app-admin>
                                     <button (click)="isAdd = false" class="btn btn-info btn-circle" data-toggle="modal"
-                                        data-target="#mEducation"><i class="fa fa-pen"></i>
+                                        data-target="#ModalAdd"><i class="fa fa-pen"></i>
                                     </button>
                                     &nbsp;
                                 </app-admin>
@@ -92,57 +99,59 @@
     </div>
 </div>
 
-<div class="modal fade" id="mEducation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="ModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title text-dark" id="exampleModalLabel">Postal Service Facility</h5>
-                <button type="button" #closebutton class="btn-close" data-bs-dismiss="modal"
+                <button type="button" #closebutton class="btn-close" data-bs-dismiss="modal" data-dismiss="modal"
                     aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                    <div class="row">
+                <div class="row">
 
-                        <div class="col-lg-12"><br>
-                            <label >Post Office/ Location :</label>
-                            <textarea class="form-control" rows="4" [(ngModel)]="data.location"></textarea>
-                        </div>
-                        <div class="col-lg-3"><br>
-                            <label >No. of Post Masters :</label>
-                            <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.postMastersNo">
-                        </div>
-                        <div class="col-lg-3"><br>
-                            <label >No. of Mail Sorters :</label>
-                            <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.mailSortersNo">
-                        </div>
-                        <div class="col-lg-3"><br>
-                            <label >No. of Postal Clerks :</label>
-                            <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.postalClerkNo">
-                        </div>
-                        <div class="col-lg-3"><br>
-                            <label >No. of Mail Carriers :</label>
-                            <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.postalCarriersNo">
-                        </div>
-                        <div class="col-lg-3"><br>
-                            <label >Mail Truck/ Van :</label>
-                            <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.mailTruck">
-                        </div>
-                        <div class="col-lg-3"><br>
-                            <label >Motorcycle : </label>
-                            <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.motorcycle">
-                        </div>
-                        <div class="col-lg-3"><br>
-                            <label >Bicycle</label>
-                            <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.bicycle">
-                        </div>
-                        <div class="col-lg-3"><br>
-                            <label >Postal Stations :</label>
-                            <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.postalStations">
-                        </div>
+                    <div class="col-lg-12"><br>
+                        <label>Post Office/ Location :</label>
+                        <textarea class="form-control" rows="4" [(ngModel)]="data.location"></textarea>
                     </div>
+                    <div class="col-lg-3"><br>
+                        <label>No. of Post Masters :</label>
+                        <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.postMastersNo">
+                    </div>
+                    <div class="col-lg-3"><br>
+                        <label>No. of Mail Sorters :</label>
+                        <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.mailSortersNo">
+                    </div>
+                    <div class="col-lg-3"><br>
+                        <label>No. of Postal Clerks :</label>
+                        <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.postalClerkNo">
+                    </div>
+                    <div class="col-lg-3"><br>
+                        <label>No. of Mail Carriers :</label>
+                        <input type="number" class="form-control" id="" placeholder=""
+                            [(ngModel)]="data.postalCarriersNo">
+                    </div>
+                    <div class="col-lg-3"><br>
+                        <label>Mail Truck/ Van :</label>
+                        <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.mailTruck">
+                    </div>
+                    <div class="col-lg-3"><br>
+                        <label>Motorcycle : </label>
+                        <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.motorcycle">
+                    </div>
+                    <div class="col-lg-3"><br>
+                        <label>Bicycle</label>
+                        <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.bicycle">
+                    </div>
+                    <div class="col-lg-3"><br>
+                        <label>Postal Stations :</label>
+                        <input type="number" class="form-control" id="" placeholder=""
+                            [(ngModel)]="data.postalStations">
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-school" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-school" data-bs-dismiss="modal" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" (click)="isAdd? AddData(): EditData()">Save
                     changes</button>
             </div>
@@ -165,10 +174,10 @@
                 <app-gmap></app-gmap>
             </div>
             <div class="modal-footer">
-              <app-admin>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" (click)="EditData()">Save changes</button>
-              </app-admin>
+                <app-admin>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" (click)="EditData()">Save changes</button>
+                </app-admin>
             </div>
         </div>
     </div>

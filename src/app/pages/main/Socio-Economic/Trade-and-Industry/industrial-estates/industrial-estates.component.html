@@ -1,5 +1,12 @@
 <div class="">
-  <div class="card o-hidden border-2 shadow-sm my-5">
+  <ng-template #isEmpty>
+    <app-import [data]="message" (importData)="importMethod()"></app-import>
+  </ng-template>
+
+  <div *ngIf="showOverlay">
+    <app-import-loading></app-import-loading>
+  </div>
+  <div *ngIf="Industrial.length>0 ; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
     <div class="card-body p-0">
       <!-- Nested Row within Card Body -->
       <div class="row">
@@ -16,7 +23,7 @@
             <div class="form-inline float-right ">
               <form class=>
                 <app-admin>
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal"><i
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd"><i
                       class="fa fa-plus"></i>
                     Industrial Estates
                   </button>
@@ -106,77 +113,165 @@
    </form>
 </div>
 </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-            <!-- ADD MODAL -->
-            <div class="modal fade bd-example-modal-lg" id="Modal" tabindex="-1" role="dialog"
-              aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <!-- <div class="modal-dialog modal-dialog-scrollable" role="document"> -->
-              <div class="modal-dialog modal-lg">
 
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Industrial Estates
-                    </h5>
-                    <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <div class="row">
-                      <div class="form-group">
-                        <div class="row">
-                          <div class="col-lg-12">
-                            <label for="validationServer03">Name of Industrial Estate :</label>
-                            <input type="text" class="form-control" [ngClass]="toValidate.name?'is-invalid':''"
-                              id="validationServer03" placeholder="" [(ngModel)]="industrial.name"
-                              [ngClass]="toValidate.name?'is-invalid':''" (keyup)="toValidate.name=false">
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-lg-6"><br>
-                            <label for="exampleFormControlInput1">Contact Person/ Designation :</label>
-                            <input type="text" class="form-control" name="industrial.contactPerson"
-                              [ngClass]="toValidate.contactPerson?'is-invalid':''"
-                              (keyup)="toValidate.contactPerson=false" id="" placeholder=""
-                              [(ngModel)]="industrial.contactPerson">
-                          </div>
-                          <div class="col-lg-6"><br>
-                            <label for="category">Barangay :</label>
-                            <select class="form-select" aria-label="Default select example"
-                              [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false"
-                              [(ngModel)]="industrial.brgyId">
-                              <option *ngFor="let item  of barangays" value={{item.brgyId}}>{{item.brgyName}}</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-lg-6">
-                          <label for="exampleFormControlInput1">Contact Numbers :</label>
-                          <input type="text" class="form-control" id="" placeholder=""
-                            [(ngModel)]="industrial.contactNo" [ngClass]="toValidate.contactNo?'is-invalid':''"
-                            (keyup)="toValidate.contactNo=false">
-                        </div>
-                        <div class="col-lg-6">
-                          <label for="exampleFormControlInput1">Area (Has):</label>
-                          <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="industrial.area"
-                            [ngClass]="toValidate.area?'is-invalid':''" (keyup)="toValidate.area=false">
-                        </div>
-                      </div><br>
-                      <div class="row">
-                        <div class="col-lg-6">
-                          <label>No. of. Locators :</label>
-                          <input type="text" class="form-control" id="" placeholder=""
-                            [(ngModel)]="industrial.locatorsNo" [ngClass]="toValidate.locatorsNo?'is-invalid':''"
-                            (keyup)="toValidate.locatorsNo=false">
-                        </div>
-                        <div class="col-lg-6">
-                          <label>Location (#/Bldg/St./Purok) :</label>
-                          <input type="text" class="form-control" id="" placeholder=""
-                            [(ngModel)]="industrial.location">
-                        </div>
-                      </div><br>
-                      <!-- <div class="row">
+<!-- edit (Modal) -->
+<div class="modal fade bd-example-modal-lg" id="ModalEdit" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <!-- <div class="modal-dialog modal-dialog-scrollable" role="document"> -->
+  <div class="modal-dialog modal-lg" role="document">
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Industrial Estates
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="form-group">
+            <div class="row">
+              <div class="col-lg-12">
+                <label for="exampleFormControlInput1">Name of Industrial Estate :</label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.name"
+                  [ngClass]="toValidate.name?'is-invalid':''" (keyup)="toValidate.name=false">
+              </div>
+            </div>
+            <div class="row"><br>
+              <div class="col-lg-6"><br>
+                <label for="exampleFormControlInput1">Contact Person/ Designation :</label>
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.contactPerson"
+                  [ngClass]="toValidate.contactPerson?'is-invalid':''" (keyup)="toValidate.contactPerson=false">
+              </div>
+              <div class="col-lg-6"><br>
+                <label for="category">Barangay :</label>
+                <select class="form-select" aria-label="Default select example" [(ngModel)]="editmodal.brgyId"
+                  [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false">
+                  <option *ngFor="let item  of barangays" value={{item.brgyId}}>{{item.brgyName}}</option>
+                </select>
+              </div>
+            </div>
+          </div><br>
+          <div class="row">
+            <div class="col-lg-6">
+              <label for="exampleFormControlInput1">Contact Numbers :</label>
+              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.contactNo">
+            </div>
+            <div class="col-lg-6">
+              <label for="exampleFormControlInput1">Area (Has):</label>
+              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.area"
+                [ngClass]="toValidate.area?'is-invalid':''" (keyup)="toValidate.area=false">
+            </div>
+          </div><br>
+          <div class="row">
+            <div class="col-lg-6">
+              <label>No. of. Locators :</label>
+              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.locatorsNo"
+                [ngClass]="toValidate.locatorsNo?'is-invalid':''" (ngModelChange)="toValidate.locatorsNo=false">
+            </div>
+            <div class="col-lg-6">
+              <label>Location (#/Bldg/St./Purok) :</label>
+              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.location">
+            </div>
+          </div><br>
+          <div class="row">
+            <div class="col-lg-6">
+              <label>Geo Coordinates - Longitude:</label>
+              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.longtitude">
+            </div>
+            <div class="col-lg-6">
+              <label for="type">Latitude : </label>
+              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.latitude">
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="Update_Industrial()"><i class="fa fa-check"></i>Save
+            Changes</button>&nbsp;
+          <!-- <button type ="button" class="btn btn-secondary" *ngIf="updateOfficial" (click) ="city={}"><i class="fa fa-times"></i>Cancel</button> -->
+          <button type="button" class="btn btn-secondary" data-dismiss="modal"><i
+              class="fa fa-times"></i>Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD MODAL -->
+<div class="modal fade bd-example-modal-lg" id="ModalAdd" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <!-- <div class="modal-dialog modal-dialog-scrollable" role="document"> -->
+  <div class="modal-dialog modal-lg">
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Industrial Estates
+        </h5>
+        <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="form-group">
+            <div class="row">
+              <div class="col-lg-12">
+                <label for="validationServer03">Name of Industrial Estate :</label>
+                <input type="text" class="form-control" [ngClass]="toValidate.name?'is-invalid':''"
+                  id="validationServer03" placeholder="" [(ngModel)]="industrial.name"
+                  [ngClass]="toValidate.name?'is-invalid':''" (keyup)="toValidate.name=false">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6"><br>
+                <label for="exampleFormControlInput1">Contact Person/ Designation :</label>
+                <input type="text" class="form-control" name="industrial.contactPerson"
+                  [ngClass]="toValidate.contactPerson?'is-invalid':''" (keyup)="toValidate.contactPerson=false" id=""
+                  placeholder="" [(ngModel)]="industrial.contactPerson">
+              </div>
+              <div class="col-lg-6"><br>
+                <label for="category">Barangay :</label>
+                <select class="form-select" aria-label="Default select example"
+                  [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false"
+                  [(ngModel)]="industrial.brgyId">
+                  <option *ngFor="let item  of barangays" value={{item.brgyId}}>{{item.brgyName}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6">
+              <label for="exampleFormControlInput1">Contact Numbers :</label>
+              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="industrial.contactNo"
+                [ngClass]="toValidate.contactNo?'is-invalid':''" (keyup)="toValidate.contactNo=false">
+            </div>
+            <div class="col-lg-6">
+              <label for="exampleFormControlInput1">Area (Has):</label>
+              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="industrial.area"
+                [ngClass]="toValidate.area?'is-invalid':''" (keyup)="toValidate.area=false">
+            </div>
+          </div><br>
+          <div class="row">
+            <div class="col-lg-6">
+              <label>No. of. Locators :</label>
+              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="industrial.locatorsNo"
+                [ngClass]="toValidate.locatorsNo?'is-invalid':''" (keyup)="toValidate.locatorsNo=false">
+            </div>
+            <div class="col-lg-6">
+              <label>Location (#/Bldg/St./Purok) :</label>
+              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="industrial.location">
+            </div>
+          </div><br>
+          <!-- <div class="row">
               <div class="col-lg-6">
                   <label>Geo Coordinates - Longitude:</label>
                   <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="industrial.longtitude">
@@ -187,119 +282,27 @@
                  </div>
             </div> -->
 
-                    </div>
-                    <div class="modal-footer">
-                      <div class="left-absolute" *ngIf="visible">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                            (ngModelChange)="onChange(isCheck)" [(ngModel)]="isCheck">
-                          <label class="form-check-label" for="flexCheckDefault">
-                            Several data
-                          </label>
-                        </div>
-                      </div>
-                      <button type="button" class="btn btn-primary" (click)="Add_Industrial()" id="close"><i
-                          class="fa fa-check"></i>Save</button>&nbsp;
-                      <!-- <button type ="button" class="btn btn-secondary" *ngIf="updateOfficial" (click) ="city={}"><i class="fa fa-times"></i>Cancel</button> -->
-                      <button type="button" id="close" class="btn btn-secondary"><i
-                          class="fa fa-times"></i>Close</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+        </div>
+        <div class="modal-footer">
+          <div class="left-absolute" *ngIf="visible">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                (ngModelChange)="onChange(isCheck)" [(ngModel)]="isCheck">
+              <label class="form-check-label" for="flexCheckDefault">
+                Several data
+              </label>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- edit (Modal) -->
-  <div class="modal fade bd-example-modal-lg" id="ModalEdit" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <!-- <div class="modal-dialog modal-dialog-scrollable" role="document"> -->
-    <div class="modal-dialog modal-lg" role="document">
-
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Industrial Estates
-          </h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="form-group">
-              <div class="row">
-                <div class="col-lg-12">
-                  <label for="exampleFormControlInput1">Name of Industrial Estate :</label>
-                  <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.name"
-                    [ngClass]="toValidate.name?'is-invalid':''" (keyup)="toValidate.name=false">
-                </div>
-              </div>
-              <div class="row"><br>
-                <div class="col-lg-6"><br>
-                  <label for="exampleFormControlInput1">Contact Person/ Designation :</label>
-                  <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.contactPerson"
-                    [ngClass]="toValidate.contactPerson?'is-invalid':''" (keyup)="toValidate.contactPerson=false">
-                </div>
-                <div class="col-lg-6"><br>
-                  <label for="category">Barangay :</label>
-                  <select class="form-select" aria-label="Default select example" [(ngModel)]="editmodal.brgyId"
-                    [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false">
-                    <option *ngFor="let item  of barangays" value={{item.brgyId}}>{{item.brgyName}}</option>
-                  </select>
-                </div>
-              </div>
-            </div><br>
-            <div class="row">
-              <div class="col-lg-6">
-                <label for="exampleFormControlInput1">Contact Numbers :</label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.contactNo">
-              </div>
-              <div class="col-lg-6">
-                <label for="exampleFormControlInput1">Area (Has):</label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.area"
-                  [ngClass]="toValidate.area?'is-invalid':''" (keyup)="toValidate.area=false">
-              </div>
-            </div><br>
-            <div class="row">
-              <div class="col-lg-6">
-                <label>No. of. Locators :</label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.locatorsNo"
-                  [ngClass]="toValidate.locatorsNo?'is-invalid':''" (ngModelChange)="toValidate.locatorsNo=false">
-              </div>
-              <div class="col-lg-6">
-                <label>Location (#/Bldg/St./Purok) :</label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.location">
-              </div>
-            </div><br>
-            <div class="row">
-              <div class="col-lg-6">
-                <label>Geo Coordinates - Longitude:</label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.longtitude">
-              </div>
-              <div class="col-lg-6">
-                <label for="type">Latitude : </label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.latitude">
-              </div>
-            </div>
-
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" (click)="Update_Industrial()"><i class="fa fa-check"></i>Save
-              Changes</button>&nbsp;
-            <!-- <button type ="button" class="btn btn-secondary" *ngIf="updateOfficial" (click) ="city={}"><i class="fa fa-times"></i>Cancel</button> -->
-            <button type="button" class="btn btn-secondary" data-dismiss="modal"><i
-                class="fa fa-times"></i>Cancel</button>
-          </div>
+          <button type="button" class="btn btn-primary" (click)="Add_Industrial()" id="close"><i
+              class="fa fa-check"></i>Save</button>&nbsp;
+          <!-- <button type ="button" class="btn btn-secondary" *ngIf="updateOfficial" (click) ="city={}"><i class="fa fa-times"></i>Cancel</button> -->
+          <button type="button" id="close" class="btn btn-secondary"><i class="fa fa-times"></i>Close</button>
         </div>
       </div>
     </div>
   </div>
 </div>
+
 
 
 <!-- modal area -->

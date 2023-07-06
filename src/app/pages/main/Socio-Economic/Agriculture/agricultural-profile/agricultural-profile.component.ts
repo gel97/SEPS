@@ -31,6 +31,8 @@ export class AgriculturalProfileComponent implements OnInit {
     this.isCheck = isCheck;
   }
 
+  message = 'General Agricultural Profile';
+
   Data: boolean = false;
   isAdd: boolean = true;
   toValidate: any = {};
@@ -49,6 +51,53 @@ export class AgriculturalProfileComponent implements OnInit {
     this.GetListAgricultureProfile();
   }
 
+  public showOverlay = false;
+  importMethod() {
+    this.showOverlay = true;
+    this.Service.Import().subscribe({
+      next: (data) => {
+        this.ngOnInit();
+      },
+      error: (error) => {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'warning',
+          title: 'Something went wrong',
+        });
+      },
+      complete: () => {
+        this.showOverlay = false;
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'success',
+          title: 'Imported Successfully',
+        });
+      },
+    });
+  }
+
   close() {}
 
   GetListAgricultureProfile() {
@@ -57,14 +106,16 @@ export class AgriculturalProfileComponent implements OnInit {
       this.Auth.munCityId
     ).subscribe({
       next: (response) => {
-        console.log(response);
+        console.log('all_data', response);
         if (response.length > 0) {
           this.addData = <any>response[0];
+          this.viewData = true;
           console.log('data: ', this.addData);
 
           this.Data = true;
         } else {
           this.Data = false;
+          this.viewData = false;
         }
       },
       error: (error) => {
@@ -72,6 +123,12 @@ export class AgriculturalProfileComponent implements OnInit {
       },
       complete: () => {},
     });
+  }
+
+  viewData: boolean = false;
+  parentMethod() {
+    // alert('parent Method');
+    this.viewData = true;
   }
 
   AddAgricultureProfile() {
@@ -87,8 +144,8 @@ export class AgriculturalProfileComponent implements OnInit {
         : false;
 
     if (
-      this.toValidate.riceIrrigTotal == true ||
-      this.toValidate.riceRainTotal == true
+      this.toValidate.riceIrrigTotal == false ||
+      this.toValidate.riceRainTotal == false
     ) {
       Swal.fire(
         'Missing Data!',
@@ -106,7 +163,7 @@ export class AgriculturalProfileComponent implements OnInit {
           }
           console.log(_data);
           this.clearData();
-          this.addData();
+          // this.addData();
           this.GetListAgricultureProfile();
         },
         (err) => {
@@ -127,9 +184,9 @@ export class AgriculturalProfileComponent implements OnInit {
 
   EditAgricultureProfile() {
     {
-      this.addData.setYear = this.setYear;
-      this.addData.munCityId = this.munCityId;
-      this.Service.EditAgricultureProfile(this.addData).subscribe({
+      this.editData.setYear = this.setYear;
+      this.editData.munCityId = this.munCityId;
+      this.Service.EditAgricultureProfile(this.editData).subscribe({
         next: (request) => {
           this.GetListAgricultureProfile();
           Swal.fire('Good job!', 'Data Updated Successfully!', 'success');

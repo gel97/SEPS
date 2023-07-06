@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { EnvironmentService } from 'src/app/shared/Environment/environment.service';
 import { AuthService } from 'src/app/services/auth.service';
 import Swal from 'sweetalert2';
@@ -6,12 +6,13 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-urban-environment',
   templateUrl: './urban-environment.component.html',
-  styleUrls: ['./urban-environment.component.css']
+  styleUrls: ['./urban-environment.component.css'],
 })
 export class UrbanEnvironmentComponent implements OnInit {
+  constructor(private Service: EnvironmentService, private Auth: AuthService) {}
 
-  constructor(private Service: EnvironmentService, private Auth: AuthService) { }
-
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void } };
   menuId = 4;
   setYear = Number(this.Auth.activeSetYear);
   munCityId = this.Auth.munCityId;
@@ -40,20 +41,25 @@ export class UrbanEnvironmentComponent implements OnInit {
   }
 
   GetData(): void {
-    this.Service
-      .GetEnvironment(this.menuId, this.setYear, this.munCityId,).subscribe({
-        next: (response) => {
-          this.listUrban = response;
-          // console.log(this.listhazard);
-        },
-        error: (err) => {
-          console.log(err);
-        },
-        complete: () => {
-          console.log('GetUrbanEnvironment() completed.');
-        },
-      });
+    this.Service.GetEnvironment(
+      this.menuId,
+      this.setYear,
+      this.munCityId
+    ).subscribe({
+      next: (response) => {
+        this.listUrban = response;
+        // console.log(this.listhazard);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+      complete: () => {
+        console.log('GetUrbanEnvironment() completed.');
+      },
+    });
   }
+
+  message = 'Urban Environment Quality';
 
   AddUrban(addData: any): void {
     addData.setYear = Number(this.setYear);
@@ -84,8 +90,9 @@ export class UrbanEnvironmentComponent implements OnInit {
         });
       },
       complete: () => {
+        this.closebutton.nativeElement.click();
         console.log('AddUrbanEnvironment() completed.');
-      }
+      },
     });
   }
 
@@ -117,6 +124,7 @@ export class UrbanEnvironmentComponent implements OnInit {
         });
       },
       complete: () => {
+        this.closebutton.nativeElement.click();
         console.log('UpdateUrbanEnvironment() completed.');
       },
     });
@@ -142,7 +150,9 @@ export class UrbanEnvironmentComponent implements OnInit {
       if (result.isConfirmed) {
         this.Service.DeleteEnvironment(id).subscribe({
           next: (response) => {
-            const index = this.listUrban.findIndex((d: any) => d.transId === id);
+            const index = this.listUrban.findIndex(
+              (d: any) => d.transId === id
+            );
             //console.log(index);
             this.delete(id);
             this.listUrban.splice(index, 1);
@@ -173,7 +183,4 @@ export class UrbanEnvironmentComponent implements OnInit {
       }
     });
   }
-
-
 }
-

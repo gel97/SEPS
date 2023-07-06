@@ -20,6 +20,7 @@ export class ProvincialCropsProductionComponent implements OnInit {
     return this.modifyService.ModifyText(cityMunName);
   }
 
+  message = 'Provincial Crops Production';
   Crops: any = [];
   crop: any = {};
   listofCrop: any = [
@@ -96,8 +97,63 @@ export class ProvincialCropsProductionComponent implements OnInit {
     // this.required = false;
   }
 
+  parentMethod() {
+    // alert('parent Method');
+    this.crop = {};
+    this.not_visible = false;
+    this.visible = true;
+    // this.required = false;
+  }
+
   ngOnInit(): void {
     this.List_Crops();
+  }
+
+  public showOverlay = false;
+  importMethod() {
+    this.showOverlay = true;
+    this.service.Import(this.menuId).subscribe({
+      next: (data) => {
+        this.ngOnInit();
+      },
+      error: (error) => {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'warning',
+          title: 'Something went wrong',
+        });
+      },
+      complete: () => {
+        this.showOverlay = false;
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'success',
+          title: 'Imported Successfully',
+        });
+      },
+    });
   }
 
   List_Crops() {

@@ -1,5 +1,12 @@
 <div class="">
-  <div class="card o-hidden border-2 shadow-sm my-5">
+  <ng-template #isEmpty>
+    <app-import [data]="message" (testEvent)="parentMethod()" (importData)="importMethod()"></app-import>
+  </ng-template>
+
+  <div *ngIf="showOverlay">
+    <app-import-loading></app-import-loading>
+  </div>
+  <div *ngIf="viewData  ; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
     <div class="card-body p-0">
       <!-- Nested Row within Card Body -->
       <div class="row">
@@ -12,7 +19,7 @@
             <div *ngIf="!hasData" class="form-inline float-right ">
               <app-admin>
                 <button (click)="isAdd = true;" class="btn btn-primary mb-2" data-bs-toggle="modal"
-                  data-bs-target="#mEducation">
+                  data-bs-target="#ModalAdd">
                   <i class="fa fa-plus"></i>
                   Irrigation System
                 </button>
@@ -55,7 +62,7 @@
               <div class="d-inline-flex">
                 <app-admin>
                   <button (click)="isAdd = false" class="btn btn-info btn-circle" data-toggle="modal"
-                    data-target="#mEducation"><i class="fa fa-pen"></i>
+                    data-target="#ModalAdd"><i class="fa fa-pen"></i>
                   </button>
                   &nbsp;
                 </app-admin>
@@ -73,7 +80,7 @@
   </div>
 </div>
 
-<div class="modal fade" id="mEducation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="ModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">

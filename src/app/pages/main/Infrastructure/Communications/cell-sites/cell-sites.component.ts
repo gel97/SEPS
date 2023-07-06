@@ -12,7 +12,9 @@ import Swal from 'sweetalert2';
 })
 export class CellSitesComponent implements OnInit {
   munCityName: string = this.auth.munCityName;
-  constructor(private service: CellSitesService, private auth: AuthService,
+  constructor(
+    private service: CellSitesService,
+    private auth: AuthService,
     private modifyService: ModifyCityMunService
   ) {}
 
@@ -30,6 +32,8 @@ export class CellSitesComponent implements OnInit {
     this.isCheck = isCheck;
     console.log('isCheck:', this.isCheck);
   }
+
+  message = 'Communication Towers/ Cell-sites';
 
   markerObj: any = {};
 
@@ -50,6 +54,53 @@ export class CellSitesComponent implements OnInit {
   ngOnInit(): void {
     this.Init();
   }
+  public showOverlay = false;
+  importMethod() {
+    this.showOverlay = true;
+    this.service.Import().subscribe({
+      next: (data) => {
+        this.ngOnInit();
+      },
+      error: (error) => {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'warning',
+          title: 'Something went wrong',
+        });
+      },
+      complete: () => {
+        this.showOverlay = false;
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'success',
+          title: 'Imported Successfully',
+        });
+      },
+    });
+  }
+
   munCityId: string = this.auth.munCityId;
   setYear: string = this.auth.setYear;
 

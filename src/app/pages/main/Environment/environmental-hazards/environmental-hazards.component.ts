@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { EnvironmentService } from 'src/app/shared/Environment/environment.service';
 import { AuthService } from 'src/app/services/auth.service';
 import Swal from 'sweetalert2';
@@ -6,13 +6,13 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-environmental-hazards',
   templateUrl: './environmental-hazards.component.html',
-  styleUrls: ['./environmental-hazards.component.css']
+  styleUrls: ['./environmental-hazards.component.css'],
 })
 export class EnvironmentalHazardsComponent implements OnInit {
+  constructor(private service: EnvironmentService, private Auth: AuthService) {}
 
-  constructor(private service: EnvironmentService, private Auth: AuthService) { }
-
-
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void } };
   menuId = 5;
   setYear = Number(this.Auth.activeSetYear);
   munCityId = this.Auth.munCityId;
@@ -24,6 +24,8 @@ export class EnvironmentalHazardsComponent implements OnInit {
 
   idCounter: number = 1;
   updateForm: boolean = false;
+
+  message = 'Environmental Hazards';
 
   click: boolean = true;
   buttonClick() {
@@ -43,7 +45,8 @@ export class EnvironmentalHazardsComponent implements OnInit {
 
   GetData(): void {
     this.service
-      .GetEnvironment(this.menuId, this.setYear, this.munCityId,).subscribe({
+      .GetEnvironment(this.menuId, this.setYear, this.munCityId)
+      .subscribe({
         next: (response) => {
           this.listHazard = response;
           // console.log(this.listhazard);
@@ -86,11 +89,11 @@ export class EnvironmentalHazardsComponent implements OnInit {
         });
       },
       complete: () => {
+        this.closebutton.nativeElement.click();
         console.log('AddEnvironmentalHazard() completed.');
-      }
+      },
     });
   }
-
 
   EditDescription(addData: any): void {
     this.service.EditEnvironment(addData).subscribe({
@@ -120,6 +123,7 @@ export class EnvironmentalHazardsComponent implements OnInit {
         });
       },
       complete: () => {
+        this.closebutton.nativeElement.click();
         console.log('UpdateEnvironmentHazard() completed.');
       },
     });
@@ -145,7 +149,9 @@ export class EnvironmentalHazardsComponent implements OnInit {
       if (result.isConfirmed) {
         this.service.DeleteEnvironment(id).subscribe({
           next: (response) => {
-            const index = this.listHazard.findIndex((d: any) => d.transId === id);
+            const index = this.listHazard.findIndex(
+              (d: any) => d.transId === id
+            );
             //console.log(index);
             this.deleteDescription(id);
             this.listHazard.splice(index, 1);
@@ -176,6 +182,4 @@ export class EnvironmentalHazardsComponent implements OnInit {
       }
     });
   }
-
-
 }
