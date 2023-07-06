@@ -1,23 +1,22 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import { SafetyServicesService } from 'src/app/shared/SocialProfile/PublicOrder/safety-services.service';
+import { HealthProfileService } from 'src/app/shared/SocialProfile/Health/healthProfile.service';
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import { isEmptyObject } from 'jquery';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
-import { SafetyPoliceService } from 'src/app/shared/SocialProfile/PublicOrder/safety-police.service';
-
+import { SafetyIndexService } from 'src/app/shared/SocialProfile/PublicOrder/safety-index.service';
 @Component({
-  selector: 'app-police-services',
-  templateUrl: './police-services.component.html',
-  styleUrls: ['./police-services.component.css'],
+  selector: 'app-index-crime',
+  templateUrl: './index-crime.component.html',
+  styleUrls: ['./index-crime.component.css']
 })
-export class PoliceServicesComponent implements OnInit {
+export class IndexCrimeComponent implements OnInit {
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void; }; };
   constructor(
     private auth: AuthService,
-    private service: SafetyPoliceService,
+    private service: SafetyIndexService,
     private modifyService: ModifyCityMunService
   ) {
     this.o_munCityId = this.auth.o_munCityId;
@@ -30,7 +29,7 @@ export class PoliceServicesComponent implements OnInit {
 
   munCityName: string = this.auth.munCityName;
   is_update: boolean = false;
-  initialList: any = [];
+  listHealthProf: any = [];
   barangay: any = {};
   addmodal: any = {};
   editmodal: any = {};
@@ -58,9 +57,9 @@ export class PoliceServicesComponent implements OnInit {
   }
 
   GetData() {
-    this.service.GetListSafetyPolice(this.auth.setYear).subscribe({
+    this.service.GetListSafetyIndex(this.auth.setYear).subscribe({
       next: (response) => {
-        this.initialList = (<any>response);
+        this.listHealthProf = (<any>response);
       },
       error: (error) => {
       },
@@ -88,7 +87,7 @@ export class PoliceServicesComponent implements OnInit {
     this.listData = [];
 
     this.listMunCity.forEach((a: any) => {
-      this.initialList.forEach((b: any) => {
+      this.listHealthProf.forEach((b: any) => {
         if (a.munCityId == b.munCityId) {
           isExist = this.listData.filter((x: any) => x.munCityId == a.munCityId);
           if (isExist.length == 0) {
@@ -118,7 +117,7 @@ export class PoliceServicesComponent implements OnInit {
     else{
       this.data.munCityId = this.auth.munCityId;
       this.data.setYear = this.auth.activeSetYear;
-      this.service.AddSafetyPolice(this.data).subscribe({
+      this.service.AddSafetyIndex(this.data).subscribe({
         next: (request) => {
           let index = this.listData.findIndex((obj: any) => obj.munCityId === this.data.munCityId);
           this.listData[index] = request;
@@ -141,7 +140,7 @@ export class PoliceServicesComponent implements OnInit {
 
   EditData() {
       this.data.setYear = this.auth.activeSetYear;
-      this.service.EditSafetyPolice(this.data).subscribe({
+      this.service.EditSafetyIndex(this.data).subscribe({
         next: (request) => {
           this.closebutton.nativeElement.click();
           this.data = {};
@@ -169,7 +168,7 @@ DeleteData(transId: any, index: any, data:any) {
     confirmButtonText: 'Yes, delete it!'
   }).then((result) => {
     if (result.isConfirmed) {
-      this.service.DeleteSafetyPolice(transId).subscribe({
+      this.service.DeleteSafetyIndex(transId).subscribe({
         next: (_data) => {
         },
         error: (err) => {
@@ -195,5 +194,5 @@ DeleteData(transId: any, index: any, data:any) {
     }
   })
 }
- 
+
 }

@@ -115,6 +115,7 @@ import { TertiaryEnrolmentComponent } from './pages/main/SocialProfile/Education
 import { TertiaryGradComponent } from './pages/main/SocialProfile/Education/Public/tertiary-grad/tertiary-grad.component';
 import { TechvocProgramsComponent } from './pages/main/SocialProfile/Education/Public/techvoc-programs/techvoc-programs.component';
 import { TechvocEnrolGradComponent } from './pages/main/SocialProfile/Education/Public/techvoc-enrol-grad/techvoc-enrol-grad.component';
+import { IndexCrimeComponent } from './pages/main/SocialProfile/PublicOrder/index-crime/index-crime.component';
 
 const socioEconomic_TradeIndustry:string = 'socio-economic/trade-and-industry/';
 const socioEconomic_Tourism:string = 'socio-economic/Tourism/';
@@ -213,6 +214,7 @@ const routes: Routes = [
       { path: SocialProfile_PublicOrder+ '/fire-protection',component:FireProtectionComponent},
       { path: SocialProfile_PublicOrder+ '/barangay-peacekeeping',component:BarangayPeacekeepingComponent},
       { path: SocialProfile_PublicOrder+ '/crime-stat',component:CrimeStatComponent},
+      { path: SocialProfile_PublicOrder+ '/index-crime',component:IndexCrimeComponent},
       { path: SocialProfile_Housing+ '/informal-settlers',component:InformalSettlersComponent},
       { path: SocialProfile_Housing+ '/government-housing',component:GovernmentHousingComponent},
       { path: SocialProfile_Housing+ '/subdivisions',component:SubdivisionsComponent},

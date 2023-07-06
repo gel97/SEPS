@@ -143,6 +143,7 @@ import { TertiaryEnrolmentComponent } from './pages/main/SocialProfile/Education
 import { TertiaryGradComponent } from './pages/main/SocialProfile/Education/Public/tertiary-grad/tertiary-grad.component';
 import { TechvocProgramsComponent } from './pages/main/SocialProfile/Education/Public/techvoc-programs/techvoc-programs.component';
 import { TechvocEnrolGradComponent } from './pages/main/SocialProfile/Education/Public/techvoc-enrol-grad/techvoc-enrol-grad.component';
+import { IndexCrimeComponent } from './pages/main/SocialProfile/PublicOrder/index-crime/index-crime.component';
 
 
 
@@ -274,6 +275,7 @@ import { TechvocEnrolGradComponent } from './pages/main/SocialProfile/Education/
     TertiaryGradComponent,
     TechvocProgramsComponent,
     TechvocEnrolGradComponent,
+    IndexCrimeComponent,
   ],
   imports: [
     MdbCollapseModule,

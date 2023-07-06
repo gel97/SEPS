@@ -8,13 +8,13 @@
               <div class="">
               </div>
               <div class="text-center">
-                <h1 class="h4 mb-4">Provincial Health Profile</h1>
-                <label><strong> Health - {{modifyCityMun(munCityName)}}</strong></label><br>
+                <h1 class="h4 mb-4">No. of Index Crime</h1>
+                <label><strong> Public order and Safety - {{modifyCityMun(munCityName)}}</strong></label><br>
               </div>
               <br>
               <div class="row">
                 <div class="col-lg-9"><br>
-                  <p>List of Municipality</p>
+                  <p>List of o. of Index Crime</p>
                 </div>
               </div>
               <div class="form-group">
@@ -26,26 +26,26 @@
                       <thead class="table-dark">
                         <tr>
                           <th scope="col" style="text-align: center;">Municipality/ City</th>
-                          <th scope="col" style="text-align: center;">Crude Death Rate</th>
-                          <th scope="col" style="text-align: center;">No. of Live Births</th>
-                          <th scope="col" style="text-align: center;">Crude Birth Rate</th>
-                          <th scope="col" style="text-align: center;">Infant Mortality Rate</th>
-                          <th scope="col" style="text-align: center;">Under Five Mortality Rate</th>
-                          <th scope="col" style="text-align: center;">No. of Maternal Death</th>
-                          <th scope="col" style="text-align: center;">Maternal Mortality Ratio</th>
+                          <th scope="col" style="text-align: center;">Murder</th>
+                          <th scope="col" style="text-align: center;">Homicide</th>
+                          <th scope="col" style="text-align: center;">Physical Injury</th>
+                          <th scope="col" style="text-align: center;">Rape</th>
+                          <th scope="col" style="text-align: center;">Robbery</th>
+                          <th scope="col" style="text-align: center;">Theft</th>
+                          <th scope="col" style="text-align: center;">Total</th>
                           <th style="text-align: center;">Action</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr *ngFor="let item of listData; index as i">
                           <td><b>{{item.munCityName}}</b></td>
-                          <td style="text-align: center;">{{ item.deathRate }}</td>
-                          <td style="text-align: center;">{{ item.birthNo }}</td>
-                          <td style="text-align: center;">{{ item.birthRate }}</td>
-                          <td style="text-align: center;">{{ item.infantMort }}</td>
-                          <td style="text-align: center;">{{ item.underFiveMort }}</td>
-                          <td style="text-align: center;">{{ item.matDeathNo }}</td>
-                          <td style="text-align: center;">{{ item.matMort }}</td>
+                          <td style="text-align: center;">{{ item.murder }}</td>
+                          <td style="text-align: center;">{{ item.homicide }}</td>
+                          <td style="text-align: center;">{{ item.physicalInjury }}</td>
+                          <td style="text-align: center;">{{ item.rape }}</td>
+                          <td style="text-align: center;">{{ item.robbery }}</td>
+                          <td style="text-align: center;">{{ item.theft }}</td>
+                          <td style="text-align: center;">{{ item.total }}</td>
                           <td *ngIf="item.transId && item.munCityId == o_munCityId else isADD ">
                             <app-admin>
                             <div class="d-inline-flex">        
@@ -86,7 +86,7 @@
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalScrollableTitle">Person with Disability
+            <h5 class="modal-title" id="exampleModalScrollableTitle">No. of Index Crime
             </h5>
             <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
@@ -95,49 +95,39 @@
           <div class="modal-body">
             <div class="form-group">
               <div class="row">
-                <div class="col-lg-6">
-                  <label for="exampleFormControlInput1">Crude Death Rate: </label>
-                  <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.deathRate"
+                <div class="col-lg-6 mb-2">
+                  <label for="exampleFormControlInput1">Murder: </label>
+                  <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.murder"
                     [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
                 </div>
-                <div class="col-lg-6">
-                  <label for="exampleFormControlInput1">No. of Live Births:</label>
-                  <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.birthNo"
+                <div class="col-lg-6 mb-2">
+                  <label for="exampleFormControlInput1">Homicide:</label>
+                  <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.homicide"
                     [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
                 </div>
               </div>
-              <br>
               <div class="row">
-                <div class="col-lg-4">
-                  <label for="exampleFormControlInput1">Crude Birth Rate:</label>
-                  <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.birthRate"
+                <div class="col-lg-6 mb-2">
+                  <label for="exampleFormControlInput1">Physical Injury:</label>
+                  <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.physicalInjury"
                     [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
                 </div>
-                <div class="col-lg-4">
-                  <label for="exampleFormControlInput1">Infant Mortality Rate:</label>
-                  <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.infantMort"
-                    [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
-                </div>
-                <div class="col-lg-4">
-                  <label for="exampleFormControlInput1">Under Five Mortality Rate:</label>
-                  <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.underFiveMort"
-                    [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
-                </div>
-              </div>
-              <br>
-              <div class="row">
-                <div class="col-lg-6">
-                  <label for="exampleFormControlInput1">No. of Maternal Death:</label>
-                  <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.matDeathNo"
+                <div class="col-lg-6 mb-2">
+                  <label for="exampleFormControlInput1">Rape:</label>
+                  <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.rape"
                     [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
                 </div>
                 <div class="col-lg-6">
-                  <label for="exampleFormControlInput1">Maternal Mortality Ratio:</label>
-                  <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.matMort"
+                  <label for="exampleFormControlInput1">Robbery:</label>
+                  <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.robbery"
                     [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
                 </div>
+                <div class="col-lg-6">
+                    <label for="exampleFormControlInput1">Theft:</label>
+                    <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.theft"
+                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$">
+                  </div>
               </div>
-              <br>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
               <button type="button" class="btn btn-primary" (click)="isAdd ? AddData():EditData()">

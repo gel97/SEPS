@@ -12,8 +12,8 @@ export class SafetyPoliceService {
   constructor(private http: HttpClient, private ApiUrl: ApiUrl, private Base:BaseUrl ) {
   }
 
-  GetListSafetyPolice(setYear  :any, munCityId :any) {
-    return this.http.get<any[]>(this.Base.url + this.ApiUrl.get_list_safety_police(setYear, munCityId), { responseType: 'json' });
+  GetListSafetyPolice(setYear  :any) {
+    return this.http.get<any[]>(this.Base.url + this.ApiUrl.get_list_safety_police(setYear), { responseType: 'json' });
   }
 
   AddSafetyPolice(data: any={}) {
@@ -33,6 +33,9 @@ export class SafetyPoliceService {
   {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay(munCityId), { responseType: 'json' });
 
+  }
+  ListOfMunicipality(){
+    return this.http.get<any[]>(this.Base.url + this.ApiUrl.get_all_muncity(), { responseType: 'json' });
   }
   Report():Observable<any[]> {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_safety_police(), { responseType: 'json' });
