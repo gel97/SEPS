@@ -60,6 +60,45 @@ export class MemorialParksComponent implements OnInit {
     this.service.Import(this.menuId).subscribe({
       next: (data) => {
         this.ngOnInit();
+        if(data.length === 0){
+          this.showOverlay = false;
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            },
+          });
+  
+          Toast.fire({
+            icon: 'info',
+            title: 'No data from previous year',
+          });
+        }
+        else
+        {
+          this.showOverlay = false;
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            },
+          });
+  
+          Toast.fire({
+            icon: 'success',
+            title: 'Imported Successfully',
+          });
+        }
       },
       error: (error) => {
         const Toast = Swal.mixin({
@@ -79,25 +118,7 @@ export class MemorialParksComponent implements OnInit {
           title: 'Something went wrong',
         });
       },
-      complete: () => {
-        this.showOverlay = false;
-        const Toast = Swal.mixin({
-          toast: true,
-          position: 'top-end',
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer);
-            toast.addEventListener('mouseleave', Swal.resumeTimer);
-          },
-        });
-
-        Toast.fire({
-          icon: 'success',
-          title: 'Imported Successfully',
-        });
-      },
+      complete: () => {},
     });
   }
   munCityId: string = this.auth.munCityId;

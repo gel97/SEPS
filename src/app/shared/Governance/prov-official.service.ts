@@ -27,6 +27,9 @@ export class ProvOfficialService {
     return this.Http.post(this.Base.url + this.ApiUrl.post_update_prov_official(), ProOfficial, { responseType: 'json' });
   }
 
+  Import():Observable<any[]> {
+    return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_import_prov_officials(), { responseType: 'json' });
+  }
 
   GetMunPosition() {
     return this.Http.get(this.Base.url + this.ApiUrl.get_prov_position (), { responseType: 'json' });

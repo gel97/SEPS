@@ -256,7 +256,6 @@ export class BarangaysComponent implements OnInit {
   message = 'Barangays';
   viewData: boolean = false;
   parentMethod() {
-    alert('parent Method');
     this.viewData = true;
   }
 
@@ -272,7 +271,6 @@ export class BarangaysComponent implements OnInit {
     });
   }
 
-  // dataTrap: any = [];
   FilterList() {
     let isExist;
     this.listData = [];
@@ -293,36 +291,20 @@ export class BarangaysComponent implements OnInit {
           brgyId: a.brgyId,
           brgyName: a.brgyName,
         });
-        // this.dataTrap.push({
-        //   landArea: a.landArea,
-        //   address: a.address,
-        //   contactNo: a.contactNo,
-        //   purokNo: a.purokNo,
-        //   longitude: a.longitude,
-        //   latitude: a.latitude
-        // });
-        // this.dataTrap.push({
-        //   transId: a.transId,
-        // });
+     
       }
-      // console.log('transid', this.dataTrap);
     });
 
-    // console.log('barangay12345', this.listData);
-    // if (this.listData != null) {
-    //   this.viewData = true;
-    //   console.log('tru or false', this.viewData);
-    // } else {
-    //   this.viewData = false;
-    // }
   }
 
   AddData() {
     this.toValidate.punongBrgy =
       this.data.punongBrgy == '' || this.data.punongBrgy == null ? true : false;
+    this.toValidate.purokNo =
+    this.data.purokNo == '' || this.data.purokNo == null ? true : false;
     this.toValidate.address =
       this.data.address == '' || this.data.address == undefined ? true : false;
-    if (this.toValidate.punongBrgy == true || this.toValidate.address == true) {
+    if (this.toValidate.punongBrgy == true || this.toValidate.address == true || this.toValidate.purokNo == true) {
       Swal.fire(
         'Missing Data!',
         'Please fill out the required fields',

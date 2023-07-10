@@ -84,7 +84,7 @@
 
 <div class="">
   <ng-template #isEmpty>
-    <app-import [data]="message" (testEvent)="parentMethod()"></app-import>
+    <app-import [data]="message" (importData)="importMethod()"></app-import>
   </ng-template>
   <div *ngIf="TranspoTerminalList.length>0  ; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
     <div class="card-body p-0">
@@ -126,7 +126,7 @@
                     <th scope="col"> No. of Units</th>
                     <th scope="col"> Location</th>
                     <th scope="col"> Routes</th>
-                    <th scope="col"> Geo-Coor.(Long, Lat)</th>
+                    <!-- <th scope="col"> Geo-Coor.(Long, Lat)</th> -->
                     <th>
                       Action
                     </th>
@@ -141,7 +141,7 @@
                     <td>{{i .unitsNo}}</td>
                     <td>{{i .location}}</td>
                     <td>{{i .routes}}</td>
-                    <td>{{i .longtitude}}<br>{{i .latitude}}</td>
+                    <!-- <td>{{i .longtitude}}<br>{{i .latitude}}</td> -->
 
                     <td>
                       <div class="d-inline-flex">
