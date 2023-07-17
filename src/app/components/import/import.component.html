@@ -7,17 +7,23 @@
         <div class="col-lg-12">
             <p class="text-center text-lg text-primary font-weight-bold">NO DATA FOUND.</p>
         </div>
-        <div class="col-lg-12 text-center p-lg-2">
-            <button (click)="importMethod()" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                data-bs-target="#staticBackdrop">
-                Import
-            </button>
+        <app-admin>
+            <div class="col-lg-12 text-center p-lg-2">
+                <button (click)="importMethod()" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#staticBackdrop">
+                    Import
+                </button>
+            </div>
+            <div class="col-lg-12 text-center">
+                <p class="text-center text-sm text-gray-800 font-weight-normal">
+                    Press the button above to import SEP Data from previous year.
+                </p>
+            </div>
+        </app-admin>
+        <div *ngIf="munCityId === null" class="col-lg-12 text-center mt-4">
+            <app-sep-data-btn></app-sep-data-btn>
         </div>
-        <div class="col-lg-12 text-center">
-            <p class="text-center text-sm text-gray-800 font-weight-normal">
-                Press the button above to import SEP Data from previous year.
-            </p>
-        </div>
+
         <div class="col-lg-12 text-center">
             <app-admin>
                 <button (click)="childMethod()" type="button" class="btn btn-primary" data-toggle="modal"

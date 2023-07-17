@@ -158,6 +158,14 @@ export class ApiUrl {
     post_report_agriculture_profile = () => `/AgricultureProfile/Reports`;
     post_import_agriculture_profile = () => `/AgricultureProfile/Import`;
 
+    // Agriculture Livestock
+    post_agriculture_livestock        = () => `/AgricultureLivestock`;
+    put_agriculture_livestock         = () => `/AgricultureLivestock`;
+    get_list_agriculture_livestock    = (setYear:any, munCityId:any) => `/AgricultureLivestock/${setYear}/${munCityId}`;
+    delete_agriculture_livestock      = (transId:any)=>`/AgricultureLivestock/${transId}`;
+    post_report_agriculture_livestock = () => `/AgricultureLivestock/Reports`;
+    post_import_agriculture_livestock = () => `/AgricultureLivestock/Import`;
+
     //Provincial Profile on Crops Production and Area Harvested
     post_agriculture_prod        = ()=> `/AgricultureProd`;
     put_agriculture_prod         = () => `/AgricultureProd`;

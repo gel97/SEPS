@@ -21,10 +21,16 @@ export class PdfService {
     }
   }
 
-  async GeneratePdf(data:any=[]) {
+  async GeneratePdf(data:any=[], isPortrait:boolean) {
     console.log(data);
     await this.loadPdfMaker();
-   
+   let _pageOrientation = "";
+   if(isPortrait){
+    _pageOrientation = "portrait"
+   }
+   else{
+    _pageOrientation = "landscape"
+   }
     const def = {
       header: {
         columns: [
@@ -41,12 +47,16 @@ export class PdfService {
             fontSize: 16, // Adjust the font size of the title as needed
             bold: true, // Make the title bold if desired
             alignment: 'center',
-            margin: [0, 10] // Adjust the margin around the title as needed
+           // margin: [0, 10] // Adjust the margin around the title as needed
           }
         ],
-        margin: [10, 10] // Adjust the margin around the header as needed
+        //margin: [10, 10] // Adjust the margin around the header as needed
       },
     	content: data,
+      pageOrientation: _pageOrientation,
+      pageSize: 'legal'
+
+
     };
    this.pdfMake.createPdf(def).open();
   }

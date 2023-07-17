@@ -1,19 +1,23 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import { AgricultureService } from 'src/app/shared/Socio-Economic/Agriculture/agriculture.service';
+import { HealthHandicapService } from 'src/app/shared/SocialProfile/Health/healthHandicap.service';
 import Swal from 'sweetalert2';
-import { GmapComponent } from 'src/app/components/gmap/gmap.component';
+import { Observable } from 'rxjs';
+import { isEmptyObject } from 'jquery';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
-
+import { AgricultureLivestockService } from 'src/app/shared/Socio-Economic/Agriculture/agricultureLivestock.service';
 @Component({
   selector: 'app-livestock-production',
   templateUrl: './livestock-production.component.html',
   styleUrls: ['./livestock-production.component.css'],
 })
 export class LivestockProductionComponent implements OnInit {
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void } };
+
   constructor(
-    private Auth: AuthService,
-    private Service: AgricultureService,
+    private auth: AuthService,
+    private service: AgricultureLivestockService,
     private modifyService: ModifyCityMunService
   ) {}
 
@@ -21,313 +25,195 @@ export class LivestockProductionComponent implements OnInit {
     return this.modifyService.ModifyText(cityMunName);
   }
 
-  @ViewChild(GmapComponent)
-  private gmapComponent!: GmapComponent;
-
-  isCheck: boolean = false;
-
-  onChange(isCheck: boolean) {
-    this.isCheck = isCheck;
-    console.log('isCheck:', this.isCheck);
+  munCityName: string = this.auth.munCityName;
+  listLivestock: any = [];
+  listBarangay: any = [];
+  isAdd: boolean = false;
+  listData: any = [];
+  data: any = {};
+  ngOnInit(): void {
+    this.Init();
   }
 
-  munCityName: string = this.Auth.munCityName;
-
-  menuId = '4';
-
+  Init() {
+    this.GetData();
+    this.GetListBarangay();
+  }
   message = 'Livestock/ Poultry Production';
-  toValidate: any = {};
-  dataList: any = [];
-  addData: any = {};
-  barangayList: any = [];
-  listofPoultry: any = [
-    { id: `1`, type: `Chicken - Broilers` },
-    { id: `2`, type: `Chicken - Layers` },
-    { id: `3`, type: `Ducks/ Gees` },
-    { id: `4`, type: `Hogs` },
-    { id: `5`, type: `Goat/ Sheep` },
-    { id: `6`, type: `Cattles` },
-    { id: `7`, type: `Carabao` },
-    { id: `8`, type: `Crocs` },
-    { id: `9`, type: `Avaboy - halal` },
-    { id: `10`, type: `Chicken - Native` },
-    { id: `11`, type: `Turkey` },
-    { id: `12`, type: `Swine` },
-    { id: `13`, type: `Dog` },
-    { id: `14`, type: `Others` },
-  ];
-  visible: boolean = true;
-  not_visible: boolean = true;
-  dummy_addData: any = {};
-  dummyData: any = {};
-
-  required: boolean = true;
-  latitude: any;
-  longtitude: any;
-
-  setYear = this.Auth.activeSetYear;
-  munCityId = this.Auth.munCityId;
-
-  @ViewChild('closebutton')
-  closebutton!: { nativeElement: { click: () => void } };
-
-  markerObj: any = {};
-
-  SetMarker(data: any = {}) {
-    console.log('lnglat: ', data.longtitude + ' , ' + data.latitude);
-
-    if (data.longtitude == undefined && data.latitude == undefined) {
-      data.longtitude = this.longtitude;
-      data.latitude = this.latitude;
-    }
-
-    this.markerObj = {
-      lat: data.latitude,
-      lng: data.longtitude,
-      label: data.brgyName.charAt(0),
-      brgyName: data.brgyName,
-      munCityName: this.munCityName,
-      draggable: true,
-    };
-    this.gmapComponent.setMarker(this.markerObj);
-    console.log('marker', this.markerObj);
+  viewData: boolean = false;
+  parentMethod() {
+    this.viewData = true;
   }
-
   public showOverlay = false;
   importMethod() {
-    this.showOverlay = true;
-    this.Service.Import(this.menuId).subscribe({
-      next: (data) => {
-        this.ngOnInit();
-        if(data.length === 0){
-          this.showOverlay = false;
-          const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.addEventListener('mouseenter', Swal.stopTimer);
-              toast.addEventListener('mouseleave', Swal.resumeTimer);
-            },
-          });
+    // this.showOverlay = true;
+    // this.service.Import().subscribe({
+    //   next: (data) => {
+    //     this.Init();
+    //     if(data.length === 0){
+    //       this.showOverlay = false;
+    //       const Toast = Swal.mixin({
+    //         toast: true,
+    //         position: 'top-end',
+    //         showConfirmButton: false,
+    //         timer: 3000,
+    //         timerProgressBar: true,
+    //         didOpen: (toast) => {
+    //           toast.addEventListener('mouseenter', Swal.stopTimer);
+    //           toast.addEventListener('mouseleave', Swal.resumeTimer);
+    //         },
+    //       });
   
-          Toast.fire({
-            icon: 'info',
-            title: 'No data from previous year',
-          });
-        }
-        else
-        {
-          this.showOverlay = false;
-          const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.addEventListener('mouseenter', Swal.stopTimer);
-              toast.addEventListener('mouseleave', Swal.resumeTimer);
-            },
-          });
+    //       Toast.fire({
+    //         icon: 'info',
+    //         title: 'No data from previous year',
+    //       });
+    //     }
+    //     else
+    //     {
+    //       this.showOverlay = false;
+    //       const Toast = Swal.mixin({
+    //         toast: true,
+    //         position: 'top-end',
+    //         showConfirmButton: false,
+    //         timer: 3000,
+    //         timerProgressBar: true,
+    //         didOpen: (toast) => {
+    //           toast.addEventListener('mouseenter', Swal.stopTimer);
+    //           toast.addEventListener('mouseleave', Swal.resumeTimer);
+    //         },
+    //       });
   
-          Toast.fire({
-            icon: 'success',
-            title: 'Imported Successfully',
-          });
-        }
+    //       Toast.fire({
+    //         icon: 'success',
+    //         title: 'Imported Successfully',
+    //       });
+    //     }
+    //   },
+    //   error: (error) => {
+    //     const Toast = Swal.mixin({
+    //       toast: true,
+    //       position: 'top-end',
+    //       showConfirmButton: false,
+    //       timer: 3000,
+    //       timerProgressBar: true,
+    //       didOpen: (toast) => {
+    //         toast.addEventListener('mouseenter', Swal.stopTimer);
+    //         toast.addEventListener('mouseleave', Swal.resumeTimer);
+    //       },
+    //     });
+
+    //     Toast.fire({
+    //       icon: 'warning',
+    //       title: 'Something went wrong',
+    //     });
+    //   },
+    //   complete: () => {},
+    // });
+  }
+  GetData() {
+    this.service
+      .GetListAgricultureLivestock(this.auth.setYear, this.auth.munCityId)
+      .subscribe({
+        next: (response) => {
+          this.listLivestock = <any>response;
+        },
+        error: (error) => {},
+        complete: () => {
+          this.GetListBarangay();
+        },
+      });
+  }
+
+  GetListBarangay() {
+    this.service.ListOfBarangay(this.auth.munCityId).subscribe({
+      next: (response) => {
+        this.listBarangay = <any>response;
       },
-      error: (error) => {
-        const Toast = Swal.mixin({
-          toast: true,
-          position: 'top-end',
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer);
-            toast.addEventListener('mouseleave', Swal.resumeTimer);
-          },
-        });
-
-        Toast.fire({
-          icon: 'warning',
-          title: 'Something went wrong',
-        });
+      error: (error) => {},
+      complete: () => {
+        this.FilterList();
       },
-      complete: () => {},
     });
   }
 
-  ngOnInit(): void {
-    this.GetListAgriculture();
-    this.GetBarangayList();
-  }
+  FilterList() {
+    let isExist;
+    this.listData = [];
 
-  GetListAgriculture() {
-    this.Service.GetListAgriculture(
-      this.menuId,
-      this.setYear,
-      this.munCityId
-    ).subscribe((response) => {
-      this.dataList = <any>response;
-      console.log('check', response);
-    });
-  }
-
-  GetBarangayList() {
-    this.Service.GetBarangayList(this.munCityId).subscribe((response) => {
-      this.barangayList = <any>response;
-      console.log('barangay', response);
-    });
-  }
-
-  findBrgyId(brgyId: any) {
-    return this.barangayList.find(
-      (item: { brgyId: any }) => item.brgyId === brgyId
-    );
-  }
-
-  AddAgriculture() {
-    this.toValidate.brgyId =
-      this.addData.brgyId == '' || this.addData.brgyId == null ? true : false;
-    this.toValidate.name =
-      this.addData.name == '' || this.addData.name == undefined ? true : false;
-    this.toValidate.area =
-      this.addData.area == '' || this.addData.area == null ? true : false;
-    this.toValidate.headRaiseNo =
-      this.addData.headRaiseNo == '' || this.addData.headRaiseNo == undefined
-        ? true
-        : false;
-
-    if (
-      this.toValidate.brgyId == true ||
-      this.toValidate.name == true ||
-      this.toValidate.area == true ||
-      this.toValidate.headRaiseNo == true
-    ) {
-      Swal.fire(
-        'Missing Data!',
-        'Please fill out the required fields',
-        'warning'
-      );
-    } else {
-      this.dummy_addData = this.addData;
-      if (
-        JSON.stringify(this.dummy_addData) != JSON.stringify(this.dummyData) &&
-        this.addData.brgyId != undefined
-      ) {
-        this.addData.setYear = this.setYear;
-        this.addData.munCityId = this.munCityId;
-        this.addData.menuId = this.menuId;
-
-        const result = this.findBrgyId(this.addData.brgyId);
-        this.longtitude = result.longitude;
-        this.addData.longtitude = this.longtitude;
-        console.log('long', this.longtitude);
-        this.latitude = result.latitude;
-        this.addData.latitude = this.latitude;
-        console.log('lat', this.latitude);
-
-        this.Service.AddAgriculture(this.addData).subscribe((request) => {
-          if (!this.isCheck) {
-            this.closebutton.nativeElement.click();
+    this.listBarangay.forEach((a: any) => {
+      this.listLivestock.forEach((b: any) => {
+        if (a.brgyId == b.brgyId) {
+          isExist = this.listData.filter((x: any) => x.brgyId == a.brgyId);
+          if (isExist.length == 0) {
+            this.listData.push(b);
           }
+        }
+      });
 
-          console.log('add', request);
-          this.GetListAgriculture();
-          Swal.fire('Good job!', 'Data Added Successfully!', 'success');
-        });
-      } else {
-        this.required = true;
-        Swal.fire({
-          icon: 'warning',
-          title: 'Oops...',
-          text: 'Missing data!',
+      isExist = this.listData.filter((x: any) => x.brgyId == a.brgyId);
+      if (isExist.length == 0) {
+        this.listData.push({
+          brgyId: a.brgyId,
+          brgyName: a.brgyName,
         });
       }
-    }
-  }
-  clearData() {
-    this.addData = {};
-    this.not_visible = false;
-    this.visible = true;
-    this.required = false;
+    });
   }
 
-  parentMethod() {
-    // alert('parent Method');
-    this.addData = {};
-    this.not_visible = false;
-    this.visible = true;
-    this.required = false;
-  }
-
-  editToggle() {
-    this.not_visible = true;
-    this.visible = false;
-  }
-
-  EditAgriculture() {
-    this.toValidate.brgyId =
-      this.addData.brgyId == '' || this.addData.brgyId == null ? true : false;
-    this.toValidate.name =
-      this.addData.name == '' || this.addData.name == undefined ? true : false;
-    this.toValidate.area =
-      this.addData.area == '' || this.addData.area == null ? true : false;
-    this.toValidate.headRaiseNo =
-      this.addData.headRaiseNo == '' || this.addData.headRaiseNo == undefined
-        ? true
-        : false;
-
-    if (
-      this.toValidate.brgyId == true ||
-      this.toValidate.name == true ||
-      this.toValidate.area == true ||
-      this.toValidate.headRaiseNo == true
-    ) {
+  AddData() {
+    if (isEmptyObject(this.data)) {
       Swal.fire(
         'Missing Data!',
         'Please fill out the required fields',
         'warning'
       );
     } else {
-      Swal.fire({
-        title: 'Do you want to save the changes?',
-        showDenyButton: true,
-        showCancelButton: true,
-        confirmButtonText: 'Save',
-        denyButtonText: `Don't save`,
-      }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
-          this.addData.longtitude = this.gmapComponent.markers.lng;
-          this.addData.latitude = this.gmapComponent.markers.lat;
-
+      this.data.munCityId = this.auth.munCityId;
+      this.data.setYear = this.auth.activeSetYear;
+      this.service.AddAgricultureLivestock(this.data).subscribe({
+        next: (request) => {
+          let index = this.listData.findIndex(
+            (obj: any) => obj.brgyId === this.data.brgyId
+          );
+          this.listData[index] = request;
+        },
+        complete: () => {
+          this.data = {};
           this.closebutton.nativeElement.click();
 
-          this.addData.setYear = this.setYear;
-          this.addData.munCityId = this.munCityId;
-          this.addData.menuId = this.menuId;
-          this.addData.tag = 1;
-          console.log('edit', this.addData);
-          this.Service.EditAgriculture(this.addData).subscribe((request) => {
-            console.log('edit', request);
-            this.GetListAgriculture();
-            this.clearData();
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Your work has been saved',
+            showConfirmButton: false,
+            timer: 1000,
           });
-          Swal.fire('Saved!', '', 'success');
-          document.getElementById('exampleModal')?.click();
-        } else if (result.isDenied) {
-          Swal.fire('Changes are not saved', '', 'info');
-        }
+        },
       });
     }
   }
 
-  DeleteAgriculture(dataItem: any) {
+  EditData() {
+    this.data.setYear = this.auth.activeSetYear;
+    this.service.EditAgricultureLivestock(this.data).subscribe({
+      next: (request) => {
+        this.closebutton.nativeElement.click();
+        this.data = {};
+      },
+      complete: () => {
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Your work has been updated',
+          showConfirmButton: false,
+          timer: 1000,
+        });
+      },
+    });
+  }
+
+  DeleteData(transId: any, index: any, data: any) {
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -338,12 +224,18 @@ export class LivestockProductionComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.Service.DeleteAgriculture(dataItem.transId).subscribe(
-          (request) => {
-            this.GetListAgriculture();
-          }
-        );
-        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+        this.service.DeleteAgricultureLivestock(transId).subscribe({
+          next: (_data) => {},
+          error: (err) => {
+            Swal.fire('Oops!', 'Something went wrong.', 'error');
+          },
+          complete: () => {
+            this.listData[index] = {};
+            this.listData[index].brgyId = data.brgyId;
+            this.listData[index].brgyName = data.brgyName;
+            Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+          },
+        });
       }
     });
   }

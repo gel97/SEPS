@@ -14,5 +14,14 @@ export class ReportsService {
   GetBarangayReport(data:any) {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_barangay_report(), data, { responseType: 'json' });
   }
-
+  GetCityOfficialsReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_officials(), data, { responseType: 'json' });
+  }
+  GetGeoProfReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_geo(), data, { responseType: 'json' });
+  }
+  GetRegvoterReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_regvoter(), data, { responseType: 'json' });
+  }
+  
 }

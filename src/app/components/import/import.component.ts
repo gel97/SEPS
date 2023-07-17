@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-import',
@@ -6,9 +7,13 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
   styleUrls: ['./import.component.css'],
 })
 export class ImportComponent implements OnInit {
-  constructor() {}
+  munCityId:any;
+  constructor(private auth:AuthService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.munCityId = this.auth.munCityId;
+    console.log("ImportComponent" ,this.munCityId )
+  }
 
   @Output() testEvent = new EventEmitter();
   @Output() importData = new EventEmitter();

@@ -8,7 +8,9 @@ import { GeoProfileService } from 'src/app/shared/Governance/geo-profile.service
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 import { ImportComponent } from 'src/app/components/import/import.component';
-
+import { PdfComponent } from 'src/app/components/pdf/pdf.component';
+import { PdfService } from 'src/app/services/pdf.service';
+import { ReportsService } from 'src/app/shared/Tools/reports.service';
 @Component({
   selector: 'app-geo-profile',
   templateUrl: './geo-profile.component.html',
@@ -21,7 +23,11 @@ export class GeoProfileComponent implements OnInit {
   @ViewChild(ImportComponent)
   private importComponent!: ImportComponent;
 
+  @ViewChild(PdfComponent)
+  private pdfComponent!: PdfComponent;
   constructor(
+    private pdfService: PdfService,
+    private reportService: ReportsService,
     private service: GeoProfileService,
     private gmap: MunCityLocService,
     private auth: AuthService,
@@ -115,6 +121,222 @@ export class GeoProfileComponent implements OnInit {
         });
       },
       complete: () => {},
+    });
+  }
+
+  reports: any = [];
+  GeneratePDF() {
+    let data: any = [];
+
+    this.reportService.GetGeoProfReport(this.pdfComponent.data).subscribe({
+      next: (response) => {
+        this.reports = <any>response;
+        console.log(this.reports)
+
+        const groupedData = this.reports.reduce((groups: any, item: any) => {
+          const { district } = item;
+          const groupKey = `${district}`;
+          if (!groups[groupKey]) {
+            groups[groupKey] = [];
+          }
+          groups[groupKey].push(item);
+          return groups;
+        }, {});
+
+         // Create the table
+         const tableData: any = [];
+         tableData.push([
+           {
+             text: 'Municipality/ City',
+             fillColor: 'black',
+             color: 'white',
+             bold: true,
+             alignment: 'center',
+           },
+           {
+             text: 'Total Land Area (Has)',
+             fillColor: 'black',
+             color: 'white',
+             bold: true,
+             alignment: 'center',
+           },
+           {
+             text: 'As of Year',
+             fillColor: 'black',
+             color: 'white',
+             bold: true,
+             alignment: 'center',
+           },
+           {
+             text: 'Residential Area (Has)',
+             fillColor: 'black',
+             color: 'white',
+             bold: true,
+             alignment: 'center',
+           },
+           {
+             text: 'Commercial (Has)',
+             fillColor: 'black',
+             color: 'white',
+             bold: true,
+             alignment: 'center',
+           },
+           {
+             text: 'Industrial (Has)',
+             fillColor: 'black',
+             color: 'white',
+             bold: true,
+             alignment: 'center',
+           },
+           {
+             text: 'Agricultural (Has)',
+             fillColor: 'black',
+             color: 'white',
+             bold: true,
+             alignment: 'center',
+           },
+           {
+             text: 'Institutional (Has)',
+             fillColor: 'black',
+             color: 'white',
+             bold: true,
+             alignment: 'center',
+           },
+           {
+             text: 'Forest Lands (Has)',
+             fillColor: 'black',
+             color: 'white',
+             bold: true,
+             alignment: 'center',
+           },
+           {
+             text: 'Open Spaces (Has)',
+             fillColor: 'black',
+             color: 'white',
+             bold: true,
+             alignment: 'center',
+           },
+           {
+             text: 'Quarry (Has)',
+             fillColor: 'black',
+             color: 'white',
+             bold: true,
+             alignment: 'center',
+           },
+           {
+             text: 'Fish Ponds (Has)',
+             fillColor: 'black',
+             color: 'white',
+             bold: true,
+             alignment: 'center',
+           },
+           {
+             text: 'Other Land Uses (Has)',
+             fillColor: 'black',
+             color: 'white',
+             bold: true,
+             alignment: 'center',
+           }
+         ]);
+
+        // Iterate over each group and add it to the PDF
+        for (const groupKey in groupedData) {
+          const group = groupedData[groupKey];
+          const [district] = groupKey.split('-');
+
+         
+          if(district === '1'){
+            tableData.push([
+              { text: `1st Congressional District `, colSpan: 13, alignment: 'left',
+              fillColor: '#526D82'}
+            ],
+              );
+          }
+          else{
+            tableData.push([
+              { text: `2nd Congressional District `, colSpan: 13, alignment: 'left',
+              fillColor: '#526D82' }
+            ],
+              );
+          }
+
+          group.forEach((item: any, index: any) => {
+            tableData.push([
+              {
+                text: item.munCityName,
+                fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+              },
+              {
+                text: item.totalLandArea,
+                fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+              },
+              {
+                text: item.setYear,
+                fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+              },
+              {
+                text: item.residential,
+                fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+              },
+              {
+                text: item.commercial,
+                fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+              },
+              {
+                text: item.industrial,
+                fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+              },
+              {
+                text: item.agricultural,
+                fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+              },
+              {
+                text: item.institutional,
+                fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+              },
+              {
+                text: item.forestLand,
+                fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+              },
+              {
+                text: item.openSpaces,
+                fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+              },
+              {
+                text: item.quarryAreas,
+                fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+              },
+              {
+                text: item.fishpond,
+                fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+              },
+              {
+                text: item.otherUses,
+                fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+              },
+             
+            ]);
+          });
+          const table = {
+            margin: [0, 40, 0, 0],
+            table: {
+              widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
+              body: tableData,
+            },
+            layout: 'lightHorizontalLines',
+          };
+
+          data.push(table);
+        }
+      },
+      error: (error) => {
+        console.log(error);
+      },
+      complete: () => {
+        let isPortrait = false;
+        this.pdfService.GeneratePdf(data[0], isPortrait);
+        console.log(data);
+      },
     });
   }
 

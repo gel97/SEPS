@@ -60,6 +60,7 @@ export class BarangaysComponent implements OnInit {
     this.reportService.GetBarangayReport(this.pdfComponent.data).subscribe({
       next: (response) => {
         this.reports = <any>response;
+        console.log(this.reports)
 
         const groupedData = this.reports.reduce((groups: any, item: any) => {
           const { munCityName, setYear } = item;
@@ -182,7 +183,8 @@ export class BarangaysComponent implements OnInit {
         console.log(error);
       },
       complete: () => {
-        this.pdfService.GeneratePdf(data);
+        let isPortrait = true;
+        this.pdfService.GeneratePdf(data, isPortrait);
         console.log(data);
       },
     });

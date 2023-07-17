@@ -1,7 +1,6 @@
 import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
 import {
   SocialAuthService,
   FacebookLoginProvider,
@@ -29,6 +28,8 @@ constructor(private service:AuthService ,private router: Router,private zone: Ng
 
 ngOnInit(): void {
   console.log("INIT LOGIN PAGE")
+  this.router.navigate(['/']);
+
   this.googleAuthSDK();
   this.socialAuthService.authState.subscribe((user) => {
     this.userFb = user;
@@ -98,7 +99,11 @@ callLoginButton() {
 
       this.user.email = profile.getEmail();
       this.user.fullName = profile.getName();
-      this.service.signinGoogle(this.user).subscribe(data => { },
+      this.service.signinGoogle(this.user).subscribe(data => { 
+        this.router.navigate(['/']);
+        window.location.reload()
+
+      },
         err => {
           console.log(err.error)
           this.errorLogin = err.error;

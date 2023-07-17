@@ -1,102 +1,82 @@
 <div class="">
   <ng-template #isEmpty>
-    <app-import [data]="message" (testEvent)="parentMethod()" (importData)="importMethod()"></app-import>
+    <app-import [data]="message" (importData)="importMethod()" (testEvent)="parentMethod()"></app-import>
   </ng-template>
 
   <div *ngIf="showOverlay">
     <app-import-loading></app-import-loading>
   </div>
-  <div *ngIf="dataList.length>0; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
+  <div *ngIf="viewData ; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
     <div class="card-body p-0">
       <!-- Nested Row within Card Body -->
       <div class="row">
         <div class="col-lg-12">
           <div class="p-5">
-
-            <div class="text-center">
-              <h1 class="h4 text-gray-900 mb-4">Livestock/ Poultry Production</h1>
-              <label><strong>Agriculture - {{modifyCityMun(munCityName)}} </strong></label><br>
+            <div class="">
             </div>
-            <div class="form-inline float-right ">
-              <app-admin>
-                <button type="button" (click)="clearData()" class="btn btn-labeled btn-primary" data-toggle="modal"
-                  data-target="#ModalAdd">
-                  <span class="btn-label"><i class="fa fa-plus"></i></span>Livestock/ Poultry</button>
-              </app-admin>
-            </div> <br><br>
-
+            <div class="text-center">
+              <h1 class="h4 text-gray-900 mb-4">Livestock/ Poultry Production
+              </h1>
+              <label><strong> Agriculture - {{modifyCityMun(munCityName)}}</strong></label><br>
+            </div>
+            <br>
             <div class="row">
-              <div class="col-lg-6">
-                <p>List of Livestock/ Poultry Production</p>
+              <div class="col-lg-9"><br>
+                <p>List of Barangays</p>
               </div>
-              <!-- <div class="col-lg-6 ">
-                <form class="form-inline float-right">
-                  <div class="form-group mb-2">
-                    <label for="" class="">Livestock Type filter : </label>
-                  </div>
-                  <div class="form-group mx-sm-1 mb-2">
-                    <select class="form-select" aria-label="Default select example">
-                      <option selected></option>
-                      <option value="1">Onsdsdsde</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
-                    </select>
-                  </div>
-                  <button type="submit" class="btn btn-primary mb-2">GO</button>
-                </form>
-              </div> -->
-              <div class="table-responsive">
-                <table class="table table-light table-striped">
-                  <thead class="table-dark">
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">Farm Name</th>
-                      <th scope="col">Livestock/Poultry Type</th>
-                      <th scope="col">No. of Heads Raised</th>
-                      <th scope="col">Farm/Poultry Area</th>
-                      <th scope="col">Contact Person</th>
-                      <th scope="col">Contact Details</th>
-                      <th scope="col">Location</th>
-                      <th scope="col">Barangay</th>
-                      <!-- <th scope="col">Geo-Coord.(Long,Lat)</th> -->
-                      <th width="11.4%"></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let dataItem of dataList; let i = index">
-                      <td>{{i+1}}</td>
-                      <td>{{dataItem.name}}</td>
-                      <td>
-                        <div *ngFor="let item of listofPoultry">
-                          <span *ngIf="item.id == dataItem.type">{{item.type}}</span>
-                        </div>
-                      </td>
-                      <td>{{dataItem.headRaiseNo}}</td>
-                      <td>{{dataItem.area}}</td>
-                      <td>{{dataItem.contactPerson}}</td>
-                      <td>{{dataItem.contactNo}}</td>
-                      <td>{{dataItem.location}}</td>
-                      <td>{{dataItem.brgyName}}</td>
-                      <!-- <td>{{dataItem.longtitude}},<br> {{dataItem.latitude}}</td> -->
-                      <td>
-                        <div class="d-inline-flex">
-                          <app-admin>
-                            <button (click)="addData = dataItem" data-toggle="modal" (click)="editToggle()"
-                              data-target="#ModalAdd" class="btn btn-info btn-circle">
-                              <i class="fas fa-pen"></i></button> </app-admin>&nbsp;
-                          <button (click)="SetMarker(dataItem); addData = dataItem" data-toggle="modal"
-                            data-target="#gmapModal" class="btn btn-success btn-circle">
-                            <i class="fas fa-globe"></i></button>&nbsp;
-                          <app-admin>
-                            <button class="btn btn-warning btn-circle" (click)="DeleteAgriculture(dataItem)">
-                              <i class="fas fa-trash"></i>
-                            </button>
-                          </app-admin>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="row">
+                </div>
+                <div class="table-responsive">
+                  <table class="table table-framed table-hover table-striped">
+                    <thead class="table-dark">
+                      <tr>
+                        <th scope="col" rowspan="2"  width="250px" >Barangay</th>
+                        <th scope="col" colspan="4" style="text-align: center;">Commodities</th>
+                        <th rowspan="2" width="150px">Action</th>
+                      </tr>
+                      <tr>
+                        <th scope="col" >Carabao</th>
+                        <th scope="col" >Cattle</th>
+                        <th scope="col" >Goat</th>
+                        <th scope="col" >Swine</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of listData; index as i">
+                        <td><b>{{item.brgyName}}</b></td>
+                    
+                        <td >{{ item.carabao }}</td>
+                        <td >{{ item.cattle }}</td>
+                        <td >{{ item.goat }}</td>
+                        <td >{{ item.swine }}</td>
+                        <td *ngIf="item.transId else isADD">
+                          <div class="d-inline-flex">
+                            <app-admin>
+                              <button (click)="data=item;isAdd = false" class="btn btn-info btn-circle"
+                                data-toggle="modal" data-target="#openModal"><i class="fa fa-pen"></i>
+                              </button> &nbsp;            
+                              <button type="button" title="Delete" class="btn btn-warning btn-circle"
+                                (click)="DeleteData(item.transId,i,item)"><i class="fa fa-trash"></i> </button>&nbsp; 
+                              </app-admin>
+                          </div>
+                        </td>
+                        <ng-template #isADD>
+                          <td>
+                            <app-admin>
+                              <button (click)="data = item; isAdd = true" type="button"
+                                class="btn btn-primary btn-circle" data-toggle="modal" data-target="#openModal ">
+                                <i class="fa fa-plus"></i>
+                              </button>
+                            </app-admin>
+                          </td>
+                        </ng-template>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
@@ -106,119 +86,46 @@
   </div>
 
   <!-- Modal -->
-  <div class="modal fade" id="ModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+  <div class="modal fade bd-example-modal-lg" id="openModal" tabindex="-1" role="dialog"
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title text-dark" id="exampleModalLabel">Livestock/ Poultry Production</h5>
-          <button type="button" #closebutton class="btn-close" data-dismiss="modal" data-target="#exampleModal"
-            aria-hidden="true" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="form-group">
-            <div class="row">
-              <div class="col-lg-8">
-                <label for="exampleFormControlInput1">Farm Name/ Owner's Name :</label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.name"
-                  [ngClass]="toValidate.name?'is-invalid':''" (keyup)="toValidate.name=false">
-              </div>
-
-              <div class="col-lg-4">
-                <label for="category">Barangay :</label>
-                <!-- <label *ngIf="required" style="color: red;" for="category">&nbsp;&nbsp;<i
-                    class="fas fa-asterisk"></i>Required</label> -->
-                <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.brgyId"
-                  [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false">
-                  <option *ngFor="let item of barangayList" [value]="item.brgyId">
-                    {{ item.brgyName }}
-                  </option>
-                </select>
-              </div>
-            </div><br>
-            <div class="row">
-              <div class="col-lg-4">
-                <label for="exampleFormControlInput1">Farm/ Poultry Type :</label>
-                <select class="form-select" aria-label="Default select example" name="listofPoultry"
-                  [(ngModel)]="addData.type" [ngClass]="toValidate.type?'is-invalid':''"
-                  (keyup)="toValidate.type=false">
-                  <option *ngFor="let list of listofPoultry" value={{list.id}}>{{list.type}}</option>
-                </select>
-              </div>
-              <div class="col-lg-4">
-                <label for="exampleFormControlInput1">No. of Heads Raised :</label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.headRaiseNo"
-                  [ngClass]="toValidate.headRaiseNo?'is-invalid':''" (keyup)="toValidate.headRaiseNo=false">
-              </div>
-              <div class="col-lg-4">
-                <label>Farm/Poultry Area(Has) :</label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.area"
-                  [ngClass]="toValidate.area?'is-invalid':''" (keyup)="toValidate.area=false">
-              </div>
-            </div><br>
-            <div class="row">
-              <div class="col-lg-4">
-                <label for="exampleFormControlInput1">Contact Person:</label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.contactPerson">
-              </div>
-              <div class="col-lg-4">
-                <label for="exampleFormControlInput1">Contact Details : </label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.contactNo">
-              </div>
-              <div class="col-lg-4">
-                <label for="exampleFormControlInput1">Location (#/St./Purok) : </label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.location">
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <div class="left-absolute" *ngIf="visible">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                (ngModelChange)="onChange(isCheck)" [(ngModel)]="isCheck">
-              <label class="form-check-label" for="flexCheckDefault">
-                Several data
-              </label>
-            </div>
-          </div>
-          <button type="button" *ngIf="visible" (click)="AddAgriculture()" id="closeModal" class="btn btn-primary">
-            <i class="fas fa-check">&nbsp;</i>Save
-          </button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal" data-target="#exampleModal"
-            aria-hidden="true">
-            <i class="fas fa-times">&nbsp;</i>Close
-          </button>
-          <button type="button" *ngIf="not_visible" (click)="EditAgriculture()" aria-hidden="true"
-            class="btn btn-primary">
-            <i class="fas fa-edit">&nbsp;</i>UPDATE
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- modal area GEO -->
-  <div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">SEPS GEOLOCATION TAGGING</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <h5 class="modal-title" id="exampleModalScrollableTitle">UPDATE
+          </h5>
+          <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <app-gmap></app-gmap>
-        </div>
-        <div class="modal-footer">
-          <app-admin>
+          <div class="row">
+            <div class="col-lg-12">
+              <label> Barangay:</label>
+              <input type="text" class="form-control mb-2" [(ngModel)]="data.brgyName" readonly>
+            </div>
+            <div class="col-lg-12">
+              <label> Carabao:</label>
+              <input type="number" class="form-control mb-2" [(ngModel)]="data.carabao">
+            </div>
+            <div class="col-lg-12">
+              <label> Cattle:</label>
+              <input type="number" class="form-control mb-2" [(ngModel)]="data.cattle">
+            </div>
+            <div class="col-lg-12">
+              <label> Goat:</label>
+              <input type="number" class="form-control mb-2" [(ngModel)]="data.goat">
+            </div>
+            <div class="col-lg-12">
+              <label> Swine:</label>
+              <input type="number" class="form-control mb-2" [(ngModel)]="data.swine">
+            </div>
+          </div>
+          <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" (click)="EditAgriculture()" data-dismiss="modal">Save
-              changes</button>
-          </app-admin>
+            <button type="button" class="btn btn-primary" (click)="isAdd ? AddData():EditData()">
+              Save Changes</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+</div>
