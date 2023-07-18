@@ -5,7 +5,9 @@ import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 import { ImportComponent } from 'src/app/components/import/import.component';
-
+import { PdfComponent } from 'src/app/components/pdf/pdf.component';
+import { PdfService } from 'src/app/services/pdf.service';
+import { ReportsService } from 'src/app/shared/Tools/reports.service';
 @Component({
   selector: 'app-sk-voters',
   templateUrl: './sk-voters.component.html',
@@ -13,6 +15,8 @@ import { ImportComponent } from 'src/app/components/import/import.component';
 })
 export class SkVotersComponent implements OnInit {
   constructor(
+    private pdfService: PdfService,
+    private reportService: ReportsService,
     private service: SkVoterService,
     private auth: AuthService,
     private modifyService: ModifyCityMunService
@@ -39,6 +43,9 @@ export class SkVotersComponent implements OnInit {
 
   @ViewChild(ImportComponent)
   private importComponent!: ImportComponent;
+
+  @ViewChild(PdfComponent)
+  private pdfComponent!: PdfComponent;
 
   onChange(isCheck: boolean) {
     this.isCheck = isCheck;
@@ -117,6 +124,271 @@ export class SkVotersComponent implements OnInit {
         });
       },
       complete: () => {},
+    });
+  }
+
+  reports: any = [];
+  GeneratePDF() {
+    let data: any = [];
+    let subtotal1: any = {};
+    let subtotal2: any = {};
+    let grandtotal: any = {};
+    const tableData: any = [];
+    const dist1: any = [];
+    const dist2: any = [];
+
+    this.reportService.GetRegSkvoterReport(this.pdfComponent.data).subscribe({
+      next: (response:any ={}) => {
+        this.reports = response.data;
+        subtotal1 = response.subtotalData[0];
+        subtotal2 = response.subtotalData[1];
+        grandtotal = response.grandTotal;
+        console.log("result: " ,response);
+       
+        this.reports.forEach((a: any) => {
+          console.log(a);
+          if(a.district === 1){
+           dist1.push(a)
+          }
+          else{
+            dist2.push(a)
+          }
+
+        });
+
+        data.push({
+          margin: [0, 40, 0, 0],
+          columns: [
+            {
+              text: `Year: ${response.data[0].setYear}`,
+              fontSize: 14,
+              bold: true,
+            },
+          ],
+        });
+
+
+           tableData.push([
+           {
+             text: 'Municipality/ City',
+             fillColor: 'black',
+             color: 'white',
+             bold: true,
+             alignment: 'center',
+           },
+           {
+             text: 'No. of Puroks	',
+             fillColor: 'black',
+             color: 'white',
+             bold: true,
+             alignment: 'center',
+           },
+           {
+             text: 'No. of Established Precincts',
+             fillColor: 'black',
+             color: 'white',
+             bold: true,
+             alignment: 'center',
+           },
+           {
+             text: 'No. of Clustered Precincts',
+             fillColor: 'black',
+             color: 'white',
+             bold: true,
+             alignment: 'center',
+           },
+           {
+             text: 'No. of Voting Centers',
+             fillColor: 'black',
+             color: 'white',
+             bold: true,
+             alignment: 'center',
+           },
+           {
+             text: 'No. of Registered SK Voters',
+             fillColor: 'black',
+             color: 'white',
+             bold: true,
+             alignment: 'center',
+           },
+         
+         ]);
+
+         tableData.push([
+          { text: `1st Congressional District `, colSpan: 6, alignment: 'left',
+          fillColor: '#526D82'}
+        ],
+          );
+
+        dist1.forEach((item: any, index: any) => {
+            tableData.push([
+              {
+                text: item.munCityName,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.totalPurokNo,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.totalEstabNo,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.totalClusterNo,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.totalVotingCntrNo,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.totalRegSkVoterNo,
+                fillColor: '#FFFFFF',
+              },
+             
+            ]);
+          });
+
+          tableData.push([
+            {
+              text: 'SUBTOTAL',
+              fillColor: '#9DB2BF',
+            },
+            {
+              text: subtotal1.purokNo,
+              fillColor: '#9DB2BF',
+            },
+            {
+              text: subtotal1.estabNo,
+              fillColor: '#9DB2BF',
+            },
+            {
+              text: subtotal1.clusterNo,
+              fillColor: '#9DB2BF',
+            },
+            {
+              text: subtotal1.votingCntrNo,
+              fillColor: '#9DB2BF',
+            },
+            {
+              text: subtotal1.regSkVoterNo,
+              fillColor: '#9DB2BF',
+            },
+           
+          ]);
+
+         tableData.push([
+              { text: `2nd Congressional District `, colSpan: 6, alignment: 'left',
+              fillColor: '#526D82' }
+            ],
+              );
+
+        dist2.forEach((item: any, index: any) => {
+            tableData.push([
+              {
+                text: item.munCityName,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.totalPurokNo,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.totalEstabNo,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.totalClusterNo,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.totalVotingCntrNo,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.totalRegSkVoterNo,
+                fillColor: '#FFFFFF',
+              },
+             
+            ]);
+          });
+
+          tableData.push([
+            {
+              text: 'SUBTOTAL',
+              fillColor: '#9DB2BF',
+            },
+            {
+              text: subtotal2.purokNo,
+              fillColor: '#9DB2BF',
+            },
+            {
+              text: subtotal2.estabNo,
+              fillColor: '#9DB2BF',
+            },
+            {
+              text: subtotal2.clusterNo,
+              fillColor: '#9DB2BF',
+            },
+            {
+              text: subtotal2.votingCntrNo,
+              fillColor: '#9DB2BF',
+            },
+            {
+              text: subtotal2.regSkVoterNo,
+              fillColor: '#9DB2BF',
+            },
+           
+          ]);  
+
+          tableData.push([
+            {
+              text: 'GRANDTOTAL',
+              fillColor: '#F1C93B',
+            },
+            {
+              text: grandtotal.purokNo,
+              fillColor: '#F1C93B',
+            },
+            {
+              text: grandtotal.estabNo,
+              fillColor: '#F1C93B',
+            },
+            {
+              text: grandtotal.clusterNo,
+              fillColor: '#F1C93B',
+            },
+            {
+              text: grandtotal.votingCntrNo,
+              fillColor: '#F1C93B',
+            },
+            {
+              text: grandtotal.regSkVoterNo,
+              fillColor: '#F1C93B',
+            },
+           
+          ]);  
+       
+        const table = {
+          margin: [0, 40, 0, 0],
+          table: {
+            widths: ['*', '*', '*', '*', '*', '*'],
+            body: tableData,
+          },
+          layout: 'lightHorizontalLines',
+        };
+
+        data.push(table);
+      },
+      error: (error: any) => {
+        console.log(error);
+      },
+      complete: () => {
+        let isPortrait = false;
+        this.pdfService.GeneratePdf(data, isPortrait);
+        console.log(data);
+      },
     });
   }
 

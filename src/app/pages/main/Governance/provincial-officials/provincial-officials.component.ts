@@ -4,6 +4,9 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ProvOfficialService } from 'src/app/shared/Governance/prov-official.service';
 import Swal from 'sweetalert2';
 import { ImportComponent } from 'src/app/components/import/import.component';
+import { PdfComponent } from 'src/app/components/pdf/pdf.component';
+import { PdfService } from 'src/app/services/pdf.service';
+import { ReportsService } from 'src/app/shared/Tools/reports.service';
 
 @Component({
   selector: 'app-provincial-officials',
@@ -12,6 +15,8 @@ import { ImportComponent } from 'src/app/components/import/import.component';
 })
 export class ProvincialOfficialsComponent implements OnInit {
   constructor(
+    private pdfService: PdfService,
+    private reportService: ReportsService,
     private service: ProvOfficialService,
     private auth: AuthService
   ) {}
@@ -42,6 +47,9 @@ export class ProvincialOfficialsComponent implements OnInit {
   @ViewChild(ImportComponent)
   private importComponent!: ImportComponent;
 
+  @ViewChild(PdfComponent)
+  private pdfComponent!: PdfComponent;
+
   onChange(isCheck: boolean) {
     this.isCheck = isCheck;
     console.log('isCheck:', this.isCheck);
@@ -64,6 +72,116 @@ export class ProvincialOfficialsComponent implements OnInit {
     this.getPositions();
   }
 
+  reports: any = [];
+  GeneratePDF() {
+    let data: any = [];
+
+    this.reportService.GetProvOfficialReport(this.pdfComponent.data).subscribe({
+      next: (response) => {
+        this.reports = <any>response;
+        console.log(this.reports)
+
+        const groupedData = this.reports.reduce((groups: any, item: any) => {
+          const { setYear } = item;
+          const groupKey = `${setYear}`;
+          if (!groups[groupKey]) {
+            groups[groupKey] = [];
+          }
+          groups[groupKey].push(item);
+          return groups;
+        }, {});
+
+        // Iterate over each group and add it to the PDF
+        for (const groupKey in groupedData) {
+          const group = groupedData[groupKey];
+          const [year] = groupKey.split('-');
+          data.push({
+            margin: [0, 50, 0, 0],
+            columns: [
+              {
+                text: `Year: ${year}`,
+                fontSize: 14,
+                bold: true,
+                alignment: 'right',
+              },
+            ],
+          });
+
+          // Create the table
+          const tableData: any = [];
+          tableData.push([
+            {
+              text: 'Position',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Name',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Term',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Contact #',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            }
+          ]);
+          group.forEach((item: any, index: any) => {
+            tableData.push([
+              {
+                text: item.position,
+                fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+              },
+              {
+                text: item.name,
+                fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+              },
+              {
+                text: item.term,
+                fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+              },
+              {
+                text: item.contact,
+                fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+              },
+             
+            ]);
+          });
+          const table = {
+            margin: [0, 10, 0, 0],
+            table: {
+              widths: ['*', '*', '*', '*'],
+              body: tableData,
+            },
+            layout: 'lightHorizontalLines',
+          };
+
+          data.push(table);
+        }
+      },
+      error: (error) => {
+        console.log(error);
+      },
+      complete: () => {
+        let isPortrait = true;
+        this.pdfService.GeneratePdf(data, isPortrait);
+        console.log(data);
+      },
+    });
+  }
   getPositions() {
     this.service.GetMunPosition().subscribe((data) => {
       this.positions = <any>data;

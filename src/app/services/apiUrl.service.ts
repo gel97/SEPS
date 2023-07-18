@@ -95,6 +95,7 @@ export class ApiUrl {
     get_prov_position          = ()=>`/ProvOfficial`;
     delete_prov_officials      = (transId:any)=>`/MunCityOfficial/${transId}`;
     post_import_prov_officials = () => `/ProvOfficial/Import`;
+    post_report_prov_officials = () => `/ProvOfficial/Reports`;
 
 
 //SOCIO-ECONOMIC ACTIVITIES

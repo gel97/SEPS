@@ -23,5 +23,14 @@ export class ReportsService {
   GetRegvoterReport(data:any) {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_regvoter(), data, { responseType: 'json' });
   }
+  GetRegSkvoterReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_skVoter(), data, { responseType: 'json' });
+  }
+  GetProvOfficialReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_prov_officials(), data, { responseType: 'json' });
+  }
+  GetMajorEcoReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_major_eco(), data, { responseType: 'json' });
+  }
   
 }

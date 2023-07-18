@@ -4,6 +4,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
+import { PdfComponent } from 'src/app/components/pdf/pdf.component';
+import { PdfService } from 'src/app/services/pdf.service';
+import { ReportsService } from 'src/app/shared/Tools/reports.service';
 
 @Component({
   selector: 'app-major-economic-activities',
@@ -12,6 +15,8 @@ import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 })
 export class MajorEconomicActivitiesComponent implements OnInit {
   constructor(
+    private pdfService: PdfService,
+    private reportService: ReportsService,
     private service: MajorEconomicService,
     private auth: AuthService,
     private modifyService: ModifyCityMunService
@@ -38,6 +43,9 @@ export class MajorEconomicActivitiesComponent implements OnInit {
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
 
+  @ViewChild(PdfComponent)
+  private pdfComponent!: PdfComponent;
+
   onChange(isCheck: boolean) {
     this.isCheck = isCheck;
     console.log('isCheck:', this.isCheck);
@@ -56,7 +64,7 @@ export class MajorEconomicActivitiesComponent implements OnInit {
     this.service.Import().subscribe({
       next: (data) => {
         this.Init();
-        if(data.length === 0){
+        if (data.length === 0) {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -69,14 +77,12 @@ export class MajorEconomicActivitiesComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'info',
             title: 'No data from previous year',
           });
-        }
-        else
-        {
+        } else {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -89,7 +95,7 @@ export class MajorEconomicActivitiesComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'success',
             title: 'Imported Successfully',
@@ -115,6 +121,187 @@ export class MajorEconomicActivitiesComponent implements OnInit {
         });
       },
       complete: () => {},
+    });
+  }
+
+  reports: any = [];
+  GeneratePDF() {
+    let data: any = [];
+    const tableData: any = [];
+    const dist1: any = [];
+    const dist2: any = [];
+
+    this.reportService.GetMajorEcoReport(this.pdfComponent.data).subscribe({
+      next: (response: any = {}) => {
+        this.reports = response;
+        console.log('result: ', response);
+
+        this.reports.forEach((a: any) => {
+          if (a.district === 1) {
+            dist1.push(a);
+          } else {
+            dist2.push(a);
+          }
+        });
+
+        data.push({
+          margin: [0, 40, 0, 0],
+          columns: [
+            {
+              text: `Year: ${response[0].setYear}`,
+              fontSize: 14,
+              bold: true,
+            },
+          ],
+        });
+
+        const dist1Group = dist1.reduce((groups: any, item: any) => {
+          const { munCityName } = item;
+          const groupKey = `${munCityName}`;
+          if (!groups[groupKey]) {
+            groups[groupKey] = [];
+          }
+          groups[groupKey].push(item);
+          return groups;
+        }, {});
+
+        console.log("dist1Group ", dist1Group);
+
+        const dist2Group = dist2.reduce((groups: any, item: any) => {
+          const { munCityName } = item;
+          const groupKey = `${munCityName}`;
+          if (!groups[groupKey]) {
+            groups[groupKey] = [];
+          }
+          groups[groupKey].push(item);
+          return groups;
+        }, {});
+
+        console.log("dist2Group ", dist2);
+
+        tableData.push([
+          {
+            text: 'Municipality/ City',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'Major Economic Activity',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'Description',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+        ]);
+
+        tableData.push([
+          {
+            text: `1st Congressional District `,
+            colSpan: 3,
+            alignment: 'left',
+            fillColor: '#526D82',
+          },
+        ]);
+
+        for (const groupKey1 in dist1Group) { // Iterate district I data
+          const group1 = dist1Group[groupKey1];
+          const [cityName1] = groupKey1.split('-');
+          tableData.push([
+            {
+              text: cityName1,
+              colSpan: 3,
+              alignment: 'left',
+              fillColor: '#9DB2BF',
+            },
+          ]);
+
+          group1.forEach((item: any, index: any) => {
+               tableData.push([
+            {
+              text: index+1,
+              fillColor: '#FFFFFF',
+            },
+            {
+              text: item.mjrActivity,
+              fillColor: '#FFFFFF',
+            },
+            {
+              text: item.description,
+              fillColor: '#FFFFFF',
+            },
+          ]);
+
+          });
+        }
+
+        tableData.push([
+          {
+            text: `2nd Congressional District `,
+            colSpan: 3,
+            alignment: 'left',
+            fillColor: '#526D82',
+          },
+        ]);
+
+        for (const groupKey2 in dist2Group) { // Iterate district II data
+          const group2 = dist2Group[groupKey2];
+          const [cityName2] = groupKey2.split('-');
+          tableData.push([
+            {
+              text: cityName2,
+              colSpan: 3,
+              alignment: 'left',
+              fillColor: '#9DB2BF',
+            },
+          ]);
+
+          group2.forEach((item: any, index: any) => {
+               tableData.push([
+            {
+              text: index+1,
+              fillColor: '#FFFFFF',
+            },
+            {
+              text: item.mjrActivity,
+              fillColor: '#FFFFFF',
+            },
+            {
+              text: item.description,
+              fillColor: '#FFFFFF',
+            },
+          ]);
+
+          });
+        }
+
+        const table = {
+          margin: [0, 40, 0, 0],
+          table: {
+            widths: ['*', '*', '*'],
+            body: tableData,
+          },
+          layout: 'lightHorizontalLines',
+        };
+
+        data.push(table);
+      },
+      error: (error: any) => {
+        console.log(error);
+      },
+      complete: () => {
+        let isPortrait = false;
+        this.pdfService.GeneratePdf(data, isPortrait);
+        console.log(data);
+      },
     });
   }
 

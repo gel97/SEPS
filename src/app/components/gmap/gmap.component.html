@@ -10,12 +10,14 @@
 </div>
 
 <agm-map
+  *ngIf="mapType === 'roadmap'; else hybrid"
   [latitude]="lat"
   [longitude]="lng"
   [zoom]="zoom"
   [disableDefaultUI]="false"
   [zoomControl]="false"
   (mapClick)="mapClicked($event)"
+  [mapTypeId]="'roadmap'"
   #map
 >
   <agm-marker
@@ -31,6 +33,46 @@
     </agm-info-window>
   </agm-marker>
 </agm-map>
+
+<ng-template #hybrid>
+  <agm-map
+  [latitude]="lat"
+  [longitude]="lng"
+  [zoom]="zoom"
+  [disableDefaultUI]="false"
+  [zoomControl]="false"
+  (mapClick)="mapClicked($event)"
+  [mapTypeId]="'hybrid'"
+
+  #map
+>
+  <agm-marker
+    (markerClick)="infoWindow.open()"
+    [latitude]="markers.lat"
+    [longitude]="markers.lng"
+    [label]="markers.label"
+    [markerDraggable]="markers.draggable"
+    (dragEnd)="markerDragEnd(markers, $event)"
+
+  >
+    <agm-info-window>
+      <strong>{{brgyName}}</strong>
+    </agm-info-window>
+  </agm-marker>
+</agm-map>
+</ng-template>
+<br/>
+<div>
+  <label>
+    <input type="radio" name="mapType" [(ngModel)]="mapType" value="roadmap" (ngModelChange)="onMapTypeChange()">
+    Map
+  </label>
+  &nbsp;&nbsp;
+  <label>
+    <input type="radio" name="mapType" [(ngModel)]="mapType" value="hybrid" (ngModelChange)="onMapTypeChange()">
+    Satellite
+  </label>
+</div>
 <br>
 <span *ngIf="isEmptyGeo" >
     <p>
