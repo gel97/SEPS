@@ -153,7 +153,8 @@ const routes: Routes = [
     component:MainLayoutComponent,
     children:
     [
-      {path: '',component:DashboardComponent},
+      {path: '', redirectTo:'/dashboard',pathMatch: 'full'},
+      {path: 'dashboard',component:DashboardComponent},
       {path: 'gov_cityOfficials',component:CityOfficialsComponent},
       {path: 'gov_Barangays',component:BarangaysComponent},
       {path: 'gov_geoProfile',component:GeoProfileComponent},
@@ -262,6 +263,8 @@ const routes: Routes = [
       { path : Governance+ '/provincial-officials',component:ProvincialOfficialsComponent},
       { path : Governance+ '/fiscal-report',component:FiscalReportComponent},
       { path : Governance+ '/city-location',component:CityLocationComponent},
+      { path: '**', redirectTo:'/login',pathMatch: 'full'},
+
 
 
 

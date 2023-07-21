@@ -29,8 +29,15 @@ export class ReportsService {
   GetProvOfficialReport(data:any) {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_prov_officials(), data, { responseType: 'json' });
   }
+  
+  //Socio-Economic Act
+    //Trade and Industry
   GetMajorEcoReport(data:any) {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_major_eco(), data, { responseType: 'json' });
   }
+  GetManEstabReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_manuf_estab(), data, { responseType: 'json' });
+  }
+
   
 }
