@@ -143,7 +143,9 @@ export class RegisteredVotersComponent implements OnInit {
         subtotal2 = response.subtotalData[1];
         grandtotal = response.grandTotal;
         console.log(response);
-       
+        
+        data.push({text:'Number of Precincts and Registered Voters by Municipality/City', bold: true, alignment:'center'});
+
         this.reports.forEach((a: any) => {
           console.log(a);
           if(a.district === 1){

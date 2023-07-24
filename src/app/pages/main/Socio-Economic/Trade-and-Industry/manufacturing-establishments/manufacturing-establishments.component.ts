@@ -165,6 +165,16 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
         dist1 = response.districtOne;
         dist2 = response.districtTwo;
        
+        console.log(response);
+
+        data.push(    {
+          text: `Number of Manufacturing Industry by Municipality/City and related business Category for the year ${response.year}`, // Add the title text
+          fontSize: 14,
+          bold: true, 
+          alignment: 'center',
+          margin: [0, 20] // Adjust the margin around the title as needed
+        });
+
         reports.forEach((a: any, index: any) => {
           let columns:any = [];
           let columnWidth:any = [];
@@ -182,7 +192,8 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
                 text: 'SUB TOTAL',
                 fillColor: '#9DB2BF',
               });
-          
+
+
           a.columnTypes.forEach((b: any, index: any) => { // GET COLUMN
             if(index == 0){
               columnWidth.push('auto');
@@ -204,8 +215,17 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
             });
           });
 
+          contentData.push({ // Categpry Name
+            text: a.catName + ' category',
+            margin: [0, 20, 0, 8],
+            fillColor: 'black',
+            color: 'black',
+            bold: true,
+            alignment: 'left',
+          });
+
           tableData.push(columns); // PUSH COLUMN
-         
+                 
           for (let dataDistrict of a.district) { // LOOP DISTRICT
 
             if (dataDistrict.district==1) { // GET DISTRICT I DATA
@@ -327,7 +347,7 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
           tableData.push(grandTotal);
 
           contentData.push([{
-            margin: [0, 40, 0, 0],
+            margin: [0, 10, 0, 0],
             table: {
            // widths: columnWidth,
             body: tableData,

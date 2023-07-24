@@ -61,6 +61,7 @@ export class BarangaysComponent implements OnInit {
       next: (response) => {
         this.reports = <any>response;
         console.log(this.reports)
+        data.push({text:'List of Barangay Officials by Municipality/ City', bold: true, alignment:'center'});
 
         const groupedData = this.reports.reduce((groups: any, item: any) => {
           const { munCityName, setYear } = item;

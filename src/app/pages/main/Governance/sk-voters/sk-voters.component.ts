@@ -144,7 +144,8 @@ export class SkVotersComponent implements OnInit {
         subtotal2 = response.subtotalData[1];
         grandtotal = response.grandTotal;
         console.log("result: " ,response);
-       
+        data.push({text:'Number of Precincts and Registered SK Voters by Municipality/City', bold: true, alignment:'center'});
+
         this.reports.forEach((a: any) => {
           console.log(a);
           if(a.district === 1){

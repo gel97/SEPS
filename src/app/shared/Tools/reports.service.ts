@@ -38,6 +38,12 @@ export class ReportsService {
   GetManEstabReport(data:any) {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_manuf_estab(), data, { responseType: 'json' });
   }
+  GetComEstabReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_com_estab(), data, { responseType: 'json' });
+  }
+  GetIndustrialReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_Industrial(), data, { responseType: 'json' });
+  }
 
   
 }

@@ -21,69 +21,99 @@ export class PdfService {
     }
   }
 
-  async GeneratePdf(data:any=[], isPortrait:boolean) {
-    console.log(data);
-    await this.loadPdfMaker();
-   let _pageOrientation = "";
-   if(isPortrait){
-    _pageOrientation = "portrait"
-   }
-   else{
-    _pageOrientation = "landscape"
-   }
-    const def = {
-      header: {
+  footerFunction(currentPage: any, pageCount: any) {
+    return {
+      text: 'Page ' + currentPage.toString() + ' of ' + pageCount.toString(),
+      alignment: 'right',
+      margin: [0, 0, 40, 20],
+    };
+  }
+
+    headerFunction = async (currentPage: any, pageCount: any) => {
+    if (currentPage == 1) {
+      const imageUrl = "assets/img/davnor.png";   
+      const imageData = await this.getBase64ImageFromURL(imageUrl);
+      return {
         columns: [
           {
-            image: await this.getBase64ImageFromURL(
-              "assets/img/davnor.png") 
-              ,            
+            image: imageUrl,
             width: 60,
-            height:60,
+            height: 60,
             marginLeft: 100,
           },
           {
-            text: 'Provincial Government of Davao del Norte', // Add the title text
-            fontSize: 16, // Adjust the font size of the title as needed
-            bold: true, // Make the title bold if desired
+            text: 'Provincial Government of Davao del Norte',
+            fontSize: 16,
+            bold: true,
             alignment: 'center',
-           // margin: [0, 10] // Adjust the margin around the title as needed
           }
         ],
-        //margin: [10, 10] // Adjust the margin around the header as needed
-      },
-    	content: data,
+      };
+    }
+    // Return null for other pages to have no header
+    return null;
+  };
+
+  async GeneratePdf(data: any = [], isPortrait: boolean) {
+    console.log(data);
+    await this.loadPdfMaker();
+    let _pageOrientation = isPortrait ? "portrait" : "landscape";
+
+    const def = {
+      header: (currentPage:any, pageCount:any) =>{  
+        if(currentPage === 1){
+        return {
+        columns: [
+          // {
+          //   image: this.getBase64ImageFromURL("assets/img/davnor.png"),
+          //   width: 60,
+          //   height: 60,
+          //   marginLeft: 100,
+          // },
+          {
+            text: 'Provincial Government of Davao del Norte',
+            fontSize: 16,
+            bold: true,
+            alignment: 'center',
+          }
+        ],
+      }}else{
+        return null;
+      }
+    },
+      content: data,
       pageOrientation: _pageOrientation,
-      pageSize: 'legal'
-
-
+      pageSize: 'legal',
+      footer: this.footerFunction,
     };
-   this.pdfMake.createPdf(def).open();
+    this.pdfMake.createPdf(def).open();
   }
 
   getBase64ImageFromURL(url: string) {
     return new Promise((resolve, reject) => {
       var img = new Image();
       img.setAttribute("crossOrigin", "anonymous");
-    
+
       img.onload = () => {
         var canvas = document.createElement("canvas");
         canvas.width = img.width;
         canvas.height = img.height;
-    
+
         var ctx = canvas.getContext("2d");
         ctx!.drawImage(img, 0, 0);
-    
+
         var dataURL = canvas.toDataURL("image/png");
-    
+
         resolve(dataURL);
       };
-    
+
       img.onerror = error => {
         reject(error);
       };
-    
-      img.src = url;
-    });}
 
+      img.src = url;
+    });
+  }
+
+  
 }

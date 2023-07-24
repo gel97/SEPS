@@ -131,7 +131,8 @@ export class GeoProfileComponent implements OnInit {
     this.reportService.GetGeoProfReport(this.pdfComponent.data).subscribe({
       next: (response) => {
         this.reports = <any>response;
-        console.log(this.reports)
+        console.log(this.reports);
+        //data.push([{text:'Physical/ Geographic Profile by Municipality/City', bold: true, alignment:'center'}]);
 
         const groupedData = this.reports.reduce((groups: any, item: any) => {
           const { district } = item;
@@ -325,7 +326,6 @@ export class GeoProfileComponent implements OnInit {
             },
             layout: 'lightHorizontalLines',
           };
-
           data.push(table);
         }
       },

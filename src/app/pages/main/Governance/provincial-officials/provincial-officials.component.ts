@@ -80,6 +80,7 @@ export class ProvincialOfficialsComponent implements OnInit {
       next: (response) => {
         this.reports = <any>response;
         console.log(this.reports)
+        data.push({text:'List of Provincial Government Officials of Davao del Norte', bold: true, alignment:'center'});
 
         const groupedData = this.reports.reduce((groups: any, item: any) => {
           const { setYear } = item;

@@ -105,6 +105,7 @@ export class ApiUrl {
     post_save_com_estab   = ()=>`/ComEstab`;
     put_update_com_estab  = ()=>`/ComEstab`;
     delete_com_estab      = (transId:any)=>`/ComEstab/${transId}`;
+    post_report_com_estab = () => `/ComEstab/Reports`;
     post_import_com_estab = () => `/ComEstab/Import`;
 
     //Summary Commercial

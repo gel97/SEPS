@@ -147,10 +147,16 @@ export class MajorEconomicActivitiesComponent implements OnInit {
         data.push({
           margin: [0, 40, 0, 0],
           columns: [
+          {
+            text: `Major Economic Activities by Municipality/City`,
+            fontSize: 14,
+            bold: true,
+          },
             {
               text: `Year: ${response[0].setYear}`,
               fontSize: 14,
               bold: true,
+              alignment: 'right'
             },
           ],
         });
@@ -181,7 +187,7 @@ export class MajorEconomicActivitiesComponent implements OnInit {
 
         tableData.push([
           {
-            text: 'Municipality/ City',
+            text: '#',
             fillColor: 'black',
             color: 'white',
             bold: true,
@@ -286,7 +292,7 @@ export class MajorEconomicActivitiesComponent implements OnInit {
         const table = {
           margin: [0, 40, 0, 0],
           table: {
-            widths: ['*', '*', '*'],
+            widths: [25, '*', '*'],
             body: tableData,
           },
           layout: 'lightHorizontalLines',

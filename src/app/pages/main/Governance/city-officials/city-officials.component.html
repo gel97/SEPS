@@ -26,7 +26,6 @@
               <h1 class="h4 text-gray-900 mb-4">Municipal Officials</h1>
               <label><strong>Governance - {{modifyCityMun(munCityName)}} - City Officials</strong></label><br>
             </div>
-            <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
 
             <div class="form-inline float-right ">
               <app-admin>
@@ -35,6 +34,8 @@
                   City Officials
                 </button>
               </app-admin>
+              &nbsp;
+              <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
             </div>
             <div class="row">
               <div class="col-lg-10"><br>
