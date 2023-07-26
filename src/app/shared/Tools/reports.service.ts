@@ -44,6 +44,12 @@ export class ReportsService {
   GetIndustrialReport(data:any) {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_Industrial(), data, { responseType: 'json' });
   }
+  GetFinancialInsReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_financial_Ins(), data, { responseType: 'json' });
+  }
 
-  
+  //Tourism
+  GetTourismReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_tourism(), data, { responseType: 'json' });
+  }
 }

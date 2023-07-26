@@ -37,4 +37,11 @@ export class FinancialInstitutionsService {
     return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_import_financial_Ins(), { responseType: 'json' });
   }
 
+  GetListCategory(){
+    return this.Http.get<any[]>(this.Base.url + this.ApiUrl.get_list_financial_Ins_cat(), { responseType: 'json' });
+  }
+  
+  GetListCatType(){
+    return this.Http.get<any[]>(this.Base.url + this.ApiUrl.get_list_financial_Ins_cat_type(), { responseType: 'json' });
+  }
 }

@@ -120,6 +120,19 @@ export class ApiUrl {
     put_update_financial_Ins  = ()=>`/FinIns`;
     delete_financial_Ins      = (transId:any)=>`/FinIns/${transId}`;
     post_import_financial_Ins = () => `/FinIns/Import`;
+    post_report_financial_Ins = () => `/FinIns/Reports`;
+
+    //Financial Institutions --> Category
+    get_list_financial_Ins_cat    = ()=>`/FinInsCategory/List`;
+    post_save_financial_Ins_cat   = ()=>`/FinInsCategory`;
+    put_update_financial_Ins_cat  = ()=>`/FinInsCategory`;
+    delete_financial_Ins_cat      = (recNo:any)=>`/FinInsCategory/${recNo}`;
+
+    //Financial Institutions --> Category Type
+    get_list_financial_Ins_cat_type    = ()=>`/FinInsCatType/List`;
+    post_save_financial_Ins_cat_type   = ()=>`/FinInsCatType`;
+    put_update_financial_Ins_cat_type  = ()=>`/FinInsCatType`;
+    delete_financial_Ins_cat_type      = (recNo:any)=>`/FinInsCatType/${recNo}`;
 
     //Industrial estates
     get_Industrial         = (munCityId:any, setYear:any)=>`/IndEst/${setYear}/${munCityId}`;
@@ -148,9 +161,10 @@ export class ApiUrl {
     //TOURISM
     post_tourism         = ()=> `/Tourism`;
     put_tourism          = ()=> `/Tourism`;
-    get_list_tourism     = (menuId:any, setYear :any, munCityId :any)=> `/Tourism/${menuId}/${setYear }/${munCityId  }`;
+    get_list_tourism     = (menuId:any, setYear :any, munCityId :any)=> `/Tourism/${menuId}/${setYear}/${munCityId}`;
     delete_tourism       = (transId :any) => `/Tourism/${transId}`;
     post_import_tourism  = (menuId:any) => `/Tourism/Import/${menuId}`;
+    post_report_tourism  = () => `/Tourism/Reports`;
 
     // Agriculture Profile
     post_agriculture_profile        = () => `/AgricultureProfile`;

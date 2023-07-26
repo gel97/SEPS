@@ -12,7 +12,6 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="p-5">
-
                         <div class="text-center">
                             <h1 class="h4 text-gray-900 mb-4"> Natural/ Man-made Tourist Attractions</h1>
                             <label><strong>Tourism - {{modifyCityMun(munCityName)}} </strong></label><br>
@@ -23,8 +22,9 @@
                                     data-toggle="modal" data-target="#ModalAdd">
                                     <span class="btn-label"><i class="fa fa-plus"></i></span>Natural
                                     Attractions</button>
-
                             </app-admin>
+                            &nbsp;
+                            <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
                         </div><br>
                         <br>
                         <div class="row">

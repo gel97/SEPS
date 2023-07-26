@@ -4,6 +4,9 @@ import Swal from 'sweetalert2';
 import { TourismService } from 'src/app/shared/Socio-Economic/Tourism/tourism.service';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
+import { PdfComponent } from 'src/app/components/pdf/pdf.component';
+import { PdfService } from 'src/app/services/pdf.service';
+import { ReportsService } from 'src/app/shared/Tools/reports.service';
 
 @Component({
   selector: 'app-recreation-facilities',
@@ -12,6 +15,8 @@ import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 })
 export class RecreationFacilitiesComponent implements OnInit {
   constructor(
+    private pdfService: PdfService,
+    private reportService: ReportsService,
     private Auth: AuthService,
     private Service: TourismService,
     private modifyService: ModifyCityMunService
@@ -23,6 +28,8 @@ export class RecreationFacilitiesComponent implements OnInit {
 
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;
+  @ViewChild(PdfComponent)
+  private pdfComponent!: PdfComponent;
 
   isCheck: boolean = false;
 
@@ -36,7 +43,7 @@ export class RecreationFacilitiesComponent implements OnInit {
   toValidate: any = {};
   menuId = '2';
   dataList: any = [];
-  setYear = this.Auth.activeSetYear;
+  setYear = this.Auth.setYear;
   munCityId = this.Auth.munCityId;
   barangayList: any = [];
   addData: any = {};
@@ -91,13 +98,245 @@ export class RecreationFacilitiesComponent implements OnInit {
     console.log('marker', this.markerObj);
   }
 
+  GeneratePDF() {
+    let reports: any = [];
+    let data: any = [];
+    let dist1: any = [];
+    let dist2: any = [];
+    let columnTypes: any = [];
+    let contentData: any = [];
+
+    this.pdfComponent.data.menuId = this.menuId;
+
+    this.reportService.GetTourismReport(this.pdfComponent.data).subscribe({
+      next: (response: any = {}) => {
+        reports = response.data;
+        dist1 = response.districtOne;
+        dist2 = response.districtTwo;
+        columnTypes = response.columnTypes;
+        console.log(response);
+
+        data.push({
+          text: `Number of Recreational Facilities by Municipality/City for the year ${response.year}`, // Add the title text
+          fontSize: 14,
+          bold: true,
+          alignment: 'center',
+          margin: [0, 20], // Adjust the margin around the title as needed
+        });
+        let columns: any = [];
+        let columnWidth: any = [];
+        const tableData: any = [];
+        let grandTotal: any = [];
+
+        let subtotal1: any = [];
+        subtotal1.push({
+          text: 'SUB TOTAL',
+          fillColor: '#9DB2BF',
+        });
+
+        let subtotal2: any = [];
+        subtotal2.push({
+          text: 'SUB TOTAL',
+          fillColor: '#9DB2BF',
+        });
+
+        columnTypes.forEach((b: any, index: any) => {
+          // GET COLUMN
+          if (index == 0) {
+            columnWidth.push(100);
+            columns.push({
+              text: 'Muncipality/ City',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            });
+          }
+          columnWidth.push('auto');
+          columns.push({
+            text: b.typeName,
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          });
+        });
+
+        tableData.push(columns); // PUSH COLUMN
+        reports.forEach((a: any, index: any) => {
+          if (a.district == 1) {
+            // GET DISTRICT I DATA
+            tableData.push([
+              {
+                text: `1st Congressional District `,
+                colSpan: columnWidth.length,
+                alignment: 'left',
+                fillColor: '#526D82',
+              },
+            ]);
+
+            for (let d1 of dist1) {
+              let data1 = [];
+              data1.push(d1.munCityName);
+
+              for (let header of columnTypes) {
+                let count = '-';
+                for (let t of a.type) {
+                  if (header.recNo == t.type) {
+                    //true
+                    for (let f of t.data) {
+                      if (
+                        d1.munCityId == f.munCityId &&
+                        header.recNo == f.type
+                      ) {
+                        count = f.countType;
+                        break;
+                      }
+                    }
+                  }
+                }
+                data1.push(count);
+              }
+              tableData.push(data1); // PUSH DISTRICT 1 DATA
+            }
+
+            for (let header of columnTypes) {
+              // GET DISTRICT 1 SUBTOTAL
+              let countSubtotal1 = '-';
+              for (let t of a.type) {
+                if (header.recNo == t.type) {
+                  countSubtotal1 = t.subtotalType;
+                  break;
+                }
+              }
+              subtotal1.push({
+                text: countSubtotal1,
+                fillColor: '#9DB2BF',
+              });
+            }
+            tableData.push(subtotal1);
+          } // PUSH DISTRICT 1 SUBTOTAL
+
+          if (a.district == 2) {
+            // GET DISTRICT II DATA
+            tableData.push([
+              {
+                text: `2nd Congressional District `,
+                colSpan: columnWidth.length,
+                alignment: 'left',
+                fillColor: '#526D82',
+              },
+            ]);
+
+            for (let d2 of dist2) {
+              let data2 = [];
+              data2.push(d2.munCityName);
+
+              for (let header of columnTypes) {
+                let count = '-';
+                for (let t of a.type) {
+                  if (header.recNo == t.type) {
+                    //true
+                    for (let f of t.data) {
+                      if (
+                        d2.munCityId == f.munCityId &&
+                        header.recNo == f.type
+                      ) {
+                        count = f.countType;
+                        break;
+                      }
+                    }
+                  }
+                }
+                data2.push(count);
+              }
+              tableData.push(data2); // PUSH DISTRICT II DATA
+            }
+
+            for (let header of columnTypes) {
+              // GET DISTRICT II SUBTOTAL
+              let countSubtotal2 = '-';
+              for (let t of a.type) {
+                if (header.recNo == t.type) {
+                  countSubtotal2 = t.subtotalType;
+                  break;
+                }
+              }
+              subtotal2.push({
+                text: countSubtotal2,
+                fillColor: '#9DB2BF',
+              });
+            }
+            tableData.push(subtotal2); // PUSH DISTRICT II SUBTOTAL
+          }
+        });
+
+        columnWidth.forEach((b: any, index: any) => {
+          // GET GRANDTOTAL
+          let grandTotalcount;
+          if (index == 0) {
+            grandTotalcount = 'GRAND TOTAL';
+          } else {
+            if (subtotal1.length > 1 && subtotal2.length == 1 && index > 0) {
+              grandTotalcount = subtotal1[index].text;
+            }
+            if (subtotal2.length > 1 && subtotal1.length == 1 && index > 0) {
+              grandTotalcount = subtotal2[index].text;
+            }
+            if (subtotal1.length > 1 && subtotal2.length > 1 && index > 0) {
+              let sub1 =
+                subtotal1[index].text == '-' ? 0 : subtotal1[index].text;
+              let sub2 =
+                subtotal2[index].text == '-' ? 0 : subtotal2[index].text;
+
+              if (
+                subtotal2[index].text == '-' &&
+                subtotal1[index].text == '-'
+              ) {
+                grandTotalcount = '-';
+              } else {
+                grandTotalcount = sub1 + sub2;
+              }
+            }
+          }
+          grandTotal.push({
+            // PUSH GRANDTOTAL
+            text: grandTotalcount,
+            fillColor: '#F1C93B',
+          });
+        });
+
+        tableData.push(grandTotal);
+
+        contentData.push([
+          {
+            margin: [0, 10, 0, 0],
+            table: {
+              widths: columnWidth,
+              body: tableData,
+            },
+          },
+        ]);
+        data.push(contentData);
+      },
+      error: (error: any) => {
+        console.log(error);
+      },
+      complete: () => {
+        let isPortrait = false;
+        this.pdfService.GeneratePdf(data, isPortrait);
+        console.log(data);
+      },
+    });
+  }
+
   public showOverlay = false;
   importMethod() {
     this.showOverlay = true;
     this.Service.Import(this.menuId).subscribe({
       next: (data) => {
         this.ngOnInit();
-        if(data.length === 0){
+        if (data.length === 0) {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -110,14 +349,12 @@ export class RecreationFacilitiesComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'info',
             title: 'No data from previous year',
           });
-        }
-        else
-        {
+        } else {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -130,7 +367,7 @@ export class RecreationFacilitiesComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'success',
             title: 'Imported Successfully',

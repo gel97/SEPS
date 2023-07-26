@@ -34,27 +34,6 @@
                 <option *ngFor="let item of filter_sep_year" value={{item.setYear}}>{{item.setYear}}</option>
               </select>
             </div>
-            <!-- <div  class="row" *ngIf="data.isRange else notRange">
-              <div class="col-lg-6">
-                <label class="text-dark">From</label>
-                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" [(ngModel)]="data.start">
-                  <option *ngFor="let item of filter_sep_year" value={{item.setYear}}>{{item.setYear}}</option>
-                </select>
-              </div>
-              <div class="col-lg-6">
-                <label class="text-dark">To</label>
-                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" [(ngModel)]="data.end">
-                  <option *ngFor="let item of filter_sep_year" value={{item.setYear}}>{{item.setYear}}</option>
-                </select>
-              </div>
-            </div>
-            <ng-template #notRange>
-              <div class="col-lg-12">
-                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" [(ngModel)]="data.start">
-                  <option *ngFor="let item of filter_sep_year" value={{item.setYear}}>{{item.setYear}}</option>
-                </select>
-              </div>
-            </ng-template> -->
           </div>
         </div>
         <div class="modal-footer">

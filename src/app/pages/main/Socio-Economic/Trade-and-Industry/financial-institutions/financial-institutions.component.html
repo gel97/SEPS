@@ -29,6 +29,8 @@
                   </button>
                 </app-admin>
               </form>
+              &nbsp;
+              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mPdf" aria-hidden="true">Generate PDF</button>
             </div><br>
 
             <br>
@@ -320,4 +322,51 @@
       </div>
     </div>
   </div>
+</div>
+
+<div>
+   <!-- Modal -->
+   <div class="modal fade" id="mPdf" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-dark" id="exampleModalLabel">Generate PDF</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-6 mb-2">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckAll" [(ngModel)]="pdf_data.allMunCity">
+                <label class="form-check-label" for="flexCheckAll">
+                  All Muncipality/City
+                </label>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <label class="text-dark">SEP Year:</label>
+            </div>
+            <div class="col-lg-12">
+              <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" [(ngModel)]="pdf_data.year">
+                <option *ngFor="let item of filter_sep_year" value={{item.setYear}}>{{item.setYear}}</option>
+              </select>
+            </div>
+            <div class="col-lg-12">
+              <label class="text-dark">Category:</label>
+            </div>
+            <div class="col-lg-12">
+              <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" [(ngModel)]="pdf_data.category">
+                <option *ngFor="let item of list_cat_type" value={{item.recNo}}>{{item.catTypeName}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" (click)="generatePdf(pdf_data.category)">Generate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>

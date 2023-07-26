@@ -5,6 +5,9 @@ import { AuthService } from 'src/app/services/auth.service';
 import Swal from 'sweetalert2';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
+import { SepDataService } from 'src/app/shared/Tools/sep-data.service';
+import { ReportsService } from 'src/app/shared/Tools/reports.service';
+import { PdfService } from 'src/app/services/pdf.service';
 
 @Component({
   selector: 'app-financial-institutions',
@@ -14,6 +17,11 @@ import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 export class FinancialInstitutionsComponent implements OnInit {
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;
+
+  list_sep_year: any = [];
+  filter_sep_year: any = [];
+  pdf_data: any = {};
+  list_cat_type: any = [];
 
   list_of_category = [
     { id: 1, name_category: 'Commercial Bank' },
@@ -31,10 +39,17 @@ export class FinancialInstitutionsComponent implements OnInit {
   errorinput: any;
 
   constructor(
+    private pdfService: PdfService,
+    private reportService: ReportsService,
+    private sepDataService: SepDataService,
     private service: FinancialInstitutionsService,
     private auth: AuthService,
     private modifyService: ModifyCityMunService
-  ) {}
+  ) {
+    this.pdf_data.year = this.auth.activeSetYear - 1;
+    this.pdf_data.allMunCity = true;
+    this.pdf_data.munCityId = this.auth.munCityId;
+  }
 
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
@@ -84,7 +99,7 @@ export class FinancialInstitutionsComponent implements OnInit {
     this.service.Import().subscribe({
       next: (data) => {
         this.ngOnInit();
-        if(data.length === 0){
+        if (data.length === 0) {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -97,14 +112,12 @@ export class FinancialInstitutionsComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'info',
             title: 'No data from previous year',
           });
-        }
-        else
-        {
+        } else {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -117,7 +130,7 @@ export class FinancialInstitutionsComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'success',
             title: 'Imported Successfully',
@@ -150,6 +163,549 @@ export class FinancialInstitutionsComponent implements OnInit {
   ngOnInit(): void {
     this.GetListFinancial();
     this.list_of_barangay();
+    this.GetListSepYear();
+    this.GetListCatType();
+  }
+
+  generatePdf(cat: number) {
+    this.pdf_data.allMunCity = this.pdf_data.allMunCity ? 1 : 0;
+    let data: any = [];
+    const columnsData: any = [];
+    const columnsWidth: any = [];
+    let countWidth: number = 0;
+
+    let reports: any = [];
+    let pdf_title: string = '';
+
+    const tableData: any = [];
+    const dist1: any = [];
+    const dist2: any = [];
+    console.log('cat :', cat);
+    if (cat == 1) {
+      pdf_title = 'Banking Institutions';
+      countWidth = 4;
+      columnsData.push(
+        {
+          text: '#',
+          fillColor: 'black',
+          color: 'white',
+          bold: true,
+          alignment: 'center',
+        },
+        {
+          text: 'Name of Bank',
+          fillColor: 'black',
+          color: 'white',
+          bold: true,
+          alignment: 'center',
+        },
+        {
+          text: 'Category',
+          fillColor: 'black',
+          color: 'white',
+          bold: true,
+          alignment: 'center',
+        },
+        {
+          text: 'Barangay',
+          fillColor: 'black',
+          color: 'white',
+          bold: true,
+          alignment: 'center',
+        }
+      );
+    }
+    if (cat == 2) {
+      pdf_title = 'Cooperatives';
+      countWidth = 7;
+      columnsData.push(
+        {
+          text: '#',
+          fillColor: 'black',
+          color: 'white',
+          bold: true,
+          alignment: 'center',
+        },
+        {
+          text: 'Name of Cooperative',
+          fillColor: 'black',
+          color: 'white',
+          bold: true,
+          alignment: 'center',
+        },
+        {
+          text: 'Contact Person/ Designation',
+          fillColor: 'black',
+          color: 'white',
+          bold: true,
+          alignment: 'center',
+        },
+        {
+          text: 'Contact Details',
+          fillColor: 'black',
+          color: 'white',
+          bold: true,
+          alignment: 'center',
+        },
+        {
+          text: 'Barangay',
+          fillColor: 'black',
+          color: 'white',
+          bold: true,
+          alignment: 'center',
+        },
+        {
+          text: 'No. of Members',
+          fillColor: 'black',
+          color: 'white',
+          bold: true,
+          alignment: 'center',
+        },
+        {
+          text: 'Total Assets',
+          fillColor: 'black',
+          color: 'white',
+          bold: true,
+          alignment: 'center',
+        }
+      );
+    }
+    if (cat == 3) {
+      pdf_title = 'Insurance Company';
+      countWidth = 4;
+      columnsData.push(
+        {
+          text: '#',
+          fillColor: 'black',
+          color: 'white',
+          bold: true,
+          alignment: 'center',
+        },
+        {
+          text: 'Name of Bank',
+          fillColor: 'black',
+          color: 'white',
+          bold: true,
+          alignment: 'center',
+        },
+        {
+          text: 'Category',
+          fillColor: 'black',
+          color: 'white',
+          bold: true,
+          alignment: 'center',
+        },
+        {
+          text: 'Barangay',
+          fillColor: 'black',
+          color: 'white',
+          bold: true,
+          alignment: 'center',
+        }
+      );
+    }
+    if (cat == 4) {
+      pdf_title = 'Financial Institutions';
+      countWidth = 4;
+      columnsData.push(
+        {
+          text: '#',
+          fillColor: 'black',
+          color: 'white',
+          bold: true,
+          alignment: 'center',
+        },
+        {
+          text: 'Name of Institution',
+          fillColor: 'black',
+          color: 'white',
+          bold: true,
+          alignment: 'center',
+        },
+        {
+          text: 'Category',
+          fillColor: 'black',
+          color: 'white',
+          bold: true,
+          alignment: 'center',
+        },
+        {
+          text: 'Barangay',
+          fillColor: 'black',
+          color: 'white',
+          bold: true,
+          alignment: 'center',
+        }
+      );
+    }
+
+    for (let index = 0; index < countWidth; index++) {
+      if (index === 0) {
+        columnsWidth.push(25);
+      }
+      if (index > 0) {
+        columnsWidth.push('*');
+      }
+    }
+
+    this.reportService.GetFinancialInsReport(this.pdf_data).subscribe({
+      next: (response: any = {}) => {
+        reports = response;
+        console.log('result: ', response);
+
+        reports.forEach((a: any) => {
+          if (a.district === 1) {
+            dist1.push(a);
+          } else {
+            dist2.push(a);
+          }
+        });
+
+        data.push({
+          margin: [0, 40, 0, 0],
+          columns: [
+            {
+              text: `List of ${pdf_title} by Municipality/City`,
+              fontSize: 14,
+              bold: true,
+            },
+            {
+              text: `Year: ${response[0].setYear}`,
+              fontSize: 14,
+              bold: true,
+              alignment: 'right',
+            },
+          ],
+        });
+
+        const dist1Group = dist1.reduce((groups: any, item: any) => {
+          const { munCityName } = item;
+          const groupKey = `${munCityName}`;
+          if (!groups[groupKey]) {
+            groups[groupKey] = [];
+          }
+          groups[groupKey].push(item);
+          return groups;
+        }, {});
+
+        console.log('dist1Group ', dist1Group);
+
+        const dist2Group = dist2.reduce((groups: any, item: any) => {
+          const { munCityName } = item;
+          const groupKey = `${munCityName}`;
+          if (!groups[groupKey]) {
+            groups[groupKey] = [];
+          }
+          groups[groupKey].push(item);
+          return groups;
+        }, {});
+
+        console.log('dist2Group ', dist2);
+        console.log('columnsData ', columnsData);
+        console.log('columnsWidth ', columnsWidth);
+
+        tableData.push(columnsData);
+
+        tableData.push([
+          {
+            text: `1st Congressional District `,
+            colSpan: countWidth,
+            alignment: 'left',
+            fillColor: '#526D82',
+          },
+        ]);
+
+        for (const groupKey1 in dist1Group) {
+          // Iterate district I data
+          const group1 = dist1Group[groupKey1];
+          const [cityName1] = groupKey1.split('-');
+          tableData.push([
+            {
+              text: cityName1,
+              colSpan: countWidth,
+              alignment: 'left',
+              fillColor: '#9DB2BF',
+            },
+          ]);
+
+          if (cat == 1) {
+            group1.forEach((item: any, index: any) => {
+              tableData.push([
+                {
+                  text: index + 1,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.name,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.catName,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.brgyName,
+                  fillColor: '#FFFFFF',
+                },
+              ]);
+            });
+          }
+          if (cat == 2) {
+            group1.forEach((item: any, index: any) => {
+              tableData.push([
+                {
+                  text: index + 1,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.name,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.contactPerson,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.contactNo,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.brgyName,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.members,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.totAssets,
+                  fillColor: '#FFFFFF',
+                },
+              ]);
+            });
+          }
+          if (cat == 3) {
+            group1.forEach((item: any, index: any) => {
+              tableData.push([
+                {
+                  text: index + 1,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.name,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.catName,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.brgyName,
+                  fillColor: '#FFFFFF',
+                },
+              ]);
+            });
+          }
+          if (cat == 4) {
+            group1.forEach((item: any, index: any) => {
+              tableData.push([
+                {
+                  text: index + 1,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.name,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.catName,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.brgyName,
+                  fillColor: '#FFFFFF',
+                },
+              ]);
+            });
+          }
+
+        }
+
+        tableData.push([
+          {
+            text: `2nd Congressional District `,
+            colSpan: countWidth,
+            alignment: 'left',
+            fillColor: '#526D82',
+          },
+        ]);
+
+        for (const groupKey2 in dist2Group) { // Iterate district II data
+          const group2 = dist2Group[groupKey2];
+          const [cityName2] = groupKey2.split('-');
+          tableData.push([
+            {
+              text: cityName2,
+              colSpan: countWidth,
+              alignment: 'left',
+              fillColor: '#9DB2BF',
+            },
+          ]);
+
+          if (cat == 1) {
+            group2.forEach((item: any, index: any) => {
+              tableData.push([
+                {
+                  text: index + 1,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.name,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.catName,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.brgyName,
+                  fillColor: '#FFFFFF',
+                },
+              ]);
+            });
+          }
+          if (cat == 2) {
+            group2.forEach((item: any, index: any) => {
+              tableData.push([
+                {
+                  text: index + 1,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.name,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.contactPerson,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.contactNo,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.brgyName,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.members,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.totAssets,
+                  fillColor: '#FFFFFF',
+                },
+              ]);
+            });
+          }
+          if (cat == 3) {
+            group2.forEach((item: any, index: any) => {
+              tableData.push([
+                {
+                  text: index + 1,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.name,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.catName,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.brgyName,
+                  fillColor: '#FFFFFF',
+                },
+              ]);
+            });
+          }
+          if (cat == 4) {
+            group2.forEach((item: any, index: any) => {
+              tableData.push([
+                {
+                  text: index + 1,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.name,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.catName,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.brgyName,
+                  fillColor: '#FFFFFF',
+                },
+              ]);
+            });
+          }
+       
+        }
+
+        const table = {
+          margin: [0, 40, 0, 0],
+          table: {
+            widths: columnsWidth,
+            body: tableData,
+          },
+          layout: 'lightHorizontalLines',
+        };
+
+        data.push(table);
+      },
+      error: (error: any) => {
+        console.log(error);
+      },
+      complete: () => {
+        let isPortrait = false;
+        this.pdfService.GeneratePdf(data, isPortrait);
+        console.log(data);
+      },
+    });
+  }
+  GetListCatType() {
+    this.service.GetListCatType().subscribe({
+      next: (response) => {
+        this.list_cat_type = <any>response;
+        this.pdf_data.category = this.list_cat_type[0].recNo;
+      },
+      error: () => {},
+      complete: () => {},
+    });
+  }
+
+  GetListSepYear() {
+    this.sepDataService.ListSepYear().subscribe({
+      next: (response) => {
+        this.list_sep_year = <any>response;
+      },
+      error: () => {},
+      complete: () => {
+        this.FilterByNotActiveYear();
+      },
+    });
+  }
+  FilterByNotActiveYear() {
+    this.filter_sep_year = [];
+
+    this.list_sep_year.forEach((a: any) => {
+      if (a.isActive == 0) {
+        this.filter_sep_year.push(a);
+      }
+    });
   }
 
   //searchBar
