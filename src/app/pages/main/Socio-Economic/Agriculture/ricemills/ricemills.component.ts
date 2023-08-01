@@ -4,7 +4,9 @@ import { AgricultureService } from 'src/app/shared/Socio-Economic/Agriculture/ag
 import Swal from 'sweetalert2';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
-
+import { PdfComponent } from 'src/app/components/pdf/pdf.component';
+import { PdfService } from 'src/app/services/pdf.service';
+import { ReportsService } from 'src/app/shared/Tools/reports.service';
 @Component({
   selector: 'app-ricemills',
   templateUrl: './ricemills.component.html',
@@ -12,6 +14,8 @@ import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 })
 export class RicemillsComponent implements OnInit {
   constructor(
+    private pdfService: PdfService,
+    private reportService: ReportsService,
     private Auth: AuthService,
     private Service: AgricultureService,
     private modifyService: ModifyCityMunService
@@ -23,6 +27,9 @@ export class RicemillsComponent implements OnInit {
 
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;
+
+  @ViewChild(PdfComponent)
+  private pdfComponent!: PdfComponent;
 
   isCheck: boolean = false;
 
@@ -57,7 +64,7 @@ export class RicemillsComponent implements OnInit {
   latitude: any;
   longtitude: any;
 
-  setYear = this.Auth.activeSetYear;
+  setYear = this.Auth.setYear;
   munCityId = this.Auth.munCityId;
 
   @ViewChild('closebutton')
@@ -156,6 +163,251 @@ export class RicemillsComponent implements OnInit {
   ngOnInit(): void {
     this.GetListAgriculture();
     this.GetBarangayList();
+  }
+
+  GeneratePDF() {
+    let data: any = [];
+    let reports: any = [];
+
+    const tableData: any = [];
+    const dist1: any = [];
+    const dist2: any = [];
+    this.pdfComponent.data.menuId = this.menuId;
+
+    this.reportService.GetAgricultureReport(this.pdfComponent.data).subscribe({
+      next: (response: any = {}) => {
+        reports = response;
+        console.log('result: ', response);
+
+        reports.forEach((a: any) => {
+          if (a.district === 1) {
+            dist1.push(a);
+          } else {
+            dist2.push(a);
+          }
+        });
+
+        data.push({
+          margin: [0, 40, 0, 0],
+          columns: [
+            {
+              text: `List of Ricemills by Municipality/City`,
+              fontSize: 14,
+              bold: true,
+            },
+            {
+              text: `Year: ${response[0].setYear}`,
+              fontSize: 14,
+              bold: true,
+              alignment: 'right',
+            },
+          ],
+        });
+
+        const dist1Group = dist1.reduce((groups: any, item: any) => {
+          const { munCityName } = item;
+          const groupKey = `${munCityName}`;
+          if (!groups[groupKey]) {
+            groups[groupKey] = [];
+          }
+          groups[groupKey].push(item);
+          return groups;
+        }, {});
+
+        console.log("dist1Group ", dist1Group);
+
+        const dist2Group = dist2.reduce((groups: any, item: any) => {
+          const { munCityName } = item;
+          const groupKey = `${munCityName}`;
+          if (!groups[groupKey]) {
+            groups[groupKey] = [];
+          }
+          groups[groupKey].push(item);
+          return groups;
+        }, {});
+
+        console.log("dist2Group ", dist2);
+
+        tableData.push([
+          {
+            text: '#',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'Name of Ricemill',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'Category',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'Capacity (M.T)',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+           {
+            text: 'Area (Sq.m)',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          }
+        ]);
+
+        tableData.push([
+          {
+            text: `1st Congressional District `,
+            colSpan: 5,
+            alignment: 'left',
+            fillColor: '#526D82',
+            marginLeft: 5
+          },
+        ]);
+
+        for (const groupKey1 in dist1Group) { // Iterate district I data
+          const group1 = dist1Group[groupKey1];
+          const [cityName1] = groupKey1.split('-');
+          tableData.push([
+            {
+              text: cityName1,
+              colSpan: 5,
+              alignment: 'left',
+              fillColor: '#9DB2BF',
+              marginLeft: 5
+            },
+          ]);
+
+          group1.forEach((item: any, index: any) => {
+            let type = ""
+            this.listofRicemill.forEach((a:any) => {
+              if(item.type === parseInt( a.id)){
+                type = a.type
+              }
+            });
+
+               tableData.push([
+            {
+              text: index+1,
+              fillColor: '#FFFFFF',
+              marginLeft: 5
+            },
+            {
+              text: item.name,
+              fillColor: '#FFFFFF',
+            },
+            {
+              text: type,
+              fillColor: '#FFFFFF',
+            },
+            {
+              text: item.capacity,
+              fillColor: '#FFFFFF',
+              alignment: 'center'
+            },
+             {
+              text: item.area,
+              fillColor: '#FFFFFF',
+              alignment: 'center'
+            },
+             
+          ]);
+
+          });
+        }
+
+        tableData.push([
+          {
+            text: `2nd Congressional District `,
+            colSpan: 5,
+            alignment: 'left',
+            fillColor: '#526D82',
+            marginLeft: 5
+          },
+        ]);
+
+        for (const groupKey2 in dist2Group) { // Iterate district II data
+          const group2 = dist2Group[groupKey2];
+          const [cityName2] = groupKey2.split('-');
+          tableData.push([
+            {
+              text: cityName2,
+              colSpan: 5,
+              alignment: 'left',
+              fillColor: '#9DB2BF',
+              marginLeft: 5
+            },
+          ]);
+
+          group2.forEach((item: any, index: any) => {
+            let type = ""
+            this.listofRicemill.forEach((a:any) => {
+              if(item.type === parseInt( a.id)){
+                type = a.type
+              }
+            });
+
+               tableData.push([
+            {
+              text: index+1,
+              fillColor: '#FFFFFF',
+              marginLeft: 5
+            },
+            {
+              text: item.name,
+              fillColor: '#FFFFFF',
+            },
+            {
+              text: type,
+              fillColor: '#FFFFFF',
+            },
+            {
+              text: item.capacity,
+              fillColor: '#FFFFFF',
+              alignment: 'center'
+            },
+             {
+              text: item.area,
+              fillColor: '#FFFFFF',
+              alignment: 'center'
+            },
+             
+          ]);
+
+          });
+        }
+
+        const table = {
+          margin: [0, 10, 0, 0],
+          table: {
+            widths: [25, '*', '*','*', '*'],
+            body: tableData,
+          },
+          layout: 'lightHorizontalLines',
+        };
+
+        data.push(table);
+      },
+      error: (error: any) => {
+        console.log(error);
+      },
+      complete: () => {
+        let isPortrait = false;
+        this.pdfService.GeneratePdf(data, isPortrait);
+        console.log(data);
+      },
+    });
   }
 
   GetListAgriculture() {

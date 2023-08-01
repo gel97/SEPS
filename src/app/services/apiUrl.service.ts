@@ -189,12 +189,13 @@ export class ApiUrl {
     delete_agriculture_prod      = (transId:any)=>`/AgricultureProd/${transId}`;
     post_import_agriculture_prod = (menuId:any) => `/AgricultureProd/Import/${menuId}`;
 
-    //Rice/Crops Production
+    //Agriculture
     post_agriculture        = ()=> `/Agriculture`;
     put_agriculture         = ()=> `/Agriculture`;
     get_list_agriculture    = (menuId:any, setYear:any, munCityId:any) => `/Agriculture/${menuId}/${setYear}/${munCityId}`;
     delete_agriculture      = (transId:any) => `/Agriculture/${transId}`;
     post_import_agriculture = (menuId:any) =>  `/Agriculture/Import/${menuId}`;
+    post_report_agriculture = () => `/Agriculture/Reports`;
 
 // SOCIAL-PROFILE
     // Association

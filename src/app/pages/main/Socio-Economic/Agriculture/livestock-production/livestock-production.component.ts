@@ -6,6 +6,10 @@ import { Observable } from 'rxjs';
 import { isEmptyObject } from 'jquery';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 import { AgricultureLivestockService } from 'src/app/shared/Socio-Economic/Agriculture/agricultureLivestock.service';
+import { PdfComponent } from 'src/app/components/pdf/pdf.component';
+import { PdfService } from 'src/app/services/pdf.service';
+import { ReportsService } from 'src/app/shared/Tools/reports.service';
+
 @Component({
   selector: 'app-livestock-production',
   templateUrl: './livestock-production.component.html',
@@ -15,7 +19,12 @@ export class LivestockProductionComponent implements OnInit {
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
 
+  @ViewChild(PdfComponent)
+  private pdfComponent!: PdfComponent;
+
   constructor(
+    private pdfService: PdfService,
+    private reportService: ReportsService,
     private auth: AuthService,
     private service: AgricultureLivestockService,
     private modifyService: ModifyCityMunService
@@ -39,6 +48,235 @@ export class LivestockProductionComponent implements OnInit {
     this.GetData();
     this.GetListBarangay();
   }
+
+  GeneratePDF() {
+    let data: any = [];
+    let grandTotal: any = {};
+
+    let reports: any = [];
+    let columnLenght: number = 0;
+
+    const tableData: any = [];
+
+    this.reportService
+      .GetAgricultureLivestockReport(this.pdfComponent.data)
+      .subscribe({
+        next: (response: any = {}) => {
+          reports = response.data;
+          grandTotal = response.grandTotal;
+
+          console.log('result: ', response);
+
+          data.push({
+            margin: [0, 40, 0, 0],
+            columns: [
+              {
+                text: `List of Poultry/ Livestock Production by Municipality/City`,
+                fontSize: 14,
+                bold: true,
+              },
+              {
+                text: `Year: ${response.year}`,
+                fontSize: 14,
+                bold: true,
+                alignment: 'right',
+              },
+            ],
+          });
+
+          tableData.push([
+            {
+              text: '#',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Municipality/ City',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Carabao',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Cattle',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Goat',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Swine',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+          ]);
+
+          reports.forEach((a: any) => {
+            if (a.district === 1) {
+              let columnWidth: number = 0;
+              a.data.forEach((b: any, index: any) => {
+                let dist: any = [];
+                for (let key in b) {
+                  if (index === 0) {
+                    columnWidth++;
+                  }
+                  dist.push({
+                    text: key === 'munCityId' ? (b[key] = index + 1) : b[key],
+                    fillColor: '#ffffff',
+                    alignment: key === 'munCityName' ? 'left' : 'center',
+                  });
+                }
+
+                if (index === 0) {
+                  tableData.push([
+                    {
+                      text: `1st Congressional District `,
+                      colSpan: columnWidth,
+                      alignment: 'left',
+                      fillColor: '#526D82',
+                      marginLeft: 5,
+                    },
+                  ]);
+
+                  columnLenght = columnWidth - 1;
+                }
+
+                tableData.push(dist);
+              });
+
+              let sub: any = []; // SUBTOTAL D1
+              for (let key in a.subTotal) {
+                if (key === 'subTotal') {
+                  sub.push({
+                    text: '',
+                    fillColor: '#9DB2BF',
+                    alignment: 'left',
+                  });
+                }
+
+                sub.push({
+                  text: a.subTotal[key],
+                  fillColor: '#9DB2BF',
+                  alignment: key === 'subTotal' ? 'left' : 'center',
+                });
+              }
+              tableData.push(sub);
+            } else {
+              let columnWidth: number = 0;
+              a.data.forEach((b: any, index: any) => {
+                let dist: any = [];
+                for (let key in b) {
+                  if (index === 0) {
+                    columnWidth++;
+                  }
+                  dist.push({
+                    text: key === 'munCityId' ? (b[key] = index + 1) : b[key],
+                    fillColor: '#ffffff',
+                    alignment: key === 'munCityName' ? 'left' : 'center',
+                  });
+                }
+
+                if (index === 0) {
+                  tableData.push([
+                    {
+                      text: `2nd Congressional District `,
+                      colSpan: columnWidth,
+                      alignment: 'left',
+                      fillColor: '#526D82',
+                      marginLeft: 5,
+                    },
+                  ]);
+                }
+
+                tableData.push(dist);
+              });
+
+              let sub: any = []; // SUBTOTAL D2
+              for (let key in a.subTotal) {
+                if (key === 'subTotal') {
+                  sub.push({
+                    text: '',
+                    fillColor: '#9DB2BF',
+                    alignment: 'left',
+                  });
+                }
+
+                sub.push({
+                  text: a.subTotal[key],
+                  fillColor: '#9DB2BF',
+                  alignment: key === 'subTotal' ? 'left' : 'center',
+                });
+              }
+              tableData.push(sub);
+            }
+          });
+
+          let grand: any = []; // GRAND TOTAL
+          for (let key in grandTotal) {
+            if (key === 'grandTotal') {
+              grand.push({
+                text: '',
+                fillColor: '#F1C93B',
+                alignment: 'left',
+              });
+            }
+
+            grand.push({
+              text: grandTotal[key],
+              fillColor: '#F1C93B',
+              alignment: key === 'grandTotal' ? 'left' : 'center',
+            });
+          }
+          tableData.push(grand);
+
+          let widths: any = []; // COLUMN WIDTH
+          for (let index = 0; index < columnLenght; index++) {
+            if (index === 0) {
+              widths.push(20);
+            }
+            widths.push('*');
+          }
+
+          const table = {
+            margin: [0, 10, 0, 0],
+            table: {
+              widths: widths,
+              body: tableData,
+            },
+            layout: 'lightHorizontalLines',
+          };
+
+          data.push(table);
+        },
+        error: (error: any) => {
+          console.log(error);
+        },
+        complete: () => {
+          let isPortrait = false;
+          this.pdfService.GeneratePdf(data, isPortrait);
+          console.log(data);
+        },
+      });
+  }
+
   message = 'Livestock/ Poultry Production';
   viewData: boolean = false;
   parentMethod() {
@@ -63,7 +301,6 @@ export class LivestockProductionComponent implements OnInit {
     //           toast.addEventListener('mouseleave', Swal.resumeTimer);
     //         },
     //       });
-  
     //       Toast.fire({
     //         icon: 'info',
     //         title: 'No data from previous year',
@@ -83,7 +320,6 @@ export class LivestockProductionComponent implements OnInit {
     //           toast.addEventListener('mouseleave', Swal.resumeTimer);
     //         },
     //       });
-  
     //       Toast.fire({
     //         icon: 'success',
     //         title: 'Imported Successfully',
@@ -102,7 +338,6 @@ export class LivestockProductionComponent implements OnInit {
     //         toast.addEventListener('mouseleave', Swal.resumeTimer);
     //       },
     //     });
-
     //     Toast.fire({
     //       icon: 'warning',
     //       title: 'Something went wrong',

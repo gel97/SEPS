@@ -17,14 +17,16 @@
               <label><strong>Agriculture - {{modifyCityMun(munCityName)}} </strong></label><br>
 
             </div>
-            <div *ngIf="!Data" class="form-inline float-right ">
+            <div  class="form-inline float-right ">
               <app-admin>
-                <button (click)="isAdd = true; isCheck=true" class="btn btn-primary" data-bs-toggle="modal"
+                <button *ngIf="!Data" (click)="isAdd = true; isCheck=true" class="btn btn-primary" data-bs-toggle="modal"
                   data-bs-target="#mEducation">
                   <i class="fa fa-plus"></i>
                   Agriultural Profile
                 </button>
               </app-admin>
+              &nbsp;
+              <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
             </div><br>
             <br>&nbsp;&nbsp;
             <div class="table-responsive">
@@ -110,7 +112,7 @@
                   <tr>
                     <td scope="col">Oil Palm:</td>
                     <td style="text-align: center;">{{addData.oilpalmArea}}</td>
-                    <td style="text-align: center;">{{addData.oilpalmFarmersNo}}</td>
+                    <td style="text-align: center;">{{addData.oilpalmArea}}</td>
                   </tr>
                   <tr>
                     <td scope="col">Coconut:</td>
@@ -123,7 +125,7 @@
                     <td style="text-align: center;">{{addData.veggieFarmersNo}}</td>
                   </tr>
                   <tr>
-                    <td scope="col">other Crops:</td>
+                    <td scope="col">Other Crops:</td>
                     <td style="text-align: center;">{{addData.otherCropsArea}}</td>
                     <td style="text-align: center;">{{addData.otherCropsNo}}</td>
                   </tr>

@@ -52,4 +52,15 @@ export class ReportsService {
   GetTourismReport(data:any) {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_tourism(), data, { responseType: 'json' });
   }
+
+  //Agriculture
+  GetAgriProfReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_agriculture_profile(), data, { responseType: 'json' });
+  }
+  GetAgricultureReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_agriculture(), data, { responseType: 'json' });
+  }
+  GetAgricultureLivestockReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_agriculture_livestock(), data, { responseType: 'json' });
+  }
 }
