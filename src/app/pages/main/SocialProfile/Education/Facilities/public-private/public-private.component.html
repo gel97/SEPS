@@ -9,14 +9,16 @@
                 <h1 class="h4 text-gray-900 mb-4">Public and Private</h1>
                 <label><strong>Education/Facilities - {{modifyCityMun(munCityName)}}</strong></label>
               </div>
-              <div *ngIf="!hasData" class="form-inline float-right ">
+              <div  class="form-inline float-right mb-2">
                 <app-admin>
-                  <button (click)="isAdd = true;" class="btn btn-primary mb-2" data-toggle="modal"
+                  <button *ngIf="!hasData" (click)="isAdd = true;" class="btn btn-primary " data-toggle="modal"
                     data-target="#openModal">
                     <i class="fa fa-plus"></i>
                     Public and Private
                   </button>
                 </app-admin>
+                &nbsp;
+                <app-pdf (myEvent)="GeneratePDF()"></app-pdf>  
               </div>
               <br>
               <div class="table-responsive">

@@ -541,7 +541,8 @@ export class FisheriesAquacultureComponent implements OnInit {
             prod = b.totalProd;
             area = b.area;
           }
-          });  
+          });
+                     
           grand.push({
             text: prod,
             fillColor: '#F1C93B',

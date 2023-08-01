@@ -11,6 +11,9 @@
                 <h1 class="h4 text-gray-900 mb-4">Tertiary Graduates</h1>
                 <label><strong>Education - {{modifyCityMun(munCityName)}}</strong></label><br>
               </div>
+              <div class="form-inline float-right ">   
+                <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
+              </div>
               <br>
               <div class="row">
                 <div class="col-lg-9"><br>

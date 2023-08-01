@@ -9,7 +9,10 @@
                             <h1 class="h4 text-gray-900 mb-4">Tertiary Enrolment</h1>
                             <label><strong>Education/Tertiary - {{modifyCityMun(munCityName)}}</strong></label>
 
-                        </div>     
+                        </div>    
+                        <div class="form-inline float-right ">
+                            <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
+                          </div> 
                         <br>
                         <label>List of Tertiary Institutions</label>
                         <div class="table-responsive">

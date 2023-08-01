@@ -63,4 +63,21 @@ export class ReportsService {
   GetAgricultureLivestockReport(data:any) {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_agriculture_livestock(), data, { responseType: 'json' });
   }
+
+  //Education
+  GetEducationStatReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_education_stat(), data, { responseType: 'json' });
+  }
+  GetEducationTertiaryReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_education_tertiary(), data, { responseType: 'json' });
+  }
+  GetEducationTechVocReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_education_techvoc(), data, { responseType: 'json' });
+  }
+  GetEducationSchoolReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_education_schools(), data, { responseType: 'json' });
+  }
+  GetEducationTertiaryGradReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_education_tertiary_grad(), data, { responseType: 'json' });
+  }
 }

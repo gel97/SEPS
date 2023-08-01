@@ -8,6 +8,7 @@ import { PdfService } from 'src/app/services/pdf.service';
 import { ReportsService } from 'src/app/shared/Tools/reports.service';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 import { EducationTertiaryGradService } from 'src/app/shared/SocialProfile/Education/educationTertiaryGrad.service';
+
 @Component({
   selector: 'app-tertiary-grad',
   templateUrl: './tertiary-grad.component.html',
@@ -58,7 +59,230 @@ export class TertiaryGradComponent implements OnInit {
     this.GetListCourse();
   }
 
- 
+  GeneratePDF() {
+    let data: any = [];
+    let grandTotal: any = {};
+
+    let reports: any = [];
+    let columnLenght: number = 0;
+
+    const tableData: any = [];
+
+    let summary:any = [];
+    let contentData:any = [];
+
+    this.reportService
+      .GetEducationTertiaryGradReport(this.pdfComponent.data)
+      .subscribe({
+        next: (response: any = {}) => {
+          reports = response.data;
+          summary = response.summary;
+          grandTotal = response.grandTotal;
+
+          console.log('result: ', response);
+
+          data.push({
+            margin: [0, 40, 0, 0],
+            columns: [
+              {
+                text: `Tertiary Graduates by Municipality/City`,
+                fontSize: 14,
+                bold: true,
+              },
+              {
+                text: `Year: ${response.year}`,
+                fontSize: 14,
+                bold: true,
+                alignment: 'right',
+              },
+            ],
+          });
+
+          data.push({
+            margin: [0, 10, 0, 0],
+            columns: [
+              {
+                text: `Summary`,
+                fontSize: 12,
+                bold: true,
+              },
+            ],
+          });
+
+          tableData.push([
+            {
+              text: '#',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Course',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },    
+            {
+              text: 'Male',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Female',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Total',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+          ]);
+
+          summary.forEach((a: any, index:any) => {
+            tableData.push([{
+              text: index + 1,
+              marginLeft:2,
+              fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+            },{
+              text: a.program,
+              fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+              
+            },{
+              text: a.male,
+              alignment: 'center',
+              fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+              
+            },{
+              text: a.female,
+              alignment: 'center',
+              fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+            },{
+              text: a.total,
+              alignment: 'center',
+              fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+            },])
+           
+          });
+
+          contentData.push([{
+            margin: [0, 10, 0, 0],
+            table: {
+              widths: [25, '*', '*', '*', '*'],
+              body: tableData,
+            },
+            layout: 'lightHorizontalLines',
+            pageBreak: 'after'
+          }]);
+
+          reports.forEach((a:any, index:any) => {
+            let newTableData:any = [];
+            contentData.push([{text: a.munCityName, bold: true }]);
+            newTableData.push([
+              {
+                text: '#',
+                fillColor: 'black',
+                color: 'white',
+                bold: true,
+                alignment: 'center',
+              },
+              {
+                text: 'Course',
+                fillColor: 'black',
+                color: 'white',
+                bold: true,
+                alignment: 'center',
+              },    
+              {
+                text: 'Male',
+                fillColor: 'black',
+                color: 'white',
+                bold: true,
+                alignment: 'center',
+              },
+              {
+                text: 'Female',
+                fillColor: 'black',
+                color: 'white',
+                bold: true,
+                alignment: 'center',
+              },
+              {
+                text: 'Total',
+                fillColor: 'black',
+                color: 'white',
+                bold: true,
+                alignment: 'center',
+              },
+            ]);
+
+            a.data.forEach((b: any, i:any) => {
+              newTableData.push([{
+                text: i + 1,
+                marginLeft:2,
+                fillColor: i % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+              },{
+                text: b.program,
+                fillColor: i % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+                
+              },{
+                text: b.male,
+                alignment: 'center',
+                fillColor: i % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+                
+              },{
+                text: b.female,
+                alignment: 'center',
+                fillColor: i % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+              },{
+                text: b.total,
+                alignment: 'center',
+                fillColor: i % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+              },])
+             
+            });
+
+            contentData.push([{
+              margin: [0, 10, 0, 0],
+              table: {
+                widths: [25, '*', '*', '*', '*'],
+                body: newTableData,
+              },
+              layout: 'lightHorizontalLines',
+              pageBreak: 'after'
+            }]);
+
+          });
+
+          // const table = {
+          //   margin: [0, 10, 0, 0],
+          //   table: {
+          //     widths: [25, '*', '*', '*', '*'],
+          //     body: tableData,
+          //   },
+          //   layout: 'lightHorizontalLines',
+          // };
+
+          data.push(contentData);
+        },
+        error: (error: any) => {
+          console.log(error);
+        },
+        complete: () => {
+          let isPortrait = false;
+          this.pdfService.GeneratePdf(data, isPortrait);
+          console.log(data);
+        },
+      });
+  }
 
   GetData() {
     this.service.GetListEducationTertiaryGrad(this.auth.setYear, this.auth.munCityId).subscribe({

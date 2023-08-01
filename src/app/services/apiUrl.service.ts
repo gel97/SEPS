@@ -254,7 +254,7 @@ export class ApiUrl {
     post_education_tertiary_grad        = ()=>`/EducationTertiaryGrad`;
     put_education_tertiary_grad         = ()=>`/EducationTertiaryGrad`;
     delete_education_tertiary_grad      = (transId:any)=>`/EducationTertiaryGrad/${transId}`;
-    post_report_education_tertiary_grad = ()=>`/EducationTechVocgrad/Reports`;
+    post_report_education_tertiary_grad = ()=>`/EducationTertiaryGrad/Reports`;
 
     // Education Stat
     get_list_education_stat    = (setYear  :any,munCityId :any)=>`/EducationStat/${setYear}/${munCityId}`;
