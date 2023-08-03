@@ -80,4 +80,10 @@ export class ReportsService {
   GetEducationTertiaryGradReport(data:any) {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_education_tertiary_grad(), data, { responseType: 'json' });
   }
+  GetEducationTechVocStatReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_education_techvoc_stat(), data, { responseType: 'json' });
+  }
+  GetEducationOsyReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_education_osy(), data, { responseType: 'json' });
+  }
 }

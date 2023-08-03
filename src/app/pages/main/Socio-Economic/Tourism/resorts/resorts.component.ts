@@ -172,7 +172,7 @@ export class ResortsComponent implements OnInit {
         console.log('result: ', response);
 
         reports.forEach((a: any) => {
-          if (a.district === 1) {
+          if (a.district === 1) {  
             dist1.push(a);
           } else {
             dist2.push(a);

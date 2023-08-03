@@ -4,6 +4,9 @@ import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { EducationOsyService } from 'src/app/shared/SocialProfile/Education/educationOsy.service';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
+import { PdfComponent } from 'src/app/components/pdf/pdf.component';
+import { PdfService } from 'src/app/services/pdf.service';
+import { ReportsService } from 'src/app/shared/Tools/reports.service';
 
 @Component({
   selector: 'app-oschool-youth',
@@ -13,6 +16,8 @@ import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 export class OSchoolYouthComponent implements OnInit {
   munCityName: string = this.auth.munCityName;
   constructor(
+    private pdfService: PdfService,
+    private reportService: ReportsService,
     private service: EducationOsyService,
     private auth: AuthService,
     private modifyService: ModifyCityMunService
@@ -27,6 +32,8 @@ export class OSchoolYouthComponent implements OnInit {
   private gmapComponent!: GmapComponent;
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
+  @ViewChild(PdfComponent)
+  private pdfComponent!: PdfComponent;
   isCheck: boolean = false;
   onChange(isCheck: boolean) {
     this.isCheck = isCheck;
@@ -61,6 +68,344 @@ export class OSchoolYouthComponent implements OnInit {
   Init() {
     this.GetListBarangay();
     this.GetListOsy();
+  }
+
+  GeneratePDF() {
+    let data: any = [];
+    let reports: any = [];
+
+    const dist1: any = [];
+    const dist2: any = [];
+    const contentData: any = [];
+
+    let grandTotal:any = [];
+
+    const tableData: any = [];
+    this.reportService
+      .GetEducationOsyReport(this.pdfComponent.data)
+      .subscribe({
+        next: (response: any = {}) => {
+          reports = response.data;
+          grandTotal = response.grandTotal;
+
+          console.log('result: ', response);
+
+          data.push({
+            margin: [0, 40, 0, 0],
+            columns: [
+              {
+                text: `Out of School Youth by Municipality/City`,
+                fontSize: 14,
+                bold: true,
+              },
+              {
+                text: `Year: ${response.year}`,
+                fontSize: 14,
+                bold: true,
+                alignment: 'right',
+              },
+            ],
+          });
+
+          tableData.push([
+            {
+              text: '#',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Municipality/ City',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Age 3-5',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Age 6-11',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Age 12-15',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Age 16-20',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Age 21-35 ',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Total ',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+          ]);
+          reports.forEach((a: any, index: any) => {
+            if(a.district == "1"){
+             // contentData.push([{ text: b.munCityName, bold: true }]);
+              tableData.push([
+                  {
+                    text: `1st Congressional District `,
+                      colSpan: 8,
+                      alignment: 'left',
+                      fillColor: '#526D82',
+                      marginLeft: 5,
+                  }]);
+              a.data.forEach((b: any, index2: any) => {
+                tableData.push([
+                  {
+                    text: index2 + 1,
+                    alignment: 'center',
+                  },
+                  {
+                    text: b.munCityName,
+                    alignment: 'left',
+                  },
+                  {
+                    text: b.age3_5,
+                    alignment: 'center',
+                  },
+                  {
+                    text: b.age6_11,
+                    alignment: 'center',
+                  },
+                  {
+                    text: b.age12_15,
+                    alignment: 'center',
+                  },
+                  {
+                    text: b.age16_20,
+                    alignment: 'center',
+                  },
+                  {
+                    text: b.age21_35,
+                    alignment: 'center',
+                  },
+                  {
+                    text: b.total,
+                    alignment: 'center',
+                  },
+                ]);
+              });
+
+              tableData.push([
+                {
+                  text: 'SUBTOTAL',
+                  alignment: 'center',
+                  colSpan:2,
+                  fillColor: '#9DB2BF',
+                },
+                {},
+                {
+                  text: a.subTotal.age3_5,
+                  alignment: 'center',
+                  fillColor: '#9DB2BF',
+                },
+                {
+                  text: a.subTotal.age6_11,
+                  alignment: 'center',
+                  fillColor: '#9DB2BF',
+                },
+                {
+                  text: a.subTotal.age12_15,
+                  alignment: 'center',
+                  fillColor: '#9DB2BF',
+                },
+                {
+                  text: a.subTotal.age16_20,
+                  alignment: 'center',
+                  fillColor: '#9DB2BF',
+                },
+                {
+                  text: a.subTotal.age21_35,
+                  alignment: 'center',
+                  fillColor: '#9DB2BF',
+                },
+                {
+                  text: a.subTotal.total,
+                  alignment: 'center',
+                  fillColor: '#9DB2BF',
+                },
+              ]);
+
+            }
+            if(a.district == "2"){
+              // contentData.push([{ text: b.munCityName, bold: true }]);
+               tableData.push([
+                   {
+                     text: `2nd Congressional District `,
+                       colSpan: 8,
+                       alignment: 'left',
+                       fillColor: '#526D82',
+                       marginLeft: 5,
+                   }]);
+               a.data.forEach((b: any, index2: any) => {
+                 tableData.push([
+                   {
+                     text: index2 + 1,
+                     alignment: 'center',
+                   },
+                   {
+                     text: b.munCityName,
+                     alignment: 'left',
+                   },
+                   {
+                     text: b.age3_5,
+                     alignment: 'center',
+                   },
+                   {
+                     text: b.age6_11,
+                     alignment: 'center',
+                   },
+                   {
+                     text: b.age12_15,
+                     alignment: 'center',
+                   },
+                   {
+                     text: b.age16_20,
+                     alignment: 'center',
+                   },
+                   {
+                     text: b.age21_35,
+                     alignment: 'center',
+                   },
+                   {
+                    text: b.total,
+                    alignment: 'center',
+                  },
+                 ]);
+               });
+ 
+               tableData.push([
+                 {
+                   text: 'SUBTOTAL',
+                   alignment: 'center',
+                   colSpan:2,
+                   fillColor: '#9DB2BF',
+                 },
+                 {},
+                 {
+                   text: a.subTotal.age3_5,
+                   alignment: 'center',
+                   fillColor: '#9DB2BF',
+                 },
+                 {
+                   text: a.subTotal.age6_11,
+                   alignment: 'center',
+                   fillColor: '#9DB2BF',
+                 },
+                 {
+                   text: a.subTotal.age12_15,
+                   alignment: 'center',
+                   fillColor: '#9DB2BF',
+                 },
+                 {
+                   text: a.subTotal.age16_20,
+                   alignment: 'center',
+                   fillColor: '#9DB2BF',
+                 },
+                 {
+                   text: a.subTotal.age21_35,
+                   alignment: 'center',
+                   fillColor: '#9DB2BF',
+                 },
+                 {
+                  text: a.subTotal.total,
+                  alignment: 'center',
+                  fillColor: '#9DB2BF',
+                },
+               ]);
+ 
+             }
+           
+          });
+          tableData.push([
+            {
+              text: 'GRANDTOTAL',
+              alignment: 'center',
+              colSpan:2,
+              fillColor: '#F1C93B',
+            },
+            {},
+            {
+              text: grandTotal.age3_5,
+              alignment: 'center',
+              fillColor: '#F1C93B',
+            },
+            {
+              text: grandTotal.age6_11,
+              alignment: 'center',
+              fillColor: '#F1C93B',
+            },
+            {
+              text: grandTotal.age12_15,
+              alignment: 'center',
+              fillColor: '#F1C93B',
+            },
+            {
+              text: grandTotal.age16_20,
+              alignment: 'center',
+              fillColor: '#F1C93B',
+            },
+            {
+              text: grandTotal.age21_35,
+              alignment: 'center',
+              fillColor: '#F1C93B',
+            },
+            {
+              text: grandTotal.total,
+              alignment: 'center',
+              fillColor: '#F1C93B',
+            },
+          ]);
+         
+          contentData.push([
+            {
+              margin: [0, 10, 0, 10],
+              table: {
+                widths: [25, '*', '*', '*', '*', '*', '*', '*'],
+                body: tableData,
+              },
+              layout: 'lightHorizontalLines',
+            },
+          ]);
+
+          data.push(contentData);
+        },
+        error: (error: any) => {
+          console.log(error);
+        },
+        complete: () => {
+          let isPortrait = false;
+          this.pdfService.GeneratePdf(data, isPortrait);
+          console.log(data);
+        },
+      });
   }
 
   GetListBarangay() {
