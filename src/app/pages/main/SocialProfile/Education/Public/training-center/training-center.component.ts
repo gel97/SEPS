@@ -4,6 +4,10 @@ import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { EducationService } from 'src/app/shared/SocialProfile/Education/education.service';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
+import { PdfComponent } from 'src/app/components/pdf/pdf.component';
+import { PdfService } from 'src/app/services/pdf.service';
+import { ReportsService } from 'src/app/shared/Tools/reports.service';
+
 @Component({
   selector: 'app-training-center',
   templateUrl: './training-center.component.html',
@@ -13,6 +17,8 @@ export class TrainingCenterComponent implements OnInit {
   menuId: string = '8';
   munCityName: string = this.auth.munCityName;
   constructor(
+    private pdfService: PdfService,
+    private reportService: ReportsService,
     private service: EducationService,
     private auth: AuthService,
     private modifyService: ModifyCityMunService
@@ -27,6 +33,9 @@ export class TrainingCenterComponent implements OnInit {
   private gmapComponent!: GmapComponent;
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
+  @ViewChild(PdfComponent)
+  private pdfComponent!: PdfComponent;
+
   isCheck: boolean = false;
   onChange(isCheck: boolean) {
     this.isCheck = isCheck;
@@ -63,6 +72,243 @@ export class TrainingCenterComponent implements OnInit {
     this.GetListSchool();
   }
 
+  GeneratePDF() {
+    let data: any = [];
+    let reports: any = [];
+
+    const tableData: any = [];
+    const dist1: any = [];
+    const dist2: any = [];
+    this.pdfComponent.data.menuId = this.menuId;
+
+    this.reportService.GetEducationReport(this.pdfComponent.data).subscribe({
+      next: (response: any = {}) => {
+        reports = response;
+        console.log('result: ', response);
+
+        reports.forEach((a: any) => {
+          if (a.district === 1) {  
+            dist1.push(a);
+          } else {
+            dist2.push(a);
+          }
+        });
+
+        data.push({
+          margin: [0, 40, 0, 0],
+          columns: [
+            {
+              text: `List of Training Centers by Municipality/City`,
+              fontSize: 14,
+              bold: true,
+            },
+            {
+              text: `Year: ${response[0].setYear}`,
+              fontSize: 14,
+              bold: true,
+              alignment: 'right',
+            },
+          ],
+        });
+
+        const dist1Group = dist1.reduce((groups: any, item: any) => {
+          const { munCityName } = item;
+          const groupKey = `${munCityName}`;
+          if (!groups[groupKey]) {
+            groups[groupKey] = [];
+          }
+          groups[groupKey].push(item);
+          return groups;
+        }, {});
+
+        console.log("dist1Group ", dist1Group);
+
+        const dist2Group = dist2.reduce((groups: any, item: any) => {
+          const { munCityName } = item;
+          const groupKey = `${munCityName}`;
+          if (!groups[groupKey]) {
+            groups[groupKey] = [];
+          }
+          groups[groupKey].push(item);
+          return groups;
+        }, {});
+
+        console.log("dist2Group ", dist2);
+
+        tableData.push([
+          {
+            text: '#',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'Name of School',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'Barangay',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'Contact Person',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'Contact Details',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+           
+           {
+            text: 'Courses Offered/ Remarks',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+        ]);
+
+        tableData.push([
+          {
+            text: `1st Congressional District `,
+            colSpan: 6,
+            alignment: 'left',
+            fillColor: '#526D82',
+          },
+        ]);
+
+        for (const groupKey1 in dist1Group) { // Iterate district I data
+          const group1 = dist1Group[groupKey1];
+          const [cityName1] = groupKey1.split('-');
+          tableData.push([
+            {
+              text: cityName1,
+              colSpan: 6,
+              alignment: 'left',
+              fillColor: '#9DB2BF',
+            },
+          ]);
+
+          group1.forEach((item: any, index: any) => {
+               tableData.push([
+            {
+              text: index+1,
+              fillColor: '#FFFFFF',
+            },
+            {
+              text: item.name,
+              fillColor: '#FFFFFF',
+            },
+            {
+              text: item.brgyName,
+              fillColor: '#FFFFFF',
+            },
+            {
+              text: item.contactPerson,
+              fillColor: '#FFFFFF',
+            },
+            {
+              text: item.contactNo,
+              fillColor: '#FFFFFF',
+            },     
+            {
+             text: item.remarks,
+             fillColor: '#FFFFFF',
+           }
+             
+          ]);
+
+          });
+        }
+
+        tableData.push([
+          {
+            text: `2nd Congressional District `,
+            colSpan: 6,
+            alignment: 'left',
+            fillColor: '#526D82',
+          },
+        ]);
+
+        for (const groupKey2 in dist2Group) { // Iterate district II data
+          const group2 = dist2Group[groupKey2];
+          const [cityName2] = groupKey2.split('-');
+          tableData.push([
+            {
+              text: cityName2,
+              colSpan: 6,
+              alignment: 'left',
+              fillColor: '#9DB2BF',
+            },
+          ]);
+
+          group2.forEach((item: any, index: any) => {
+            tableData.push([
+              {
+                text: index+1,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.name,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.brgyName,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.contactPerson,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.contactNo,
+                fillColor: '#FFFFFF',
+              },     
+              {
+               text: item.remarks,
+               fillColor: '#FFFFFF',
+             }
+               
+            ]);
+
+          });
+        }
+
+        const table = {
+          margin: [0, 20, 0, 0],
+          table: {
+            widths: [25, '*', '*','*', '*', '*'],
+            body: tableData,
+          },
+          layout: 'lightHorizontalLines',
+        };
+
+        data.push(table);
+      },
+      error: (error: any) => {
+        console.log(error);
+      },
+      complete: () => {
+        let isPortrait = false;
+        this.pdfService.GeneratePdf(data, isPortrait);
+        console.log(data);
+      },
+    });
+  }
+
   GetListBarangay() {
     this.service.ListOfBarangay(this.auth.munCityId).subscribe((data) => {
       this.listBarangay = <any>data;
@@ -86,28 +332,9 @@ export class TrainingCenterComponent implements OnInit {
   AddSchool() {
     this.toValidate.name =
       this.school.name == '' || this.school.name == undefined ? true : false;
-    this.toValidate.schoolId =
-      this.school.schoolId == '' || this.school.schoolId == undefined
-        ? true
-        : false;
-    this.toValidate.teacherNo =
-      this.school.teacherNo == '' || this.school.teacherNo == undefined
-        ? true
-        : false;
-    this.toValidate.classroomNo =
-      this.school.classroomNo == '' || this.school.classroomNo == undefined
-        ? true
-        : false;
-    this.toValidate.classesNo =
-      this.school.classesNo == '' || this.school.classesNo == undefined
-        ? true
-        : false;
+
     this.toValidate.brgyId =
       this.school.brgyId == '' || this.school.brgyId == null ? true : false;
-    this.toValidate.enrollyNo =
-      this.school.enrollyNo == '' || this.school.enrollyNo == undefined
-        ? true
-        : false;
 
     this.school.menuId = this.menuId;
     this.school.setYear = this.setYear;
@@ -115,12 +342,7 @@ export class TrainingCenterComponent implements OnInit {
 
     if (
       !this.toValidate.name &&
-      !this.toValidate.brgyId &&
-      !this.toValidate.schoolId &&
-      !this.toValidate.teacherNo &&
-      !this.toValidate.classroomNo &&
-      !this.toValidate.classesNo &&
-      !this.toValidate.enrollyNo
+      !this.toValidate.brgyId 
     ) {
       this.service.AddEducation(this.school).subscribe({
         next: (request) => {

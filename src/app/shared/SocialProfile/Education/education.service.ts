@@ -35,4 +35,8 @@ export class EducationService {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay(munCityId), { responseType: 'json' });
  
   }
+  ListOfAreaEx()
+  {
+    return this.http.get<any[]>(this.Base.url + this.ApiUrl.get_list_education_area_ex(), { responseType: 'json' });
+  }
 }

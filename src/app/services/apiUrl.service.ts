@@ -211,7 +211,15 @@ export class ApiUrl {
     post_education     = ()=>`/Education`;
     put_education      = ()=>`/Education`;
     delete_education   = (transId:any)=>`/Education/${transId}`;
+    post_report_education = ()=>`/Education/Reports`;
 
+    //Area of Exceptionality
+    get_list_education_area_ex = ()=>`/EducationAreaEx/List`;
+    get_education_area_ex      = (transId:any,)=>`/EducationAreaEx/${transId}`;
+    post_education_area_ex     = ()=>`/EducationAreaEx`;
+    put_education_area_ex      = ()=>`/EducationAreaEx`;
+    delete_education_area_ex   = (transId:any)=>`/EducationAreaEx/${transId}`;
+    
     // Education Schools
     get_list_education_schools    = (menuId :any, setYear  :any,munCityId :any)=>`/EducationSchools/${menuId}/${setYear}/${munCityId}`;
     get_education_schools         = (transId:any,)=>`/EducationSchools/${transId}`;

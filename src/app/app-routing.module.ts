@@ -116,7 +116,7 @@ import { TertiaryGradComponent } from './pages/main/SocialProfile/Education/Publ
 import { TechvocProgramsComponent } from './pages/main/SocialProfile/Education/Public/techvoc-programs/techvoc-programs.component';
 import { TechvocEnrolGradComponent } from './pages/main/SocialProfile/Education/Public/techvoc-enrol-grad/techvoc-enrol-grad.component';
 import { IndexCrimeComponent } from './pages/main/SocialProfile/PublicOrder/index-crime/index-crime.component';
-
+import { SummaryReportComponent } from './pages/main/Tools/summary-report/summary-report.component';
 const socioEconomic_TradeIndustry:string = 'socio-economic/trade-and-industry/';
 const socioEconomic_Tourism:string = 'socio-economic/Tourism/';
 const socioEconomic_Agriculture:string = 'socio-economic/Agriculture/';
@@ -160,6 +160,7 @@ const routes: Routes = [
       {path: 'gov_geoProfile',component:GeoProfileComponent},
       {path:'admin/add_user',component:AddUserComponent},
       {path: Tools+ 'news',component:NewsComponent},
+      {path: Tools+ 'summary-reports',component:SummaryReportComponent},
       {path: socioEconomic_TradeIndustry+ 'major-economic-activities',component:MajorEconomicActivitiesComponent},
       {path: socioEconomic_TradeIndustry+ 'manufacturing-establishments',component:ManufacturingEstablishmentsComponent},
       {path: socioEconomic_TradeIndustry+ 'comercial-establishments',component:CommercialEstablishmentsComponent},

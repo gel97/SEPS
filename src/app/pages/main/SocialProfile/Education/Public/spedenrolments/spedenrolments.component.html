@@ -18,6 +18,8 @@
                   Schools
                 </button>
               </app-admin>
+              &nbsp;
+              <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
             </div>
             <br>
             <label>List of SPED Enrollments</label>
@@ -51,7 +53,7 @@
                     <td>
                       <!-- {{data.exception}} -->
                       <div *ngFor="let item of AreaofExceptionality">
-                        <span *ngIf="item.value === data.exception">{{item.name}} </span>
+                        <span *ngIf="item.recNo === data.exception">{{item.areaName}} </span>
                       </div>
                     </td>
                     <td>{{data.total1_m}}</td>
@@ -134,7 +136,7 @@
               <select class="form-select" aria-label="Default select example" name="AreaofExceptionality"
                 [(ngModel)]="school.exception" [ngClass]="toValidate.exception?'is-invalid':''"
                 (ngModelChange)="toValidate.exception=false">
-                <option *ngFor="let list of AreaofExceptionality" value={{list.value}}>{{list.name}}</option>
+                <option *ngFor="let list of AreaofExceptionality" value={{list.recNo}}>{{list.areaName}}</option>
               </select>
             </div>
             <table class="table"> <br><br>

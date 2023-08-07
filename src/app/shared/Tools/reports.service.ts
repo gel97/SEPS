@@ -86,4 +86,7 @@ export class ReportsService {
   GetEducationOsyReport(data:any) {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_education_osy(), data, { responseType: 'json' });
   }
+  GetEducationReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_education(), data, { responseType: 'json' });
+  }
 }
