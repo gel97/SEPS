@@ -4,7 +4,9 @@ import { HealthSanitaryService } from 'src/app/shared/SocialProfile/Health/healt
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
-
+import { PdfComponent } from 'src/app/components/pdf/pdf.component';
+import { PdfService } from 'src/app/services/pdf.service';
+import { ReportsService } from 'src/app/shared/Tools/reports.service';
 @Component({
   selector: 'app-sanitary-facilities',
   templateUrl: './sanitary-facilities.component.html',
@@ -12,6 +14,8 @@ import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 })
 export class SanitaryFacilitiesComponent implements OnInit {
   constructor(
+    private pdfService: PdfService,
+    private reportService: ReportsService,
     private Auth: AuthService,
     private Service: HealthSanitaryService,
     private modifyService: ModifyCityMunService
@@ -30,7 +34,7 @@ export class SanitaryFacilitiesComponent implements OnInit {
 
   munCityName: string = this.Auth.munCityName;
   dataList: any = [];
-  setYear = this.Auth.activeSetYear;
+  setYear = this.Auth.setYear;
   munCityId = this.Auth.munCityId;
   barangayList: any = [];
   addData: any = {};
@@ -47,9 +51,346 @@ export class SanitaryFacilitiesComponent implements OnInit {
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
 
+  @ViewChild(PdfComponent)
+  private pdfComponent!: PdfComponent;
+
   ngOnInit(): void {
     this.GetHealthSanitary();
     this.GetBarangayList();
+  }
+
+  formatNumber(value: number): string {
+    return value.toLocaleString(undefined, {
+      maximumFractionDigits: 0,
+    });
+  }
+
+  GeneratePDF() {
+    let data: any = [];
+    let grandTotal: any = {};
+
+    let reports: any = [];
+    let columnLenght: number = 0;
+
+    const tableData: any = [];
+
+    this.reportService
+      .GetHealthSanitaryReport(this.pdfComponent.data)
+      .subscribe({
+        next: (response: any = {}) => {
+          reports = response.data;
+          grandTotal = response.grandTotal;
+
+          console.log('result: ', response);
+
+          data.push({
+            margin: [0, 40, 0, 0],
+            columns: [
+              {
+                text: `Households with Access to Safe Water Supply and Sanitary Facilities by Municipality/City`,
+                fontSize: 11,
+                bold: true,
+              },
+              {
+                text: `Year: ${response.year}`,
+                fontSize: 14,
+                bold: true,
+                alignment: 'right',
+              },
+            ],
+          });
+
+          tableData.push([
+            {
+              text: '#',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Municipality/ City',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Total No. of Households',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'With Access to Safe Water Supply',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Percentage',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'With Access to Sanitary Facilities',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Percentage',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+          ]);
+
+          reports.forEach((a: any) => {
+            if (a.district === 1) {
+              let columnWidth: number = 0;
+              a.data.forEach((b: any, index: any) => {
+                let dist: any = [];
+                for (let key in b) {
+                  let textValue: any;
+                  if (index === 0) {
+                    columnWidth++;
+                  }
+                  if (
+                    key === 'safeWaterPercent' ||
+                    key === 'toiletsNoPercent'
+                  ) {
+                    textValue = b[key].toFixed(2);
+                  } else if (
+                    key === 'householdNo' ||
+                    key === 'safeWaterNo' ||
+                    key === 'toiletsNo'
+                  ) {
+                    textValue = this.formatNumber(b[key]);
+                  } else {
+                    textValue = b[key];
+                  }
+                  dist.push({
+                    text:
+                      key === 'munCityId' ? (b[key] = index + 1) : textValue,
+                    fillColor: '#ffffff',
+                    alignment: key === 'munCityName' ? 'left' : 'center',
+                  });
+                }
+
+                if (index === 0) {
+                  tableData.push([
+                    {
+                      text: `1st Congressional District `,
+                      colSpan: columnWidth,
+                      alignment: 'left',
+                      fillColor: '#526D82',
+                      marginLeft: 5,
+                    },
+                  ]);
+
+                  columnLenght = columnWidth - 1;
+                }
+
+                tableData.push(dist);
+              });
+
+              let sub: any = []; // SUBTOTAL D1
+              for (let key in a.subTotal) {
+                if (key === 'subTotal') {
+                  sub.push(
+                    {
+                      text: a.subTotal[key],
+                      fillColor: '#9DB2BF',
+                      alignment: 'left',
+                      colSpan: 2,
+                      marginLeft: 5,
+                    },
+                    {}
+                  );
+                } else {
+                  let textValue: any;
+                  if (
+                    key === 'safeWaterPercent' ||
+                    key === 'toiletsNoPercent'
+                  ) {
+                    textValue = a.subTotal[key].toFixed(2);
+                  } else if (
+                    key === 'householdNo' ||
+                    key === 'safeWaterNo' ||
+                    key === 'toiletsNo'
+                  ) {
+                    textValue = this.formatNumber(a.subTotal[key]);
+                  } else {
+                    textValue = a.subTotal[key];
+                  }
+                  sub.push({
+                    text: textValue,
+                    fillColor: '#9DB2BF',
+                    alignment: 'center',
+                  });
+                }
+              }
+              tableData.push(sub);
+            } else {
+              let columnWidth: number = 0;
+              a.data.forEach((b: any, index: any) => {
+                let dist: any = [];
+                for (let key in b) {
+                  let textValue: any;
+                  if (index === 0) {
+                    columnWidth++;
+                  }
+                  if (
+                    key === 'safeWaterPercent' ||
+                    key === 'toiletsNoPercent'
+                  ) {
+                    textValue = b[key].toFixed(2);
+                  } else if (
+                    key === 'householdNo' ||
+                    key === 'safeWaterNo' ||
+                    key === 'toiletsNo'
+                  ) {
+                    textValue = this.formatNumber(b[key]);
+                  } else {
+                    textValue = b[key];
+                  }
+                  dist.push({
+                    text:
+                      key === 'munCityId' ? (b[key] = index + 1) : textValue,
+                    fillColor: '#ffffff',
+                    alignment: key === 'munCityName' ? 'left' : 'center',
+                  });
+                }
+
+                if (index === 0) {
+                  tableData.push([
+                    {
+                      text: `2nd Congressional District `,
+                      colSpan: columnWidth,
+                      alignment: 'left',
+                      fillColor: '#526D82',
+                      marginLeft: 5,
+                    },
+                  ]);
+                }
+
+                tableData.push(dist);
+              });
+
+              let sub: any = []; // SUBTOTAL D2
+              for (let key in a.subTotal) {
+                if (key === 'subTotal') {
+                  sub.push(
+                    {
+                      text: a.subTotal[key],
+                      fillColor: '#9DB2BF',
+                      alignment: 'left',
+                      colSpan: 2,
+                      marginLeft: 5,
+                    },
+                    {}
+                  );
+                } else {
+                  let textValue: any;
+                  if (
+                    key === 'safeWaterPercent' ||
+                    key === 'toiletsNoPercent'
+                  ) {
+                    textValue = a.subTotal[key].toFixed(2);
+                  } else if (
+                    key === 'householdNo' ||
+                    key === 'safeWaterNo' ||
+                    key === 'toiletsNo'
+                  ) {
+                    textValue = this.formatNumber(a.subTotal[key]);
+                  } else {
+                    textValue = a.subTotal[key];
+                  }
+                  sub.push({
+                    text: textValue,
+                    fillColor: '#9DB2BF',
+                    alignment: 'center',
+                  });
+                }
+              }
+              tableData.push(sub);
+            }
+          });
+
+          let grand: any = []; // GRAND TOTAL
+          for (let key in grandTotal) {
+            if (key == 'grandTotal') {
+              grand.push(
+                {
+                  text: grandTotal[key],
+                  fillColor: '#F1C93B',
+                  alignment: 'left',
+                  colSpan: 2,
+                  marginLeft: 5,
+                },
+                {}
+              );
+            } else {
+              let textValue: any;
+              if (
+                key === 'safeWaterPercent' ||
+                key === 'toiletsNoPercent'
+              ) {
+                textValue = grandTotal[key].toFixed(2);
+              } else if (
+                key === 'householdNo' ||
+                key === 'safeWaterNo' ||
+                key === 'toiletsNo'
+              ) {
+                textValue = this.formatNumber(grandTotal[key]);
+              } else {
+                textValue = grandTotal[key];
+              }
+              grand.push({
+                text: textValue,
+                fillColor: '#F1C93B',
+                alignment: 'center',
+              });
+            }
+          }
+
+          tableData.push(grand);
+
+          let widths: any = []; // COLUMN WIDTH
+          for (let index = 0; index < columnLenght; index++) {
+            if (index === 0) {
+              widths.push(20);
+            }
+            widths.push('*');
+          }
+
+          const table = {
+            margin: [0, 10, 0, 0],
+            table: {
+              widths: widths,
+              body: tableData,
+            },
+            layout: 'lightHorizontalLines',
+          };
+
+          data.push(table);
+        },
+        error: (error: any) => {
+          console.log(error);
+        },
+        complete: () => {
+          let isPortrait = false;
+          this.pdfService.GeneratePdf(data, isPortrait);
+          console.log(data);
+        },
+      });
   }
 
   GetHealthSanitary() {

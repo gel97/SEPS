@@ -1,312 +1,358 @@
 <div class="">
-    <div class="card o-hidden border-2 shadow-sm my-5">
-        <div class="card-body p-0">
-            <!-- Nested Row within Card Body -->
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="p-5">
-                        <div class="text-center">
-                            <h1 class="h4 text-gray-900 mb-4">Public Health Service Workers</h1>
-                            <label><strong> Health - {{modifyCityMun(munCityName)}}</strong></label><br>
-                        </div>
-                        <div *ngIf="!hasData" class="form-inline float-right ">
-                            <app-admin>
-                              <button (click)="isAdd = true;" class="btn btn-primary" data-bs-toggle="modal"
-                              data-bs-target="#mEducation">
-                              <i class="fa fa-plus"></i>
-                            Service Workers
-                          </button>
-                            </app-admin>
-                        </div>
-                        
-                        <br>&nbsp;&nbsp;
-                        <div class="table-responsive">
-                            <table class="table table-light table-striped">
-                                <thead>
-                                    <tr>
-                                        <th colspan="25" style="text-align: center;"><h1 class="h4 text-gray-900 mb-4">Number of Human Resources for Health</h1></th>
-                                    </tr>
-                                </thead>
-                                <tbody >
-                                    <tr class="table-dark" >
-                                        <td scope="col" style="text-align: center;">Category</td>
-                                        <td scope="col" style="text-align: center;">Number of HRH</td>
-                                        <td scope="col" style="text-align: center;">Ratio to population</td>
-                                        <td scope="col" style="text-align: center;">Average No. of HRH to meet the Standard (DOH Target)</td>
-                                        <td scope="col" style="text-align: center;">National Standard Ratio (DOH)</td>
-                                        
-                                    </tr>
-                                    <tr>
-                                        <td scope="col">Physician:</td>
-                                        <td style="text-align: center;">{{data.physicianNo}}</td>
-                                        <td style="text-align: center;">{{data.physicianRatio}}</td>
-                                        <td style="text-align: center;">{{data.physicianAvg}}</td>
-                                        <td style="text-align: center;">{{data.physicianNsRatio}}</td>
-                                       
-                                          
-                                        
-                                    </tr>
-                                    <tr>
-                                        <td scope="col">Nurses:</td>
-                                        <td style="text-align: center;">{{data.nursesNo}}</td>
-                                        <td style="text-align: center;">{{data.nursesRatio}}</td>
-                                        <td style="text-align: center;">{{data.nursesAvg}}</td>
-                                        <td style="text-align: center;">{{data.nursesNsRatio}}</td>
-                                       
-                                    </tr>
-                                    <tr>
-                                        <td scope="col">Midwives:</td>
-                                        <td style="text-align: center;">{{data.midwivesNo}}</td>
-                                        <td style="text-align: center;">{{data.midwivesRatio}}</td>
-                                        <td style="text-align: center;">{{data.midwivesAvg}}</td>
-                                        <td style="text-align: center;">{{data.midwivesNsRatio}}</td>
-                                       
-                                    </tr>
-                                    <tr>
-                                        <td scope="col">Dentists:</td>
-                                        <td style="text-align: center;">{{data.dentistNo}}</td>
-                                        <td style="text-align: center;">{{data.dentistRatio}}</td>
-                                        <td style="text-align: center;">{{data.dentistAvg}}</td>
-                                        <td style="text-align: center;">{{data.dentistNsRatio}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td scope="col">Medical Technoligists:</td>
-                                        <td style="text-align: center;">{{data.medTechNo}}</td>
-                                        <td style="text-align: center;">{{data.medTechRatio}}</td>
-                                        <td style="text-align: center;">{{data.medTechAvg}}</td>
-                                        <td style="text-align: center;">{{data.medTechNsRatio}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td scope="col">Pharmacists:</td>
-                                        <td style="text-align: center;">{{data.pharmaNo}}</td>
-                                        <td style="text-align: center;">{{data.pharmaRatio}}</td>
-                                        <td style="text-align: center;">{{data.pharmaAvg}}</td>
-                                        <td style="text-align: center;">{{data.pharmaNsRatio}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td scope="col">Nutritionists and Dieticians:</td>
-                                        <td style="text-align: center;">{{data.nutriNo}}</td>
-                                        <td style="text-align: center;">{{data.nutriRatio}}</td>
-                                        <td style="text-align: center;">{{data.nutriAvg}}</td>
-                                        <td style="text-align: center;">{{data.nutriNsRatio}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td scope="col">Sanitation Inspectors:</td>
-                                        <td style="text-align: center;">{{data.sanInsNo}}</td>
-                                        <td style="text-align: center;">{{data.sanInsRatio}}</td>
-                                        <td style="text-align: center;">{{data.sanInsAvg}}</td>
-                                        <td style="text-align: center;">{{data.sanInsNsRatio}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td scope="col">Population Program Inspectors:</td>
-                                        <td style="text-align: center;">{{data.popProgInsNo}}</td>
-                                        <td style="text-align: center;">{{data.popProgInsRatio}}</td>
-                                        <td style="text-align: center;">{{data.popProgInsAvg}}</td>
-                                        <td style="text-align: center;">{{data.popProgInsNsRatio}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td scope="col">Health Education Promotion Officers:</td>
-                                        <td style="text-align: center;">{{data.healthOffNo}}</td>
-                                        <td style="text-align: center;">{{data.healthOffRatio}}</td>
-                                        <td style="text-align: center;">{{data.healthOffAvg}}</td>
-                                        <td style="text-align: center;">{{data.healthOffNsRatio}}</td>
-                                    </tr>
-                                    
-                                </tbody>
-                            </table>
-
-                        </div>
-                        <div *ngIf="hasData" class="form-inline float-right ">
-                            <div class="d-inline-flex">
-                                <app-admin>
-                                    <button (click)="isAdd = false" class="btn btn-info btn-circle" data-toggle="modal"
-                                        data-target="#mEducation"><i class="fa fa-pen"></i>
-                                    </button>
-                                    &nbsp;
-                                </app-admin>
-                                <app-admin>
-                                    <button type="button" title="Delete" class="btn btn-warning btn-circle"
-                                        (click)="DeleteHealthWorkers(data.transId)"><i class="fa fa-trash"></i>
-                                    </button>
-                                </app-admin>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  <div class="card o-hidden border-2 shadow-sm my-5">
+    <div class="card-body p-0">
+      <!-- Nested Row within Card Body -->
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="p-5">
+            <div class="text-center">
+              <h1 class="h4 text-gray-900 mb-4">Public Health Service Workers</h1>
+              <label><strong> Health - {{modifyCityMun(munCityName)}}</strong></label><br>
+            </div>
+            <div class="form-inline float-right ">
+              <app-admin>
+                <button *ngIf="!hasData" (click)="isAdd = true;" class="btn btn-primary" data-bs-toggle="modal"
+                  data-bs-target="#mEducation">
+                  <i class="fa fa-plus"></i>
+                  Service Workers
+                </button>
+              </app-admin>
+              &nbsp;
+              <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
             </div>
 
+            <br>&nbsp;&nbsp;
+            <div class="table-responsive">
+              <table class="table table-light table-striped">
+                <thead>
+                  <tr>
+                    <th colspan="25" style="text-align: center;">
+                      <h1 class="h4 text-gray-900 mb-4">Number of Human Resources for Health</h1>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="table-dark">
+                    <td scope="col" style="text-align: center;">Category</td>
+                    <td scope="col" style="text-align: center;">Number of HRH</td>
+                    <td scope="col" style="text-align: center;">Ratio to population</td>
+                    <td scope="col" style="text-align: center;">Average No. of HRH to meet the Standard (DOH Target)
+                    </td>
+                    <td scope="col" style="text-align: center;">National Standard Ratio (DOH)</td>
 
-<!-- Modal -->
-<div class="modal fade" id="mEducation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-scrollable">
-      <div class="modal-content">
-          <div class="modal-header">
+                  </tr>
+                  <tr>
+                    <td scope="col">Physician:</td>
+                    <td style="text-align: center;">{{data.physicianNo}}</td>
+                    <td style="text-align: center;">{{data.physicianRatio}}</td>
+                    <td style="text-align: center;">{{data.physicianAvg}}</td>
+                    <td style="text-align: center;">{{data.physicianNsRatio}}</td>
+
+
+
+                  </tr>
+                  <tr>
+                    <td scope="col">Nurses:</td>
+                    <td style="text-align: center;">{{data.nursesNo}}</td>
+                    <td style="text-align: center;">{{data.nursesRatio}}</td>
+                    <td style="text-align: center;">{{data.nursesAvg}}</td>
+                    <td style="text-align: center;">{{data.nursesNsRatio}}</td>
+
+                  </tr>
+                  <tr>
+                    <td scope="col">Midwives:</td>
+                    <td style="text-align: center;">{{data.midwivesNo}}</td>
+                    <td style="text-align: center;">{{data.midwivesRatio}}</td>
+                    <td style="text-align: center;">{{data.midwivesAvg}}</td>
+                    <td style="text-align: center;">{{data.midwivesNsRatio}}</td>
+
+                  </tr>
+                  <tr>
+                    <td scope="col">Dentists:</td>
+                    <td style="text-align: center;">{{data.dentistNo}}</td>
+                    <td style="text-align: center;">{{data.dentistRatio}}</td>
+                    <td style="text-align: center;">{{data.dentistAvg}}</td>
+                    <td style="text-align: center;">{{data.dentistNsRatio}}</td>
+                  </tr>
+                  <tr>
+                    <td scope="col">Medical Technoligists:</td>
+                    <td style="text-align: center;">{{data.medTechNo}}</td>
+                    <td style="text-align: center;">{{data.medTechRatio}}</td>
+                    <td style="text-align: center;">{{data.medTechAvg}}</td>
+                    <td style="text-align: center;">{{data.medTechNsRatio}}</td>
+                  </tr>
+                  <tr>
+                    <td scope="col">Pharmacists:</td>
+                    <td style="text-align: center;">{{data.pharmaNo}}</td>
+                    <td style="text-align: center;">{{data.pharmaRatio}}</td>
+                    <td style="text-align: center;">{{data.pharmaAvg}}</td>
+                    <td style="text-align: center;">{{data.pharmaNsRatio}}</td>
+                  </tr>
+                  <tr>
+                    <td scope="col">Nutritionists and Dieticians:</td>
+                    <td style="text-align: center;">{{data.nutriNo}}</td>
+                    <td style="text-align: center;">{{data.nutriRatio}}</td>
+                    <td style="text-align: center;">{{data.nutriAvg}}</td>
+                    <td style="text-align: center;">{{data.nutriNsRatio}}</td>
+                  </tr>
+                  <tr>
+                    <td scope="col">Sanitation Inspectors:</td>
+                    <td style="text-align: center;">{{data.sanInsNo}}</td>
+                    <td style="text-align: center;">{{data.sanInsRatio}}</td>
+                    <td style="text-align: center;">{{data.sanInsAvg}}</td>
+                    <td style="text-align: center;">{{data.sanInsNsRatio}}</td>
+                  </tr>
+                  <tr>
+                    <td scope="col">Population Program Inspectors:</td>
+                    <td style="text-align: center;">{{data.popProgInsNo}}</td>
+                    <td style="text-align: center;">{{data.popProgInsRatio}}</td>
+                    <td style="text-align: center;">{{data.popProgInsAvg}}</td>
+                    <td style="text-align: center;">{{data.popProgInsNsRatio}}</td>
+                  </tr>
+                  <tr>
+                    <td scope="col">Health Education Promotion Officers:</td>
+                    <td style="text-align: center;">{{data.healthOffNo}}</td>
+                    <td style="text-align: center;">{{data.healthOffRatio}}</td>
+                    <td style="text-align: center;">{{data.healthOffAvg}}</td>
+                    <td style="text-align: center;">{{data.healthOffNsRatio}}</td>
+                  </tr>
+
+                </tbody>
+              </table>
+
+            </div>
+            <div *ngIf="hasData" class="form-inline float-right ">
+              <div class="d-inline-flex">
+                <app-admin>
+                  <button (click)="isAdd = false" class="btn btn-info btn-circle" data-bs-toggle="modal"
+                    data-bs-target="#mEducation"><i class="fa fa-pen"></i>
+                  </button>
+                  &nbsp;
+                </app-admin>
+                <app-admin>
+                  <button type="button" title="Delete" class="btn btn-warning btn-circle"
+                    (click)="DeleteHealthWorkers(data.transId)"><i class="fa fa-trash"></i>
+                  </button>
+                </app-admin>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Modal -->
+      <div class="modal fade" id="mEducation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
               <h5 class="modal-title text-dark" id="exampleModalLabel">Public Health Service Workers</h5>
               <br>
               <button type="button" #closebutton class="btn-close" data-bs-dismiss="modal" aria-hidden="true"
-                  aria-label="Close"></button>
+                aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form class="user collapse show" id="collapseExample">
+                <table class="table table-light table-striped">
+                  <tbody>
+                    <tr class="table-dark">
+                      <td scope="col" style="text-align: center;">Category</td>
+                      <td scope="col" style="text-align: center;">Number of HRH</td>
+                      <td scope="col" style="text-align: center;">Ratio to Population</td>
+                      <td scope="col" style="text-align: center;">Average No. of HRH to meet the Standard (DOH Target)
+                      </td>
+                      <td scope="col" style="text-align: center;">National Standard Ratio (DOH)</td>
+
+                    </tr>
+                    <tr>
+
+                      <td scope="col">Physician:</td>
+                      <td style="text-align: center;"><input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.physicianNo"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                      <td style="text-align: center;"><input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.physicianRatio"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                      <td style="text-align: center;"><input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.physicianAvg"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                      <td style="text-align: center;"><input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.physicianNsRatio"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+
+
+
+                    </tr>
+                    <tr>
+                      <td scope="col">Nurses:</td>
+                      <td style="text-align: center;"><input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.nursesNo"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                      <td style="text-align: center;"><input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.nursesRatio"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                      <td style="text-align: center;"> <input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.nursesAvg"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                      <td style="text-align: center;"> <input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.nursesNsRatio"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+
+                    </tr>
+                    <tr>
+                      <td scope="col">Midwives:</td>
+                      <td style="text-align: center;"> <input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.midwivesNo"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                      <td style="text-align: center;"> <input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.midwivesRatio"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                      <td style="text-align: center;"> <input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.midwivesAvg"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                      <td style="text-align: center;"><input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.midwivesNsRatio"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+
+                    </tr>
+                    <tr>
+                      <td scope="col">Dentists:</td>
+                      <td style="text-align: center;"> <input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.dentistNo"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                      <td style="text-align: center;"><input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.dentistRatio"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                      <td style="text-align: center;"> <input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.dentistAvg"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                      <td style="text-align: center;"> <input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.dentistNsRatio"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                    </tr>
+                    <tr>
+                      <td scope="col">Medical Technoligists:</td>
+                      <td style="text-align: center;"> <input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.medTechNo"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                      <td style="text-align: center;"> <input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.medTechRatio"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                      <td style="text-align: center;"><input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.medTechAvg"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                      <td style="text-align: center;"> <input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.medTechNsRatio"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                    </tr>
+                    <tr>
+                      <td scope="col">Pharmacists:</td>
+                      <td style="text-align: center;"> <input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.pharmaNo"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                      <td style="text-align: center;"><input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.pharmaRatio"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                      <td style="text-align: center;"><input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.pharmaAvg"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                      <td style="text-align: center;"><input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.pharmaNsRatio"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                    </tr>
+                    <tr>
+                      <td scope="col">Nutritionists and Dieticians:</td>
+                      <td style="text-align: center;"> <input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.nutriNo"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                      <td style="text-align: center;"> <input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.nutriRatio"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                      <td style="text-align: center;"><input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.nutriAvg"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                      <td style="text-align: center;"> <input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.nutriNsRatio"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                    </tr>
+                    <tr>
+                      <td scope="col">Sanitation Inspectors:</td>
+                      <td style="text-align: center;"> <input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.sanInsNo"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                      <td style="text-align: center;"> <input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.sanInsRatio"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                      <td style="text-align: center;"> <input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.sanInsAvg"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                      <td style="text-align: center;"><input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.sanInsNsRatio"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                    </tr>
+                    <tr>
+                      <td scope="col">Population Program Inspectors:</td>
+                      <td style="text-align: center;"> <input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.popProgInsNo"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                      <td style="text-align: center;"> <input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.popProgInsRatio"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                      <td style="text-align: center;"> <input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.popProgInsAvg"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                      <td style="text-align: center;"> <input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.popProgInsNsRatio"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                    </tr>
+                    <tr>
+                      <td scope="col">Health Education Promotion Officers:</td>
+                      <td style="text-align: center;"><input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.healthOffNo"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                      <td style="text-align: center;"><input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.healthOffRatio"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                      <td style="text-align: center;"> <input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.healthOffAvg"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                      <td style="text-align: center;"> <input style="text-align: center;" type="number"
+                          class="form-control" id="" placeholder="" [(ngModel)]="data.healthOffNsRatio"
+                          [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
+                    </tr>
+
+                  </tbody>
+                </table>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i
+                  class="fa fa-times"></i>Close</button>
+              <button type="button" class="btn btn-primary" (click)="isAdd? AddHealthWorkers(): EditHealthWorkers()"><i
+                  class="fa fa-check"></i>Save Changes</button>
+            </div>
           </div>
-          <div class="modal-body">
-            <form class="user collapse show" id="collapseExample">
-                 <table class="table table-light table-striped">
-                            <tbody >
-                                <tr class="table-dark" >
-                                    <td scope="col" style="text-align: center;">Category</td>
-                                    <td scope="col" style="text-align: center;">Number of HRH</td>
-                                    <td scope="col" style="text-align: center;">Ratio to Population</td>
-                                    <td scope="col" style="text-align: center;">Average No. of HRH to meet the Standard (DOH Target)</td>
-                                    <td scope="col" style="text-align: center;">National Standard Ratio (DOH)</td>
-                                    
-                                </tr>
-                                <tr>
-                                  
-                                    <td scope="col">Physician:</td>
-                                    <td style="text-align: center;"><input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.physicianNo"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                    <td style="text-align: center;"><input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.physicianRatio"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                    <td style="text-align: center;"><input style="text-align: center;"type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.physicianAvg"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                    <td style="text-align: center;"><input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.physicianNsRatio"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                   
-                                      
-                                    
-                                </tr>
-                                <tr>
-                                    <td scope="col">Nurses:</td>
-                                    <td style="text-align: center;"><input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.nursesNo"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                    <td style="text-align: center;"><input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.nursesRatio"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                    <td style="text-align: center;">  <input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.nursesAvg"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                    <td style="text-align: center;"> <input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.nursesNsRatio"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                   
-                                </tr>
-                                <tr>
-                                    <td scope="col">Midwives:</td>
-                                    <td style="text-align: center;"> <input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.midwivesNo"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                    <td style="text-align: center;"> <input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.midwivesRatio"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                    <td style="text-align: center;"> <input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.midwivesAvg"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                    <td style="text-align: center;"><input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.midwivesNsRatio"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                   
-                                </tr>
-                                <tr>
-                                    <td scope="col">Dentists:</td>
-                                    <td style="text-align: center;"> <input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.dentistNo"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                    <td style="text-align: center;"><input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.dentistRatio"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                    <td style="text-align: center;"> <input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.dentistAvg"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                    <td style="text-align: center;"> <input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.dentistNsRatio"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                </tr>
-                                <tr>
-                                    <td scope="col">Medical Technoligists:</td>
-                                    <td style="text-align: center;"> <input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.medTechNo"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                    <td style="text-align: center;"> <input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.medTechRatio"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                    <td style="text-align: center;"><input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.medTechAvg"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                    <td style="text-align: center;"> <input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.medTechNsRatio"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                </tr>
-                                <tr>
-                                    <td scope="col">Pharmacists:</td>
-                                    <td style="text-align: center;"> <input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.pharmaNo"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                    <td style="text-align: center;"><input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.pharmaRatio"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                    <td style="text-align: center;"><input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.pharmaAvg"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                    <td style="text-align: center;"><input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.pharmaNsRatio"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                </tr>
-                                <tr>
-                                    <td scope="col">Nutritionists and Dieticians:</td>
-                                    <td style="text-align: center;"> <input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.nutriNo"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                    <td style="text-align: center;"> <input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.nutriRatio"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                    <td style="text-align: center;"><input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.nutriAvg"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                    <td style="text-align: center;"> <input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.nutriNsRatio"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                </tr>
-                                <tr>
-                                    <td scope="col">Sanitation Inspectors:</td>
-                                    <td style="text-align: center;"> <input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.sanInsNo"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                    <td style="text-align: center;"> <input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.sanInsRatio"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                    <td style="text-align: center;"> <input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.sanInsAvg"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                    <td style="text-align: center;"><input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.sanInsNsRatio"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                </tr>
-                                <tr>
-                                    <td scope="col">Population Program Inspectors:</td>
-                                    <td style="text-align: center;"> <input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.popProgInsNo"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                    <td style="text-align: center;"> <input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.popProgInsRatio"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                    <td style="text-align: center;"> <input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.popProgInsAvg"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                    <td style="text-align: center;"> <input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.popProgInsNsRatio"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                </tr>
-                                <tr>
-                                    <td scope="col">Health Education Promotion Officers:</td>
-                                    <td style="text-align: center;"><input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.healthOffNo"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                    <td style="text-align: center;"><input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.healthOffRatio"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                    <td style="text-align: center;">  <input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.healthOffAvg"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                    <td style="text-align: center;"> <input style="text-align: center;" type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.healthOffNsRatio"
-                                      [ngModelOptions]="{ standalone: true }" pattern="^\d*\.?\d+$"></td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
-            <button type="button" class="btn btn-primary"
-                (click)="isAdd? AddHealthWorkers(): EditHealthWorkers()"><i class="fa fa-check"></i>Save Changes</button>
         </div>
       </div>
-  </div>
-</div>
 
-<!-- modal area -->
-<div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">SEPS GEOLOCATION TAGGING</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+      <!-- modal area -->
+      <div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">SEPS GEOLOCATION TAGGING</h5>
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <app-gmap></app-gmap>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" (click)="EditHealthWorkers()">Save changes</button>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="modal-body">
-        <app-gmap></app-gmap>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="EditHealthWorkers()">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
-

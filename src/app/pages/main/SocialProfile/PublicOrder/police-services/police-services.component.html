@@ -12,6 +12,9 @@
               <label><strong> Public order and Safety - {{modifyCityMun(munCityName)}}</strong></label><br>
             </div>
             <br>
+            <div class="form-inline float-right ">
+              <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
+            </div>
             <div class="row">
               <div class="col-lg-9"><br>
                 <p>List of Municipality</p>

@@ -180,7 +180,7 @@ export class ResortsComponent implements OnInit {
         });
 
         data.push({
-          margin: [0, 40, 0, 0],
+          margin: [0, 20, 0, 0],
           columns: [
             {
               text: `List of Resorts/Recreation Center by Municipality/City`,
@@ -264,6 +264,7 @@ export class ResortsComponent implements OnInit {
             colSpan: 5,
             alignment: 'left',
             fillColor: '#526D82',
+            marginLeft: 5,
           },
         ]);
 
@@ -276,6 +277,7 @@ export class ResortsComponent implements OnInit {
               colSpan: 5,
               alignment: 'left',
               fillColor: '#9DB2BF',
+              marginLeft: 5,
             },
           ]);
 
@@ -284,6 +286,7 @@ export class ResortsComponent implements OnInit {
             {
               text: index+1,
               fillColor: '#FFFFFF',
+              marginLeft: 5,
             },
             {
               text: item.name,
@@ -313,6 +316,7 @@ export class ResortsComponent implements OnInit {
             colSpan: 5,
             alignment: 'left',
             fillColor: '#526D82',
+            marginLeft: 5,
           },
         ]);
 
@@ -325,6 +329,7 @@ export class ResortsComponent implements OnInit {
               colSpan: 5,
               alignment: 'left',
               fillColor: '#9DB2BF',
+              marginLeft: 5,
             },
           ]);
 
@@ -333,6 +338,7 @@ export class ResortsComponent implements OnInit {
               {
                 text: index+1,
                 fillColor: '#FFFFFF',
+                marginLeft: 5,
               },
               {
                 text: item.name,
@@ -357,7 +363,7 @@ export class ResortsComponent implements OnInit {
         }
 
         const table = {
-          margin: [0, 40, 0, 0],
+          margin: [0, 20, 0, 0],
           table: {
             widths: [25, '*', '*','*', '*'],
             body: tableData,

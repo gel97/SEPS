@@ -15,9 +15,8 @@
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-4">Communication Towers/ Cell-sites</h1>
               <label><strong>Communications Services - {{modifyCityMun(munCityName)}}</strong></label>
-
-
             </div>
+            <br>
             <div class="form-inline float-right ">
               <app-admin>
                 <button class="btn btn-primary" (click)="Add_cell = true" data-bs-toggle="modal"
@@ -25,12 +24,9 @@
                   <i class="fa fa-plus"></i>
                   Towers/ Cell-sites
                 </button>
-
               </app-admin>
             </div>
             <br>
-            <br>
-
             <div class="row">
               <div class="col-lg-6">
                 <p>List of Communication Towers/ Cell-sites
@@ -44,7 +40,6 @@
               <table class="table table-light table-striped">
                 <thead class="table-dark">
                   <tr>
-
                     <th scope="col"></th>
                     <th scope="col">Telecommunications Company </th>
                     <th scope="col">Tower Name/ Identification</th>
@@ -55,7 +50,6 @@
                     <th scope="col">Barangay</th>
                     <!-- <th scope="col">Geo-Coord. (Long, Lat)</th> -->
                     <th></th>
-
                   </tr>
                 </thead>
                 <tbody>
@@ -71,12 +65,10 @@
                     <!-- <td>{{text.longtitude}},<br> {{text.latitude}}</td> -->
                     <td>
                       <div class="d-inline-flex">
-
                         <app-admin>
                           <button type="button" title="Edit" (click)="cell = text; Add_cell=false"
                             class="btn btn-info btn-circle" data-toggle="modal" data-target="#ModalAdd"><i
                               class="fa fa-pen"></i> </button>&nbsp;
-
                         </app-admin>
                         &nbsp;
                         <button (click)="SetMarker(text); cell=text" class="btn btn-success btn-circle" role="button"

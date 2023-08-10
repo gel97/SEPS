@@ -11,10 +11,13 @@
                 <h1 class="h4 mb-4">No. of Index Crime</h1>
                 <label><strong> Public order and Safety - {{modifyCityMun(munCityName)}}</strong></label><br>
               </div>
+              <div class="form-inline float-right ">
+                  <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
+              </div>
               <br>
               <div class="row">
                 <div class="col-lg-9"><br>
-                  <p>List of o. of Index Crime</p>
+                  <p>List of Index Crime</p>
                 </div>
               </div>
               <div class="form-group">

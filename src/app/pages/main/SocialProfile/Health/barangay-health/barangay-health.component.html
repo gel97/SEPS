@@ -17,6 +17,8 @@
                   <i class="fa fa-plus"></i> Health Station
                 </button>
               </app-admin>
+              &nbsp;
+              <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
             </div>
             <br />
             <label>List of Barangay Health Stations </label>
@@ -37,9 +39,9 @@
                     </th>
                     <th scope="col" style="text-align: center">Location</th>
                     <th scope="col" style="text-align: center">Barangay</th>
-                    <th scope="col" style="text-align: center">
+                    <!-- <th scope="col" style="text-align: center">
                       Geo-Coord.(Long.Lat)
-                    </th>
+                    </th> -->
                     <th style="text-align: center"></th>
                   </tr>
                 </thead>
@@ -52,8 +54,8 @@
                     <td style="text-align: center">{{ dataItem.contactNo }}</td>
                     <td style="text-align: center">{{ dataItem.location }}</td>
                     <td style="text-align: center">{{ dataItem.brgyName }}</td>
-                    <td style="text-align: center;">{{ dataItem.longtitude }},<br>
-                      {{ dataItem.latitude }}</td>
+                    <!-- <td style="text-align: center;">{{ dataItem.longtitude }},<br>
+                      {{ dataItem.latitude }}</td> -->
                     <td style="text-align: center;">
                       <div class="d-inline-flex">
                         <app-admin>

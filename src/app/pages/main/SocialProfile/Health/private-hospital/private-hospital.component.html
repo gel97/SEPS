@@ -19,12 +19,14 @@
                   <i class="fa fa-plus"></i> Private-Hospital
                 </button>
               </app-admin>
+              &nbsp;
+              <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
             </div>
             <br>
             <div class="table-responsive">
               <label>List of Private Hospitals/Clinics(Medical/Dental,Diagnostic), Veterinary </label>
               <table class="table table-light table-striped">
-                <thead>
+                <thead class="table-dark">
                   <tr>
                     <th scope="col" style="text-align: center;">#</th>
                     <th scope="col" style="text-align: center;">Name of Hospitals</th>

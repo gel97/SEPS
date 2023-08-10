@@ -6,6 +6,10 @@ import { Observable } from 'rxjs';
 import { isEmptyObject } from 'jquery';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 import { SafetyIndexService } from 'src/app/shared/SocialProfile/PublicOrder/safety-index.service';
+import { PdfComponent } from 'src/app/components/pdf/pdf.component';
+import { PdfService } from 'src/app/services/pdf.service';
+import { ReportsService } from 'src/app/shared/Tools/reports.service';
+
 @Component({
   selector: 'app-index-crime',
   templateUrl: './index-crime.component.html',
@@ -14,7 +18,13 @@ import { SafetyIndexService } from 'src/app/shared/SocialProfile/PublicOrder/saf
 export class IndexCrimeComponent implements OnInit {
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void; }; };
+
+  @ViewChild(PdfComponent)
+  private pdfComponent!: PdfComponent;
+
   constructor(
+    private pdfService: PdfService,
+    private reportService: ReportsService,
     private auth: AuthService,
     private service: SafetyIndexService,
     private modifyService: ModifyCityMunService
@@ -54,6 +64,282 @@ export class IndexCrimeComponent implements OnInit {
   Init() {
     this.GetData();
     this.GetListMunicipality();
+  }
+
+  GeneratePDF() {
+    let data: any = [];
+    let grandTotal: any = {};
+
+    let reports: any = [];
+    let columnLenght: number = 0;
+
+    const tableData: any = [];
+
+    this.reportService
+      .GetSafetyIndexReport(this.pdfComponent.data)
+      .subscribe({
+        next: (response: any = {}) => {
+          reports = response.data;
+          grandTotal = response.grandTotal;
+
+          console.log('result: ', response);
+
+          data.push({
+            margin: [0, 40, 0, 0],
+            columns: [
+              {
+                text: `Index Crime by Municipality/City`,
+                fontSize: 14,
+                bold: true,
+              },
+              {
+                text: `Year: ${response.year}`,
+                fontSize: 14,
+                bold: true,
+                alignment: 'right',
+              },
+            ],
+          });
+
+          tableData.push([
+            {
+              text: '#',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Municipality/ City',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Murder',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Homicide',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Physical Injury',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Rape',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Robbery',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Theft',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Total',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            }
+            
+          ]);
+
+          reports.forEach((a: any) => {
+            if (a.district === 1) {
+              let columnWidth: number = 0;
+              a.data.forEach((b: any, index: any) => {
+                let dist: any = [];
+                for (let key in b) {
+                  let textValue: any = b[key];
+                  if (index === 0) {
+                    columnWidth++;
+                  }
+               
+                  dist.push({
+                    text:
+                      key === 'munCityId' ? (b[key] = index + 1) : textValue,
+                    fillColor: '#ffffff',
+                    alignment: key === 'munCityName' ? 'left' : 'center',
+                  });
+                }
+
+                if (index === 0) {
+                  tableData.push([
+                    {
+                      text: `1st Congressional District `,
+                      colSpan: columnWidth,
+                      alignment: 'left',
+                      fillColor: '#526D82',
+                      marginLeft: 5,
+                    },
+                  ]);
+
+                  columnLenght = columnWidth - 1;
+                }
+
+                tableData.push(dist);
+              });
+
+              let sub: any = []; // SUBTOTAL D1
+              for (let key in a.subTotal) {
+                if (key === 'subTotal') {
+                  sub.push(
+                    {
+                      text: a.subTotal[key],
+                      fillColor: '#9DB2BF',
+                      alignment: 'left',
+                      colSpan: 2,
+                      marginLeft: 5,
+                    },
+                    {}
+                  );
+                } else {
+                  let textValue: any = a.subTotal[key];
+                  sub.push({
+                    text: textValue,
+                    fillColor: '#9DB2BF',
+                    alignment: 'center',
+                  });
+                }
+              }
+              tableData.push(sub);
+            } else {
+              let columnWidth: number = 0;
+              a.data.forEach((b: any, index: any) => {
+                let dist: any = [];
+                for (let key in b) {
+                  let textValue: any = b[key];
+                  if (index === 0) {
+                    columnWidth++;
+                  }
+                
+                  dist.push({
+                    text:
+                      key === 'munCityId' ? (b[key] = index + 1) : textValue,
+                    fillColor: '#ffffff',
+                    alignment: key === 'munCityName' ? 'left' : 'center',
+                  });
+                }
+
+                if (index === 0) {
+                  tableData.push([
+                    {
+                      text: `2nd Congressional District `,
+                      colSpan: columnWidth,
+                      alignment: 'left',
+                      fillColor: '#526D82',
+                      marginLeft: 5,
+                    },
+                  ]);
+                }
+
+                tableData.push(dist);
+              });
+
+              let sub: any = []; // SUBTOTAL D2
+              for (let key in a.subTotal) {
+                if (key === 'subTotal') {
+                  sub.push(
+                    {
+                      text: a.subTotal[key],
+                      fillColor: '#9DB2BF',
+                      alignment: 'left',
+                      colSpan: 2,
+                      marginLeft: 5,
+                    },
+                    {}
+                  );
+                } else {
+                  let textValue: any= a.subTotal[key];
+                
+                  sub.push({
+                    text: textValue,
+                    fillColor: '#9DB2BF',
+                    alignment: 'center',
+                  });
+                }
+              }
+              tableData.push(sub);
+            }
+          });
+
+          let grand: any = []; // GRAND TOTAL
+          for (let key in grandTotal) {
+            if (key == 'grandTotal') {
+              grand.push(
+                {
+                  text: grandTotal[key],
+                  fillColor: '#F1C93B',
+                  alignment: 'left',
+                  colSpan: 2,
+                  marginLeft: 5,
+                },
+                {}
+              );
+            } else {
+              let textValue: any = grandTotal[key];         
+              grand.push({
+                text: textValue,
+                fillColor: '#F1C93B',
+                alignment: 'center',
+              });
+            }
+          }
+
+          tableData.push(grand);
+
+          let widths: any = []; // COLUMN WIDTH
+          for (let index = 0; index < columnLenght; index++) {
+            if (index === 0) {
+              widths.push(20);
+            }
+            widths.push('*');
+          }
+
+          const table = {
+            margin: [0, 10, 0, 0],
+            table: {
+              widths: widths,
+              body: tableData,
+            },
+            layout: 'lightHorizontalLines',
+          };
+
+          data.push(table);
+        },
+        error: (error: any) => {
+          console.log(error);
+        },
+        complete: () => {
+          let isPortrait = false;
+          this.pdfService.GeneratePdf(data, isPortrait);
+          console.log(data);
+        },
+      });
   }
 
   GetData() {

@@ -89,4 +89,36 @@ export class ReportsService {
   GetEducationReport(data:any) {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_education(), data, { responseType: 'json' });
   }
+  
+  //Health
+  GetHealthWorkersReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_health_workers(), data, { responseType: 'json' });
+  }
+  GetHealthFacilityReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_health_facility(), data, { responseType: 'json' });
+  }
+  GetHealthSanitaryReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_health_sanitary(), data, { responseType: 'json' });
+  }
+  GetHealthHandiReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_health_handicap(), data, { responseType: 'json' });
+  }
+  GetHealthHospitalReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_health_hospital(), data, { responseType: 'json' });
+  }
+
+  //Safety
+  GetSafetyPoliceReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_safety_police(), data, { responseType: 'json' });
+  }
+  GetSafetyFireReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_safety_fire(), data, { responseType: 'json' });
+  }
+  GetSafetyTanodReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_safety_tanod(), data, { responseType: 'json' });
+  }
+
+  GetSafetyIndexReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_safety_index(), data, { responseType: 'json' });
+  }
 }

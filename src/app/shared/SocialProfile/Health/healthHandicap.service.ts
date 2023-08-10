@@ -37,6 +37,12 @@ export class HealthHandicapService {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay(munCityId), { responseType: 'json' });
  
   }
+
+  ListOfHandiType()
+  {
+    return this.http.get<any[]>(this.Base.url + this.ApiUrl.get_list_health_handicap_type(), { responseType: 'json' });
+ 
+  }
   Import():Observable<any[]> {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_import_health_handicap(), { responseType: 'json' });
   }

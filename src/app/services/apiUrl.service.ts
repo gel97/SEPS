@@ -299,6 +299,7 @@ export class ApiUrl {
     put_health_workers         = ()=>`/HealthWorkers`;
     delete_health_workers      = (transId:any)=>`/HealthWorkers/${transId}`;
     post_import_health_workers = ()=>`/HealthWorkers/Import`;
+    post_report_health_workers  = ()=>`/HealthWorkers/Reports`;
 
     // Health -> Facilities
     get_list_health_facilities  = (menuId :any, setYear  :any,munCityId :any)=>`/HealthFacilities/${menuId}/${setYear}/${munCityId}`;
@@ -306,6 +307,7 @@ export class ApiUrl {
     put_health_facility         = ()=>`/HealthFacilities`;
     delete_health_facility      = (transId:any)=>`/HealthFacilities/${transId}`;
     post_import_health_facility = (menuId:any)=>`/HealthFacilities/Import/${menuId}`;
+    post_report_health_facility  = ()=>`/HealthFacilities/Reports`;
 
     // Health -> Handicap
     get_list_health_handicap    = (setYear  :any,munCityId :any)=>`/HealthHandi/${setYear}/${munCityId}`;
@@ -313,6 +315,13 @@ export class ApiUrl {
     put_health_handicap         = ()=>`/HealthHandi`;
     delete_health_handicap      = (transId:any)=>`/HealthHandi/${transId}`;
     post_import_health_handicap = ()=>`/HealthHandi/Import`;
+    post_report_health_handicap  = ()=>`/HealthHandi/Reports`;
+
+    // Health -> Handicap Type
+    get_list_health_handicap_type    = ()=>`/HealthHandiType/List`;
+    post_health_handicap_type        = ()=>`/HealthHandiType`;
+    put_health_handicap_type         = ()=>`/HealthHandiType`;
+    delete_health_handicap_type      = (recNo:any)=>`/HealthHandiType/${recNo}`;
 
     // Health -> HealthMalnutrition
     get_list_health_malnutrition    = (setYear  :any,munCityId :any)=>`/HealthMalnut/${setYear}/${munCityId}`;
@@ -327,6 +336,7 @@ export class ApiUrl {
     put_health_sanitary         = ()=>`/HealthSanitary`;
     delete_health_sanitary      = (transId:any)=>`/HealthSanitary/${transId}`;
     post_import_health_sanitary = ()=>`/HealthSanitary/Import`;
+    post_report_health_sanitary  = ()=>`/HealthSanitary/Reports`;
 
     // Health -> Hospital -> Provincial
     get_list_health_hospital    = (setYear:any)=>`/HealthHosp/${setYear}`;
@@ -334,6 +344,7 @@ export class ApiUrl {
     put_health_hospital         = ()=>`/HealthHosp`;
     delete_health_hospital      = (transId:any)=>`/HealthHosp/${transId}`;
     post_import_health_hospital = ()=>`/HealthHosp/Import`;
+    post_report_health_hospital  = ()=>`/HealthHosp/Reports`;
 
     // Health -> Profile -> Provincial
     get_list_health_profile    = (setYear:any)=>`/HealthProfile/${setYear}`;

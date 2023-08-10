@@ -4,6 +4,10 @@ import { HealthFacilitiesService } from 'src/app/shared/SocialProfile/Health/hea
 import Swal from 'sweetalert2';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
+import { PdfComponent } from 'src/app/components/pdf/pdf.component';
+import { PdfService } from 'src/app/services/pdf.service';
+import { ReportsService } from 'src/app/shared/Tools/reports.service';
+
 @Component({
   selector: 'app-community-hospital',
   templateUrl: './community-hospital.component.html',
@@ -11,6 +15,8 @@ import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 })
 export class CommunityHospitalComponent implements OnInit {
   constructor(
+    private pdfService: PdfService,
+    private reportService: ReportsService,
     private Auth: AuthService,
     private Service: HealthFacilitiesService,
     private modifyService: ModifyCityMunService
@@ -20,9 +26,11 @@ export class CommunityHospitalComponent implements OnInit {
     return this.modifyService.ModifyText(cityMunName);
   }
 
-
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;
+
+  @ViewChild(PdfComponent)
+  private pdfComponent!: PdfComponent;
 
   isCheck: boolean = false;
 
@@ -34,7 +42,7 @@ export class CommunityHospitalComponent implements OnInit {
   munCityName: string = this.Auth.munCityName;
   menuId = '2';
   dataList: any = [];
-  setYear = this.Auth.activeSetYear;
+  setYear = this.Auth.setYear;
   munCityId = this.Auth.munCityId;
   barangayList: any = [];
   addData: any = {};
@@ -79,6 +87,293 @@ export class CommunityHospitalComponent implements OnInit {
     this.GetBarangayList();
   }
 
+  GeneratePDF() {
+    let data: any = [];
+    let reports: any = [];
+
+    const tableData: any = [];
+    const dist1: any = [];
+    const dist2: any = [];
+    this.pdfComponent.data.menuId = this.menuId;
+
+    this.reportService
+      .GetHealthFacilityReport(this.pdfComponent.data)
+      .subscribe({
+        next: (response: any = {}) => {
+          reports = response;
+          console.log('result: ', response);
+
+          reports.forEach((a: any) => {
+            if (a.district === 1) {
+              dist1.push(a);
+            } else {
+              dist2.push(a);
+            }
+          });
+
+          data.push({
+            margin: [0, 40, 0, 0],
+            columns: [
+              {
+                text: `List of RHUs/ Community Hospitals by Municipality/City`,
+                fontSize: 14,
+                bold: true,
+              },
+              {
+                text: `Year: ${response[0].setYear}`,
+                fontSize: 14,
+                bold: true,
+                alignment: 'right',
+              },
+            ],
+          });
+
+          const dist1Group = dist1.reduce((groups: any, item: any) => {
+            const { munCityName } = item;
+            const groupKey = `${munCityName}`;
+            if (!groups[groupKey]) {
+              groups[groupKey] = [];
+            }
+            groups[groupKey].push(item);
+            return groups;
+          }, {});
+
+          console.log('dist1Group ', dist1Group);
+
+          const dist2Group = dist2.reduce((groups: any, item: any) => {
+            const { munCityName } = item;
+            const groupKey = `${munCityName}`;
+            if (!groups[groupKey]) {
+              groups[groupKey] = [];
+            }
+            groups[groupKey].push(item);
+            return groups;
+          }, {});
+
+          console.log('dist2Group ', dist2);
+
+          tableData.push([
+            {
+              text: '#',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Name',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Bed Capacity',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+             {
+              text: 'Occupancy Rate',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Location',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Barangay',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Existing Facilities/ Remarks',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Contact Person/ Designation',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Contact Details',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+          ]);
+
+          tableData.push([
+            {
+              text: `1st Congressional District `,
+              colSpan: 9,
+              alignment: 'left',
+              fillColor: '#526D82',
+              marginLeft: 5,
+            },
+          ]);
+
+          for (const groupKey1 in dist1Group) {
+            // Iterate district I data
+            const group1 = dist1Group[groupKey1];
+            const [cityName1] = groupKey1.split('-');
+            tableData.push([
+              {
+                text: cityName1,
+                colSpan: 9,
+                alignment: 'left',
+                fillColor: '#9DB2BF',
+                marginLeft: 5,
+              },
+            ]);
+
+            group1.forEach((item: any, index: any) => {
+              tableData.push([
+                {
+                  text: index + 1,
+                  fillColor: '#FFFFFF',
+                  marginLeft: 5,
+                },
+                {
+                  text: item.name,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.capacity,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.rate,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.location,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.brgyName,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.description,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.contactPerson,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.contactNo,
+                  fillColor: '#FFFFFF',
+                },
+              ]);
+            });
+          }
+
+          tableData.push([
+            {
+              text: `2nd Congressional District `,
+              colSpan: 9,
+              alignment: 'left',
+              fillColor: '#526D82',
+              marginLeft: 5,
+            },
+          ]);
+
+          for (const groupKey2 in dist2Group) {
+            // Iterate district II data
+            const group2 = dist2Group[groupKey2];
+            const [cityName2] = groupKey2.split('-');
+            tableData.push([
+              {
+                text: cityName2,
+                colSpan: 9,
+                alignment: 'left',
+                fillColor: '#9DB2BF',
+                marginLeft: 5,
+              },
+            ]);
+
+            group2.forEach((item: any, index: any) => {
+              tableData.push([
+                {
+                  text: index + 1,
+                  fillColor: '#FFFFFF',
+                  marginLeft: 5,
+                },
+                {
+                  text: item.name,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.capacity,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.rate,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.location,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.brgyName,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.description,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.contactPerson,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.contactNo,
+                  fillColor: '#FFFFFF',
+                },
+              ]);
+            });
+          }
+
+          const table = {
+            margin: [0, 20, 0, 0],
+            table: {
+              widths: [25, '*', '*', '*', '*', '*', '*', '*', '*'],
+              body: tableData,
+            },
+            layout: 'lightHorizontalLines',
+          };
+
+          data.push(table);
+        },
+        error: (error: any) => {
+          console.log(error);
+        },
+        complete: () => {
+          let isPortrait = false;
+          this.pdfService.GeneratePdf(data, isPortrait);
+          console.log(data);
+        },
+      });
+  }
+
   GetHealthFacilities() {
     this.Service.GetHealthFacilities(
       this.menuId,
@@ -108,13 +403,17 @@ export class CommunityHospitalComponent implements OnInit {
     // console.log('brgyid', this.addData.brgyId);
     // this.dummy_addData = this.addData;
     // console.log('trap_2', this.dummy_addData);
-    this.toValidate.brgyId = this.addData.brgyId == '' || this.addData.brgyId == null ? true : false;
-    this.toValidate.name =this.addData.name == '' || this.addData.name == undefined ? true : false;
+    this.toValidate.brgyId =
+      this.addData.brgyId == '' || this.addData.brgyId == null ? true : false;
+    this.toValidate.name =
+      this.addData.name == '' || this.addData.name == undefined ? true : false;
 
     if (this.toValidate.brgyId == true || this.toValidate.name == true) {
-      Swal.fire('Missing Data!',
-      'Please fill out the required fields',
-       'warning');
+      Swal.fire(
+        'Missing Data!',
+        'Please fill out the required fields',
+        'warning'
+      );
     } else {
       if (
         JSON.stringify(this.dummy_addData) != JSON.stringify(this.dummyData) &&
@@ -160,46 +459,48 @@ export class CommunityHospitalComponent implements OnInit {
   }
 
   EditHealthFacilities() {
-    this.toValidate.brgyId = this.addData.brgyId == '' || this.addData.brgyId == null ? true : false;
-    this.toValidate.name =this.addData.name == '' || this.addData.name == undefined ? true : false;
+    this.toValidate.brgyId =
+      this.addData.brgyId == '' || this.addData.brgyId == null ? true : false;
+    this.toValidate.name =
+      this.addData.name == '' || this.addData.name == undefined ? true : false;
 
     if (this.toValidate.brgyId == true || this.toValidate.name == true) {
       Swal.fire(
-      'Missing Data!',
-      'Please fill out the required fields',
-       'warning');
+        'Missing Data!',
+        'Please fill out the required fields',
+        'warning'
+      );
     } else {
       this.Service.EditHealthFacilities(this.addData).subscribe((request) => {
         // console.log('edit', request);
         this.GetHealthFacilities();
       });
-    Swal.fire({
-      title: 'Do you want to save the changes?',
-      showDenyButton: true,
-      showCancelButton: true,
-      confirmButtonText: 'Save',
-      denyButtonText: `Don't save`,
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        this.addData.longtitude = this.gmapComponent.markers.lng;
-        this.addData.latitude = this.gmapComponent.markers.lat;
+      Swal.fire({
+        title: 'Do you want to save the changes?',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Save',
+        denyButtonText: `Don't save`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          this.addData.longtitude = this.gmapComponent.markers.lng;
+          this.addData.latitude = this.gmapComponent.markers.lat;
 
-        this.addData.setYear = this.setYear;
-        this.addData.munCityId = this.munCityId;
-        this.addData.menuId = this.menuId;
-        this.addData.tag = 1;
-        // console.log('edit', this.addData);
+          this.addData.setYear = this.setYear;
+          this.addData.munCityId = this.munCityId;
+          this.addData.menuId = this.menuId;
+          this.addData.tag = 1;
+          // console.log('edit', this.addData);
 
-        Swal.fire('Saved!', '', 'success');
-        document.getElementById("exampleModal")?.click();
-      } else if (result.isDenied) {
-        Swal.fire('Changes are not saved', '', 'info');
-      }
-    });
+          Swal.fire('Saved!', '', 'success');
+          document.getElementById('exampleModal')?.click();
+        } else if (result.isDenied) {
+          Swal.fire('Changes are not saved', '', 'info');
+        }
+      });
+    }
   }
-}
-
 
   DeleteHealthFacilities(dataItem: any) {
     Swal.fire({
@@ -213,7 +514,7 @@ export class CommunityHospitalComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.Service.DeleteHealthFacilities(dataItem.transId).subscribe(
-          (request) => { }
+          (request) => {}
         );
         Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
         this.ngOnInit();
