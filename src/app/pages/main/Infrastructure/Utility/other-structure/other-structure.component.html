@@ -24,12 +24,14 @@
                   Other Structure
                 </button>
               </app-admin>
+              &nbsp;
+              <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
             </div>
             <br>
             <label>List of Other Structures</label>
             <div class="table-responsive">
               <table class="table table-light table-striped">
-                <thead>
+                <thead class=table-dark>
                   <tr>
                     <th scope="col">#</th>
                     <th scope="col">Type of Structure</th>

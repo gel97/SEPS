@@ -17,6 +17,8 @@
                   Civic Organizations
                 </button>
               </app-admin>
+              &nbsp;
+              <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
             </div>
             <br>
             <label>List of Civic Organizations</label>
@@ -32,7 +34,7 @@
                     <th scope="col">Contact Details</th>
                     <th scope="col">Total Assets</th>
                     <th scope="col">Location</th>
-                    <th scope="col">Geo-Coord. (Long, Lat)</th>
+                    <!-- <th scope="col">Geo-Coord. (Long, Lat)</th> -->
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
@@ -46,7 +48,7 @@
                     <td style="text-align: center;">{{ data.contactNo }}</td>
                     <td style="text-align: center;">{{ data.totalAssets }}</td>
                     <td style="text-align: center;">{{ data.location }}</td>
-                    <td style="text-align: center;">({{ data.longtitude }}, {{ data.latitude }})</td>
+                    <!-- <td style="text-align: center;">({{ data.longtitude }}, {{ data.latitude }})</td> -->
                     <td style="text-align: center">
                       <div class="d-inline-flex">
                         <app-admin>
@@ -101,9 +103,14 @@
                     (keyup)="toValidate.name=false">
 
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-2">
                   <label for="exampleFormControlInput1">No. of Members :</label>
                   <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="addData.membersNo"
+                    [ngModelOptions]="{ standalone: true }">
+                </div>
+                <div class="col-lg-2">
+                  <label for="category">Total Assets :</label>
+                  <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="addData.totalAssets"
                     [ngModelOptions]="{ standalone: true }">
                 </div>
               </div>
@@ -118,12 +125,12 @@
             </div>
             <div class="form-group">
               <div class="row">
-                <div class="col-lg-4">
+                <div class="col-lg-6">
                   <label for="exampleFormControlInput1">Contact Person :</label>
                   <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.contactPerson"
                     [ngModelOptions]="{ standalone: true }">
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-6">
                   <label for="category">Contact Details :</label>
                   <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.contactNo"
                     [ngModelOptions]="{ standalone: true }">
@@ -132,7 +139,12 @@
             </div>
             <div class="form-group">
               <div class="row">
-                <div class="col-lg-4">
+                <div class="col-lg-6">
+                  <label for="category">Location (#/Bldg/St./Purok):</label>
+                  <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.location"
+                    [ngModelOptions]="{ standalone: true }">
+                </div>
+                <div class="col-lg-6">
                   <label for="category">Barangay :</label>
                   <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.brgyId"
                     [ngModelOptions]="{ standalone: true }" [ngClass]="toValidate.brgyId?'is-invalid':''"

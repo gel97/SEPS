@@ -105,6 +105,8 @@
                 <button class="btn btn-primary font-weight-bold" (click)="isNew=true; TerminalList={}" type="button"
                   data-bs-toggle="modal" data-bs-target="#ModalAdd"><i class="fa fa-plus"></i>Terminals</button>
               </app-admin>
+              &nbsp;
+              <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
             </div>
 
             <br>
@@ -136,11 +138,11 @@
                 <tbody>
                   <tr *ngFor="let i of TranspoTerminalList; let a = index">
                     <td>{{a+1}}</td>
-                    <td>{{i .company}}</td>
-                    <td>{{i .transpotypename}}</td>
-                    <td>{{i .unitsNo}}</td>
-                    <td>{{i .location}}</td>
-                    <td>{{i .routes}}</td>
+                    <td>{{i.company}}</td>
+                    <td>{{i.transpotypename}}</td>
+                    <td>{{i.unitsNo}}</td>
+                    <td>{{i.location}}</td>
+                    <td>{{i.routes}}</td>
                     <!-- <td>{{i .longtitude}}<br>{{i .latitude}}</td> -->
 
                     <td>

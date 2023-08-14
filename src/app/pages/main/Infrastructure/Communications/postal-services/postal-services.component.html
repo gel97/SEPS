@@ -15,14 +15,16 @@
                         <div class="text-center">
                             <h1 class="h4 text-gray-900 mb-4">Postal Service Facilities</h1>
                         </div>
-                        <div *ngIf="!hasData" class="form-inline float-right ">
+                        <div class="form-inline float-right ">
                             <app-admin>
-                                <button (click)="isAdd = true;" class="btn btn-primary mb-2" data-bs-toggle="modal"
+                                <button  *ngIf="!hasData" (click)="isAdd = true;" class="btn btn-primary mb-2" data-bs-toggle="modal"
                                     data-bs-target="#ModalAdd">
                                     <i class="fa fa-plus"></i>
                                     Postal Service Facility
                                 </button>
                             </app-admin>
+                            &nbsp;
+                            <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
                         </div>
                         <br>
                         <div class="table-responsive">
@@ -109,7 +111,11 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-
+                    <div class="col-lg-12"><br>
+                        <label>Postal Stations :</label>
+                        <input type="text" class="form-control" id="" placeholder=""
+                            [(ngModel)]="data.postalStations">
+                    </div>
                     <div class="col-lg-12"><br>
                         <label>Post Office/ Location :</label>
                         <textarea class="form-control" rows="4" [(ngModel)]="data.location"></textarea>
@@ -143,11 +149,7 @@
                         <label>Bicycle</label>
                         <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.bicycle">
                     </div>
-                    <div class="col-lg-3"><br>
-                        <label>Postal Stations :</label>
-                        <input type="number" class="form-control" id="" placeholder=""
-                            [(ngModel)]="data.postalStations">
-                    </div>
+                    
                 </div>
             </div>
             <div class="modal-footer">

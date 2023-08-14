@@ -24,12 +24,14 @@
                   Ice Plant / Cold Storage Facility
                 </button>
               </app-admin>
+              &nbsp;
+              <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
             </div>
             <br>
             <label>List of Ice Plant / Cold Storage Facilities</label>
             <div class="table-responsive">
               <table class="table table-light table-striped">
-                <thead>
+                <thead class=table-dark>
                   <tr>
                     <th scope="col">#</th>
                     <th scope="col">Name</th>

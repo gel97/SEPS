@@ -4,6 +4,9 @@ import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 import { HousingProjectService } from 'src/app/shared/SocialProfile/Housing/housing-project.service';
 import Swal from 'sweetalert2';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
+import { PdfComponent } from 'src/app/components/pdf/pdf.component';
+import { PdfService } from 'src/app/services/pdf.service';
+import { ReportsService } from 'src/app/shared/Tools/reports.service';
 
 @Component({
   selector: 'app-government-housing',
@@ -12,6 +15,8 @@ import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 })
 export class GovernmentHousingComponent implements OnInit {
   constructor(
+    private pdfService: PdfService,
+    private reportService: ReportsService,
     private Auth: AuthService,
     private service: HousingProjectService,
     private modifyService: ModifyCityMunService
@@ -23,12 +28,15 @@ export class GovernmentHousingComponent implements OnInit {
 
   menuId = '2';
   munCityName: string = this.Auth.munCityName;
-  setYear = Number(this.Auth.activeSetYear);
+  setYear = Number(this.Auth.setYear);
   munCityId = this.Auth.munCityId;
   userId = this.Auth.userId;
 
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;
+
+  @ViewChild(PdfComponent)
+  private pdfComponent!: PdfComponent;
 
   isCheck: boolean = false;
 
@@ -79,6 +87,276 @@ export class GovernmentHousingComponent implements OnInit {
   ngOnInit(): void {
     this.GetData();
     this.GetBarangayList();
+  }
+
+  GeneratePDF() {
+    let data: any = [];
+    let reports: any = [];
+
+    const tableData: any = [];
+    const dist1: any = [];
+    const dist2: any = [];
+    this.pdfComponent.data.menuId = this.menuId;
+
+    this.reportService.GetHousingProjReport(this.pdfComponent.data).subscribe({
+      next: (response: any = {}) => {
+        reports = response;
+        console.log('result: ', response);
+
+        reports.forEach((a: any) => {
+          if (a.district === 1) {
+            dist1.push(a);
+          } else {
+            dist2.push(a);
+          }
+        });
+
+        data.push({
+          margin: [0, 20, 0, 0],
+          columns: [
+            {
+              text: `List of Government Housing Projects by Municipality/City`,
+              fontSize: 14,
+              bold: true,
+            },
+            {
+              text: `Year: ${response[0].setYear}`,
+              fontSize: 14,
+              bold: true,
+              alignment: 'right',
+            },
+          ],
+        });
+
+        const dist1Group = dist1.reduce((groups: any, item: any) => {
+          const { munCityName } = item;
+          const groupKey = `${munCityName}`;
+          if (!groups[groupKey]) {
+            groups[groupKey] = [];
+          }
+          groups[groupKey].push(item);
+          return groups;
+        }, {});
+
+        console.log('dist1Group ', dist1Group);
+
+        const dist2Group = dist2.reduce((groups: any, item: any) => {
+          const { munCityName } = item;
+          const groupKey = `${munCityName}`;
+          if (!groups[groupKey]) {
+            groups[groupKey] = [];
+          }
+          groups[groupKey].push(item);
+          return groups;
+        }, {});
+
+        console.log('dist2Group ', dist2);
+
+        tableData.push([
+          {
+            text: '#',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'Name of Housing Project',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'Location',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'Barangay',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'Area (Has)',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'No. of Housing Units',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'No. of Families',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'Remarks',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+        ]);
+
+        tableData.push([
+          {
+            text: `1st Congressional District `,
+            colSpan: 8,
+            alignment: 'left',
+            fillColor: '#526D82',
+            marginLeft: 5,
+          },
+        ]);
+
+        for (const groupKey1 in dist1Group) {
+          // Iterate district I data
+          const group1 = dist1Group[groupKey1];
+          const [cityName1] = groupKey1.split('-');
+          tableData.push([
+            {
+              text: cityName1,
+              colSpan: 8,
+              alignment: 'left',
+              fillColor: '#9DB2BF',
+              marginLeft: 5,
+            },
+          ]);
+
+          group1.forEach((item: any, index: any) => {
+            tableData.push([
+              {
+                text: index + 1,
+                fillColor: '#FFFFFF',
+                marginLeft: 5,
+              },
+              {
+                text: item.name,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.location,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.brgyName,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.area,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.housingNo,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.familiesNo,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.remarks,
+                fillColor: '#FFFFFF',
+              },
+            ]);
+          });
+        }
+
+        tableData.push([
+          {
+            text: `2nd Congressional District `,
+            colSpan: 8,
+            alignment: 'left',
+            fillColor: '#526D82',
+            marginLeft: 5,
+          },
+        ]);
+
+        for (const groupKey2 in dist2Group) {
+          // Iterate district II data
+          const group2 = dist2Group[groupKey2];
+          const [cityName2] = groupKey2.split('-');
+          tableData.push([
+            {
+              text: cityName2,
+              colSpan: 8,
+              alignment: 'left',
+              fillColor: '#9DB2BF',
+              marginLeft: 5,
+            },
+          ]);
+
+          group2.forEach((item: any, index: any) => {
+            tableData.push([
+              {
+                text: index + 1,
+                fillColor: '#FFFFFF',
+                marginLeft: 5,
+              },
+              {
+                text: item.name,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.location,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.brgyName,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.area,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.housingNo,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.familiesNo,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.remarks,
+                fillColor: '#FFFFFF',
+              },
+            ]);
+          });
+        }
+
+        const table = {
+          margin: [0, 20, 0, 0],
+          table: {
+            widths: [25, '*', '*', '*', '*', '*', '*', '*'],
+            body: tableData,
+          },
+          layout: 'lightHorizontalLines',
+        };
+
+        data.push(table);
+      },
+      error: (error: any) => {
+        console.log(error);
+      },
+      complete: () => {
+        let isPortrait = false;
+        this.pdfService.GeneratePdf(data, isPortrait);
+        console.log(data);
+      },
+    });
   }
 
   GetData() {

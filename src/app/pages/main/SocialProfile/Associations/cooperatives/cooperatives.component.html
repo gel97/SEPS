@@ -17,6 +17,8 @@
                     <i class="fa fa-plus"></i> Cooperative
                   </button>
                 </app-admin>
+                &nbsp;
+              <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
               </div>
             </form>
             <br />
@@ -38,7 +40,7 @@
                     <th scope="col" style="text-align: center;">Contact Numbers</th>
                     <th scope="col" style="text-align: center;">Location</th>
                     <th scope="col" style="text-align: center;">Barangay</th>
-                    <th scope="col" style="text-align: center;">Geo-Coord.(Long,Lat)</th>
+                    <!-- <th scope="col" style="text-align: center;">Geo-Coord.(Long,Lat)</th> -->
                     <th width="11.4%"></th>
                   </tr>
                 </thead>
@@ -52,7 +54,7 @@
                     <td style="text-align: center;">{{ dataItem.contactNo }}</td>
                     <td style="text-align: center;">{{ dataItem.location }}</td>
                     <td style="text-align: center;">{{ dataItem.brgyName }}</td>
-                    <td style="text-align: center;">{{ dataItem.longtitude }}, <br>{{ dataItem.latitude }}</td>
+                    <!-- <td style="text-align: center;">{{ dataItem.longtitude }}, <br>{{ dataItem.latitude }}</td> -->
                     <td style="text-align: center; padding: 12px 15px; ">
                       <app-admin>
                         <div class="flex-container">
@@ -145,7 +147,7 @@
             </div>
             <br />
             <div class="">
-              <label for="exampleFormControlInput1">Location :</label>
+              <label for="exampleFormControlInput1">Location (#/Bldg/St./Purok):</label>
               <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.location"
                 [(ngModel)]="dummy_addData.location" />
             </div>

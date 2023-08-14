@@ -13,12 +13,13 @@
               <h1 class="h4 text-gray-900 mb-4">Bridges</h1>
               <label><strong>Transportation - {{modifyCityMun(munCityName)}}</strong></label>
             </div>
-            <div class="row">
-              <div class="col-lg-11"></div>
-              <div class="col-lg-1">
+            <div class="form-inline float-right ">
+              <app-admin>
                 <button class="btn btn-primary font-weight-bold" (click)="isNew=true; BridgeList={}" type="button"
-                  data-bs-toggle="modal" data-bs-target="#ModalAdd"><i class="fa fa-plus"></i>Bridges</button>
-              </div>
+                data-bs-toggle="modal" data-bs-target="#ModalAdd"><i class="fa fa-plus"></i>Bridges</button>
+             </app-admin>
+              &nbsp;
+              <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
             </div>
 
             <br>

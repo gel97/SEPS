@@ -17,6 +17,8 @@
                     <i class="fa fa-plus"></i> Foundations
                   </button>
                 </app-admin>
+                &nbsp;
+              <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
               </div>
             </form>
             <br />
@@ -37,7 +39,7 @@
                     <th scope="col" style="text-align: center;">Contact Details</th>
                     <th scope="col" style="text-align: center;">Location</th>
                     <th scope="col" style="text-align: center;">Barangay</th>
-                    <th scope="col" style="text-align: center;">Geo-Coord.(Long,Lat)</th>
+                    <!-- <th scope="col" style="text-align: center;">Geo-Coord.(Long,Lat)</th> -->
                     <th width="11.4%"></th>
                   </tr>
                 </thead>
@@ -45,12 +47,12 @@
                   <tr *ngFor="let dataItem of dataList; let i = index">
                     <td style="text-align: center;">{{ i + 1 }}</td>
                     <td style="text-align: center;">{{ dataItem.name }}</td>
-                    <td style="text-align: center;">{{ dataItem.membersNo }}</td>
+                    <td style="text-align: center;">{{ dataItem.membersNo }} {{ dataItem.remarks }}</td>
                     <td style="text-align: center;">{{ dataItem.contactPerson }}</td>
                     <td style="text-align: center;">{{ dataItem.contactNo }}</td>
                     <td style="text-align: center;">{{ dataItem.location }}</td>
                     <td style="text-align: center;">{{ dataItem.brgyName }}</td>
-                    <td style="text-align: center;">{{ dataItem.longtitude }}, <br>{{ dataItem.latitude }}</td>
+                    <!-- <td style="text-align: center;">{{ dataItem.longtitude }}, <br>{{ dataItem.latitude }}</td> -->
                     <td style="text-align: center; padding: 12px 15px; ">
                       <div class="flex-container">
                         <app-admin>
@@ -119,8 +121,14 @@
             </div>
             <br />
             <div class="">
-              <label for="exampleFormControlInput1">No. of Members/Remarks:</label>
+              <label for="exampleFormControlInput1">No. of Members:</label>
               <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.membersNo" />
+            </div>
+            <br />
+            <div class="">
+              <label for="exampleFormControlInput1">Remarks :</label>
+              <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" [(ngModel)]="addData.remarks"
+                [ngModelOptions]="{ standalone: true }"></textarea>
             </div>
             <br />
             <div class="">

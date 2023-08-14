@@ -16,14 +16,16 @@
               <h1 class="h4 text-gray-900 mb-4">Irrigation Systems</h1>
               <label><strong>Utility Services/Structures - {{modifyCityMun(munCityName)}}</strong></label>
             </div>
-            <div *ngIf="!hasData" class="form-inline float-right ">
+            <div class="form-inline float-right ">
               <app-admin>
-                <button (click)="isAdd = true;" class="btn btn-primary mb-2" data-bs-toggle="modal"
+                <button *ngIf="!hasData" (click)="isAdd = true;" class="btn btn-primary mb-2" data-bs-toggle="modal"
                   data-bs-target="#ModalAdd">
                   <i class="fa fa-plus"></i>
                   Irrigation System
                 </button>
               </app-admin>
+              &nbsp;
+              <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
             </div>
             <br>
             <div class="table-responsive">

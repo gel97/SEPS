@@ -24,12 +24,14 @@
                   Waste Management Facility
                 </button>
               </app-admin>
+              &nbsp;
+              <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
             </div>
             <br>
             <label>List of Waste Management Facilities</label>
             <div class="table-responsive">
               <table class="table table-light table-striped">
-                <thead>
+                <thead class=table-dark>
                   <tr>
                     <th scope="col">#</th>
                     <th scope="col">Name/ Type of Facility</th>

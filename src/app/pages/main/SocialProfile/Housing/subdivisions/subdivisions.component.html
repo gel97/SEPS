@@ -19,6 +19,8 @@
                   <i class="fa fa-plus"></i> Subdivision
                 </button>
               </app-admin>
+              &nbsp;
+              <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
             </div>
             <br />
             <label>List of Subdivision </label>
@@ -43,9 +45,9 @@
                     </th>
                     <th scope="col" style="text-align: center">Remarks</th>
                     <th scope="col" style="text-align: center">Barangay</th>
-                    <th scope="col" style="text-align: center">
+                    <!-- <th scope="col" style="text-align: center">
                       Geo-Coord.(Long.Lat)
-                    </th>
+                    </th> -->
                     <th style="text-align: center">Action</th>
                   </tr>
                 </thead>
@@ -60,7 +62,7 @@
                     <td style="text-align: center">{{ dataItem.lotSoldNo }}</td>
                     <td style="text-align: center">{{ dataItem.remarks }}</td>
                     <td style="text-align: center">{{ dataItem.brgyName }}</td>
-                    <td style="text-align: center">{{ dataItem.longtitude }}, {{ dataItem.latitude }}</td>
+                    <!-- <td style="text-align: center">{{ dataItem.longtitude }}, {{ dataItem.latitude }}</td> -->
                     <td style="text-align: center;">
                       <div class="d-inline-flex">
                         <app-admin>

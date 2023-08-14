@@ -4,6 +4,9 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 import { ServicesStationService } from 'src/app/shared/Infrastructure/Utilities/services-station.service';
 import Swal from 'sweetalert2';
+import { PdfComponent } from 'src/app/components/pdf/pdf.component';
+import { PdfService } from 'src/app/services/pdf.service';
+import { ReportsService } from 'src/app/shared/Tools/reports.service';
 
 @Component({
   selector: 'app-power-sub',
@@ -14,6 +17,8 @@ export class PowerSubComponent implements OnInit {
   menuId: string = '5';
   munCityName: string = this.auth.munCityName;
   constructor(
+    private pdfService: PdfService,
+    private reportService: ReportsService,
     private service: ServicesStationService,
     private auth: AuthService,
     private modifyService: ModifyCityMunService
@@ -30,6 +35,8 @@ export class PowerSubComponent implements OnInit {
   private gmapComponent!: GmapComponent;
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
+  @ViewChild(PdfComponent)
+  private pdfComponent!: PdfComponent;
   isCheck: boolean = false;
   onChange(isCheck: boolean) {
     this.isCheck = isCheck;
@@ -54,6 +61,277 @@ export class PowerSubComponent implements OnInit {
 
   ngOnInit(): void {
     this.Init();
+  }
+
+  GeneratePDF() {
+    let data: any = [];
+    let reports: any = [];
+
+    const tableData: any = [];
+    const dist1: any = [];
+    const dist2: any = [];
+
+    this.pdfComponent.data.menuId = this.menuId;
+
+    this.reportService.GetStationReport(this.pdfComponent.data).subscribe({
+      next: (response: any = {}) => {
+        reports = response;
+        console.log('result: ', response);
+
+        reports.forEach((a: any) => {
+          if (a.district === 1) {
+            dist1.push(a);
+          } else {
+            dist2.push(a);
+          }
+        });
+
+        data.push({
+          margin: [0, 20, 0, 0],
+          columns: [
+            {
+              text: `List of Power Sub-Stations by Municipality/ City`,
+              fontSize: 14,
+              bold: true,
+            },
+            {
+              text: `Year: ${response[0].setYear}`,
+              fontSize: 14,
+              bold: true,
+              alignment: 'right',
+            },
+          ],
+        });
+
+        const dist1Group = dist1.reduce((groups: any, item: any) => {
+          const { munCityName } = item;
+          const groupKey = `${munCityName}`;
+          if (!groups[groupKey]) {
+            groups[groupKey] = [];
+          }
+          groups[groupKey].push(item);
+          return groups;
+        }, {});
+
+        console.log('dist1Group ', dist1Group);
+
+        const dist2Group = dist2.reduce((groups: any, item: any) => {
+          const { munCityName } = item;
+          const groupKey = `${munCityName}`;
+          if (!groups[groupKey]) {
+            groups[groupKey] = [];
+          }
+          groups[groupKey].push(item);
+          return groups;
+        }, {});
+
+        console.log('dist2Group ', dist2);
+
+        tableData.push([
+          {
+            text: '#',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'Water Utility Service Provider',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'Pump Station Name/ ID',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'Service Area/ Remarks',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'Contact Person/ Designation',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'Contact Details',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'Location',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'Barangay',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          }
+        ]);
+
+        tableData.push([
+          {
+            text: `1st Congressional District `,
+            colSpan: 8,
+            alignment: 'left',
+            fillColor: '#526D82',
+            marginLeft: 5,
+          },
+        ]);
+
+        for (const groupKey1 in dist1Group) {
+          // Iterate district I data
+          const group1 = dist1Group[groupKey1];
+          const [cityName1] = groupKey1.split('-');
+          tableData.push([
+            {
+              text: cityName1,
+              colSpan: 8,
+              alignment: 'left',
+              fillColor: '#9DB2BF',
+              marginLeft: 5,
+            },
+          ]);
+
+          group1.forEach((item: any, index: any) => {    
+            tableData.push([
+              {
+                text: index + 1,
+                fillColor: '#FFFFFF',
+                marginLeft: 5,
+                alignment: 'center'
+              },
+              {
+                text: item.company,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.stationName,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.contactPerson,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.remarks,
+              },
+              {
+                text: item.contactNo,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.location,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.brgyName,
+                fillColor: '#FFFFFF',
+              }
+            ]);
+          });
+        }
+
+        tableData.push([
+          {
+            text: `2nd Congressional District `,
+            colSpan: 8,
+            alignment: 'left',
+            fillColor: '#526D82',
+            marginLeft: 5,
+          },
+        ]);
+
+        for (const groupKey2 in dist2Group) {
+          // Iterate district II data
+          const group2 = dist2Group[groupKey2];
+          const [cityName2] = groupKey2.split('-');
+          tableData.push([
+            {
+              text: cityName2,
+              colSpan: 8,
+              alignment: 'left',
+              fillColor: '#9DB2BF',
+              marginLeft: 5,
+            },
+          ]);
+
+          group2.forEach((item: any, index: any) => {
+            tableData.push([
+              {
+                text: index + 1,
+                fillColor: '#FFFFFF',
+                marginLeft: 5,
+                alignment: 'center'
+              },
+              {
+                text: item.company,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.stationName,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.contactPerson,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.remarks,
+              },
+              {
+                text: item.contactNo,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.location,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.brgyName,
+                fillColor: '#FFFFFF',
+              }
+            ]);
+          });
+        }
+
+        const table = {
+          margin: [0, 20, 0, 0],
+          table: {
+            widths: [25, '*', '*', '*', '*', '*', '*', '*'],
+            body: tableData,
+          },
+          layout: 'lightHorizontalLines',
+        };
+
+        data.push(table);
+      },
+      error: (error: any) => {
+        console.log(error);
+      },
+      complete: () => {
+        let isPortrait = false;
+        this.pdfService.GeneratePdf(data, isPortrait);
+        console.log(data);
+      },
+    });
   }
 
   public showOverlay = false;

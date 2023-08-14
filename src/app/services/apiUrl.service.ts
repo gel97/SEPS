@@ -204,6 +204,7 @@ export class ApiUrl {
     get_list_associations   = (menuId:any, setYear:any, munCityId:any) => `/Associations/${menuId}/${setYear}/${munCityId}`;
     delete_association      = (transId:any) => `/Associations/${transId}`;  
     post_import_association = (menuId:any)  => `/Associations/Import/${menuId}`;
+    post_report_association = () => `/Associations/Reports`;
 
     // Education
     get_list_education = (menuId :any, setYear  :any,munCityId :any)=>`/Education/${menuId}/${setYear}/${munCityId}`;
@@ -462,7 +463,6 @@ export class ApiUrl {
     post_import_facilities = (menuId:any)  => `/ServiceFacilities/Import/${menuId}`;
     post_report_facilities = ()=>`/ServiceFacilities/Reports`;
 
-    //Manufacturing Establishment
     get_list_transpo_road    = (setYear:any, munCityId:any)=>`/TranspoRoads/${setYear}/${munCityId}`;
     post_save_transpo_road   = ()=>`/TranspoRoads`;
     put_update_transpo_road  = ()=>`/TranspoRoads`;

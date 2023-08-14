@@ -117,8 +117,67 @@ export class ReportsService {
   GetSafetyTanodReport(data:any) {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_safety_tanod(), data, { responseType: 'json' });
   }
-
   GetSafetyIndexReport(data:any) {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_safety_index(), data, { responseType: 'json' });
+  }
+  
+  //Housing
+  GetHousingSettlersReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_housing_settlers(), data, { responseType: 'json' });
+  }
+  GetHousingProjReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_housing_project(), data, { responseType: 'json' });
+  }
+  GetHousingSubdvReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_housing_subdivision(), data, { responseType: 'json' });
+  }
+
+  //Association
+  GetAssociationReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_association(), data, { responseType: 'json' });
+  }
+
+  //Infra & Utilities
+  GetTranspoRoadReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_transpo_road(), data, { responseType: 'json' });
+  }
+  GetTranspoBridgesReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_transpo_bridge(), data, { responseType: 'json' });
+  }
+  GetTranspoPortsReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_port(), data, { responseType: 'json' });
+  }
+  GetTranspoTerminalsReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_transpo_terminal(), data, { responseType: 'json' });
+  }
+  GetTelcomReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_telcom(), data, { responseType: 'json' });
+  }
+  GetCellSitesReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_cell(), data, { responseType: 'json' });
+  }
+  GetTelFacilityReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_com_telfacility(), data, { responseType: 'json' });
+  }
+  GetComExpressReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_com_express_mail(), data, { responseType: 'json' });
+  }
+  GetComPostalReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_com_postal(), data, { responseType: 'json' });
+  }
+  GetComISPReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_com_isp(), data, { responseType: 'json' });
+  }
+  GetServiceUtilReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_services(), data, { responseType: 'json' });
+  }
+  GetStationReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_station(), data, { responseType: 'json' });
+  }
+  GetServiceIrrigationReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_service_irrigation(), data, { responseType: 'json' });
+  }
+  GetServiceFacilityReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_service_facility(), data, { responseType: 'json' });
   }
 }

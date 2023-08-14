@@ -24,12 +24,14 @@
                                     Ports
                                 </button>
                             </app-admin>
+                            &nbsp;
+                            <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
                         </div>
                         <br>
                         <label>List of Ports</label>
                         <div class="table-responsive">
-                            <table class="table table-light table-striped">
-                                <thead>
+                            <table class="table table-striped">
+                                <thead style="background-color: #000000;color:white;">
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">Name of Port</th>

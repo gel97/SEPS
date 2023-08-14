@@ -16,6 +16,8 @@
                   <i class="fa fa-plus"></i> Professional Organizations
                 </button>
               </app-admin>
+              &nbsp;
+              <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
             </div>
 
             <br>
@@ -33,7 +35,7 @@
                     <th scope="col">Contact Details</th>
                     <th scope="col">Total Assets</th>
                     <th scope="col">Location</th>
-                    <th scope="col">Geo-Coord. (Long, Lat)</th>
+                    <!-- <th scope="col">Geo-Coord. (Long, Lat)</th> -->
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
@@ -48,7 +50,7 @@
                     <td style="text-align: center;">{{ data.contactNo }}</td>
                     <td style="text-align: center;">{{ data.totalAssets }}</td>
                     <td style="text-align: center;">{{ data.location }}</td>
-                    <td style="text-align: center;">{{ data.longtitude }}, {{ data.latitude }}</td>
+                    <!-- <td style="text-align: center;">{{ data.longtitude }}, {{ data.latitude }}</td> -->
                     <td>
                       <div class="d-inline-flex">
                         <app-admin>
@@ -158,6 +160,11 @@
             </div>
             <div class="form-group">
               <div class="row">
+                <div class="col-lg-4">
+                  <label for="category">Location (#/Bldg/St./Purok):</label>
+                  <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.location"
+                    [ngModelOptions]="{ standalone: true }">
+                </div>
                 <div class="col-lg-4">
                   <label for="category">Barangay :</label>
                   <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.brgyId"

@@ -17,6 +17,8 @@
                   Religious Organizations
                 </button>
               </app-admin>
+              &nbsp;
+              <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
             </div>
 
             <br>
@@ -34,7 +36,7 @@
                     <th scope="col">Total Assets</th>
                     <th scope="col">Location</th>
                     <th scope="col">Barangay</th>
-                    <th scope="col">Geo-Coord. (Long, Lat)</th>
+                    <!-- <th scope="col">Geo-Coord. (Long, Lat)</th> -->
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
@@ -49,7 +51,7 @@
                     <td style="text-align: center;">{{ data.totalAssets }}</td>
                     <td style="text-align: center;">{{ data.location }}</td>
                     <td style="text-align: center;">{{ data.brgyName }}</td>
-                    <td style="text-align: center;">({{ data.longtitude }}, {{ data.latitude }})</td>
+                    <!-- <td style="text-align: center;">({{ data.longtitude }}, {{ data.latitude }})</td> -->
                     <td style="text-align: center">
                       <div class="d-inline-flex">
                         <app-admin>
@@ -96,24 +98,29 @@
         <form class="user collapse show" id="collapseExample">
           <app-admin>
             <div class="form-group">
-              <div class="row">
+              <div class="row mb-2">
                 <div class="col-lg-8">
                   <label for="category">Name :</label>
                   <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.name"
                     [ngModelOptions]="{ standalone: true }" [ngClass]="toValidate.name?'is-invalid':''"
                     (keyup)="toValidate.name=false">
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-2">
                   <label for="exampleFormControlInput1">No. of Members :</label>
                   <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="addData.membersNo"
+                    [ngModelOptions]="{ standalone: true }">
+                </div>
+                <div class="col-lg-2">
+                  <label for="category">Total Assets :</label>
+                  <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="addData.totalAssets"
                     [ngModelOptions]="{ standalone: true }">
                 </div>
               </div>
               <div class="form-group">
                 <div class="row">
                   <div class="col-lg-6">
-                    <label for="category">Total Assets :</label>
-                    <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="addData.totalAssets"
+                    <label for="category">Location (#/Bldg/St./Purok):</label>
+                    <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.location"
                       [ngModelOptions]="{ standalone: true }">
                   </div>
                   <div class="col-lg-6">
@@ -128,7 +135,6 @@
 
                 </div>
               </div>
-              <br>
               <div class="form-group">
                 <div class="row">
                   <div class="col-lg-6">

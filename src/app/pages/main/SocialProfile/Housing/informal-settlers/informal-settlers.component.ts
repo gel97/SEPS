@@ -6,6 +6,9 @@ import { Observable } from 'rxjs';
 import { isEmptyObject } from 'jquery';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
+import { PdfComponent } from 'src/app/components/pdf/pdf.component';
+import { PdfService } from 'src/app/services/pdf.service';
+import { ReportsService } from 'src/app/shared/Tools/reports.service';
 
 @Component({
   selector: 'app-informal-settlers',
@@ -17,8 +20,11 @@ export class InformalSettlersComponent implements OnInit {
   closebutton!: { nativeElement: { click: () => void } };
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;
-
+  @ViewChild(PdfComponent)
+  private pdfComponent!: PdfComponent;
   constructor(
+    private pdfService: PdfService,
+    private reportService: ReportsService,
     private auth: AuthService,
     private service: HousingSettlersService,
     private modifyService: ModifyCityMunService
@@ -62,6 +68,200 @@ export class InformalSettlersComponent implements OnInit {
   Init() {
     this.GetHousingSettlers();
     this.GetListBarangay();
+  }
+
+  GeneratePDF() {
+    let data: any = [];
+    let grandTotal: any = {};
+
+    let reports: any = [];
+    let columnLenght: number = 0;
+
+    const tableData: any = [];
+
+    this.reportService
+      .GetHousingSettlersReport(this.pdfComponent.data)
+      .subscribe({
+        next: (response: any = {}) => {
+          reports = response.data;
+          grandTotal = response.grandTotal;
+
+          console.log('result: ', response);
+
+          data.push({
+            margin: [0, 40, 0, 0],
+            columns: [
+              {
+                text: `List of Informal Settlements by Municipality/City`,
+                fontSize: 14,
+                bold: true,
+              },
+              {
+                text: `Year: ${response.year}`,
+                fontSize: 14,
+                bold: true,
+                alignment: 'right',
+              },
+            ],
+          });
+
+          tableData.push([
+            {
+              text: '#',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Location',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Barangay',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'No. of Dwelling Units',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'No. of Families',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Remarks',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            }
+            
+          ]);
+
+          reports.forEach((a: any) => {
+            tableData.push([
+              {
+                text: a.munCityName,
+                fillColor: '#9DB2BF',
+                bold: true,
+                alignment: 'left',
+                colSpan: 6,
+                marginLeft: 5
+              }
+            ]);
+
+            a.data.forEach((b:any, index2:any) => {
+              tableData.push([
+                {
+                  text: index2 + 1,
+                  fillColor: index2 % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+                  alignment: 'center',
+                },
+                {
+                  text: b.location,
+                  fillColor: index2 % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+                }, {
+                  text: b.brgyName,
+                  fillColor: index2 % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+                }, {
+                  text: b.unitsNo,
+                  fillColor: index2 % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+                  alignment: 'center',
+                }, {
+                  text: b.familiesNo,
+                  fillColor: index2 % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+                  alignment: 'center',
+                }, {
+                  text: b.remarks,
+                  fillColor: index2 % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+                },
+              ]);
+
+            });
+
+            tableData.push([
+              {
+                text: 'SUBTOTAL',
+                fillColor:'#FFFFFF',
+                colSpan: 2,
+                marginLeft: 5
+              },{},
+             {
+                text: a.subtotal.brgyCount,
+                fillColor:'#FFFFFF',
+              }, {
+                text: a.subtotal.unitsNo,
+                fillColor:'#FFFFFF',
+                alignment: 'center',
+              }, {
+                text: a.subtotal.familiesNo,
+                fillColor:'#FFFFFF',
+                alignment: 'center',
+              }, {
+                text: '',
+                fillColor:'#FFFFFF',
+              },
+            ]);
+
+          });
+
+          tableData.push([
+            {
+              text: 'GRANDTOTAL',
+              fillColor:'#F1C93B',
+              colSpan: 2,
+              marginLeft: 5
+            },{},
+           {
+              text: grandTotal.brgyCount,
+              fillColor:'#F1C93B',
+            }, {
+              text: grandTotal.unitsNo,
+              fillColor:'#F1C93B',
+              alignment: 'center',
+            }, {
+              text: grandTotal.familiesNo,
+              fillColor:'#F1C93B',
+              alignment: 'center',
+            }, {
+              text: '',
+              fillColor:'#F1C93B',
+            },
+          ]);
+
+          const table = {
+            margin: [0, 10, 0, 0],
+            table: {
+              widths: [25,'*','*','*','*','*'],
+              body: tableData,
+            },
+            layout: 'lightHorizontalLines',
+          };
+
+          data.push(table);
+        },
+        error: (error: any) => {
+          console.log(error);
+        },
+        complete: () => {
+          let isPortrait = false;
+          this.pdfService.GeneratePdf(data, isPortrait);
+          console.log(data);
+        },
+      });
   }
 
   GetHousingSettlers() {
