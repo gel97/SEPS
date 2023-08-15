@@ -20,16 +20,17 @@ export class DemographyService {
 
 //DEMOGRAPHY//
 GetDemography():Observable<any[]>{
-  return this.Http.post<any[]>(this.apiurl + `/Demography/List?munCityId=${this.auth.munCityId}&setYear=${this.auth.activeSetYear}`,{responseType: 'json'} );
+  //return this.Http.post<any[]>(this.apiurl + `/Demography/List?munCityId=${this.auth.munCityId}&setYear=${this.auth.activeSetYear}`,{responseType: 'json'} );
+  return this.Http.get<any[]>(this.Base.url + this.ApiUrl.get_demography(this.auth.munCityId, this.auth.setYear),{responseType: 'json'} );
 }
 AddDemography(Demo:any={}){
   console.log(Demo)
-  return this.Http.post (this.apiurl + "/Demography/Save", Demo , {responseType: 'json'});
+  return this.Http.post (this.Base.url + "/Demography/Save", Demo , {responseType: 'json'});
 }
 
 UpdateDemography(Demo:any={}){
   console.log(Demo)
-  return this.Http.post (this.apiurl + "/Demography/Update", Demo , {responseType: 'json'});
+  return this.Http.post (this.Base.url + "/Demography/Update", Demo , {responseType: 'json'});
 }
 
 DeleteDemography(transId:any) {

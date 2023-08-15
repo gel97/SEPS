@@ -59,7 +59,7 @@ export class ApiUrl {
 
 
     // Demography Officials
-    post_get_demography     = (munCityId:any, setYear:any) => `/Demography/List?munCityId=${munCityId}&setYear=${setYear}`;
+    get_demography     = (munCityId:any, setYear:any) => `/Demography/${munCityId}/${setYear}`;
     post_save_demography    = () => `/Demography/Save`;
     post_update_demography  = () => `/Demography/Update`;
     delete_demography       = (transId:any)   => `/Demography/${transId}`;
@@ -566,8 +566,13 @@ export class ApiUrl {
     put_news      = ()=>`/News`;
     delete_news   = (transId:any)=>`/News/${transId}`;
 
-    get_notif_seen      = (userId:any)=>`/NotifSeen/${userId}`;
-    post_notif_seen     = ()=>`/NotifSeen`;
+    get_notif_seen   = (userId:any)=>`/NotifSeen/${userId}`;
+    post_notif_seen  = ()=>`/NotifSeen`;
+
+    get_list_message = ()=>`/Message/list`;
+    post_message     = ()=>`/Message`;
+    put_message      = ()=>`/Message`;
+    delete_message   = (transId:any)=>`/Message/${transId}`;
     
     get_sep_year  = ()=>`/SepYear`;
 }

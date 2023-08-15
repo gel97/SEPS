@@ -148,6 +148,7 @@ import { TechvocEnrolGradComponent } from './pages/main/SocialProfile/Education/
 import { IndexCrimeComponent } from './pages/main/SocialProfile/PublicOrder/index-crime/index-crime.component';
 import { SepDataBtnComponent } from './pages/main/Tools/sep-data-btn/sep-data-btn.component';
 import { SummaryReportComponent } from './pages/main/Tools/summary-report/summary-report.component';
+import { MessageComponent } from './pages/main/Tools/message/message.component';
 
 @NgModule({
   declarations: [
@@ -283,6 +284,7 @@ import { SummaryReportComponent } from './pages/main/Tools/summary-report/summar
     IndexCrimeComponent,
     SepDataBtnComponent,
     SummaryReportComponent,
+    MessageComponent,
   ],
   imports: [
     MdbCollapseModule,
