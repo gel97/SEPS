@@ -14,6 +14,9 @@ export class ReportsService {
   GetBarangayReport(data:any) {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_barangay_report(), data, { responseType: 'json' });
   }
+  GetDemographyReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_demography(), data, { responseType: 'json' });
+  }
   GetCityOfficialsReport(data:any) {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_officials(), data, { responseType: 'json' });
   }
