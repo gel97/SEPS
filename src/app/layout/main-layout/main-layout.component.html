@@ -49,7 +49,7 @@
         <hr class="sidebar-divider my-0">
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item"  routerLinkActive="active">
+        <li class="nav-item" routerLinkActive="active">
             <a class="nav-link" routerLink="/dashboard">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span></a>
@@ -219,7 +219,7 @@
 <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSocialProfile"
         aria-expanded="true" aria-controls="collapsePages">
-        <i class="fas fa-fw fa-folder" ></i>
+        <i class="fas fa-fw fa-folder"></i>
         <span>Social Profile</span>
     </a>
     <div id="collapseSocialProfile" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
@@ -234,31 +234,31 @@
     <div id="collapseEducation" class="collapse" aria-labelledby="headingUtilities"
         data-parent="#collapseSocialProfile">
         <div class="bg-lightblue py-2 collapse-inner rounded">
-        <!-- ========== Facilities ========== -->
+            <!-- ========== Facilities ========== -->
 <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFacIns" aria-expanded="true"
-                aria-controls="collapseUtilities">
-                <i class='fas fa-school'></i>
-                <span>Facilities</span>
+        aria-controls="collapseUtilities">
+        <i class='fas fa-school'></i>
+        <span>Facilities</span>
     </a>
     <div id="collapseFacIns" class="collapse" aria-labelledby="headingUtilities" data-parent="#collapseEducation">
         <div class="bg-lightblue py-2 collapse-inner rounded">
             <a class="collapse-item" routerLinkActive="active"
-                        routerLink="socialProfile/education/facilities/public-private">
-                        Public and Private
+                routerLink="socialProfile/education/facilities/public-private">
+                Public and Private
             </a>
             <a class="collapse-item" routerLinkActive="active"
-                        routerLink="socialProfile/education/facilities/tertiary-institutions">
-                        Tertiary Ins.
+                routerLink="socialProfile/education/facilities/tertiary-institutions">
+                Tertiary Ins.
             </a>
             <a class="collapse-item" routerLinkActive="active"
-            routerLink="socialProfile/education/facilities/techvoc-institutions">
-                        Technical Vocational Ins.
+                routerLink="socialProfile/education/facilities/techvoc-institutions">
+                Technical Vocational Ins.
             </a>
         </div>
     </div>
 </li>
-            <!-- ========== PRIVATE SCHOOLS ========== -->
+<!-- ========== PRIVATE SCHOOLS ========== -->
 <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePriSchools" aria-expanded="true"
         aria-controls="collapseUtilities">
@@ -303,13 +303,14 @@
     </a>
     <div id="collapseTertiary" class="collapse" aria-labelledby="headingUtilities" data-parent="#collapseEducation">
         <div class="bg-lightblue py-2 collapse-inner rounded">
-            <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/education/public/tertiary-enrolment">
+            <a class="collapse-item" routerLinkActive="active"
+                routerLink="socialProfile/education/public/tertiary-enrolment">
                 Enrolment
             </a>
             <a class="collapse-item" routerLinkActive="active"
                 routerLink="socialProfile/education/public/tertiary-graduates">
                 Graduates
-            </a>     
+            </a>
         </div>
     </div>
 </li>
@@ -322,13 +323,14 @@
     </a>
     <div id="collapseTechvoc" class="collapse" aria-labelledby="headingUtilities" data-parent="#collapseEducation">
         <div class="bg-lightblue py-2 collapse-inner rounded">
-            <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/education/public/tech-voc/programs">
+            <a class="collapse-item" routerLinkActive="active"
+                routerLink="socialProfile/education/public/tech-voc/programs">
                 Programs
             </a>
             <a class="collapse-item" routerLinkActive="active"
                 routerLink="socialProfile/education/public/tech-voc/enrolment-graduates">
                 Enrolment & Graduates
-            </a>     
+            </a>
         </div>
     </div>
 </li>
@@ -405,8 +407,9 @@
                 Peacekeeping/ Tanod</a>
             <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/PublicOrder/crime-stat">Crime
                 Statistics</a>
-            <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/PublicOrder/index-crime">No. of Index Crime
-            </a>    
+            <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/PublicOrder/index-crime">No. of
+                Index Crime
+            </a>
         </div>
     </div>
 </li>
@@ -602,7 +605,7 @@
         <div class="bg-lightblue collapse-inner rounded">
             <a class="collapse-item" routerLinkActive="active" routerLink="Tools/news">News/ Announcements</a>
             <a class="collapse-item" routerLinkActive="active" routerLink="Tools/summary-reports">Summary Reports</a>
-        </div>   
+        </div>
     </div>
 </li>
 
@@ -700,10 +703,9 @@
                 </li>
 
                 <!-- Nav Item - Alerts -->
-                <app-notification>
-
-                </app-notification>
-
+                <app-notification></app-notification>
+                <div class="topbar-divider d-none d-sm-block"></div>
+                <app-message></app-message>
                 <div class="topbar-divider d-none d-sm-block"></div>
                 <!-- SEP DATA -->
                 <li class="nav-item dropdown no-arrow mx-1">

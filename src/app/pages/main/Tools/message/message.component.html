@@ -1,1 +1,36 @@
-<p>message works!</p>
+<li class="nav-item dropdown no-arrow mx-1" >
+    <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-comment fa-fw"></i>
+        <!-- Counter - Alerts -->
+        <span *ngIf="unread?.count > 0" class="badge badge-danger badge-counter">{{unread.count}}</span>
+    </a>
+    <!-- Dropdown - Alerts -->
+    <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+        aria-labelledby="alertsDropdown">
+        <h6 class="dropdown-header">
+            Messages
+        </h6>
+        <div *ngIf="listMessage.length > 0; else empty">
+            <div *ngFor="let item of listMessage">
+                <a class="dropdown-item d-flex align-items-center" [ngClass]="item.seen? '':'bg-notif'" (click)="GetUserId(item.fromUserId, item.transId)">
+                    <!-- <div class="mr-3">
+                        <div class="icon-circle bg-primary">
+                            <i class="fas fa-file-alt text-white"></i>
+                        </div>
+                    </div> -->
+                    <div>
+                        <div [ngClass]="item.seen === null? 'bold-text':''" style="position:absolute; right: 10px;" class="text-xs text-gray-500">{{item.createdAt | hoursAgoOrDate}}</div>
+                        <div [ngClass]="item.seen === null? 'bold-text':''" class="small text-gray-500">{{item.fromUserFullName}}</div>
+                        <span [ngClass]="item.seen === null? 'bold-text':''">{{item.message | truncate: 30}}</span>
+                    </div>
+                </a>
+            </div> 
+        </div>
+        <ng-template #empty>
+            <div>
+                <p class="text-center mt-2">No Message.</p>
+            </div>
+        </ng-template>        
+    </div>
+</li>

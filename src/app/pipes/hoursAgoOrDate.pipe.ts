@@ -23,7 +23,7 @@ export class HoursAgoOrDatePipe implements PipeTransform {
       return `${hoursElapsed} hours ago`;
     } else {
       const options = { year: 'numeric', month: 'long', day: 'numeric' };
-      return currentDate.toDateString();    }
+      return previousDate.toDateString();    }
   }
 
 }

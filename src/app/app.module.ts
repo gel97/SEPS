@@ -149,6 +149,8 @@ import { IndexCrimeComponent } from './pages/main/SocialProfile/PublicOrder/inde
 import { SepDataBtnComponent } from './pages/main/Tools/sep-data-btn/sep-data-btn.component';
 import { SummaryReportComponent } from './pages/main/Tools/summary-report/summary-report.component';
 import { MessageComponent } from './pages/main/Tools/message/message.component';
+import { TruncatePipe } from './pipes/truncate.pipe';
+import { MessageListComponent } from './pages/main/Tools/message-list/message-list.component';
 
 @NgModule({
   declarations: [
@@ -285,6 +287,8 @@ import { MessageComponent } from './pages/main/Tools/message/message.component';
     SepDataBtnComponent,
     SummaryReportComponent,
     MessageComponent,
+    TruncatePipe,
+    MessageListComponent,
   ],
   imports: [
     MdbCollapseModule,

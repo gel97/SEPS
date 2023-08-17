@@ -1,0 +1,31 @@
+<div *ngIf="listMessage.length > 0">
+    <p class="ml-2"><b>{{listMessage[0]?.fromUserFullname}}</b></p>
+    <div *ngFor="let item of listMessage" class="card border-2 shadow-xs my-1"
+        [ngStyle]="{'background-color': userMeId == item.fromUserId? '#E8F0F2' : ''}">
+        <div class="card-body p-10">
+            <div class="row mb-2">
+                <div class="col-lg-9">
+                    {{item.fromUserFullname}}
+                </div>
+                <div class="col-lg-3 ">
+                    <span class="float-right">{{item.createdAt | hoursAgoOrDate}}</span>
+                </div>
+            </div>
+            <div>
+                <div>
+                    {{item.message}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col-lg-11">
+        <textarea [(ngModel)]="data.message" [ngClass]="toValidate.message?'is-invalid':''" (ngModelChange)="toValidate.message=false" type="text" class="form-control" id="" row="4" placeholder="Type here. . ."></textarea>
+    </div>
+    <div class="col-lg-1">
+        <button (click)="AddMessage()" type="button" class="form-control btn btn-primary" style="height: 60px;">
+            <i class="fas fa-paper-plane"></i> Send</button>
+    </div>
+</div>
+<p *ngIf="toValidate.message" style="color: red;" class="ml-2 mt-2">Please fillout the message box.</p>

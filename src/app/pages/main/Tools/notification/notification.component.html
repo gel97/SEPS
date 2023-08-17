@@ -11,19 +11,25 @@
         <h6 class="dropdown-header">
             Notifications
         </h6>
+        <div *ngIf="result.length > 0; else empty">
         <div *ngFor="let item of result">
             <a (click)="!item.seen? IsSeen(item):''" class="dropdown-item d-flex align-items-center" [ngClass]="item.seen? '':'bg-notif'"  href="#">
-                <div class="mr-3">
+                <!-- <div class="mr-3">
                     <div class="icon-circle bg-primary">
                         <i class="fas fa-file-alt text-white"></i>
                     </div>
-                </div>
+                </div> -->
                 <div>
                     <div class="small text-gray-500">{{item.datePosted | hoursAgoOrDate}}</div>
-                    <span [ngClass]="item.seen? '':'bold-text'">{{item.title}}</span>
+                    <span [ngClass]="item.seen? '':'bold-text'">{{item.title | truncate: 30}}</span>
                 </div>
             </a>
         </div>
-        
+        </div>
+        <ng-template #empty>
+            <div>
+                <p class="text-center mt-2">No Notification.</p>
+            </div>
+        </ng-template>      
     </div>
 </li>

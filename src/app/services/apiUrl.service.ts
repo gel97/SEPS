@@ -569,10 +569,12 @@ export class ApiUrl {
     get_notif_seen   = (userId:any)=>`/NotifSeen/${userId}`;
     post_notif_seen  = ()=>`/NotifSeen`;
 
-    get_list_message = ()=>`/Message/list`;
-    post_message     = ()=>`/Message`;
-    put_message      = ()=>`/Message`;
-    delete_message   = (transId:any)=>`/Message/${transId}`;
-    
+    get_list_message      = ()=>`/Message/list`;
+    get_list_message_data = (userId:any)=>`/Message/list/${userId}`;
+    post_message          = ()=>`/Message`;
+    put_message           = ()=>`/Message`;
+    delete_message        = (transId:any)=>`/Message/${transId}`;
+    post_message_seen     = (transId:any)=>`/Message/SeenMessage/${transId}`;
+
     get_sep_year  = ()=>`/SepYear`;
 }

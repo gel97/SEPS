@@ -24,6 +24,7 @@ export class NotificationComponent implements OnInit {
     this.NewsService.GetNews().subscribe({
       next: (response) => {
         this.NotifList = (<any>response);
+        
       },
       error: (error) => {
 

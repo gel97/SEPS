@@ -16,6 +16,9 @@ export class MessageService {
   GetListMessage():Observable<any[]>{
     return this.Http.get<any[]>(this.Base.url + this.ApiUrl.get_list_message(), { responseType: 'json' });
   }
+  GetListMessageData(userId:string):Observable<any[]>{
+    return this.Http.get<any[]>(this.Base.url + this.ApiUrl.get_list_message_data(userId), { responseType: 'json' });
+  }
 
   AddMessage(data: any = {}){
     return this.Http.post(this.Base.url + this.ApiUrl.post_message(),data, { responseType: 'json' });
@@ -27,6 +30,10 @@ export class MessageService {
 
   DeleteMessage(transId:any) {
     return this.Http.delete(this.Base.url + this.ApiUrl.delete_message(transId), { responseType: 'json' });
+  }
+
+  SeenMessage(transId: any){
+    return this.Http.post(this.Base.url + this.ApiUrl.post_message_seen(transId), { responseType: 'json' });
   }
 
 }
