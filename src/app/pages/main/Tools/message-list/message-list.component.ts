@@ -13,6 +13,8 @@ export class MessageListComponent implements OnInit {
   userMeId: any;
 
   data: any = {};
+  user: any = {};
+
   toValidate: any = {};
 
   constructor(private service: MessageService, private route: ActivatedRoute) {}
@@ -30,6 +32,7 @@ export class MessageListComponent implements OnInit {
   GetListMessages(userId: any) {
     this.service.GetListMessageData(userId).subscribe((response: any) => {
       this.listMessage = response.data;
+      this.user = response.user;
       this.userFromId = response.userId;
       this.userMeId = response.userMeId;
       console.log(response);

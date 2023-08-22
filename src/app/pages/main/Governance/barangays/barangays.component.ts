@@ -43,7 +43,7 @@ export class BarangaysComponent implements OnInit {
 
   listData: any = [];
   data: any = {};
-  reports: any = [];
+ 
 
   ngOnInit(): void {
     this.Init();
@@ -55,15 +55,16 @@ export class BarangaysComponent implements OnInit {
   }
 
   GeneratePDF() {
+    let reports: any = [];
     let data: any = [];
 
     this.reportService.GetBarangayReport(this.pdfComponent.data).subscribe({
       next: (response) => {
-        this.reports = <any>response;
-        console.log(this.reports)
+        reports = <any>response;
+        console.log(reports)
         data.push({text:'List of Barangay Officials by Municipality/ City', bold: true, alignment:'center'});
 
-        const groupedData = this.reports.reduce((groups: any, item: any) => {
+        const groupedData = reports.reduce((groups: any, item: any) => {
           const { munCityName, setYear } = item;
           const groupKey = `${munCityName}-${setYear}`;
           if (!groups[groupKey]) {

@@ -1,2 +1,17 @@
-<p>summary-report works!</p>
-<a (click)="BrgyGeneratePdf()">Barangay</a>
+<div class="table-responsive">
+    <table class="table table-framed table-hover table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>GOVERNANCE</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr (click)="CityOfficialGeneratePDF()">
+          <td>Muncipality/ City Officials</td>
+        </tr>
+        <tr (click)="BrgyGeneratePdf()">
+          <td>Barangays</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

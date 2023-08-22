@@ -570,6 +570,7 @@ export class ApiUrl {
     post_notif_seen  = ()=>`/NotifSeen`;
 
     get_list_message      = ()=>`/Message/list`;
+    get_list_my_message   = ()=>`/Message/MyMessages`;
     get_list_message_data = (userId:any)=>`/Message/list/${userId}`;
     post_message          = ()=>`/Message`;
     put_message           = ()=>`/Message`;

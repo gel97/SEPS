@@ -16,6 +16,9 @@ export class MessageService {
   GetListMessage():Observable<any[]>{
     return this.Http.get<any[]>(this.Base.url + this.ApiUrl.get_list_message(), { responseType: 'json' });
   }
+  GetListMyMessage():Observable<any[]>{
+    return this.Http.get<any[]>(this.Base.url + this.ApiUrl.get_list_my_message(), { responseType: 'json' });
+  }
   GetListMessageData(userId:string):Observable<any[]>{
     return this.Http.get<any[]>(this.Base.url + this.ApiUrl.get_list_message_data(userId), { responseType: 'json' });
   }

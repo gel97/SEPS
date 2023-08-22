@@ -1,5 +1,5 @@
 <div *ngIf="listMessage.length > 0">
-    <p class="ml-2"><b>{{listMessage[0]?.fromUserFullname}}</b></p>
+    <p class="ml-2"><b>{{user.fullName}}</b></p>
     <div *ngFor="let item of listMessage" class="card border-2 shadow-xs my-1"
         [ngStyle]="{'background-color': userMeId == item.fromUserId? '#E8F0F2' : ''}">
         <div class="card-body p-10">
