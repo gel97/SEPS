@@ -84,7 +84,7 @@ export class TechvocInsComponent implements OnInit {
           margin: [0, 40, 0, 0],
           columns: [
             {
-              text: `List of Tertiary Facilities by Municipality/City`,
+              text: `List of Technical/Vocational Facilities by Municipality/City`,
               fontSize: 14,
               bold: true,
             },
@@ -126,7 +126,7 @@ export class TechvocInsComponent implements OnInit {
             alignment: 'center',
           },
           {
-            text: 'Name of Tertiary Institution',
+            text: 'Name of Technical/Vocational Institution',
             fillColor: 'black',
             color: 'white',
             bold: true,

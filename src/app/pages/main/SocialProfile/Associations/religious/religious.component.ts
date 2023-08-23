@@ -39,7 +39,7 @@ export class ReligiousComponent implements OnInit {
   menuId = '2';
   munCityId = this.Auth.munCityId;
   munName = this.Auth.munCityName + ', Davao del Norte';
-  setYear = Number(this.Auth.activeSetYear);
+  setYear = Number(this.Auth.setYear);
 
   addData: any = {};
   editData: any = {};

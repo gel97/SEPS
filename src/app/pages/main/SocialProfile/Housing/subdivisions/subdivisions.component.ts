@@ -26,7 +26,7 @@ export class SubdivisionsComponent implements OnInit {
       return this.modifyService.ModifyText(cityMunName);
     }
     
-  menuId = '2';
+  menuId = '3';
   munCityName: string = this.Auth.munCityName;
   setYear = Number(this.Auth.setYear);
   munCityId = this.Auth.munCityId;
@@ -115,7 +115,7 @@ export class SubdivisionsComponent implements OnInit {
           margin: [0, 20, 0, 0],
           columns: [
             {
-              text: `List of Government Housing Projects by Municipality/City`,
+              text: `List of Subdivisions by Municipality/City`,
               fontSize: 14,
               bold: true,
             },

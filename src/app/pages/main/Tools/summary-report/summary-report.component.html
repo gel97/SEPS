@@ -6,11 +6,356 @@
         </tr>
       </thead>
       <tbody>
+        <tr (click)="ProvOfficialGeneratePDF()">
+          <td>Provincial Officials</td>
+        </tr>
         <tr (click)="CityOfficialGeneratePDF()">
-          <td>Muncipality/ City Officials</td>
+          <td>Municipality/ City Officials</td>
         </tr>
         <tr (click)="BrgyGeneratePdf()">
-          <td>Barangays</td>
+          <td>List of Barangay Officials</td>
+        </tr>
+        <tr (click)="PhyGeoGeneratePDF()">
+          <td>Physical / Geographic Profile</td>
+        </tr>
+        <tr (click)="OrgStafGeneratePDF()">
+          <td>Organization/ Staffing Patterns by Municipality/City</td>
+        </tr>
+        <tr (click)="DemographyGeneratePDF()">
+          <td>Demography</td>
+        </tr>
+        <tr (click)="VotersGeneratePDF()">
+          <td>Number of Precincts and Registered Voters by Municipality/City</td>
+        </tr>
+        <tr (click)="SkGeneratePDF()">
+          <td>Number of Precincts and Registered SK Voters by Municipality/City</td>
+        </tr>
+      </tbody>
+    </table>
+    <table class="table table-framed table-hover table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>TRADE AND INDUSTRY</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr (click)="MjrEcoGeneratePDF()">
+          <td>Major Economic Activities by Municipality/City</td>
+        </tr>
+        <tr (click)="ManEstabGeneratePDF()">
+          <td>Number of Manufacturing Industry by Municipality/City</td>
+        </tr>
+        <tr (click)="ComEstabGeneratePDF()">
+          <td>Number of Business/ Commercial Establishments by Municipality/City</td>
+        </tr>
+        <tr (click)="IndustrialGeneratePDF()">
+          <td>List of Industrial Estates by Municipality/City</td>
+        </tr>
+        <tr (click)="BankingGeneratePdf()">
+          <td>List of Banking Institutions by Municipality/City</td>
+        </tr>
+        <tr (click)="CoopGeneratePdf()">
+          <td>List of Cooperatives by Municipality/City</td>
+        </tr>
+        <tr (click)="InsuranceGeneratePdf()">
+          <td>List of Insurance Institutions by Municipality/City</td>
+        </tr>
+        <tr (click)="FinancialGeneratePdf()">
+          <td>List of Financial Institutions by Municipality/City</td>
+        </tr>
+      </tbody>
+    </table>
+    <table class="table table-framed table-hover table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>TOURISM</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr (click)="RecreationalGeneratePDF()">
+          <td>Number of Recreational Facilities by Municipality/City</td>
+        </tr>
+        <tr (click)="ResortGeneratePDF()">
+          <td>List of Resorts/Recreation Center by Municipality/City</td>
+        </tr>
+        <tr (click)="LodgingGeneratePDF()">
+          <td>List of Hotels/ Lodging Houses by Municipality/City</td>
+        </tr>
+        <tr (click)="IndustrialGeneratePDF()">
+          <td>List of Industrial Estates by Municipality/City</td>
+        </tr>
+        <tr (click)="CinemaGeneratePDF()">
+          <td>List of Cinema/ Movie Houses by Municipality/City</td>
+        </tr>
+        <tr (click)="NaturalGeneratePDF()">
+          <td>List of Natural and Man-made Attractions by Municipality/City</td>
+        </tr>
+        <tr (click)="CulturalGeneratePDF()">
+          <td>List of Historical/ Cultural and Religious Attractions by Municipality/City</td>
+        </tr>
+        <tr (click)="FestivalGeneratePDF()">
+          <td>List of Fiestas and Festivals by Municipality/City</td>
+        </tr>
+      </tbody>
+    </table>
+    <table class="table table-framed table-hover table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>AGRICULTURE</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr (click)="AgriProfGeneratePDF()">
+          <td>Agricultural Profle of Davao del Norte</td>
+        </tr>
+        <tr (click)="FisheriesGeneratePDF()">
+          <td>List of Fisheries/ Aquaculture Production by Municipality/City</td>
+        </tr>
+        <tr (click)="LivestockGeneratePDF()">
+          <td>List of Poultry/ Livestock Production by Municipality/City</td>
+        </tr>
+        <tr (click)="RicemillsGeneratePDF()">
+          <td>List of Ricemills by Municipality/City</td>
+        </tr>
+        <tr (click)="WarehouseGeneratePDF()">
+          <td>List of Warehouses by Municipality/City</td>
+        </tr>
+        <tr (click)="SlaughterGeneratePDF()">
+          <td>List of Slaughterhouses by Municipality/City</td>
+        </tr>
+      </tbody>
+    </table>
+    <table class="table table-framed table-hover table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>EDUCATION</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr (click)="PubPrivGeneratePDF()">
+          <td>Number of Public and Private by Municipality/City</td>
+        </tr>
+        <tr (click)="TechvocFacGeneratePDF()">
+          <td>List of Technical/Vocational by Municipality/City</td>
+        </tr>
+        <tr (click)="TertiaryGeneratePDF()">
+          <td>List of Tertiary Facilities by Municipality/City</td>
+        </tr>
+        <tr (click)="PrivElemGeneratePDF()">
+          <td>Number of Private Elementary Schools by Municipality/City</td>
+        </tr>
+        <tr (click)="PrivSecGeneratePDF()">
+          <td>Number of Private Secondary Schools by Municipality/City</td>
+        </tr>
+        <tr (click)="PubElemGeneratePDF()">
+          <td>Number of Public Elementary Shools by Municipality/City</td>
+        </tr>
+        <tr (click)="PubSecGeneratePDF()">
+          <td>Number of Public Secondary Schools by Municipality/City</td>
+        </tr>
+        <tr (click)="DaycareGeneratePDF()">
+          <td>Number of DayCare by Municipality/City</td>
+        </tr>
+        <tr (click)="TertiraryEnrolGeneratePDF()">
+          <td>Tertiary Enrolment by Municipality/City</td>
+        </tr>
+        <tr (click)="TertiaryGradGeneratePDF()">
+          <td>Tertiary Graduates by Municipality/City</td>
+        </tr>
+        <tr (click)="DaycareGeneratePDF()">
+          <td>Number of DayCare by Municipality/City</td>
+        </tr>
+        <tr (click)="TechvoProgramsGeneratePDF()">
+          <td>List of Technical/ Vocational programs by Municipality/City</td>
+        </tr>
+        <tr (click)="TechvocGradGeneratePDF()">
+          <td>Number of Enrolment and Graduates for Technical/ Vocational by Municipality/City</td>
+        </tr>
+        <tr (click)="TrainingCenterGeneratePDF()">
+          <td>List of Training Centers by Municipality/City</td>
+        </tr>
+        <tr (click)="SPEDGeneratePDF()">
+          <td>Number of SPED Enrolment by Municipality/City</td>
+        </tr>
+        <tr (click)="OSYGeneratePDF()">
+          <td>Number of Out of School Youth by Municipality/City</td>
+        </tr>
+      </tbody>
+    </table>
+    <table class="table table-framed table-hover table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>HEALTH</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr (click)="HealthServiceGeneratePDF()">
+          <td>Number of Health Service Workers by Municipality/City</td>
+        </tr>
+        <tr (click)="ComHospGeneratePDF()">
+          <td>List of RHUs/ Community Hospitals by Municipality/City</td>
+        </tr>
+        <tr (click)="BrgyHealthGeneratePDF()">
+          <td>List of Barangay Health Stations by Municipality/City</td>
+        </tr>
+        <tr (click)="PrivateHospGeneratePDF()">
+          <td>List of Private Hospitals by Municipality/City</td>
+        </tr>
+        <tr (click)="SanitaryGeneratePDF()">
+          <td>Households with Access to Safe Water Supply and Sanitary Facilities by Municipality/City</td>
+        </tr>
+        <tr (click)="PWDGeneratePDF()">
+          <td>Persons with Disability</td>
+        </tr>
+        <tr (click)="ProvHospGeneratePDF()">
+          <td>List of Provincial Hospitals</td>
+        </tr>
+      </tbody>
+    </table>
+    <table class="table table-framed table-hover table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>PUBLIC ORDER AND SAFETY</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr (click)="PoliceGeneratePDF()">
+          <td>Police Services by Municipality/City</td>
+        </tr>
+        <tr (click)="FireGeneratePDF()">
+          <td>Fire Protection Services by Municipality/City</td>
+        </tr>
+        <tr (click)="BrgyHealthGeneratePDF()">
+          <td>List of Barangay Health Stations by Municipality/City</td>
+        </tr>
+        <tr (click)="TanodGeneratePDF()">
+          <td>Barangay Peacekeeping/ Tanod Services by Municipality/City</td>
+        </tr>
+        <tr (click)="IndexCrimeGeneratePDF()">
+          <td>Index Crime by Municipality/City</td>
+        </tr>
+      </tbody>
+    </table>
+    <table class="table table-framed table-hover table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>HOUSING</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr (click)="SettlersGeneratePDF()">
+          <td>List of Informal Settlements by Municipality/City</td>
+        </tr>
+        <tr (click)="GovHousingGeneratePDF()">
+          <td>List of Government Housing Projects by Municipality/City</td>
+        </tr>
+        <tr (click)="SubdvGeneratePDF()">
+          <td>List of Subdivisions by Municipality/City</td>
+        </tr>
+      </tbody>
+    </table>
+    <table class="table table-framed table-hover table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>ASSOCIATION</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr (click)="CivicOrgGeneratePDF()">
+          <td>List of Civic Organizations by Municipality/ City</td>
+        </tr>
+        <tr (click)="ReligiousGeneratePDF()">
+          <td>List of Religious Organizations by Municipality/ City</td>
+        </tr>
+        <tr (click)="ProfGeneratePDF()">
+          <td>List of Professional Organizations by Municipality/ City</td>
+        </tr>
+        <tr (click)="CommercialGeneratePDF()">
+          <td>List of Commercial/ Industrial/ Labor Organizations by Municipality/ City</td>
+        </tr>
+        <tr (click)="CooperativesGeneratePDF()">
+          <td>List of Cooperatives by Municipality/ City</td>
+        </tr>
+        <tr (click)="SectoralGeneratePDF()">
+          <td>List of Sectoral by Municipality/ City</td>
+        </tr>
+        <tr (click)="FoundationGeneratePDF()">
+          <td>List of Foundations by Municipality/ City</td>
+        </tr>
+      </tbody>
+    </table>
+    <table class="table table-framed table-hover table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>INFRASTRUCTURE & UTILITIES</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr (click)="TelSysGeneratePDF()">
+          <td>List of Communication Towers/ Cell-sites by Municipality/ City</td>
+        </tr>
+        <tr (click)="MailGeneratePDF()">
+          <td>List of Express Mail/ Mailing Services by Municipality/ City</td>
+        </tr>
+        <tr (click)="ISPGeneratePDF()">
+          <td>List of Internet Service Providers by Municipality/ City</td>
+        </tr>
+        <tr (click)="PostalGeneratePDF()">
+          <td>Number of Postal Services by Municipality/City</td>
+        </tr>
+        <tr (click)="TelcomGeneratePDF()">
+          <td>List of Telecommunication Systems by Municipality/ City</td>
+        </tr>
+        <tr (click)="TelgraphGeneratePDF()">
+          <td>List of Telegraph Facilities by Municipality/ City</td>
+        </tr>
+        <tr (click)="RoadGeneratePDF()">
+          <td>Summary of Road Length by Type and Pavement Classification</td>
+        </tr>
+        <tr (click)="BridgesGeneratePDF()">
+          <td>List of Bridges by Municipality/City</td>
+        </tr>
+        <tr (click)="TerminalsGeneratePDF()">
+          <td>List of Transport Terminals by Municipality/City</td>
+        </tr>
+        <tr (click)="PortGeneratePDF()">
+          <td>List of Ports by Municipality/City</td>
+        </tr>
+        <tr (click)="WaterUtilGeneratePDF()">
+          <td>List of Water Utility Service Providers by Municipality/ City</td>
+        </tr>
+        <tr (click)="WaterPumpGeneratePDF()">
+          <td>List of Water Pump Stations by Municipality/ City</td>
+        </tr>
+        <tr (click)="IrrigsysGeneratePDF()">
+          <td>Irrigation Systems by Municipality/City</td>
+        </tr>
+        <tr (click)="PowerSysGeneratePDF()">
+          <td>List of Power System Service Providers by Municipality/ City</td>
+        </tr>
+        <tr (click)="PowersubGeneratePDF()">
+          <td>List of Power Sub-Stations by Municipality/ City</td>
+        </tr>
+        <tr (click)="WasteGeneratePDF()">
+          <td>List of Waste Management Facilities by Municipality/ City</td>
+        </tr>
+        <tr (click)="IceGeneratePDF()">
+          <td>List of Ice Plant / Cold Storage Facilities by Municipality/ City</td>
+        </tr>
+        <tr (click)="MarketGeneratePDF()">
+          <td>List of Market / Supermarkets by Municipality/ City</td>
+        </tr>
+        <tr (click)="DepGeneratePDF()">
+          <td>List of Department Stores by Municipality/ City</td>
+        </tr>
+        <tr (click)="CemeteryGeneratePDF()">
+          <td>List of Cemeteries/ Memorial Parks by Municipality/ City</td>
+        </tr>
+        <tr (click)="ChurchGeneratePDF()">
+          <td>List of Churches/ Worship Houses by Municipality/ City</td>
+        </tr>
+        <tr (click)="OtherStructGeneratePDF()">
+          <td>List of Other Structures by Municipality/ City</td>
         </tr>
       </tbody>
     </table>

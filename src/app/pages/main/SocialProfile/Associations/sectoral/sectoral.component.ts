@@ -42,7 +42,7 @@ export class SectoralComponent implements OnInit {
   munCityName: string = this.Auth.munCityName;
   menuId = '7';
   dataList: any = [];
-  setYear = this.Auth.activeSetYear;
+  setYear = this.Auth.setYear;
   munCityId = this.Auth.munCityId;
   barangayList: any = [];
   addData: any = {};

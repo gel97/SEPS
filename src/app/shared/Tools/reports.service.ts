@@ -20,6 +20,9 @@ export class ReportsService {
   GetCityOfficialsReport(data:any) {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_officials(), data, { responseType: 'json' });
   }
+  GetOrgStaffReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_org(), data, { responseType: 'json' });
+  }
   GetGeoProfReport(data:any) {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_geo(), data, { responseType: 'json' });
   }

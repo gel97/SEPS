@@ -370,7 +370,7 @@ export class NaturalsAttractionsComponent implements OnInit {
         }
 
         const table = {
-          margin: [0, 40, 0, 0],
+          margin: [0, 10, 0, 0],
           table: {
             widths: [25, '*', '*','*', '*', '*'],
             body: tableData,

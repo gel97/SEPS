@@ -6,6 +6,9 @@ import { AuthService } from 'src/app/services/auth.service';
 import { OrgStaffingService } from 'src/app/shared/Governance/org-staffing.service';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 import { ImportComponent } from 'src/app/components/import/import.component';
+import { PdfComponent } from 'src/app/components/pdf/pdf.component';
+import { PdfService } from 'src/app/services/pdf.service';
+import { ReportsService } from 'src/app/shared/Tools/reports.service';
 
 @Component({
   selector: 'app-org-staffing',
@@ -14,6 +17,8 @@ import { ImportComponent } from 'src/app/components/import/import.component';
 })
 export class OrgStaffingComponent implements OnInit {
   constructor(
+    private pdfService: PdfService,
+    private reportService: ReportsService,
     private service: OrgStaffingService,
     private auth: AuthService,
     private modifyService: ModifyCityMunService
@@ -24,6 +29,8 @@ export class OrgStaffingComponent implements OnInit {
 
   @ViewChild(ImportComponent)
   private importComponent!: ImportComponent;
+  @ViewChild(PdfComponent)
+  private pdfComponent!: PdfComponent;
 
   munCityName: string = this.auth.munCityName;
   toValidate: any = {};
@@ -35,6 +42,405 @@ export class OrgStaffingComponent implements OnInit {
   date = new DatePipe('en-PH');
   ngOnInit(): void {
     this.Init();
+  }
+
+  GeneratePDF() {
+    let data: any = [];
+    let grandTotal: any = {};
+
+    let reports: any = [];
+    let columnLenght: number = 0;
+
+    const tableData: any = [];
+
+    this.reportService.GetOrgStaffReport(this.pdfComponent.data).subscribe({
+      next: (response: any = {}) => {
+        reports = response.data;
+        grandTotal = response.grandTotal;
+
+        console.log('result: ', response);
+
+        data.push({
+          margin: [0, 40, 0, 0],
+          columns: [
+            {
+              text: `Organization/ Staffing Patterns by Municipality/City`,
+              fontSize: 14,
+              bold: true,
+            },
+            {
+              text: `Year: ${response.year}`,
+              fontSize: 14,
+              bold: true,
+              alignment: 'right',
+            },
+          ],
+        });
+
+        tableData.push([
+          {
+            text: '#',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+            fontSize: 9
+          },
+          {
+            text: 'Municipality/ City',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+            fontSize: 9
+          },
+          {
+            text: 'Permanent Employees',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+            fontSize: 9
+          },
+          {
+            text: 'Temporary',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+            fontSize: 9
+          },
+          {
+            text: 'Co-Terminus',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+            fontSize: 9
+          },
+          {
+            text: 'Elected',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+            fontSize: 9
+          },
+          {
+            text: 'Casual',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+            fontSize: 9
+          },
+          {
+            text: 'Job Order',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+            fontSize: 9
+          },
+          {
+            text: 'Contractual',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+            fontSize: 9
+          },
+          {
+            text: 'Casual SEF',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+            fontSize: 9
+          },
+          {
+            text: 'School Board',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+            fontSize: 9
+          },
+          {
+            text: 'Contract of Services',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+            fontSize: 9
+          },
+          {
+            text: 'Others',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+            fontSize: 9
+          },
+        ]);
+
+        reports.forEach((a: any) => {
+          let _district:string = "1st";
+          if(a.district === 2){
+            _district = "2nd"
+          }
+          tableData.push([
+            {
+              text: `${_district} Congressional District `,
+              colSpan: 13,
+              alignment: 'left',
+              fillColor: '#526D82',
+              marginLeft: 5,
+              fontSize: 9
+            },
+          ]);
+          a.data.forEach((b: any, index2: any) => {
+            tableData.push([
+              {
+                text: index2 + 1,
+                fillColor: '#FFFFFF',
+                alignment: 'center',
+                fontSize: 9
+              },
+              {
+                text: b.munCityName,
+                fillColor: '#FFFFFF',
+                fontSize: 9
+              },
+              {
+                text: b.munData.permanentNo,
+                fillColor: '#FFFFFF',
+                fontSize: 9,
+                alignment: 'center',
+              },
+              {
+                text: b.munData.temporary,
+                fillColor: '#FFFFFF',
+                alignment: 'center',
+                fontSize: 9
+              },
+              {
+                text: b.munData.coTerminus,
+                fillColor: '#FFFFFF',
+                alignment: 'center',
+                fontSize: 9
+              },
+              {
+                text: b.munData.elected,
+                fillColor: '#FFFFFF',
+                alignment: 'center',
+                fontSize: 9
+              },
+              {
+                text: b.munData.casual,
+                fillColor: '#FFFFFF',
+                alignment: 'center',
+                fontSize: 9
+              },
+              {
+                text: b.munData.jobOrder,
+                fillColor: '#FFFFFF',
+                alignment: 'center',
+                fontSize: 9
+              },
+              {
+                text: b.munData.contractual,
+                fillColor: '#FFFFFF',
+                alignment: 'center',
+                fontSize: 9
+              },
+              {
+                text: b.munData.casualSef,
+                fillColor: '#FFFFFF',
+                alignment: 'center',
+                fontSize: 9
+              },
+              {
+                text: b.munData.schoolBoard,
+                fillColor: '#FFFFFF',
+                fontSize: 9,
+                alignment: 'center',
+              },
+              {
+                text: b.munData.contractService,
+                fillColor: '#FFFFFF',
+                fontSize: 9,
+                alignment: 'center',
+              },
+              {
+                text: b.munData.others,
+                fillColor: '#FFFFFF',
+                fontSize: 9
+              },
+            ]);
+          });
+
+          tableData.push([
+            {
+              text: 'SUBTOTAL',
+              fillColor: '#9DB2BF',
+              colSpan: 2,
+              marginLeft: 5,
+              fontSize: 9
+            },
+            {},
+            {
+              text: a.subTotal.permanentNo,
+              fillColor: '#9DB2BF',
+              alignment: 'center',
+              fontSize: 9
+            },
+            {
+              text: a.subTotal.temporary,
+              fillColor: '#9DB2BF',
+              alignment: 'center',
+              fontSize: 9
+            },
+            {
+              text: a.subTotal.coTerminus,
+              fillColor: '#9DB2BF',
+              alignment: 'center',
+              fontSize: 9
+            },
+            {
+              text: a.subTotal.elected,
+              fillColor: '#9DB2BF',
+              alignment: 'center',
+              fontSize: 9
+            },
+            {
+              text: a.subTotal.casual,
+              fillColor: '#9DB2BF',
+              alignment: 'center',
+              fontSize: 9
+            },
+            {
+              text: a.subTotal.jobOrder,
+              fillColor: '#9DB2BF',
+              alignment: 'center',
+              fontSize: 9
+            },
+            {
+              text: a.subTotal.contractual,
+              fillColor: '#9DB2BF',
+              alignment: 'center',
+              fontSize: 9
+            },
+            {
+              text: a.subTotal.casualSef,
+              fillColor: '#9DB2BF',
+              alignment: 'center',
+              fontSize: 9
+            },  {
+              text: a.subTotal.schoolBoard,
+              fillColor: '#9DB2BF',
+              alignment: 'center',
+              fontSize: 9
+            },  {
+              text: a.subTotal.contractService,
+              fillColor: '#9DB2BF',
+              alignment: 'center',
+              fontSize: 9
+            },  {
+              text: a.subTotal.others,
+              fillColor: '#9DB2BF',
+              alignment: 'center',
+              fontSize: 9
+            },
+          ]);
+        });
+
+        tableData.push([
+          {
+            text: 'GRANDTOTAL',
+            fillColor:'#F1C93B',
+            colSpan: 2,
+            marginLeft: 5,
+            fontSize: 9
+          },{},
+         {
+            text: grandTotal.permanentNo,
+            fillColor:'#F1C93B',
+            alignment: 'center',
+            fontSize: 9
+          }, {
+            text: grandTotal.temporary,
+            fillColor:'#F1C93B',
+            alignment: 'center',
+            fontSize: 9
+          }, {
+            text: grandTotal.coTerminus,
+            fillColor:'#F1C93B',
+            alignment: 'center',
+            fontSize: 9
+          }, {
+            text: grandTotal.elected,
+            fillColor:'#F1C93B',
+            alignment: 'center',
+            fontSize: 9
+          }, {
+            text: grandTotal.casual,
+            fillColor:'#F1C93B',
+            alignment: 'center',
+            fontSize: 9
+          }, {
+            text: grandTotal.jobOrder,
+            fillColor:'#F1C93B',
+            alignment: 'center',
+            fontSize: 9
+          }, {
+            text: grandTotal.contractual,
+            fillColor:'#F1C93B',
+            alignment: 'center',
+            fontSize: 9
+          },{
+            text: grandTotal.casualSef,
+            fillColor:'#F1C93B',
+            alignment: 'center',
+            fontSize: 9
+          },{
+            text: grandTotal.schoolBoard,
+            fillColor:'#F1C93B',
+            alignment: 'center',
+            fontSize: 9
+          },{
+            text: grandTotal.contractService,
+            fillColor:'#F1C93B',
+            alignment: 'center',
+            fontSize: 9
+          },{
+            text: grandTotal.others,
+            fillColor:'#F1C93B',
+            alignment: 'center',
+            fontSize: 9
+          },
+        ]);
+
+        const table = {
+          margin: [0, 10, 0, 0],
+          table: {
+            widths: [25, '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*'],
+            body: tableData,
+          },
+          layout: 'lightHorizontalLines',
+        };
+
+        data.push(table);
+      },
+      error: (error: any) => {
+        console.log(error);
+      },
+      complete: () => {
+        let isPortrait = false;
+        this.pdfService.GeneratePdf(data, isPortrait);
+        console.log(data);
+      },
+    });
   }
 
   viewData: boolean = false;

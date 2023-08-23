@@ -82,7 +82,7 @@ export class PubSecondaryComponent implements OnInit {
             margin: [0, 40, 0, 0],
             columns: [
               {
-                text: `Private Elementary by Municipality/City`,
+                text: `Public Secondary by Municipality/City`,
                 fontSize: 14,
                 bold: true,
               },

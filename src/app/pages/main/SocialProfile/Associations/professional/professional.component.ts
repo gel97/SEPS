@@ -38,7 +38,7 @@ export class ProfessionalComponent implements OnInit {
   munCityId = this.Auth.munCityId;
   munCityName: string = this.Auth.munCityName;
   munName = this.Auth.munCityName + ', Davao del Norte';
-  setYear = Number(this.Auth.activeSetYear);
+  setYear = Number(this.Auth.setYear);
 
   addData: any = {};
   editData: any = {};

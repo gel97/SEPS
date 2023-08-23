@@ -36,7 +36,7 @@ export class CivicOrgComponent implements OnInit {
   munCityId = this.Auth.munCityId;
   munCityName: string = this.Auth.munCityName;
   munName = this.Auth.munCityName;
-  setYear = Number(this.Auth.activeSetYear);
+  setYear = Number(this.Auth.setYear);
 
   addData: any = {};
   editData: any = {};

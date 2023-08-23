@@ -21,7 +21,7 @@
                   <label><strong>Governance - {{modifyCityMun(munCityName)}}
                     </strong></label>
                 </div>
-
+            
                 <form class="user collapse show" id="collapseExample">
                   <div class="form-group">
                     <div class="row"></div>
@@ -31,6 +31,9 @@
                         <form action="/action_page.php">
                           <input type="file" id="myFile" name="filename" />
                         </form>
+                        <div class="form-inline float-right ">       
+                          <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
+                      </div>
                         <br>
                       </div>
                       <div class="table-responsive">

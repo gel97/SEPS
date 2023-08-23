@@ -30,7 +30,7 @@ export class BarangayPeacekeepingComponent implements OnInit {
     return this.modifyService.ModifyText(cityMunName);
   }
 
-  setYear = Number(this.Auth.activeSetYear);
+  setYear = Number(this.Auth.setYear);
   munCityId = this.Auth.munCityId;
   listData: any = [];
   addData: any = {};
