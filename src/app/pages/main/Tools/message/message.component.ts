@@ -69,9 +69,9 @@ export class MessageComponent implements OnInit {
 
   FilterMessages(){
     if(this.listMessage.length > 0){
-      this.listMessage.forEach((a:any) => {
+      this.listMessage?.forEach((a:any) => {
         let add:boolean = true;
-        this.listMyMessage.forEach((b:any) => {
+        this.listMyMessage?.forEach((b:any) => {
           if(a.fromUserId == b.toUserId && a.toUserId == b.fromUserId){
             if(a.createdAt > b.createdAt){
               add = false;
