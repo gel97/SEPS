@@ -4,7 +4,6 @@
 
     <!-- Sidebar -->
     <ul class="navbar-nav  sidebar sidebar-dark accordion shadow-sm" aria-expanded="true" id="accordionSidebar">
-
         <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" routerLink="">
             <div class="sidebar-brand-icon">
@@ -43,8 +42,6 @@
             </a>
         </div>
 
-
-
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
 
@@ -54,163 +51,170 @@
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span></a>
         </li>
+        <app-hidefromguestmenu>
 
-        <!-- Divider -->
-        <hr class="sidebar-divider">
-
-        <!-- Heading -->
-        <div class="sidebar-heading">
-            Interface
-        </div>
-
-        <!-- Nav Item - Governance -->
-        <li class="nav-item" routerLinkActive="active">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGovernance"
-                aria-expanded="true" aria-controls="collapseTwo">
-                <i class="fas fa-fw fa-users"></i>
-                <span>Governance</span>
-            </a>
-            <div id="collapseGovernance" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                <div class="bg-lightblue collapse-inner rounded">
-                    <a class="collapse-item" routerLinkActive="active" routerLink="gov_cityOfficials">City Officials</a>
-                    <a class="collapse-item" routerLinkActive="active" routerLink="gov_Barangays">Barangays</a>
-                    <a class="collapse-item" routerLinkActive="active" routerLink="gov_geoProfile">Physical / Geographic
-                        Profile</a>
-                    <a class="collapse-item" routerLinkActive="active" routerLink="Governance/org-staffing">Organization
-                        & Staffing
-                        Pattern</a>
-                    <a class="collapse-item" routerLinkActive="active" routerLink="Governance/fiscal-matters">Fiscal
-                        Matters</a>
-                    <a class="collapse-item" routerLinkActive="active" routerLink="Governance/demography">Demography</a>
-                    <a class="collapse-item" routerLinkActive="active"
-                        routerLink="Governance/registered-voters">Precincts/ Registered
-                        Voters</a>
-                    <a class="collapse-item" routerLinkActive="active" routerLink="Governance/sk-voters">Precincts/
-                        Registered SK Voters</a>
-                    <a class="collapse-item" routerLinkActive="active"
-                        routerLink="Governance/provincial-officials">Provincial Officials</a>
-                    <a class="collapse-item" routerLinkActive="active" routerLink="Governance/fiscal-report">Provincial
-                        Fiscal Report</a>
-                    <a class="collapse-item" routerLinkActive="active"
-                        routerLink="Governance/city-location">Municipal/City Locations</a>
-                </div>
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Interface
             </div>
-        </li>
-        <app-menu>
-            <!-- Nav Item - Socio-Economic Activities -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSocio-Economic"
-                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-industry"></i>
-                    <span>Socio-Economic Act.</span>
+
+            <!-- Nav Item - Governance -->
+            <li class="nav-item" routerLinkActive="active">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGovernance"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-fw fa-users"></i>
+                    <span>Governance</span>
                 </a>
-                <div id="collapseSocio-Economic" class="collapse" aria-labelledby="headingUtilities"
+                <div id="collapseGovernance" class="collapse" aria-labelledby="headingTwo"
                     data-parent="#accordionSidebar">
                     <div class="bg-lightblue collapse-inner rounded">
-                        <!-- ==================== -->
-            <li class="nav-item" routerLinkActive="active">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTradeIndustry"
-                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class='fas fa-exchange-alt'></i>
-                    <span>Trade and Ind.</span>
-                </a>
-                <div id="collapseTradeIndustry" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#collapseSocio-Economic">
-                    <div class="bg-lightblue py-2 collapse-inner rounded">
+                        <a class="collapse-item" routerLinkActive="active" routerLink="gov_cityOfficials">City
+                            Officials</a>
+                        <a class="collapse-item" routerLinkActive="active" routerLink="gov_Barangays">Barangays</a>
+                        <a class="collapse-item" routerLinkActive="active" routerLink="gov_geoProfile">Physical /
+                            Geographic
+                            Profile</a>
                         <a class="collapse-item" routerLinkActive="active"
-                            routerLink="socio-economic/trade-and-industry/major-economic-activities">Major Economic
-                            Activities</a>
+                            routerLink="Governance/org-staffing">Organization
+                            & Staffing
+                            Pattern</a>
+                        <a class="collapse-item" routerLinkActive="active" routerLink="Governance/fiscal-matters">Fiscal
+                            Matters</a>
                         <a class="collapse-item" routerLinkActive="active"
-                            routerLink="socio-economic/trade-and-industry/manufacturing-establishments">Manufacturing
-                            Establishments</a>
+                            routerLink="Governance/demography">Demography</a>
                         <a class="collapse-item" routerLinkActive="active"
-                            routerLink="socio-economic/trade-and-industry/comercial-establishments">Commercial
-                            Establishments</a>
+                            routerLink="Governance/registered-voters">Precincts/ Registered
+                            Voters</a>
+                        <a class="collapse-item" routerLinkActive="active" routerLink="Governance/sk-voters">Precincts/
+                            Registered SK Voters</a>
                         <a class="collapse-item" routerLinkActive="active"
-                            routerLink="socio-economic/trade-and-industry/summary-commercial">Summary - Commercial
-                            Est.</a>
+                            routerLink="Governance/provincial-officials">Provincial Officials</a>
                         <a class="collapse-item" routerLinkActive="active"
-                            routerLink="socio-economic/trade-and-industry/industrial-estates">Industrial Estates</a>
+                            routerLink="Governance/fiscal-report">Provincial
+                            Fiscal Report</a>
                         <a class="collapse-item" routerLinkActive="active"
-                            routerLink="socio-economic/trade-and-industry/financial-institutions">Financial
-                            Institutions</a>
-
+                            routerLink="Governance/city-location">Municipal/City Locations</a>
                     </div>
                 </div>
             </li>
+            <app-menu>
+                <!-- Nav Item - Socio-Economic Activities -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSocio-Economic"
+                        aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fas fa-fw fa-industry"></i>
+                        <span>Socio-Economic Act.</span>
+                    </a>
+                    <div id="collapseSocio-Economic" class="collapse" aria-labelledby="headingUtilities"
+                        data-parent="#accordionSidebar">
+                        <div class="bg-lightblue collapse-inner rounded">
+                            <!-- ==================== -->
+                <li class="nav-item" routerLinkActive="active">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTradeIndustry"
+                        aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class='fas fa-exchange-alt'></i>
+                        <span>Trade and Ind.</span>
+                    </a>
+                    <div id="collapseTradeIndustry" class="collapse" aria-labelledby="headingUtilities"
+                        data-parent="#collapseSocio-Economic">
+                        <div class="bg-lightblue py-2 collapse-inner rounded">
+                            <a class="collapse-item" routerLinkActive="active"
+                                routerLink="socio-economic/trade-and-industry/major-economic-activities">Major Economic
+                                Activities</a>
+                            <a class="collapse-item" routerLinkActive="active"
+                                routerLink="socio-economic/trade-and-industry/manufacturing-establishments">Manufacturing
+                                Establishments</a>
+                            <a class="collapse-item" routerLinkActive="active"
+                                routerLink="socio-economic/trade-and-industry/comercial-establishments">Commercial
+                                Establishments</a>
+                            <a class="collapse-item" routerLinkActive="active"
+                                routerLink="socio-economic/trade-and-industry/summary-commercial">Summary - Commercial
+                                Est.</a>
+                            <a class="collapse-item" routerLinkActive="active"
+                                routerLink="socio-economic/trade-and-industry/industrial-estates">Industrial Estates</a>
+                            <a class="collapse-item" routerLinkActive="active"
+                                routerLink="socio-economic/trade-and-industry/financial-institutions">Financial
+                                Institutions</a>
 
-            <!-- ==================== -->
-            <li class="nav-item" routerLinkActive="active">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTourism"
-                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-globe"></i>
-                    <span>Tourism</span>
-                </a>
-                <div id="collapseTourism" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#collapseSocio-Economic">
-                    <div class="bg-lightblue py-2 collapse-inner rounded">
-                        <a class="collapse-item" routerLinkActive="active"
-                            routerLink="socio-economic/Tourism/resorts">Resorts</a>
-                        <a class="collapse-item" routerLinkActive="active"
-                            routerLink="socio-economic/Tourism/recreation-facilities">Recreation
-                            Facilities</a>
-                        <a class="collapse-item" routerLinkActive="active"
-                            routerLink="socio-economic/Tourism/hotels-lodging-houses">Lodging
-                            Houses</a>
-                        <a class="collapse-item" routerLinkActive="active"
-                            routerLink="socio-economic/Tourism/cinema-movie-houses">Cinema/ Movie
-                            Houses</a>
-                        <a class="collapse-item" routerLinkActive="active"
-                            routerLink="socio-economic/Tourism/naturals-attractions"> Natural/
-                            Man-made Tourist Attractions</a>
-                        <a class="collapse-item" routerLinkActive="active"
-                            routerLink="socio-economic/Tourism/cultural-attractions">Cultural/
-                            Religious Attractions</a>
-                        <a class="collapse-item" routerLinkActive="active"
-                            routerLink="socio-economic/Tourism/festival-attractions">Fiestas and
-                            Festivals</a>
+                        </div>
                     </div>
-                </div>
-            </li>
+                </li>
 
-            <!-- ==================== -->
-            <li class="nav-item" routerLinkActive="active">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAgriculture"
-                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-tree"></i>
-                    <span>Agriculture</span>
-                </a>
-                <div id="collapseAgriculture" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#collapseSocio-Economic">
-                    <div class="bg-lightblue py-2 collapse-inner rounded">
-                        <a class="collapse-item" routerLinkActive="active"
-                            routerLink="socio-economic/Agriculture/agricultural-profile">Agricultural Profile</a>
-                        <a class="collapse-item" routerLinkActive="active"
-                            routerLink="socio-economic/Agriculture/rice-crops-production">Rice/
-                            Crops Production</a>
-                        <a class="collapse-item" routerLinkActive="active"
-                            routerLink="socio-economic/Agriculture/fisheries-aquaculture">Fisheries/ Aquaculture</a>
-                        <a class="collapse-item" routerLinkActive="active"
-                            routerLink="socio-economic/Agriculture/livestock-production">Livestock
-                            / Poultry</a>
-                        <a class="collapse-item" routerLinkActive="active"
-                            routerLink="socio-economic/Agriculture/ricemills">Ricemills</a>
-                        <a class="collapse-item" routerLinkActive="active"
-                            routerLink="socio-economic/Agriculture/warehouses">Warehouses</a>
-                        <a class="collapse-item" routerLinkActive="active"
-                            routerLink="socio-economic/Agriculture/slaughterhouses">Slaughterhouses</a>
-                        <a class="collapse-item" routerLinkActive="active"
-                            routerLink="socio-economic/Agriculture/provincial-crops-production">Provincial Crops
-                            Production</a>
-                        <a class="collapse-item" routerLinkActive="active"
-                            routerLink="socio-economic/Agriculture/provincial-crops-harvested">Provincial Crops Area
-                            Harvested</a>
-                        <a class="collapse-item" routerLinkActive="active"
-                            routerLink="socio-economic/Agriculture/provincial-crops-total-production">Provincial Crops
-                            Total Production</a>
+                <!-- ==================== -->
+                <li class="nav-item" routerLinkActive="active">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTourism"
+                        aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fas fa-fw fa-globe"></i>
+                        <span>Tourism</span>
+                    </a>
+                    <div id="collapseTourism" class="collapse" aria-labelledby="headingUtilities"
+                        data-parent="#collapseSocio-Economic">
+                        <div class="bg-lightblue py-2 collapse-inner rounded">
+                            <a class="collapse-item" routerLinkActive="active"
+                                routerLink="socio-economic/Tourism/resorts">Resorts</a>
+                            <a class="collapse-item" routerLinkActive="active"
+                                routerLink="socio-economic/Tourism/recreation-facilities">Recreation
+                                Facilities</a>
+                            <a class="collapse-item" routerLinkActive="active"
+                                routerLink="socio-economic/Tourism/hotels-lodging-houses">Lodging
+                                Houses</a>
+                            <a class="collapse-item" routerLinkActive="active"
+                                routerLink="socio-economic/Tourism/cinema-movie-houses">Cinema/ Movie
+                                Houses</a>
+                            <a class="collapse-item" routerLinkActive="active"
+                                routerLink="socio-economic/Tourism/naturals-attractions"> Natural/
+                                Man-made Tourist Attractions</a>
+                            <a class="collapse-item" routerLinkActive="active"
+                                routerLink="socio-economic/Tourism/cultural-attractions">Cultural/
+                                Religious Attractions</a>
+                            <a class="collapse-item" routerLinkActive="active"
+                                routerLink="socio-economic/Tourism/festival-attractions">Fiestas and
+                                Festivals</a>
+                        </div>
                     </div>
-                </div>
-            </li>
+                </li>
+
+                <!-- ==================== -->
+                <li class="nav-item" routerLinkActive="active">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAgriculture"
+                        aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fas fa-fw fa-tree"></i>
+                        <span>Agriculture</span>
+                    </a>
+                    <div id="collapseAgriculture" class="collapse" aria-labelledby="headingUtilities"
+                        data-parent="#collapseSocio-Economic">
+                        <div class="bg-lightblue py-2 collapse-inner rounded">
+                            <a class="collapse-item" routerLinkActive="active"
+                                routerLink="socio-economic/Agriculture/agricultural-profile">Agricultural Profile</a>
+                            <a class="collapse-item" routerLinkActive="active"
+                                routerLink="socio-economic/Agriculture/rice-crops-production">Rice/
+                                Crops Production</a>
+                            <a class="collapse-item" routerLinkActive="active"
+                                routerLink="socio-economic/Agriculture/fisheries-aquaculture">Fisheries/ Aquaculture</a>
+                            <a class="collapse-item" routerLinkActive="active"
+                                routerLink="socio-economic/Agriculture/livestock-production">Livestock
+                                / Poultry</a>
+                            <a class="collapse-item" routerLinkActive="active"
+                                routerLink="socio-economic/Agriculture/ricemills">Ricemills</a>
+                            <a class="collapse-item" routerLinkActive="active"
+                                routerLink="socio-economic/Agriculture/warehouses">Warehouses</a>
+                            <a class="collapse-item" routerLinkActive="active"
+                                routerLink="socio-economic/Agriculture/slaughterhouses">Slaughterhouses</a>
+                            <a class="collapse-item" routerLinkActive="active"
+                                routerLink="socio-economic/Agriculture/provincial-crops-production">Provincial Crops
+                                Production</a>
+                            <a class="collapse-item" routerLinkActive="active"
+                                routerLink="socio-economic/Agriculture/provincial-crops-harvested">Provincial Crops Area
+                                Harvested</a>
+                            <a class="collapse-item" routerLinkActive="active"
+                                routerLink="socio-economic/Agriculture/provincial-crops-total-production">Provincial
+                                Crops
+                                Total Production</a>
+                        </div>
+                    </div>
+                </li>
 </div>
 </div>
 </li>
@@ -603,7 +607,8 @@
     </a>
     <div id="collapseTools" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
         <div class="bg-lightblue collapse-inner rounded">
-            <app-ddn><a class="collapse-item" routerLinkActive="active" routerLink="Tools/news">News/ Announcements</a></app-ddn>
+            <app-ddn><a class="collapse-item" routerLinkActive="active" routerLink="Tools/news">News/
+                    Announcements</a></app-ddn>
             <a class="collapse-item" routerLinkActive="active" routerLink="Tools/summary-reports">Summary Reports</a>
         </div>
     </div>
@@ -611,7 +616,7 @@
 
 <!-- Divider -->
 <hr class="sidebar-divider d-none d-md-block">
-
+</app-hidefromguestmenu>
 <app-ddn>
     <!-- Heading -->
     <div class="sidebar-heading">
@@ -642,8 +647,6 @@
     <button (click)="toggleSidebar()" aria-controls="accordionSidebar" class="rounded-circle border-0"
         id="sidebarToggle"></button>
 </div>
-
-
 
 </ul>
 <!-- End of Sidebar -->
@@ -783,7 +786,8 @@
     <footer class="sticky-footer bg-white">
         <div class="container my-auto">
             <div class="copyright text-center my-auto">
-                <span>Copyright &copy; 2023 Provincial Planning and Development Office, Province of Davao del Norte.   All rights reserved.</span>
+                <span>Copyright &copy; 2023 Provincial Planning and Development Office, Province of Davao del Norte. All
+                    rights reserved.</span>
             </div>
         </div>
     </footer>

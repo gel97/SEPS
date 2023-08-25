@@ -151,6 +151,7 @@ import { SummaryReportComponent } from './pages/main/Tools/summary-report/summar
 import { MessageComponent } from './pages/main/Tools/message/message.component';
 import { TruncatePipe } from './pipes/truncate.pipe';
 import { MessageListComponent } from './pages/main/Tools/message-list/message-list.component';
+import { HidefromguestmenuComponent } from './Admin/hidefromguestmenu/hidefromguestmenu.component';
 
 @NgModule({
   declarations: [
@@ -289,6 +290,7 @@ import { MessageListComponent } from './pages/main/Tools/message-list/message-li
     MessageComponent,
     TruncatePipe,
     MessageListComponent,
+    HidefromguestmenuComponent,
   ],
   imports: [
     MdbCollapseModule,

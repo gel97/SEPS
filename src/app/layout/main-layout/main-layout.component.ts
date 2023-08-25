@@ -55,14 +55,19 @@ export class MainLayoutComponent implements OnInit {
 
   _userData: any = {};
   userInfo: any = {};
+  guest:any;
 
   ngOnInit(): void {
-     this.set_year = this.service.setYear;
+    this.guest = localStorage.getItem("guest");
+
+    this.set_year = this.service.setYear;
     this.active_set_year = this.service.activeSetYear;
     this._userData = this.service.getUserData();
-    this.munCityName = this.service.munCityName;
+    this.munCityName = this.guest && this.service.munCityId === "null"?'Province of Davao del Norte' : this.service.munCityName;
     this.userInfo = JSON.parse(this._userData);
-      this.imagesService.GetLogo(this.service.munCityId).pipe(concatMap(item => of(item).pipe(delay(2000))), catchError((error: any, caught: Observable<any>): Observable<any> => {
+
+
+      this.imagesService.GetLogo(this.guest && this.service.munCityId === "null" ?"ddn":this.service.munCityId).pipe(concatMap(item => of(item).pipe(delay(2000))), catchError((error: any, caught: Observable<any>): Observable<any> => {
         console.error('There was an error!', error);  
         if(error){
           this.isLoading = false;

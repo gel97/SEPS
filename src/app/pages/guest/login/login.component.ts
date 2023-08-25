@@ -94,6 +94,9 @@ callLoginButton() {
         token: googleAuthUser.getAuthResponse().id_token
       }
 
+      localStorage.setItem("guest", JSON.stringify(true));
+      localStorage.setItem("munCityId", JSON.stringify(null));
+
       localStorage.setItem("token", this.userData.token);
       localStorage.setItem("userData", JSON.stringify(this.userData));
 

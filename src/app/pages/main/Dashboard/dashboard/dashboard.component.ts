@@ -43,7 +43,13 @@ export class DashboardComponent implements OnInit {
     
   }
   
+  guest:any;
+  guestMunCityId:any;
+
   ngOnInit(): void {
+    this.guest = localStorage.getItem("guest");
+    this.guestMunCityId = localStorage.getItem("munCityId");
+    console.log("guest",this.guest)
     this.GetImage();
     this.GetNews();
   }
@@ -77,7 +83,8 @@ export class DashboardComponent implements OnInit {
 
   GetImage()
   {
-    this.imagesService.GetImage(this.auth.munCityId).pipe(catchError((error: any, caught: Observable<any>): Observable<any> => {
+    
+    this.imagesService.GetImage(this.guest && this.auth.munCityId === "null" ?"ddn":this.auth.munCityId).pipe(catchError((error: any, caught: Observable<any>): Observable<any> => {
       console.error('There was an error!', error);    
       return of();
   })).subscribe(response => { 
