@@ -14,22 +14,31 @@ export class NotificationComponent implements OnInit {
   constructor(private NotifSeenService: NotifSeenService, private NewsService: NewsService, private auth: AuthService) { }
   SeenList: any = [];
   NotifList: any = [];
+  NotifData: any = [];
   totalNotif: any = [];
 
+  munCityId:any;
   ngOnInit(): void {
+    this.munCityId = this.auth.munCityId;
     this.GetNotif();
   }
 
   GetNotif() {
+    this.NotifList = [];
     this.NewsService.GetNews().subscribe({
       next: (response) => {
-        this.NotifList = (<any>response);
+        this.NotifData = (<any>response);
         
       },
       error: (error) => {
 
       },
       complete: () => {
+        this.NotifData.forEach((a:any) => {
+          if(a.munCityId === "DDN"){
+            this.NotifList.push(a);
+          }
+        });
         this.GetSeen();
       }
     })

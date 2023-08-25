@@ -152,6 +152,8 @@ import { MessageComponent } from './pages/main/Tools/message/message.component';
 import { TruncatePipe } from './pipes/truncate.pipe';
 import { MessageListComponent } from './pages/main/Tools/message-list/message-list.component';
 import { HidefromguestmenuComponent } from './Admin/hidefromguestmenu/hidefromguestmenu.component';
+import { ForAllAdminComponent } from './Admin/for-all-admin/for-all-admin.component';
+import { DdnDashboardComponent } from './pages/main/Dashboard/ddn-dashboard/ddn-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -291,6 +293,8 @@ import { HidefromguestmenuComponent } from './Admin/hidefromguestmenu/hidefromgu
     TruncatePipe,
     MessageListComponent,
     HidefromguestmenuComponent,
+    ForAllAdminComponent,
+    DdnDashboardComponent,
   ],
   imports: [
     MdbCollapseModule,

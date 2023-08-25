@@ -11,18 +11,17 @@ import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';
 import { NewsService } from 'src/app/shared/Tools/news.service';
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  selector: 'app-ddn-dashboard',
+  templateUrl: './ddn-dashboard.component.html',
+  styleUrls: ['./ddn-dashboard.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class DdnDashboardComponent implements OnInit {
   @ViewChild('closeModal')
   closeModal!: ElementRef; 
   isElementVisible: boolean = true;
   
   @HostListener('window:scroll', [])
   onWindowScroll() {
-    // Logic to determine visibility based on scroll position
     if (window.pageYOffset > 10000) {
       this.isElementVisible = false;
     } else {
@@ -43,14 +42,8 @@ export class DashboardComponent implements OnInit {
   constructor(private auth:AuthService, private baseUrl: BaseUrl, private imagesService: ImagesService, private newsService: NewsService) { 
     
   }
-  
-  guest:any;
-  guestMunCityId:any;
 
   ngOnInit(): void {
-    this.guest = localStorage.getItem("guest");
-    this.guestMunCityId = localStorage.getItem("munCityId");
-    console.log("guest",this.guest)
     this.GetImage();
     this.GetNews();
   }
@@ -66,27 +59,11 @@ export class DashboardComponent implements OnInit {
 
       },
       complete: ()=>{
-        if(this.auth.munCityId === "null"){
-          this.listNewsData.forEach((a:any) => {
-            if(a.munCityId === "DDN"){
-              this.listNews.push(a);
-            }
-          });
-        }
-        else if(this.auth.o_munCityId !== "DDN"){
-          this.listNewsData.forEach((a:any) => {
-            if(a.munCityId === this.auth.munCityId){
-              this.listNews.push(a);
-            }
-          });
-        }
-        else{
-          this.listNewsData.forEach((a:any) => {
-            if(a.munCityId === "DDN"){
-              this.listNews.push(a);
-            }
-          });
-        }
+        this.listNewsData.forEach((a:any) => {
+          if(a.munCityId === "DDN"){
+            this.listNews.push(a);
+          }
+        });
       }
     });
   }
@@ -105,7 +82,7 @@ export class DashboardComponent implements OnInit {
   GetImage()
   {
     
-    this.imagesService.GetImage(this.guest && this.auth.munCityId === "null" ?"ddn":this.auth.munCityId).pipe(catchError((error: any, caught: Observable<any>): Observable<any> => {
+    this.imagesService.GetImage("ddn").pipe(catchError((error: any, caught: Observable<any>): Observable<any> => {
       console.error('There was an error!', error);    
       return of();
   })).subscribe(response => { 

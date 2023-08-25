@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { NewsService } from 'src/app/shared/Tools/news.service';
+import { AuthService } from 'src/app/services/auth.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -10,13 +11,14 @@ import Swal from 'sweetalert2';
 })
 export class NewsComponent implements OnInit {
 
-  constructor(private service:NewsService) { }
+  constructor(private service:NewsService, private auth:AuthService) { }
    
   title = 'angular';
   public Editor = ClassicEditor;
   public editorInstance: any;
 
   listData:any = [];
+  filterData:any = [];
   data:any = {};      
   toValidate:any = {};
   isAdd:boolean = false;
@@ -48,6 +50,16 @@ export class NewsComponent implements OnInit {
       },
       complete: () =>
       {
+        if(this.auth.o_munCityId !== "DDN"){
+          this.listData.forEach((a:any) => {
+            if(a.munCityId === this.auth.o_munCityId){
+              this.filterData.push(a);
+            }
+          });
+        }
+        else{
+          this.filterData = this.listData;
+        }
 
       }
     })
@@ -74,6 +86,7 @@ export class NewsComponent implements OnInit {
       {
         this.data.hidden = 0
       }
+      this.data.munCityId = this.auth.o_munCityId;
       this.service.AddNews(this.data).subscribe({
         next: (request) => {
           this.GetData();

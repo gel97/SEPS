@@ -1,5 +1,5 @@
 <li class="nav-item dropdown no-arrow mx-1" >
-    <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+    <a class="nav-link dropdown-toggle" id="alertsDropdown" role="button"
         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="GetNotif(); result = [];totalNotif = []">
         <i class="fas fa-bell fa-fw"></i>
         <!-- Counter - Alerts -->
@@ -13,7 +13,7 @@
         </h6>
         <div *ngIf="result.length > 0; else empty">
         <div *ngFor="let item of result">
-            <a (click)="!item.seen? IsSeen(item):''" class="dropdown-item d-flex align-items-center" [ngClass]="item.seen? '':'bg-notif'"  href="#">
+            <a (click)="!item.seen? IsSeen(item):''" class="dropdown-item d-flex align-items-center" [ngClass]="item.seen? '':'bg-notif'" [routerLink]="munCityId === 'DDN'? '':'dashboard/ddn'">
                 <!-- <div class="mr-3">
                     <div class="icon-circle bg-primary">
                         <i class="fas fa-file-alt text-white"></i>
@@ -28,7 +28,7 @@
         </div>
         <ng-template #empty>
             <div>
-                <p class="text-center mt-2">No Notification.</p>
+                <p class="text-center text-xs mt-2">No Notification.</p>
             </div>
         </ng-template>      
     </div>

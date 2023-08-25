@@ -118,6 +118,7 @@ import { TechvocEnrolGradComponent } from './pages/main/SocialProfile/Education/
 import { IndexCrimeComponent } from './pages/main/SocialProfile/PublicOrder/index-crime/index-crime.component';
 import { SummaryReportComponent } from './pages/main/Tools/summary-report/summary-report.component';
 import { MessageListComponent } from './pages/main/Tools/message-list/message-list.component';
+import { DdnDashboardComponent } from './pages/main/Dashboard/ddn-dashboard/ddn-dashboard.component';
 const socioEconomic_TradeIndustry:string = 'socio-economic/trade-and-industry/';
 const socioEconomic_Tourism:string = 'socio-economic/Tourism/';
 const socioEconomic_Agriculture:string = 'socio-economic/Agriculture/';
@@ -156,6 +157,7 @@ const routes: Routes = [
     [
       {path: '', redirectTo:'/dashboard',pathMatch: 'full'},
       {path: 'dashboard',component:DashboardComponent},
+      {path: 'dashboard/ddn',component:DdnDashboardComponent},
       {path: 'gov_cityOfficials',component:CityOfficialsComponent},
       {path: 'gov_Barangays',component:BarangaysComponent},
       {path: 'gov_geoProfile',component:GeoProfileComponent},

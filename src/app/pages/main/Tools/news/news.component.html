@@ -24,24 +24,26 @@
                                         <th scope="col">#</th>
                                         <th></th>
                                         <th scope="col">Title</th>
+                                        <th scope="col">Municipality/ Name</th>
                                         <th scope="col">Date Posted	</th>
                                         <th scope="col">Last Update</th>
                                         <th width="5"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let item of listData; let i = index;">
+                                    <tr *ngFor="let item of filterData; let i = index;">
                                         <td>{{i+1}}</td>
                                         <td><i *ngIf="item.hidden" class='fa fa-eye-slash text-gray-900'></i></td>
                                         <td>{{item.title}}</td>
+                                        <td>{{item.munCityName? item.munCityName : "DDN"}}</td>
                                         <td>{{item.datePosted | hoursAgoOrDate}}</td>
                                         <td>{{item.lastUpdated | hoursAgoOrDate}}</td>
                                         <td>
                                             <div class="d-inline-flex">
                                                 <app-admin>
                                                     <button (click)="isAdd = false; data = item"
-                                                        class="btn btn-info btn-circle" data-toggle="modal"
-                                                        data-target="#openModal"><i class="fa fa-pen"></i>
+                                                        class="btn btn-info btn-circle" data-bs-toggle="modal"
+                                                        data-bs-target="#openModal"><i class="fa fa-pen"></i>
                                                     </button>
                                                 </app-admin>
                                                 &nbsp;
