@@ -112,6 +112,9 @@ export class ReportsService {
   GetHealthHospitalReport(data:any) {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_health_hospital(), data, { responseType: 'json' });
   }
+  GetHealthPrevRateReport(data:any) {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_health_prev_rate(), data, { responseType: 'json' });
+  }
 
   //Safety
   GetSafetyPoliceReport(data:any) {

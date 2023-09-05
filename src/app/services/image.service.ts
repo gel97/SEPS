@@ -37,6 +37,17 @@ export class ImagesService {
     });
   }
 
+  public GetOrg(munCityId:any){
+    return this.http.get(this.api + this.ApiUrl.get_image_org(munCityId) , {responseType: 'blob'}).pipe(retry(1), catchError(this.handleError));
+  }
+
+  public UploadOrg(inpudata:any){
+    return this.http.post(this.api + this.ApiUrl.post_upload_image_org(), inpudata, {
+      reportProgress:true,
+      observe:'events'
+    });
+  }
+
   handleError(error:any) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {

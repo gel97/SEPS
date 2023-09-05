@@ -119,6 +119,7 @@ import { IndexCrimeComponent } from './pages/main/SocialProfile/PublicOrder/inde
 import { SummaryReportComponent } from './pages/main/Tools/summary-report/summary-report.component';
 import { MessageListComponent } from './pages/main/Tools/message-list/message-list.component';
 import { DdnDashboardComponent } from './pages/main/Dashboard/ddn-dashboard/ddn-dashboard.component';
+import { PrevRateComponent } from './pages/main/SocialProfile/Health/prev-rate/prev-rate.component';
 const socioEconomic_TradeIndustry:string = 'socio-economic/trade-and-industry/';
 const socioEconomic_Tourism:string = 'socio-economic/Tourism/';
 const socioEconomic_Agriculture:string = 'socio-economic/Agriculture/';
@@ -216,6 +217,7 @@ const routes: Routes = [
       { path: SocialProfile_Health+ '/person-disability',component:PersonDisabilityComponent},
       { path: SocialProfile_Health+ '/provincial-hospital',component:ProvincialHospitalComponent},
       { path: SocialProfile_Health+ '/provincial-health',component:ProvincialHealthComponent},
+      { path: SocialProfile_Health+ '/prevalence-rate',component:PrevRateComponent},
       { path: SocialProfile_PublicOrder+ '/police-services',component:PoliceServicesComponent},
       { path: SocialProfile_PublicOrder+ '/fire-protection',component:FireProtectionComponent},
       { path: SocialProfile_PublicOrder+ '/barangay-peacekeeping',component:BarangayPeacekeepingComponent},

@@ -154,6 +154,7 @@ import { MessageListComponent } from './pages/main/Tools/message-list/message-li
 import { HidefromguestmenuComponent } from './Admin/hidefromguestmenu/hidefromguestmenu.component';
 import { ForAllAdminComponent } from './Admin/for-all-admin/for-all-admin.component';
 import { DdnDashboardComponent } from './pages/main/Dashboard/ddn-dashboard/ddn-dashboard.component';
+import { PrevRateComponent } from './pages/main/SocialProfile/Health/prev-rate/prev-rate.component';
 
 @NgModule({
   declarations: [
@@ -295,6 +296,7 @@ import { DdnDashboardComponent } from './pages/main/Dashboard/ddn-dashboard/ddn-
     HidefromguestmenuComponent,
     ForAllAdminComponent,
     DdnDashboardComponent,
+    PrevRateComponent,
   ],
   imports: [
     MdbCollapseModule,

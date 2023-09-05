@@ -21,19 +21,53 @@
                   <label><strong>Governance - {{modifyCityMun(munCityName)}}
                     </strong></label>
                 </div>
-            
+
                 <form class="user collapse show" id="collapseExample">
                   <div class="form-group">
-                    <div class="row"></div>
                     <div class="row">
                       <div class="col-lg-12">
                         <label for="exampleFormControlTextarea1">Organizational Chart</label>
-                        <form action="/action_page.php">
-                          <input type="file" id="myFile" name="filename" />
-                        </form>
-                        <div class="form-inline float-right ">       
+                        <div class="row">
+                        
+                          <div class="col-lg-4">
+                            <app-admin>
+                              <label *ngIf="!croppedImagee; else show" for="fileInputtt" class="pointer">
+                                <img  data-toggle="modal" data-target="#uploadOrg" src="assets/img/image.png" height="50" width="50"/>   
+                              </label>
+
+                              <!-- <label for="fileInputtt" class="pointer">
+                                <h5>
+                                  <i class='fa fa-pen' data-toggle="modal" data-target="#uploadOrg"
+                                    style="color: rgb(54, 127, 223); font-size: 13px;"></i>
+                                </h5>
+                              </label> -->
+                              <input #fileInputtt id="fileInputtt" type="file" style="display:none" (change)="fileChangeEventt($event)">
+                            </app-admin>
+                          </div>
+                          <ng-template #show>
+                            <img *ngIf="croppedImagee" [src]="croppedImagee" height="50" width="50"  data-toggle="modal" data-target="#viewOrg"/>
+                            <!-- <i class='fa fa-pen pl-2 pt-3' data-toggle="modal" data-target="#uploadOrg"
+                            style="color: rgb(54, 127, 223); font-size: 13px;"></i> -->
+                          </ng-template>
+                        </div>
+
+                       
+                        <!-- <div class="row">
+                          <div class="col-lg-12 mb-2">
+                            <form action="/action_page.php">
+                              <input id="fileInputt" type="file" (change)="fileChangeEventt($event)">
+                            </form>
+                          </div>
+                          <div *ngIf="fileName !== ''" class="col-lg-12">
+                            <button class="btn btn-primary" (click)="updateImage()">
+                              Upload file
+                            </button>
+                          </div>
+                        </div> -->
+
+                        <div class="form-inline float-right ">
                           <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
-                      </div>
+                        </div>
                         <br>
                       </div>
                       <div class="table-responsive">
@@ -302,3 +336,62 @@
       </div>
     </div>
   </div>
+  <!-- Modal Upload Org -->
+  <div class="modal fade" id="uploadOrg" tabindex="-1" role="dialog" aria-labelledby="uploadModalTitle"
+    aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Organizational Chart</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <image-cropper [imageChangedEvent]="imageChangedEventt" [maintainAspectRatio]="true" [aspectRatio]="fullImageAspectRatio"
+            format="png" (imageCropped)="imageCroppedd($event)" (imageLoaded)="imageLoadedd($event)"
+            (cropperReady)="cropperReadyy($event)" (loadImageFailed)="loadImageFailedd()">
+          </image-cropper>
+        </div>
+
+        <div class="modal-footer">
+          <div class="col-lg-6 progress" style="height: 20px" *ngIf="progressvalue">
+            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 75%"
+              [ngStyle]="{'width': progressvalue}">
+            </div>
+          </div>
+          <button #closeModal type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" (click)="updateImage()">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+   <!-- Modal View Org -->
+   <div class="modal fade" id="viewOrg" tabindex="-1" role="dialog"
+   aria-hidden="true" data-backdrop="static" data-keyboard="false">
+   <div class="modal-dialog modal-xl" role="document">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title" id="exampleModalLongTitle">Organizational Chart</h5>
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+         </button>
+       </div>
+       <div class="modal-body">
+        <img *ngIf="croppedImagee" class="img-fluid" [src]="croppedImagee"  data-toggle="modal" data-target="#viewOrg"/>
+       </div>
+
+       <div class="modal-footer">
+         <div class="col-lg-6 progress" style="height: 20px" *ngIf="progressvalue">
+           <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 75%"
+             [ngStyle]="{'width': progressvalue}">
+           </div>
+         </div>
+         <button #closeModal type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+         <button type="button" class="btn btn-primary" (click)="triggerFileInput()" data-dismiss="modal" data-toggle="modal" data-target="#uploadOrg" >
+          Edit Organizational Chart
+         </button>
+        </div>
+     </div>
+   </div>
+ </div>

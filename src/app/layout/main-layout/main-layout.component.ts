@@ -18,6 +18,7 @@ import {
   SocialUser,
 } from 'angularx-social-login';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
+import { Location } from '@angular/common';
 
 
 @Component({
@@ -39,18 +40,21 @@ export class MainLayoutComponent implements OnInit {
   isLoading: boolean = true;
   set_year:any;
   active_set_year:any;
+  currentUrl:any;
 
 
   constructor(private service: AuthService, private router: Router, private baseUrl: BaseUrl, private imagesService: ImagesService,
-    private socialAuthService: SocialAuthService, private modifyService: ModifyCityMunService) { 
+    private socialAuthService: SocialAuthService, private modifyService: ModifyCityMunService, private location: Location) { 
     console.log(router.url);
 
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe(event => {
+    // this.router.events.pipe(
+    //   filter(event => event instanceof NavigationEnd)
+    // ).subscribe(event => {
 
-      console.log(event);
-    });
+    //   console.log(event);
+    // });
+    this.currentUrl = this.location.path();
+
   }
 
   _userData: any = {};
@@ -58,6 +62,7 @@ export class MainLayoutComponent implements OnInit {
   guest:any;
 
   ngOnInit(): void {
+    console.log("currentUrl: ",this.currentUrl)
     this.guest = localStorage.getItem("guest");
 
     this.set_year = this.service.setYear;
@@ -83,6 +88,17 @@ export class MainLayoutComponent implements OnInit {
           }
         };
     });
+  }
+
+  isMatchURL:boolean = false;
+  isMatchUrl(text:string){
+    if (this.currentUrl.includes(text)) {
+      console.log(`The main string contains the specific text "${text}".`);
+      return true;
+    } else {
+      console.log(`The main string does not contain the specific text "${text}".`);
+      return false;
+    }
   }
 
   modifyCityMun(cityMunName:string){

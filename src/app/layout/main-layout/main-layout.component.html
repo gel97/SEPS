@@ -3,7 +3,7 @@
 <div id="wrapper">
 
     <!-- Sidebar -->
-    <ul class="navbar-nav  sidebar sidebar-dark accordion shadow-sm" aria-expanded="true" id="accordionSidebar">
+    <ul class="navbar-nav sidebar sidebar-dark accordion shadow-sm" aria-expanded="true" id="accordionSidebar" style="background-color: rgb(236, 242, 248)">
         <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" routerLink="">
             <div class="sidebar-brand-icon">
@@ -111,36 +111,36 @@
                         data-parent="#accordionSidebar">
                         <div class="bg-lightblue collapse-inner rounded">
                             <!-- ==================== -->
-                <li class="nav-item" routerLinkActive="active">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTradeIndustry"
-                        aria-expanded="true" aria-controls="collapseUtilities">
-                        <i class='fas fa-exchange-alt'></i>
-                        <span>Trade and Ind.</span>
-                    </a>
-                    <div id="collapseTradeIndustry" class="collapse" aria-labelledby="headingUtilities"
-                        data-parent="#collapseSocio-Economic">
-                        <div class="bg-lightblue py-2 collapse-inner rounded">
-                            <a class="collapse-item" routerLinkActive="active"
-                                routerLink="socio-economic/trade-and-industry/major-economic-activities">Major Economic
-                                Activities</a>
-                            <a class="collapse-item" routerLinkActive="active"
-                                routerLink="socio-economic/trade-and-industry/manufacturing-establishments">Manufacturing
-                                Establishments</a>
-                            <a class="collapse-item" routerLinkActive="active"
-                                routerLink="socio-economic/trade-and-industry/comercial-establishments">Commercial
-                                Establishments</a>
-                            <a class="collapse-item" routerLinkActive="active"
-                                routerLink="socio-economic/trade-and-industry/summary-commercial">Summary - Commercial
-                                Est.</a>
-                            <a class="collapse-item" routerLinkActive="active"
-                                routerLink="socio-economic/trade-and-industry/industrial-estates">Industrial Estates</a>
-                            <a class="collapse-item" routerLinkActive="active"
-                                routerLink="socio-economic/trade-and-industry/financial-institutions">Financial
-                                Institutions</a>
+                    <li class="nav-item" routerLinkActive="active">
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTradeIndustry"
+                            aria-expanded="true" aria-controls="collapseUtilities">
+                            <i class='fas fa-exchange-alt'></i>
+                            <span>Trade and Ind.</span>
+                        </a>
+                        <div id="collapseTradeIndustry" class="collapse" aria-labelledby="headingUtilities"
+                            data-parent="#collapseSocio-Economic">
+                            <div class="bg-lightblue py-2 collapse-inner rounded">
+                                <a class="collapse-item" routerLinkActive="active"
+                                    routerLink="socio-economic/trade-and-industry/major-economic-activities">Major Economic
+                                    Activities</a>
+                                <a class="collapse-item" routerLinkActive="active"
+                                    routerLink="socio-economic/trade-and-industry/manufacturing-establishments">Manufacturing
+                                    Establishments</a>
+                                <a class="collapse-item" routerLinkActive="active"
+                                    routerLink="socio-economic/trade-and-industry/comercial-establishments">Commercial
+                                    Establishments</a>
+                                <a class="collapse-item" routerLinkActive="active"
+                                    routerLink="socio-economic/trade-and-industry/summary-commercial">Summary - Commercial
+                                    Est.</a>
+                                <a class="collapse-item" routerLinkActive="active"
+                                    routerLink="socio-economic/trade-and-industry/industrial-estates">Industrial Estates</a>
+                                <a class="collapse-item" routerLinkActive="active"
+                                    routerLink="socio-economic/trade-and-industry/financial-institutions">Financial
+                                    Institutions</a>
 
+                            </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
 
                 <!-- ==================== -->
                 <li class="nav-item" routerLinkActive="active">
@@ -229,7 +229,7 @@
     <div id="collapseSocialProfile" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
         <div class="bg-lightblue py-2 collapse-inner rounded">
             <!-- ======== EDUCATION ============ -->
-<li class="nav-item" routerLinkActive="active">
+<li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEducation" aria-expanded="true"
         aria-controls="collapseUtilities">
         <i class="fas fa-fw fa-university"></i>
@@ -239,7 +239,7 @@
         data-parent="#collapseSocialProfile">
         <div class="bg-lightblue py-2 collapse-inner rounded">
             <!-- ========== Facilities ========== -->
-<li class="nav-item">
+<li class="nav-item" routerLinkActive="active">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFacIns" aria-expanded="true"
         aria-controls="collapseUtilities">
         <i class='fas fa-school'></i>
@@ -263,7 +263,7 @@
     </div>
 </li>
 <!-- ========== PRIVATE SCHOOLS ========== -->
-<li class="nav-item">
+<li class="nav-item" routerLinkActive="active">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePriSchools" aria-expanded="true"
         aria-controls="collapseUtilities">
         <i class="fas fa-fw fa-lock"></i>
@@ -280,7 +280,7 @@
     </div>
 </li>
 <!-- ========= PUBLIC SCHOOLS =========== -->
-<li class="nav-item">
+<li class="nav-item" routerLinkActive="active">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePubSchools" aria-expanded="true"
         aria-controls="collapseUtilities">
         <i class="fas fa-fw fa-unlock"></i>
@@ -299,7 +299,7 @@
     </div>
 </li>
 <!-- ========= Tertiary SCHOOLS =========== -->
-<li class="nav-item">
+<li class="nav-item" routerLinkActive="active">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTertiary" aria-expanded="true"
         aria-controls="collapseUtilities">
         <!-- <i class="fas fa-fw fa-unlock"></i> -->
@@ -319,7 +319,7 @@
     </div>
 </li>
 <!-- ========= Techvoc SCHOOLS =========== -->
-<li class="nav-item">
+<li class="nav-item" routerLinkActive="active">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTechvoc" aria-expanded="true"
         aria-controls="collapseUtilities">
         <!-- <i class="fas fa-fw fa-unlock"></i> -->
@@ -379,6 +379,8 @@
             <a class="collapse-item" routerLinkActive="active"
                 routerLink="socialProfile/health/malnutrition-revised">Malnutrition (Revised
                 Form)</a>
+            <a class="collapse-item" routerLinkActive="active"
+                routerLink="socialProfile/health/prevalence-rate">Prevalence Rate</a>
             <a class="collapse-item" routerLinkActive="active"
                 routerLink="socialProfile/health/person-disability">Persons with
                 Disability</a>
@@ -666,7 +668,7 @@
             </button>
 
             <!-- Topbar Search -->
-            <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+            <!-- <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                 <div class="input-group">
                     <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
                         aria-label="Search" aria-describedby="basic-addon2">
@@ -677,7 +679,7 @@
                     </div>
                 </div>
 
-            </form>
+            </form> -->
 
             <!-- Topbar Navbar -->
             <ul class="navbar-nav ml-auto">

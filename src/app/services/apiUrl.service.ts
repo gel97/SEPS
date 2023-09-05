@@ -52,7 +52,9 @@ export class ApiUrl {
     post_upload_image_banner = () => `/Image/UploadImage`;
     get_muncity_logo         = (munCityId:any) => `/Image/GetMunLogo/${munCityId}`;
     post_upload_muncity_logo = () => `/Image/UploadMunLogo`;
-
+    get_image_org         = (munCityId:any) => `/Image/GetOrg/${munCityId}`;
+    post_upload_image_org = () => `/Image/UploadOrg`;
+   
     // MUN/CITY LIST
     get_all_muncity     = () => `/MunLoc/List`;
     post_update_muncity = () => `/MunLoc/Update`;
@@ -330,6 +332,14 @@ export class ApiUrl {
     put_health_malnutrition         = ()=>`/HealthMalnut`;
     delete_health_malnutrition      = (transId:any)=>`/HealthMalnut/${transId}`;
     post_import_health_malnutrition = ()=>`/HealthMalnut/Import`;
+
+    // Health -> Prev Rate
+    get_list_health_prev_rate    = (setYear  :any)=>`/HealthPrevRate/List/${setYear}`;
+    post_health_prev_rate        = ()=>`/HealthPrevRate`;
+    put_health_prev_rate         = ()=>`/HealthPrevRate`;
+    delete_health_prev_rate      = (transId:any)=>`/HealthPrevRate/${transId}`;
+    post_import_health_prev_rate = ()=>`/HealthPrevRate/Import`;
+    post_report_health_prev_rate = ()=>`/HealthPrevRate/Reports `;
 
     // Health -> Sanitary
     get_list_health_sanitary    = (setYear  :any,munCityId :any)=>`/HealthSanitary/${setYear}/${munCityId}`;
