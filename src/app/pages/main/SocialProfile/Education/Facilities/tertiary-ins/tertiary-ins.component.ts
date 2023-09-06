@@ -45,6 +45,59 @@ export class TertiaryInsComponent implements OnInit {
     this.Init();
   }
 
+  public showOverlay = false;
+  importMethod() {
+    this.showOverlay = true;
+    this.service.Import().subscribe({
+      next: (data) => {
+        this.Init();
+      },
+      error: (error) => {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'warning',
+          title: 'Something went wrong',
+        });
+      },
+      complete: () => {
+        this.showOverlay = false;
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'success',
+          title: 'Imported Successfully',
+        });
+      },
+    });
+  }
+
+  message = 'Tertiary Institution';
+  viewData: boolean = false;
+  parentMethod() {
+    this.viewData = true;
+  } 
+
   GeneratePDF() {
     let data: any = [];
     let reports: any = [];
@@ -240,7 +293,6 @@ export class TertiaryInsComponent implements OnInit {
     });
   }
 
-
   munCityId: string = this.auth.munCityId;
   setYear: string = this.auth.setYear;
 
@@ -285,6 +337,11 @@ export class TertiaryInsComponent implements OnInit {
         next: (response) => {
           this.list = <any>response;
           console.log(this.list );
+          if (this.list.length > 0) {
+            this.viewData = true;
+          } else {
+            this.viewData = false;
+          }
         },
         error: (error) => {
           Swal.fire('Oops!', 'Something went wrong.', 'error');

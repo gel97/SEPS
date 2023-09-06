@@ -155,6 +155,7 @@ import { HidefromguestmenuComponent } from './Admin/hidefromguestmenu/hidefromgu
 import { ForAllAdminComponent } from './Admin/for-all-admin/for-all-admin.component';
 import { DdnDashboardComponent } from './pages/main/Dashboard/ddn-dashboard/ddn-dashboard.component';
 import { PrevRateComponent } from './pages/main/SocialProfile/Health/prev-rate/prev-rate.component';
+import { NoDataComponent } from './components/no-data/no-data.component';
 
 @NgModule({
   declarations: [
@@ -297,6 +298,7 @@ import { PrevRateComponent } from './pages/main/SocialProfile/Health/prev-rate/p
     ForAllAdminComponent,
     DdnDashboardComponent,
     PrevRateComponent,
+    NoDataComponent,
   ],
   imports: [
     MdbCollapseModule,

@@ -1,6 +1,12 @@
 <div class="">
+  <ng-template #isEmpty>
+    <app-import [data]="message" (importData)="importMethod()"></app-import>
+  </ng-template>
 
-    <div class="card o-hidden border-2 shadow-sm my-5">
+  <div *ngIf="showOverlay">
+    <app-import-loading></app-import-loading>
+  </div>
+    <div *ngIf="dataList.length>0; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
       <div class="card-body p-0">
         <!-- Nested Row within Card Body -->
         <div class="row">
@@ -14,8 +20,8 @@
               </div>
               <div class="form-inline float-right ">
               <app-admin>
-                <button type="button" (click)="clearData()" class="btn btn-labeled btn-primary" data-toggle="modal"
-                  data-target="#exampleModal">
+                <button type="button" (click)="clearData(); isAdd =true" class="btn btn-labeled btn-primary" data-toggle="modal"
+                  data-target="#ModalAdd">
                   <span class="btn-label"><i class="fa fa-plus"></i></span> Facility
                 </button>
               </app-admin>
@@ -49,8 +55,8 @@
                       <td style="text-align: center;">
                         <div class="d-inline-flex">
                           <app-admin>
-                            <button (click)="addData = dataItem" data-toggle="modal" (click)="editToggle()"
-                              data-target="#exampleModal" class="btn btn-info btn-circle">
+                            <button (click)="addData = dataItem; isAdd =false" data-toggle="modal" (click)="editToggle()"
+                              data-target="#ModalAdd" class="btn btn-info btn-circle">
                               <i class="fas fa-pen"></i>
                             </button>
                           </app-admin>
@@ -74,15 +80,15 @@
   </div>
 
   <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  <div class="modal fade" id="ModalAdd" tabindex="-1" role="dialog" aria-labelledby="ModalAddLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title text-dark" id="exampleModalLabel">
+          <h5 class="modal-title text-dark" id="ModalAddLabel">
             Access to Sanitary and Water Facilities
           </h5>
-          <button type="button" #closebutton class="btn-close" data-toggle="modal" data-target="#exampleModal"
+          <button type="button" #closebutton class="btn-close" data-toggle="modal" data-target="#ModalAdd"
             aria-hidden="true" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -133,13 +139,16 @@
               </label>
             </div>
           </div>
-
-          <button type="button" *ngIf="visible" (click)="AddHealthSanitary()" id="closeModal" class="btn btn-primary"><i class="fa fa-check"></i> Save </button>&nbsp;
-          <button type="button" class="btn btn-secondary" *ngIf="visible" data-toggle="modal" data-target="#exampleModal" aria-hidden="true"> <i class="fas fa-times"></i>Close
-          </button>&nbsp;
-          <button type="button" *ngIf="not_visible" (click)="EditHealthSanitary()"  aria-hidden="true" class="btn btn-primary"><i class="fa fa-check"></i>  Save changes </button>
-          <button type="button" class="btn btn-secondary"  *ngIf="not_visible"  data-toggle="modal" data-target="#exampleModal" aria-hidden="true"> <i class="fas fa-times"></i>Cancel
-          </button>&nbsp;
+          <div *ngIf="isAdd; else Edit">
+            <button type="button" *ngIf="visible" (click)="AddHealthSanitary()" id="closeModal" class="btn btn-primary"><i class="fa fa-check"></i> Save </button>&nbsp;
+            <button type="button" class="btn btn-secondary" *ngIf="visible" data-toggle="modal" data-target="#ModalAdd" aria-hidden="true"> <i class="fas fa-times"></i>Close
+            </button>&nbsp;
+          </div>
+          <ng-template #Edit>
+            <button type="button" *ngIf="not_visible" (click)="EditHealthSanitary()"  aria-hidden="true" class="btn btn-primary"><i class="fa fa-check"></i>  Save changes </button>
+            <button type="button" class="btn btn-secondary"  *ngIf="not_visible"  data-toggle="modal" data-target="#ModalAdd" aria-hidden="true"> <i class="fas fa-times"></i>Cancel
+            </button>&nbsp;
+          </ng-template>
         </div>
       </div>
     </div>

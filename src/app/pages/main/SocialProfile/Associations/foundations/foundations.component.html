@@ -1,5 +1,12 @@
 <div class="">
-  <div class="card o-hidden border-2 shadow-sm my-5">
+  <ng-template #isEmpty>
+    <app-import [data]="message" (importData)="importMethod()"></app-import>
+  </ng-template>
+
+  <div *ngIf="showOverlay">
+    <app-import-loading></app-import-loading>
+  </div>
+  <div *ngIf="dataList.length>0; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
     <div class="card-body p-0">
       <!-- Nested Row within Card Body -->
       <div class="row">
@@ -12,8 +19,8 @@
             <form class="user collapse show" id="collapseExample">
               <div class="form-inline float-right ">
                 <app-admin>
-                  <button type="button" (click)="clearData()" class="btn btn-labeled btn-primary" data-toggle="modal"
-                    data-target="#exampleModal">
+                  <button type="button" (click)="clearData(); isAdd = true" class="btn btn-labeled btn-primary" data-toggle="modal"
+                    data-target="#ModalAdd">
                     <i class="fa fa-plus"></i> Foundations
                   </button>
                 </app-admin>
@@ -57,8 +64,8 @@
                       <div class="flex-container">
                         <app-admin>
                           <div class="flex-button">
-                            <button (click)="addData = dataItem" data-toggle="modal" (click)="editToggle()"
-                              data-target="#exampleModal" class="btn btn-info btn-circle"
+                            <button (click)="addData = dataItem; isAdd = false" data-toggle="modal" (click)="editToggle()"
+                              data-target="#ModalAdd" class="btn btn-info btn-circle"
                               style="display: inline-block; margin-right: 10px; ">
                               <i class="fas fa-pen"></i></button>
                           </div>
@@ -92,13 +99,13 @@
 
 <!-- Modal -->
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="ModalAdd" tabindex="-1" role="dialog" aria-labelledby="ModalAddLabel"
   aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title text-dark" id="exampleModalLabel">Foundations</h5>
-        <button type="button" #closebutton class="btn-close" data-toggle="modal" data-target="#exampleModal"
+        <h5 class="modal-title text-dark" id="ModalAddLabel">Foundations</h5>
+        <button type="button" #closebutton class="btn-close" data-toggle="modal" data-target="#ModalAdd"
           aria-hidden="true" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -160,29 +167,31 @@
             </label>
           </div>
         </div>
-        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal"
+        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#ModalAdd"
           aria-hidden="true">
           <i class="fas fa-times">&nbsp;</i>Close
         </button>
-        <button type="submit" *ngIf="visible" (click)="AddAssociation()" id="closeModal" class="btn btn-primary">
+        <button type="submit" *ngIf="isAdd; else Edit" (click)="AddAssociation()" id="closeModal" class="btn btn-primary">
           <i class="fas fa-plane-departure">&nbsp;</i>ADD
         </button>
-        <button type="button" *ngIf="not_visible" (click)="EditAssociation()" data-toggle="modal"
-          data-target="#exampleModal" aria-hidden="true" class="btn btn-primary">
+        <ng-template #Edit>
+          <button type="button" *ngIf="not_visible" (click)="EditAssociation()" data-toggle="modal"
+          data-target="#ModalAdd" aria-hidden="true" class="btn btn-primary">
           Save Changes
         </button>
+        </ng-template>  
       </div>
     </div>
   </div>
 </div>
 
 <!-- modal area GEO -->
-<div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="ModalAddLabel"
   aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">SEPS GEOLOCATION TAGGING</h5>
+        <h5 class="modal-title" id="ModalAddLabel">SEPS GEOLOCATION TAGGING</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

@@ -88,6 +88,76 @@ export class CooperativesComponent implements OnInit {
     this.ListOfBarangay();
   }
 
+  public showOverlay = false;
+  message = 'Cooperative Organizations';
+  importMethod() {
+    this.showOverlay = true;
+    this.Service.Import(this.menuId).subscribe({
+      next: (data) => {
+        this.ngOnInit();
+        if(data.length === 0){
+          this.showOverlay = false;
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            },
+          });
+  
+          Toast.fire({
+            icon: 'info',
+            title: 'No data from previous year',
+          });
+        }
+        else
+        {
+          this.showOverlay = false;
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            },
+          });
+  
+          Toast.fire({
+            icon: 'success',
+            title: 'Imported Successfully',
+          });
+        }
+      },
+      error: (error) => {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'warning',
+          title: 'Something went wrong',
+        });
+      },
+      complete: () => {},
+    });
+  }
+
+
   GeneratePDF() {
     let data: any = [];
     let reports: any = [];

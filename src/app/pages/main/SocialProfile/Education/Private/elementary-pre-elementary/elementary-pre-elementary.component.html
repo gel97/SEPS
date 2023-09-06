@@ -1,7 +1,11 @@
 <div class="">
   <ng-template #isEmpty>
-    <app-import [data]="message"></app-import>
+    <app-import [data]="message" (importData)="importMethod()"></app-import>
   </ng-template>
+
+  <div *ngIf="showOverlay">
+    <app-import-loading></app-import-loading>
+  </div>
   <div *ngIf="listElems.length>0; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
     <div class="card-body p-0">
       <!-- Nested Row within Card Body -->
@@ -57,7 +61,7 @@
                     <td>{{data.name}}</td>
                     <td>{{data.male}}</td>
                     <td>{{data.female}}</td>
-                    <td>{{data.male + data.female}}</td>
+                    <td>{{data.male + data.female > 0 ? data.male + data.female:null }}</td>
                     <td>{{data.location}} {{data.brgyName}}</td>
                     <td>
                       <div class="d-inline-flex">
@@ -158,8 +162,7 @@
             </label>
           </div>
         </div>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i
-            class="fa fa-times"></i>Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
         &nbsp;
         <button type="button" class="btn btn-primary"
           (click)="isAdd? AddPrivateElemSchool(): EditPrivateElemSchool()"><i class="fa fa-check"></i>Save

@@ -30,6 +30,10 @@ export class EducationService {
     return this.http.delete(this.Base.url + this.ApiUrl.delete_education(transId), { responseType: 'text' });
   }
 
+  Import(menuId: any):Observable<any[]> {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_import_education(menuId), { responseType: 'json' });
+  }
+
   ListOfBarangay(munCityId:any)
   {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay(munCityId), { responseType: 'json' });

@@ -33,7 +33,7 @@
                         <th style="text-align: center;">No. of Dweeling Units</th>
                         <th style="text-align: center;">No. of Families</th>
                         <th style="text-align: center;">Remarks</th>
-                        <th style="text-align: center;">Geo-Coord.</th>
+                        <!-- <th style="text-align: center;">Geo-Coord.</th> -->
                         <th style="text-align: center;">Action</th>
                       </tr>
                     </thead>
@@ -44,7 +44,7 @@
                         <td style="text-align: center;">{{ item.unitsNo }}</td>
                         <td style="text-align: center;">{{ item.familiesNo }}</td>
                         <td style="text-align: center;">{{ item.remarks }}</td>
-                        <td style="text-align: center;">{{ item.longtitude }}, {{ item.latitude }}</td>
+                        <!-- <td style="text-align: center;">{{ item.longtitude }}, {{ item.latitude }}</td> -->
                         <td *ngIf="item.transId else isADD">
                           <div class="d-inline-flex">
                             <app-admin>

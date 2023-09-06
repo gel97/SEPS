@@ -215,6 +215,7 @@ export class ApiUrl {
     put_education      = ()=>`/Education`;
     delete_education   = (transId:any)=>`/Education/${transId}`;
     post_report_education = ()=>`/Education/Reports`;
+    post_import_education = (menuId:any)=>`/Education/Import/${menuId}`;
 
     //Area of Exceptionality
     get_list_education_area_ex = ()=>`/EducationAreaEx/List`;

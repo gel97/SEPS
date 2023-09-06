@@ -59,6 +59,7 @@ export class BarangayHealthComponent implements OnInit {
   longtitude: any;
   checker_brgylist: any = {};
   toValidate: any = {};
+  isAdd:boolean = true;
 
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
@@ -88,6 +89,75 @@ export class BarangayHealthComponent implements OnInit {
   ngOnInit(): void {
     this.GetHealthFacilities();
     this.GetBarangayList();
+  }
+
+  public showOverlay = false;
+  message = 'Hospital';
+  importMethod() {
+    this.showOverlay = true;
+    this.Service.Import(this.menuId).subscribe({
+      next: (data) => {
+        this.ngOnInit();
+        if(data.length === 0){
+          this.showOverlay = false;
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            },
+          });
+  
+          Toast.fire({
+            icon: 'info',
+            title: 'No data from previous year',
+          });
+        }
+        else
+        {
+          this.showOverlay = false;
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            },
+          });
+  
+          Toast.fire({
+            icon: 'success',
+            title: 'Imported Successfully',
+          });
+        }
+      },
+      error: (error) => {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'warning',
+          title: 'Something went wrong',
+        });
+      },
+      complete: () => {},
+    });
   }
 
   GeneratePDF() {
@@ -474,11 +544,10 @@ export class BarangayHealthComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.Service.DeleteHealthFacilities(dataItem.transId).subscribe(
-          (request) => { }
+          (request) => {this.ngOnInit();}
         );
 
         Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
-        this.ngOnInit();
       }
     });
   }
