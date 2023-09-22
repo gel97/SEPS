@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, HostListener  } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { BaseUrl } from 'src/app/services/baseUrl.service';
 import { Dimensions, ImageCroppedEvent, ImageCropperComponent, LoadedImage } from 'ngx-image-cropper';
 import {ImagesService} from 'src/app/services/image.service';
@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/services/auth.service';
 import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';
-import { NewsService } from 'src/app/shared/Tools/news.service';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -18,17 +18,6 @@ import { NewsService } from 'src/app/shared/Tools/news.service';
 export class DashboardComponent implements OnInit {
   @ViewChild('closeModal')
   closeModal!: ElementRef; 
-  isElementVisible: boolean = true;
-  
-  @HostListener('window:scroll', [])
-  onWindowScroll() {
-    // Logic to determine visibility based on scroll position
-    if (window.pageYOffset > 10000) {
-      this.isElementVisible = false;
-    } else {
-      this.isElementVisible = true;
-    }
-  }
 
   imageChangedEvent: any = '';
   img:any ='';
@@ -37,75 +26,12 @@ export class DashboardComponent implements OnInit {
   fileName:any='';
   progressvalue = 0;
 
-  listNews:any = [];
-  listNewsData:any = [];
-
-  constructor(private auth:AuthService, private baseUrl: BaseUrl, private imagesService: ImagesService, private newsService: NewsService) { 
+  constructor(private auth:AuthService, private baseUrl: BaseUrl, private imagesService: ImagesService) { 
     
   }
   
-  guest:any;
-  guestMunCityId:any;
-
   ngOnInit(): void {
-    this.guest = localStorage.getItem("guest");
-    this.guestMunCityId = localStorage.getItem("munCityId");
-    console.log("guest",this.guest)
-    this.GetImage();
-    this.GetNews();
-  }
-
-  GetNews()
-  {
-    this.newsService.GetNews().subscribe({
-      next: (response) =>
-      {
-        this.listNewsData = (<any> response);
-      },
-      error: (error)=>{
-
-      },
-      complete: ()=>{
-        if(this.auth.munCityId === "null"){
-          this.listNewsData.forEach((a:any) => {
-            if(a.munCityId === "DDN"){
-              this.listNews.push(a);
-            }
-          });
-        }
-        else if(this.auth.o_munCityId !== "DDN"){
-          this.listNewsData.forEach((a:any) => {
-            if(a.munCityId === this.auth.munCityId){
-              this.listNews.push(a);
-            }
-          });
-        }
-        else{
-          this.listNewsData.forEach((a:any) => {
-            if(a.munCityId === "DDN"){
-              this.listNews.push(a);
-            }
-          });
-        }
-      }
-    });
-  }
-
-  get filterNews()
-  {
-    if(this.auth.o_munCityId){
-      return this.listNews.filter((a: any) => a.hidden == 0);
-    }
-    else{
-      return this.listNews.filter((a: any) => a.hidden == 0 && a.isAdmin == 0);
-    }
-    
-  }
-
-  GetImage()
-  {
-    
-    this.imagesService.GetImage(this.guest && this.auth.munCityId === "null" ?"ddn":this.auth.munCityId).pipe(catchError((error: any, caught: Observable<any>): Observable<any> => {
+    this.imagesService.GetImage(this.auth.munCityId).pipe(catchError((error: any, caught: Observable<any>): Observable<any> => {
       console.error('There was an error!', error);    
       return of();
   })).subscribe(response => { 
