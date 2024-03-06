@@ -189,4 +189,15 @@ export class ReportsService {
   GetServiceFacilityReport(data:any) {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_service_facility(), data, { responseType: 'json' });
   }
+
+  // Summarized report & validation
+  GetReportSummarized(year:number) {
+    return this.http.get<any[]>(this.Base.url + this.ApiUrl.get_report_summarized(year), { responseType: 'json' });
+  }
+
+  SeenNotif(data:any = {})
+  {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_validation(), data, { responseType: 'json' });
+  }
+
 }

@@ -458,7 +458,7 @@ export class SanitaryFacilitiesComponent implements OnInit {
         },
         complete: () => {
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, "");
           console.log(data);
         },
       });

@@ -19,8 +19,51 @@ export class SummaryReportComponent implements OnInit {
     this.params.allMunCity = 1;
    }
   params:any = {};
+  
+  data:any = [];
 
   ngOnInit(): void {
+    this.getReportSummarized();
+  }
+
+  getReportSummarized(){
+    this.reportService
+      .GetReportSummarized(this.params.year)
+      .subscribe({
+        next: (response) => {
+          this.data = response;
+          console.log(this.data);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+        complete: () => {
+          console.log('getReportSummarized() completed.');
+        },
+      });
+  }
+
+  remarks:string ="";
+
+  showReport(reportName:string, remarks:string){
+    console.log(reportName);
+    this.remarks ="sample remarks ssss";
+    console.log(this.remarks);
+
+    switch (reportName) {
+      case "Provincial Officials":
+          this.ProvOfficialGeneratePDF();    
+        break;
+      case "List of Barangay Officials":
+          this.BrgyGeneratePdf();    
+      break;
+      case "Municipality/ City Officials":
+          this.CityOfficialGeneratePDF();    
+        break;
+      default:
+        break;
+    }
+
   }
 
   formatNumber(value: number): string {
@@ -301,7 +344,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -563,7 +606,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -825,7 +868,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -1087,7 +1130,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -1349,7 +1392,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -1611,7 +1654,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -1887,7 +1930,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -2162,7 +2205,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -2441,7 +2484,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -2784,7 +2827,7 @@ export class SummaryReportComponent implements OnInit {
         complete: () => {
           if(reports.length > 0){
             let isPortrait = false;
-            this.pdfService.GeneratePdf(data, isPortrait);
+            this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
             console.log(data);
           }
           else{
@@ -3059,7 +3102,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -3338,7 +3381,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -3660,7 +3703,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -3926,7 +3969,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -4156,7 +4199,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -4445,7 +4488,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -4728,7 +4771,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -5036,7 +5079,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -5372,7 +5415,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -5649,7 +5692,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -5877,7 +5920,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -6158,7 +6201,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -6421,7 +6464,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -6683,7 +6726,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -6949,7 +6992,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -7230,7 +7273,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -7509,7 +7552,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -7795,7 +7838,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -8076,7 +8119,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -8372,7 +8415,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -8646,7 +8689,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -8844,7 +8887,7 @@ export class SummaryReportComponent implements OnInit {
         complete: () => {
           if(reports.length > 0){
             let isPortrait = false;
-            this.pdfService.GeneratePdf(data, isPortrait);
+            this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
             console.log(data);
           }
           else{
@@ -9125,7 +9168,7 @@ export class SummaryReportComponent implements OnInit {
         complete: () => {
           if(reports.length > 0){
             let isPortrait = false;
-            this.pdfService.GeneratePdf(data, isPortrait);
+            this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
             console.log(data);
           }
           else{
@@ -9370,7 +9413,7 @@ export class SummaryReportComponent implements OnInit {
         complete: () => {
           if(reports.length > 0){
             let isPortrait = false;
-            this.pdfService.GeneratePdf(data, isPortrait);
+            this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
             console.log(data);
           }
           else{
@@ -9669,7 +9712,7 @@ export class SummaryReportComponent implements OnInit {
         complete: () => {
           if(reports.length > 0){
             let isPortrait = false;
-            this.pdfService.GeneratePdf(data, isPortrait);
+            this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
             console.log(data);
           }
           else{
@@ -9976,7 +10019,7 @@ export class SummaryReportComponent implements OnInit {
         complete: () => {
           if(reports.length > 0){
             let isPortrait = false;
-            this.pdfService.GeneratePdf(data, isPortrait);
+            this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
             console.log(data);
           }
           else{
@@ -10122,7 +10165,7 @@ export class SummaryReportComponent implements OnInit {
         complete: () => {
           if(reports.length > 0){
             let isPortrait = false;
-            this.pdfService.GeneratePdf(data, isPortrait);
+            this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
             console.log(data);
           }
           else{
@@ -10324,7 +10367,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -10656,7 +10699,7 @@ export class SummaryReportComponent implements OnInit {
         complete: () => {
           if(reports.length > 0){
             let isPortrait = false;
-            this.pdfService.GeneratePdf(data, isPortrait);
+            this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
             console.log(data);
           }
           else{
@@ -11004,7 +11047,7 @@ export class SummaryReportComponent implements OnInit {
         complete: () => {
           if(reports.length > 0){
             let isPortrait = false;
-            this.pdfService.GeneratePdf(data, isPortrait);
+            this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
             console.log(data);
           }
           else{
@@ -11265,7 +11308,7 @@ export class SummaryReportComponent implements OnInit {
         complete: () => {
           if(reports.length > 0){
             let isPortrait = false;
-            this.pdfService.GeneratePdf(data, isPortrait);
+            this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
             console.log(data);
           }
           else{
@@ -11556,7 +11599,7 @@ export class SummaryReportComponent implements OnInit {
         complete: () => {
           if(reports.length > 0){
             let isPortrait = false;
-            this.pdfService.GeneratePdf(data, isPortrait);
+            this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
             console.log(data);
           }
           else{
@@ -11846,7 +11889,7 @@ export class SummaryReportComponent implements OnInit {
         complete: () => {
           if(reports.length > 0){
             let isPortrait = false;
-            this.pdfService.GeneratePdf(data, isPortrait);
+            this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
             console.log(data);
           }
           else{
@@ -12189,7 +12232,7 @@ export class SummaryReportComponent implements OnInit {
         complete: () => {
           if(reports.length > 0){
             let isPortrait = false;
-            this.pdfService.GeneratePdf(data, isPortrait);
+            this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
             console.log(data);
           }
           else{
@@ -12494,7 +12537,7 @@ export class SummaryReportComponent implements OnInit {
         complete: () => {
           if(reports.length > 0){
             let isPortrait = false;
-            this.pdfService.GeneratePdf(data, isPortrait);
+            this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
             console.log(data);
           }
           else{
@@ -12735,7 +12778,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -13080,7 +13123,7 @@ export class SummaryReportComponent implements OnInit {
         complete: () => {
           if(reports.length > 0){
             let isPortrait = false;
-            this.pdfService.GeneratePdf(data, isPortrait);
+            this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
             console.log(data);
           }
           else{
@@ -13180,7 +13223,7 @@ export class SummaryReportComponent implements OnInit {
         complete: () => {   
             if(reports.length > 0){
               let isPortrait = false;
-              this.pdfService.GeneratePdf(data, isPortrait);
+              this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
               console.log(data);
             }
             else{
@@ -13400,7 +13443,7 @@ export class SummaryReportComponent implements OnInit {
         complete: () => {
           if(reports.length > 0){
             let isPortrait = false;
-            this.pdfService.GeneratePdf(data, isPortrait);
+            this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
             console.log(data);
           }
           else{
@@ -13642,7 +13685,7 @@ export class SummaryReportComponent implements OnInit {
         complete: () => {
           if(reports.length > 0){
             let isPortrait = false;
-            this.pdfService.GeneratePdf(data, isPortrait);
+            this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
             console.log(data);
           }
           else{
@@ -13884,7 +13927,7 @@ export class SummaryReportComponent implements OnInit {
         complete: () => {
           if(reports.length > 0){
             let isPortrait = false;
-            this.pdfService.GeneratePdf(data, isPortrait);
+            this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
             console.log(data);
           }
           else{
@@ -14126,7 +14169,7 @@ export class SummaryReportComponent implements OnInit {
         complete: () => {
           if(reports.length > 0){
             let isPortrait = false;
-            this.pdfService.GeneratePdf(data, isPortrait);
+            this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
             console.log(data);
           }
           else{
@@ -14368,7 +14411,7 @@ export class SummaryReportComponent implements OnInit {
         complete: () => {
           if(reports.length > 0){
             let isPortrait = false;
-            this.pdfService.GeneratePdf(data, isPortrait);
+            this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
             console.log(data);
           }
           else{
@@ -14610,7 +14653,7 @@ export class SummaryReportComponent implements OnInit {
         complete: () => {
           if(reports.length > 0){
             let isPortrait = false;
-            this.pdfService.GeneratePdf(data, isPortrait);
+            this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
             console.log(data);
           }
           else{
@@ -14852,7 +14895,7 @@ export class SummaryReportComponent implements OnInit {
         complete: () => {
           if(reports.length > 0){
             let isPortrait = false;
-            this.pdfService.GeneratePdf(data, isPortrait);
+            this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
             console.log(data);
           }
           else{
@@ -15051,7 +15094,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -15250,7 +15293,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -15503,7 +15546,7 @@ export class SummaryReportComponent implements OnInit {
         complete: () => {
           if(reports.length > 0){
             let isPortrait = false;
-            this.pdfService.GeneratePdf(data, isPortrait);
+            this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
             console.log(data);
           }
           else{
@@ -15753,7 +15796,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -15991,7 +16034,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -16248,7 +16291,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -16480,7 +16523,7 @@ export class SummaryReportComponent implements OnInit {
         complete: () => {
           if(reports.length > 0){
             let isPortrait = false;
-            this.pdfService.GeneratePdf(data, isPortrait);
+            this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
             console.log(data);
           }
           else{
@@ -16913,7 +16956,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -17927,7 +17970,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -18169,7 +18212,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -18409,7 +18452,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -18649,7 +18692,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -18875,7 +18918,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -19106,7 +19149,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -19344,7 +19387,7 @@ export class SummaryReportComponent implements OnInit {
       },
       complete: () => {
         let isPortrait = false;
-        this.pdfService.GeneratePdf(data, isPortrait);
+        this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
         console.log(data);
       },
     });
@@ -19576,7 +19619,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -19797,7 +19840,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -20020,7 +20063,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -20288,7 +20331,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -20511,7 +20554,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -20734,7 +20777,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -20959,7 +21002,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -21179,7 +21222,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-        this.pdfService.GeneratePdf(data, isPortrait);
+        this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
         console.log(data);
           }
           else{
@@ -21309,7 +21352,6 @@ export class SummaryReportComponent implements OnInit {
               fillColor: '#FFFFFF',
             },
           ]);
-
           });
         }
 
@@ -21370,7 +21412,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
           }
           else{
@@ -21487,7 +21529,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
         let isPortrait = true;
-        this.pdfService.GeneratePdf(data, isPortrait);
+        this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
         console.log(data);
         }
         else{
@@ -21757,7 +21799,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -22029,7 +22071,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -22388,7 +22430,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {    
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -22791,7 +22833,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -23009,7 +23051,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {    
         if(reports.length > 0){
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data[0], isPortrait);
+          this.pdfService.GeneratePdf(data[0], isPortrait, this.remarks);
           console.log(data);
         }
         else{
@@ -23130,7 +23172,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = true;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
         }
         else{
           this.Error()
@@ -23271,7 +23313,7 @@ export class SummaryReportComponent implements OnInit {
       complete: () => {
         if(reports.length > 0){
           let isPortrait = true;
-          this.pdfService.GeneratePdf(data, isPortrait);
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
         }
         else{
           this.Error()

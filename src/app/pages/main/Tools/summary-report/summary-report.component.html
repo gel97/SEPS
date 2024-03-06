@@ -1,5 +1,21 @@
 <div class="table-responsive">
-    <table class="table table-framed table-hover table-striped">
+  <table *ngFor="let a of data" class="table table-framed table-hover table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>{{a.sectorName}}</th>
+        <th>Remarks</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let b of a.subMenu" (click)="showReport(b.reportName, b?.details?.remarks)">
+        <td>{{b.reportName}}</td>
+        <td>{{b?.details?.remarks}}</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+    <!-- <table class="table table-framed table-hover table-striped">
       <thead class="table-dark">
         <tr>
           <th>GOVERNANCE</th>
@@ -358,5 +374,5 @@
           <td>List of Other Structures by Municipality/ City</td>
         </tr>
       </tbody>
-    </table>
+    </table> -->
   </div>

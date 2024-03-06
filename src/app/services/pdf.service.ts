@@ -9,6 +9,7 @@ import * as pdfFonts from "pdfmake/build/vfs_fonts";
 export class PdfService {
 
   pdfMake: any;
+  remarks:string = "";
 
   constructor() {}
 
@@ -21,13 +22,7 @@ export class PdfService {
     }
   }
 
-  footerFunction(currentPage: any, pageCount: any) {
-    return {
-      text: 'Page ' + currentPage.toString() + ' of ' + pageCount.toString(),
-      alignment: 'right',
-      margin: [0, 0, 40, 20],
-    };
-  }
+
 
     headerFunction = async (currentPage: any, pageCount: any) => {
     if (currentPage == 1) {
@@ -54,8 +49,11 @@ export class PdfService {
     return null;
   };
 
-  async GeneratePdf(data: any = [], isPortrait: boolean) {
+  async GeneratePdf(data: any = [], isPortrait: boolean, remarks:string) {
     console.log(data);
+    this.remarks = remarks;
+    console.log(this.remarks);
+
     await this.loadPdfMaker();
     let _pageOrientation = isPortrait ? "portrait" : "landscape";
 
@@ -84,9 +82,23 @@ export class PdfService {
       content: data,
       pageOrientation: _pageOrientation,
       pageSize: 'legal',
-      footer: this.footerFunction,
+      footer: this.footerFunction.bind(this),
     };
     this.pdfMake.createPdf(def).open();
+  }
+
+  footerFunction(currentPage: any, pageCount: any) {
+    return [ 
+      {
+        text: this.remarks,
+        alignment: 'left',
+        margin: [20, 0, 0, 0],
+      },
+      {
+      text: 'Page ' + currentPage.toString() + ' of ' + pageCount.toString(),
+      alignment: 'right',
+      margin: [0, 0, 40, 20],
+    }];
   }
 
   getBase64ImageFromURL(url: string) {
