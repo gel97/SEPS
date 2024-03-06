@@ -178,7 +178,7 @@ export class ProvincialOfficialsComponent implements OnInit {
       },
       complete: () => {
         let isPortrait = true;
-        this.pdfService.GeneratePdf(data, isPortrait);
+        this.pdfService.GeneratePdf(data, isPortrait, "");
         console.log(data);
       },
     });

@@ -9,6 +9,8 @@ import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/services/auth.service';
 import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';
+import { NewsService } from 'src/app/shared/Tools/news.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -26,13 +28,20 @@ export class DashboardComponent implements OnInit {
   fileName:any='';
   progressvalue = 0;
 
-  constructor(private auth:AuthService, private baseUrl: BaseUrl, private imagesService: ImagesService) { 
+  constructor(private router: Router, private newsService: NewsService, private auth:AuthService, private baseUrl: BaseUrl, private imagesService: ImagesService) { 
     
   }
   
+  isGuest:any;
+
   ngOnInit(): void {
-    this.imagesService.GetImage(this.auth.munCityId).pipe(catchError((error: any, caught: Observable<any>): Observable<any> => {
-      console.error('There was an error!', error);    
+   this.isGuest = localStorage.getItem("guest");
+
+    // if(this.auth.munCityId === null){
+    //   this.router.navigate(['dashboard/ddn']);
+    // }
+    this.imagesService.GetImage(this.auth.munCityId === "null" && this.isGuest? "ddn" : this.auth.munCityId).pipe(catchError((error: any, caught: Observable<any>): Observable<any> => {
+        console.error('There was an error!', error);    
       return of();
   })).subscribe(response => { 
 
@@ -44,6 +53,52 @@ export class DashboardComponent implements OnInit {
       }   
     };
     });
+
+    this.GetNews();
+  }
+
+  listNews:any = [];
+  listNewsData:any = [];
+
+  GetNews()
+  {
+    this.newsService.GetNews().subscribe({
+      next: (response) =>
+      {
+        this.listNewsData = (<any> response);
+      },
+      error: (error)=>{
+
+      },
+      complete: ()=>{
+        console.log(this.listNewsData)
+        if(this.auth.munCityId === "null" && this.isGuest){
+          this.listNewsData.forEach((a:any) => {
+            if(a.munCityId === "DDN"){
+              this.listNews.push(a);
+            }
+          });
+        }else{
+          this.listNewsData.forEach((a:any) => {
+            if(a.munCityId === this.auth.munCityId){
+              this.listNews.push(a);
+            }
+          });
+        }
+      
+      }
+    });
+  }
+
+  get filterNews()
+  {
+    if(this.auth.o_munCityId){
+      return this.listNews.filter((a: any) => a.hidden == 0);
+    }
+    else{
+      return this.listNews.filter((a: any) => a.hidden == 0 && a.isAdmin == 0);
+    }
+    
   }
  
   dataURItoBlob(dataURI:any) {

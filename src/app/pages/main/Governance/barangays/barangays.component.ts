@@ -186,7 +186,7 @@ export class BarangaysComponent implements OnInit {
       },
       complete: () => {
         let isPortrait = true;
-        this.pdfService.GeneratePdf(data, isPortrait);
+        this.pdfService.GeneratePdf(data, isPortrait, "");
         console.log(data);
       },
     });
@@ -332,7 +332,7 @@ export class BarangaysComponent implements OnInit {
             icon: 'success',
             title: 'Your work has been saved',
             showConfirmButton: false,
-            timer: 1000,
+            timer: 500,
           });
         },
       });

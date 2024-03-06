@@ -1,12 +1,14 @@
 <div class="">
-  <ng-template #isEmpty>
+  <!-- <ng-template #isEmpty>
     <app-import [data]="message" (importData)="importMethod()" (testEvent)="parentMethod()"></app-import>
-  </ng-template>
+  </ng-template> -->
 
   <div *ngIf="showOverlay">
     <app-import-loading></app-import-loading>
   </div>
-  <div *ngIf="listLivestock.length>0 ; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
+  <!-- <div *ngIf="listLivestock.length>0 ; else isEmpty" class="card o-hidden border-2 shadow-sm my-5"> -->
+  <div class="card o-hidden border-2 shadow-sm my-5">
+  
     <div class="card-body p-0">
       <!-- Nested Row within Card Body -->
       <div class="row">

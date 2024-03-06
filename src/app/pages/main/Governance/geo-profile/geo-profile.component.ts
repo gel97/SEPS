@@ -334,7 +334,7 @@ export class GeoProfileComponent implements OnInit {
       },
       complete: () => {
         let isPortrait = false;
-        this.pdfService.GeneratePdf(data[0], isPortrait);
+        this.pdfService.GeneratePdf(data[0], isPortrait, "");
         console.log(data);
       },
     });

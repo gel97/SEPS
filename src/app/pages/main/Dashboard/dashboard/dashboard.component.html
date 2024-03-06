@@ -1,55 +1,78 @@
-
 <div class="card border-2 shadow-sm">
   <app-admin>
     <label for="fileInput" class="position-absolute top-0 end-0 p-2 pointer">
       <h5>
-          <i class='fas fa-pencil-alt bg-primary p-2 rounded-circle text-white' data-toggle="modal" data-target="#uploadModal"></i>
-      </h5>      
-  </label>
+        <i class='fas fa-pencil-alt bg-primary p-2 rounded-circle text-white' data-toggle="modal"
+          data-target="#uploadModal"></i>
+      </h5>
+    </label>
   </app-admin>
-  
-  <input id="fileInput" type="file"  style="display:none" (change)="fileChangeEvent($event)">
-  <img *ngIf="croppedImage" [src]="croppedImage" (error)="handleImageError($event)"/>
-  <img *ngIf="!croppedImage" src="assets/img/image.png" height="50" width="50"/>
+
+  <input id="fileInput" type="file" style="display:none" (change)="fileChangeEvent($event)">
+  <img *ngIf="croppedImage" [src]="croppedImage" (error)="handleImageError($event)" />
+  <img *ngIf="!croppedImage" src="assets/img/image.png" height="50" width="50" />
 
 </div>
+<br>
 
-<!-- Modal -->
-<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Add banner</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-            <image-cropper
-            [imageChangedEvent]="imageChangedEvent"
-            [maintainAspectRatio]="true"
-            [aspectRatio]="3 / 1"     
-            format="png"
-            (imageCropped)="imageCropped($event)"
-            (imageLoaded)="imageLoaded($event)"
-            (cropperReady)="cropperReady($event)"
-            (loadImageFailed)="loadImageFailed()">
-            </image-cropper> 
-        </div>
-       
-        <div class="modal-footer">
-            <div class="col-lg-6 progress" style="height: 20px" *ngIf="progressvalue">
-                <div
-                    class="progress-bar progress-bar-striped bg-success"
-                    role="progressbar"
-                    style="width: 75%"
-                    [ngStyle]="{'width': progressvalue}"
-                >
-                </div>            
-            </div>            
-                <button #closeModal type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>  
-                <button type="button" class="btn btn-primary" (click)="updateImage()">Save changes</button>       
-        </div>
+<div *ngFor="let item of filterNews" class="card shadow-sm mb-3">
+
+  <!-- Card Header - Dropdown -->
+  <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+    <h6 class="m-0 font-weight-bold text-primary">{{item.title}}</h6>
+    <div class="dropdown no-arrow">
+      <i class='fa fa-history'></i>
+      {{ item.datePosted | hoursAgoOrDate }}
+
+      <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+      </a>
+      <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+        <div class="dropdown-header">Dropdown Header:</div>
+        <a class="dropdown-item" href="#">Action</a>
+        <a class="dropdown-item" href="#">Another action</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="#">Something else here</a>
       </div>
     </div>
   </div>
+  <!-- Card Body -->
+  <div class="card-body">
+    <div [innerHTML]=item.bodyContent>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Add banner</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="3 / 1"
+          format="png" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded($event)"
+          (cropperReady)="cropperReady($event)" (loadImageFailed)="loadImageFailed()">
+        </image-cropper>
+      </div>
+
+      <div class="modal-footer">
+        <div class="col-lg-6 progress" style="height: 20px" *ngIf="progressvalue">
+          <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 75%"
+            [ngStyle]="{'width': progressvalue}">
+          </div>
+        </div>
+        <button #closeModal type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="updateImage()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
