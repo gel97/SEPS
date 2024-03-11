@@ -200,4 +200,19 @@ export class ReportsService {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_validation(), data, { responseType: 'json' });
   }
 
+  AddReportValidation(data:any = {})
+  {
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_validation(), data, { responseType: 'json' });
+  }
+
+  EditReportValidation(data:any = {})
+  {
+    return this.http.put<any[]>(this.Base.url + this.ApiUrl.put_report_validation(), data, { responseType: 'json' });
+  }
+
+  DeleteReportValidation(transId:string = "")
+  {
+    return this.http.delete(this.Base.url + this.ApiUrl.delete_report_validation(transId), { responseType: 'text' });
+  }
+
 }
