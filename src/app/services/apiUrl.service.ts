@@ -594,6 +594,8 @@ export class ApiUrl {
 
     get_report_summarized  = (year:number)=>`/ReportSummarized/${year}`;
     post_report_validation = ()=>`/ReportValidation`;
+    put_report_validation = ()=>`/ReportValidation`;
+    delete_report_validation = (transId:any)=>`/ReportValidation/${transId}`;
 
     get_sep_year  = ()=>`/SepYear`;
 }
