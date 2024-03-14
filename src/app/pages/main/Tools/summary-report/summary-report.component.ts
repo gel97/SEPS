@@ -134,8 +134,7 @@ export class SummaryReportComponent implements OnInit {
 
   showReport(reportName: string, remarks: string) {
     console.log(reportName);
-    this.remarks = 'sample remarks ssss';
-    console.log(this.remarks);
+    this.remarks = remarks;
 
     switch (reportName) {
       case 'Provincial Officials':
@@ -146,6 +145,21 @@ export class SummaryReportComponent implements OnInit {
         break;
       case 'Municipality/ City Officials':
         this.CityOfficialGeneratePDF();
+        break;
+      case 'Physical / Geographic Profile':
+        this.PhyGeoGeneratePDF();
+        break;
+      case 'Organization/ Staffing Patterns by Municipality/City':
+        this.OrgStafGeneratePDF();
+        break;
+      case 'Demography':
+        this.DemographyGeneratePDF();
+        break;
+      case 'Number of Precincts and Registered Voters by Municipality/City':
+        this.VotersGeneratePDF();
+        break;
+      case 'Number of Precincts and Registered SK Voters by Municipality/City':
+        this.SkGeneratePDF();
         break;
       default:
         break;
