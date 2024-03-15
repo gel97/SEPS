@@ -42,7 +42,8 @@ export class SummaryReportComponent implements OnInit {
 
     if (!this.toValidate.remarks) {
       this.fields.year = this.service.activeSetYear;
-
+      this.fields.userId = this.service.userId;
+      
       this.reportService.AddReportValidation(this.fields).subscribe({
         next: (response) => {
           this.closebutton.nativeElement.click();
