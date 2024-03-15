@@ -26,8 +26,8 @@ export class TokenInterceptorService implements HttpInterceptor {
     return next.handle(tokenizedReq).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
-          auth.clearSession();
-          this.router.navigate(['/login']);
+          //auth.clearSession();
+          //this.router.navigate(['/login']);
         }
         return throwError(error);
       })
