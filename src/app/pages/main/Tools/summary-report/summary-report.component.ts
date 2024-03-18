@@ -162,6 +162,252 @@ export class SummaryReportComponent implements OnInit {
       case 'Number of Precincts and Registered SK Voters by Municipality/City':
         this.SkGeneratePDF();
         break;
+        case 'Major Economic Activities by Municipality/City':
+          this.MjrEcoGeneratePDF();
+          break;
+        case 'Number of Manufacturing Industry by Municipality/City':
+          this.ManEstabGeneratePDF();
+          break;
+        case 'Number of Business/ Commercial Establishments by Municipality/City':
+          this.ComEstabGeneratePDF();
+          break;
+        case 'List of Industrial Estates by Municipality/City':
+          this.IndustrialGeneratePDF();
+          break;
+        case 'List of Banking Institutions by Municipality/City':
+            this.BankingGeneratePdf();
+            break;
+        case 'List of Cooperative by Municipality/City':
+            this.CoopGeneratePdf();
+            break;
+        case 'List of Insurance Institutions by Municipality/City':
+            this.InsuranceGeneratePdf();
+            break;
+        case 'List of Financial Institutions by Municipality/City':
+            this.FinancialGeneratePdf();
+            break;
+        case 'Number of Recreational Facilities by Municipality/City':
+            this.RecreationalGeneratePDF();
+            break;
+        case 'List of Resorts/Recreation Center by Municipality/City':
+            this.ResortGeneratePDF();
+            break;
+        case 'List of Hotels/ Lodging Houses by Municipality/City':
+            this.LodgingGeneratePDF();
+            break;
+        case 'List of Industrial Estate by Municipality/City':
+            this.IndustrialGeneratePDF();
+            break;
+        case 'List of Cinema/ Movie Houses by Municipality/City':
+            this.CinemaGeneratePDF();
+            break;
+        case 'List of Natural and Man-made Attractions by Municipality/City':
+            this.NaturalGeneratePDF();
+            break;
+        case 'List of Historical/ Cultural and Religious Attractions by Municipality/City':
+            this.CulturalGeneratePDF();
+            break;
+        case 'List of Fiestas and Festivals by Municipality/City':
+            this.FestivalGeneratePDF();
+            break;
+        case 'Agricultural Profle of Davao del Norte':
+            this.AgriProfGeneratePDF();
+            break;
+        case 'List of Fisheries/ Aquaculture Production by Municipality/City':
+            this.FisheriesGeneratePDF();
+            break;
+        case 'List of Poultry/ Livestock Production by Municipality/City':
+            this.LivestockGeneratePDF();
+            break;
+        case 'List of Ricemills by Municipality/City':
+            this.RicemillsGeneratePDF();
+            break;
+        case 'List of Warehouses by Municipality/City':
+            this.WarehouseGeneratePDF();
+            break;
+        case 'List of Slaughterhouses by Municipality/City':
+            this.SlaughterGeneratePDF();
+            break;
+        case 'Number of Public and Private by Municipality/City':
+            this.PubPrivGeneratePDF();
+            break;
+        case 'List of Technical/Vocational by Municipality/City':
+            this.TechvocFacGeneratePDF();
+            break;
+        case 'List of Tertiary Facilities by Municipality/City':
+            this.TertiaryGeneratePDF();
+            break;
+        case 'Number of Private Elementary Schools by Municipality/City':
+            this.PrivElemGeneratePDF();
+            break;
+        case 'Number of Private Secondary Schools by Municipality/City':
+            this.PrivSecGeneratePDF();
+            break;
+        case 'Number of Public Elementary Shools by Municipality/City':
+            this.PubElemGeneratePDF();
+            break;
+        case 'Number of Public Secondary Schools by Municipality/City':
+            this.PubSecGeneratePDF();
+            break;
+        case 'Number of DayCare by Municipality/City':
+            this.DaycareGeneratePDF();
+            break;
+        case 'Tertiary Enrolment by Municipality/City':
+            this.TertiraryEnrolGeneratePDF();
+            break;
+        case 'Tertiary Graduates by Municipality/City':
+            this.TertiaryGradGeneratePDF();
+            break;
+        case 'Number of DayCare by Municipality/City':
+            this.DaycareGeneratePDF();
+            break;
+        case 'List of Technical/ Vocational programs by Municipality/City':
+            this.TechvoProgramsGeneratePDF();
+            break;
+        case 'Number of Enrolment and Graduates for Technical/ Vocational by Municipality/City':
+            this.TechvocGradGeneratePDF();
+            break;
+        case 'List of Training Centers by Municipality/City':
+            this.TrainingCenterGeneratePDF();
+            break;
+        case 'Number of SPED Enrolment by Municipality/City':
+            this.SPEDGeneratePDF();
+            break;
+        case 'Number of Out of School Youth by Municipality/City':
+            this.OSYGeneratePDF();
+            break;
+        case 'Number of Health Service Workers by Municipality/City':
+            this.HealthServiceGeneratePDF();
+            break;
+        case 'List of RHUs/ Community Hospitals by Municipality/City':
+            this.ComHospGeneratePDF();
+            break;
+        case 'List of Barangay Health Stations by Municipality/City':
+            this.BrgyHealthGeneratePDF();
+            break;
+        case 'List of Private Hospitals by Municipality/City':
+            this.PrivateHospGeneratePDF();
+            break;
+        case 'Households with Access to Safe Water Supply and Sanitary Facilities by Municipality/City':
+            this.SanitaryGeneratePDF();
+            break;
+        case 'Persons with Disability':
+            this.PWDGeneratePDF();
+            break;
+        case 'List of Provincial Hospitals':
+            this.ProvHospGeneratePDF();
+            break;
+        case 'Police Services by Municipality/City':
+            this.PoliceGeneratePDF();
+            break;
+        case 'Fire Protection Services by Municipality/City':
+            this.FireGeneratePDF();
+            break;
+        case 'List of Barangay Health Station by Municipality/City':
+            this.BrgyHealthGeneratePDF();
+            break;
+        case 'Barangay Peacekeeping/ Tanod Services by Municipality/City':
+            this.TanodGeneratePDF();
+            break;
+        case 'Index Crime by Municipality/City':
+            this.IndexCrimeGeneratePDF();
+            break;
+        case 'List of Informal Settlements by Municipality/City':
+            this.SettlersGeneratePDF();
+            break;
+        case 'List of Government Housing Projects by Municipality/City':
+            this.GovHousingGeneratePDF();
+            break;
+        case 'List of Subdivisions by Municipality/City':
+            this.SubdvGeneratePDF();
+            break;
+        case 'List of Civic Organizations by Municipality/ City':
+            this.CivicOrgGeneratePDF();
+            break;
+        case 'List of Religious Organizations by Municipality/ City':
+            this.ReligiousGeneratePDF();
+            break;
+        case 'List of Professional Organizations by Municipality/ City':
+            this.ProfGeneratePDF();
+            break;
+        case 'List of Commercial/ Industrial/ Labor Organizations by Municipality/ City':
+            this.CommercialGeneratePDF();
+            break;
+        case 'List of Cooperatives by Municipality/ City':
+            this.CooperativesGeneratePDF();
+            break;
+        case 'List of Sectoral by Municipality/ City':
+            this.SectoralGeneratePDF();
+            break;
+        case 'List of Foundations by Municipality/ City':
+            this.FoundationGeneratePDF();
+            break;
+        case 'List of Communication Towers/ Cell-sites by Municipality/ City':
+            this.TelSysGeneratePDF();
+            break;
+        case 'List of Express Mail/ Mailing Services by Municipality/ City':
+            this.MailGeneratePDF();
+            break;
+        case 'List of Internet Service Providers by Municipality/ City':
+            this.ISPGeneratePDF();
+            break;
+        case 'Number of Postal Services by Municipality/City':
+            this.PostalGeneratePDF();
+            break;
+        case 'List of Telecommunication Systems by Municipality/ City':
+            this.TelcomGeneratePDF();
+            break;
+        case 'List of Telegraph Facilities by Municipality/ City':
+            this.TelgraphGeneratePDF();
+            break;
+        case 'Summary of Road Length by Type and Pavement Classification':
+            this.RoadGeneratePDF();
+            break;
+        case 'List of Bridges by Municipality/City':
+            this.BridgesGeneratePDF();
+            break;
+        case 'List of Transport Terminals by Municipality/City':
+            this.TerminalsGeneratePDF();
+            break;
+        case 'List of Ports by Municipality/City':
+            this.PortGeneratePDF();
+            break;
+        case 'List of Water Utility Service Providers by Municipality/ City':
+            this.WaterUtilGeneratePDF();
+            break;
+        case 'List of Water Pump Stations by Municipality/ City':
+            this.WaterPumpGeneratePDF();
+            break;
+        case 'Irrigation Systems by Municipality/City':
+            this.IrrigsysGeneratePDF();
+            break;
+        case 'List of Power System Service Providers by Municipality/ City':
+            this.PowerSysGeneratePDF();
+            break;
+        case 'List of Power Sub-Stations by Municipality/ City':
+            this.PowersubGeneratePDF();
+            break;
+        case 'List of Waste Management Facilities by Municipality/ City':
+            this.WasteGeneratePDF();
+            break;
+        case 'List of Ice Plant / Cold Storage Facilities by Municipality/ City':
+            this.IceGeneratePDF();
+            break;
+        case 'List of Market / Supermarkets by Municipality/ City':
+            this.MarketGeneratePDF();
+            break;
+        case 'List of Department Stores by Municipality/ City':
+            this.DepGeneratePDF();
+            break;
+        case 'List of Cemeteries/ Memorial Parks by Municipality/ City':
+            this.CemeteryGeneratePDF();
+            break;
+        case 'List of Churches/ Worship Houses by Municipality/ City':
+            this.ChurchGeneratePDF();
+            break;
+        case 'List of Other Structures by Municipality/ City':
+            this.OtherStructGeneratePDF();
+            break;
       default:
         break;
     }
