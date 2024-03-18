@@ -177,7 +177,7 @@ export class SummaryReportComponent implements OnInit {
         case 'List of Banking Institutions by Municipality/City':
             this.BankingGeneratePdf();
             break;
-        case 'List of Cooperative by Municipality/City':
+        case 'List of Cooperatives by Municipality/City':
             this.CoopGeneratePdf();
             break;
         case 'List of Insurance Institutions by Municipality/City':
