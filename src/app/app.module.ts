@@ -156,6 +156,7 @@ import { ForAllAdminComponent } from './Admin/for-all-admin/for-all-admin.compon
 import { DdnDashboardComponent } from './pages/main/Dashboard/ddn-dashboard/ddn-dashboard.component';
 import { PrevRateComponent } from './pages/main/SocialProfile/Health/prev-rate/prev-rate.component';
 import { NoDataComponent } from './components/no-data/no-data.component';
+import { NgoComponent } from './Admin/ngo/ngo.component';
 
 @NgModule({
   declarations: [
@@ -299,6 +300,7 @@ import { NoDataComponent } from './components/no-data/no-data.component';
     DdnDashboardComponent,
     PrevRateComponent,
     NoDataComponent,
+    NgoComponent,
   ],
   imports: [
     MdbCollapseModule,

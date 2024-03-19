@@ -4,7 +4,11 @@
       <tr>
         <th>{{a.sectorName}}</th>
         <th>Remarks</th>
-        <th>Action</th>
+        <th>
+          <app-ngo>
+            Action
+          </app-ngo>
+        </th>
       </tr>
     </thead>
     <tbody>
@@ -12,17 +16,19 @@
         <td (click)="showReport(b.reportName, b?.details?.remarks)">{{b.reportName}}</td>
         <td (click)="showReport(b.reportName, b?.details?.remarks)">{{b?.details?.remarks}}</td>
         <td>
-          <button *ngIf="b.details === null; else ShowEditBtn" type="button" (click)="isAdd = true; fields.remarks = null; fields.reportId = b.reportId" class="btn btn-primary btn-circle" data-toggle="modal"
-            data-target="#openModal ">
-            <i class="fa fa-plus"></i>
-          </button>
-          <ng-template #ShowEditBtn>
-            <button type="button" title="Edit" (click)="isAdd = false; fields.reportId = b.reportId; setData(b?.details)" class="btn btn-info btn-circle"
-            data-toggle="modal" data-target="#openModal"><i class="fa fa-pen"></i> </button>
-            <button (click)="DeleteReportValidation(b?.details?.transId)" class="btn btn-warning btn-circle">
-              <i class="fas fa-trash"></i>
+          <app-ngo>
+            <button *ngIf="b.details === null; else ShowEditBtn" type="button" (click)="isAdd = true; fields.remarks = null; fields.reportId = b.reportId" class="btn btn-primary btn-circle" data-toggle="modal"
+              data-target="#openModal ">
+              <i class="fa fa-plus"></i>
             </button>
-          </ng-template>
+            <ng-template #ShowEditBtn>
+              <button type="button" title="Edit" (click)="isAdd = false; fields.reportId = b.reportId; setData(b?.details)" class="btn btn-info btn-circle"
+              data-toggle="modal" data-target="#openModal"><i class="fa fa-pen"></i> </button>
+              <button (click)="DeleteReportValidation(b?.details?.transId)" class="btn btn-warning btn-circle">
+                <i class="fas fa-trash"></i>
+              </button>
+            </ng-template>
+          </app-ngo>
         </td>
       </tr>
     </tbody>
