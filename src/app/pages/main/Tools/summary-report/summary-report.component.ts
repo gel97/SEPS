@@ -41,7 +41,7 @@ export class SummaryReportComponent implements OnInit {
       this.fields.year == '' || this.fields.remarks == null ? true : false;
 
     if (!this.toValidate.remarks) {
-      this.fields.year = this.service.activeSetYear;
+      this.fields.year = this.service.setYear;
       this.fields.userId = this.service.userId;
       
       this.reportService.AddReportValidation(this.fields).subscribe({
@@ -64,6 +64,7 @@ export class SummaryReportComponent implements OnInit {
       this.fields.year == '' || this.fields.remarks == null ? true : false;
 
     if (!this.toValidate.remarks) {
+      this.fields.year=this.service.setYear;
 
       this.reportService.EditReportValidation(this.fields).subscribe({
         next: (response) => {
@@ -21984,7 +21985,7 @@ export class SummaryReportComponent implements OnInit {
           tableData.push([
             {
               text: item.munCityName,
-              fillColor: '#FFFFFF',
+              fillColor:  '#FFFFFF',
             },
             {
               text: item.totalPurokNo,
@@ -22080,23 +22081,23 @@ export class SummaryReportComponent implements OnInit {
             fillColor: '#9DB2BF',
           },
           {
-            text: subtotal2.purokNo,
+            text: subtotal2?.purokNo ?? "",
             fillColor: '#9DB2BF',
           },
           {
-            text: subtotal2.estabNo,
+            text: subtotal2?.estabNo ?? "",
             fillColor: '#9DB2BF',
           },
           {
-            text: subtotal2.clusterNo,
+            text: subtotal2?.clusterNo ?? "",
             fillColor: '#9DB2BF',
           },
           {
-            text: subtotal2.votingCntrNo,
+            text: subtotal2?.votingCntrNo ?? "",
             fillColor: '#9DB2BF',
           },
           {
-            text: subtotal2.regSkVoterNo,
+            text: subtotal2?.regSkVoterNo ?? "",
             fillColor: '#9DB2BF',
           },
         ]);
