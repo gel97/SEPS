@@ -227,10 +227,10 @@ export class RegisteredVotersComponent implements OnInit {
                 text: item.munCityName,
                 fillColor: '#FFFFFF',
               },
-              {
-                text: item.totalPurokNo,
-                fillColor: '#FFFFFF',
-              },
+              //{
+                //text: item.totalPurokNo,
+               // fillColor: '#FFFFFF',
+              //},
               {
                 text: item.totalEstabNo,
                 fillColor: '#FFFFFF',
@@ -256,10 +256,10 @@ export class RegisteredVotersComponent implements OnInit {
               text: 'SUBTOTAL',
               fillColor: '#9DB2BF',
             },
-            {
-              text: subtotal1.purokNo,
-              fillColor: '#9DB2BF',
-            },
+           // {
+             // text: subtotal1.purokNo,
+              //fillColor: '#9DB2BF',
+           // },
             {
               text: subtotal1.estabNo,
               fillColor: '#9DB2BF',
@@ -291,10 +291,10 @@ export class RegisteredVotersComponent implements OnInit {
                 text: item.munCityName,
                 fillColor: '#FFFFFF',
               },
-              {
-                text: item.totalPurokNo,
-                fillColor: '#FFFFFF',
-              },
+             // {
+               // text: item.totalPurokNo,
+                //fillColor: '#FFFFFF',
+              //},
               {
                 text: item.totalEstabNo,
                 fillColor: '#FFFFFF',
@@ -320,10 +320,10 @@ export class RegisteredVotersComponent implements OnInit {
               text: 'SUBTOTAL',
               fillColor: '#9DB2BF',
             },
-            {
-              text: subtotal2.purokNo,
-              fillColor: '#9DB2BF',
-            },
+            //{
+              //text: subtotal2.purokNo,
+              //fillColor: '#9DB2BF',
+            //},
             {
               text: subtotal2.estabNo,
               fillColor: '#9DB2BF',
@@ -348,10 +348,10 @@ export class RegisteredVotersComponent implements OnInit {
               text: 'GRANDTOTAL',
               fillColor: '#F1C93B',
             },
-            {
-              text: grandtotal.purokNo,
-              fillColor: '#F1C93B',
-            },
+            //{
+              //text: grandtotal.purokNo,
+              //fillColor: '#F1C93B',
+            //},
             {
               text: grandtotal.estabNo,
               fillColor: '#F1C93B',
