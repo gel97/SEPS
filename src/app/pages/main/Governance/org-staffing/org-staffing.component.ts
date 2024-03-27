@@ -666,33 +666,33 @@ export class OrgStaffingComponent implements OnInit {
 
   AddOrg() {
     this.toValidate.permanentNo =
-      this.org.permanentNo == '' || this.org.permanentNo == null ? true : false;
+       this.org.permanentNo == null ? true : false;
     this.toValidate.temporary =
-      this.org.temporary == '' || this.org.temporary == undefined
+       this.org.temporary == undefined
         ? true
         : false;
     this.toValidate.coTerminus =
-      this.org.coTerminus == '' || this.org.coTerminus == undefined
+       this.org.coTerminus == undefined
         ? true
         : false;
     this.toValidate.elected =
-      this.org.elected == '' || this.org.elected == undefined ? true : false;
+       this.org.elected == undefined ? true : false;
     this.toValidate.casual =
-      this.org.casual == '' || this.org.casual == null ? true : false;
+       this.org.casual == null ? true : false;
     this.toValidate.jobOrder =
-      this.org.jobOrder == '' || this.org.jobOrder == undefined ? true : false;
+       this.org.jobOrder == undefined ? true : false;
     this.toValidate.contractual =
-      this.org.contractual == '' || this.org.contractual == undefined
+       this.org.contractual == undefined
         ? true
         : false;
     this.toValidate.casualSef =
-      this.org.casualSef == '' || this.org.casualSef == undefined
+       this.org.casualSef == undefined
         ? true
         : false;
     this.toValidate.schoolBoard =
-      this.org.schoolBoard == '' || this.org.schoolBoard == null ? true : false;
+       this.org.schoolBoard == null ? true : false;
     this.toValidate.contractService =
-      this.org.contractService == '' || this.org.contractService == undefined
+       this.org.contractService == undefined
         ? true
         : false;
     this.toValidate.others =
@@ -740,33 +740,33 @@ export class OrgStaffingComponent implements OnInit {
   //for modal
   update() {
     this.toValidate.permanentNo =
-      this.org.permanentNo == '' || this.org.permanentNo == null ? true : false;
+       this.org.permanentNo == null ? true : false;
     this.toValidate.temporary =
-      this.org.temporary == '' || this.org.temporary == undefined
+      this.org.temporary == undefined
         ? true
         : false;
     this.toValidate.coTerminus =
-      this.org.coTerminus == '' || this.org.coTerminus == undefined
+       this.org.coTerminus == undefined
         ? true
         : false;
     this.toValidate.elected =
-      this.org.elected == '' || this.org.elected == undefined ? true : false;
+       this.org.elected == undefined ? true : false;
     this.toValidate.casual =
-      this.org.casual == '' || this.org.casual == null ? true : false;
+       this.org.casual == null ? true : false;
     this.toValidate.jobOrder =
-      this.org.jobOrder == '' || this.org.jobOrder == undefined ? true : false;
+       this.org.jobOrder == undefined ? true : false;
     this.toValidate.contractual =
-      this.org.contractual == '' || this.org.contractual == undefined
+       this.org.contractual == undefined
         ? true
         : false;
     this.toValidate.casualSef =
-      this.org.casualSef == '' || this.org.casualSef == undefined
+       this.org.casualSef == undefined
         ? true
         : false;
     this.toValidate.schoolBoard =
-      this.org.schoolBoard == '' || this.org.schoolBoard == null ? true : false;
+       this.org.schoolBoard == null ? true : false;
     this.toValidate.contractService =
-      this.org.contractService == '' || this.org.contractService == undefined
+       this.org.contractService == undefined
         ? true
         : false;
     this.toValidate.others =
