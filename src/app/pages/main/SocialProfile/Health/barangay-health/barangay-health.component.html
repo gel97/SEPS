@@ -44,11 +44,11 @@
                     <th scope="col" style="text-align: center">
                       Contact Numbers
                     </th>
-                    <th scope="col" style="text-align: center">Location</th>
+                    <th scope="col" style="text-align: center">Location (#/Bldg/St./Purok)</th>
                     <th scope="col" style="text-align: center">Barangay</th>
-                    <!-- <th scope="col" style="text-align: center">
+                     <th scope="col" style="text-align: center">
                       Geo-Coord.(Long.Lat)
-                    </th> -->
+                    </th> 
                     <th style="text-align: center"></th>
                   </tr>
                 </thead>
@@ -61,8 +61,8 @@
                     <td style="text-align: center">{{ dataItem.contactNo }}</td>
                     <td style="text-align: center">{{ dataItem.location }}</td>
                     <td style="text-align: center">{{ dataItem.brgyName }}</td>
-                    <!-- <td style="text-align: center;">{{ dataItem.longtitude }},<br>
-                      {{ dataItem.latitude }}</td> -->
+                     <td style="text-align: center;">{{ dataItem.longtitude }},<br>
+                      {{ dataItem.latitude }}</td> 
                     <td style="text-align: center;">
                       <div class="d-inline-flex">
                         <app-admin>
@@ -133,7 +133,7 @@
             <div class="row">
               <div class="col-lg-6">
                 <label for="exampleFormControlInput1">Contact Person/Designation :</label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.capacity" />
+                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.contactPerson" />
               </div>
               <div class="col-lg-6">
                 <label for="exampleFormControlInput1"> Contact Numbers:</label>
@@ -143,10 +143,14 @@
           </div>
         </div>
         <div class="row">
+          <!-- <div class="col-lg-6">
+            <label for="exampleFormControlInput1">longtitude :</label>
+            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.longtitude" />
+          </div> 
           <div class="col-lg-6">
-            <label for="exampleFormControlInput1">Location :</label>
-            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.contactPerson" />
-          </div>
+            <label for="exampleFormControlInput1">latitude :</label>
+            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.latitude" />
+          </div>  -->
 
           <div class="col-lg-6">
             <label>Location (#/Bldg/St./Purok) :</label>
