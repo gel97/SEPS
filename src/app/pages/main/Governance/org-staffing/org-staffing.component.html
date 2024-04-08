@@ -91,7 +91,9 @@
                                 <input type="number" class="form-control mb-2" id="permanent" name="permanent"
                                   [(ngModel)]="org.permanentNo" [disabled]="inputDisabled" placeholder=""
                                   [ngClass]="toValidate.permanentNo ? 'is-invalid' : ''"
-                                  (keyup)="toValidate.permanentNo = false" />
+                                  (keyup)="toValidate.permanentNo = false" 
+                                  min="0"
+                                  oninput="this.value = Math.abs(this.value)"/>
                               </td>
                             </tr>
                             <tr>
@@ -102,7 +104,9 @@
                                 <input type="number" class="form-control" id="temporary" name="temporary"
                                   [(ngModel)]="org.temporary" [disabled]="inputDisabled" placeholder=""
                                   [ngClass]="toValidate.temporary ? 'is-invalid' : ''"
-                                  (keyup)="toValidate.temporary = false" />
+                                  (keyup)="toValidate.temporary = false" 
+                                  min="0"
+                                  oninput="this.value = Math.abs(this.value)"/>
                               </td>
                             </tr>
                             <tr>
@@ -113,7 +117,9 @@
                                 <input type="number" class="form-control" id="coTerminus" name="coTerminus"
                                   [(ngModel)]="org.coTerminus" [disabled]="inputDisabled" placeholder=""
                                   [ngClass]="toValidate.coTerminus ? 'is-invalid' : ''"
-                                  (keyup)="toValidate.coTerminus = false" />
+                                  (keyup)="toValidate.coTerminus = false" 
+                                  min="0"
+                                  oninput="this.value = Math.abs(this.value)"/>
                               </td>
                             </tr>
                             <tr>
@@ -124,7 +130,9 @@
                                 <input type="number" class="form-control" id="elected" name="elected"
                                   [(ngModel)]="org.elected" [disabled]="inputDisabled" placeholder=""
                                   [ngClass]="toValidate.elected ? 'is-invalid' : ''"
-                                  (keyup)="toValidate.elected = false" />
+                                  (keyup)="toValidate.elected = false" 
+                                  min="0"
+                                  oninput="this.value = Math.abs(this.value)"/>
                               </td>
                             </tr>
                             <tr>
@@ -135,7 +143,9 @@
                                 <input type="number" class="form-control" id="casual" name="casual"
                                   [(ngModel)]="org.casual" [disabled]="inputDisabled" placeholder=""
                                   [ngClass]="toValidate.casual ? 'is-invalid' : ''"
-                                  (keyup)="toValidate.casual = false" />
+                                  (keyup)="toValidate.casual = false" 
+                                  min="0"
+                                  oninput="this.value = Math.abs(this.value)"/>
                               </td>
                             </tr>
                             <tr>
@@ -146,7 +156,9 @@
                                 <input type="number" class="form-control" id="jobOrder" name="jobOrder"
                                   [(ngModel)]="org.jobOrder" [disabled]="inputDisabled" placeholder=""
                                   [ngClass]="toValidate.jobOrder ? 'is-invalid' : ''"
-                                  (keyup)="toValidate.jobOrder = false" />
+                                  (keyup)="toValidate.jobOrder = false" 
+                                  min="0"
+                                  oninput="this.value = Math.abs(this.value)"/>
                               </td>
                             </tr>
                             <tr>
@@ -157,7 +169,9 @@
                                 <input type="number" class="form-control" id="contractual" name="contractual"
                                   [(ngModel)]="org.contractual" [disabled]="inputDisabled" placeholder=""
                                   [ngClass]="toValidate.contractual ? 'is-invalid' : ''"
-                                  (keyup)="toValidate.contractual = false" />
+                                  (keyup)="toValidate.contractual = false" 
+                                  min="0"
+                                  oninput="this.value = Math.abs(this.value)"/>
                               </td>
                             </tr>
                             <tr>
@@ -168,7 +182,9 @@
                                 <input type="number" class="form-control" id="casualSef" name="casualSef"
                                   [(ngModel)]="org.casualSef" [disabled]="inputDisabled" placeholder=""
                                   [ngClass]="toValidate.casualSef ? 'is-invalid' : ''"
-                                  (keyup)="toValidate.casualSef = false" />
+                                  (keyup)="toValidate.casualSef = false" 
+                                  min="0"
+                                  oninput="this.value = Math.abs(this.value)"/>
                               </td>
                             </tr>
                             <tr>
@@ -179,7 +195,9 @@
                                 <input type="number" class="form-control" id="schoolBoard" name="schoolBoard"
                                   [(ngModel)]="org.schoolBoard" [disabled]="inputDisabled" placeholder=""
                                   [ngClass]="toValidate.schoolBoard ? 'is-invalid' : ''"
-                                  (keyup)="toValidate.schoolBoard = false" />
+                                  (keyup)="toValidate.schoolBoard = false" 
+                                  min="0"
+                                  oninput="this.value = Math.abs(this.value)"/>
                               </td>
                             </tr>
                             <tr>
@@ -190,7 +208,9 @@
                                 <input type="number" class="form-control" id="contractService" name="contractService"
                                   [(ngModel)]="org.contractService" [disabled]="inputDisabled" placeholder="" [ngClass]="
                                   toValidate.contractService ? 'is-invalid' : ''
-                                " (keyup)="toValidate.contractService = false" />
+                                " (keyup)="toValidate.contractService = false" 
+                                 min="0"
+                                 oninput="this.value = Math.abs(this.value)"/>
                               </td>
                             </tr>
                             <tr>
@@ -256,26 +276,34 @@
                 <label>Permanent :</label>
                 <input type="number" class="form-control mb-2" id="permanent" name="permanent"
                   [(ngModel)]="editO.permanentNo" placeholder="" [ngClass]="toValidate.permanentNo ? 'is-invalid' : ''"
-                  (keyup)="toValidate.permanentNo = false" />
+                  (keyup)="toValidate.permanentNo = false" 
+                  min="0"
+                  oninput="this.value = Math.abs(this.value)"/>
               </div>
               <div class="col-lg-6">
                 <label>Temporary : </label>
                 <input type="number" class="form-control mb-2" id="temporary" name="temporary"
                   [(ngModel)]="editO.temporary" placeholder="" [ngClass]="toValidate.temporary ? 'is-invalid' : ''"
-                  (keyup)="toValidate.temporary = false" />
+                  (keyup)="toValidate.temporary = false" 
+                  min="0"
+                  oninput="this.value = Math.abs(this.value)"/>
               </div>
               <div class="col-lg-6">
                 <label> Co-Terminus :
                 </label>
                 <input type="number" class="form-control mb-2" id="coTerminus" name="coTerminus"
                   [(ngModel)]="editO.coTerminus" placeholder="" [ngClass]="toValidate.coTerminus ? 'is-invalid' : ''"
-                  (keyup)="toValidate.coTerminus = false" />
+                  (keyup)="toValidate.coTerminus = false" 
+                  min="0"
+                  oninput="this.value = Math.abs(this.value)"/>
               </div>
               <div class="col-lg-6">
                 <label>Elected :</label>
                 <input type="number" class="form-control mb-2" id="elected" name="elected" [(ngModel)]="editO.elected"
                   placeholder="" [ngClass]="toValidate.elected ? 'is-invalid' : ''"
-                  (keyup)="toValidate.elected = false" />
+                  (keyup)="toValidate.elected = false" 
+                  min="0"
+                  oninput="this.value = Math.abs(this.value)"/>
               </div>
               <div class="col-lg-6">
                 <label>
@@ -284,38 +312,50 @@
 
                 <input type="number" class="form-control mb-2" id="casual" name="casual" [(ngModel)]="editO.casual"
                   placeholder="" [ngClass]="toValidate.casual ? 'is-invalid' : ''"
-                  (keyup)="toValidate.casual = false" />
+                  (keyup)="toValidate.casual = false" 
+                  min="0"
+                  oninput="this.value = Math.abs(this.value)"/>
               </div>
               <div class="col-lg-6">
                 <label>Job Order :</label>
                 <input type="number" class="form-control mb-2" id="jobOrder" name="jobOrder"
                   [(ngModel)]="editO.jobOrder" placeholder="" [ngClass]="toValidate.jobOrder ? 'is-invalid' : ''"
-                  (keyup)="toValidate.jobOrder = false" />
+                  (keyup)="toValidate.jobOrder = false" 
+                  min="0"
+                  oninput="this.value = Math.abs(this.value)"/>
               </div>
               <div class="col-lg-6">
                 <label>Contractual :</label>
                 <input type="number" class="form-control mb-2" id="contractual" name="contractual"
                   [(ngModel)]="org.contractual" placeholder="" [ngClass]="toValidate.contractual ? 'is-invalid' : ''"
-                  (keyup)="toValidate.contractual = false" />
+                  (keyup)="toValidate.contractual = false" 
+                  min="0"
+                  oninput="this.value = Math.abs(this.value)"/>
               </div>
               <div class="col-lg-6">
                 <label>Casual SEF :</label>
                 <input type="number" class="form-control mb-2" id="casualSef" name="casualSef"
                   [(ngModel)]="editO.casualSef" placeholder="" [ngClass]="toValidate.casualSef ? 'is-invalid' : ''"
-                  (keyup)="toValidate.casualSef = false" />
+                  (keyup)="toValidate.casualSef = false" 
+                  min="0"
+                  oninput="this.value = Math.abs(this.value)"/>
               </div>
               <div class="col-lg-6">
                 <label>School Board :</label>
                 <input type="number" class="form-control mb-2" id="schoolBoard" name="schoolBoard"
                   [(ngModel)]="editO.schoolBoard" placeholder="" [ngClass]="toValidate.schoolBoard ? 'is-invalid' : ''"
-                  (keyup)="toValidate.schoolBoard = false" />
+                  (keyup)="toValidate.schoolBoard = false" 
+                  min="0"
+                  oninput="this.value = Math.abs(this.value)"/>
               </div>
               <div class="col-lg-6">
                 <label>Contract of Services :</label>
                 <input type="number" class="form-control mb-2" id="contractService" name="contractService"
                   [(ngModel)]="editO.contractService" placeholder=""
                   [ngClass]="toValidate.contractService ? 'is-invalid' : ''"
-                  (keyup)="toValidate.contractService = false" />
+                  (keyup)="toValidate.contractService = false" 
+                  min="0"
+                  oninput="this.value = Math.abs(this.value)"/>
               </div>
               <div class="col-lg-6">
                 <label>Others :</label>

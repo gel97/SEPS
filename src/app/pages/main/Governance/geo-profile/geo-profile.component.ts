@@ -407,39 +407,39 @@ export class GeoProfileComponent implements OnInit {
 
   AddGeo() {
     this.toValidate.totalLandArea =
-      this.geo.totalLandArea == '' || this.geo.totalLandArea == null
+      this.geo.totalLandArea == null
         ? true
         : false;
     this.toValidate.setYear =
       this.geo.setYear == '' || this.geo.setYear == undefined ? true : false;
     this.toValidate.residential =
-      this.geo.residential == '' || this.geo.residential == undefined
+      this.geo.residential == undefined
         ? true
         : false;
     this.toValidate.commercial =
-      this.geo.commercial == '' || this.geo.commercial == undefined
+       this.geo.commercial == undefined
         ? true
         : false;
     this.toValidate.industrial =
-      this.geo.industrial == '' || this.geo.industrial == null ? true : false;
+     this.geo.industrial == null ? true : false;
     this.toValidate.agricultural =
-      this.geo.agricultural == '' || this.geo.agricultural == undefined
+      this.geo.agricultural == undefined
         ? true
         : false;
     this.toValidate.institutional =
-      this.geo.institutional == '' || this.geo.institutional == undefined
+       this.geo.institutional == undefined
         ? true
         : false;
     this.toValidate.forestLand =
-      this.geo.forestLand == '' || this.geo.forestLand == undefined
+       this.geo.forestLand == undefined
         ? true
         : false;
     this.toValidate.openSpaces =
-      this.geo.openSpaces == '' || this.geo.openSpaces == null ? true : false;
+       this.geo.openSpaces == null ? true : false;
     this.toValidate.fishpond =
-      this.geo.fishpond == '' || this.geo.fishpond == undefined ? true : false;
+       this.geo.fishpond == undefined ? true : false;
     this.toValidate.quarryAreas =
-      this.geo.quarryAreas == '' || this.geo.quarryAreas == undefined
+       this.geo.quarryAreas == undefined
         ? true
         : false;
     this.toValidate.otherUses =
@@ -498,39 +498,39 @@ export class GeoProfileComponent implements OnInit {
   //for modal
   update_Geo() {
     this.toValidate.totalLandArea =
-      this.geo.totalLandArea == '' || this.geo.totalLandArea == null
+       this.geo.totalLandArea == null
         ? true
         : false;
     this.toValidate.setYear =
       this.geo.setYear == '' || this.geo.setYear == undefined ? true : false;
     this.toValidate.residential =
-      this.geo.residential == '' || this.geo.residential == undefined
+       this.geo.residential == undefined
         ? true
         : false;
     this.toValidate.commercial =
-      this.geo.commercial == '' || this.geo.commercial == undefined
+       this.geo.commercial == undefined
         ? true
         : false;
     this.toValidate.industrial =
-      this.geo.industrial == '' || this.geo.industrial == null ? true : false;
+       this.geo.industrial == null ? true : false;
     this.toValidate.agricultural =
-      this.geo.agricultural == '' || this.geo.agricultural == undefined
+       this.geo.agricultural == undefined
         ? true
         : false;
     this.toValidate.institutional =
-      this.geo.institutional == '' || this.geo.institutional == undefined
+       this.geo.institutional == undefined
         ? true
         : false;
     this.toValidate.forestLand =
-      this.geo.forestLand == '' || this.geo.forestLand == undefined
+      this.geo.forestLand == undefined
         ? true
         : false;
     this.toValidate.openSpaces =
-      this.geo.openSpaces == '' || this.geo.openSpaces == null ? true : false;
+       this.geo.openSpaces == null ? true : false;
     this.toValidate.fishpond =
-      this.geo.fishpond == '' || this.geo.fishpond == undefined ? true : false;
+       this.geo.fishpond == undefined ? true : false;
     this.toValidate.quarryAreas =
-      this.geo.quarryAreas == '' || this.geo.quarryAreas == undefined
+       this.geo.quarryAreas == undefined
         ? true
         : false;
     this.toValidate.otherUses =

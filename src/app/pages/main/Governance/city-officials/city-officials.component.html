@@ -72,7 +72,7 @@
                         <!-- <tr *ngFor="let text of  Official | paginate: { itemsPerPage: 10, currentPage: p}"> -->
                         <!-- <th scope="row">{{i + 1}}</th> -->
                         <td></td>
-                        <td>{{text.seqNo}}</td>
+                        <td>{{i+1}}</td>
                         <td>{{text.name}} </td>
                         <td>{{text.position}}</td>
                         <td>{{text.contact}} </td>
@@ -145,25 +145,25 @@
               [ngClass]="toValidate.name?'is-invalid':''" (keyup)="toValidate.name=false" placeholder="">
           </div>
 
-          <div class="col-lg-12"><br>
+          <!-- <div class="col-lg-12"><br>
             <label for="exampleFormControlTextarea1">Select Position :</label>
-            <!-- <input type="text" class="form-control" name ="seqNo" [(ngModel)]="city.seqNo" id="SeqNum" placeholder="">  -->
+            <input type="text" class="form-control" name ="seqNo" [(ngModel)]="city.seqNo" id="SeqNum" placeholder=""> 
             <select class="form-select" aria-label="Default select example" [(ngModel)]="city.seqNo"
               [ngClass]="toValidate.seqNo?'is-invalid':''" (ngModelChange)="toValidate.seqNo=false">
               <option *ngFor="let item  of positions" value={{item.seqNo}}>{{item.position}}</option>
 
             </select>
-          </div>
+          </div> -->
           <div class="col-lg-12"><br>
             <label for="exampleFormControlTextarea1">Term of Office :</label>
 
             <input type="text" class="form-control" name="Term" [(ngModel)]="city.term" id="Term"
               [ngClass]="toValidate.term?'is-invalid':''" (keyup)="toValidate.term=false" placeholder="">
           </div>
-          <!-- <div class ="col-lg-12"><br>
+           <div class ="col-lg-12"><br>
            <label for="exampleFormControlTextarea1" >Position :</label>
            <input type="text" class="form-control"  name ="position" [(ngModel)]="city.position"  id="position" placeholder="">
-          </div> -->
+          </div> 
 
 
           <div class="col-lg-12"><br>
@@ -224,15 +224,19 @@
                 [ngClass]="toValidate.name?'is-invalid':''" (keyup)="toValidate.name=false">
             </div>
 
-            <div class="col-lg-12"><br>
+            <!-- <div class="col-lg-12"><br>
               <label for="exampleFormControlTextarea1"> Position :</label>
-              <!-- <input type="text" class="form-control" name ="seqNo" [(ngModel)]="city.seqNo" id="SeqNum" placeholder="">  -->
+              <input type="text" class="form-control" name ="seqNo" [(ngModel)]="city.seqNo" id="SeqNum" placeholder="">  
               <select class="form-select" aria-label="Default select example" [(ngModel)]="editModal.seqNo"
                 [ngClass]="toValidate.seqNo?'is-invalid':''" (ngModelChange)="toValidate.seqNo=false">
                 <option *ngFor="let item  of positions" value={{item.seqNo}}>{{item.position}}</option>
 
               </select>
-            </div>
+            </div>-->
+            <div class ="col-lg-12"><br>
+              <label for="exampleFormControlTextarea1" >Position :</label>
+              <input type="text" class="form-control"  name ="position" [(ngModel)]="editModal.position"  id="position" placeholder="">
+             </div> 
 
             <div class="col-lg-12"><br>
               <label for="exampleFormControlTextarea1">Term of Office :</label>
