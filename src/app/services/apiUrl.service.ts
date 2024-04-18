@@ -159,7 +159,9 @@ export class ApiUrl {
     delete_manuf_estab       = (transId:any) => `/ManEstab/${transId}`;
     post_report_manuf_estab  = () => `/ManEstab/Reports`;
     post_import_manuf_estab  = () => `/ManEstab/Import`;
-
+    //Excel
+    post_ExImport_manuf_estab = (setYear:any, MunCityId:any) =>`ManEstab/import/${setYear}/${MunCityId}`;
+    get_ExExport_maunuf_estab = (setYear:any, MunCityId:any) =>`ManEstab/export/${setYear}/${MunCityId}`;
     //TOURISM
     post_tourism         = ()=> `/Tourism`;
     put_tourism          = ()=> `/Tourism`;

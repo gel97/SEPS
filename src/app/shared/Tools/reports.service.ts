@@ -1,13 +1,18 @@
-import { HttpClient } from '@angular/common/http';
+// import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BaseUrl } from 'src/app/services/baseUrl.service';
 import { ApiUrl } from 'src/app/services/apiUrl.service';
 import { Observable } from 'rxjs/internal/Observable';
 import { AuthService } from 'src/app/services/auth.service';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http'
+
+
 @Injectable({
   providedIn: 'root'
 })
 export class ReportsService {
+  headers:any = new HttpHeaders().set('Accept', 'application/vnd.ms-excel');
+
 
   constructor(private http: HttpClient, private ApiUrl: ApiUrl, private Base:BaseUrl ) {}
 
@@ -52,6 +57,13 @@ export class ReportsService {
   }
   GetFinancialInsReport(data:any) {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_financial_Ins(), data, { responseType: 'json' });
+  }
+  GetExcelExport(setYear:number, munCityId:string, httpOptions: HttpResponse<Blob> ): Observable<HttpResponse<Blob>> {
+   
+    return this.http.get<HttpResponse<Blob>> (this.Base.url + this.ApiUrl.get_ExExport_maunuf_estab(setYear,munCityId),  httpOptions  );
+  }
+  GetExcelImport(setYear:MutationObserver, munCityId:string){
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_ExImport_manuf_estab(setYear,munCityId),{ responseType: 'json'});
   }
 
   //Tourism

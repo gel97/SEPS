@@ -8,6 +8,9 @@ import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 import { PdfComponent } from 'src/app/components/pdf/pdf.component';
 import { PdfService } from 'src/app/services/pdf.service';
 import { ReportsService } from 'src/app/shared/Tools/reports.service';
+import { ExcelComponent } from 'src/app/components/excel/excel.component';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
+
 @Component({
   selector: 'app-manufacturing-establishments',
   templateUrl: './manufacturing-establishments.component.html',
@@ -18,6 +21,8 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
   private gmapComponent!: GmapComponent;
   searchText: string = '';
 
+   @ViewChild(ExcelComponent)
+   private ExcelComponent!: ExcelComponent;
   @ViewChild(PdfComponent)
   private pdfComponent!: PdfComponent;
 
@@ -39,7 +44,9 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
     private reportService: ReportsService,
     private service: ManEstabService,
     private auth: AuthService,
-    private modifyService: ModifyCityMunService
+    private modifyService: ModifyCityMunService,
+  
+    // private excel:ExcelComponent
   ) {}
 
   modifyCityMun(cityMunName: string) {
@@ -151,7 +158,53 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
     });
   }
 
+  ExportExcel(){
+    const httpOptions : any = {
+      headers: new HttpHeaders({
+        'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        
+      }),
+      responseType: 'blob', 
+      observe:'response'
+    };
+    let data: any = [];
+    this.reportService.GetExcelExport(this.auth.setYear, this.auth.munCityId, httpOptions).subscribe(response => {
+      this.saveFile(response);
+    });
+}
+private saveFile(response: any): void {
+  const contentDispositionHeader = response.headers.get('Content-Disposition');
+  const fileNameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+  const matches = fileNameRegex.exec(contentDispositionHeader);
+  const fileName = matches !== null && matches[1] ? matches[1].replace(/['"]/g, '') : 'file.xlsx';
+
+  const blob = new Blob([response.body], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+ 
+    // For other browsers
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
   
+}
+   
+   getFileName(response: HttpResponse<Blob>) {
+    let filename: string;
+    try {
+      const contentDisposition: any = response.headers.get('content-disposition');
+      const r = /(?:filename=")(.+)(?:;")/
+      filename = r.exec(contentDisposition)![1];
+    }
+    catch (e) {
+      filename = 'myfile.txt'
+    }
+    return filename
+  }
   GeneratePDF() {
     let reports: any = [];
     let data: any = [];
