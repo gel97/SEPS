@@ -159,52 +159,9 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
   }
 
   ExportExcel(){
-    const httpOptions : any = {
-      headers: new HttpHeaders({
-        'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        
-      }),
-      responseType: 'blob', 
-      observe:'response'
-    };
-    let data: any = [];
-    this.reportService.GetExcelExport(this.auth.setYear, this.auth.munCityId, httpOptions).subscribe(response => {
-      this.saveFile(response);
-    });
-}
-private saveFile(response: any): void {
-  const contentDispositionHeader = response.headers.get('Content-Disposition');
-  const fileNameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-  const matches = fileNameRegex.exec(contentDispositionHeader);
-  const fileName = matches !== null && matches[1] ? matches[1].replace(/['"]/g, '') : 'file.xlsx';
-
-  const blob = new Blob([response.body], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-
- 
-    // For other browsers
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = fileName;
-    document.body.appendChild(a);
-    a.click();
-    window.URL.revokeObjectURL(url);
-    document.body.removeChild(a);
-  
-}
-   
-   getFileName(response: HttpResponse<Blob>) {
-    let filename: string;
-    try {
-      const contentDisposition: any = response.headers.get('content-disposition');
-      const r = /(?:filename=")(.+)(?:;")/
-      filename = r.exec(contentDisposition)![1];
-    }
-    catch (e) {
-      filename = 'myfile.txt'
-    }
-    return filename
+    this.reportService.GetExcelExport(this.auth.setYear, this.auth.munCityId, "ManEstab");
   }
+
   GeneratePDF() {
     let reports: any = [];
     let data: any = [];

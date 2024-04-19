@@ -5,6 +5,7 @@ import { ApiUrl } from 'src/app/services/apiUrl.service';
 import { Observable } from 'rxjs/internal/Observable';
 import { AuthService } from 'src/app/services/auth.service';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http'
+import Swal from 'sweetalert2';
 
 
 @Injectable({
@@ -58,10 +59,50 @@ export class ReportsService {
   GetFinancialInsReport(data:any) {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_financial_Ins(), data, { responseType: 'json' });
   }
-  GetExcelExport(setYear:number, munCityId:string, httpOptions: HttpResponse<Blob> ): Observable<HttpResponse<Blob>> {
-   
-    return this.http.get<HttpResponse<Blob>> (this.Base.url + this.ApiUrl.get_ExExport_maunuf_estab(setYear,munCityId),  httpOptions  );
+
+  GetExcelExport(setYear:number, munCityId:string, apiControllerName:string){
+    Swal.fire({
+      title: "Exporting Data",
+      html: "Please wait for a moment.",
+      timerProgressBar: true,
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+          const httpOptions : any = {
+            headers: new HttpHeaders({
+              'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+              
+            }),
+            responseType: 'blob', 
+            observe:'response'
+          };
+      
+          this.http.get<HttpResponse<Blob>> (this.Base.url + this.ApiUrl.get_ExExport(setYear,munCityId,apiControllerName),  httpOptions  ).subscribe((response:any) => {
+            const contentDispositionHeader = response.headers.get('Content-Disposition');
+            const fileNameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+            const matches = fileNameRegex.exec(contentDispositionHeader);
+            const fileName = matches !== null && matches[1] ? matches[1].replace(/['"]/g, '') : 'file.xlsx';
+          
+            const blob = new Blob([response.body], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+            Swal.close();
+
+          });
+      
+      },
+    });
+
+
   }
+
   GetExcelImport(setYear:MutationObserver, munCityId:string){
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_ExImport_manuf_estab(setYear,munCityId),{ responseType: 'json'});
   }
