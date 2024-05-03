@@ -42,9 +42,9 @@ export class ManEstabService {
   Import():Observable<any[]> {
       return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_import_manuf_estab(), { responseType: 'json' });
   }
-  ExImport():Observable<any[]> {
-    return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_ExImport_manuf_estab(this.Auth.munCityId, this.Auth.setYear), { responseType: 'json' });
-}
+//   ExImport():Observable<any[]> {
+//     return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_ExImport_manuf_estab(this.Auth.munCityId, this.Auth.setYear), { responseType: 'json' });
+// }
 //   ExExport():Observable<any[]>  {
 //   return this.Http.get<any[]>(this.Base.url + this.ApiUrl.get_ExExport_maunuf_estab(this.Auth.munCityId, this.Auth.setYear), { responseType: 'json' });
 // }

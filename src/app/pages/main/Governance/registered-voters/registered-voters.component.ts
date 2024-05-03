@@ -32,7 +32,7 @@ export class RegisteredVotersComponent implements OnInit {
   Voter: any = [];
   voter: any = {};
   editmodal: any = {};
-
+  searchText= '';
   isCheck: boolean = false;
   visible: boolean = true;
   not_visible: boolean = true;

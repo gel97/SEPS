@@ -161,7 +161,13 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
   ExportExcel(){
     this.reportService.GetExcelExport(this.auth.setYear, this.auth.munCityId, "ManEstab");
   }
-
+  ExportTemplate(){
+    this.reportService.GetExport_tamplate("ManEstab");
+  }
+  ImportTemplate(){
+    this.reportService.Get_ExImport(this.auth.setYear, this.auth.munCityId, "ManEstab");
+    
+  }
   GeneratePDF() {
     let reports: any = [];
     let data: any = [];

@@ -158,6 +158,9 @@ import { PrevRateComponent } from './pages/main/SocialProfile/Health/prev-rate/p
 import { NoDataComponent } from './components/no-data/no-data.component';
 import { NgoComponent } from './Admin/ngo/ngo.component';
 import { ExcelComponent } from './components/excel/excel.component';
+import { ExportTempComponent } from './components/export-temp/export-temp.component';
+import { ImportExcelComponent } from './components/import-excel/import-excel.component';
+import { SearchPipe } from './search.pipe';
 
 @NgModule({
   declarations: [
@@ -303,6 +306,9 @@ import { ExcelComponent } from './components/excel/excel.component';
     NoDataComponent,
     NgoComponent,
     ExcelComponent,
+    ExportTempComponent,
+    ImportExcelComponent,
+    SearchPipe,
   ],
   imports: [
     MdbCollapseModule,

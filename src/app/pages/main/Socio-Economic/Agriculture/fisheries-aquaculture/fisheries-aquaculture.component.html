@@ -78,10 +78,10 @@
                     </td>
 
                     <td>
-                      <div *ngFor="let item of listofFishing">
+                      <!-- <div *ngFor="let item of listofFishing">
                         <span *ngIf="item.id == dataItem.source">{{item.type}}</span>
-                      </div>
-                      <!-- {{dataItem.source}} -->
+                      </div> -->
+                      {{dataItem.source}}
                     </td>
                     <td>{{dataItem.totalProd}}</td>
                     <td>{{dataItem.area}}</td>
@@ -160,11 +160,11 @@
             <div class="col-lg-6">
               <label for="exampleFormControlInput1">Fishing Ground/
                 Fishpond Type :</label>
-              <!-- <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.source" [ngClass]="toValidate.source?'is-invalid':''" (keyup)="toValidate.source=false"> -->
-              <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.source">
+              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.source" [ngClass]="toValidate.source?'is-invalid':''" (keyup)="toValidate.source=false">
+              <!-- <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.source">
                 <option selected></option>
                 <option *ngFor="let list of listofFishing" value={{list.id}}>{{list.type}}</option>
-              </select>
+              </select> -->
             </div>
           </div>
           <div class="row">

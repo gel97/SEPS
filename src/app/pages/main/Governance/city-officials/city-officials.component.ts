@@ -65,7 +65,7 @@ export class CityOfficialsComponent implements OnInit {
   AddModal: any = {};
   positions: any = [];
   munCityName: string = this.auth.munCityName;
-
+  searchText= '';
   pageSize = 25;
   p: string | number | undefined;
   count: number = 0;
@@ -139,7 +139,9 @@ export class CityOfficialsComponent implements OnInit {
       complete: () => {},
     });
   }
-
+  ExportExcel(){
+    this.reportService.GetExcelExport(this.auth.setYear, this.auth.munCityId, "MunCityOfficial");
+  }
   reports: any = [];
   GeneratePDF() {
     let data: any = [];

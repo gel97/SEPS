@@ -30,7 +30,7 @@ export class FiscalMattersComponent implements OnInit {
   editmodal: any = {};
   list_revenues: any = [];
   list_expend: any = [];
-
+  searchText= '';
   pageSize = 10;
   p: string | number | undefined;
   count: number = 0;

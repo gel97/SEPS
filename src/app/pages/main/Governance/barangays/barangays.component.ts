@@ -43,7 +43,7 @@ export class BarangaysComponent implements OnInit {
 
   listData: any = [];
   data: any = {};
- 
+  searchText= '';
 
   ngOnInit(): void {
     this.Init();
@@ -52,6 +52,9 @@ export class BarangaysComponent implements OnInit {
   Init() {
     this.GetBarangay();
     this.GetListBarangay();
+  }
+  ExportExcel(){
+    this.reportService.GetExcelExport(this.auth.setYear, this.auth.munCityId, "Barangay");
   }
 
   GeneratePDF() {

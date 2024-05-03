@@ -1,6 +1,7 @@
 <div class="">
   <ng-template #isEmpty>
     <app-import [data]="message" (importData)="importMethod()"></app-import>
+    <app-export-temp (myEvent)="ExportTemplate()" ></app-export-temp>
   </ng-template>
 
   <div *ngIf="showOverlay">
@@ -32,6 +33,7 @@
               &nbsp;
               <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
             </div>
+            <app-excel  (myEvent)="ExportExcel()" apiControllerName="MjrEcoAct"></app-excel>
             <br>
             <br>
             <div class="row">
@@ -54,6 +56,11 @@
 
                 </div>
                 <div class="table-responsive">
+                  <div class="input-group col-sm-3">
+                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                        aria-label="Search" aria-describedby="basic-addon2" [(ngModel)]="searchText">
+                </div>
+                <br>
                   <table class="table table-framed table-hover table-striped">
                     <thead class="table-dark">
                       <tr>
@@ -65,7 +72,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let text of MajorAct| paginate:{ itemsPerPage: tableSize,
+                      <tr *ngFor="let text of MajorAct | search: searchText | paginate:{ itemsPerPage: tableSize,
               currentPage: p,
               totalItems:count} | filterall: searchText , let i = index ">
                         <td>{{ i + 1 }}</td>

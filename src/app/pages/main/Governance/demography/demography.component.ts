@@ -96,6 +96,9 @@ export class DemographyComponent implements OnInit {
       console.log(this.Demo);
     });
   }
+  ExportExcel(){
+    this.reportService.GetExcelExport(this.auth.setYear, this.auth.munCityId, "Demography");
+  }
 
   GeneratePDF() {
     let data: any = [];

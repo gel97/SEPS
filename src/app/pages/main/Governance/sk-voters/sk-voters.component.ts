@@ -33,6 +33,7 @@ export class SkVotersComponent implements OnInit {
   Voter: any = [];
   voter: any = {};
   editmodal: any = {};
+  searchText= '';
 
   isCheck: boolean = false;
   visible: boolean = true;

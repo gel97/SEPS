@@ -30,12 +30,18 @@
                 </app-admin>
               </form>
             </div><br><br>
-
             <div class="row">
               <div class="col-lg-6">
                 <p>List of Actual Revenues:</p>
               </div>
+              <br>
             </div>
+            <div class="input-group col-sm-3">
+              <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                  aria-label="Search" aria-describedby="basic-addon2" [(ngModel)]="searchText">
+          </div>
+            <br>
+            <div class="table-responsive">
             <table class="table table-framed table-hover table-striped">
               <thead class="table-dark">
                 <tr>
@@ -48,7 +54,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let text of list_revenues| paginate:{
+                <tr *ngFor="let text of list_revenues | search: searchText | paginate:{
                                 itemsPerPage: tableSize,
                                 currentPage: p,
                                 totalItems:count}, let i = index;">
@@ -112,7 +118,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let text of list_expend| paginate:{
+                  <tr *ngFor="let text of list_expend | search: searchText | paginate:{
                               itemsPerPage: tableSize2,
                               currentPage: p2,
                               totalItems:count2}, let i = index;">

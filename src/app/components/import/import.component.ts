@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./import.component.css'],
 })
 export class ImportComponent implements OnInit {
+
   munCityId:any;
   constructor(private auth:AuthService) {}
 
@@ -17,6 +18,7 @@ export class ImportComponent implements OnInit {
 
   @Output() testEvent = new EventEmitter();
   @Output() importData = new EventEmitter();
+  @Output() myEvent = new EventEmitter();
 
   @Input() data: string | any;
 
@@ -32,4 +34,9 @@ export class ImportComponent implements OnInit {
   importMethod() {
     this.importData.emit();
   }
+  
+  ImportTemplate() {
+    this.myEvent.emit();
+    }
+ 
 }

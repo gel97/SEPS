@@ -96,6 +96,12 @@
               </div>
             </div>
             <div class="table-responsive">
+              <div class="table-responsive">
+                <div class="input-group col-sm-3">
+                  <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                      aria-label="Search" aria-describedby="basic-addon2" [(ngModel)]="searchText">
+              </div>
+              <br>
               <table class="table table-light table-striped">
                 <thead class="table-dark">
                   <tr>
@@ -107,7 +113,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let text of list_expend| paginate:{
+                  <tr *ngFor="let text of list_expend | search: searchText | paginate:{
                               itemsPerPage: tableSize2,
                               currentPage: p2,
                               totalItems:count2} let i = index;">
