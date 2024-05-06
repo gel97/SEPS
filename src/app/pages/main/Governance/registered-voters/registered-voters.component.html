@@ -28,6 +28,9 @@
               &nbsp;
               <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
             </div><br><br>
+            <app-admin>
+              <app-excel  (myEvent)="ExportExcel()" apiControllerName="RegVoters"></app-excel>
+            </app-admin>
             <div class="row">
               <div class="">
                 <p>Number of Precincts and Registered Voters</p>
