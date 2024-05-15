@@ -25,12 +25,21 @@
               &nbsp;
               <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
             </div><br><br>
+            <app-admin>
+              <app-excel  (myEvent)="ExportExcel()" apiControllerName="Demography"></app-excel>
+            </app-admin>
             <div class="row">
               <div class="col-lg-4">
                 <p>List of Demography:</p>
               </div>
             </div>
             <div class="table-responsive">
+              <div class="table-responsive">
+                <div class="input-group col-sm-3">
+                  <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                      aria-label="Search" aria-describedby="basic-addon2" [(ngModel)]="searchText">
+              </div>
+              <br>
               <table class="table table-light table-striped">
                 <thead class="table-dark">
                   <tr>
@@ -52,7 +61,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let text of Demo, let i = index">
+                  <tr *ngFor="let text of Demo | search: searchText , let i = index">
                     <td>{{i + 1}}</td>
                     <td>{{text.setYear}}</td>
                     <td class="text-center">{{text.brgyName}}</td>

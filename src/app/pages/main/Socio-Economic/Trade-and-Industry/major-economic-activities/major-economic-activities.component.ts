@@ -34,7 +34,7 @@ export class MajorEconomicActivitiesComponent implements OnInit {
   MajorAct: any = [];
   mjr: any = {};
   editmodal: any = {};
-  searchText: string = '';
+  searchText = '';
 
   isCheck: boolean = false;
   visible: boolean = true;
@@ -123,7 +123,12 @@ export class MajorEconomicActivitiesComponent implements OnInit {
       complete: () => {},
     });
   }
-
+  ExportExcel(){
+    this.reportService.GetExcelExport(this.auth.setYear, this.auth.munCityId, "MjrEcoAct");
+  }
+  ExportTemplate(){
+    this.reportService.GetExport_tamplate("MjrEcoAct");
+  }
   reports: any = [];
   GeneratePDF() {
     let data: any = [];

@@ -31,11 +31,18 @@
                 <app-pdf (myEvent)="GeneratePDF()"></app-pdf> 
               </form>
             </div><br>
+            <!-- <app-excel  (myEvent)="ExportExcel()" apiControllerName="ComEstab"></app-excel> -->
             <br>
+            <div class="input-group col-sm-3">
+              <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                  aria-label="Search" aria-describedby="basic-addon2" [(ngModel)]="searchText">
+          </div>
             <div class="row">
               <div class="col-lg-6">
                 <p>List of Commercial Establishments </p>
               </div>
+            <br>
+            
               <!-- <div class="col-lg-6 ">
                                   <form class="form-inline float-right">
                                     <div class="form-group mb-4">
@@ -65,7 +72,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let text of ComEstab | paginate:{ itemsPerPage: tableSize,
+                  <tr *ngFor="let text of ComEstab | search: searchText | paginate:{ itemsPerPage: tableSize,
                                   currentPage: p,
                                   totalItems:count} | filterall: searchText , let i = index ">
                     <td>{{ i + 1}}</td>

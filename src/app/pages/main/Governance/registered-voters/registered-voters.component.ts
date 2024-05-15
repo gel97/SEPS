@@ -32,7 +32,7 @@ export class RegisteredVotersComponent implements OnInit {
   Voter: any = [];
   voter: any = {};
   editmodal: any = {};
-
+  searchText= '';
   isCheck: boolean = false;
   visible: boolean = true;
   not_visible: boolean = true;
@@ -124,6 +124,12 @@ export class RegisteredVotersComponent implements OnInit {
       },
       complete: () => {},
     });
+  }
+  ExportExcel(){
+    this.reportService.GetExcelExport(this.auth.setYear, this.auth.munCityId, "RegVoters");
+  }
+  ExportTemplate(){
+    this.reportService.GetExport_tamplate("RegVoters");
   }
 
   reports: any = [];

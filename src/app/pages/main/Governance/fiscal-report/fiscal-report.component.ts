@@ -31,6 +31,7 @@ export class FiscalReportComponent implements OnInit {
   editmodal: any = {};
   list_revenues: any = [];
   list_expend: any = [];
+  searchText='';
 
   pageSize = 10;
   p: string | number | undefined;

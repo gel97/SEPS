@@ -8,6 +8,9 @@ import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 import { PdfComponent } from 'src/app/components/pdf/pdf.component';
 import { PdfService } from 'src/app/services/pdf.service';
 import { ReportsService } from 'src/app/shared/Tools/reports.service';
+import { ExcelComponent } from 'src/app/components/excel/excel.component';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
+
 @Component({
   selector: 'app-manufacturing-establishments',
   templateUrl: './manufacturing-establishments.component.html',
@@ -18,6 +21,8 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
   private gmapComponent!: GmapComponent;
   searchText: string = '';
 
+   @ViewChild(ExcelComponent)
+   private ExcelComponent!: ExcelComponent;
   @ViewChild(PdfComponent)
   private pdfComponent!: PdfComponent;
 
@@ -39,7 +44,9 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
     private reportService: ReportsService,
     private service: ManEstabService,
     private auth: AuthService,
-    private modifyService: ModifyCityMunService
+    private modifyService: ModifyCityMunService,
+  
+    // private excel:ExcelComponent
   ) {}
 
   modifyCityMun(cityMunName: string) {
@@ -151,7 +158,16 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
     });
   }
 
-  
+  ExportExcel(){
+    this.reportService.GetExcelExport(this.auth.setYear, this.auth.munCityId, "ManEstab");
+  }
+  ExportTemplate(){
+    this.reportService.GetExport_tamplate("ManEstab");
+  }
+  ImportTemplate(){
+    this.reportService.Get_ExImport(this.auth.setYear, this.auth.munCityId, "ManEstab");
+    
+  }
   GeneratePDF() {
     let reports: any = [];
     let data: any = [];

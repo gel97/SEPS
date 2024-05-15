@@ -26,6 +26,7 @@ export class CityLocationComponent implements OnInit {
   count: number = 0;
   tableSize: number = 5;
   tableSizes: any = [5, 10, 15, 25, 50, 100];
+  searchText='';
 
   date = new DatePipe('en-PH');
   ngOnInit(): void {

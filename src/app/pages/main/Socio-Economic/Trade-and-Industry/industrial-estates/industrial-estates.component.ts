@@ -8,6 +8,7 @@ import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 import { PdfComponent } from 'src/app/components/pdf/pdf.component';
 import { PdfService } from 'src/app/services/pdf.service';
 import { ReportsService } from 'src/app/shared/Tools/reports.service';
+import { ExcelComponent } from 'src/app/components/excel/excel.component';
 
 @Component({
   selector: 'app-industrial-estates',
@@ -17,7 +18,8 @@ import { ReportsService } from 'src/app/shared/Tools/reports.service';
 export class IndustrialEstatesComponent implements OnInit {
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;
-
+  @ViewChild(ExcelComponent)
+  private ExcelComponent!: ExcelComponent;
   @ViewChild(PdfComponent)
   private pdfComponent!: PdfComponent;
 
@@ -63,6 +65,12 @@ export class IndustrialEstatesComponent implements OnInit {
     this.not_visible = false;
     this.visible = true;
     // this.required = false;
+  }
+  ExportExcel(){
+    this.reportService.GetExcelExport(this.auth.setYear, this.auth.munCityId, "IndEst");
+  }
+  ExportTemplate(){
+    this.reportService.GetExport_tamplate("IndEst");
   }
 
   GeneratePDF() {

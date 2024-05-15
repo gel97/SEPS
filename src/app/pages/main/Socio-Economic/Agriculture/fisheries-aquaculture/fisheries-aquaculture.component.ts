@@ -54,11 +54,11 @@ export class FisheriesAquacultureComponent implements OnInit {
     { id: `6`, type: `Hito` },
     { id: `7`, type: `Others` },
   ];
-  listofFishing: any = [
-    { id: `1`, type: `` },
-    { id: `2`, type: `` },
-    { id: `3`, type: `` },
-  ];
+  // listofFishing: any = [
+  //   { id: `1`, type: `` },
+  //   { id: `2`, type: `` },
+  //   { id: `3`, type: `` },
+  // ];
   visible: boolean = true;
   not_visible: boolean = true;
   dummy_addData: any = {};

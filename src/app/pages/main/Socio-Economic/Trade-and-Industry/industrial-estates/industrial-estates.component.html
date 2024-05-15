@@ -1,8 +1,9 @@
 <div class="">
   <ng-template #isEmpty>
-    <app-import [data]="message" (importData)="importMethod()"></app-import>
+    <app-import [data]="message" (importData)="importMethod()" ></app-import>
+    <app-export-temp (myEvent)="ExportTemplate()" ></app-export-temp>
   </ng-template>
-
+  
   <div *ngIf="showOverlay">
     <app-import-loading></app-import-loading>
   </div>
@@ -30,9 +31,16 @@
                 </app-admin>
                 &nbsp;
                 <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
-              </form>
+              </form>  
             </div><br>
             <br>
+            <app-excel  (myEvent)="ExportExcel()" apiControllerName="IndEst"></app-excel>
+            <br>
+            <div class="input-group col-sm-3">
+              <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                  aria-label="Search" aria-describedby="basic-addon2" [(ngModel)]="searchText">
+          </div>
+          <br>
             <div class="row">
               <div class="col-lg-6">
                 <p>List of Industrial Estates </p>
@@ -67,7 +75,7 @@
                                   currentPage: p2,
                                   totalItems:count2} | filterall: searchText , let i = index ">
                                                            -->
-                  <tr *ngFor="let text of Industrial; let i = index ">
+                  <tr *ngFor="let text of Industrial | search: searchText; let i = index ">
                     <td>{{i + 1}}</td>
                     <td class="text-center">{{text.name}}</td>
                     <td class="text-center">{{text.contactPerson}}</td>

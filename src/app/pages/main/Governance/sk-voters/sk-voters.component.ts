@@ -33,6 +33,7 @@ export class SkVotersComponent implements OnInit {
   Voter: any = [];
   voter: any = {};
   editmodal: any = {};
+  searchText= '';
 
   isCheck: boolean = false;
   visible: boolean = true;
@@ -126,7 +127,9 @@ export class SkVotersComponent implements OnInit {
       complete: () => {},
     });
   }
-
+  ExportExcel(){
+    this.reportService.GetExcelExport(this.auth.setYear, this.auth.munCityId, "RegSkVoters");
+  }
   reports: any = [];
   GeneratePDF() {
     let data: any = [];
