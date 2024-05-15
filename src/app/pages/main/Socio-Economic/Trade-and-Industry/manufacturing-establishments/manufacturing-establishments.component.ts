@@ -21,8 +21,8 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
   private gmapComponent!: GmapComponent;
   searchText: string = '';
 
-   @ViewChild(ExcelComponent)
-   private ExcelComponent!: ExcelComponent;
+  @ViewChild(ExcelComponent)
+  private ExcelComponent!: ExcelComponent;
   @ViewChild(PdfComponent)
   private pdfComponent!: PdfComponent;
 
@@ -44,10 +44,9 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
     private reportService: ReportsService,
     private service: ManEstabService,
     private auth: AuthService,
-    private modifyService: ModifyCityMunService,
-  
-    // private excel:ExcelComponent
-  ) {}
+    private modifyService: ModifyCityMunService
+  ) // private excel:ExcelComponent
+  {}
 
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
@@ -94,7 +93,7 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
     this.service.Import().subscribe({
       next: (data) => {
         this.ngOnInit();
-        if(data.length === 0){
+        if (data.length === 0) {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -107,14 +106,12 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'info',
             title: 'No data from previous year',
           });
-        }
-        else
-        {
+        } else {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -127,7 +124,7 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'success',
             title: 'Imported Successfully',
@@ -152,69 +149,125 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
           title: 'Something went wrong',
         });
       },
-      complete: () => {
-       
-      },
+      complete: () => {},
     });
   }
 
-  ExportExcel(){
-    this.reportService.GetExcelExport(this.auth.setYear, this.auth.munCityId, "ManEstab");
+  ExportExcel() {
+    this.reportService.GetExcelExport(
+      this.auth.setYear,
+      this.auth.munCityId,
+      'ManEstab'
+    );
   }
-  ExportTemplate(){
-    this.reportService.GetExport_tamplate("ManEstab");
+  ExportTemplate() {
+    this.reportService.GetExport_tamplate('ManEstab');
   }
-  ImportTemplate(){
-    this.reportService.Get_ExImport(this.auth.setYear, this.auth.munCityId, "ManEstab");
-    
+
+  ImportExcel(e: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "",
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, submit it!'
+    }).then((result) => {
+      console.log(result)
+      if (result.isConfirmed) {
+        this.reportService
+        .Get_ExImport(
+          e.target.files[0],
+          this.auth.setYear,
+          this.auth.munCityId,
+          'ManEstab'
+        )
+        .subscribe((success) => {
+          Swal.fire({
+            title: 'Importing Data',
+            html: 'Please wait for a moment.',
+            timerProgressBar: true,
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+              setTimeout(() => {
+                if (success) {
+                  this.GetListManEstab();
+                  Swal.close();
+                  Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'File imported successfully',
+                    showConfirmButton: true,
+                  });
+                } else {
+                  Swal.close();
+                  Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Something went wrong. possible invalid file',
+                    showConfirmButton: true,
+                  });
+                }
+              }, 5000);
+            },
+          });
+        });
+      }
+      else{
+      }
+    })
+
   }
+
   GeneratePDF() {
     let reports: any = [];
     let data: any = [];
     let dist1: any = [];
     let dist2: any = [];
-    let contentData:any = [];
+    let contentData: any = [];
 
     this.reportService.GetManEstabReport(this.pdfComponent.data).subscribe({
       next: (response: any = {}) => {
         reports = response.data;
         dist1 = response.districtOne;
         dist2 = response.districtTwo;
-       
+
         console.log(response);
 
-        data.push(    {
+        data.push({
           text: `Number of Manufacturing Industry by Municipality/City and related business Category for the year ${response.year}`, // Add the title text
           fontSize: 14,
-          bold: true, 
+          bold: true,
           alignment: 'center',
-          margin: [0, 20] // Adjust the margin around the title as needed
+          margin: [0, 20], // Adjust the margin around the title as needed
         });
 
         reports.forEach((a: any, index: any) => {
-          let columns:any = [];
-          let columnWidth:any = [];
+          let columns: any = [];
+          let columnWidth: any = [];
           const tableData: any = [];
-          let grandTotal:any = [];
-         
-          let subtotal1:any=[];
-              subtotal1.push({
-                text: 'SUB TOTAL',
-                fillColor: '#9DB2BF',
-              });
+          let grandTotal: any = [];
 
-          let subtotal2:any=[];
-              subtotal2.push({
-                text: 'SUB TOTAL',
-                fillColor: '#9DB2BF',
-              });
+          let subtotal1: any = [];
+          subtotal1.push({
+            text: 'SUB TOTAL',
+            fillColor: '#9DB2BF',
+          });
 
+          let subtotal2: any = [];
+          subtotal2.push({
+            text: 'SUB TOTAL',
+            fillColor: '#9DB2BF',
+          });
 
-          a.columnTypes.forEach((b: any, index: any) => { // GET COLUMN
-            if(index == 0){
+          a.columnTypes.forEach((b: any, index: any) => {
+            // GET COLUMN
+            if (index == 0) {
               columnWidth.push('auto');
               columns.push({
-                text: "Muncipality/ City",
+                text: 'Muncipality/ City',
                 fillColor: 'black',
                 color: 'white',
                 bold: true,
@@ -231,7 +284,8 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
             });
           });
 
-          contentData.push({ // Categpry Name
+          contentData.push({
+            // Categpry Name
             text: a.catName + ' category',
             margin: [0, 20, 0, 8],
             fillColor: 'black',
@@ -241,134 +295,163 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
           });
 
           tableData.push(columns); // PUSH COLUMN
-                 
-          for (let dataDistrict of a.district) { // LOOP DISTRICT
 
-            if (dataDistrict.district==1) { // GET DISTRICT I DATA
-              tableData.push([{ text: `1st Congressional District `, colSpan: columnWidth.length, alignment: 'left',
-              fillColor: '#526D82'}]);
-              
+          for (let dataDistrict of a.district) {
+            // LOOP DISTRICT
+
+            if (dataDistrict.district == 1) {
+              // GET DISTRICT I DATA
+              tableData.push([
+                {
+                  text: `1st Congressional District `,
+                  colSpan: columnWidth.length,
+                  alignment: 'left',
+                  fillColor: '#526D82',
+                },
+              ]);
+
               for (let d1 of dist1) {
-                let data1=[];
+                let data1 = [];
                 data1.push(d1.munCityName);
-            
+
                 for (let header of a.columnTypes) {
-                    let count = '-';
-                        for (let t of dataDistrict.type) {
-                          if (header.recNo == t.type) {
-                            //true
-                            for(let f of t.data){
-                              if (d1.munCityId == f.munCityId && header.recNo == f.type) {
-                                count=f.countType;
-                                break;
-                              }
-                            }                              
-                          }       
+                  let count = '-';
+                  for (let t of dataDistrict.type) {
+                    if (header.recNo == t.type) {
+                      //true
+                      for (let f of t.data) {
+                        if (
+                          d1.munCityId == f.munCityId &&
+                          header.recNo == f.type
+                        ) {
+                          count = f.countType;
+                          break;
                         }
-                        data1.push(count);
+                      }
+                    }
                   }
-                      tableData.push(data1); // PUSH DISTRICT 1 DATA
+                  data1.push(count);
+                }
+                tableData.push(data1); // PUSH DISTRICT 1 DATA
               }
 
-                for (let header of a.columnTypes) { // GET DISTRICT 1 SUBTOTAL
-                    let countSubtotal1 = '-';
-                        for (let t of dataDistrict.type) {
-                          if (header.recNo == t.type) {
-                            countSubtotal1 = t.subtotalType;
-                            break;                                
-                          }       
-                        }
-                        subtotal1.push({
-                          text: countSubtotal1,
-                          fillColor: '#9DB2BF',
-                        });
+              for (let header of a.columnTypes) {
+                // GET DISTRICT 1 SUBTOTAL
+                let countSubtotal1 = '-';
+                for (let t of dataDistrict.type) {
+                  if (header.recNo == t.type) {
+                    countSubtotal1 = t.subtotalType;
+                    break;
+                  }
                 }
-                      tableData.push(subtotal1); // PUSH DISTRICT 1 SUBTOTAL
+                subtotal1.push({
+                  text: countSubtotal1,
+                  fillColor: '#9DB2BF',
+                });
+              }
+              tableData.push(subtotal1); // PUSH DISTRICT 1 SUBTOTAL
             }
 
-            if (dataDistrict.district==2) {// GET DISTRICT II DATA
-              tableData.push([{ text: `2nd Congressional District `, colSpan: columnWidth.length, alignment: 'left',
-              fillColor: '#526D82'}]);
+            if (dataDistrict.district == 2) {
+              // GET DISTRICT II DATA
+              tableData.push([
+                {
+                  text: `2nd Congressional District `,
+                  colSpan: columnWidth.length,
+                  alignment: 'left',
+                  fillColor: '#526D82',
+                },
+              ]);
 
               for (let d2 of dist2) {
-                let data2=[];
+                let data2 = [];
                 data2.push(d2.munCityName);
 
-                  for (let header of a.columnTypes) {
-                    let count = '-';
-                        for (let t of dataDistrict.type) {
-                          if (header.recNo == t.type) {
-                            //true
-                            for(let f of t.data){
-                              if (d2.munCityId == f.munCityId && header.recNo == f.type) {
-                                count=f.countType;
-                                break;
-                              }
-                            }
-                          }
+                for (let header of a.columnTypes) {
+                  let count = '-';
+                  for (let t of dataDistrict.type) {
+                    if (header.recNo == t.type) {
+                      //true
+                      for (let f of t.data) {
+                        if (
+                          d2.munCityId == f.munCityId &&
+                          header.recNo == f.type
+                        ) {
+                          count = f.countType;
+                          break;
                         }
-                        data2.push(count)
+                      }
+                    }
                   }
-                      tableData.push(data2); // PUSH DISTRICT II DATA
+                  data2.push(count);
+                }
+                tableData.push(data2); // PUSH DISTRICT II DATA
               }
 
-                for (let header of a.columnTypes) { // GET DISTRICT II SUBTOTAL
-                    let countSubtotal2 = '-';
-                        for (let t of dataDistrict.type) {
-                          if (header.recNo == t.type) {
-                            countSubtotal2 = t.subtotalType;
-                            break;                                
-                          }       
-                        }
-                        subtotal2.push({
-                          text: countSubtotal2,
-                          fillColor: '#9DB2BF',
-                        });
+              for (let header of a.columnTypes) {
+                // GET DISTRICT II SUBTOTAL
+                let countSubtotal2 = '-';
+                for (let t of dataDistrict.type) {
+                  if (header.recNo == t.type) {
+                    countSubtotal2 = t.subtotalType;
+                    break;
+                  }
                 }
-                      tableData.push(subtotal2); // PUSH DISTRICT II SUBTOTAL
-            }   
+                subtotal2.push({
+                  text: countSubtotal2,
+                  fillColor: '#9DB2BF',
+                });
+              }
+              tableData.push(subtotal2); // PUSH DISTRICT II SUBTOTAL
+            }
           }
 
-          columnWidth.forEach((b: any, index: any) => {  // GET GRANDTOTAL
-            let grandTotalcount ;
-            if(index == 0){
-              grandTotalcount ='GRAND TOTAL';
-            }
-            else{
-              if(subtotal1.length>1 && subtotal2.length == 1 && index > 0){
+          columnWidth.forEach((b: any, index: any) => {
+            // GET GRANDTOTAL
+            let grandTotalcount;
+            if (index == 0) {
+              grandTotalcount = 'GRAND TOTAL';
+            } else {
+              if (subtotal1.length > 1 && subtotal2.length == 1 && index > 0) {
                 grandTotalcount = subtotal1[index].text;
-
               }
-              if(subtotal2.length>1 && subtotal1.length == 1 && index > 0){
+              if (subtotal2.length > 1 && subtotal1.length == 1 && index > 0) {
                 grandTotalcount = subtotal2[index].text;
               }
-              if(subtotal1.length>1 && subtotal2.length > 1 && index > 0){ 
-                let sub1 = subtotal1[index].text == '-'? 0: subtotal1[index].text;
-                let sub2 = subtotal2[index].text == '-'? 0: subtotal2[index].text;
-                
-                if(subtotal2[index].text == '-' && subtotal1[index].text == '-'){
-                  grandTotalcount = '-'
-                }
-                else{
+              if (subtotal1.length > 1 && subtotal2.length > 1 && index > 0) {
+                let sub1 =
+                  subtotal1[index].text == '-' ? 0 : subtotal1[index].text;
+                let sub2 =
+                  subtotal2[index].text == '-' ? 0 : subtotal2[index].text;
+
+                if (
+                  subtotal2[index].text == '-' &&
+                  subtotal1[index].text == '-'
+                ) {
+                  grandTotalcount = '-';
+                } else {
                   grandTotalcount = sub1 + sub2;
-                }          
+                }
               }
-           }
-            grandTotal.push( {  // PUSH GRANDTOTAL
+            }
+            grandTotal.push({
+              // PUSH GRANDTOTAL
               text: grandTotalcount,
               fillColor: '#F1C93B',
-            });                  
+            });
           });
 
           tableData.push(grandTotal);
 
-          contentData.push([{
-            margin: [0, 10, 0, 0],
-            table: {
-           // widths: columnWidth,
-            body: tableData,
-          },
-          }])
+          contentData.push([
+            {
+              margin: [0, 10, 0, 0],
+              table: {
+                // widths: columnWidth,
+                body: tableData,
+              },
+            },
+          ]);
         });
 
         data.push(contentData);
@@ -378,7 +461,7 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
       },
       complete: () => {
         let isPortrait = false;
-        this.pdfService.GeneratePdf(data, isPortrait, "");
+        this.pdfService.GeneratePdf(data, isPortrait, '');
         console.log(data);
       },
     });

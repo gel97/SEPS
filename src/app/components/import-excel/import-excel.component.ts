@@ -11,11 +11,19 @@ import { SepDataService } from 'src/app/shared/Tools/sep-data.service';
 export class ImportExcelComponent implements OnInit {
 
   constructor() { }
+  @Output() excelFile = new EventEmitter<any>();
+  @Output() myEvent   = new EventEmitter<any>();
+
+  file:any = null;
 
   ngOnInit(): void {
   }
-  @Output() myEvent = new EventEmitter();
+
   ImportTemplate(){
-    this.myEvent.emit();
+    this.myEvent.emit(this.file);
+  }
+
+  fileChangeEvent(event: any): void {
+    this.file = event;
   }
 }

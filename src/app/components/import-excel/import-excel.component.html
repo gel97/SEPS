@@ -1,4 +1,24 @@
-<div>
-    <input type="file" file-model="excelFile" />
-        <button class="btn btn-primary" (click)="ImportTemplate()" >Upload</button>   
+<button class="btn btn-primary" data-toggle="modal" data-target="#ModalImportExcel">Import <i class="fa fa-upload" aria-hidden="true"></i></button>
+
+<div class="modal fade bd-example-modal-lg" id="ModalImportExcel" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="modal-header modal-header-primary">
+                <h5 class="modal-title" id="exampleModalLabel">Import Excel</h5>
+                <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="file" file-model="excelFile" (change)="fileChangeEvent($event)" accept=".xlsx, .xls" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="ImportTemplate()"><i
+                        class="fa fa-check"></i>Submit</button>&nbsp;
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"><i
+                        class="fa fa-times"></i>Close</button>
+            </div>
+        </div>
+    </div>
 </div>

@@ -2,11 +2,11 @@
 import { Injectable } from '@angular/core';
 import { BaseUrl } from 'src/app/services/baseUrl.service';
 import { ApiUrl } from 'src/app/services/apiUrl.service';
-import { Observable } from 'rxjs/internal/Observable';
 import { AuthService } from 'src/app/services/auth.service';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http'
 import Swal from 'sweetalert2';
-
+import { catchError, map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -99,21 +99,21 @@ export class ReportsService {
       },
     });
   }
-  Get_ExImport(setYear:number, munCityId:string, apiControllerName:string){
-    
-    // Swal.fire({
-    //   icon: 'error',
-    //   title: 'Oops...',
-    //   text: 'No file was uploaded.',
-    // });
-    
-    // Swal.fire({
-    //   icon: 'error',
-    //   title: 'Oops...',
-    //   text: 'Only Excel files (xlsx) are allowed.',
-    // });
 
-    
+  Get_ExImport(file:File, setYear:number, munCityId:string, apiControllerName:string): Observable<boolean>{
+    let formdata = new FormData();
+    formdata.append("File", file);
+    formdata.append("Year", setYear.toString());
+    formdata.append("MunCityId", munCityId);
+
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_ExImport(apiControllerName), formdata, { responseType: 'json' }).pipe(
+        map((response:any) => {       
+          return true;  
+        }),
+        catchError((error: any) => {       
+          return of(false); 
+        })
+      );
   }
   GetExcelExport(setYear:number, munCityId:string, apiControllerName:string){
     Swal.fire({

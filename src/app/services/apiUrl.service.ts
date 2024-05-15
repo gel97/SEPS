@@ -160,7 +160,7 @@ export class ApiUrl {
     post_report_manuf_estab  = () => `/ManEstab/Reports`;
     post_import_manuf_estab  = () => `/ManEstab/Import`;
     //Excel
-    post_ExImport = (setYear:any, MunCityId:any, apiControllerName:string) =>`/${apiControllerName}/import/${setYear}/${MunCityId}`;
+    post_ExImport = (apiControllerName:string) =>`/${apiControllerName}/import_excel`;
     get_ExExport = (setYear:any, MunCityId:any, apiControllerName:string) =>`/${apiControllerName}/export/${setYear}/${MunCityId}`;
     get_ExExport_temp =(apiController:string) =>`/${apiController}/export_template`;
     //TOURISM
