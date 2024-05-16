@@ -2,6 +2,8 @@
   <ng-template #isEmpty>
     <app-import [data]="message" (importData)="importMethod()"></app-import>
     <app-export-temp (myEvent)="ExportTemplate()"></app-export-temp>
+
+    <app-import-excel (myEvent)="ImportExcel($event)"></app-import-excel>
   </ng-template>
 
   <div *ngIf="showOverlay">
