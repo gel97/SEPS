@@ -9,6 +9,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class GeoProfileService {
+  UpdateMunCity(editmodal: any) {
+    throw new Error('Method not implemented.');
+  }
 
   constructor(private Http: HttpClient, private Auth: AuthService, private Base: BaseUrl, private ApiUrl: ApiUrl, private auth: AuthService) { }
 

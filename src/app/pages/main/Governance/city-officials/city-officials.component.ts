@@ -56,7 +56,9 @@ export class CityOfficialsComponent implements OnInit {
     });
   } // private service: + name of service that you've created
   toValidate: any = {};
-  Official: any = [];
+  Official: any =[];
+  appointed: any =[];
+  elected: any =[];
   city: any = {};
   city2: any = {};
   Edit: any = {};
@@ -280,11 +282,25 @@ export class CityOfficialsComponent implements OnInit {
     return this.modifyService.ModifyText(cityMunName);
   }
   getOfficials() {
-    this.service.GetOfficial().subscribe((data) => {
+    // this.elected = [];
+    // this.appointed = [];
+    this.service.GetOfficial().subscribe((data:any) => {
       this.Official = <any>data;
+      this.elected = [];
+      this.appointed = [];
+      data.forEach((element:any) => {
+        if (element.category == 1) {
+          this.elected.push(element); 
+        }else{
+          this.appointed.push(element);
+        }
+      });
       // this.import();
     });
+    console.log(this.elected);
+    console.log(this.appointed);
   }
+
 
   message = 'City Officials';
 
@@ -299,7 +315,7 @@ export class CityOfficialsComponent implements OnInit {
       this.positions = <any>data;
     });
   }
-
+  category:number= 0;
   addOfficial() {
     this.toValidate.name =
       this.city.name == '' || this.city.name == null ? true : false;
@@ -321,6 +337,7 @@ export class CityOfficialsComponent implements OnInit {
         'warning'
       );
     } else {
+      this.city.category = this.category;
       this.city.munCityId = this.auth.munCityId;
       this.city.setYear = this.auth.activeSetYear;
       this.city.transId = this.date.transform(Date.now(), 'YYMM');

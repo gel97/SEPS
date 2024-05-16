@@ -31,7 +31,10 @@
                 <app-pdf (myEvent)="GeneratePDF()"></app-pdf> 
               </form>
             </div><br>
-            <!-- <app-excel  (myEvent)="ExportExcel()" apiControllerName="ComEstab"></app-excel> -->
+            <app-admin>
+              <app-excel  (myEvent)="ExportExcel()" apiControllerName="Comestab"></app-excel>
+              <br>
+            </app-admin>
             <br>
             <div class="input-group col-sm-3">
               <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
