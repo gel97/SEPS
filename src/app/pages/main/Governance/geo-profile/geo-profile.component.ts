@@ -404,7 +404,9 @@ export class GeoProfileComponent implements OnInit {
       },
     });
   }
-
+  ExportExcel(){
+    this.reportService.GetExcelExport(this.auth.setYear, this.auth.munCityId, "PhyGeoProf");
+  }
   AddGeo() {
     this.toValidate.totalLandArea =
       this.geo.totalLandArea == null
@@ -562,7 +564,14 @@ export class GeoProfileComponent implements OnInit {
         'Please fill out the required fields',
         'warning'
       );
-    } else {
+    } else{
+      if(
+        this.gmapComponent.markers.lng !== undefined &&
+        this.gmapComponent.markers.lat !== undefined
+      ){
+        this.editgeo.longitude = this.gmapComponent.markers.lng;
+        this.editgeo.latitude = this.gmapComponent.markers.lat;
+      }
       this.service.UpdateGeo(this.editgeo).subscribe({
         next: (_data) => {
           this.Init();
@@ -577,6 +586,7 @@ export class GeoProfileComponent implements OnInit {
       });
       document.getElementById('exampleModalLong')?.click();
       this.editgeo = {};
+
     }
   }
 

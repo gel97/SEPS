@@ -70,6 +70,7 @@
                 <div id="collapseGovernance" class="collapse" aria-labelledby="headingTwo"
                     data-parent="#accordionSidebar">
                     <div class="bg-lightblue collapse-inner rounded">
+                        <app-lgu>
                         <a class="collapse-item" routerLinkActive="active" routerLink="gov_cityOfficials">City/Muncipal Officials</a>
                         <a class="collapse-item" routerLinkActive="active" routerLink="gov_Barangays">Barangays</a>
                         <a class="collapse-item" routerLinkActive="active" routerLink="gov_geoProfile">Physical /
@@ -88,13 +89,16 @@
                             Voters</a>
                         <a class="collapse-item" routerLinkActive="active" routerLink="Governance/sk-voters">Precincts/
                             Registered SK Voters</a>
-                        <a class="collapse-item" routerLinkActive="active"
+                            <a class="collapse-item" routerLinkActive="active"
+                            routerLink="Governance/city-location">Municipal/City Locations</a>
+                        </app-lgu>
+                            <app-ddn>
+                                <a class="collapse-item" routerLinkActive="active"
                             routerLink="Governance/provincial-officials">Provincial Officials</a>
                         <a class="collapse-item" routerLinkActive="active"
                             routerLink="Governance/fiscal-report">Provincial
                             Fiscal Report</a>
-                        <a class="collapse-item" routerLinkActive="active"
-                            routerLink="Governance/city-location">Municipal/City Locations</a>
+                            </app-ddn>
                     </div>
                 </div>
             </li>

@@ -29,9 +29,9 @@
 
             <div class="form-inline float-right ">
               <app-admin>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd "><i
-                    class="fa fa-plus"></i>
-                  City Officials
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd " (click)="category=1"><i
+                    class="fa fa-plus" ></i>
+                     Elective Officials
                 </button>
               </app-admin>
               &nbsp;
@@ -47,7 +47,7 @@
         </div>
             <div class="row">
               <div class="col-lg-10"><br>
-                <p>List of Municipal Officials:</p>
+                <p>List of Elective Officials:</p>
               </div>
             </div>
 
@@ -75,7 +75,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let text of  Official | search: searchText | paginate:{
+                      <tr *ngFor="let text of  elected | search: searchText | paginate:{
                                       itemsPerPage: tableSize,
                                       currentPage: p,
                                       totalItems:count} let i = index ;">
@@ -104,10 +104,9 @@
                     </tbody>
                   </table>
                 </div>
-
                 <!-- Pagination Control -->
                 <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
-
+              
                 <div class="row">
                   <div class="col-lg-12">
                     <form class="form-inline float-right ">
@@ -124,6 +123,95 @@
                     </form>
                   </div>
                 </div>
+                <br><br>
+                <div class="form-inline float-right ">
+                  <app-admin>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd " (click)="category=2"><i
+                        class="fa fa-plus"></i>
+                        Appointed Officials
+                    </button>
+                  </app-admin>
+                  &nbsp;
+                  <!-- <app-pdf (myEvent)="GeneratePDF()"></app-pdf> -->
+                </div>
+                <div class="row">
+                  <div class="col-lg-10"><br>
+                    <p>List of Appointed Officials:</p>
+                  </div>
+                </div>
+    
+                <div class="form-group">
+                  <div class="row">
+                    <div class="row">
+    
+                    </div>
+                    <div class="table-responsive">
+                      <div class="table-responsive">
+                      <br>
+                      <table class="table table-framed table-hover table-striped">
+                        <thead class="table-dark">
+                          <tr>
+                            <th></th>
+    
+                            <th scope="col">#</th>
+    
+                            <th scope="col">Name</th>
+                            <th scope="col">Position</th>
+                            <th scope="col">Contact Details</th>
+                            <th scope="col">Employment Status</th>
+                            <th width="8%"></th>
+    
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let text of  appointed | search: searchText | paginate:{
+                                          itemsPerPage: tableSize,
+                                          currentPage: p,
+                                          totalItems:count} let i = index ;">
+                            <!-- <tr *ngFor="let text of  Official | paginate: { itemsPerPage: 10, currentPage: p}"> -->
+                            <!-- <th scope="row">{{i + 1}}</th> -->
+                            <td></td>
+                            <td>{{i+1}}</td>
+                            <td>{{text.name}} </td>
+                            <td>{{text.position}}</td>
+                            <td>{{text.contact}} </td>
+                            <td>{{text.term}}</td>
+                            <td>
+                              <div class="d-inline-flex">
+                                <app-admin>
+                                  <button type="button" title="Edit" (click)="editModal=text"
+                                    class="btn btn-info btn-circle" data-toggle="modal" data-target="#exampleModalLong"><i
+                                      class="fa fa-pen"></i> </button>
+                                </app-admin>&nbsp;
+                                <app-admin>
+                                  <button type="button" title="Delete" class="btn btn-warning btn-circle"
+                                    (click)="delete(text)"><i class="fa fa-trash"></i> </button>
+                                </app-admin>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <!-- Pagination Control -->
+                    <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
+    
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <form class="form-inline float-right ">
+                          <pagination-controls previousLabel="Prev" currentPage="Next"
+                            (pageChange)="onTableDataChange($event)">
+                          </pagination-controls>
+                          <ul>
+                            <select (change)="onTableSizeChange($event)">
+                              <option *ngFor="let size of tableSizes ">
+                                {{size}}
+                              </option>
+                            </select>
+                          </ul>
+                        </form>
+                      </div>
+                    </div>
               </div>
             </div>
           </div>
@@ -141,7 +229,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">City Officials</h5>
+        <h5 class="modal-title" id="exampleModalLabel">City/Municipal Officials</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" #closebutton>
           <span aria-hidden="true">&times;</span>
         </button>

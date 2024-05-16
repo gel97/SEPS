@@ -161,6 +161,8 @@ import { ExcelComponent } from './components/excel/excel.component';
 import { ExportTempComponent } from './components/export-temp/export-temp.component';
 import { ImportExcelComponent } from './components/import-excel/import-excel.component';
 import { SearchPipe } from './search.pipe';
+import { LGUComponent } from './Admin/lgu/lgu.component';
+import { CategoryPipe } from './category.pipe';
 
 @NgModule({
   declarations: [
@@ -309,6 +311,8 @@ import { SearchPipe } from './search.pipe';
     ExportTempComponent,
     ImportExcelComponent,
     SearchPipe,
+    LGUComponent,
+    CategoryPipe,
   ],
   imports: [
     MdbCollapseModule,

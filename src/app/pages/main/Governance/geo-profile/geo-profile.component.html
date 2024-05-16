@@ -21,6 +21,13 @@
           </div>
           <div class="modal-body">
             <app-gmap></app-gmap>
+            <div class="modal-footer">
+              <app-admin>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="update_Geo()" >Save
+                  changes</button>
+              </app-admin>
+            </div>
           </div>
         </div>
       </div>
@@ -39,6 +46,10 @@
                 </div>
                 <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
                 <br>
+                <app-admin>
+                  <app-excel  (myEvent)="ExportExcel()" apiControllerName="PhyGeoProf"></app-excel>
+                  <br>
+                </app-admin>
                 <div class="table-responsive">
                   <table class="table table-striped">
                     <thead class="table-dark">
@@ -280,7 +291,7 @@
                         data-toggle="modal" data-target="#exampleModalLong"><i class="fa fa-pen"></i> </button>&nbsp;
                       <button type="button" title="Delete" (click)="delete(geo.transId)"
                         class="btn btn-warning btn-circle "><i class="fa fa-trash"></i></button>&nbsp;
-                      <button hidden (click)="SetMarker(munCity)" class="btn btn-success btn-circle" role="button"
+                      <button (click)="SetMarker(munCity)" class="btn btn-success btn-circle" role="button"
                         data-toggle="modal" data-target="#gmapModal"><i class="fa fa-globe"></i></button>
                     </div>
                   </div>
