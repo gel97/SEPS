@@ -32,7 +32,8 @@
               </form>
             </div><br>
             <app-admin>
-              <app-excel  (myEvent)="ExportExcel()" apiControllerName="Comestab"></app-excel>
+              <app-excel  (myEvent)="ExportExcel()" apiControllerName="ComEstab"></app-excel>&nbsp;
+              <app-import-excel (myEvent)="ImportExcel($event)"></app-import-excel>
               <br>
             </app-admin>
             <br>

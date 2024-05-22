@@ -123,13 +123,76 @@ export class MajorEconomicActivitiesComponent implements OnInit {
       complete: () => {},
     });
   }
+  GetListMjrcoAct(){
+    this.service.GetMajorEco().subscribe((data) => {
+      this.MajorAct = <any>data;
+      this.MajorAct = this.MajorAct.filter((s: any) => s.tag == 1);
+      console.log(this.MajorAct);
+    });
+  }
   ExportExcel(){
     this.reportService.GetExcelExport(this.auth.setYear, this.auth.munCityId, "MjrEcoAct");
   }
   ExportTemplate(){
     this.reportService.GetExport_tamplate("MjrEcoAct");
   }
-  reports: any = [];
+  ImportExcel(e: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "",
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, submit it!'
+    }).then((result) => {
+      console.log(result)
+      if (result.isConfirmed) {
+        this.reportService
+        .Get_ExImport(
+          e.target.files[0],
+          this.auth.setYear,
+          this.auth.munCityId,
+          'MjrEcoAct'
+        )
+        .subscribe((success) => {
+          Swal.fire({
+            title: 'Importing Data',
+            html: 'Please wait for a moment.',
+            timerProgressBar: true,
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+              setTimeout(() => {
+                if (success) {
+                  this.GetListMjrcoAct();
+                  Swal.close();
+                  Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'File imported successfully',
+                    showConfirmButton: true,
+                  });
+                } else {
+                  Swal.close();
+                  Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Something went wrong. possible invalid file',
+                    showConfirmButton: true,
+                  });
+                }
+              }, 5000);
+            },
+          });
+        });
+      }
+      else{
+      }
+    })
+
+  }
+ reports: any = [];
   GeneratePDF() {
     let data: any = [];
     const tableData: any = [];

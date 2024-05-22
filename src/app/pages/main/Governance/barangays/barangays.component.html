@@ -25,6 +25,7 @@
             </div>
             <app-admin>
             <app-excel  (myEvent)="ExportExcel()" apiControllerName="Barangay"></app-excel>
+            <app-import-excel (myEvent)="ImportExcel($event)"></app-import-excel>
           </app-admin>
           <br>
           <div class="input-group col-sm-3">
@@ -47,10 +48,10 @@
                       <tr>
                         <th scope="col">Barangay</th>
                         <th scope="col">Punong Barangay</th>
-                        <th scope="col">Land Area</th>
+                        <!-- <th scope="col">Land Area</th> -->
                         <th scope="col">Barangay Location</th>
                         <th scope="col">Contact Details </th>
-                        <th scope="col">No. of Puroks</th>
+                        <!-- <th scope="col">No. of Puroks</th> -->
                         <!-- <th scope="col">Geo-Coord.</th> -->
                         <th width="8%"></th>
                       </tr>
@@ -59,10 +60,10 @@
                       <tr *ngFor="let item of listData | search: searchText; index as i">
                         <td><b>{{item.brgyName}}</b></td>
                         <td>{{item.punongBrgy}}</td>
-                        <td>{{item.landArea}}</td>
+                        <!-- <td>{{item.landArea}}</td> -->
                         <td>{{item.address}} </td>
                         <td>{{item.contactNo}}</td>
-                        <td>{{item.purokNo}}</td>
+                        <!-- <td>{{item.purokNo}}</td> -->
                         <!-- <td>
                           <span *ngIf="item.longitude || item.latitude">
                             {{item.longitude}},<br> {{item.latitude}}

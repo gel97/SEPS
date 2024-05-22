@@ -2,6 +2,8 @@
   <ng-template #isEmpty>
     <app-import [data]="message" (importData)="importMethod()" ></app-import>
     <app-export-temp (myEvent)="ExportTemplate()" ></app-export-temp>
+    <app-import-temp (myEvent)="ImportExcel($event)"></app-import-temp>
+    <app-import-excel (myEvent)="ImportExcel($event)"></app-import-excel>
   </ng-template>
   
   <div *ngIf="showOverlay">
@@ -34,7 +36,8 @@
               </form>  
             </div><br>
             <br>
-            <app-excel  (myEvent)="ExportExcel()" apiControllerName="IndEst"></app-excel>
+            <app-excel  (myEvent)="ExportExcel()" apiControllerName="IndEst"></app-excel>&nbsp;
+            <app-import-excel (myEvent)="ImportExcel($event)"></app-import-excel>
             <br>
             <div class="input-group col-sm-3">
               <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
