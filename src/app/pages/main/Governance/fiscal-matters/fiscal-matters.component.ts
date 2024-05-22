@@ -53,7 +53,6 @@ export class FiscalMattersComponent implements OnInit {
 
   onChange(isCheck: boolean) {
     this.isCheck = isCheck;
-    console.log('isCheck:', this.isCheck);
   }
 
   clearData() {
@@ -90,7 +89,7 @@ export class FiscalMattersComponent implements OnInit {
           this.list_expend.push(item);
         }
       }
-      console.log(this.list_revenues);
+
       this.FisView = <any>data;
       this.list_expend.sort((n1: any, n2: any) => {
         //order by Descending
@@ -141,7 +140,6 @@ export class FiscalMattersComponent implements OnInit {
           if (!this.isCheck) {
             this.closebutton.nativeElement.click();
           }
-          console.log(_data);
           this.clearData();
           // this.Init();
 
@@ -206,7 +204,6 @@ export class FiscalMattersComponent implements OnInit {
 
   onTableDataChange(page: any) {
     //paginate
-    console.log(page);
     this.p = page;
   }
   onTableSizeChange(event: any) {
@@ -217,7 +214,6 @@ export class FiscalMattersComponent implements OnInit {
 
   onTableDataChange2(page: any) {
     //paginate
-    console.log(page);
     this.p2 = page;
   }
   onTableSizeChange2(event: any) {
