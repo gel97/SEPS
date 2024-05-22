@@ -171,14 +171,81 @@ export class CommercialEstablishmentsComponent implements OnInit {
     };
     this.gmapComponent.setMarker(this.markerObj);
   }
+  GetListCom(){
+    {
+      this.service.Get_Com_Estab().subscribe((data) => {
+        this.ComEstab = <any>data;
+        this.ComEstab = this.ComEstab.filter((s: any) => s.tag == 1);
+        console.log(this.ComEstab);
+      });
+    }
+  }
 
   //searchBar
   onChangeSearch(e: any) {
     this.searchText = e.target.value;
+   
   }
   ExportExcel(){
     this.reportService.GetExcelExport(this.auth.setYear, this.auth.munCityId, "ComEstab");
   }
+  ImportExcel(e: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "",
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, submit it!'
+    }).then((result) => {
+      console.log(result)
+      if (result.isConfirmed) {
+        this.reportService
+        .Get_ExImport(
+          e.target.files[0],
+          this.auth.setYear,
+          this.auth.munCityId,
+          'ComEstab'
+        )
+        .subscribe((success) => {
+          Swal.fire({
+            title: 'Importing Data',
+            html: 'Please wait for a moment.',
+            timerProgressBar: true,
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+              setTimeout(() => {
+                if (success) {
+                  this.ComEstab();
+                  Swal.close();
+                  Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'File imported successfully',
+                    showConfirmButton: true,
+                  });
+                } else {
+                  Swal.close();
+                  Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Something went wrong. possible invalid file',
+                    showConfirmButton: true,
+                  });
+                }
+              }, 5000);
+            },
+          });
+        });
+      }
+      else{
+      }
+    })
+
+  }
+
   GeneratePDF() {
     let reports: any = [];
     let data: any = [];

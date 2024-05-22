@@ -56,6 +56,70 @@ export class BarangaysComponent implements OnInit {
   ExportExcel(){
     this.reportService.GetExcelExport(this.auth.setYear, this.auth.munCityId, "Barangay");
   }
+  GetLisbarangay(){
+    this.service.GetBarangay().subscribe((data) => {
+      this.listBarangay = <any>data;
+      this.listBarangay = this.listBarangay.filter((s: any) => s.tag == 1);
+      console.log(this.listBarangay);
+    });
+  }
+
+  ImportExcel(e: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "",
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, submit it!'
+    }).then((result) => {
+      console.log(result)
+      if (result.isConfirmed) {
+        this.reportService
+        .Get_ExImport(
+          e.target.files[0],
+          this.auth.setYear,
+          this.auth.munCityId,
+          'MajorAct'
+        )
+        .subscribe((success) => {
+          Swal.fire({
+            title: 'Importing Data',
+            html: 'Please wait for a moment.',
+            timerProgressBar: true,
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+              setTimeout(() => {
+                if (success) {
+                  this.listBarangay();
+                  Swal.close();
+                  Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'File imported successfully',
+                    showConfirmButton: true,
+                  });
+                } else {
+                  Swal.close();
+                  Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Something went wrong. possible invalid file',
+                    showConfirmButton: true,
+                  });
+                }
+              }, 5000);
+            },
+          });
+        });
+      }
+      else{
+      }
+    })
+
+  }
 
   GeneratePDF() {
     let reports: any = [];
