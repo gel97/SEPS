@@ -35,3 +35,15 @@
   .x-center{
     display:flex; justify-content: center;align-items: center;
   }
+
+  .x-text-primary {
+    color: #0060CA;
+  }
+
+  .x-text-secondary{
+    color: #515153;
+  }
+
+  .x-cursor {
+    cursor: pointer;
+  }

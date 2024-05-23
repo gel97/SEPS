@@ -32,13 +32,13 @@ export class FiscalMattersComponent implements OnInit {
   list_expend: any = [];
   searchText= '';
   pageSize = 10;
-  p: string | number | undefined;
+  p:  number = 0;
   count: number = 0;
   tableSize: number = 5;
   tableSizes: any = [5, 15, 25, 50, 100];
 
   pageSize2 = 10;
-  p2: string | number | undefined;
+  p2: number = 0;
   count2: number = 0;
   tableSize2: number = 5;
   tableSizes2: any = [5, 15, 25, 50, 100];
@@ -47,6 +47,8 @@ export class FiscalMattersComponent implements OnInit {
   isCheck: boolean = false;
   visible: boolean = true;
   not_visible: boolean = true;
+
+  isRevenues: boolean = true;
 
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
@@ -104,6 +106,15 @@ export class FiscalMattersComponent implements OnInit {
         else return 0;
       });
     });
+  }
+
+  handleOnTabChange(isRevenues:boolean){
+    this.isRevenues = isRevenues;
+    this.searchText = '';
+    this.p          = 1;
+    this.p2         = 1;
+    this.tableSize  = 5;
+    this.tableSize2 = 5;
   }
 
   import() {
@@ -209,7 +220,7 @@ export class FiscalMattersComponent implements OnInit {
   onTableSizeChange(event: any) {
     //paginate
     this.tableSize = event.target.value;
-    this.p = 1;
+    this.p = 0;
   }
 
   onTableDataChange2(page: any) {
@@ -219,7 +230,8 @@ export class FiscalMattersComponent implements OnInit {
   onTableSizeChange2(event: any) {
     //paginate
     this.tableSize2 = event.target.value;
-    this.p2 = 1;
+    this.p2 = 0;
+    
   }
 
   delete(transId: any, index: any) {
