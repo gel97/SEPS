@@ -18,6 +18,14 @@ export class ManEstabService {
     return this.Http.get<any[]>(this.Base.url + this.ApiUrl.get_manuf_estab(this.Auth.munCityId, this.Auth.setYear), { responseType: 'json' });
   }
 
+  GetManEstabCategory():Observable<any[]>{
+    return this.Http.get<any[]>(this.Base.url + this.ApiUrl.get_manuf_estab_cat(), { responseType: 'json' });
+  }
+
+  GetManEstabType():Observable<any[]>{
+    return this.Http.get<any[]>(this.Base.url + this.ApiUrl.get_manuf_estab_types(), { responseType: 'json' });
+  }
+
   AddManEstab(ManEstab: any = {}){
     console.log(ManEstab)
     return this.Http.post(this.Base.url + this.ApiUrl.post_save_manuf_estab(), ManEstab, { responseType: 'json' });

@@ -26,17 +26,6 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
   @ViewChild(PdfComponent)
   private pdfComponent!: PdfComponent;
 
-  get filteredItems() {
-    return this.list_of_Business.filter(
-      (item) => item.categoryId == this.estab.category
-    );
-  }
-  get EDITfilteredItems() {
-    return this.list_of_Business.filter(
-      (item) => item.categoryId == this.editmodal.category
-    );
-  }
-
   message = 'Manufacturing Establishments';
 
   constructor(
@@ -52,39 +41,40 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
     return this.modifyService.ModifyText(cityMunName);
   }
 
-  munCityName: string = this.auth.munCityName;
-
-  toValidate: any = {};
-  ManEstab: any = [];
-  barangays: any = [];
-  estab: any = {};
-  editmodal: any = {};
-  Updatelocation: any = {};
+  munCityName    : string = this.auth.munCityName;
+  toValidate     : any    = {};
+  ManEstab       : any    = [];
+  barangays      : any    = [];
+  estab          : any    = {};
+  editmodal      : any    = {};
+  Updatelocation : any    = {};
 
   // Pagination
-  pageSize2 = 10;
-  p2: string | number | undefined;
-  count2: number = 1;
-  tableSize2: number = 20;
-  tableSizes2: any = [20, 40, 60, 80, 100];
+  pageSize    = 10;
+  p           : number = 0;
+  count       : number = 0;
+  tableSize   : number = 20;
+  tableSizes  : any    = [20, 40, 60, 80, 100];
 
-  isCheck: boolean = false;
-  visible: boolean = true;
-  not_visible: boolean = true;
+  isCheck     : boolean = false;
+  visible     : boolean = true;
+  not_visible : boolean = true;
+
+  list_of_category :any = [];
+  listFilterType   :any = [];
+  list_of_Business :any = [];
 
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
 
   onChange(isCheck: boolean) {
     this.isCheck = isCheck;
-    console.log('isCheck:', this.isCheck);
   }
 
   clearData() {
-    this.estab = {};
+    this.estab       = {};
     this.not_visible = false;
-    this.visible = true;
-    // this.required = false;
+    this.visible     = true;
   }
 
   public showOverlay = false;
@@ -496,7 +486,20 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
     this.service.GetManEstab().subscribe((data) => {
       this.ManEstab = <any>data;
       this.ManEstab = this.ManEstab.filter((s: any) => s.tag == 1);
-      console.log(this.ManEstab);
+      this.GetListManEstabCategory();
+      this.GetListManEstabTypes();
+    });
+  }
+
+  GetListManEstabCategory() {
+    this.service.GetManEstabCategory().subscribe((data:any) => {
+      this.list_of_category = data;
+    });
+  }
+
+  GetListManEstabTypes() {
+    this.service.GetManEstabType().subscribe((data:any) => {
+      this.list_of_Business = data;
     });
   }
 
@@ -638,108 +641,22 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
     });
   }
 
-  onTableDataChange2(page: any) {
+  onTableDataChange(page: any) {
     //paginate
     console.log(page);
-    this.p2 = page;
+    this.p = page;
   }
-  onTableSizeChange2(event: any) {
+  onTableSizeChange(event: any) {
+    console.log(event.target.value)
     //paginate
-    this.tableSize2 = event.target.value;
-    this.p2 = 1;
+    this.tableSize = event.target.value;
+    this.p = 1;
   }
-  list_of_category = [
-    { id: 1, name_category: 'Food processing' },
-    { id: 2, name_category: 'Agricultural products' },
-    { id: 3, name_category: 'Garments and embroidery' },
-    { id: 4, name_category: 'Crafts/ Furnitures' },
-    { id: 5, name_category: 'Ceramics/ Paper/ Plastic' },
-    { id: 6, name_category: 'Chemical and pharmaceutical' },
-    { id: 7, name_category: 'Jewelry' },
-    { id: 8, name_category: 'Other non-metallic products' },
-  ];
 
-  list_of_Business = [
-    { id: 1, name_business: 'Bakeries/ Bakeshop', categoryId: 1 },
-    { id: 2, name_business: 'Meat products/ processed meat', categoryId: 1 },
-    {
-      id: 3,
-      name_business: 'Fish products/ fish drying and smoking',
-      categoryId: 1,
-    },
-    { id: 4, name_business: 'Ice Plant', categoryId: 1 },
-    {
-      id: 5,
-      name_business: 'Ice cream/ Ice drops/ frozen products',
-      categoryId: 1,
-    },
-    { id: 6, name_business: 'Native Delicacies', categoryId: 1 },
-    { id: 7, name_business: 'Sweet Preserves', categoryId: 1 },
-    { id: 8, name_business: 'Nuts/ Kornik/ Chicharon', categoryId: 1 },
-    { id: 9, name_business: 'Noodles / Bihon products', categoryId: 1 },
-    { id: 10, name_business: 'Vinegar/ patis/ bagoong making', categoryId: 1 },
-    { id: 11, name_business: 'Juices and Beverages', categoryId: 1 },
-    {
-      id: 12,
-      name_business: 'Poultry and farm products processing',
-      categoryId: 1,
-    },
-    { id: 13, name_business: 'Other processed food', categoryId: 1 },
+  filterTypes(catId:any){
+    this.listFilterType = this.list_of_Business.filter(
+      (item:any) => item.catId == catId
+    );
+  }
 
-    {
-      id: 14,
-      name_business: 'Agricultural equipments and supplies',
-      categoryId: 2,
-    },
-    { id: 15, name_business: 'Feeds manufacturing', categoryId: 2 },
-    { id: 16, name_business: 'Fertilizer manufacturing', categoryId: 2 },
-
-    { id: 17, name_business: 'Gowns and Barong', categoryId: 3 },
-    { id: 18, name_business: 'Ladies Wear', categoryId: 3 },
-    { id: 19, name_business: 'Shirts/ Pants Manufacturing', categoryId: 3 },
-    { id: 20, name_business: 'Needlecraft/ Embroidery', categoryId: 3 },
-    { id: 21, name_business: 'Knitting', categoryId: 3 },
-    {
-      id: 22,
-      name_business: 'Bed Sheets/ Pillow cases/ Curtains',
-      categoryId: 3,
-    },
-    { id: 23, name_business: 'Dress making/ undergarments', categoryId: 3 },
-
-    { id: 24, name_business: 'Woodcrafts/ Wooden Furniture', categoryId: 4 },
-    { id: 25, name_business: 'Casket/coffin making', categoryId: 4 },
-    { id: 26, name_business: 'Sash manufacturing', categoryId: 4 },
-    { id: 27, name_business: 'Rattan products manufacturing', categoryId: 4 },
-    { id: 28, name_business: 'Bamboo products', categoryId: 4 },
-    { id: 29, name_business: 'Steel products/ Iron works', categoryId: 4 },
-    { id: 30, name_business: 'Handicrafts/ Shellcraft', categoryId: 4 },
-    { id: 31, name_business: 'Upholstery', categoryId: 4 },
-
-    { id: 32, name_business: 'Ceramics / pottery', categoryId: 5 },
-    { id: 33, name_business: 'Plastic wares', categoryId: 5 },
-    { id: 34, name_business: 'Paper Products ', categoryId: 5 },
-    { id: 35, name_business: 'Glasswares', categoryId: 5 },
-
-    { id: 36, name_business: 'Laboratories', categoryId: 6 },
-    { id: 37, name_business: 'Chemical industries', categoryId: 6 },
-    { id: 38, name_business: 'Soap making', categoryId: 6 },
-    { id: 39, name_business: 'Candle making', categoryId: 6 },
-    { id: 40, name_business: 'Tobacco/ Cigarettes', categoryId: 6 },
-
-    { id: 41, name_business: 'Fancy Jewelry maker', categoryId: 7 },
-    { id: 42, name_business: 'Jewelry tools and equipments', categoryId: 7 },
-    { id: 43, name_business: 'Fine Jewelries', categoryId: 7 },
-    { id: 44, name_business: 'Fashion Accessories', categoryId: 7 },
-
-    { id: 45, name_business: 'Cement Factories', categoryId: 8 },
-    { id: 46, name_business: 'Marble Craft', categoryId: 8 },
-    { id: 47, name_business: 'Pyro-tecnics/ Firecrackers', categoryId: 8 },
-    { id: 48, name_business: 'Rubber/ Leather products', categoryId: 8 },
-    {
-      id: 49,
-      name_business: 'Concrete products/ Tiles/ Hollowblocks',
-      categoryId: 8,
-    },
-    { id: 50, name_business: 'Foam Products', categoryId: 8 },
-  ];
 }

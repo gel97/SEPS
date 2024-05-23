@@ -54,10 +54,10 @@ export class PdfComponent implements OnInit {
 
     this.list_sep_year.forEach((a: any) => {
 
-      if(a.isActive == 0)
-      {
+      //if(a.isActive == 0)
+      //{
         this.filter_sep_year.push(a);
-      }      
+      //}      
     });
   }
 }
