@@ -82,22 +82,16 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let text of ManEstab | search: searchText | paginate:{ itemsPerPage: tableSize2,
-                                  currentPage: p2,
-                                  totalItems:count2} | filterall: searchText , let i = index ">
-                    <td>{{ i + 1 }}</td>
+                  <tr *ngFor="let text of ManEstab | search: searchText | paginate:{ itemsPerPage: tableSize,
+                                  currentPage: p,
+                                  totalItems:count} | filterall: searchText , let i = index ">
+                    <td>{{( (p>0? p-1 : p) * tableSize) +(i + 1)}}</td>
                     <td class="text-center">{{text.name}}</td>
                     <td>
-                      <div *ngFor="let item of list_of_category">
-                        <span *ngIf="item.id === text.category">{{item.name_category}} </span>
-                      </div>
+                      {{text.catName}}
                     </td>
                     <td>
-                      <div *ngFor="let item of list_of_Business">
-                        <span *ngIf="item.id === text.type">{{item.name_business}}
-
-                        </span>
-                      </div>
+                      {{text.typeName}}
                     </td>
                     <td>{{text.contactPerson}}</td>
                     <td>{{text.contactNo}}</td>
@@ -108,7 +102,7 @@
                     <td>
                       <div class="d-inline-flex">
                         <app-admin>
-                          <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info btn-circle"
+                          <button type="button" title="Edit" (click)="filterTypes(text.category); editmodal=text" class="btn btn-info btn-circle"
                             data-toggle="modal" data-target="#ModalEdit"><i class="fa fa-pen"></i> </button>
                         </app-admin>&nbsp;
                         <button (click)="SetMarker(text)" class="btn btn-success btn-circle" role="button"
@@ -129,11 +123,11 @@
               <div class="col-lg-12">
                 <form class="form-inline float-right ">
                   <pagination-controls previousLabel="Prev" currentPage="Next"
-                    (pageChange)="onTableDataChange2($event)">
+                    (pageChange)="onTableDataChange($event)">
                   </pagination-controls>
                   <ul>
-                    <select (change)="onTableSizeChange2($event)">
-                      <option *ngFor="let size of tableSizes2 ">
+                    <select (change)="onTableSizeChange($event)">
+                      <option *ngFor="let size of tableSizes ">
                         {{size}}
                       </option>
                     </select>
@@ -204,8 +198,8 @@
               <label for="type">Select Category:</label>
               <select class="form-select" aria-label="Default select example" name="list_of_category"
                 [(ngModel)]="estab.category" [ngClass]="toValidate.category?'is-invalid':''"
-                (ngModelChange)="toValidate.category=false">
-                <option *ngFor="let list of list_of_category" value={{list.id}}>{{list.name_category}}
+                (ngModelChange)="toValidate.category=false; filterTypes($event)">
+                <option *ngFor="let list of list_of_category" value={{list.recNo}}>{{list.catName}}
                 </option>
               </select>
             </div>
@@ -215,7 +209,7 @@
               <select class="form-select" aria-label="Default select example" name="list_of_Business"
                 id="list_of_Business" [(ngModel)]="estab.type" [ngClass]="toValidate.type?'is-invalid':''"
                 (ngModelChange)="toValidate.type=false">
-                <option *ngFor="let list of filteredItems" value={{list.id}}>{{list.name_business}}</option>
+                <option *ngFor="let list of listFilterType" value={{list.recNo}}>{{list.typeName}}</option>
               </select>
             </div>
           </div>
@@ -232,7 +226,7 @@
           <br>
           <div class="col-lg-12"> <br>
             <label>No. of Workers :</label>
-            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="estab.workersNo"
+            <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="estab.workersNo"
               [ngClass]="toValidate.workersNo?'is-invalid':''" (keyup)="toValidate.workersNo=false">
           </div>
           <br>
@@ -300,8 +294,8 @@
               <label for="type">Select Category:</label>
               <select class="form-select" aria-label="Default select example" name="list_of_category"
                 [(ngModel)]="editmodal.category" [ngClass]="toValidate.category?'is-invalid':''"
-                (ngModelChange)="toValidate.category=false">
-                <option *ngFor="let list of list_of_category" value={{list.id}}>{{list.name_category}}</option>
+                (ngModelChange)="toValidate.category=false; filterTypes($event)">
+                <option *ngFor="let list of list_of_category" value={{list.recNo}}>{{list.catName}}</option>
               </select>
 
             </div>
@@ -311,7 +305,7 @@
               <select class="form-select" aria-label="Default select example" name="list_of_Business"
                 [(ngModel)]="editmodal.type" [ngClass]="toValidate.type?'is-invalid':''"
                 (keyup)="toValidate.type=false">
-                <option *ngFor="let list of EDITfilteredItems" value={{list.id}}>{{list.name_business}}</option>
+                <option *ngFor="let list of listFilterType" value={{list.recNo}}>{{list.typeName}}</option>
               </select>
             </div>
           </div>
@@ -330,7 +324,7 @@
           <br>
           <div class="col-lg-12"> <br>
             <label>No. of Workers :</label>
-            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.workersNo"
+            <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="editmodal.workersNo"
               [ngClass]="toValidate.workersNo?'is-invalid':''" (keyup)="toValidate.workersNo=false">
           </div>
           <br>
