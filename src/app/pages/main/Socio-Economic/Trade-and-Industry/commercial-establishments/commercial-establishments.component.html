@@ -19,7 +19,12 @@
               <label><strong>Trade and Industry - {{modifyCityMun(munCityName)}} </strong></label><br>
             </div>
             <br>
-            <div class="form-inline float-right ">
+            <div class="x-space-between">
+              <div class="x-space-between">
+                  <app-excel  (myEvent)="ExportExcel()" apiControllerName="ComEstab"></app-excel>&nbsp;
+                  <app-import-excel (myEvent)="ImportExcel($event)"></app-import-excel>
+                  <br>
+              </div>  
               <form class=>
                 <app-admin>
                   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd"><i
@@ -30,12 +35,7 @@
                 &nbsp;
                 <app-pdf (myEvent)="GeneratePDF()"></app-pdf> 
               </form>
-            </div><br>
-            <app-admin>
-              <app-excel  (myEvent)="ExportExcel()" apiControllerName="ComEstab"></app-excel>&nbsp;
-              <app-import-excel (myEvent)="ImportExcel($event)"></app-import-excel>
-              <br>
-            </app-admin>
+            </div>
             <br>
             <div class="input-group col-sm-3">
               <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."

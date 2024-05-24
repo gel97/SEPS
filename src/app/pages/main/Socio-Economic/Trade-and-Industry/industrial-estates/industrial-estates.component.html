@@ -23,21 +23,25 @@
 
             </div>
             <br>
-            <div class="form-inline float-right ">
-              <form class=>
-                <app-admin>
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd"><i
-                      class="fa fa-plus"></i>
-                    Industrial Estates
-                  </button>
-                </app-admin>
-                &nbsp;
-                <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
-              </form>  
-            </div><br>
+            <div class="x-space-between">
+              <div class="x-space-between">
+                <app-excel  (myEvent)="ExportExcel()" apiControllerName="IndEst"></app-excel>&nbsp;
+                <app-import-excel (myEvent)="ImportExcel($event)"></app-import-excel>
+              </div>
+              <div class="x-space-between">
+                <form class=>
+                  <app-admin>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd"><i
+                        class="fa fa-plus"></i>
+                      Industrial Estates
+                    </button>
+                  </app-admin>
+                </form>  
+                  &nbsp;
+                  <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
+              </div>
+            </div>
             <br>
-            <app-excel  (myEvent)="ExportExcel()" apiControllerName="IndEst"></app-excel>&nbsp;
-            <app-import-excel (myEvent)="ImportExcel($event)"></app-import-excel>
             <br>
             <div class="input-group col-sm-3">
               <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
