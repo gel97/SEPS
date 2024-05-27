@@ -134,7 +134,7 @@ export class MajorEconomicActivitiesComponent implements OnInit {
     this.reportService.GetExcelExport(this.auth.setYear, this.auth.munCityId, "MjrEcoAct");
   }
   ExportTemplate(){
-    this.reportService.GetExport_tamplate("MjrEcoAct");
+    this.reportService.GetExport_tamplate("MjrEcoAct", this.auth.munCityId);
   }
   ImportExcel(e: any) {
     Swal.fire({

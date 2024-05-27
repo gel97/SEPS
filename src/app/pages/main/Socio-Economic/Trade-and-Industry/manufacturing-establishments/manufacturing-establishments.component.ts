@@ -151,7 +151,7 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
     );
   }
   ExportTemplate() {
-    this.reportService.GetExport_tamplate('ManEstab');
+    this.reportService.GetExport_tamplate('ManEstab', this.auth.munCityId);
   }
 
   ImportExcel(e: any) {
@@ -485,7 +485,6 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
   GetListManEstab() {
     this.service.GetManEstab().subscribe((data) => {
       this.ManEstab = <any>data;
-      this.ManEstab = this.ManEstab.filter((s: any) => s.tag == 1);
       this.GetListManEstabCategory();
       this.GetListManEstabTypes();
     });
@@ -643,11 +642,9 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
 
   onTableDataChange(page: any) {
     //paginate
-    console.log(page);
     this.p = page;
   }
   onTableSizeChange(event: any) {
-    console.log(event.target.value)
     //paginate
     this.tableSize = event.target.value;
     this.p = 1;

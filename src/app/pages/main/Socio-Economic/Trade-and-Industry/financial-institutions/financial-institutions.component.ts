@@ -226,7 +226,7 @@ export class FinancialInstitutionsComponent implements OnInit {
     this.reportService.GetExcelExport(this.auth.setYear, this.auth.munCityId, "FinIns");
   }
   ExportTemplate(){
-    this.reportService.GetExport_tamplate("FinIns");
+    this.reportService.GetExport_tamplate("FinIns", this.auth.munCityId);
   }
   generatePdf(cat: number) {
     this.pdf_data.allMunCity = this.pdf_data.allMunCity ? 1 : 0;

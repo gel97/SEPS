@@ -21,11 +21,10 @@
             <br>
             <div class="x-space-between">
               <div class="x-space-between">
-                  <app-excel  (myEvent)="ExportExcel()" apiControllerName="ComEstab"></app-excel>&nbsp;
-                  <app-import-excel (myEvent)="ImportExcel($event)"></app-import-excel>
-                  <br>
-              </div>  
-              <form class=>
+                <app-excel (myEvent)="ExportExcel()" apiControllerName="ComEstab"></app-excel>&nbsp;
+                <app-import-excel (myEvent)="ImportExcel($event)"></app-import-excel>
+              </div>
+              <div class="x-space-between">
                 <app-admin>
                   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd"><i
                       class="fa fa-plus"></i>
@@ -34,19 +33,23 @@
                 </app-admin>
                 &nbsp;
                 <app-pdf (myEvent)="GeneratePDF()"></app-pdf> 
-              </form>
-            </div>
+            </div><br>
+            <app-admin>
+              <app-excel  (myEvent)="ExportExcel()" apiControllerName="ComEstab"></app-excel>&nbsp;
+              <app-import-excel (myEvent)="ImportExcel($event)"></app-import-excel>
+              <br>
+            </app-admin>
             <br>
             <div class="input-group col-sm-3">
               <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                  aria-label="Search" aria-describedby="basic-addon2" [(ngModel)]="searchText">
-          </div>
+                aria-label="Search" aria-describedby="basic-addon2" [(ngModel)]="searchText">
+            </div>
             <div class="row">
               <div class="col-lg-6">
                 <p>List of Commercial Establishments </p>
               </div>
-            <br>
-            
+              <br>
+
               <!-- <div class="col-lg-6 ">
                                   <form class="form-inline float-right">
                                     <div class="form-group mb-4">
@@ -79,22 +82,13 @@
                   <tr *ngFor="let text of ComEstab | search: searchText | paginate:{ itemsPerPage: tableSize,
                                   currentPage: p,
                                   totalItems:count} | filterall: searchText , let i = index ">
-                    <td>{{ i + 1}}</td>
+                    <td>{{( (p>0? p-1 : p) * tableSize) +(i + 1)}}</td>
                     <td class="text-center">{{text.brgyName}}</td>
                     <td class="text-center">{{text.permitNo}}</td>
                     <td>{{text.owner}}</td>
                     <td>{{text.estabName}}</td>
-                    <td>
-                      <div *ngFor="let item of list_of_category">
-                        <span *ngIf="item.id === text.category">{{item.name_category}} </span>
-                      </div>
-                    </td>
-                    <td>
-                      <div *ngFor="let item of list_of_Business">
-                        <span *ngIf="item.id === text.lineBusiness">{{item .name_business}} </span>
-                      </div>
-                    </td>
-
+                    <td>{{text.catName}}</td>
+                    <td>{{text.lineBusinessName}}</td>
                     <td>
                       <div *ngFor="let item of list_of_status">
                         <span *ngIf="item.id === text.status">{{item.status}} </span>
@@ -107,8 +101,9 @@
                     <td>
                       <div class="d-inline-flex">
                         <app-admin>
-                          <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info btn-circle"
-                            data-toggle="modal" data-target="#ModalEdit"><i class="fa fa-pen"></i> </button>
+                          <button type="button" title="Edit" (click)="filterTypes(text.category); editmodal=text"
+                            class="btn btn-info btn-circle" data-toggle="modal" data-target="#ModalEdit"><i
+                              class="fa fa-pen"></i> </button>
                         </app-admin>&nbsp;
                         <button (click)="SetMarker(text)" class="btn btn-success btn-circle" role="button"
                           (click)="editmodal=text" data-toggle="modal" data-target="#gmapModal"><i class="fa fa-globe">
@@ -221,8 +216,8 @@
                 <label for="type">Select Category:</label>
                 <select class="form-select" aria-label="Default select example" name="list_of_category"
                   [(ngModel)]="editmodal.category" [ngClass]="toValidate.category?'is-invalid':''"
-                  (ngModelChange)="toValidate.category=false">
-                  <option *ngFor="let list of list_of_category" value={{list.id}}>{{list.name_category}}</option>
+                  (ngModelChange)="toValidate.category=false; filterTypes($event)">
+                  <option *ngFor="let list of list_of_category" value={{list.recNo}}>{{list.catName}}</option>
                 </select>
 
               </div>
@@ -231,7 +226,7 @@
                 <select class="form-select" aria-label="Default select example" name="list_of_Business"
                   [(ngModel)]="editmodal.lineBusiness" [ngClass]="toValidate.lineBusiness?'is-invalid':''"
                   (ngModelChange)="toValidate.lineBusiness=false">
-                  <option *ngFor="let list of EDTfilteredItems" value={{list.id}}>{{list.name_business}}</option>
+                  <option *ngFor="let list of listFilterType" value={{list.recNo}}>{{list.lineBusinessName}}</option>
                 </select>
               </div>
 
@@ -334,8 +329,8 @@
                 <label for="type">Select Category:</label>
                 <select class="form-select" aria-label="Default select example" name="list_of_category"
                   [(ngModel)]="comm.category" [ngClass]="toValidate.category?'is-invalid':''"
-                  (ngModelChange)="toValidate.category=false">
-                  <option *ngFor="let list of list_of_category" value={{list.id}}>{{list.name_category}}
+                  (ngModelChange)="toValidate.category=false; filterTypes($event)">
+                  <option *ngFor="let list of list_of_category" value={{list.recNo}}>{{list.catName}}
                   </option>
                 </select>
               </div>
@@ -344,7 +339,7 @@
                 <select class="form-select" aria-label="Default select example" name="list_of_Business"
                   [(ngModel)]="comm.lineBusiness" [ngClass]="toValidate.lineBusiness?'is-invalid':''"
                   (ngModelChange)="toValidate.lineBusiness=false">
-                  <option *ngFor="let list of filteredItems" value={{list.id}}>{{list.name_business}}
+                  <option *ngFor="let list of listFilterType" value={{list.recNo}}>{{list.lineBusinessName}}
                   </option>
                 </select>
               </div>

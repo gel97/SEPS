@@ -110,6 +110,9 @@ export class ApiUrl {
     post_report_com_estab = () => `/ComEstab/Reports`;
     post_import_com_estab = () => `/ComEstab/Import`;
 
+    get_com_estab_cat     = ()=>`/ComEstabCategory/List`;
+    get_com_estab_type    = ()=>`/ComEstabLineBusiness/List`;
+
     //Summary Commercial
     get_summ_commercial=(munCityId:any, setYear:any)=>`/SumComEst/${setYear}/${munCityId}`;
     post_save_summ_commercial=()=>`/SumComEst`;
@@ -165,7 +168,7 @@ export class ApiUrl {
     //Excel
     post_ExImport = (apiControllerName:string) =>`/${apiControllerName}/import_excel`;
     get_ExExport = (setYear:any, MunCityId:any, apiControllerName:string) =>`/${apiControllerName}/export/${setYear}/${MunCityId}`;
-    get_ExExport_temp =(apiController:string) =>`/${apiController}/export_template`;
+    get_ExExport_temp =(apiController:string, munCityId:any) =>`/${apiController}/export_template/${munCityId}`;
     //TOURISM
     post_tourism         = ()=> `/Tourism`;
     put_tourism          = ()=> `/Tourism`;
