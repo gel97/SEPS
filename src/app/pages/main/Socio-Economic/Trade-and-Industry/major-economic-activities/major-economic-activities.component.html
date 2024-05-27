@@ -22,20 +22,26 @@
 
             </div>
             <br>
-            <div class="form-inline float-right ">
-              <app-admin>
-                <form class=>
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd "><i
-                      class="fa fa-plus"></i>
-                    Major Economic Activities
-                  </button>
-                </form>
-              </app-admin>
-              &nbsp;
-              <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
+            <div class="x-space-between">
+              <div class="x-space-between">
+                <app-excel  (myEvent)="ExportExcel()" apiControllerName="MjrEcoAct"></app-excel>&nbsp;
+                <app-import-excel (myEvent)="ImportExcel($event)"></app-import-excel>
+              </div>
+                <div class="x-space-between">
+                  <form class=>
+                    <app-admin>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd "><i
+                            class="fa fa-plus"></i>
+                          Major Economic Activities
+                        </button>
+                    </app-admin>
+                  </form>
+                  &nbsp;
+                  <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
+                
+              </div>
             </div>
-            <app-excel  (myEvent)="ExportExcel()" apiControllerName="MjrEcoAct"></app-excel>&nbsp;
-            <app-import-excel (myEvent)="ImportExcel($event)"></app-import-excel>
+           
             <br>
             <br>
             <div class="row">

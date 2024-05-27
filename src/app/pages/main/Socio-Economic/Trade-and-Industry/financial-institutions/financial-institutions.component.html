@@ -22,20 +22,29 @@
 
             </div>
             <br>
+            <div class="x-space-between">
+              <div class="x-space-between">
+                <app-excel  (myEvent)="ExportExcel()" apiControllerName="FinIns"></app-excel>&nbsp;
+                <app-import-excel (myEvent)="ImportExcel($event)"></app-import-excel>
+              </div>
+              <div class="x-space-between">
+                <form class=>
+                  <app-admin>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd "><i
+                        class="fa fa-plus"></i>
+                      Financial Institutions
+                    </button>
+                  </app-admin>
+                </form>
+                &nbsp;
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mPdf" aria-hidden="true">Generate PDF</button>
+              </div>
+            </div>
             <div class="form-inline float-right ">
-              <form class=>
-                <app-admin>
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd "><i
-                      class="fa fa-plus"></i>
-                    Financial Institutions
-                  </button>
-                </app-admin>
-              </form>
-              &nbsp;
-              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mPdf" aria-hidden="true">Generate PDF</button>
+              
+            
             </div><br>
-            <app-excel  (myEvent)="ExportExcel()" apiControllerName="FinIns"></app-excel>&nbsp;
-            <app-import-excel (myEvent)="ImportExcel($event)"></app-import-excel>
+           
             <br>
               <div class="input-group col-sm-3">
               <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
