@@ -1,6 +1,7 @@
 <div class="">
   <ng-template #isEmpty>
     <app-import [data]="message" (importData)="importMethod()"></app-import>
+    <app-export-excel apiControllerName="RegVoters"></app-export-excel>
   </ng-template>
 
   <div *ngIf="showOverlay">
@@ -16,21 +17,20 @@
               <h1 class="h4 text-gray-900 mb-4">Polling Precincts and Registered Voters</h1>
               <label><strong>Governance - {{modifyCityMun(munCityName)}} </strong></label><br>    
             </div>
-            <div class="form-inline float-right ">
-              <form class=>
+            <div class="x-space-between">
+              <div class="x-space-between">
+                <app-export-excel apiControllerName="RegVoters"></app-export-excel>
+              </div>
+              <div class="x-space-between">
                 <app-admin>
                   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd "><i
                       class="fa fa-plus"></i>
                     Registered Voters
-                  </button>
+                  </button>&nbsp;
                 </app-admin>
-              </form>
-              &nbsp;
-              <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
-            </div><br><br>
-            <app-admin>
-              <app-excel  (myEvent)="ExportExcel()" apiControllerName="RegVoters"></app-excel>
-            </app-admin>
+                <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
+              </div>
+            </div>
             <div class="row">
               <div class="">
                 <p>Number of Precincts and Registered Voters</p>

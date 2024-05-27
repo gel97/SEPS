@@ -1,6 +1,7 @@
 <div class="">
   <ng-template #isEmpty>
     <app-import [data]="message" (importData)="importMethod()"></app-import>
+    <app-export-excel apiControllerName="MunCityOfficial"></app-export-excel>
   </ng-template>
 
   <div *ngIf="showOverlay">
@@ -26,25 +27,25 @@
               <h1 class="h4 text-gray-900 mb-4">City/Municipal Officials</h1>
               <label><strong>Governance - {{modifyCityMun(munCityName)}} - City Officials</strong></label><br>
             </div>
-
-            <div class="form-inline float-right ">
-              <app-admin>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd " (click)="category=1"><i
-                    class="fa fa-plus" ></i>
-                     Elective Officials
-                </button>
-              </app-admin>
-              &nbsp;
-              <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
+            <div class="x-space-between">
+              <div class="x-space-between">
+                <app-export-excel apiControllerName="MunCityOfficial"></app-export-excel>
+              </div>
+              <div class="x-space-between">
+                <app-admin>
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd "
+                    (click)="category=1"><i class="fa fa-plus"></i>
+                    Elective Officials
+                  </button>
+                </app-admin>
+                &nbsp;
+                <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
+              </div>
             </div>
-            <app-admin>
-            <app-excel  (myEvent)="ExportExcel()" apiControllerName="MunCityOfficial"></app-excel>
-            <br>
-          </app-admin>
-          <div class="input-group col-sm-3">
-            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+            <div class="input-group col-sm-3">
+              <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
                 aria-label="Search" aria-describedby="basic-addon2" [(ngModel)]="searchText">
-        </div>
+            </div>
             <div class="row">
               <div class="col-lg-10"><br>
                 <p>List of Elective Officials:</p>
@@ -58,192 +59,192 @@
                 </div>
                 <div class="table-responsive">
                   <div class="table-responsive">
-                  <br>
-                  <table class="table table-framed table-hover table-striped">
-                    <thead class="table-dark">
-                      <tr>
-                        <th></th>
+                    <br>
+                    <table class="table table-framed table-hover table-striped">
+                      <thead class="table-dark">
+                        <tr>
+                          <th></th>
 
-                        <th scope="col">#</th>
+                          <th scope="col">#</th>
 
-                        <th scope="col">Name</th>
-                        <th scope="col">Position</th>
-                        <th scope="col">Contact Details</th>
-                        <th scope="col">Term of Office</th>
-                        <th width="8%"></th>
+                          <th scope="col">Name</th>
+                          <th scope="col">Position</th>
+                          <th scope="col">Contact Details</th>
+                          <th scope="col">Term of Office</th>
+                          <th width="8%"></th>
 
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let text of  elected | search: searchText | paginate:{
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let text of  elected | search: searchText | paginate:{
                                       itemsPerPage: tableSize,
                                       currentPage: p,
                                       totalItems:count} let i = index ;">
-                        <!-- <tr *ngFor="let text of  Official | paginate: { itemsPerPage: 10, currentPage: p}"> -->
-                        <!-- <th scope="row">{{i + 1}}</th> -->
-                        <td></td>
-                        <td>{{i+1}}</td>
-                        <td>{{text.name}} </td>
-                        <td>{{text.position}}</td>
-                        <td>{{text.contact}} </td>
-                        <td>{{text.term}}</td>
-                        <td>
-                          <div class="d-inline-flex">
-                            <app-admin>
-                              <button type="button" title="Edit" (click)="editModal=text"
-                                class="btn btn-info btn-circle" data-toggle="modal" data-target="#exampleModalLong"><i
-                                  class="fa fa-pen"></i> </button>
-                            </app-admin>&nbsp;
-                            <app-admin>
-                              <button type="button" title="Delete" class="btn btn-warning btn-circle"
-                                (click)="delete(text)"><i class="fa fa-trash"></i> </button>
-                            </app-admin>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <!-- Pagination Control -->
-                <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
-              
-                <div class="row">
-                  <div class="col-lg-12">
-                    <form class="form-inline float-right ">
-                      <pagination-controls previousLabel="Prev" currentPage="Next"
-                        (pageChange)="onTableDataChange($event)">
-                      </pagination-controls>
-                      <ul>
-                        <select (change)="onTableSizeChange($event)">
-                          <option *ngFor="let size of tableSizes ">
-                            {{size}}
-                          </option>
-                        </select>
-                      </ul>
-                    </form>
+                          <!-- <tr *ngFor="let text of  Official | paginate: { itemsPerPage: 10, currentPage: p}"> -->
+                          <!-- <th scope="row">{{i + 1}}</th> -->
+                          <td></td>
+                          <td>{{i+1}}</td>
+                          <td>{{text.name}} </td>
+                          <td>{{text.position}}</td>
+                          <td>{{text.contact}} </td>
+                          <td>{{text.term}}</td>
+                          <td>
+                            <div class="d-inline-flex">
+                              <app-admin>
+                                <button type="button" title="Edit" (click)="editModal=text"
+                                  class="btn btn-info btn-circle" data-toggle="modal" data-target="#exampleModalLong"><i
+                                    class="fa fa-pen"></i> </button>
+                              </app-admin>&nbsp;
+                              <app-admin>
+                                <button type="button" title="Delete" class="btn btn-warning btn-circle"
+                                  (click)="delete(text)"><i class="fa fa-trash"></i> </button>
+                              </app-admin>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
-                </div>
-                <br><br>
-                <div class="form-inline float-right ">
-                  <app-admin>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd " (click)="category=2"><i
-                        class="fa fa-plus"></i>
-                        Appointed Officials
-                    </button>
-                  </app-admin>
-                  &nbsp;
-                  <!-- <app-pdf (myEvent)="GeneratePDF()"></app-pdf> -->
-                </div>
-                <div class="row">
-                  <div class="col-lg-10"><br>
-                    <p>List of Appointed Officials:</p>
-                  </div>
-                </div>
-    
-                <div class="form-group">
+                  <!-- Pagination Control -->
+                  <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
+
                   <div class="row">
-                    <div class="row">
-    
+                    <div class="col-lg-12">
+                      <form class="form-inline float-right ">
+                        <pagination-controls previousLabel="Prev" currentPage="Next"
+                          (pageChange)="onTableDataChange($event)">
+                        </pagination-controls>
+                        <ul>
+                          <select (change)="onTableSizeChange($event)">
+                            <option *ngFor="let size of tableSizes ">
+                              {{size}}
+                            </option>
+                          </select>
+                        </ul>
+                      </form>
                     </div>
-                    <div class="table-responsive">
+                  </div>
+                  <br><br>
+                  <div class="form-inline float-right ">
+                    <app-admin>
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd "
+                        (click)="category=2"><i class="fa fa-plus"></i>
+                        Appointed Officials
+                      </button>
+                    </app-admin>
+                    &nbsp;
+                    <!-- <app-pdf (myEvent)="GeneratePDF()"></app-pdf> -->
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-10"><br>
+                      <p>List of Appointed Officials:</p>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="row">
+                      <div class="row">
+
+                      </div>
                       <div class="table-responsive">
-                      <br>
-                      <table class="table table-framed table-hover table-striped">
-                        <thead class="table-dark">
-                          <tr>
-                            <th></th>
-    
-                            <th scope="col">#</th>
-    
-                            <th scope="col">Name</th>
-                            <th scope="col">Position</th>
-                            <th scope="col">Contact Details</th>
-                            <th scope="col">Employment Status</th>
-                            <th width="8%"></th>
-    
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let text of  appointed | search: searchText | paginate:{
+                        <div class="table-responsive">
+                          <br>
+                          <table class="table table-framed table-hover table-striped">
+                            <thead class="table-dark">
+                              <tr>
+                                <th></th>
+
+                                <th scope="col">#</th>
+
+                                <th scope="col">Name</th>
+                                <th scope="col">Position</th>
+                                <th scope="col">Contact Details</th>
+                                <th scope="col">Employment Status</th>
+                                <th width="8%"></th>
+
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let text of  appointed | search: searchText | paginate:{
                                           itemsPerPage: tableSize,
                                           currentPage: p,
                                           totalItems:count} let i = index ;">
-                            <!-- <tr *ngFor="let text of  Official | paginate: { itemsPerPage: 10, currentPage: p}"> -->
-                            <!-- <th scope="row">{{i + 1}}</th> -->
-                            <td></td>
-                            <td>{{i+1}}</td>
-                            <td>{{text.name}} </td>
-                            <td>{{text.position}}</td>
-                            <td>{{text.contact}} </td>
-                            <td>{{text.term}}</td>
-                            <td>
-                              <div class="d-inline-flex">
-                                <app-admin>
-                                  <button type="button" title="Edit" (click)="editModal=text"
-                                    class="btn btn-info btn-circle" data-toggle="modal" data-target="#exampleModalLong"><i
-                                      class="fa fa-pen"></i> </button>
-                                </app-admin>&nbsp;
-                                <app-admin>
-                                  <button type="button" title="Delete" class="btn btn-warning btn-circle"
-                                    (click)="delete(text)"><i class="fa fa-trash"></i> </button>
-                                </app-admin>
-                              </div>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                    <!-- Pagination Control -->
-                    <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
-    
-                    <div class="row">
-                      <div class="col-lg-12">
-                        <form class="form-inline float-right ">
-                          <pagination-controls previousLabel="Prev" currentPage="Next"
-                            (pageChange)="onTableDataChange($event)">
-                          </pagination-controls>
-                          <ul>
-                            <select (change)="onTableSizeChange($event)">
-                              <option *ngFor="let size of tableSizes ">
-                                {{size}}
-                              </option>
-                            </select>
-                          </ul>
-                        </form>
+                                <!-- <tr *ngFor="let text of  Official | paginate: { itemsPerPage: 10, currentPage: p}"> -->
+                                <!-- <th scope="row">{{i + 1}}</th> -->
+                                <td></td>
+                                <td>{{i+1}}</td>
+                                <td>{{text.name}} </td>
+                                <td>{{text.position}}</td>
+                                <td>{{text.contact}} </td>
+                                <td>{{text.term}}</td>
+                                <td>
+                                  <div class="d-inline-flex">
+                                    <app-admin>
+                                      <button type="button" title="Edit" (click)="editModal=text"
+                                        class="btn btn-info btn-circle" data-toggle="modal"
+                                        data-target="#exampleModalLong"><i class="fa fa-pen"></i> </button>
+                                    </app-admin>&nbsp;
+                                    <app-admin>
+                                      <button type="button" title="Delete" class="btn btn-warning btn-circle"
+                                        (click)="delete(text)"><i class="fa fa-trash"></i> </button>
+                                    </app-admin>
+                                  </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <!-- Pagination Control -->
+                        <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
+
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <form class="form-inline float-right ">
+                              <pagination-controls previousLabel="Prev" currentPage="Next"
+                                (pageChange)="onTableDataChange($event)">
+                              </pagination-controls>
+                              <ul>
+                                <select (change)="onTableSizeChange($event)">
+                                  <option *ngFor="let size of tableSizes ">
+                                    {{size}}
+                                  </option>
+                                </select>
+                              </ul>
+                            </form>
+                          </div>
+                        </div>
                       </div>
                     </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
 
 
-<!-- Modal For Adding the CityOfficials -->
-<!-- Modal -->
-<div class="modal fade bd-example-modal-lg" id="ModalAdd" tabindex="-1" role="dialog"
-  aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">City/Municipal Officials</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" #closebutton>
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
+        <!-- Modal For Adding the CityOfficials -->
+        <!-- Modal -->
+        <div class="modal fade bd-example-modal-lg" id="ModalAdd" tabindex="-1" role="dialog"
+          aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">City/Municipal Officials</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" #closebutton>
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="row">
 
-          <div class="col-lg-12"><br>
-            <label for="exampleFormControlTextarea1">Name :</label>
-            <input type="text" class="form-control" id="name" name="name" [(ngModel)]="city.name"
-              [ngClass]="toValidate.name?'is-invalid':''" (keyup)="toValidate.name=false" placeholder="">
-          </div>
+                  <div class="col-lg-12"><br>
+                    <label for="exampleFormControlTextarea1">Name :</label>
+                    <input type="text" class="form-control" id="name" name="name" [(ngModel)]="city.name"
+                      [ngClass]="toValidate.name?'is-invalid':''" (keyup)="toValidate.name=false" placeholder="">
+                  </div>
 
-          <!-- <div class="col-lg-12"><br>
+                  <!-- <div class="col-lg-12"><br>
             <label for="exampleFormControlTextarea1">Select Position :</label>
             <input type="text" class="form-control" name ="seqNo" [(ngModel)]="city.seqNo" id="SeqNum" placeholder=""> 
             <select class="form-select" aria-label="Default select example" [(ngModel)]="city.seqNo"
@@ -252,77 +253,78 @@
 
             </select>
           </div> -->
-          <div class="col-lg-12"><br>
-            <label for="exampleFormControlTextarea1">Term of Office :</label>
+                  <div class="col-lg-12"><br>
+                    <label for="exampleFormControlTextarea1">Term of Office :</label>
 
-            <input type="text" class="form-control" name="Term" [(ngModel)]="city.term" id="Term"
-              [ngClass]="toValidate.term?'is-invalid':''" (keyup)="toValidate.term=false" placeholder="">
-          </div>
-           <div class ="col-lg-12"><br>
-           <label for="exampleFormControlTextarea1" >Position :</label>
-           <input type="text" class="form-control"  name ="position" [(ngModel)]="city.position"  id="position" placeholder="">
-          </div> 
-
-
-          <div class="col-lg-12"><br>
-            <label for="exampleFormControlTextarea1">Contact Details :</label>
-          </div>
-          <div class="col-lg-12">
-            <input type="text" class="form-control" id="contact" name="contact" [(ngModel)]="city.contact"
-              [ngClass]="toValidate.contact?'is-invalid':''" (keyup)="toValidate.contact=false" placeholder="">
-          </div>
-
-        </div>
-      </div>
-      <div class="modal-footer">
-
-        <div class="left-absolute" *ngIf="visible">
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-              (ngModelChange)="onChange(isCheck)" [(ngModel)]="isCheck">
-            <label class="form-check-label" for="flexCheckDefault">
-              Several data
-            </label>
-          </div>
-        </div>
-
-        <button type="button" class="btn btn-primary" *ngIf="updateOfficial" (click)="addOfficial()"><i
-            class="fa fa-check"></i>Save</button>&nbsp;
-        <button type="button" class="btn btn-secondary" *ngIf="updateOfficial" (click)="city={}" data-dismiss="modal"><i
-            class="fa fa-times"></i>Close</button>
-
-        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
-      </div>
-    </div>
-  </div>
-</div>
+                    <input type="text" class="form-control" name="Term" [(ngModel)]="city.term" id="Term"
+                      [ngClass]="toValidate.term?'is-invalid':''" (keyup)="toValidate.term=false" placeholder="">
+                  </div>
+                  <div class="col-lg-12"><br>
+                    <label for="exampleFormControlTextarea1">Position :</label>
+                    <input type="text" class="form-control" name="position" [(ngModel)]="city.position" id="position"
+                      placeholder="">
+                  </div>
 
 
+                  <div class="col-lg-12"><br>
+                    <label for="exampleFormControlTextarea1">Contact Details :</label>
+                  </div>
+                  <div class="col-lg-12">
+                    <input type="text" class="form-control" id="contact" name="contact" [(ngModel)]="city.contact"
+                      [ngClass]="toValidate.contact?'is-invalid':''" (keyup)="toValidate.contact=false" placeholder="">
+                  </div>
 
-<!-- Modal For Update -->
-<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Municipal Officials
-        </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <div class="row">
-          </div>
-          <div class="row">
-            <div class="col-lg-12"><br>
-              <label for="exampleFormControlTextarea1">Name :</label>
-              <input type="text" class="form-control" id="name" name="name" [(ngModel)]="editModal.name" placeholder=""
-                [ngClass]="toValidate.name?'is-invalid':''" (keyup)="toValidate.name=false">
+                </div>
+              </div>
+              <div class="modal-footer">
+
+                <div class="left-absolute" *ngIf="visible">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                      (ngModelChange)="onChange(isCheck)" [(ngModel)]="isCheck">
+                    <label class="form-check-label" for="flexCheckDefault">
+                      Several data
+                    </label>
+                  </div>
+                </div>
+
+                <button type="button" class="btn btn-primary" *ngIf="updateOfficial" (click)="addOfficial()"><i
+                    class="fa fa-check"></i>Save</button>&nbsp;
+                <button type="button" class="btn btn-secondary" *ngIf="updateOfficial" (click)="city={}"
+                  data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
+
+                <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+              </div>
             </div>
+          </div>
+        </div>
 
-            <!-- <div class="col-lg-12"><br>
+
+
+        <!-- Modal For Update -->
+        <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog"
+          aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Municipal Officials
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                  <div class="row">
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-12"><br>
+                      <label for="exampleFormControlTextarea1">Name :</label>
+                      <input type="text" class="form-control" id="name" name="name" [(ngModel)]="editModal.name"
+                        placeholder="" [ngClass]="toValidate.name?'is-invalid':''" (keyup)="toValidate.name=false">
+                    </div>
+
+                    <!-- <div class="col-lg-12"><br>
               <label for="exampleFormControlTextarea1"> Position :</label>
               <input type="text" class="form-control" name ="seqNo" [(ngModel)]="city.seqNo" id="SeqNum" placeholder="">  
               <select class="form-select" aria-label="Default select example" [(ngModel)]="editModal.seqNo"
@@ -331,34 +333,37 @@
 
               </select>
             </div>-->
-            <div class ="col-lg-12"><br>
-              <label for="exampleFormControlTextarea1" >Position :</label>
-              <input type="text" class="form-control"  name ="position" [(ngModel)]="editModal.position"  id="position" placeholder="">
-             </div> 
+                    <div class="col-lg-12"><br>
+                      <label for="exampleFormControlTextarea1">Position :</label>
+                      <input type="text" class="form-control" name="position" [(ngModel)]="editModal.position"
+                        id="position" placeholder="">
+                    </div>
 
-            <div class="col-lg-12"><br>
-              <label for="exampleFormControlTextarea1">Term of Office :</label>
-              <input type="text" class="form-control" name="term" [(ngModel)]="editModal.term" id="term" placeholder="">
+                    <div class="col-lg-12"><br>
+                      <label for="exampleFormControlTextarea1">Term of Office :</label>
+                      <input type="text" class="form-control" name="term" [(ngModel)]="editModal.term" id="term"
+                        placeholder="">
+                    </div>
+
+                    <div class="col-lg-12"><br>
+                      <label for="exampleFormControlTextarea1">Contact Details :</label>
+                    </div>
+
+                    <div class="col-lg-12">
+                      <input type="text" class="form-control" id="contact" name="contact"
+                        [(ngModel)]="editModal.contact" placeholder="">
+                    </div>
+
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" (click)="update();updateOfficial=true;"><i
+                      class="fa fa-check"></i>Save Changes</button>&nbsp;
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal"><i
+                      class="fa fa-times"></i>Close</button>
+
+                </div>
+              </div>
             </div>
-
-            <div class="col-lg-12"><br>
-              <label for="exampleFormControlTextarea1">Contact Details :</label>
-            </div>
-
-            <div class="col-lg-12">
-              <input type="text" class="form-control" id="contact" name="contact" [(ngModel)]="editModal.contact"
-                placeholder="">
-            </div>
-
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" (click)="update();updateOfficial=true;"><i
-              class="fa fa-check"></i>Save Changes</button>&nbsp;
-          <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
-
-        </div>
-      </div>
-    </div>
-  </div>
-</div>

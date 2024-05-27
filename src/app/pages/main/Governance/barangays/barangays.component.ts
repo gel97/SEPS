@@ -53,9 +53,7 @@ export class BarangaysComponent implements OnInit {
     this.GetBarangay();
     this.GetListBarangay();
   }
-  ExportExcel(){
-    this.reportService.GetExcelExport(this.auth.setYear, this.auth.munCityId, "Barangay");
-  }
+
   GetLisbarangay(){
     this.service.GetBarangay().subscribe((data) => {
       this.listBarangay = <any>data;

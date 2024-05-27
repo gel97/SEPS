@@ -130,12 +130,7 @@ export class MajorEconomicActivitiesComponent implements OnInit {
       console.log(this.MajorAct);
     });
   }
-  ExportExcel(){
-    this.reportService.GetExcelExport(this.auth.setYear, this.auth.munCityId, "MjrEcoAct");
-  }
-  ExportTemplate(){
-    this.reportService.GetExport_tamplate("MjrEcoAct", this.auth.munCityId);
-  }
+
   ImportExcel(e: any) {
     Swal.fire({
       title: 'Are you sure?',
