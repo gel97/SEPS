@@ -1,3 +1,4 @@
+
 <div class="">
   <ng-template #isEmpty>
     <app-import [data]="message" (importData)="importMethod()"></app-import>
@@ -32,13 +33,9 @@
                   </button>
                 </app-admin>
                 &nbsp;
-                <app-pdf (myEvent)="GeneratePDF()"></app-pdf> 
-            </div><br>
-            <app-admin>
-              <app-excel  (myEvent)="ExportExcel()" apiControllerName="ComEstab"></app-excel>&nbsp;
-              <app-import-excel (myEvent)="ImportExcel($event)"></app-import-excel>
-              <br>
-            </app-admin>
+                <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
+              </div>
+            </div>
             <br>
             <div class="input-group col-sm-3">
               <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
