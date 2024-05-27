@@ -17,6 +17,14 @@ export class CommercialEstablishmentService {
     return this.Http.get<any[]>(this.Base.url + this.ApiUrl.get_com_estab(this.Auth.munCityId, this.Auth.setYear), { responseType: 'json' });
   }
 
+  Get_Com_Estab_Cat():Observable<any[]>{
+    return this.Http.get<any[]>(this.Base.url + this.ApiUrl.get_com_estab_cat(), { responseType: 'json' });
+  }
+
+  Get_Com_Estab_Type():Observable<any[]>{
+    return this.Http.get<any[]>(this.Base.url + this.ApiUrl.get_com_estab_type(), { responseType: 'json' });
+  }
+
   Add_Com_Estab(ComEstab: any = {}){
     console.log(ComEstab)
     return this.Http.post(this.Base.url + this.ApiUrl.post_save_com_estab(),ComEstab, { responseType: 'json' });

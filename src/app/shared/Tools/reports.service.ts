@@ -59,7 +59,7 @@ export class ReportsService {
   GetFinancialInsReport(data:any) {
     return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_report_financial_Ins(), data, { responseType: 'json' });
   }
-  GetExport_tamplate(apiControllerName:string){
+  GetExport_tamplate(apiControllerName:string, munCityId:string){
     Swal.fire({
       title: "Exporting Data",
       html: "Please wait for a moment.",
@@ -76,7 +76,7 @@ export class ReportsService {
             observe:'response'
           };
       
-          this.http.get<HttpResponse<Blob>> (this.Base.url + this.ApiUrl.get_ExExport_temp(apiControllerName),  httpOptions  ).subscribe((response:any) => {
+          this.http.get<HttpResponse<Blob>> (this.Base.url + this.ApiUrl.get_ExExport_temp(apiControllerName, munCityId),  httpOptions  ).subscribe((response:any) => {
             const contentDispositionHeader = response.headers.get('Content-Disposition');
             const fileNameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
             const matches = fileNameRegex.exec(contentDispositionHeader);

@@ -134,7 +134,7 @@ export class IndustrialEstatesComponent implements OnInit {
     this.reportService.GetExcelExport(this.auth.setYear, this.auth.munCityId, "IndEst");
   }
   ExportTemplate(){
-    this.reportService.GetExport_tamplate("IndEst");
+    this.reportService.GetExport_tamplate("IndEst", this.auth.munCityId);
   }
 
   GeneratePDF() {

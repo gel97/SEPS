@@ -129,7 +129,7 @@ export class RegisteredVotersComponent implements OnInit {
     this.reportService.GetExcelExport(this.auth.setYear, this.auth.munCityId, "RegVoters");
   }
   ExportTemplate(){
-    this.reportService.GetExport_tamplate("RegVoters");
+    this.reportService.GetExport_tamplate("RegVoters", this.auth.munCityId);
   }
 
   reports: any = [];
