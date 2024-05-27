@@ -404,9 +404,7 @@ export class GeoProfileComponent implements OnInit {
       },
     });
   }
-  ExportExcel(){
-    this.reportService.GetExcelExport(this.auth.setYear, this.auth.munCityId, "PhyGeoProf");
-  }
+
   AddGeo() {
     this.toValidate.totalLandArea =
       this.geo.totalLandArea == null

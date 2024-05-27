@@ -1,6 +1,7 @@
 <div class="">
   <ng-template #isEmpty>
     <app-import [data]="message" (importData)="importMethod()" (testEvent)="parentMethod()"></app-import>
+    <app-export-excel apiControllerName="PhyGeoProf"></app-export-excel>
   </ng-template>
 
   <div *ngIf="showOverlay">
@@ -44,12 +45,15 @@
                   <h1 class="h4 text-gray-900 mb-4"> Physical / Geographic Profile</h1>
                   <label><strong>Governance - {{modifyCityMun(munCityName)}} </strong></label><br>
                 </div>
-                <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
+                <div class="x-space-between">
+                  <div class="x-space-between">
+                    <app-export-excel apiControllerName="PhyGeoProf"></app-export-excel>
+                  </div>
+                  <div class="x-space-between">
+                    <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
+                  </div>
+                </div>
                 <br>
-                <app-admin>
-                  <app-excel  (myEvent)="ExportExcel()" apiControllerName="PhyGeoProf"></app-excel>
-                  <br>
-                </app-admin>
                 <div class="table-responsive">
                   <table class="table table-striped">
                     <thead class="table-dark">

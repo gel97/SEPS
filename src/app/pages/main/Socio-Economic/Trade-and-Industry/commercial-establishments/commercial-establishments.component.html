@@ -2,6 +2,8 @@
 <div class="">
   <ng-template #isEmpty>
     <app-import [data]="message" (importData)="importMethod()"></app-import>
+    <app-export-excel apiControllerName="ComEstab"></app-export-excel>
+    <app-import-excel (myEvent)="ImportExcel($event)"></app-import-excel>
   </ng-template>
 
   <div *ngIf="showOverlay">
@@ -22,7 +24,7 @@
             <br>
             <div class="x-space-between">
               <div class="x-space-between">
-                <app-excel (myEvent)="ExportExcel()" apiControllerName="ComEstab"></app-excel>&nbsp;
+                <app-export-excel apiControllerName="ComEstab"></app-export-excel>&nbsp;
                 <app-import-excel (myEvent)="ImportExcel($event)"></app-import-excel>
               </div>
               <div class="x-space-between">

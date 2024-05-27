@@ -8,7 +8,6 @@ import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 import { PdfComponent } from 'src/app/components/pdf/pdf.component';
 import { PdfService } from 'src/app/services/pdf.service';
 import { ReportsService } from 'src/app/shared/Tools/reports.service';
-import { ExcelComponent } from 'src/app/components/excel/excel.component';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 
 @Component({
@@ -21,8 +20,6 @@ export class ManufacturingEstablishmentsComponent implements OnInit {
   private gmapComponent!: GmapComponent;
   searchText: string = '';
 
-  @ViewChild(ExcelComponent)
-  private ExcelComponent!: ExcelComponent;
   @ViewChild(PdfComponent)
   private pdfComponent!: PdfComponent;
 

@@ -127,9 +127,7 @@ export class SkVotersComponent implements OnInit {
       complete: () => {},
     });
   }
-  ExportExcel(){
-    this.reportService.GetExcelExport(this.auth.setYear, this.auth.munCityId, "RegSkVoters");
-  }
+
   reports: any = [];
   GeneratePDF() {
     let data: any = [];
