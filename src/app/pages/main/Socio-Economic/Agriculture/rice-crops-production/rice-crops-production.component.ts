@@ -81,7 +81,7 @@ export class RiceCropsProductionComponent implements OnInit {
     { id: `38`, type: `Cassava` },
     { id: `39`, type: `Lanzones` },
     { id: `40`, type: `Pepper` },
-    { id: `41`, type: `Other Vgetables` },
+    { id: `41`, type: `Other Vegetables` },
   ];
 
   listofWater: any = [
@@ -92,7 +92,7 @@ export class RiceCropsProductionComponent implements OnInit {
     { id: `1`, type: `Owned` },
     { id: `2`, type: `Rented` },
     { id: `3`, type: `Sharecropping Tenant` },
-    { id: `3`, type: `Informal Tenant` },
+    { id: `4`, type: `Informal Tenant` },
   ];
   visible: boolean = true;
   not_visible: boolean = true;
