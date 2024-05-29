@@ -50,6 +50,20 @@ export class AgricultureService {
       { responseType: 'text' }
     );
   }
+  
+  GetListHarvestTypes() {
+    return this.http.get<any[]>(
+      this.Base.url + this.ApiUrl.get_list_harvest_type(),
+      { responseType: `json` }
+    );
+  }
+
+  GetListRicemillTypes() {
+    return this.http.get<any[]>(
+      this.Base.url + this.ApiUrl.get_list_ricemill_type(),
+      { responseType: `json` }
+    );
+  }
 
   GetBarangayList(munCityId: any) {
     return this.http.post<any[]>(

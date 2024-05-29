@@ -12,7 +12,8 @@ export class ExportExcelComponent implements OnInit {
   filter_sep_year :any = [];
   data            :any = {};
 
-  @Input() apiControllerName:any;
+  @Input() apiControllerName :any;
+  @Input() menuId            :any;
 
   constructor(private sepDataService:SepDataService, private authService: AuthService, private reportService: ReportsService) 
   {}
@@ -22,11 +23,21 @@ export class ExportExcelComponent implements OnInit {
   }
 
   ExportExcel(){  
-    this.reportService.GetExcelExport(
-      this.authService.setYear,
-      this.authService.munCityId,
-      this.apiControllerName
-    );
+    if(this.menuId !== undefined){
+      this.reportService.GetExcelExportWithMenuId(
+        this.authService.setYear,
+        this.authService.munCityId,
+        this.apiControllerName,
+        this.menuId
+      );
+    }else{
+      this.reportService.GetExcelExport(
+        this.authService.setYear,
+        this.authService.munCityId,
+        this.apiControllerName
+      );
+    }
+
   }
 
   GetListSepYear(){

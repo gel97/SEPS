@@ -47,14 +47,7 @@ export class RicemillsComponent implements OnInit {
   dataList: any = [];
   addData: any = {};
   barangayList: any = [];
-  listofRicemill: any = [
-    { id: `1`, type: `Cono` },
-    { id: `2`, type: `Kiskisan` },
-    { id: `3`, type: `Rubber Roll` },
-    { id: `4`, type: `Centrifugal` },
-    { id: `5`, type: `MOBILE` },
-    { id: `6`, type: `Others` },
-  ];
+  listofRicemill: any = [];
   visible: boolean = true;
   not_visible: boolean = true;
   dummy_addData: any = {};
@@ -90,6 +83,63 @@ export class RicemillsComponent implements OnInit {
     };
     this.gmapComponent.setMarker(this.markerObj);
     console.log('marker', this.markerObj);
+  }
+
+  ImportExcel(e: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "",
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, submit it!'
+    }).then((result) => {
+      console.log(result)
+      if (result.isConfirmed) {
+        this.reportService
+        .PostImportWithMenuId(
+          e.target.files[0],
+          this.Auth.setYear,
+          this.Auth.munCityId,
+          'Agriculture',
+          "5"
+        )
+        .subscribe((success) => {
+          Swal.fire({
+            title: 'Importing Data',
+            html: 'Please wait for a moment.',
+            timerProgressBar: true,
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+              setTimeout(() => {
+                if (success) {
+                  this.GetListAgriculture();
+                  Swal.close();
+                  Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'File imported successfully',
+                    showConfirmButton: true,
+                  });
+                } else {
+                  Swal.close();
+                  Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Something went wrong. possible invalid file',
+                    showConfirmButton: true,
+                  });
+                }
+              }, 5000);
+            },
+          });
+        });
+      }
+      else{
+      }
+    })
   }
 
   public showOverlay = false;
@@ -417,14 +467,19 @@ export class RicemillsComponent implements OnInit {
       this.munCityId
     ).subscribe((response) => {
       this.dataList = <any>response;
-      console.log('check', response);
+      this.GetListRicemillTypes()
+    });
+  }
+
+  GetListRicemillTypes() {
+    this.Service.GetListRicemillTypes().subscribe((response) => {
+      this.listofRicemill = <any>response;
     });
   }
 
   GetBarangayList() {
     this.Service.GetBarangayList(this.munCityId).subscribe((response) => {
       this.barangayList = <any>response;
-      console.log('barangay', response);
     });
   }
 
