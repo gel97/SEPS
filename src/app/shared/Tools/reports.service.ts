@@ -158,6 +158,66 @@ export class ReportsService {
 
   }
 
+  GetExcelExportWithMenuId(setYear:number, munCityId:string, apiControllerName:string, menuId:string){
+    Swal.fire({
+      title: "Exporting Data",
+      html: "Please wait for a moment.",
+      timerProgressBar: true,
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+          const httpOptions : any = {
+            headers: new HttpHeaders({
+              'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+              
+            }),
+            responseType: 'blob', 
+            observe:'response'
+          };
+      
+          this.http.get<HttpResponse<Blob>> (this.Base.url + this.ApiUrl.get_export_with_menuId(setYear,munCityId,apiControllerName, menuId),  httpOptions  ).subscribe((response:any) => {
+            const contentDispositionHeader = response.headers.get('Content-Disposition');
+            const fileNameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+            const matches = fileNameRegex.exec(contentDispositionHeader);
+            const fileName = matches !== null && matches[1] ? matches[1].replace(/['"]/g, '') : 'file.xlsx';
+          
+            const blob = new Blob([response.body], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+            Swal.close();
+
+          });
+      
+      },
+    });
+
+
+  }
+
+  PostImportWithMenuId(file:File, setYear:number, munCityId:string, apiControllerName:string, menuId:string): Observable<boolean>{
+    let formdata = new FormData();
+    formdata.append("File", file);
+    formdata.append("Year", setYear.toString());
+    formdata.append("MunCityId", munCityId);
+    formdata.append("MenuId", menuId);
+
+    return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_ExImport(apiControllerName), formdata, { responseType: 'json' }).pipe(
+        map((response:any) => {       
+          return true;  
+        }),
+        catchError((error: any) => {       
+          return of(false); 
+        })
+      );
+  }
+
  
 
   //Tourism

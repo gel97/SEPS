@@ -45,15 +45,7 @@ export class FisheriesAquacultureComponent implements OnInit {
   dataList: any = [];
   addData: any = {};
   barangayList: any = [];
-  listofHarvest: any = [
-    { id: `1`, type: `Bangus` },
-    { id: `2`, type: `Tilapia` },
-    { id: `3`, type: `Shrimp` },
-    { id: `4`, type: `Crabs` },
-    { id: `5`, type: `Cream Dory` },
-    { id: `6`, type: `Hito` },
-    { id: `7`, type: `Others` },
-  ];
+  listofHarvest: any = [];
   // listofFishing: any = [
   //   { id: `1`, type: `` },
   //   { id: `2`, type: `` },
@@ -167,6 +159,64 @@ export class FisheriesAquacultureComponent implements OnInit {
   ngOnInit(): void {
     this.GetListAgriculture();
     this.GetBarangayList();
+  }
+
+  ImportExcel(e: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "",
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, submit it!'
+    }).then((result) => {
+      console.log(result)
+      if (result.isConfirmed) {
+        this.reportService
+        .PostImportWithMenuId(
+          e.target.files[0],
+          this.Auth.setYear,
+          this.Auth.munCityId,
+          'Agriculture',
+          "3"
+        )
+        .subscribe((success) => {
+          Swal.fire({
+            title: 'Importing Data',
+            html: 'Please wait for a moment.',
+            timerProgressBar: true,
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+              setTimeout(() => {
+                if (success) {
+                  this.GetListAgriculture();
+                  Swal.close();
+                  Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'File imported successfully',
+                    showConfirmButton: true,
+                  });
+                } else {
+                  Swal.close();
+                  Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Something went wrong. possible invalid file',
+                    showConfirmButton: true,
+                  });
+                }
+              }, 5000);
+            },
+          });
+        });
+      }
+      else{
+      }
+    })
+
   }
 
   GeneratePDF() {
@@ -605,14 +655,19 @@ export class FisheriesAquacultureComponent implements OnInit {
       this.munCityId
     ).subscribe((response) => {
       this.dataList = <any>response;
-      console.log('check', response);
+      this.GetListHarvestTypes()
+    });
+  }
+
+  GetListHarvestTypes() {
+    this.Service.GetListHarvestTypes().subscribe((response) => {
+      this.listofHarvest = <any>response;
     });
   }
 
   GetBarangayList() {
     this.Service.GetBarangayList(this.munCityId).subscribe((response) => {
       this.barangayList = <any>response;
-      console.log('barangay', response);
     });
   }
 

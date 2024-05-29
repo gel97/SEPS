@@ -169,6 +169,10 @@ export class ApiUrl {
     post_ExImport = (apiControllerName:string) =>`/${apiControllerName}/import_excel`;
     get_ExExport = (setYear:any, MunCityId:any, apiControllerName:string) =>`/${apiControllerName}/export/${setYear}/${MunCityId}`;
     get_ExExport_temp =(apiController:string, munCityId:any) =>`/${apiController}/export_template/${munCityId}`;
+
+    get_export_with_menuId = (setYear:any, MunCityId:any, apiControllerName:string, menuId:string) =>`/${apiControllerName}/export_excel/${menuId}/${setYear}/${MunCityId}`;
+    get_import_with_menuId = (setYear:any, MunCityId:any, apiControllerName:string, menuId:string) =>`/${apiControllerName}/import_excel/${menuId}/${setYear}/${MunCityId}`;
+
     //TOURISM
     post_tourism         = ()=> `/Tourism`;
     put_tourism          = ()=> `/Tourism`;
@@ -184,6 +188,9 @@ export class ApiUrl {
     delete_agriculture_profile      = (transId:any)=>`/AgricultureProfile/${transId}`;
     post_report_agriculture_profile = () => `/AgricultureProfile/Reports`;
     post_import_agriculture_profile = () => `/AgricultureProfile/Import`;
+
+    get_list_harvest_type           = () => `/AgricultureHarvestType/List`;
+    get_list_ricemill_type          = () => `/AgricultureRicemillType/List`;
 
     // Agriculture Livestock
     post_agriculture_livestock        = () => `/AgricultureLivestock`;
