@@ -28,6 +28,11 @@
               <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
             </div><br>
             <br><br>
+            <div class="input-group col-sm-3">
+              <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                aria-label="Search" aria-describedby="basic-addon2" [(ngModel)]="searchText">
+           </div>
+           <br>
             <div class="row">
               <div class="col-lg-6">
                 <p>List of Recreation Facilities</p>
@@ -66,7 +71,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let dataItem of dataList; let i = index">
+                  <tr *ngFor="let dataItem of dataList | search: searchText; let i = index">
                     <td>{{i+1}}</td>
                     <td>{{dataItem.name}}</td>
                     <td>
