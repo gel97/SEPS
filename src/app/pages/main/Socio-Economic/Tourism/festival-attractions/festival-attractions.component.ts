@@ -48,6 +48,7 @@ export class FestivalAttractionsComponent implements OnInit {
   munCityId = this.Auth.munCityId;
   barangayList: any = [];
   addData: any = {};
+  searchText = '';
   dummy_addData: any = {};
   dummyData: any = {};
   visible: boolean = true;
@@ -89,7 +90,7 @@ export class FestivalAttractionsComponent implements OnInit {
     this.Service.Import(this.menuId).subscribe({
       next: (data) => {
         this.ngOnInit();
-        if(data.length === 0){
+        if (data.length === 0) {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -102,14 +103,12 @@ export class FestivalAttractionsComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'info',
             title: 'No data from previous year',
           });
-        }
-        else
-        {
+        } else {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -122,7 +121,7 @@ export class FestivalAttractionsComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'success',
             title: 'Imported Successfully',
@@ -154,6 +153,61 @@ export class FestivalAttractionsComponent implements OnInit {
   ngOnInit(): void {
     this.GetListTourism();
     this.GetBarangayList();
+  }
+  ImportExcel(e: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: '',
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, submit it!',
+    }).then((result) => {
+      console.log(result);
+      if (result.isConfirmed) {
+        this.reportService
+          .PostImportWithMenuId(
+            e.target.files[0],
+            this.Auth.setYear,
+            this.Auth.munCityId,
+            'Tourism',
+            '7'
+          )
+          .subscribe((success) => {
+            Swal.fire({
+              title: 'Importing Data',
+              html: 'Please wait for a moment.',
+              timerProgressBar: true,
+              allowOutsideClick: false,
+              didOpen: () => {
+                Swal.showLoading();
+                setTimeout(() => {
+                  if (success) {
+                    this.GetListTourism();
+                    Swal.close();
+                    Swal.fire({
+                      position: 'center',
+                      icon: 'success',
+                      title: 'File imported successfully',
+                      showConfirmButton: true,
+                    });
+                  } else {
+                    Swal.close();
+                    Swal.fire({
+                      position: 'center',
+                      icon: 'error',
+                      title: 'Something went wrong. possible invalid file',
+                      showConfirmButton: true,
+                    });
+                  }
+                }, 5000);
+              },
+            });
+          });
+      } else {
+      }
+    });
   }
 
   GeneratePDF() {
@@ -205,7 +259,7 @@ export class FestivalAttractionsComponent implements OnInit {
           return groups;
         }, {});
 
-        console.log("dist1Group ", dist1Group);
+        console.log('dist1Group ', dist1Group);
 
         const dist2Group = dist2.reduce((groups: any, item: any) => {
           const { munCityName } = item;
@@ -217,7 +271,7 @@ export class FestivalAttractionsComponent implements OnInit {
           return groups;
         }, {});
 
-        console.log("dist2Group ", dist2);
+        console.log('dist2Group ', dist2);
 
         tableData.push([
           {
@@ -248,14 +302,14 @@ export class FestivalAttractionsComponent implements OnInit {
             bold: true,
             alignment: 'center',
           },
-           {
+          {
             text: 'Barangay',
             fillColor: 'black',
             color: 'white',
             bold: true,
             alignment: 'center',
           },
-           {
+          {
             text: 'Brief Description',
             fillColor: 'black',
             color: 'white',
@@ -273,7 +327,8 @@ export class FestivalAttractionsComponent implements OnInit {
           },
         ]);
 
-        for (const groupKey1 in dist1Group) { // Iterate district I data
+        for (const groupKey1 in dist1Group) {
+          // Iterate district I data
           const group1 = dist1Group[groupKey1];
           const [cityName1] = groupKey1.split('-');
           tableData.push([
@@ -286,62 +341,9 @@ export class FestivalAttractionsComponent implements OnInit {
           ]);
 
           group1.forEach((item: any, index: any) => {
-               tableData.push([
-            {
-              text: index+1,
-              fillColor: '#FFFFFF',
-            },
-            {
-              text: item.name,
-              fillColor: '#FFFFFF',
-            },
-            {
-              text: item.contactPerson,
-              fillColor: '#FFFFFF',
-            },
-            {
-              text: item.contactNo,
-              fillColor: '#FFFFFF',
-            },
-             {
-              text: item.brgyName,
-              fillColor: '#FFFFFF',
-            },
-            {
-             text: item.description,
-             fillColor: '#FFFFFF',
-           }
-             
-          ]);
-
-          });
-        }
-
-        tableData.push([
-          {
-            text: `2nd Congressional District `,
-            colSpan: 6,
-            alignment: 'left',
-            fillColor: '#526D82',
-          },
-        ]);
-
-        for (const groupKey2 in dist2Group) { // Iterate district II data
-          const group2 = dist2Group[groupKey2];
-          const [cityName2] = groupKey2.split('-');
-          tableData.push([
-            {
-              text: cityName2,
-              colSpan: 6,
-              alignment: 'left',
-              fillColor: '#9DB2BF',
-            },
-          ]);
-
-          group2.forEach((item: any, index: any) => {
             tableData.push([
               {
-                text: index+1,
+                text: index + 1,
                 fillColor: '#FFFFFF',
               },
               {
@@ -356,24 +358,74 @@ export class FestivalAttractionsComponent implements OnInit {
                 text: item.contactNo,
                 fillColor: '#FFFFFF',
               },
-               {
+              {
                 text: item.brgyName,
                 fillColor: '#FFFFFF',
               },
               {
-               text: item.description,
-               fillColor: '#FFFFFF',
-             }
-               
+                text: item.description,
+                fillColor: '#FFFFFF',
+              },
             ]);
+          });
+        }
 
+        tableData.push([
+          {
+            text: `2nd Congressional District `,
+            colSpan: 6,
+            alignment: 'left',
+            fillColor: '#526D82',
+          },
+        ]);
+
+        for (const groupKey2 in dist2Group) {
+          // Iterate district II data
+          const group2 = dist2Group[groupKey2];
+          const [cityName2] = groupKey2.split('-');
+          tableData.push([
+            {
+              text: cityName2,
+              colSpan: 6,
+              alignment: 'left',
+              fillColor: '#9DB2BF',
+            },
+          ]);
+
+          group2.forEach((item: any, index: any) => {
+            tableData.push([
+              {
+                text: index + 1,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.name,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.contactPerson,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.contactNo,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.brgyName,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.description,
+                fillColor: '#FFFFFF',
+              },
+            ]);
           });
         }
 
         const table = {
           margin: [0, 10, 0, 0],
           table: {
-            widths: [25, '*', '*','*', '*', '*'],
+            widths: [25, '*', '*', '*', '*', '*'],
             body: tableData,
           },
           layout: 'lightHorizontalLines',
@@ -386,7 +438,7 @@ export class FestivalAttractionsComponent implements OnInit {
       },
       complete: () => {
         let isPortrait = false;
-        this.pdfService.GeneratePdf(data, isPortrait, "");
+        this.pdfService.GeneratePdf(data, isPortrait, '');
         console.log(data);
       },
     });

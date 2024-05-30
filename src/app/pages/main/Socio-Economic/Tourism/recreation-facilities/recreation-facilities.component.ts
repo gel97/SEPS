@@ -42,7 +42,7 @@ export class RecreationFacilitiesComponent implements OnInit {
   munCityName: string = this.Auth.munCityName;
   toValidate: any = {};
   menuId = '2';
-  searchText='';
+  searchText = '';
   dataList: any = [];
   setYear = this.Auth.setYear;
   munCityId = this.Auth.munCityId;
@@ -97,6 +97,68 @@ export class RecreationFacilitiesComponent implements OnInit {
     };
     this.gmapComponent.setMarker(this.markerObj);
     console.log('marker', this.markerObj);
+  }
+  ExportExcel() {
+    this.reportService.GetExcelExport(
+      this.Auth.setYear,
+      this.Auth.munCityId,
+      'Tourism'
+    );
+  }
+  ImportExcel(e: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: '',
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, submit it!',
+    }).then((result) => {
+      console.log(result);
+      if (result.isConfirmed) {
+        this.reportService
+          .PostImportWithMenuId(
+            e.target.files[0],
+            this.Auth.setYear,
+            this.Auth.munCityId,
+            'Tourism',
+            '2'
+          )
+          .subscribe((success) => {
+            Swal.fire({
+              title: 'Importing Data',
+              html: 'Please wait for a moment.',
+              timerProgressBar: true,
+              allowOutsideClick: false,
+              didOpen: () => {
+                Swal.showLoading();
+                setTimeout(() => {
+                  if (success) {
+                    this.GetListTourism();
+                    Swal.close();
+                    Swal.fire({
+                      position: 'center',
+                      icon: 'success',
+                      title: 'File imported successfully',
+                      showConfirmButton: true,
+                    });
+                  } else {
+                    Swal.close();
+                    Swal.fire({
+                      position: 'center',
+                      icon: 'error',
+                      title: 'Something went wrong. possible invalid file',
+                      showConfirmButton: true,
+                    });
+                  }
+                }, 5000);
+              },
+            });
+          });
+      } else {
+      }
+    });
   }
 
   GeneratePDF() {
@@ -325,7 +387,7 @@ export class RecreationFacilitiesComponent implements OnInit {
       },
       complete: () => {
         let isPortrait = false;
-        this.pdfService.GeneratePdf(data, isPortrait, "");
+        this.pdfService.GeneratePdf(data, isPortrait, '');
         console.log(data);
       },
     });
