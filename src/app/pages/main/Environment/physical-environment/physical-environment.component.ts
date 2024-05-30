@@ -45,7 +45,7 @@ export class PhysicalEnvironmentComponent implements OnInit {
     this.AddData = {};
   }
 
-  message = 'Fisheries/ Aquaculture Production';
+  message = 'Physical Environment Profile';
 
   GetEnvironment(): void {
     this.EnvironmentService.GetEnvironment(
