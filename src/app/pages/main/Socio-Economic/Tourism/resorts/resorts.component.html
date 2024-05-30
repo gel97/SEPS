@@ -5,6 +5,8 @@
       (testEvent)="parentMethod()"
       (importData)="importMethod()"
     ></app-import>
+    <app-export-excel apiControllerName="Tourism" menuId="1"></app-export-excel>
+    <app-import-excel (myEvent)="ImportExcel($event)"></app-import-excel>
   </ng-template>
 
   <div *ngIf="showOverlay">
@@ -32,7 +34,11 @@
               <div class="x-space-between">
                 <app-export-excel
                   apiControllerName="Tourism"
+                  menuId="1"
                 ></app-export-excel>
+                <app-import-excel
+                  (myEvent)="ImportExcel($event)"
+                ></app-import-excel>
               </div>
               <div class="x-space-between">
                 <app-admin>
