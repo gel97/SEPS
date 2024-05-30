@@ -53,6 +53,7 @@ export class ResortsComponent implements OnInit {
   dummyData: any = {};
   visible: boolean = true;
   not_visible: boolean = true;
+  searchText = '';
   //required == not_visible
   required: boolean = true;
   latitude: any;
@@ -90,7 +91,7 @@ export class ResortsComponent implements OnInit {
     this.Service.Import(this.menuId).subscribe({
       next: (data) => {
         this.ngOnInit();
-        if(data.length === 0){
+        if (data.length === 0) {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -103,14 +104,12 @@ export class ResortsComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'info',
             title: 'No data from previous year',
           });
-        }
-        else
-        {
+        } else {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -123,7 +122,7 @@ export class ResortsComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'success',
             title: 'Imported Successfully',
@@ -156,6 +155,13 @@ export class ResortsComponent implements OnInit {
     this.GetListTourism();
     this.GetBarangayList();
   }
+  ExportExcel() {
+    this.reportService.GetExcelExport(
+      this.Auth.setYear,
+      this.Auth.munCityId,
+      'Tourism'
+    );
+  }
 
   GeneratePDF() {
     let data: any = [];
@@ -172,7 +178,7 @@ export class ResortsComponent implements OnInit {
         console.log('result: ', response);
 
         reports.forEach((a: any) => {
-          if (a.district === 1) {  
+          if (a.district === 1) {
             dist1.push(a);
           } else {
             dist2.push(a);
@@ -206,7 +212,7 @@ export class ResortsComponent implements OnInit {
           return groups;
         }, {});
 
-        console.log("dist1Group ", dist1Group);
+        console.log('dist1Group ', dist1Group);
 
         const dist2Group = dist2.reduce((groups: any, item: any) => {
           const { munCityName } = item;
@@ -218,7 +224,7 @@ export class ResortsComponent implements OnInit {
           return groups;
         }, {});
 
-        console.log("dist2Group ", dist2);
+        console.log('dist2Group ', dist2);
 
         tableData.push([
           {
@@ -242,14 +248,14 @@ export class ResortsComponent implements OnInit {
             bold: true,
             alignment: 'center',
           },
-           {
+          {
             text: 'Barangay',
             fillColor: 'black',
             color: 'white',
             bold: true,
             alignment: 'center',
           },
-           {
+          {
             text: 'Amenities/Remarks',
             fillColor: 'black',
             color: 'white',
@@ -268,7 +274,8 @@ export class ResortsComponent implements OnInit {
           },
         ]);
 
-        for (const groupKey1 in dist1Group) { // Iterate district I data
+        for (const groupKey1 in dist1Group) {
+          // Iterate district I data
           const group1 = dist1Group[groupKey1];
           const [cityName1] = groupKey1.split('-');
           tableData.push([
@@ -282,31 +289,29 @@ export class ResortsComponent implements OnInit {
           ]);
 
           group1.forEach((item: any, index: any) => {
-               tableData.push([
-            {
-              text: index+1,
-              fillColor: '#FFFFFF',
-              marginLeft: 5,
-            },
-            {
-              text: item.name,
-              fillColor: '#FFFFFF',
-            },
-            {
-              text: item.contactNo,
-              fillColor: '#FFFFFF',
-            },
-             {
-              text: item.brgyName,
-              fillColor: '#FFFFFF',
-            },
-            {
-             text: item.description,
-             fillColor: '#FFFFFF',
-           }
-             
-          ]);
-
+            tableData.push([
+              {
+                text: index + 1,
+                fillColor: '#FFFFFF',
+                marginLeft: 5,
+              },
+              {
+                text: item.name,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.contactNo,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.brgyName,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.description,
+                fillColor: '#FFFFFF',
+              },
+            ]);
           });
         }
 
@@ -320,7 +325,8 @@ export class ResortsComponent implements OnInit {
           },
         ]);
 
-        for (const groupKey2 in dist2Group) { // Iterate district II data
+        for (const groupKey2 in dist2Group) {
+          // Iterate district II data
           const group2 = dist2Group[groupKey2];
           const [cityName2] = groupKey2.split('-');
           tableData.push([
@@ -336,7 +342,7 @@ export class ResortsComponent implements OnInit {
           group2.forEach((item: any, index: any) => {
             tableData.push([
               {
-                text: index+1,
+                text: index + 1,
                 fillColor: '#FFFFFF',
                 marginLeft: 5,
               },
@@ -348,24 +354,22 @@ export class ResortsComponent implements OnInit {
                 text: item.contactNo,
                 fillColor: '#FFFFFF',
               },
-               {
+              {
                 text: item.brgyName,
                 fillColor: '#FFFFFF',
               },
               {
-               text: item.description,
-               fillColor: '#FFFFFF',
-             }
-               
+                text: item.description,
+                fillColor: '#FFFFFF',
+              },
             ]);
-
           });
         }
 
         const table = {
           margin: [0, 20, 0, 0],
           table: {
-            widths: [25, '*', '*','*', '*'],
+            widths: [25, '*', '*', '*', '*'],
             body: tableData,
           },
           layout: 'lightHorizontalLines',
@@ -378,7 +382,7 @@ export class ResortsComponent implements OnInit {
       },
       complete: () => {
         let isPortrait = false;
-        this.pdfService.GeneratePdf(data, isPortrait, "");
+        this.pdfService.GeneratePdf(data, isPortrait, '');
         console.log(data);
       },
     });

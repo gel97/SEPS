@@ -42,6 +42,7 @@ export class RecreationFacilitiesComponent implements OnInit {
   munCityName: string = this.Auth.munCityName;
   toValidate: any = {};
   menuId = '2';
+  searchText='';
   dataList: any = [];
   setYear = this.Auth.setYear;
   munCityId = this.Auth.munCityId;
