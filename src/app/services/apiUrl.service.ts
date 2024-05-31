@@ -176,6 +176,7 @@ export class ApiUrl {
     //TOURISM
     post_tourism         = ()=> `/Tourism`;
     put_tourism          = ()=> `/Tourism`;
+    get_tourism_type     = ()=> `/TourismType/List`;
     get_list_tourism     = (menuId:any, setYear :any, munCityId :any)=> `/Tourism/${menuId}/${setYear}/${munCityId}`;
     delete_tourism       = (transId :any) => `/Tourism/${transId}`;
     post_import_tourism  = (menuId:any) => `/Tourism/Import/${menuId}`;

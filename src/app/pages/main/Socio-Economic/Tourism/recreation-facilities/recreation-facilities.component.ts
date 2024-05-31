@@ -50,22 +50,7 @@ export class RecreationFacilitiesComponent implements OnInit {
   addData: any = {};
   dummy_addData: any = {};
   dummyData: any = {};
-  listofRecreation: any = [
-    { id: `1`, type: `Amusement/gaming facilities` },
-    { id: `2`, type: `Badminton courts` },
-    { id: `3`, type: `Basketball courts` },
-    { id: `4`, type: `Billiard centers` },
-    { id: `5`, type: `Bowling Alleys` },
-    { id: `6`, type: `Camping site` },
-    { id: `7`, type: `Cockpit arenas` },
-    { id: `8`, type: `Fitness Gym` },
-    { id: `9`, type: `Function halls/ clubhouse` },
-    { id: `10`, type: `Golf Course` },
-    { id: `11`, type: `Library/ Museums` },
-    { id: `12`, type: `Lottery outlets` },
-    { id: `13`, type: `Music Studio/ Recording` },
-    { id: `14`, type: `Playgrounds/ Parks` },
-  ];
+  listofRecreation: any = [];
   visible: boolean = true;
   not_visible: boolean = true;
   //required == not_visible
@@ -472,6 +457,13 @@ export class RecreationFacilitiesComponent implements OnInit {
     ).subscribe((response) => {
       this.dataList = <any>response;
       console.log('check', response);
+      this.GetTourismTypeList();
+    });
+  }
+
+  GetTourismTypeList() {
+    this.Service.GetTourismTypeList().subscribe((response) => {
+      this.listofRecreation = <any>response;
     });
   }
 
