@@ -117,13 +117,7 @@
                   >
                     <td>{{ i + 1 }}</td>
                     <td>{{ dataItem.name }}</td>
-                    <td>
-                      <div *ngFor="let item of listofRecreation">
-                        <span *ngIf="item.id == dataItem.type">{{
-                          item.type
-                        }}</span>
-                      </div>
-                    </td>
+                    <td>{{ dataItem.typeName}}</td>
                     <td>{{ dataItem.description }}</td>
                     <td>{{ dataItem.contactPerson }}</td>
                     <td>{{ dataItem.contactNo }}</td>
@@ -244,9 +238,9 @@
               <option selected></option>
               <option
                 *ngFor="let list of listofRecreation"
-                value="{{ list.id }}"
+                value="{{ list.recNo }}"
               >
-                {{ list.type }}
+                {{ list.typeName }}
               </option>
             </select>
           </div>

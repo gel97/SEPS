@@ -31,6 +31,10 @@ export class TourismService {
         return this.http.delete(this.Base.url + this.ApiUrl.delete_tourism(transId), { responseType: 'text' });
     }
 
+    GetTourismTypeList() {
+        return this.http.get<any[]>(this.Base.url + this.ApiUrl.get_tourism_type(), { responseType: `json` });
+    }
+
     GetBarangayList(munCityId: any) {
         return this.http.post<any[]>(this.Base.url + this.ApiUrl.post_list_barangay(munCityId), { responseType: `json` });
     }
