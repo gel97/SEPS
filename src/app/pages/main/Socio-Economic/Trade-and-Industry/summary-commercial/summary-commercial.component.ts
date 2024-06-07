@@ -71,7 +71,7 @@ export class SummaryCommercialComponent implements OnInit {
   GetList_Summary_CommercialEstab() {
     this.service.Get_Summ_Estab().subscribe((data) => {
       this.Summary = <any>data;
-      this.Summary = this.Summary.filter((s: any) => s.tag == 1);
+      //this.Summary = this.Summary.filter((s: any) => s.tag == 1);
       console.log(this.Summary);
     });
   }

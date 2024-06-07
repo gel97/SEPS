@@ -17,18 +17,6 @@
 
             </div>
             <br>
-            <div class="form-inline float-right ">
-              <form class=>
-                <app-admin>
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd "><i
-                      class="fa fa-plus"></i>
-                    Commercial Establishment Summary
-                  </button>
-                </app-admin>
-              </form>
-            </div><br><br>
-
-            <br>
             <div class="row">
               <div class="col-lg-6">
                 <p>List of Commercial Establishments Summary</p>
@@ -51,8 +39,6 @@
                     <th scope="col">Category</th>
                     <th scope="col" class="text-center">Business Type </th>
                     <th scope="col" class="text-center">Count </th>
-                    <th scope="col" class="text-center">Remarks </th>
-                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -61,33 +47,9 @@
                                 totalItems:count} | filterall: searchText , let i = index ">
                     <td>{{ i + 1 }}</td>
                     <!-- <td class="text-center">{{text.name}}</td> -->
-                    <td>
-                      <div *ngFor="let item of list_of_category">
-                        <span *ngIf="item.id === text.category">{{item.name_category}} </span>
-                      </div>
-                    </td>
-                    <td class="text-center">
-                      <div *ngFor="let item of list_of_Business">
-                        <span *ngIf="item.id === text.type">{{item.name_business}}
-
-                        </span>
-                      </div>
-                    </td>
-                    <td class="text-center">{{text.count}}</td>
-                    <td> {{text.remarks}}</td>
-
-                    <td>
-                      <div class="d-inline-flex" class="form-inline float-right">
-                        <app-admin>
-                          <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info btn-circle"
-                            data-toggle="modal" data-target="#exampleModal_EDIT"><i class="fa fa-pen"></i> </button>
-                          &nbsp;
-                          <!-- <button type="button"  onclick="initialize()" (click)="editmodal=text"  class="btn btn-success" data-toggle="modal"data-target="#exampleModal"><i  class="fa fa-globe"></i> </button>&nbsp; -->
-                          <button type="button" title="Delete" class="btn btn-warning btn-circle"
-                            (click)="delete(text.transId,i)"><i class="fa fa-trash"></i> </button>&nbsp;
-                        </app-admin>
-                      </div>
-                    </td>
+                    <td>{{text.catName}}</td>
+                    <td>{{text.lineBusinessName}}</td>
+                    <td class="text-center">{{text.total}}</td>
                   </tr>
 
                 </tbody>

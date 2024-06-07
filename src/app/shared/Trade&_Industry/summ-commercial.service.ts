@@ -14,7 +14,7 @@ export class SummCommercialService {
   constructor(private Http: HttpClient, private Auth: AuthService, private Base: BaseUrl, private ApiUrl: ApiUrl, private auth: AuthService) { }
 
   Get_Summ_Estab():Observable<any[]>{
-    return this.Http.get<any[]>(this.Base.url + this.ApiUrl.get_summ_commercial(this.Auth.munCityId, this.Auth.setYear), { responseType: 'json' });
+    return this.Http.get<any[]>(this.Base.url + this.ApiUrl.get_com_estab_summary(this.Auth.munCityId, this.Auth.setYear), { responseType: 'json' });
   }
 
   Add_Summ_Estab(ManEstab: any = {}){

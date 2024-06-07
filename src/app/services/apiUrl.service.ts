@@ -104,6 +104,8 @@ export class ApiUrl {
 
     //Comercial Establishments
     get_com_estab         = (munCityId:any, setYear:any)=>`/ComEstab/${setYear}/${munCityId}`;
+    get_com_estab_summary = (munCityId:any, setYear:any)=>`/ComEstab/comestab_summary/${setYear}/${munCityId}`;
+
     post_save_com_estab   = ()=>`/ComEstab`;
     put_update_com_estab  = ()=>`/ComEstab`;
     delete_com_estab      = (transId:any)=>`/ComEstab/${transId}`;
