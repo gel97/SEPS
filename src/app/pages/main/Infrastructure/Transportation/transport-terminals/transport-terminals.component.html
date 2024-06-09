@@ -1,63 +1,142 @@
-<div class="modal fade" id="ModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
+<div
+  class="modal fade"
+  id="ModalAdd"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title text-dark" id="exampleModalLabel">Transport Terminals</h5>
-        <button type="close" #closebutton class="btn-close" data-bs-dismiss="modal" data-dismiss="modal"
-          aria-label="Close"></button>
+        <h5 class="modal-title text-dark" id="exampleModalLabel">
+          Transport Terminals
+        </h5>
+        <button
+          type="close"
+          #closebutton
+          class="btn-close"
+          data-bs-dismiss="modal"
+          data-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
-
         <div class="form-group">
           <div class="row">
-
-            <div class=""><br>
-              <label for="exampleFormControlTextarea1">Company/Organization :</label>
-              <input type="text" [(ngModel)]="TerminalList.company" class="form-control" id="" placeholder=""
-                [ngClass]="toValidate.company?'is-invalid':''" (ngModelChange)="toValidate.company=false">
+            <div class="">
+              <br />
+              <label for="exampleFormControlTextarea1"
+                >Company/Organization :</label
+              >
+              <input
+                type="text"
+                [(ngModel)]="TerminalList.company"
+                class="form-control"
+                id=""
+                placeholder=""
+                [ngClass]="toValidate.company ? 'is-invalid' : ''"
+                (ngModelChange)="toValidate.company = false"
+              />
             </div>
-            <div class="col-lg-12"><br>
+            <div class="col-lg-12">
+              <br />
               <label for="exampleFormControlTextarea1">Transport Type :</label>
-              <select name="traspotype" [(ngModel)]="TerminalList.transportType" class="form-select"
-                aria-label="Default select example" [ngClass]="toValidate.transportType?'is-invalid':''"
-                (ngModelChange)="toValidate.transportType=false">
-
+              <select
+                name="traspotype"
+                [(ngModel)]="TerminalList.transportType"
+                class="form-select"
+                aria-label="Default select example"
+                [ngClass]="toValidate.transportType ? 'is-invalid' : ''"
+                (ngModelChange)="toValidate.transportType = false"
+              >
                 <option selected disabled>- Select -</option>
-                <option *ngFor="let i of TransportType" value="{{i.id}}">{{i.transpotypename}}</option>
-
+                <option *ngFor="let i of TransportType" value="{{ i.id }}">
+                  {{ i.transpotypename }}
+                </option>
               </select>
             </div>
-            <div class=""><br>
-              <label for="exampleFormControlTextarea1">No. of Units/ Remarks :</label>
-              <input type="number" [(ngModel)]="TerminalList.unitsNo" class="form-control" id="" placeholder=""
-                [ngClass]="toValidate.unitsNo?'is-invalid':''" (ngModelChange)="toValidate.unitsNo=false">
+            <div class="">
+              <br />
+              <label for="exampleFormControlTextarea1"
+                >No. of Units/ Remarks :</label
+              >
+              <input
+                type="text"
+                [(ngModel)]="TerminalList.unitsNo"
+                class="form-control"
+                id=""
+                placeholder=""
+                (ngModelChange)="(TerminalList.unitsNo)"
+              />
             </div>
-            <div class=""><br>
+            <div class="">
+              <br />
               <label for="exampleFormControlTextarea1">Routes :</label>
-              <input type="text" [(ngModel)]="TerminalList.routes" class="form-control" id="" placeholder=""
-                [ngClass]="toValidate.routes?'is-invalid':''" (ngModelChange)="toValidate.routes=false">
+              <input
+                type="text"
+                [(ngModel)]="TerminalList.routes"
+                class="form-control"
+                id=""
+                placeholder=""
+                [ngClass]="toValidate.routes ? 'is-invalid' : ''"
+                (ngModelChange)="toValidate.routes = false"
+              />
             </div>
             <div class="row">
-              <div class="col-lg-6"><br>
-                <label for="exampleFormControlTextarea1">Contact Person/Designation :</label>
-                <input type="text" [(ngModel)]="TerminalList.contactPerson" class="form-control" id="" placeholder="">
+              <div class="col-lg-6">
+                <br />
+                <label for="exampleFormControlTextarea1"
+                  >Contact Person/Designation :</label
+                >
+                <input
+                  type="text"
+                  [(ngModel)]="TerminalList.contactPerson"
+                  class="form-control"
+                  id=""
+                  placeholder=""
+                />
               </div>
-              <div class="col-lg-6"><br>
-                <label for="exampleFormControlTextarea1">Contact Details :</label>
-                <input type="text" [(ngModel)]="TerminalList.contactNo" class="form-control" id="" placeholder="">
+              <div class="col-lg-6">
+                <br />
+                <label for="exampleFormControlTextarea1"
+                  >Contact Details :</label
+                >
+                <input
+                  type="text"
+                  [(ngModel)]="TerminalList.contactNo"
+                  class="form-control"
+                  id=""
+                  placeholder=""
+                />
               </div>
             </div>
             <div class="row">
-              <div class="col-lg-6"><br>
-                <label for="exampleFormControlTextarea1">Location (Sitio/Purok) :</label>
-                <input type="text" [(ngModel)]="TerminalList.location" class="form-control" id="" placeholder="">
+              <div class="col-lg-6">
+                <br />
+                <label for="exampleFormControlTextarea1"
+                  >Location (Sitio/Purok) :</label
+                >
+                <input
+                  type="text"
+                  [(ngModel)]="TerminalList.location"
+                  class="form-control"
+                  id=""
+                  placeholder=""
+                />
               </div>
-              <div class="col-lg-6"><br>
+              <div class="col-lg-6">
+                <br />
                 <label for="category">Barangay :</label>
-                <select [(ngModel)]="TerminalList.brgyId" class="form-select" aria-label="Default select example">
+                <select
+                  [(ngModel)]="TerminalList.brgyId"
+                  class="form-select"
+                  aria-label="Default select example"
+                >
                   <option selected disabled>- Select category -</option>
-                  <option *ngFor="let i of BarangayList" value="{{i.brgyId}}">{{i.brgyName}}</option>
+                  <option *ngFor="let i of BarangayList" value="{{ i.brgyId }}">
+                    {{ i.brgyName }}
+                  </option>
                 </select>
               </div>
             </div>
@@ -73,91 +152,135 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal" data-dismiss="modal">Close</button>
-        <button class="btn btn-primary" type="button" *ngIf="isNew" (click)="saveTerminalList()">Save</button>
-        <button class="btn btn-primary" type="button" *ngIf="!isNew" (click)="updateTerminalList()">Update</button>
+        <button
+          class="btn btn-secondary"
+          type="button"
+          data-bs-dismiss="modal"
+          data-dismiss="modal"
+        >
+          Close
+        </button>
+        <button
+          class="btn btn-primary"
+          type="button"
+          *ngIf="isNew"
+          (click)="saveTerminalList()"
+        >
+          Save
+        </button>
+        <button
+          class="btn btn-primary"
+          type="button"
+          *ngIf="!isNew"
+          (click)="updateTerminalList()"
+        >
+          Update
+        </button>
       </div>
     </div>
   </div>
 </div>
 
-
 <div class="">
   <ng-template #isEmpty>
     <app-import [data]="message" (importData)="importMethod()"></app-import>
   </ng-template>
-  <div *ngIf="TranspoTerminalList.length>0  ; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
+  <div
+    *ngIf="TranspoTerminalList.length > 0; else isEmpty"
+    class="card o-hidden border-2 shadow-sm my-5"
+  >
     <div class="card-body p-0">
       <!-- Nested Row within Card Body -->
       <div class="row">
-
         <div class="col-lg-12">
           <div class="p-5">
-
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-4">Transport Terminals</h1>
-              <label><strong>Transportation - {{modifyCityMun(munCityName)}}</strong></label>
-
+              <label
+                ><strong
+                  >Transportation - {{ modifyCityMun(munCityName) }}</strong
+                ></label
+              >
             </div>
 
-            <div class="form-inline float-right ">
+            <div class="form-inline float-right">
               <app-admin>
-                <button class="btn btn-primary font-weight-bold" (click)="isNew=true; TerminalList={}" type="button"
-                  data-bs-toggle="modal" data-bs-target="#ModalAdd"><i class="fa fa-plus"></i>Terminals</button>
+                <button
+                  class="btn btn-primary font-weight-bold"
+                  (click)="isNew = true; TerminalList = {}"
+                  type="button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#ModalAdd"
+                >
+                  <i class="fa fa-plus"></i>Terminals
+                </button>
               </app-admin>
               &nbsp;
               <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
             </div>
 
-            <br>
+            <br />
             <div class="row">
               <div class="col-lg-6">
                 <p>List of Transport Terminals</p>
               </div>
-              <div class="col-lg-6 ">
-
-              </div>
+              <div class="col-lg-6"></div>
             </div>
             <div class="table-responsive">
               <table class="table table-sm table-hover">
-                <thead style="background-color: #000000;color:white;">
+                <thead style="background-color: #000000; color: white">
                   <tr>
                     <th scope="col"></th>
-                    <th scope="col"> Company/ Organization</th>
-                    <th scope="col"> Type</th>
-                    <th scope="col"> No. of Units</th>
-                    <th scope="col"> Location</th>
-                    <th scope="col"> Routes</th>
+                    <th scope="col">Company/ Organization</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">No. of Units</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Routes</th>
                     <!-- <th scope="col"> Geo-Coor.(Long, Lat)</th> -->
-                    <th>
-                      Action
-                    </th>
-
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let i of TranspoTerminalList; let a = index">
-                    <td>{{a+1}}</td>
-                    <td>{{i.company}}</td>
-                    <td>{{i.transpotypename}}</td>
-                    <td>{{i.unitsNo}}</td>
-                    <td>{{i.location}}</td>
-                    <td>{{i.routes}}</td>
+                    <td>{{ a + 1 }}</td>
+                    <td>{{ i.company }}</td>
+                    <td>{{ i.transpotypename }}</td>
+                    <td>{{ i.unitsNo }}</td>
+                    <td>{{ i.location }}</td>
+                    <td>{{ i.routes }}</td>
                     <!-- <td>{{i .longtitude}}<br>{{i .latitude}}</td> -->
 
                     <td>
                       <div class="d-inline-flex">
                         <app-admin>
-                          <button class="btn btn-info btn-circle" titel="Edit" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal" (click)="TerminalList=i; isNew=false"><i
-                              class="fa fa-pen"></i></button>&nbsp;
+                          <button
+                            class="btn btn-info btn-circle"
+                            titel="Edit"
+                            data-bs-toggle="modal"
+                            data-bs-target="#exampleModal"
+                            (click)="TerminalList = i; isNew = false"
+                          >
+                            <i class="fa fa-pen"></i></button
+                          >&nbsp;
                         </app-admin>
-                        <button (click)="SetMarker(i)" class="btn btn-success btn-circle" title="Map"
-                          data-bs-toggle="modal" data-bs-target="#gmapModal" (click)="TerminalList=i"><i
-                            class="fa fa-globe"></i></button>&nbsp;
+                        <button
+                          (click)="SetMarker(i)"
+                          class="btn btn-success btn-circle"
+                          title="Map"
+                          data-bs-toggle="modal"
+                          data-bs-target="#gmapModal"
+                          (click)="TerminalList = i"
+                        >
+                          <i class="fa fa-globe"></i></button
+                        >&nbsp;
                         <app-admin>
-                          <button class="btn btn-warning btn-circle" title="Delete"
-                            (click)="deleteTerminalList(i.transId)"><i class="fa fa-trash"></i></button>
+                          <button
+                            class="btn btn-warning btn-circle"
+                            title="Delete"
+                            (click)="deleteTerminalList(i.transId)"
+                          >
+                            <i class="fa fa-trash"></i>
+                          </button>
                         </app-admin>
                       </div>
                     </td>
@@ -165,22 +288,34 @@
                 </tbody>
               </table>
             </div>
-            <br>
+            <br />
           </div>
         </div>
       </div>
     </div>
   </div>
-
 </div>
 <!-- modal area -->
-<div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
+<div
+  class="modal fade"
+  id="gmapModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">SEPS GEOLOCATION TAGGING</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h5 class="modal-title" id="exampleModalLabel">
+          SEPS GEOLOCATION TAGGING
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -189,8 +324,20 @@
       </div>
       <div class="modal-footer">
         <app-admin>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>&nbsp;
-          <button type="button" class="btn btn-primary" (click)="updateTerminalList()">Save changes</button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close</button
+          >&nbsp;
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="updateTerminalList()"
+          >
+            Save changes
+          </button>
         </app-admin>
       </div>
     </div>

@@ -36,7 +36,7 @@ export class TransportTerminalsComponent implements OnInit {
   closebutton!: { nativeElement: { click: () => void } };
 
   message = 'Transport Terminals';
-
+  dataList: any = [];
   parentMethod() {
     // alert('parent Method');
     this.isNew = true;
@@ -47,7 +47,7 @@ export class TransportTerminalsComponent implements OnInit {
     this.service.post_import_transpo_terminal().subscribe({
       next: (data) => {
         this.ngOnInit();
-        if(data.length === 0){
+        if (data.length === 0) {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -60,14 +60,12 @@ export class TransportTerminalsComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'info',
             title: 'No data from previous year',
           });
-        }
-        else
-        {
+        } else {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -80,7 +78,7 @@ export class TransportTerminalsComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'success',
             title: 'Imported Successfully',
@@ -138,249 +136,251 @@ export class TransportTerminalsComponent implements OnInit {
     const dist1: any = [];
     const dist2: any = [];
 
-    this.reportService.GetTranspoTerminalsReport(this.pdfComponent.data).subscribe({
-      next: (response: any = {}) => {
-        reports = response;
-        console.log('result: ', response);
+    this.reportService
+      .GetTranspoTerminalsReport(this.pdfComponent.data)
+      .subscribe({
+        next: (response: any = {}) => {
+          reports = response;
+          console.log('result: ', response);
 
-        reports.forEach((a: any) => {
-          if (a.district === 1) {
-            dist1.push(a);
-          } else {
-            dist2.push(a);
-          }
-        });
+          reports.forEach((a: any) => {
+            if (a.district === 1) {
+              dist1.push(a);
+            } else {
+              dist2.push(a);
+            }
+          });
 
-        data.push({
-          margin: [0, 20, 0, 0],
-          columns: [
-            {
-              text: `List of Transport Terminals by Municipality/City`,
-              fontSize: 14,
-              bold: true,
-            },
-            {
-              text: `Year: ${response[0].setYear}`,
-              fontSize: 14,
-              bold: true,
-              alignment: 'right',
-            },
-          ],
-        });
+          data.push({
+            margin: [0, 20, 0, 0],
+            columns: [
+              {
+                text: `List of Transport Terminals by Municipality/City`,
+                fontSize: 14,
+                bold: true,
+              },
+              {
+                text: `Year: ${response[0].setYear}`,
+                fontSize: 14,
+                bold: true,
+                alignment: 'right',
+              },
+            ],
+          });
 
-        const dist1Group = dist1.reduce((groups: any, item: any) => {
-          const { munCityName } = item;
-          const groupKey = `${munCityName}`;
-          if (!groups[groupKey]) {
-            groups[groupKey] = [];
-          }
-          groups[groupKey].push(item);
-          return groups;
-        }, {});
+          const dist1Group = dist1.reduce((groups: any, item: any) => {
+            const { munCityName } = item;
+            const groupKey = `${munCityName}`;
+            if (!groups[groupKey]) {
+              groups[groupKey] = [];
+            }
+            groups[groupKey].push(item);
+            return groups;
+          }, {});
 
-        console.log('dist1Group ', dist1Group);
+          console.log('dist1Group ', dist1Group);
 
-        const dist2Group = dist2.reduce((groups: any, item: any) => {
-          const { munCityName } = item;
-          const groupKey = `${munCityName}`;
-          if (!groups[groupKey]) {
-            groups[groupKey] = [];
-          }
-          groups[groupKey].push(item);
-          return groups;
-        }, {});
+          const dist2Group = dist2.reduce((groups: any, item: any) => {
+            const { munCityName } = item;
+            const groupKey = `${munCityName}`;
+            if (!groups[groupKey]) {
+              groups[groupKey] = [];
+            }
+            groups[groupKey].push(item);
+            return groups;
+          }, {});
 
-        console.log('dist2Group ', dist2);
+          console.log('dist2Group ', dist2);
 
-        tableData.push([
-          {
-            text: '#',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-          },
-          {
-            text: 'Company/ Organization',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-          },
-          {
-            text: 'Type',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-          },
-          {
-            text: 'No. of Units',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-          },
-          {
-            text: 'Location',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-          },
-          {
-            text: 'Routes',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-          }
-        ]);
-
-        tableData.push([
-          {
-            text: `1st Congressional District `,
-            colSpan: 6,
-            alignment: 'left',
-            fillColor: '#526D82',
-            marginLeft: 5,
-          },
-        ]);
-
-        for (const groupKey1 in dist1Group) {
-          // Iterate district I data
-          const group1 = dist1Group[groupKey1];
-          const [cityName1] = groupKey1.split('-');
           tableData.push([
             {
-              text: cityName1,
+              text: '#',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Company/ Organization',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Type',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'No. of Units',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Location',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Routes',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+          ]);
+
+          tableData.push([
+            {
+              text: `1st Congressional District `,
               colSpan: 6,
               alignment: 'left',
-              fillColor: '#9DB2BF',
+              fillColor: '#526D82',
               marginLeft: 5,
             },
           ]);
 
-          group1.forEach((item: any, index: any) => {    
-            let transpo:string = '';
-            this.TransportType.forEach((a:any) => {
-              if(a.id === item.transportType){
-                 transpo = a.transpotypename
-              }
-            });
+          for (const groupKey1 in dist1Group) {
+            // Iterate district I data
+            const group1 = dist1Group[groupKey1];
+            const [cityName1] = groupKey1.split('-');
             tableData.push([
               {
-                text: index + 1,
-                fillColor: '#FFFFFF',
+                text: cityName1,
+                colSpan: 6,
+                alignment: 'left',
+                fillColor: '#9DB2BF',
                 marginLeft: 5,
               },
-              {
-                text: item.company,
-                fillColor: '#FFFFFF',
-              },
-              {
-                text: transpo,
-                fillColor: '#FFFFFF',
-              },
-              {
-                text: item.unitsNo,
-                fillColor: '#FFFFFF',
-                alignment: 'center'
-              },
-              {
-                text: item.location,
-                fillColor: '#FFFFFF',
-              },
-              {
-                text: item.routes,
-                fillColor: '#FFFFFF',
-              }
             ]);
-          });
-        }
 
-        tableData.push([
-          {
-            text: `2nd Congressional District `,
-            colSpan: 6,
-            alignment: 'left',
-            fillColor: '#526D82',
-            marginLeft: 5,
-          },
-        ]);
+            group1.forEach((item: any, index: any) => {
+              let transpo: string = '';
+              this.TransportType.forEach((a: any) => {
+                if (a.id === item.transportType) {
+                  transpo = a.transpotypename;
+                }
+              });
+              tableData.push([
+                {
+                  text: index + 1,
+                  fillColor: '#FFFFFF',
+                  marginLeft: 5,
+                },
+                {
+                  text: item.company,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: transpo,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.unitsNo,
+                  fillColor: '#FFFFFF',
+                  alignment: 'center',
+                },
+                {
+                  text: item.location,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.routes,
+                  fillColor: '#FFFFFF',
+                },
+              ]);
+            });
+          }
 
-        for (const groupKey2 in dist2Group) {
-          // Iterate district II data
-          const group2 = dist2Group[groupKey2];
-          const [cityName2] = groupKey2.split('-');
           tableData.push([
             {
-              text: cityName2,
+              text: `2nd Congressional District `,
               colSpan: 6,
               alignment: 'left',
-              fillColor: '#9DB2BF',
+              fillColor: '#526D82',
               marginLeft: 5,
             },
           ]);
 
-          group2.forEach((item: any, index: any) => {
-            let transpo:string = '';
-            this.TransportType.forEach((a:any) => {
-              if(a.id === item.transportType){
-                 transpo = a.transpotypename
-              }
-            });
+          for (const groupKey2 in dist2Group) {
+            // Iterate district II data
+            const group2 = dist2Group[groupKey2];
+            const [cityName2] = groupKey2.split('-');
             tableData.push([
               {
-                text: index + 1,
-                fillColor: '#FFFFFF',
+                text: cityName2,
+                colSpan: 6,
+                alignment: 'left',
+                fillColor: '#9DB2BF',
                 marginLeft: 5,
               },
-              {
-                text: item.company,
-                fillColor: '#FFFFFF',
-              },
-              {
-                text: transpo,
-                fillColor: '#FFFFFF',
-              },
-              {
-                text: item.unitsNo,
-                fillColor: '#FFFFFF',
-                alignment: 'center'
-              },
-              {
-                text: item.location,
-                fillColor: '#FFFFFF',
-              },
-              {
-                text: item.routes,
-                fillColor: '#FFFFFF',
-              }
             ]);
-          });
-        }
 
-        const table = {
-          margin: [0, 20, 0, 0],
-          table: {
-            widths: [25, '*', '*', '*', '*', '*'],
-            body: tableData,
-          },
-          layout: 'lightHorizontalLines',
-        };
+            group2.forEach((item: any, index: any) => {
+              let transpo: string = '';
+              this.TransportType.forEach((a: any) => {
+                if (a.id === item.transportType) {
+                  transpo = a.transpotypename;
+                }
+              });
+              tableData.push([
+                {
+                  text: index + 1,
+                  fillColor: '#FFFFFF',
+                  marginLeft: 5,
+                },
+                {
+                  text: item.company,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: transpo,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.unitsNo,
+                  fillColor: '#FFFFFF',
+                  alignment: 'center',
+                },
+                {
+                  text: item.location,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.routes,
+                  fillColor: '#FFFFFF',
+                },
+              ]);
+            });
+          }
 
-        data.push(table);
-      },
-      error: (error: any) => {
-        console.log(error);
-      },
-      complete: () => {
-        let isPortrait = false;
-        this.pdfService.GeneratePdf(data, isPortrait, "");
-        console.log(data);
-      },
-    });
+          const table = {
+            margin: [0, 20, 0, 0],
+            table: {
+              widths: [25, '*', '*', '*', '*', '*'],
+              body: tableData,
+            },
+            layout: 'lightHorizontalLines',
+          };
+
+          data.push(table);
+        },
+        error: (error: any) => {
+          console.log(error);
+        },
+        complete: () => {
+          let isPortrait = false;
+          this.pdfService.GeneratePdf(data, isPortrait, '');
+          console.log(data);
+        },
+      });
   }
 
   markerObj: any = {};
@@ -429,10 +429,6 @@ export class TransportTerminalsComponent implements OnInit {
     this.toValidate.transportType =
       this.TerminalList.transportType == '' ||
       this.TerminalList.transportType == null
-        ? true
-        : false;
-    this.toValidate.unitsNo =
-      this.TerminalList.unitsNo == '' || this.TerminalList.unitsNo == undefined
         ? true
         : false;
     this.toValidate.routes =
