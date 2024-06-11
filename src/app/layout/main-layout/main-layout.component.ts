@@ -182,7 +182,7 @@ export class MainLayoutComponent implements OnInit {
     //localStorage.removeItem('token'); 
     this.service.clearSession();
     this.socialAuthService.signOut();
-    this.router.navigate(['guest/home']);
+    this.router.navigate(['login']);
   }
 
   toggleSidebar() {

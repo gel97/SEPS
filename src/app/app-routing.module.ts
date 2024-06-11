@@ -136,13 +136,13 @@ const Governance:string ='Governance';
 const Tools:string ='Tools/';
 
 const routes: Routes = [
-  {
-    path: 'guest',
-    component: GuestLayoutComponent,
-    children: [
-      {path:'home',component:GuestHomeComponent},
-    ]
-  },
+  // {
+  //   path: 'guest',
+  //   component: GuestLayoutComponent,
+  //   children: [
+  //     {path:'home',component:GuestHomeComponent},
+  //   ]
+  // },
   {
     path: 'login',
     component:LoginComponent
