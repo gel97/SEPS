@@ -44,6 +44,11 @@ export class GeoProfileService {
       responseType: 'json',
     });
   }
+  GetMunCity(): Observable<any[]> {
+    return this.Http.get<any[]>(this.Base.url + this.ApiUrl.get_all_muncity(), {
+      responseType: 'json',
+    });
+  }
   Delete(transId: any) {
     return this.Http.delete(this.Base.url + this.ApiUrl.delete_geo(transId), {
       responseType: 'json',
@@ -89,7 +94,7 @@ export class GeoProfileService {
   }
   EditPhyGeoBrgy(geobrgy: any = {}) {
     geobrgy.latitude = Number(geobrgy.latitude);
-    geobrgy.longitude = Number(geobrgy.longitude);
+    geobrgy.longtitude = Number(geobrgy.longtitude);
     console.log(geobrgy);
     return this.Http.put(
       this.Base.url + this.ApiUrl.put_update_profbrgy(),

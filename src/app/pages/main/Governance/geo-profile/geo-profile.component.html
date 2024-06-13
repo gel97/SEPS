@@ -17,7 +17,7 @@
     class="card o-hidden border-2 shadow-sm my-5"
   >
     <!-- gmap modal area -->
-    <div
+    <!-- <div
       class="modal fade"
       id="gmapModal"
       tabindex="-1"
@@ -54,7 +54,7 @@
                 <button
                   type="button"
                   class="btn btn-primary"
-                  (click)="update_Geo()"
+                  (click)="update_Geo(); UpdateMunCity = true"
                 >
                   Save changes
                 </button>
@@ -63,7 +63,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="card-body p-0">
       <!-- Nested Row within Card Body -->
       <div class="row">
@@ -491,7 +491,7 @@
                           <i class="fa fa-trash"></i></button
                         >&nbsp;
                         <button
-                          (click)="SetMarker(munCity)"
+                          (click)="SetMarker2(munCity); editgeo = munCity"
                           class="btn btn-success btn-circle"
                           role="button"
                           data-toggle="modal"
@@ -503,6 +503,7 @@
                     </div>
                   </div>
                 </div>
+                <!--------------------PhyGeoBrgy--------------------------------------->
                 <div class="table-responsive" *ngIf="!isPhyGeoBrgy">
                   <table class="table table-framed table-hover table-striped">
                     <thead class="table-dark">
@@ -640,7 +641,7 @@
     </div>
   </div>
 </div>
-<!--------------------PhyGeoBrgy--------------------------------------->
+
 <!-- Modal -->
 <div
   class="modal fade bd-example-modal-lg"
@@ -900,8 +901,8 @@
     </div>
   </div>
 </div>
-
-<!-- Modal For Update -->
+<!--End of Barangay-------------------------->
+<!-- Modal For Update MunGeo -->
 <div
   class="modal fade"
   id="exampleModalLong"
@@ -1190,7 +1191,11 @@
         <button type="button" class="btn btn-secondary" data-dismiss="modal">
           Close
         </button>
-        <button type="button" class="btn btn-primary" (click)="updateM()">
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="updateM(); UpdateBarangay = true"
+        >
           Save changes
         </button>
       </div>

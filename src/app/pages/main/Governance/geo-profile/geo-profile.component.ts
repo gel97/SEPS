@@ -47,6 +47,8 @@ export class GeoProfileComponent implements OnInit {
   updategeo: any = {};
   inputDisabled: boolean = false;
   editgeo: any = {};
+  editmodal: any = {};
+  UpdateMunCity: any = {};
   toValidate: any = {};
   isAdd: boolean = true;
   MunLoc: any = [];
@@ -78,6 +80,23 @@ export class GeoProfileComponent implements OnInit {
     this.gmapComponent.setMarker(this.markerObj);
   }
   ngOnInit(): void {
+    this.GmapLocation();
+    this.Init();
+  }
+  SetMarker2(data: any = {}) {
+    console.log('lnglat: ', data.longtitude + ' , ' + data.latitude);
+
+    this.markerObj = {
+      lat: data.latitude,
+      lng: data.longitude,
+      label: data.brgyName.charAt(0),
+      brgyName: data.brgyName,
+      munCityName: this.munCityName,
+      draggable: true,
+    };
+    this.gmapComponent.setMarker(this.markerObj);
+  }
+  ngOnInit2(): void {
     this.GmapLocation();
     this.Init();
   }
@@ -399,6 +418,7 @@ export class GeoProfileComponent implements OnInit {
     this.GetPhyGeoBrgy();
     this.GetGeoProf();
   }
+
   GetGeoProf() {
     this.service.GetGeo().subscribe((data) => {
       this.ViewGeo = <any>data;
@@ -546,7 +566,6 @@ export class GeoProfileComponent implements OnInit {
   updateM() {
     this.geobrgy.longtitude = this.gmapComponent.markers.lng;
     this.geobrgy.latitude = this.gmapComponent.markers.lat;
-
     this.geobrgy.setYear = this.auth.activeSetYear;
     this.service.EditPhyGeoBrgy(this.geobrgy).subscribe({
       next: (_data) => {
