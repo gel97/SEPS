@@ -470,25 +470,26 @@
                       >
                         <i class="fa fa-plus"></i>Save Data
                       </button>
-
-                      <div *ngIf="ViewGeo">
-                        <button
-                          type="button"
-                          title="Edit"
-                          (click)="editgeo = geo"
-                          class="btn btn-info btn-circle"
-                          data-toggle="modal"
-                          data-target="#exampleModalLong"
-                        >
-                          <i class="fa fa-pen"></i></button
+                      <div class="d-inline-flex" *ngIf="ViewGeo">
+                        <app-admin>
+                          <button
+                            type="button"
+                            title="Edit"
+                            (click)="editgeo = geo"
+                            class="btn btn-info btn-circle"
+                            data-toggle="modal"
+                            data-target="#exampleModalLong"
+                          >
+                            <i class="fa fa-pen"></i></button></app-admin
                         >&nbsp;
-                        <button
-                          type="button"
-                          title="Delete"
-                          (click)="delete(geo.transId)"
-                          class="btn btn-warning btn-circle"
-                        >
-                          <i class="fa fa-trash"></i></button
+                        <app-admin>
+                          <button
+                            type="button"
+                            title="Delete"
+                            (click)="delete(geo.transId)"
+                            class="btn btn-warning btn-circle"
+                          >
+                            <i class="fa fa-trash"></i></button></app-admin
                         >&nbsp;
                         <button
                           (click)="SetMarker2(munCity); editgeo = munCity"
