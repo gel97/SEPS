@@ -1,13 +1,20 @@
 <div class="">
   <ng-template #isEmpty>
-    <app-import [data]="message" (importData)="importMethod()" (testEvent)="parentMethod()"></app-import>
+    <app-import
+      [data]="message"
+      (importData)="importMethod()"
+      (testEvent)="parentMethod()"
+    ></app-import>
     <app-export-excel apiControllerName="Barangay"></app-export-excel>
   </ng-template>
 
   <div *ngIf="showOverlay">
     <app-import-loading></app-import-loading>
   </div>
-  <div *ngIf="viewData ; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
+  <div
+    *ngIf="viewData; else isEmpty"
+    class="card o-hidden border-2 shadow-sm my-5"
+  >
     <div class="card-body p-0">
       <!-- Nested Row within Card Body -->
       <div class="row">
@@ -15,33 +22,45 @@
           <div class="p-5">
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-4">Barangay Officials</h1>
-              <label><strong>Governance - {{modifyCityMun(munCityName)}} - Barangay
-                  Officials</strong></label><br>
+              <label
+                ><strong
+                  >Governance - {{ modifyCityMun(munCityName) }} - Barangay
+                  Officials</strong
+                ></label
+              ><br />
             </div>
             <div class="x-space-between">
               <div class="x-space-between">
-                <app-export-excel apiControllerName="Barangay"></app-export-excel>
+                <app-export-excel
+                  apiControllerName="Barangay"
+                ></app-export-excel>
               </div>
               <div class="x-space-between">
                 <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
               </div>
             </div>
-            <br>
+            <br />
             <div class="input-group col-sm-3">
-              <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                aria-label="Search" aria-describedby="basic-addon2" [(ngModel)]="searchText">
+              <input
+                type="text"
+                class="form-control bg-light border-0 small"
+                placeholder="Search for..."
+                aria-label="Search"
+                aria-describedby="basic-addon2"
+                [(ngModel)]="searchText"
+              />
             </div>
             <div class="row">
-              <div class="col-lg-9"><br>
+              <div class="col-lg-9">
+                <br />
                 <p>List of Barangays</p>
               </div>
             </div>
             <div class="form-group">
               <div class="row">
-                <div class="row">
-                </div>
+                <div class="row"></div>
                 <div class="table-responsive">
-                  <br>
+                  <br />
                   <table class="table table-framed table-hover table-striped">
                     <thead class="table-dark">
                       <tr>
@@ -49,48 +68,76 @@
                         <th scope="col">Punong Barangay</th>
                         <!-- <th scope="col">Land Area</th> -->
                         <th scope="col">Barangay Location</th>
-                        <th scope="col">Contact Details </th>
+                        <th scope="col">Contact Details</th>
                         <!-- <th scope="col">No. of Puroks</th> -->
                         <!-- <th scope="col">Geo-Coord.</th> -->
                         <th width="8%"></th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let item of listData | search: searchText; index as i">
-                        <td><b>{{item.brgyName}}</b></td>
-                        <td>{{item.punongBrgy}}</td>
+                      <tr
+                        *ngFor="
+                          let item of listData | search : searchText;
+                          index as i
+                        "
+                      >
+                        <td>
+                          <b>{{ item.brgyName }}</b>
+                        </td>
+                        <td>{{ item.punongBrgy }}</td>
                         <!-- <td>{{item.landArea}}</td> -->
-                        <td>{{item.address}} </td>
-                        <td>{{item.contactNo}}</td>
+                        <td>{{ item.address }}</td>
+                        <td>{{ item.contactNo }}</td>
                         <!-- <td>{{item.purokNo}}</td> -->
                         <!-- <td>
                           <span *ngIf="item.longitude || item.latitude">
                             {{item.longitude}},<br> {{item.latitude}}
                           </span>
                         </td> -->
-                        <td *ngIf="item.transId else isADD">
+                        <td *ngIf="item.transId; else isADD">
                           <div class="d-inline-flex">
                             <app-admin>
-                              <button (click)="data=item;isAdd = false" class="btn btn-info btn-circle"
-                                data-toggle="modal" data-target="#openModal"><i class="fa fa-pen"></i>
-                              </button>
-                            </app-admin>&nbsp;
-                            <button (click)="SetMarker(item)" class="btn btn-success btn-circle" role="button"
-                              (click)="data=item" data-toggle="modal" data-target="#gmapModal">
-                              <i class="fa fa-globe">
-                              </i>
-                            </button>&nbsp;
+                              <button
+                                (click)="data = item; isAdd = false"
+                                class="btn btn-info btn-circle"
+                                data-toggle="modal"
+                                data-target="#openModal"
+                              >
+                                <i class="fa fa-pen"></i>
+                              </button> </app-admin
+                            >&nbsp;
+                            <button
+                              (click)="SetMarker(item)"
+                              class="btn btn-success btn-circle"
+                              role="button"
+                              (click)="data = item"
+                              data-toggle="modal"
+                              data-target="#gmapModal"
+                            >
+                              <i class="fa fa-globe"> </i></button
+                            >&nbsp;
                             <app-admin>
-                              <button type="button" title="Delete" class="btn btn-warning btn-circle"
-                                (click)="DeleteData(item.transId,i,item)"><i class="fa fa-trash"></i> </button>&nbsp;
+                              <button
+                                type="button"
+                                title="Delete"
+                                class="btn btn-warning btn-circle"
+                                (click)="DeleteData(item.transId, i, item)"
+                              >
+                                <i class="fa fa-trash"></i></button
+                              >&nbsp;
                             </app-admin>
                           </div>
                         </td>
                         <ng-template #isADD>
                           <td>
                             <app-admin>
-                              <button (click)="data = item; isAdd = true" type="button"
-                                class="btn btn-primary btn-circle" data-toggle="modal" data-target="#openModal ">
+                              <button
+                                (click)="data = item; isAdd = true"
+                                type="button"
+                                class="btn btn-primary btn-circle"
+                                data-toggle="modal"
+                                data-target="#openModal "
+                              >
                                 <i class="fa fa-plus"></i>
                               </button>
                             </app-admin>
@@ -109,13 +156,27 @@
   </div>
 
   <!-- Modal -->
-  <div class="modal fade bd-example-modal-lg" id="openModal" tabindex="-1" role="dialog"
-    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div
+    class="modal fade bd-example-modal-lg"
+    id="openModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="myLargeModalLabel"
+    aria-hidden="true"
+  >
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalScrollableTitle">Barangay Officials</h5>
-          <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
+          <h5 class="modal-title" id="exampleModalScrollableTitle">
+            Barangay Officials
+          </h5>
+          <button
+            type="button"
+            #closebutton
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -123,39 +184,76 @@
           <div class="row">
             <div class="col-lg-12">
               <label> Barangay:</label>
-              <input type="text" class="form-control mb-2" [(ngModel)]="data.brgyName" readonly>
+              <input
+                type="text"
+                class="form-control mb-2"
+                [(ngModel)]="data.brgyName"
+                readonly
+              />
             </div>
             <div class="col-lg-12">
               <label>Punong Barangay:</label>
-              <input type="text" class="form-control mb-2" [(ngModel)]="data.punongBrgy"
-                [ngClass]="toValidate.punongBrgy?'is-invalid':''" (keyup)="toValidate.punongBrgy=false">
+              <input
+                type="text"
+                class="form-control mb-2"
+                [(ngModel)]="data.punongBrgy"
+                [ngClass]="toValidate.punongBrgy ? 'is-invalid' : ''"
+                (keyup)="toValidate.punongBrgy = false"
+              />
             </div>
             <div class="col-lg-12">
               <label>Contact Number:</label>
-              <input type="text" class="form-control mb-2" [(ngModel)]="data.contactNo">
+              <input
+                type="text"
+                class="form-control mb-2"
+                [(ngModel)]="data.contactNo"
+              />
             </div>
             <div class="col-lg-12">
               <label>Location of Barangay Hall:</label>
-              <input type="text" class="form-control mb-2" [(ngModel)]="data.address"
-                [ngClass]="toValidate.address?'is-invalid':''" (keyup)="toValidate.address=false">
+              <input
+                type="text"
+                class="form-control mb-2"
+                [(ngModel)]="data.address"
+                [ngClass]="toValidate.address ? 'is-invalid' : ''"
+                (keyup)="toValidate.address = false"
+              />
             </div>
             <div class="col-lg-12">
               <label>Number of Puroks:</label>
-              <input type="number" class="form-control mb-2" [(ngModel)]="data.purokNo"
-                [ngClass]="toValidate.purokNo?'is-invalid':''" (keyup)="toValidate.purokNo=false">
+              <input
+                type="number"
+                class="form-control mb-2"
+                [(ngModel)]="data.purokNo"
+                [ngClass]="toValidate.purokNo ? 'is-invalid' : ''"
+                (keyup)="toValidate.purokNo = false"
+              />
             </div>
             <div class="col-lg-12">
               <label>Barangay Land Area (HAS):</label>
-              <input type="number" class="form-control mb-2" [(ngModel)]="data.landArea">
-            </div><br><br>
+              <input
+                type="number"
+                class="form-control mb-2"
+                [(ngModel)]="data.landArea"
+              />
+            </div>
+            <br /><br />
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" (click)="isAdd ? AddData():EditData()"><i
-                class="fa fa-check"></i>
-              Save Changes</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal"><i
-                class="fa fa-time"></i>Close</button>
-
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="isAdd ? AddData() : EditData()"
+            >
+              <i class="fa fa-check"></i> Save Changes
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              <i class="fa fa-time"></i>Close
+            </button>
           </div>
         </div>
       </div>
@@ -163,13 +261,26 @@
   </div>
 
   <!-- gmap modal area -->
-  <div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+  <div
+    class="modal fade"
+    id="gmapModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">SEPS GEOLOCATION TAGGING</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <h5 class="modal-title" id="exampleModalLabel">
+            SEPS GEOLOCATION TAGGING
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -178,11 +289,19 @@
         </div>
         <div class="modal-footer">
           <app-admin>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" (click)="EditData()">Save
-              changes</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary" (click)="EditData()">
+              Save changes
+            </button>
           </app-admin>
         </div>
       </div>
     </div>
   </div>
+</div>
