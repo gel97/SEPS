@@ -11,17 +11,20 @@ import { ImportComponent } from 'src/app/components/import/import.component';
 import { PdfComponent } from 'src/app/components/pdf/pdf.component';
 import { PdfService } from 'src/app/services/pdf.service';
 import { ReportsService } from 'src/app/shared/Tools/reports.service';
+import { isEmpty } from 'rxjs';
+import { isEmptyObject } from 'jquery';
 @Component({
   selector: 'app-geo-profile',
   templateUrl: './geo-profile.component.html',
   styleUrls: ['./geo-profile.component.css'],
 })
 export class GeoProfileComponent implements OnInit {
-  @ViewChild(GmapComponent)
-  private gmapComponent!: GmapComponent;
-
   @ViewChild(ImportComponent)
   private importComponent!: ImportComponent;
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void } };
+  @ViewChild(GmapComponent)
+  private gmapComponent!: GmapComponent;
 
   @ViewChild(PdfComponent)
   private pdfComponent!: PdfComponent;
@@ -44,14 +47,56 @@ export class GeoProfileComponent implements OnInit {
   updategeo: any = {};
   inputDisabled: boolean = false;
   editgeo: any = {};
+  editmodal: any = {};
+  UpdateMunCity: any = {};
   toValidate: any = {};
   isAdd: boolean = true;
   MunLoc: any = [];
   munCity: any = {};
+  allList: any = [];
+  isPhyGeoBrgy: boolean = true;
 
+  UpdateBarangay: any = {};
+  listGeoProfBrgy: any = [];
+  listBarangay: any = [];
+  geobrgy: any = {};
+  listData: any = [];
+  data: any = {};
   date = new DatePipe('en-PH');
 
+  markerObj: any = {};
+
+  SetMarker(data: any = {}) {
+    console.log('lnglat: ', data.longtitude + ' , ' + data.latitude);
+
+    this.markerObj = {
+      lat: data.latitude,
+      lng: data.longtitude,
+      label: data.brgyName.charAt(0),
+      brgyName: data.brgyName,
+      munCityName: this.munCityName,
+      draggable: true,
+    };
+    this.gmapComponent.setMarker(this.markerObj);
+  }
   ngOnInit(): void {
+    this.GmapLocation();
+    this.Init();
+  }
+  SetMarker2(data: any = {}) {
+    console.log('lnglat: ', data.longtitude + ' , ' + data.latitude);
+
+    this.markerObj = {
+      lat: data.latitude,
+      lng: data.longitude,
+      label: data.brgyName.charAt(0),
+      brgyName: data.brgyName,
+      munCityName: this.munCityName,
+      draggable: true,
+    };
+    this.gmapComponent.setMarker(this.markerObj);
+  }
+  ngOnInit2(): void {
     this.GmapLocation();
     this.Init();
   }
@@ -62,7 +107,7 @@ export class GeoProfileComponent implements OnInit {
     this.service.Import().subscribe({
       next: (data) => {
         this.Init();
-        if(data === null){
+        if (data === null) {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -75,14 +120,12 @@ export class GeoProfileComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'info',
             title: 'No data from previous year',
           });
-        }
-        else
-        {
+        } else {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -95,7 +138,7 @@ export class GeoProfileComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'success',
             title: 'Imported Successfully',
@@ -123,7 +166,13 @@ export class GeoProfileComponent implements OnInit {
       complete: () => {},
     });
   }
-
+  handleOnTabChange(isPhyGeoBrgy: boolean) {
+    this.isPhyGeoBrgy = isPhyGeoBrgy;
+    // this.p          = 1;
+    // this.p2         = 1;
+    // this.tableSize  = 5;
+    // this.tableSize2 = 5;
+  }
   reports: any = [];
   GeneratePDF() {
     let data: any = [];
@@ -144,121 +193,125 @@ export class GeoProfileComponent implements OnInit {
           return groups;
         }, {});
 
-         // Create the table
-         const tableData: any = [];
-         tableData.push([
-           {
-             text: 'Municipality/ City',
-             fillColor: 'black',
-             color: 'white',
-             bold: true,
-             alignment: 'center',
-           },
-           {
-             text: 'Total Land Area (Has)',
-             fillColor: 'black',
-             color: 'white',
-             bold: true,
-             alignment: 'center',
-           },
-           {
-             text: 'As of Year',
-             fillColor: 'black',
-             color: 'white',
-             bold: true,
-             alignment: 'center',
-           },
-           {
-             text: 'Residential Area (Has)',
-             fillColor: 'black',
-             color: 'white',
-             bold: true,
-             alignment: 'center',
-           },
-           {
-             text: 'Commercial (Has)',
-             fillColor: 'black',
-             color: 'white',
-             bold: true,
-             alignment: 'center',
-           },
-           {
-             text: 'Industrial (Has)',
-             fillColor: 'black',
-             color: 'white',
-             bold: true,
-             alignment: 'center',
-           },
-           {
-             text: 'Agricultural (Has)',
-             fillColor: 'black',
-             color: 'white',
-             bold: true,
-             alignment: 'center',
-           },
-           {
-             text: 'Institutional (Has)',
-             fillColor: 'black',
-             color: 'white',
-             bold: true,
-             alignment: 'center',
-           },
-           {
-             text: 'Forest Lands (Has)',
-             fillColor: 'black',
-             color: 'white',
-             bold: true,
-             alignment: 'center',
-           },
-           {
-             text: 'Open Spaces (Has)',
-             fillColor: 'black',
-             color: 'white',
-             bold: true,
-             alignment: 'center',
-           },
-           {
-             text: 'Quarry (Has)',
-             fillColor: 'black',
-             color: 'white',
-             bold: true,
-             alignment: 'center',
-           },
-           {
-             text: 'Fish Ponds (Has)',
-             fillColor: 'black',
-             color: 'white',
-             bold: true,
-             alignment: 'center',
-           },
-           {
-             text: 'Other Land Uses (Has)',
-             fillColor: 'black',
-             color: 'white',
-             bold: true,
-             alignment: 'center',
-           }
-         ]);
+        // Create the table
+        const tableData: any = [];
+        tableData.push([
+          {
+            text: 'Municipality/ City',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'Total Land Area (Has)',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'As of Year',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'Residential Area (Has)',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'Commercial (Has)',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'Industrial (Has)',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'Agricultural (Has)',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'Institutional (Has)',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'Forest Lands (Has)',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'Open Spaces (Has)',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'Quarry (Has)',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'Fish Ponds (Has)',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'Other Land Uses (Has)',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+        ]);
 
         // Iterate over each group and add it to the PDF
         for (const groupKey in groupedData) {
           const group = groupedData[groupKey];
           const [district] = groupKey.split('-');
 
-         
-          if(district === '1'){
+          if (district === '1') {
             tableData.push([
-              { text: `1st Congressional District `, colSpan: 13, alignment: 'left',
-              fillColor: '#526D82'}
-            ],
-              );
-          }
-          else{
+              {
+                text: `1st Congressional District `,
+                colSpan: 13,
+                alignment: 'left',
+                fillColor: '#526D82',
+              },
+            ]);
+          } else {
             tableData.push([
-              { text: `2nd Congressional District `, colSpan: 13, alignment: 'left',
-              fillColor: '#526D82' }
-            ],
-              );
+              {
+                text: `2nd Congressional District `,
+                colSpan: 13,
+                alignment: 'left',
+                fillColor: '#526D82',
+              },
+            ]);
           }
 
           group.forEach((item: any, index: any) => {
@@ -315,13 +368,26 @@ export class GeoProfileComponent implements OnInit {
                 text: item.otherUses,
                 fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
               },
-             
             ]);
           });
           const table = {
             margin: [0, 40, 0, 0],
             table: {
-              widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
+              widths: [
+                'auto',
+                'auto',
+                'auto',
+                'auto',
+                'auto',
+                'auto',
+                'auto',
+                'auto',
+                'auto',
+                'auto',
+                'auto',
+                'auto',
+                'auto',
+              ],
               body: tableData,
             },
             layout: 'lightHorizontalLines',
@@ -334,7 +400,7 @@ export class GeoProfileComponent implements OnInit {
       },
       complete: () => {
         let isPortrait = false;
-        this.pdfService.GeneratePdf(data[0], isPortrait, "");
+        this.pdfService.GeneratePdf(data[0], isPortrait, '');
         console.log(data);
       },
     });
@@ -346,23 +412,14 @@ export class GeoProfileComponent implements OnInit {
     this.viewData = true;
   }
 
-  markerObj: any = {};
-
-  SetMarker(data: any = {}) {
-    console.log('lnglat: ', data.longtitude + ' , ' + data.latitude);
-
-    this.markerObj = {
-      lat: data.latitude,
-      lng: data.longtitude,
-      label: null,
-      brgyName: null,
-      munCityName: null,
-      draggable: true,
-    };
-    this.gmapComponent.setMarker(this.markerObj);
-  }
   message = 'Physical / Geographic Profile';
   Init() {
+    this.GetListBarangay();
+    this.GetPhyGeoBrgy();
+    this.GetGeoProf();
+  }
+
+  GetGeoProf() {
     this.service.GetGeo().subscribe((data) => {
       this.ViewGeo = <any>data;
       console.log('viewgeo', this.ViewGeo);
@@ -379,6 +436,55 @@ export class GeoProfileComponent implements OnInit {
         console.log('tru or false', this.viewData);
       } else {
         this.viewData = false;
+      }
+    });
+  }
+  GetPhyGeoBrgy() {
+    this.service.GetPhyGeoBrgy().subscribe({
+      next: (response) => {
+        this.listGeoProfBrgy = <any>response;
+        console.log(this.listGeoProfBrgy);
+      },
+      error: (error) => {
+        console.error('Error fetching phy geo brgy', error);
+      },
+      complete: () => {
+        this.GetListBarangay();
+      },
+    });
+  }
+
+  GetListBarangay() {
+    this.service.ListOfBarangay(this.auth.munCityId).subscribe({
+      next: (response) => {
+        this.listBarangay = <any>response;
+        this.FilterList();
+      },
+      error: (error) => {
+        console.error('Error fetching barangay list', error);
+      },
+    });
+  }
+  FilterList() {
+    let isExist;
+    this.listData = [];
+
+    this.listBarangay.forEach((a: any) => {
+      this.listGeoProfBrgy.forEach((b: any) => {
+        if (a.brgyId == b.brgyId) {
+          isExist = this.listData.filter((x: any) => x.brgyId == a.brgyId);
+          if (isExist.length == 0) {
+            this.listData.push(b);
+          }
+        }
+      });
+
+      isExist = this.listData.filter((x: any) => x.brgyId == a.brgyId);
+      if (isExist.length == 0) {
+        this.listData.push({
+          brgyId: a.brgyId,
+          brgyName: a.brgyName,
+        });
       }
     });
   }
@@ -404,44 +510,125 @@ export class GeoProfileComponent implements OnInit {
       },
     });
   }
+  //PhyGeoProfBrgy-----------------------------------
+  AddData() {
+    if (isEmptyObject(this.data)) {
+      Swal.fire(
+        'Missing Data!',
+        'Please fill out the required fields',
+        'warning'
+      );
+    } else {
+      this.data.munCityId = this.auth.munCityId;
+      this.data.setYear = this.auth.activeSetYear;
+      this.service.AddPhyGeoBrgy(this.data).subscribe({
+        next: (request) => {
+          let index = this.listData.findIndex(
+            (obj: any) => obj.brgyId === this.data.brgyId
+          );
+          this.listData[index] = request;
+        },
+        complete: () => {
+          this.data = {};
+          this.closebutton.nativeElement.click();
+
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Your work has been saved',
+            showConfirmButton: false,
+            timer: 1000,
+          });
+        },
+      });
+    }
+  }
+
+  EditData() {
+    this.data.setYear = this.auth.activeSetYear;
+    this.service.EditPhyGeoBrgy(this.data).subscribe({
+      next: (request) => {
+        this.closebutton.nativeElement.click();
+        this.data = {};
+      },
+      complete: () => {
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Your work has been updated',
+          showConfirmButton: false,
+          timer: 1000,
+        });
+      },
+    });
+  }
+  //GeoMapBarangay
+  updateM() {
+    this.geobrgy.longtitude = this.gmapComponent.markers.lng;
+    this.geobrgy.latitude = this.gmapComponent.markers.lat;
+    this.geobrgy.setYear = this.auth.activeSetYear;
+    this.service.EditPhyGeoBrgy(this.geobrgy).subscribe({
+      next: (_data) => {
+        this.Init();
+        this.geobrgy = {};
+      },
+    });
+
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'Your work has been updated',
+      showConfirmButton: false,
+      timer: 1000,
+    });
+  }
+  DeleteData(transId: any, index: any, data: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.service.DeletePhyGeoBrgy(transId).subscribe({
+          next: (_data) => {},
+          error: (err) => {
+            Swal.fire('Oops!', 'Something went wrong.', 'error');
+          },
+          complete: () => {
+            this.listData[index] = {};
+            this.listData[index].brgyId = data.brgyId;
+            this.listData[index].brgyName = data.brgyName;
+            Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+          },
+        });
+      }
+    });
+  }
 
   AddGeo() {
     this.toValidate.totalLandArea =
-      this.geo.totalLandArea == null
-        ? true
-        : false;
+      this.geo.totalLandArea == null ? true : false;
     this.toValidate.setYear =
       this.geo.setYear == '' || this.geo.setYear == undefined ? true : false;
     this.toValidate.residential =
-      this.geo.residential == undefined
-        ? true
-        : false;
+      this.geo.residential == undefined ? true : false;
     this.toValidate.commercial =
-       this.geo.commercial == undefined
-        ? true
-        : false;
-    this.toValidate.industrial =
-     this.geo.industrial == null ? true : false;
+      this.geo.commercial == undefined ? true : false;
+    this.toValidate.industrial = this.geo.industrial == null ? true : false;
     this.toValidate.agricultural =
-      this.geo.agricultural == undefined
-        ? true
-        : false;
+      this.geo.agricultural == undefined ? true : false;
     this.toValidate.institutional =
-       this.geo.institutional == undefined
-        ? true
-        : false;
+      this.geo.institutional == undefined ? true : false;
     this.toValidate.forestLand =
-       this.geo.forestLand == undefined
-        ? true
-        : false;
-    this.toValidate.openSpaces =
-       this.geo.openSpaces == null ? true : false;
-    this.toValidate.fishpond =
-       this.geo.fishpond == undefined ? true : false;
+      this.geo.forestLand == undefined ? true : false;
+    this.toValidate.openSpaces = this.geo.openSpaces == null ? true : false;
+    this.toValidate.fishpond = this.geo.fishpond == undefined ? true : false;
     this.toValidate.quarryAreas =
-       this.geo.quarryAreas == undefined
-        ? true
-        : false;
+      this.geo.quarryAreas == undefined ? true : false;
     this.toValidate.otherUses =
       this.geo.otherUses == '' || this.geo.otherUses == undefined
         ? true
@@ -498,41 +685,24 @@ export class GeoProfileComponent implements OnInit {
   //for modal
   update_Geo() {
     this.toValidate.totalLandArea =
-       this.geo.totalLandArea == null
-        ? true
-        : false;
+      this.geo.totalLandArea == null ? true : false;
     this.toValidate.setYear =
       this.geo.setYear == '' || this.geo.setYear == undefined ? true : false;
     this.toValidate.residential =
-       this.geo.residential == undefined
-        ? true
-        : false;
+      this.geo.residential == undefined ? true : false;
     this.toValidate.commercial =
-       this.geo.commercial == undefined
-        ? true
-        : false;
-    this.toValidate.industrial =
-       this.geo.industrial == null ? true : false;
+      this.geo.commercial == undefined ? true : false;
+    this.toValidate.industrial = this.geo.industrial == null ? true : false;
     this.toValidate.agricultural =
-       this.geo.agricultural == undefined
-        ? true
-        : false;
+      this.geo.agricultural == undefined ? true : false;
     this.toValidate.institutional =
-       this.geo.institutional == undefined
-        ? true
-        : false;
+      this.geo.institutional == undefined ? true : false;
     this.toValidate.forestLand =
-      this.geo.forestLand == undefined
-        ? true
-        : false;
-    this.toValidate.openSpaces =
-       this.geo.openSpaces == null ? true : false;
-    this.toValidate.fishpond =
-       this.geo.fishpond == undefined ? true : false;
+      this.geo.forestLand == undefined ? true : false;
+    this.toValidate.openSpaces = this.geo.openSpaces == null ? true : false;
+    this.toValidate.fishpond = this.geo.fishpond == undefined ? true : false;
     this.toValidate.quarryAreas =
-       this.geo.quarryAreas == undefined
-        ? true
-        : false;
+      this.geo.quarryAreas == undefined ? true : false;
     this.toValidate.otherUses =
       this.geo.otherUses == '' || this.geo.otherUses == undefined
         ? true
@@ -562,11 +732,11 @@ export class GeoProfileComponent implements OnInit {
         'Please fill out the required fields',
         'warning'
       );
-    } else{
-      if(
+    } else {
+      if (
         this.gmapComponent.markers.lng !== undefined &&
         this.gmapComponent.markers.lat !== undefined
-      ){
+      ) {
         this.editgeo.longitude = this.gmapComponent.markers.lng;
         this.editgeo.latitude = this.gmapComponent.markers.lat;
       }
@@ -584,7 +754,6 @@ export class GeoProfileComponent implements OnInit {
       });
       document.getElementById('exampleModalLong')?.click();
       this.editgeo = {};
-
     }
   }
 
