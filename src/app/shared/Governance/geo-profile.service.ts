@@ -94,7 +94,7 @@ export class GeoProfileService {
   }
   EditPhyGeoBrgy(geobrgy: any = {}) {
     geobrgy.latitude = Number(geobrgy.latitude);
-    geobrgy.longtitude = Number(geobrgy.longtitude);
+    geobrgy.longitude = Number(geobrgy.longitude);
     console.log(geobrgy);
     return this.Http.put(
       this.Base.url + this.ApiUrl.put_update_profbrgy(),

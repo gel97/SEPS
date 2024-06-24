@@ -19,7 +19,7 @@
     <!-- gmap modal area -->
     <!-- <div
       class="modal fade"
-      id="gmapModal"
+      id="gmapModal2"
       tabindex="-1"
       role="dialog"
       aria-labelledby="exampleModalLabel"
@@ -53,10 +53,10 @@
                 </button>
                 <button
                   type="button"
-                  class="btn btn-primary"
-                  (click)="update_Geo(); UpdateMunCity = true"
+                  class="btn btn-secondary"
+                  (click)="updateGeo()"
                 >
-                  Save changes
+                  Update Geo
                 </button>
               </app-admin>
             </div>
@@ -460,6 +460,54 @@
                       </tr>
                     </tbody>
                   </table>
+                  <table class="table table-striped">
+                    <thead class="table-dark">
+                      <tr>
+                        <th style="width: 400px">
+                          <strong>3.Geo-Coord. (Long, Lat)</strong>
+                        </th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <label class="labelForm" for="geo_TAreaReclassified"
+                            >Longitude :
+                          </label>
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="longitude"
+                            name="longitude"
+                            [(ngModel)]="geo.longitude"
+                            [disabled]="inputDisabled"
+                            placeholder=""
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <label class="labelForm" for="geo_Remarks"
+                            >Latitude :
+                          </label>
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="latitude"
+                            name="latitude"
+                            [(ngModel)]="geo.latitude"
+                            [disabled]="inputDisabled"
+                            placeholder=""
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                   <div class="form-inline float-right">
                     <div class="d-inline-flex">
                       <button
@@ -492,7 +540,11 @@
                             <i class="fa fa-trash"></i></button></app-admin
                         >&nbsp;
                         <button
-                          (click)="SetMarker2(munCity); editgeo = munCity"
+                          (click)="
+                            SetMarker(munCity);
+                            editgeo = munCity;
+                            updateForm = false
+                          "
                           class="btn btn-success btn-circle"
                           role="button"
                           data-toggle="modal"
@@ -595,7 +647,11 @@
                               </button> </app-admin
                             >&nbsp;
                             <button
-                              (click)="SetMarker(item); geobrgy = item"
+                              (click)="
+                                SetMarker(item);
+                                geobrgy = item;
+                                updateForm = true
+                              "
                               class="btn btn-success btn-circle"
                               role="button"
                               data-toggle="modal"
@@ -1192,12 +1248,24 @@
         <button type="button" class="btn btn-secondary" data-dismiss="modal">
           Close
         </button>
+
         <button
           type="button"
           class="btn btn-primary"
-          (click)="updateM(); UpdateBarangay = true"
+          *ngIf="!updateForm"
+          (click)="updateGeo()"
+          style="font-size: 15px"
         >
-          Save changes
+          updateGeo
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          *ngIf="updateForm"
+          (click)="updateM()"
+          style="font-size: 15px"
+        >
+          updateM
         </button>
       </div>
     </div>

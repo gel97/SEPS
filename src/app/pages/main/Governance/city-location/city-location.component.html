@@ -5,83 +5,192 @@
       <div class="row">
         <div class="col-lg-12">
           <div class="p-5">
-            <div class="">
-
-            </div>
+            <div class=""></div>
             <div class="text-center">
-              <h1 class="h4 text-gray-900 mb-4">Locations of Municipalities/ Cities Administrative Buildings</h1>
-              <label><strong>Governance - Locations of Municipalities/ Cities Administrative
-                  Buildings</strong></label><br>
+              <h1 class="h4 text-gray-900 mb-4">
+                Locations of Municipalities/ Cities Administrative Buildings
+              </h1>
+              <label
+                ><strong
+                  >Governance - Locations of Municipalities/ Cities
+                  Administrative Buildings</strong
+                ></label
+              ><br />
             </div>
-            <br>
+            <br />
 
+            <div class="form-inline float-right "  *ngIf="!isMunLocBuilding">
+              <form class=>
+                <app-admin>
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd "><i
+                      class="fa fa-plus"></i>
+                      Administrative Buildings
+                  </button>
+                </app-admin>
+              </form>
+            </div><br><br>
             <div class="row">
-              <div class="col-lg-9"><br>
+              <div class="col-lg-9">
+                <br />
                 <p></p>
               </div>
-              <div class="col-lg-3">
-
-              </div>
+              <div class="col-lg-3"></div>
             </div>
-
 
             <div class="form-group">
               <div class="row">
-                <div class="row">
-
+                <div class="row"></div>
+                <div class="input-group col-sm-3">
+                  <input
+                    type="text"
+                    class="form-control bg-light border-0 small"
+                    placeholder="Search for..."
+                    aria-label="Search"
+                    aria-describedby="basic-addon2"
+                    [(ngModel)]="searchText"
+                  />
                 </div>
-                <div class="table-responsive">
+                <br /><br />
+                <ul class="nav nav-tabs pb-2">
+                  <li class="nav-item" (click)="handleOnTabChange(true)">
+                    <a
+                      class="nav-link x-cursor"
+                      [ngClass]="isMunLocBuilding ? 'active fw-bold' : ''"
+                      aria-current="page"
+                      >Locations of Municipalities/ Cities
+                    </a>
+                  </li>
+                  <li class="nav-item" (click)="handleOnTabChange(false)">
+                    <a
+                      class="nav-link x-cursor"
+                      [ngClass]="!isMunLocBuilding ? 'active fw-bold' : ''"
+                      >Administrative Buildings</a
+                    >
+                  </li>
+                </ul>
+                <div class="table-responsive" *ngIf="!isMunLocBuilding">
                   <div class="table-responsive">
-                    <div class="input-group col-sm-3">
-                      <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                          aria-label="Search" aria-describedby="basic-addon2" [(ngModel)]="searchText">
-                  </div>
-                  <br>
-                  <table class="table table-framed table-hover table-striped">
-                    <thead class="table-dark">
-                      <tr>
-                        <th scope="col"></th>
-                        <th scope="col">Municipality/City</th>
+                    <br />
+                    <table class="table table-framed table-hover table-striped">
+                      <thead class="table-dark">
+                        <tr>
+                          <th scope="col">#</th>
+                        <th scope="col">Municipality/City Buildings</th>
                         <th scope="col">Geo-Coord. (Long, Lat)</th>
-                        <th width="8%"></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let text of MunLoc | search: searchText | paginate:{
-                          itemsPerPage: tableSize,
-                          currentPage: p,
-                          totalItems:count};">
-                        <td></td>
-                        <td>{{text.munCityName}}</td>
-                        <td>{{text.longtitude}}, {{text.latitude}}</td>
-                        <td>
+                        <th scope="col"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let dataItem of dataList; let i = index;">
+                          <td>{{ i + 1 }}</td>
+                          <td>{{ dataItem.munCityBuildingName }}</td>
+                          <td>{{ dataItem.longtitude }}, {{ dataItem.latitude }}</td>
+                          <td>
+                            <div class="d-inline-flex">
+                              <button type="button" title="Edit" class="btn btn-info btn-circle"
+                                      (click)="edit = dataItem " data-toggle="modal" data-target="#Edit">
+                                <i class="fa fa-pen"></i>
+                              </button>
+                              <button type="button" title="Delete" class="btn btn-warning btn-circle"  (click)="delete(dataItem.transId,i)">
+                                <i class="fa fa-trash"></i>
+                              </button>
+                              <button type="button" title="View on Map" class="btn btn-success btn-circle"
+                                      data-toggle="modal" data-target="#exampleModal">
+                                <i class="fa fa-globe"></i>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
 
-                          <button type="button" (click)="SetMarker(text);editmodal=text"
-                            class="btn btn-success btn-circle" data-toggle="modal" data-target="#exampleModal"><i
-                              class="fa fa-globe"></i> </button>&nbsp;
+                  <!-- Pagination Control -->
 
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <!-- <div class="row">
+                    <div class="col-lg-12">
+                      <form class="form-inline float-right">
+                        <pagination-controls
+                          previousLabel="Prev"
+                          currentPage="Next"
+                          (pageChange)="onTableDataChange($event)"
+                        >
+                        </pagination-controls>
+                        <ul>
+                          <select (change)="onTableSizeChange($event)">
+                            <option *ngFor="let size of tableSizes">
+                              {{ size }}
+                            </option>
+                          </select>
+                        </ul>
+                      </form>
+                    </div>
+                  </div> -->
                 </div>
+                <div class="table-responsive" *ngIf="isMunLocBuilding">
+                  <div class="table-responsive">
+                    <br />
+                    <table class="table table-framed table-hover table-striped">
+                      <thead class="table-dark">
+                        <tr>
+                          <th scope="col"></th>
+                          <th scope="col">Municipality/City</th>
+                          <th scope="col">Geo-Coord. (Long, Lat)</th>
+                          <th width="8%"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          *ngFor="
+                            let text of MunLoc
+                              | search : searchText
+                              | paginate
+                                : {
+                                    itemsPerPage: tableSize,
+                                    currentPage: p,
+                                    totalItems: count
+                                  }
+                          "
+                        >
+                          <td></td>
+                          <td>{{ text.munCityName }}</td>
+                          <td>{{ text.longtitude }}, {{ text.latitude }}</td>
+                          <td>
+                            <button
+                              type="button"
+                              (click)="SetMarker(text); editmodal = text"
+                              class="btn btn-success btn-circle"
+                              data-toggle="modal"
+                              data-target="#exampleModal"
+                            >
+                              <i class="fa fa-globe"></i></button
+                            >&nbsp;
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
 
-                <!-- Pagination Control -->
+                  <!-- Pagination Control -->
 
-                <div class="row">
-                  <div class="col-lg-12">
-                    <form class="form-inline float-right ">
-                      <pagination-controls previousLabel="Prev" currentPage="Next"
-                        (pageChange)="onTableDataChange($event)">
-                      </pagination-controls>
-                      <ul>
-                        <select (change)="onTableSizeChange($event)">
-                          <option *ngFor="let size of tableSizes ">
-                            {{size}}
-                          </option>
-                        </select>
-                      </ul>
-                    </form>
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <form class="form-inline float-right">
+                        <pagination-controls
+                          previousLabel="Prev"
+                          currentPage="Next"
+                          (pageChange)="onTableDataChange($event)"
+                        >
+                        </pagination-controls>
+                        <ul>
+                          <select (change)="onTableSizeChange($event)">
+                            <option *ngFor="let size of tableSizes">
+                              {{ size }}
+                            </option>
+                          </select>
+                        </ul>
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -91,28 +200,121 @@
       </div>
     </div>
   </div>
+   <!-- Add Mun Building (Modal) -->
+   <div class="modal fade bd-example-modal-lg" id="ModalAdd" tabindex="-1" role="dialog"
+   aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title" id="exampleModalLabel">Administrative Buildings</h5>
+         <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+         </button>
+       </div>
+       <div class="modal-body">
+         <div class="row">
+
+           <div class="row">
+             <div class="col-lg-12"><br>
+               <label for="exampleFormControlTextarea1">Name of Buildings :</label>
+               <input type="text" class="form-control" id="" name="" [(ngModel)]="addData.munCityBuildingName" [ngClass]="toValidate.munCityBuildingName?'is-invalid':''" (keyup)="toValidate.munCityBuildingName=false">
+             </div>
+           </div>
+         </div>
+       </div>
+       <div class="modal-footer">
+         <div class="left-absolute" *ngIf="visible">
+           <div class="form-check">
+             <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+               (ngModelChange)="onChange(isCheck)" [(ngModel)]="isCheck">
+             <label class="form-check-label" for="flexCheckDefault">
+               Several data
+             </label>
+           </div>
+         </div>
+         <button type="button" class="btn btn-primary" (click)="AddBuild()" ><i
+             class="fa fa-check"></i>Save</button>&nbsp;
+         <!-- <button type ="button" class="btn btn-secondary" *ngIf="updateOfficial" (click) ="city={}"><i class="fa fa-times"></i>Cancel</button> -->
+         <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
+       </div>
+     </div>
+   </div>
+ </div>
+ <!--Edit Fiscal (Modal) -->
+ <div class="modal fade" id="Edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+ aria-hidden="true">
+ <div class="modal-dialog" role="document">
+   <div class="modal-content">
+     <div class="modal-header">
+       <h5 class="modal-title" id="exampleModalLabel">Fiscal Matters Data</h5>
+       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+         <span aria-hidden="true">&times;</span>
+       </button>
+     </div>
+     <div class="modal-body">
+      <div class="row">
+
+        <div class="row">
+          <div class="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1">Name of Buildings :</label>
+            <input type="text" class="form-control" id="" name="edit" [(ngModel)]="edit.munCityBuildingName"  [ngClass]="toValidate.munCityBuildingName?'is-invalid':''" (keyup)="toValidate.munCityBuildingName=false" >
+          </div>
+        </div>
+      </div>
+     </div>
+     <div class="modal-footer">
+       <button type="button" class="btn btn-primary" (click)="EditData()"><i class="fa fa-check"></i>Save
+         Changes</button>&nbsp;
+       <button type="button" class="btn btn-secondary" data-dismiss="modal"> <i
+           class="fa fa-times"></i>Cancel</button>
+     </div>
+   </div>
+ </div>
 </div>
 
-<!-- modal area -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">SEPS GEOLOCATION TAGGING</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <app-gmap></app-gmap>
-      </div>
-      <div class="modal-footer">
-        <app-admin>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" (click)="updateM()">Save changes</button>
-        </app-admin>
+  <!-- modal area -->
+  <div
+    class="modal fade"
+    id="exampleModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">
+            SEPS GEOLOCATION TAGGING
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <app-gmap></app-gmap>
+        </div>
+        <div class="modal-footer">
+          <app-admin>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary" (click)="saveChanges()">
+              Save changes
+            </button>
+          </app-admin>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
