@@ -25,6 +25,8 @@ export class MunCityLocService {
   }
 
   UpdateMunCity(MunLoc: any = {}) {
+    MunLoc.latitude = Number(MunLoc.latitude);
+    MunLoc.longtitude = Number(MunLoc.longtitude);
     console.log(MunLoc);
     return this.Http.post(
       this.Base.url + this.ApiUrl.post_update_muncity(),
@@ -56,8 +58,8 @@ export class MunCityLocService {
     MunBuild.latitude = Number(MunBuild.latitude);
     MunBuild.longtitude = Number(MunBuild.longtitude);
     console.log(MunBuild);
-    return this.Http.post(
-      this.Base.url + this.ApiUrl.put_update_Building(),
+    return this.Http.put(
+      this.Base.url + this.ApiUrl.post_update_Building(),
       MunBuild,
       { responseType: 'json' }
     );
@@ -66,7 +68,7 @@ export class MunCityLocService {
   DeleteBuilding(transId: any) {
     return this.Http.delete(
       this.Base.url + this.ApiUrl.delete_building(transId),
-      { responseType: 'json' }
+      { responseType: 'text' }
     );
   }
 }

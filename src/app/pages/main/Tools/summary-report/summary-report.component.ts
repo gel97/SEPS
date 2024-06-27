@@ -20563,49 +20563,20 @@ export class SummaryReportComponent implements OnInit {
     pdf_title = 'Cooperatives';
     countWidth = 7;
     columnsData.push(
-      {
-        text: '#',
-        bold: true,
-        alignment: 'center',
-      },
-      {
-        text: 'Name of Cooperative',
-        bold: true,
-        alignment: 'center',
-      },
-      {
-        text: 'Contact Person/ Designation',
-        bold: true,
-        alignment: 'center',
-      },
-      {
-        text: 'Contact Details',
-        bold: true,
-        alignment: 'center',
-      },
-      {
-        text: 'Barangay',
-        bold: true,
-        alignment: 'center',
-      },
-      {
-        text: 'No. of Members',
-        bold: true,
-        alignment: 'center',
-      },
-      {
-        text: 'Total Assets',
-        bold: true,
-        alignment: 'center',
-      }
+      { text: '#', bold: true, alignment: 'center' },
+      { text: 'Name of Cooperative', bold: true, alignment: 'center' },
+      { text: 'Contact Person/ Designation', bold: true, alignment: 'center' },
+      { text: 'Contact Details', bold: true, alignment: 'center' },
+      { text: 'Barangay', bold: true, alignment: 'center' },
+      { text: 'No. of Members', bold: true, alignment: 'center' },
+      { text: 'Total Assets', bold: true, alignment: 'center' }
     );
 
     for (let index = 0; index < countWidth; index++) {
       if (index === 0) {
         columnsWidth.push(25);
-      }
-      if (index > 0) {
-        columnsWidth.push('*');
+      } else {
+        columnsWidth.push('auto'); // Let the library auto-calculate width based on content
       }
     }
 
@@ -20667,43 +20638,26 @@ export class SummaryReportComponent implements OnInit {
             colSpan: countWidth,
             alignment: 'left',
           },
+          ...Array(countWidth - 1).fill({}),
         ]);
 
         for (const groupKey1 in dist1Group) {
-          // Iterate district I data
           const group1 = dist1Group[groupKey1];
           const [cityName1] = groupKey1.split('-');
           tableData.push([
-            {
-              text: cityName1,
-              colSpan: countWidth,
-              alignment: 'left',
-            },
+            { text: cityName1, colSpan: countWidth, alignment: 'left' },
+            ...Array(countWidth - 1).fill({}),
           ]);
 
           group1.forEach((item: any, index: any) => {
             tableData.push([
-              {
-                text: index + 1,
-              },
-              {
-                text: item.name,
-              },
-              {
-                text: item.contactPerson,
-              },
-              {
-                text: item.contactNo,
-              },
-              {
-                text: item.brgyName,
-              },
-              {
-                text: item.members,
-              },
-              {
-                text: item.totAssets,
-              },
+              { text: index + 1 },
+              { text: item.name },
+              { text: item.contactPerson },
+              { text: item.contactNo },
+              { text: item.brgyName },
+              { text: item.members },
+              { text: item.totAssets },
             ]);
           });
         }
@@ -20714,43 +20668,26 @@ export class SummaryReportComponent implements OnInit {
             colSpan: countWidth,
             alignment: 'left',
           },
+          ...Array(countWidth - 1).fill({}),
         ]);
 
         for (const groupKey2 in dist2Group) {
-          // Iterate district II data
           const group2 = dist2Group[groupKey2];
           const [cityName2] = groupKey2.split('-');
           tableData.push([
-            {
-              text: cityName2,
-              colSpan: countWidth,
-              alignment: 'left',
-            },
+            { text: cityName2, colSpan: countWidth, alignment: 'left' },
+            ...Array(countWidth - 1).fill({}),
           ]);
 
           group2.forEach((item: any, index: any) => {
             tableData.push([
-              {
-                text: index + 1,
-              },
-              {
-                text: item.name,
-              },
-              {
-                text: item.contactPerson,
-              },
-              {
-                text: item.contactNo,
-              },
-              {
-                text: item.brgyName,
-              },
-              {
-                text: item.members,
-              },
-              {
-                text: item.totAssets,
-              },
+              { text: index + 1 },
+              { text: item.name },
+              { text: item.contactPerson },
+              { text: item.contactNo },
+              { text: item.brgyName },
+              { text: item.members },
+              { text: item.totAssets },
             ]);
           });
         }
