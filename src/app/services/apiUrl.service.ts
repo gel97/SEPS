@@ -41,6 +41,7 @@ export class ApiUrl {
   post_save_profbrgy = () => `/PhyGeoProfBrgy`;
   put_update_profbrgy = () => `/PhyGeoProfBrgy`;
   delete_profbrgy = (transId: any) => `/PhyGeoProfBrgy/${transId}`;
+  post_report_geobrgy = () => `/PhyGeoProfBrgy/Reports`;
 
   // Organization & Staffing Pattern
   get_get_org = (munCityId: any, setYear: any) =>
@@ -70,6 +71,13 @@ export class ApiUrl {
   // MUN/CITY LIST
   get_all_muncity = () => `/MunLoc/List`;
   post_update_muncity = () => `/MunLoc/Update`;
+
+  // Mun Loc Building
+  get_mun_building = (munCityId: any, setYear: any) =>
+    `/MunCityBuilding/${setYear}/${munCityId}`;
+  post_save_building = () => `/MunCityBuilding`;
+  put_update_Building = () => `/MunCityBuilding`;
+  delete_building = (transId: any) => `/MunCityBuilding/${transId}`;
 
   // Demography Officials
   get_demography = (munCityId: any, setYear: any) =>

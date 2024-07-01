@@ -28,6 +28,7 @@ export class GeoProfileComponent implements OnInit {
 
   @ViewChild(PdfComponent)
   private pdfComponent!: PdfComponent;
+  instance: any;
   constructor(
     private pdfService: PdfService,
     private reportService: ReportsService,
@@ -48,15 +49,17 @@ export class GeoProfileComponent implements OnInit {
   inputDisabled: boolean = false;
   editgeo: any = {};
   editmodal: any = {};
-  UpdateMunCity: any = {};
+  UpdateMunCity: boolean = false;
   toValidate: any = {};
   isAdd: boolean = true;
   MunLoc: any = [];
   munCity: any = {};
   allList: any = [];
   isPhyGeoBrgy: boolean = true;
-
-  UpdateBarangay: any = {};
+  shouldUpdateGeo: boolean = true;
+  shouldUpdateGeoBrgy: boolean = false;
+  updateForm: boolean = false;
+  UpdateBarangay: boolean = true;
   listGeoProfBrgy: any = [];
   listBarangay: any = [];
   geobrgy: any = {};
@@ -65,26 +68,8 @@ export class GeoProfileComponent implements OnInit {
   date = new DatePipe('en-PH');
 
   markerObj: any = {};
-
   SetMarker(data: any = {}) {
-    console.log('lnglat: ', data.longtitude + ' , ' + data.latitude);
-
-    this.markerObj = {
-      lat: data.latitude,
-      lng: data.longtitude,
-      label: data.brgyName.charAt(0),
-      brgyName: data.brgyName,
-      munCityName: this.munCityName,
-      draggable: true,
-    };
-    this.gmapComponent.setMarker(this.markerObj);
-  }
-  ngOnInit(): void {
-    this.GmapLocation();
-    this.Init();
-  }
-  SetMarker2(data: any = {}) {
-    console.log('lnglat: ', data.longtitude + ' , ' + data.latitude);
+    console.log('lnglat: ', data.longitude + ' , ' + data.latitude);
 
     this.markerObj = {
       lat: data.latitude,
@@ -96,7 +81,7 @@ export class GeoProfileComponent implements OnInit {
     };
     this.gmapComponent.setMarker(this.markerObj);
   }
-  ngOnInit2(): void {
+  ngOnInit(): void {
     this.GmapLocation();
     this.Init();
   }
@@ -297,7 +282,7 @@ export class GeoProfileComponent implements OnInit {
           if (district === '1') {
             tableData.push([
               {
-                text: `1st Congressional District `,
+                text: `1st Congressional District`,
                 colSpan: 13,
                 alignment: 'left',
                 fillColor: '#526D82',
@@ -306,7 +291,7 @@ export class GeoProfileComponent implements OnInit {
           } else {
             tableData.push([
               {
-                text: `2nd Congressional District `,
+                text: `2nd Congressional District`,
                 colSpan: 13,
                 alignment: 'left',
                 fillColor: '#526D82',
@@ -564,22 +549,22 @@ export class GeoProfileComponent implements OnInit {
   }
   //GeoMapBarangay
   updateM() {
-    this.geobrgy.longtitude = this.gmapComponent.markers.lng;
+    this.geobrgy.longitude = this.gmapComponent.markers.lng;
     this.geobrgy.latitude = this.gmapComponent.markers.lat;
     this.geobrgy.setYear = this.auth.activeSetYear;
+
     this.service.EditPhyGeoBrgy(this.geobrgy).subscribe({
       next: (_data) => {
-        this.Init();
-        this.geobrgy = {};
+        this.Init(); // Call Init() or any method to refresh data
+        this.geobrgy = {}; // Clear geobrgy object
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Geo Barangay has been updated',
+          showConfirmButton: false,
+          timer: 1000,
+        });
       },
-    });
-
-    Swal.fire({
-      position: 'center',
-      icon: 'success',
-      title: 'Your work has been updated',
-      showConfirmButton: false,
-      timer: 1000,
     });
   }
   DeleteData(transId: any, index: any, data: any) {
@@ -682,7 +667,29 @@ export class GeoProfileComponent implements OnInit {
     this.Init();
   }
 
-  //for modal
+  //update Mun Map
+
+  updateGeo() {
+    // Update logic specific to updateGeo()
+    this.geo.longitude = this.gmapComponent.markers.lng;
+    this.geo.latitude = this.gmapComponent.markers.lat;
+    this.geo.setYear = this.auth.activeSetYear;
+
+    this.service.UpdateGeo(this.geo).subscribe({
+      next: (_data) => {
+        this.Init(); // Call Init() or any method to refresh data
+        this.geo = {}; // Clear geo object
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'GeoMun has been updated',
+          showConfirmButton: false,
+          timer: 1000,
+        });
+      },
+    });
+  }
+
   update_Geo() {
     this.toValidate.totalLandArea =
       this.geo.totalLandArea == null ? true : false;
@@ -779,5 +786,11 @@ export class GeoProfileComponent implements OnInit {
         Swal.fire('Deleted!', 'Your file has been removed.', 'success');
       }
     });
+  }
+  saveChanges() {
+    this.updateM();
+    if (this.shouldUpdateGeo) {
+      this.updateGeo();
+    }
   }
 }
