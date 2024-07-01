@@ -73,10 +73,11 @@ export class ApiUrl {
   post_update_muncity = () => `/MunLoc/Update`;
 
   // Mun Loc Building
+  get_all_building = () => `/MunCityBuilding/List`;
   get_mun_building = (munCityId: any, setYear: any) =>
     `/MunCityBuilding/${setYear}/${munCityId}`;
   post_save_building = () => `/MunCityBuilding`;
-  put_update_Building = () => `/MunCityBuilding`;
+  post_update_Building = () => `/MunCityBuilding`;
   delete_building = (transId: any) => `/MunCityBuilding/${transId}`;
 
   // Demography Officials
