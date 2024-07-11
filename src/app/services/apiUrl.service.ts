@@ -608,6 +608,7 @@ export class ApiUrl {
   delete_transpo_terminal = (transId: any) => `/TranspoTerminals/${transId}`;
   post_import_transpo_terminal = () => `/TranspoTerminals/Import`;
   post_report_transpo_terminal = () => `/TranspoTerminals/Reports`;
+  get_list_transpo_terminal_type = () => `/TranspoTerminalsType/List`;
 
   post_port = () => `/TranspoPorts`;
   put_port = () => `/TranspoPorts`;

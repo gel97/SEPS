@@ -153,7 +153,7 @@ export class SummaryReportComponent implements OnInit {
       case 'Physical / Geographic Profile Barangay':
         this.PhyGeoBarangayGeneratePDF();
         break;
-      case 'Fiscal Matters':
+      case 'Revenue and Expenditures Report by Municipality/ City':
         this.FiscalMattersGeneratePDF();
         break;
       case 'Organization/ Staffing Patterns by Municipality/City':
@@ -19423,7 +19423,7 @@ export class SummaryReportComponent implements OnInit {
             color: 'white',
             bold: true,
             alignment: 'center',
-            margin: [5, 5, 5, 5],
+            margin: [2, 2, 2, 2],
           },
           {
             text: 'Name of Resort',
@@ -19431,7 +19431,7 @@ export class SummaryReportComponent implements OnInit {
             color: 'white',
             bold: true,
             alignment: 'center',
-            margin: [5, 5, 5, 5],
+            margin: [2, 2, 2, 2],
           },
           {
             text: 'Contact Details',
@@ -19439,7 +19439,7 @@ export class SummaryReportComponent implements OnInit {
             color: 'white',
             bold: true,
             alignment: 'center',
-            margin: [5, 5, 5, 5],
+            margin: [2, 2, 2, 2],
           },
           {
             text: 'Barangay',
@@ -19447,7 +19447,7 @@ export class SummaryReportComponent implements OnInit {
             color: 'white',
             bold: true,
             alignment: 'center',
-            margin: [5, 5, 5, 5],
+            margin: [2, 2, 2, 2],
           },
           {
             text: 'Amenities/Remarks',
@@ -19455,114 +19455,134 @@ export class SummaryReportComponent implements OnInit {
             color: 'white',
             bold: true,
             alignment: 'center',
-            margin: [5, 5, 5, 5],
+            margin: [2, 2, 2, 2],
           },
         ]);
 
-        tableData.push([
-          {
-            text: `1st Congressional District `,
-            colSpan: 5,
-            alignment: 'left',
-            fillColor: '#526D82',
-            margin: [5, 5, 5, 5],
-          },
-        ]);
-
-        for (const groupKey1 in dist1Group) {
-          // Iterate district I data
-          const group1 = dist1Group[groupKey1];
-          const [cityName1] = groupKey1.split('-');
+        if (dist1.length > 0) {
           tableData.push([
             {
-              text: cityName1,
+              text: `1st Congressional District`,
               colSpan: 5,
               alignment: 'left',
-              fillColor: '#9DB2BF',
+              fillColor: '#526D82',
               margin: [5, 5, 5, 5],
             },
+            {},
+            {},
+            {},
+            {},
           ]);
 
-          group1.forEach((item: any, index: any) => {
-            tableData.push([
-              {
-                text: index + 1,
-                margin: [5, 5, 5, 5],
-              },
-              {
-                text: item.name,
-                margin: [5, 5, 5, 5],
-              },
-              {
-                text: item.contactNo,
-                margin: [5, 5, 5, 5],
-              },
-              {
-                text: item.brgyName,
-                margin: [5, 5, 5, 5],
-              },
-              {
-                text: item.description,
-                margin: [5, 5, 5, 5],
-              },
-            ]);
-          });
+          for (const groupKey1 in dist1Group) {
+            const group1 = dist1Group[groupKey1];
+            if (group1.length > 0) {
+              tableData.push([
+                {
+                  text: groupKey1,
+                  colSpan: 5,
+                  alignment: 'left',
+                  fillColor: '#9DB2BF',
+                  margin: [5, 5, 5, 5],
+                },
+                {},
+                {},
+                {},
+                {},
+              ]);
+
+              group1.forEach((item: any, index: any) => {
+                tableData.push([
+                  {
+                    text: index + 1,
+                    margin: [2, 2, 2, 2],
+                  },
+                  {
+                    text: item.name,
+                    margin: [2, 2, 2, 2],
+                  },
+                  {
+                    text: item.contactNo,
+                    margin: [2, 2, 2, 2],
+                  },
+                  {
+                    text: item.brgyName,
+                    margin: [2, 2, 2, 2],
+                  },
+                  {
+                    text: item.description,
+                    margin: [2, 2, 2, 2],
+                  },
+                ]);
+              });
+            }
+          }
         }
 
-        tableData.push([
-          {
-            text: `2nd Congressional District `,
-            colSpan: 5,
-            alignment: 'left',
-            fillColor: '#526D82',
-            margin: [5, 5, 5, 5],
-          },
-        ]);
-
-        for (const groupKey2 in dist2Group) {
-          // Iterate district II data
-          const group2 = dist2Group[groupKey2];
-          const [cityName2] = groupKey2.split('-');
+        if (dist2.length > 0) {
           tableData.push([
             {
-              text: cityName2,
+              text: `2nd Congressional District`,
               colSpan: 5,
               alignment: 'left',
-              fillColor: '#9DB2BF',
+              fillColor: '#526D82',
               margin: [5, 5, 5, 5],
             },
+            {},
+            {},
+            {},
+            {},
           ]);
 
-          group2.forEach((item: any, index: any) => {
-            tableData.push([
-              {
-                text: index + 1,
-                margin: [5, 5, 5, 5],
-              },
-              {
-                text: item.name,
-                margin: [5, 5, 5, 5],
-              },
-              {
-                text: item.contactNo,
-                margin: [5, 5, 5, 5],
-              },
-              {
-                text: item.brgyName,
-                margin: [5, 5, 5, 5],
-              },
-              {
-                text: item.description,
-                margin: [5, 5, 5, 5],
-              },
-            ]);
-          });
+          for (const groupKey2 in dist2Group) {
+            const group2 = dist2Group[groupKey2];
+            if (group2.length > 0) {
+              tableData.push([
+                {
+                  text: groupKey2,
+                  colSpan: 5,
+                  alignment: 'left',
+                  fillColor: '#9DB2BF',
+                  margin: [5, 5, 5, 5],
+                },
+                {},
+                {},
+                {},
+                {},
+              ]);
+
+              group2.forEach((item: any, index: any) => {
+                tableData.push([
+                  {
+                    text: index + 1,
+                    margin: [2, 2, 2, 2],
+                  },
+                  {
+                    text: item.name,
+                    margin: [2, 2, 2, 2],
+                  },
+                  {
+                    text: item.contactNo,
+                    margin: [2, 2, 2, 2],
+                  },
+                  {
+                    text: item.brgyName,
+                    margin: [2, 2, 2, 2],
+                  },
+                  {
+                    text: item.description,
+                    margin: [2, 2, 2, 2],
+                  },
+                ]);
+              });
+            }
+          }
         }
 
         const table = {
           margin: [0, 20, 0, 0],
           table: {
-            widths: [25, '*', '*', '*', '*'],
+            widths: [25, 'auto', 'auto', 'auto', 'auto'],
             body: tableData,
           },
           layout: {
@@ -19580,7 +19600,7 @@ export class SummaryReportComponent implements OnInit {
       },
       complete: () => {
         if (reports.length > 0) {
-          let isPortrait = false;
+          let isPortrait = false; // Ensure landscape orientation
           this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
           console.log(data);
         } else {
@@ -24026,11 +24046,11 @@ export class SummaryReportComponent implements OnInit {
       next: (response) => {
         reports = <any>response;
 
-        // Function to generate combined Revenue and Expenditure table per Municipality
+        // Function to generate separate Revenue and Expenditure tables per Municipality
         const generateTablesForMunicipality = () => {
           const municipalities: { [key: string]: any } = {};
 
-          // Group reports by municipality
+          // Group reports by municipality and category
           reports.forEach((item: any) => {
             const { munCityName, fiscalYear, category } = item;
             const key = `${munCityName}`;
@@ -24038,47 +24058,72 @@ export class SummaryReportComponent implements OnInit {
             if (!municipalities[key]) {
               municipalities[key] = {
                 cityName: munCityName,
-                combinedData: [], // Combined data array for both revenue and expenditure
+                revenueData: [],
+                expenditureData: [],
               };
             }
 
-            municipalities[key].combinedData.push({
-              fiscalYear: fiscalYear,
-              name: item.name,
-              amount: item.amount,
-              category: category === 1 ? 'Revenue' : 'Expenditure', // Marking category for combined table
-            });
+            if (category === 1) {
+              municipalities[key].revenueData.push({
+                fiscalYear: fiscalYear,
+                name: item.name,
+                amount: item.amount,
+                category: 'Revenue',
+              });
+            } else {
+              municipalities[key].expenditureData.push({
+                fiscalYear: fiscalYear,
+                name: item.name,
+                amount: item.amount,
+                category: 'Expenditure',
+              });
+            }
           });
 
-          // Iterate over each municipality and add combined tables to data
+          // Iterate over each municipality and add separate tables to data
           for (const key in municipalities) {
-            const { cityName, combinedData } = municipalities[key];
+            const { cityName, revenueData, expenditureData } =
+              municipalities[key];
 
-            // Generate combined Revenue and Expenditure table
-            generateCombinedTable(cityName, combinedData);
+            // Generate separate Revenue and Expenditure tables
+            generateTables(cityName, revenueData, expenditureData);
           }
         };
 
-        // Function to generate combined Revenue and Expenditure table for a municipality
-        const generateCombinedTable = (
+        // Function to generate separate tables for a municipality
+        const generateTables = (
           cityName: string,
-          combinedData: any[]
+          revenueData: any[],
+          expenditureData: any[]
+        ) => {
+          // Generate Revenue Table
+          generateTable(cityName, revenueData, 'Revenue');
+          // Generate Expenditure Table without page break
+          generateTable(cityName, expenditureData, 'Expenditure', false);
+        };
+
+        // Function to format amount with commas
+        const formatAmount = (amount: number) => {
+          return amount.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          });
+        };
+
+        // Function to generate a table for a municipality
+        const generateTable = (
+          cityName: string,
+          dataItems: any[],
+          category: string,
+          addPageBreak: boolean = true
         ) => {
           // Determine the section title
-          const tableTitle = `${cityName} - Revenue and Expenditure`;
+          const tableTitle = `${cityName} - ${category}`;
 
           // Prepare table headers
           const tableHeaders = [
             {
               text: 'Fiscal Year',
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
-              border: [true, true, true, true],
-            },
-            {
-              text: 'Category',
               fillColor: 'black',
               color: 'white',
               bold: true,
@@ -24104,16 +24149,9 @@ export class SummaryReportComponent implements OnInit {
           ];
 
           // Prepare table data
-          const tableData = combinedData.map((item: any) => [
+          const tableData = dataItems.map((item: any) => [
             {
               text: item.fiscalYear,
-              fillColor: '#FFFFFF',
-              border: [true, true, true, true],
-              alignment: 'center',
-              fontSize: 10,
-            },
-            {
-              text: item.category,
               fillColor: '#FFFFFF',
               border: [true, true, true, true],
               alignment: 'center',
@@ -24127,7 +24165,7 @@ export class SummaryReportComponent implements OnInit {
               fontSize: 10,
             },
             {
-              text: item.amount,
+              text: formatAmount(item.amount),
               fillColor: '#FFFFFF',
               border: [true, true, true, true],
               alignment: 'center',
@@ -24135,9 +24173,10 @@ export class SummaryReportComponent implements OnInit {
             },
           ]);
 
-          // Add table to data with page break as needed
+          // Add table to data
           if (tableData.length > 0) {
-            if (data.length > 1) {
+            // Add page break only if required
+            if (data.length > 1 && addPageBreak) {
               data.push({ text: '', pageBreak: 'before' });
             }
 
@@ -24153,7 +24192,7 @@ export class SummaryReportComponent implements OnInit {
               margin: [0, 5, 0, 15],
               table: {
                 headerRows: 1,
-                widths: ['auto', 'auto', '*', 'auto'],
+                widths: ['auto', '*', 'auto'],
                 body: [tableHeaders, ...tableData],
               },
               layout: {
@@ -24188,7 +24227,7 @@ export class SummaryReportComponent implements OnInit {
           }
         };
 
-        // Call function to generate combined tables for each municipality
+        // Call function to generate separate tables for each municipality
         generateTablesForMunicipality();
       },
       error: (error) => {
@@ -24214,185 +24253,175 @@ export class SummaryReportComponent implements OnInit {
         reports = <any>response;
 
         data.push({
-          text: 'List of Local Government Officials by Municipality/ City',
+          text: 'List of Local Government Officials by Municipality/City',
           bold: true,
           alignment: 'center',
           margin: [0, 20, 0, 10],
         });
 
-        // Separate elective and appointed officials based on category
-        const electiveOfficials = reports.filter(
-          (report: any) => report.category === 1
-        );
-        const appointedOfficials = reports.filter(
-          (report: any) => report.category === 2
-        );
+        // Group data by municipality and year
+        const groupedData = reports.reduce((groups: any, item: any) => {
+          const { munCityName, setYear } = item;
+          const groupKey = `${munCityName}-${setYear}`;
+          if (!groups[groupKey]) {
+            groups[groupKey] = [];
+          }
+          groups[groupKey].push(item);
+          return groups;
+        }, {});
+
+        // Iterate over each group and add it to the PDF
+        for (const groupKey in groupedData) {
+          const group = groupedData[groupKey];
+          const [cityName, year] = groupKey.split('-');
+
+          // Add page break before each municipality (except the first one)
+          if (data.length > 1) {
+            data.push({ text: '', pageBreak: 'before' });
+          }
+
+          data.push({
+            margin: [0, 10, 0, 0],
+            columns: [
+              {
+                text: `${cityName}`,
+                fontSize: 14,
+                bold: true,
+                width: 'auto',
+              },
+            ],
+          });
+
+          // Generate table for elective officials
+          data.push({ text: 'Elective Officials', style: 'header' });
+          const electiveTable = generateTable(
+            group.filter((item: any) => item.category === 1),
+            'Elective Officials'
+          );
+          data.push(electiveTable);
+
+          // Generate table for appointed officials
+          data.push({ text: 'Appointed Officials', style: 'header' });
+          const appointedTable = generateTable(
+            group.filter((item: any) => item.category === 2),
+            'Appointed Officials'
+          );
+          data.push(appointedTable);
+        }
 
         // Function to generate tables for a given category
-        const generateTablesForCategory = (
-          categoryReports: any[],
-          categoryTitle: string
-        ) => {
-          const groupedData = categoryReports.reduce(
-            (groups: any, item: any) => {
-              const { munCityName, setYear, category } = item;
-              const groupKey = `${munCityName}-${category}-${setYear}`;
-              if (!groups[groupKey]) {
-                groups[groupKey] = [];
-              }
-              groups[groupKey].push(item);
-              return groups;
+        function generateTable(categoryReports: any[], categoryTitle: string) {
+          // Create the table headers based on category
+          const tableData: any = [];
+          tableData.push([
+            {
+              text: 'Position',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+              border: [true, true, true, true],
             },
-            {}
-          );
+            {
+              text: 'Name',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+              border: [true, true, true, true],
+            },
+            {
+              text:
+                categoryTitle === 'Elective Officials'
+                  ? 'Term'
+                  : 'Employment Status',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+              border: [true, true, true, true],
+            },
+            {
+              text: 'Contact #',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+              border: [true, true, true, true],
+            },
+          ]);
 
-          // Iterate over each group and add it to the PDF
-          for (const groupKey in groupedData) {
-            const group = groupedData[groupKey];
-            const [cityName, category, year] = groupKey.split('-');
-
-            // Determine the section title based on the category
-            const sectionTitle =
-              category === '1' ? 'Elective Officials' : 'Appointed Officials';
-
-            // Add page break before each table (except the first one)
-            if (data.length > 1) {
-              data.push({ text: '', pageBreak: 'before' });
-            }
-
-            data.push({
-              margin: [0, 10, 0, 0],
-              columns: [
-                {
-                  text: `${cityName} - ${sectionTitle}`,
-                  fontSize: 14,
-                  bold: true,
-                  width: 'auto',
-                },
-                {
-                  text: `Year: ${year}`,
-                  fontSize: 14,
-                  bold: true,
-                  alignment: 'right',
-                  width: 'auto',
-                },
-              ],
-            });
-
-            // Create the table headers based on category
-            const tableData: any = [];
+          // Populate table rows with data
+          categoryReports.forEach((item: any) => {
             tableData.push([
               {
-                text: 'Position',
-                fillColor: 'black',
-                color: 'white',
-                bold: true,
-                alignment: 'center',
+                text: item.position,
+                fillColor: '#FFFFFF',
                 border: [true, true, true, true],
+                alignment: 'center',
+                fontSize: 10,
               },
               {
-                text: 'Name',
-                fillColor: 'black',
-                color: 'white',
-                bold: true,
-                alignment: 'center',
+                text: item.name,
+                fillColor: '#FFFFFF',
                 border: [true, true, true, true],
+                alignment: 'center',
+                fontSize: 10,
               },
               {
-                text: category === '1' ? 'Term' : 'Employment Status',
-                fillColor: 'black',
-                color: 'white',
-                bold: true,
-                alignment: 'center',
+                text:
+                  categoryTitle === 'Elective Officials'
+                    ? item.term
+                    : item.employmentStatus,
+                fillColor: '#FFFFFF',
                 border: [true, true, true, true],
+                alignment: 'center',
+                fontSize: 10,
               },
               {
-                text: 'Contact #',
-                fillColor: 'black',
-                color: 'white',
-                bold: true,
-                alignment: 'center',
+                text: item.contact,
+                fillColor: '#FFFFFF',
                 border: [true, true, true, true],
+                alignment: 'center',
+                fontSize: 10,
               },
             ]);
+          });
 
-            // Populate table rows with data
-            group.forEach((item: any) => {
-              tableData.push([
-                {
-                  text: item.position,
-                  fillColor: '#FFFFFF',
-                  border: [true, true, true, true],
-                  alignment: 'center',
-                  fontSize: 10,
-                },
-                {
-                  text: item.name,
-                  fillColor: '#FFFFFF',
-                  border: [true, true, true, true],
-                  alignment: 'center',
-                  fontSize: 10,
-                },
-                {
-                  text: category === '1' ? item.term : item.term,
-                  fillColor: '#FFFFFF',
-                  border: [true, true, true, true],
-                  alignment: 'center',
-                  fontSize: 10,
-                },
-                {
-                  text: item.contact,
-                  fillColor: '#FFFFFF',
-                  border: [true, true, true, true],
-                  alignment: 'center',
-                  fontSize: 10,
-                },
-              ]);
-            });
-
-            const table = {
-              margin: [0, 5, 0, 15],
-              table: {
-                widths: ['*', '*', '*', 'auto'],
-                body: tableData,
+          return {
+            margin: [0, 5, 0, 15],
+            table: {
+              widths: ['*', '*', '*', 'auto'],
+              body: tableData,
+            },
+            layout: {
+              hLineWidth: function (i: any, node: any) {
+                return 1;
               },
-              layout: {
-                hLineWidth: function (i: any, node: any) {
-                  return 1;
-                },
-                vLineWidth: function (i: any, node: any) {
-                  return 1;
-                },
-                hLineColor: function (i: any, node: any) {
-                  return '#CCCCCC';
-                },
-                vLineColor: function (i: any, node: any) {
-                  return '#CCCCCC';
-                },
-                paddingLeft: function (i: any, node: any) {
-                  return 5;
-                },
-                paddingRight: function (i: any, node: any) {
-                  return 5;
-                },
-                paddingTop: function (i: any, node: any) {
-                  return 3;
-                },
-                paddingBottom: function (i: any, node: any) {
-                  return 3;
-                },
+              vLineWidth: function (i: any, node: any) {
+                return 1;
               },
-            };
-
-            data.push(table);
-          }
-        };
-
-        // Generate tables for Elective officials (category 1)
-        generateTablesForCategory(electiveOfficials, 'Elective Officials');
-
-        // Generate tables for Appointed officials (category 2)
-        generateTablesForCategory(appointedOfficials, 'Appointed Officials');
+              hLineColor: function (i: any, node: any) {
+                return '#CCCCCC';
+              },
+              vLineColor: function (i: any, node: any) {
+                return '#CCCCCC';
+              },
+              paddingLeft: function (i: any, node: any) {
+                return 5;
+              },
+              paddingRight: function (i: any, node: any) {
+                return 5;
+              },
+              paddingTop: function (i: any, node: any) {
+                return 3;
+              },
+              paddingBottom: function (i: any, node: any) {
+                return 3;
+              },
+            },
+          };
+        }
       },
       error: (error) => {
         console.log(error);
