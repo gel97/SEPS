@@ -162,6 +162,7 @@ import { ImportExcelComponent } from './components/import-excel/import-excel.com
 import { SearchPipe } from './search.pipe';
 import { LGUComponent } from './Admin/lgu/lgu.component';
 import { CategoryPipe } from './category.pipe';
+import { PGDeptHeadsComponent } from './pages/main/Governance/pgdept-heads/pgdept-heads.component';
 
 @NgModule({
   declarations: [
@@ -311,6 +312,7 @@ import { CategoryPipe } from './category.pipe';
     SearchPipe,
     LGUComponent,
     CategoryPipe,
+    PGDeptHeadsComponent,
   ],
   imports: [
     MdbCollapseModule,

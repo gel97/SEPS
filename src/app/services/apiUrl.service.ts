@@ -125,6 +125,14 @@ export class ApiUrl {
   post_import_prov_officials = () => `/ProvOfficial/Import`;
   post_report_prov_officials = () => `/ProvOfficial/Reports`;
 
+  //PG DepartmentHead
+  post_get_pg_official = (setYear: any) =>
+    `/PGDepartmentHeads/List?setYear=${setYear}`;
+  post_save_pg_official = () => `/PGDepartmentHeads/SaveOfficial`;
+  post_update_pg_official = () => `/PGDepartmentHeads/Update`;
+  delete_pg_official = (transId: any) => `/PGDepartmentHeads/${transId}`;
+  post_report_pg_officials = () => `/PGDepartmentHeads/Reports`;
+
   //SOCIO-ECONOMIC ACTIVITIES
 
   //Comercial Establishments

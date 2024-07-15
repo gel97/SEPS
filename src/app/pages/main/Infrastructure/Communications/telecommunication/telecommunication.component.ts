@@ -71,6 +71,7 @@ export class TelecommunicationComponent implements OnInit {
   list_of_type = [
     { id: 1, name: 'Globe' },
     { id: 2, name: 'Smart' },
+    { id: 3, name: 'DITO' },
   ];
 
   ngOnInit(): void {
@@ -202,7 +203,7 @@ export class TelecommunicationComponent implements OnInit {
             color: 'white',
             bold: true,
             alignment: 'center',
-          }
+          },
         ]);
 
         tableData.push([
@@ -230,11 +231,9 @@ export class TelecommunicationComponent implements OnInit {
           ]);
 
           group1.forEach((item: any, index: any) => {
-            let _type:string="";
-            this.list_of_type.forEach((m:any) => {
-              if(m.id === item.type)(
-                _type = m.name
-              )
+            let _type: string = '';
+            this.list_of_type.forEach((m: any) => {
+              if (m.id === item.type) _type = m.name;
             });
             tableData.push([
               {
@@ -253,12 +252,12 @@ export class TelecommunicationComponent implements OnInit {
               {
                 text: item.installed,
                 fillColor: '#FFFFFF',
-                alignment: 'center'
+                alignment: 'center',
               },
               {
                 text: item.subscribed,
                 fillColor: '#FFFFFF',
-                alignment: 'center'
+                alignment: 'center',
               },
               {
                 text: item.contactPerson,
@@ -275,7 +274,7 @@ export class TelecommunicationComponent implements OnInit {
               {
                 text: item.brgyName,
                 fillColor: '#FFFFFF',
-              }
+              },
             ]);
           });
         }
@@ -305,11 +304,9 @@ export class TelecommunicationComponent implements OnInit {
           ]);
 
           group2.forEach((item: any, index: any) => {
-            let _type:string="";
-            this.list_of_type.forEach((m:any) => {
-              if(m.id === item.type)(
-                _type = m.name
-              )
+            let _type: string = '';
+            this.list_of_type.forEach((m: any) => {
+              if (m.id === item.type) _type = m.name;
             });
             tableData.push([
               {
@@ -328,12 +325,12 @@ export class TelecommunicationComponent implements OnInit {
               {
                 text: item.installed,
                 fillColor: '#FFFFFF',
-                alignment: 'center'
+                alignment: 'center',
               },
               {
                 text: item.subscribed,
                 fillColor: '#FFFFFF',
-                alignment: 'center'
+                alignment: 'center',
               },
               {
                 text: item.contactPerson,
@@ -350,7 +347,7 @@ export class TelecommunicationComponent implements OnInit {
               {
                 text: item.brgyName,
                 fillColor: '#FFFFFF',
-              }
+              },
             ]);
           });
         }
@@ -371,7 +368,7 @@ export class TelecommunicationComponent implements OnInit {
       },
       complete: () => {
         let isPortrait = false;
-        this.pdfService.GeneratePdf(data, isPortrait, "");
+        this.pdfService.GeneratePdf(data, isPortrait, '');
         console.log(data);
       },
     });
@@ -382,7 +379,7 @@ export class TelecommunicationComponent implements OnInit {
     this.service.Import().subscribe({
       next: (data) => {
         this.ngOnInit();
-        if(data.length === 0){
+        if (data.length === 0) {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -395,14 +392,12 @@ export class TelecommunicationComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'info',
             title: 'No data from previous year',
           });
-        }
-        else
-        {
+        } else {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -415,7 +410,7 @@ export class TelecommunicationComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'success',
             title: 'Imported Successfully',

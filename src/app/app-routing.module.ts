@@ -2,6 +2,7 @@ import { DashboardComponent } from './pages/main/Dashboard/dashboard/dashboard.c
 import { CityLocationComponent } from './pages/main/Governance/city-location/city-location.component';
 import { FiscalReportComponent } from './pages/main/Governance/fiscal-report/fiscal-report.component';
 import { ProvincialOfficialsComponent } from './pages/main/Governance/provincial-officials/provincial-officials.component';
+import { PGDeptHeadsComponent } from './pages/main/Governance/pgdept-heads/pgdept-heads.component';
 import { SkVotersComponent } from './pages/main/Governance/sk-voters/sk-voters.component';
 import { RegisteredVotersComponent } from './pages/main/Governance/registered-voters/registered-voters.component';
 import { DemographyComponent } from './pages/main/Governance/demography/demography.component';
@@ -86,10 +87,10 @@ import { GuestHomeComponent } from './pages/guest/guest-home/guest-home.componen
 import { LoginComponent } from './pages/guest/login/login.component';
 import { RegisterComponent } from './pages/guest/register/register.component';
 import { MainHomeComponent } from './pages/main/main-home/main-home.component';
-import { CityOfficialsComponent} from './pages/main/Governance/city-officials/city-officials.component';
-import { BarangaysComponent} from './pages/main/Governance/barangays/barangays.component';
+import { CityOfficialsComponent } from './pages/main/Governance/city-officials/city-officials.component';
+import { BarangaysComponent } from './pages/main/Governance/barangays/barangays.component';
 // import { GeoTaggingComponent } from './pages/GeoTagging/geo-tagging/geo-tagging.component';
-import { GeoProfileComponent} from './pages/main/Governance/geo-profile/geo-profile.component';
+import { GeoProfileComponent } from './pages/main/Governance/geo-profile/geo-profile.component';
 import { AddUserComponent } from './pages/main/Admin-Panel/add-user/add-user.component';
 import { MajorEconomicActivitiesComponent } from './pages/main/Socio-Economic/Trade-and-Industry/major-economic-activities/major-economic-activities.component';
 import { ManufacturingEstablishmentsComponent } from './pages/main/Socio-Economic/Trade-and-Industry/manufacturing-establishments/manufacturing-establishments.component';
@@ -98,7 +99,7 @@ import { SummaryCommercialComponent } from './pages/main/Socio-Economic/Trade-an
 import { FinancialInstitutionsComponent } from './pages/main/Socio-Economic/Trade-and-Industry/financial-institutions/financial-institutions.component';
 import { IndustrialEstatesComponent } from './pages/main/Socio-Economic/Trade-and-Industry/industrial-estates/industrial-estates.component';
 import { ResortsComponent } from './pages/main/Socio-Economic/Tourism/resorts/resorts.component';
-import {ElementaryPreElementaryComponent} from'./pages/main/SocialProfile/Education/Private/elementary-pre-elementary/elementary-pre-elementary.component';
+import { ElementaryPreElementaryComponent } from './pages/main/SocialProfile/Education/Private/elementary-pre-elementary/elementary-pre-elementary.component';
 import { DayCareComponent } from './pages/main/SocialProfile/Education/Public/day-care/day-care.component';
 import { PubSecondaryComponent } from './pages/main/SocialProfile/Education/Public/pub-secondary/pub-secondary.component';
 import { PrivateHospitalComponent } from './pages/main/SocialProfile/Health/private-hospital/private-hospital.component';
@@ -120,20 +121,21 @@ import { SummaryReportComponent } from './pages/main/Tools/summary-report/summar
 import { MessageListComponent } from './pages/main/Tools/message-list/message-list.component';
 import { DdnDashboardComponent } from './pages/main/Dashboard/ddn-dashboard/ddn-dashboard.component';
 import { PrevRateComponent } from './pages/main/SocialProfile/Health/prev-rate/prev-rate.component';
-const socioEconomic_TradeIndustry:string = 'socio-economic/trade-and-industry/';
-const socioEconomic_Tourism:string = 'socio-economic/Tourism/';
-const socioEconomic_Agriculture:string = 'socio-economic/Agriculture/';
-const SocialProfile_Education:string = 'socialProfile/education';
-const SocialProfile_Health:string ='socialProfile/health';
-const SocialProfile_PublicOrder:string='socialProfile/PublicOrder';
-const SocialProfile_Housing: string ='socialProfile/Housing';
+const socioEconomic_TradeIndustry: string =
+  'socio-economic/trade-and-industry/';
+const socioEconomic_Tourism: string = 'socio-economic/Tourism/';
+const socioEconomic_Agriculture: string = 'socio-economic/Agriculture/';
+const SocialProfile_Education: string = 'socialProfile/education';
+const SocialProfile_Health: string = 'socialProfile/health';
+const SocialProfile_PublicOrder: string = 'socialProfile/PublicOrder';
+const SocialProfile_Housing: string = 'socialProfile/Housing';
 const SocialProfile_Associations: string = 'socialProfile/Associations';
-const Environment:string ='Environment';
+const Environment: string = 'Environment';
 const Infrastructure_Transportation: string = 'Insfrastructure/Transportation';
 const Infrastructure_Communications: string = 'Infrastructure/Communications';
-const Infrastructure_Utility: string ='Infrastructure/Utility';
-const Governance:string ='Governance';
-const Tools:string ='Tools/';
+const Infrastructure_Utility: string = 'Infrastructure/Utility';
+const Governance: string = 'Governance';
+const Tools: string = 'Tools/';
 
 const routes: Routes = [
   // {
@@ -145,145 +147,428 @@ const routes: Routes = [
   // },
   {
     path: 'login',
-    component:LoginComponent
+    component: LoginComponent,
   },
   {
     path: 'register',
-    component:RegisterComponent
+    component: RegisterComponent,
   },
   {
     path: '',
-    component:MainLayoutComponent,
-    children:
-    [
-      {path: '', redirectTo:'/dashboard',pathMatch: 'full'},
-      {path: 'dashboard',component:DashboardComponent},
-      {path: 'dashboard/ddn',component:DdnDashboardComponent},
-      {path: 'gov_cityOfficials',component:CityOfficialsComponent},
-      {path: 'gov_Barangays',component:BarangaysComponent},
-      {path: 'gov_geoProfile',component:GeoProfileComponent},
-      {path:'admin/add_user',component:AddUserComponent},
-      {path: Tools+ 'news',component:NewsComponent},
-      {path: Tools+ 'message-list/:id',component:MessageListComponent},
-      {path: Tools+ 'summary-reports',component:SummaryReportComponent},
-      {path: socioEconomic_TradeIndustry+ 'major-economic-activities',component:MajorEconomicActivitiesComponent},
-      {path: socioEconomic_TradeIndustry+ 'manufacturing-establishments',component:ManufacturingEstablishmentsComponent},
-      {path: socioEconomic_TradeIndustry+ 'comercial-establishments',component:CommercialEstablishmentsComponent},
-      { path: socioEconomic_TradeIndustry+ 'summary-commercial',component:SummaryCommercialComponent},
-      { path: socioEconomic_TradeIndustry+ 'industrial-estates',component:IndustrialEstatesComponent},
-      { path: socioEconomic_TradeIndustry+ 'financial-institutions',component:FinancialInstitutionsComponent},
-      { path: socioEconomic_Tourism+ 'resorts',component:ResortsComponent} ,
-      { path: socioEconomic_Tourism+ 'recreation-facilities',component:RecreationFacilitiesComponent} ,
-      { path: socioEconomic_Tourism+ 'hotels-lodging-houses',component:HotelsLodgingHousesComponent},
-      { path: socioEconomic_Tourism+ 'cinema-movie-houses',component:CinemaMovieHousesComponent},
-      { path: socioEconomic_Tourism+ 'naturals-attractions',component:NaturalsAttractionsComponent},
-      { path: socioEconomic_Tourism+ 'cultural-attractions',component:CulturalAttractionsComponent},
-      { path: socioEconomic_Tourism+ 'festival-attractions',component:FestivalAttractionsComponent},
-      { path: socioEconomic_Agriculture+  'agricultural-profile',component:AgriculturalProfileComponent},
-      { path: socioEconomic_Agriculture+ 'rice-crops-production',component:RiceCropsProductionComponent},
-      { path: socioEconomic_Agriculture+ 'fisheries-aquaculture',component:FisheriesAquacultureComponent},
-      { path: socioEconomic_Agriculture+ 'livestock-production',component:LivestockProductionComponent},
-      { path: socioEconomic_Agriculture+ 'ricemills',component:RicemillsComponent},
-      { path: socioEconomic_Agriculture+ 'warehouses',component:WarehousesComponent},
-      { path: socioEconomic_Agriculture+ 'slaughterhouses',component:SlaughterhousesComponent},
-      { path: socioEconomic_Agriculture+ 'provincial-crops-production',component:ProvincialCropsProductionComponent},
-      { path: socioEconomic_Agriculture+ 'provincial-crops-harvested',component:ProvincialCropsHarvestedComponent},
-      { path: socioEconomic_Agriculture+ 'provincial-crops-total-production',component:ProvincialCropsTotalProductionComponent},
-      { path: SocialProfile_Education+ '/facilities/public-private',component:PublicPrivateComponent},
-      { path: SocialProfile_Education+ '/facilities/tertiary-institutions',component:TertiaryInsComponent},
-      { path: SocialProfile_Education+ '/facilities/techvoc-institutions',component:TechvocInsComponent},
-      { path: SocialProfile_Education+ '/private/elementary',component:ElementaryPreElementaryComponent},
-      { path: SocialProfile_Education+ '/private/secondary',component:SecondaryComponent},
-      { path: SocialProfile_Education+ '/public/elementary',component:ElementaryComponent},
-      { path: SocialProfile_Education+ '/public/day-care',component:DayCareComponent},
-      { path: SocialProfile_Education+ '/public/pub-secondary',component:PubSecondaryComponent},
-      { path: SocialProfile_Education+ '/public/tech-voc',component:TechVocComponent},
-      { path: SocialProfile_Education+ '/public/tech-voc/programs',component:TechvocProgramsComponent},
-      { path: SocialProfile_Education+ '/public/tech-voc/enrolment-graduates',component:TechvocEnrolGradComponent},
-      { path: SocialProfile_Education+ '/public/tertiary',component:TertiaryComponent},
-      { path: SocialProfile_Education+ '/public/tertiary-enrolment',component:TertiaryEnrolmentComponent},
-      { path: SocialProfile_Education+ '/public/tertiary-graduates',component:TertiaryGradComponent},
-      { path: SocialProfile_Education+ '/public/training-center',component:TrainingCenterComponent},
-      { path: SocialProfile_Education+ '/public/spedenrolments',component:SPEDEnrolmentsComponent},
-      { path: SocialProfile_Education+ '/public/spedenrolments',component:SPEDEnrolmentsComponent},
-      { path: SocialProfile_Education+ '/public/oschool-youth',component:OSchoolYouthComponent},
-      { path: SocialProfile_Health+ '/public-health',component:PublicHealthComponent},
-      { path: SocialProfile_Health+ '/community-hospital',component:CommunityHospitalComponent},
-      { path: SocialProfile_Health+ '/barangay-health',component:BarangayHealthComponent},
-      { path: SocialProfile_Health+ '/private-hospital',component:PrivateHospitalComponent},
-      { path: SocialProfile_Health+ '/sanitary-facilities',component:SanitaryFacilitiesComponent},
-      { path: SocialProfile_Health+ '/malnutrition',component:MalnutritionComponent},
-      { path: SocialProfile_Health+ '/malnutrition-revised',component:MalnutritionRevisedComponent},
-      { path: SocialProfile_Health+ '/person-disability',component:PersonDisabilityComponent},
-      { path: SocialProfile_Health+ '/provincial-hospital',component:ProvincialHospitalComponent},
-      { path: SocialProfile_Health+ '/provincial-health',component:ProvincialHealthComponent},
-      { path: SocialProfile_Health+ '/prevalence-rate',component:PrevRateComponent},
-      { path: SocialProfile_PublicOrder+ '/police-services',component:PoliceServicesComponent},
-      { path: SocialProfile_PublicOrder+ '/fire-protection',component:FireProtectionComponent},
-      { path: SocialProfile_PublicOrder+ '/barangay-peacekeeping',component:BarangayPeacekeepingComponent},
-      { path: SocialProfile_PublicOrder+ '/crime-stat',component:CrimeStatComponent},
-      { path: SocialProfile_PublicOrder+ '/index-crime',component:IndexCrimeComponent},
-      { path: SocialProfile_Housing+ '/informal-settlers',component:InformalSettlersComponent},
-      { path: SocialProfile_Housing+ '/government-housing',component:GovernmentHousingComponent},
-      { path: SocialProfile_Housing+ '/subdivisions',component:SubdivisionsComponent},
-      { path: SocialProfile_Associations+ '/civic-org',component:CivicOrgComponent},
-      { path: SocialProfile_Associations+ '/religious',component:ReligiousComponent},
-      { path: SocialProfile_Associations+ '/professional',component:ProfessionalComponent},
-      { path: SocialProfile_Associations+ '/commercial',component:CommercialComponent},
-      { path: SocialProfile_Associations+ '/cooperatives',component:CooperativesComponent},
-      { path: SocialProfile_Associations+ '/foundations',component:FoundationsComponent},
-      { path: SocialProfile_Associations+ '/sectoral',component:SectoralComponent},
-      { path: Environment+ '/physical-environment',component:PhysicalEnvironmentComponent},
-      { path: Environment+ '/natural-resources', component:NaturalResourcesComponent},
-      { path: Environment+ '/environmental-activities',component:EnvironmentalActivitiesComponent},
-      { path: Environment+ '/urban-environment',component:UrbanEnvironmentComponent},
-      { path: Environment+ '/environmental-hazards',component:EnvironmentalHazardsComponent},
-      { path: Environment+ '/social-condition',component:SocialConditionComponent},
-      { path: Environment+ '/historical-disaster',component:HistoricalDisasterComponent},
-      { path: Infrastructure_Transportation+ '/roads',component:RoadsComponent},
-      { path: Infrastructure_Transportation+ '/bridges',component:BridgesComponent},
-      { path: Infrastructure_Transportation+ '/transport-terminals',component:TransportTerminalsComponent},
-      { path: Infrastructure_Transportation+ '/ports',component:PortsComponent},
-      { path: Infrastructure_Communications+ '/telecommunication',component:TelecommunicationComponent},
-      { path: Infrastructure_Communications+ '/cell-sites',component:CellSitesComponent},
-      { path: Infrastructure_Communications+ '/telegraph',component:TelegraphComponent},
-      { path: Infrastructure_Communications+ '/express-mail',component:ExpressMailComponent},
-      { path: Infrastructure_Communications+ '/postal-services',component:PostalServicesComponent},
-      { path: Infrastructure_Communications+ '/internet-service',component:InternetServiceComponent},
-      { path : Infrastructure_Utility+ '/water-utility',component:WaterUtilityComponent},
-      { path : Infrastructure_Utility+ '/water-pump',component:WaterPumpComponent},
-      { path : Infrastructure_Utility+ '/irrigation-system',component:IrrigationSystemComponent},
-      { path : Infrastructure_Utility+ '/power-system',component:PowerSystemComponent},
-      { path : Infrastructure_Utility+ '/power-sub',component:PowerSubComponent},
-      { path : Infrastructure_Utility+ '/waste-management',component:WasteManagementComponent},
-      { path : Infrastructure_Utility+ '/ice-plant', component:IcePlantComponent},
-      { path : Infrastructure_Utility+ '/market-supermarkets',component:MarketSupermarketsComponent},
-      { path : Infrastructure_Utility+ '/department-store',component:DepartmentStoreComponent},
-      { path : Infrastructure_Utility+ '/ memorial-parks',component:MemorialParksComponent},
-      { path : Infrastructure_Utility+ '/worship-houses', component:WorshipHousesComponent},
-      { path : Infrastructure_Utility+ '/other-structure',component:OtherStructureComponent},
-      { path : Governance+ '/org-staffing',component:OrgStaffingComponent},
-      { path : Governance+ '/fiscal-matters',component:FiscalMattersComponent},
-      { path : Governance+ '/demography',component:DemographyComponent},
-      { path : Governance+ '/registered-voters',component:RegisteredVotersComponent},
-      { path : Governance+ '/sk-voters',component: SkVotersComponent},
-      { path : Governance+ '/provincial-officials',component:ProvincialOfficialsComponent},
-      { path : Governance+ '/fiscal-report',component:FiscalReportComponent},
-      { path : Governance+ '/city-location',component:CityLocationComponent},
-      { path: '**', redirectTo:'/login',pathMatch: 'full'},
-
-
-
-
-
-
-
-
-
-
-
+    component: MainLayoutComponent,
+    children: [
+      { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: DashboardComponent },
+      { path: 'dashboard/ddn', component: DdnDashboardComponent },
+      { path: 'gov_cityOfficials', component: CityOfficialsComponent },
+      { path: 'gov_Barangays', component: BarangaysComponent },
+      { path: 'gov_geoProfile', component: GeoProfileComponent },
+      { path: 'admin/add_user', component: AddUserComponent },
+      { path: Tools + 'news', component: NewsComponent },
+      { path: Tools + 'message-list/:id', component: MessageListComponent },
+      { path: Tools + 'summary-reports', component: SummaryReportComponent },
+      {
+        path: socioEconomic_TradeIndustry + 'major-economic-activities',
+        component: MajorEconomicActivitiesComponent,
+      },
+      {
+        path: socioEconomic_TradeIndustry + 'manufacturing-establishments',
+        component: ManufacturingEstablishmentsComponent,
+      },
+      {
+        path: socioEconomic_TradeIndustry + 'comercial-establishments',
+        component: CommercialEstablishmentsComponent,
+      },
+      {
+        path: socioEconomic_TradeIndustry + 'summary-commercial',
+        component: SummaryCommercialComponent,
+      },
+      {
+        path: socioEconomic_TradeIndustry + 'industrial-estates',
+        component: IndustrialEstatesComponent,
+      },
+      {
+        path: socioEconomic_TradeIndustry + 'financial-institutions',
+        component: FinancialInstitutionsComponent,
+      },
+      { path: socioEconomic_Tourism + 'resorts', component: ResortsComponent },
+      {
+        path: socioEconomic_Tourism + 'recreation-facilities',
+        component: RecreationFacilitiesComponent,
+      },
+      {
+        path: socioEconomic_Tourism + 'hotels-lodging-houses',
+        component: HotelsLodgingHousesComponent,
+      },
+      {
+        path: socioEconomic_Tourism + 'cinema-movie-houses',
+        component: CinemaMovieHousesComponent,
+      },
+      {
+        path: socioEconomic_Tourism + 'naturals-attractions',
+        component: NaturalsAttractionsComponent,
+      },
+      {
+        path: socioEconomic_Tourism + 'cultural-attractions',
+        component: CulturalAttractionsComponent,
+      },
+      {
+        path: socioEconomic_Tourism + 'festival-attractions',
+        component: FestivalAttractionsComponent,
+      },
+      {
+        path: socioEconomic_Agriculture + 'agricultural-profile',
+        component: AgriculturalProfileComponent,
+      },
+      {
+        path: socioEconomic_Agriculture + 'rice-crops-production',
+        component: RiceCropsProductionComponent,
+      },
+      {
+        path: socioEconomic_Agriculture + 'fisheries-aquaculture',
+        component: FisheriesAquacultureComponent,
+      },
+      {
+        path: socioEconomic_Agriculture + 'livestock-production',
+        component: LivestockProductionComponent,
+      },
+      {
+        path: socioEconomic_Agriculture + 'ricemills',
+        component: RicemillsComponent,
+      },
+      {
+        path: socioEconomic_Agriculture + 'warehouses',
+        component: WarehousesComponent,
+      },
+      {
+        path: socioEconomic_Agriculture + 'slaughterhouses',
+        component: SlaughterhousesComponent,
+      },
+      {
+        path: socioEconomic_Agriculture + 'provincial-crops-production',
+        component: ProvincialCropsProductionComponent,
+      },
+      {
+        path: socioEconomic_Agriculture + 'provincial-crops-harvested',
+        component: ProvincialCropsHarvestedComponent,
+      },
+      {
+        path: socioEconomic_Agriculture + 'provincial-crops-total-production',
+        component: ProvincialCropsTotalProductionComponent,
+      },
+      {
+        path: SocialProfile_Education + '/facilities/public-private',
+        component: PublicPrivateComponent,
+      },
+      {
+        path: SocialProfile_Education + '/facilities/tertiary-institutions',
+        component: TertiaryInsComponent,
+      },
+      {
+        path: SocialProfile_Education + '/facilities/techvoc-institutions',
+        component: TechvocInsComponent,
+      },
+      {
+        path: SocialProfile_Education + '/private/elementary',
+        component: ElementaryPreElementaryComponent,
+      },
+      {
+        path: SocialProfile_Education + '/private/secondary',
+        component: SecondaryComponent,
+      },
+      {
+        path: SocialProfile_Education + '/public/elementary',
+        component: ElementaryComponent,
+      },
+      {
+        path: SocialProfile_Education + '/public/day-care',
+        component: DayCareComponent,
+      },
+      {
+        path: SocialProfile_Education + '/public/pub-secondary',
+        component: PubSecondaryComponent,
+      },
+      {
+        path: SocialProfile_Education + '/public/tech-voc',
+        component: TechVocComponent,
+      },
+      {
+        path: SocialProfile_Education + '/public/tech-voc/programs',
+        component: TechvocProgramsComponent,
+      },
+      {
+        path: SocialProfile_Education + '/public/tech-voc/enrolment-graduates',
+        component: TechvocEnrolGradComponent,
+      },
+      {
+        path: SocialProfile_Education + '/public/tertiary',
+        component: TertiaryComponent,
+      },
+      {
+        path: SocialProfile_Education + '/public/tertiary-enrolment',
+        component: TertiaryEnrolmentComponent,
+      },
+      {
+        path: SocialProfile_Education + '/public/tertiary-graduates',
+        component: TertiaryGradComponent,
+      },
+      {
+        path: SocialProfile_Education + '/public/training-center',
+        component: TrainingCenterComponent,
+      },
+      {
+        path: SocialProfile_Education + '/public/spedenrolments',
+        component: SPEDEnrolmentsComponent,
+      },
+      {
+        path: SocialProfile_Education + '/public/spedenrolments',
+        component: SPEDEnrolmentsComponent,
+      },
+      {
+        path: SocialProfile_Education + '/public/oschool-youth',
+        component: OSchoolYouthComponent,
+      },
+      {
+        path: SocialProfile_Health + '/public-health',
+        component: PublicHealthComponent,
+      },
+      {
+        path: SocialProfile_Health + '/community-hospital',
+        component: CommunityHospitalComponent,
+      },
+      {
+        path: SocialProfile_Health + '/barangay-health',
+        component: BarangayHealthComponent,
+      },
+      {
+        path: SocialProfile_Health + '/private-hospital',
+        component: PrivateHospitalComponent,
+      },
+      {
+        path: SocialProfile_Health + '/sanitary-facilities',
+        component: SanitaryFacilitiesComponent,
+      },
+      {
+        path: SocialProfile_Health + '/malnutrition',
+        component: MalnutritionComponent,
+      },
+      {
+        path: SocialProfile_Health + '/malnutrition-revised',
+        component: MalnutritionRevisedComponent,
+      },
+      {
+        path: SocialProfile_Health + '/person-disability',
+        component: PersonDisabilityComponent,
+      },
+      {
+        path: SocialProfile_Health + '/provincial-hospital',
+        component: ProvincialHospitalComponent,
+      },
+      {
+        path: SocialProfile_Health + '/provincial-health',
+        component: ProvincialHealthComponent,
+      },
+      {
+        path: SocialProfile_Health + '/prevalence-rate',
+        component: PrevRateComponent,
+      },
+      {
+        path: SocialProfile_PublicOrder + '/police-services',
+        component: PoliceServicesComponent,
+      },
+      {
+        path: SocialProfile_PublicOrder + '/fire-protection',
+        component: FireProtectionComponent,
+      },
+      {
+        path: SocialProfile_PublicOrder + '/barangay-peacekeeping',
+        component: BarangayPeacekeepingComponent,
+      },
+      {
+        path: SocialProfile_PublicOrder + '/crime-stat',
+        component: CrimeStatComponent,
+      },
+      {
+        path: SocialProfile_PublicOrder + '/index-crime',
+        component: IndexCrimeComponent,
+      },
+      {
+        path: SocialProfile_Housing + '/informal-settlers',
+        component: InformalSettlersComponent,
+      },
+      {
+        path: SocialProfile_Housing + '/government-housing',
+        component: GovernmentHousingComponent,
+      },
+      {
+        path: SocialProfile_Housing + '/subdivisions',
+        component: SubdivisionsComponent,
+      },
+      {
+        path: SocialProfile_Associations + '/civic-org',
+        component: CivicOrgComponent,
+      },
+      {
+        path: SocialProfile_Associations + '/religious',
+        component: ReligiousComponent,
+      },
+      {
+        path: SocialProfile_Associations + '/professional',
+        component: ProfessionalComponent,
+      },
+      {
+        path: SocialProfile_Associations + '/commercial',
+        component: CommercialComponent,
+      },
+      {
+        path: SocialProfile_Associations + '/cooperatives',
+        component: CooperativesComponent,
+      },
+      {
+        path: SocialProfile_Associations + '/foundations',
+        component: FoundationsComponent,
+      },
+      {
+        path: SocialProfile_Associations + '/sectoral',
+        component: SectoralComponent,
+      },
+      {
+        path: Environment + '/physical-environment',
+        component: PhysicalEnvironmentComponent,
+      },
+      {
+        path: Environment + '/natural-resources',
+        component: NaturalResourcesComponent,
+      },
+      {
+        path: Environment + '/environmental-activities',
+        component: EnvironmentalActivitiesComponent,
+      },
+      {
+        path: Environment + '/urban-environment',
+        component: UrbanEnvironmentComponent,
+      },
+      {
+        path: Environment + '/environmental-hazards',
+        component: EnvironmentalHazardsComponent,
+      },
+      {
+        path: Environment + '/social-condition',
+        component: SocialConditionComponent,
+      },
+      {
+        path: Environment + '/historical-disaster',
+        component: HistoricalDisasterComponent,
+      },
+      {
+        path: Infrastructure_Transportation + '/roads',
+        component: RoadsComponent,
+      },
+      {
+        path: Infrastructure_Transportation + '/bridges',
+        component: BridgesComponent,
+      },
+      {
+        path: Infrastructure_Transportation + '/transport-terminals',
+        component: TransportTerminalsComponent,
+      },
+      {
+        path: Infrastructure_Transportation + '/ports',
+        component: PortsComponent,
+      },
+      {
+        path: Infrastructure_Communications + '/telecommunication',
+        component: TelecommunicationComponent,
+      },
+      {
+        path: Infrastructure_Communications + '/cell-sites',
+        component: CellSitesComponent,
+      },
+      {
+        path: Infrastructure_Communications + '/telegraph',
+        component: TelegraphComponent,
+      },
+      {
+        path: Infrastructure_Communications + '/express-mail',
+        component: ExpressMailComponent,
+      },
+      {
+        path: Infrastructure_Communications + '/postal-services',
+        component: PostalServicesComponent,
+      },
+      {
+        path: Infrastructure_Communications + '/internet-service',
+        component: InternetServiceComponent,
+      },
+      {
+        path: Infrastructure_Utility + '/water-utility',
+        component: WaterUtilityComponent,
+      },
+      {
+        path: Infrastructure_Utility + '/water-pump',
+        component: WaterPumpComponent,
+      },
+      {
+        path: Infrastructure_Utility + '/irrigation-system',
+        component: IrrigationSystemComponent,
+      },
+      {
+        path: Infrastructure_Utility + '/power-system',
+        component: PowerSystemComponent,
+      },
+      {
+        path: Infrastructure_Utility + '/power-sub',
+        component: PowerSubComponent,
+      },
+      {
+        path: Infrastructure_Utility + '/waste-management',
+        component: WasteManagementComponent,
+      },
+      {
+        path: Infrastructure_Utility + '/ice-plant',
+        component: IcePlantComponent,
+      },
+      {
+        path: Infrastructure_Utility + '/market-supermarkets',
+        component: MarketSupermarketsComponent,
+      },
+      {
+        path: Infrastructure_Utility + '/department-store',
+        component: DepartmentStoreComponent,
+      },
+      {
+        path: Infrastructure_Utility + '/ memorial-parks',
+        component: MemorialParksComponent,
+      },
+      {
+        path: Infrastructure_Utility + '/worship-houses',
+        component: WorshipHousesComponent,
+      },
+      {
+        path: Infrastructure_Utility + '/other-structure',
+        component: OtherStructureComponent,
+      },
+      { path: Governance + '/org-staffing', component: OrgStaffingComponent },
+      {
+        path: Governance + '/fiscal-matters',
+        component: FiscalMattersComponent,
+      },
+      { path: Governance + '/demography', component: DemographyComponent },
+      {
+        path: Governance + '/registered-voters',
+        component: RegisteredVotersComponent,
+      },
+      { path: Governance + '/sk-voters', component: SkVotersComponent },
+      {
+        path: Governance + '/provincial-officials',
+        component: ProvincialOfficialsComponent,
+      },
+      { path: Governance + '/pgdept-heads', component: PGDeptHeadsComponent },
+      { path: Governance + '/fiscal-report', component: FiscalReportComponent },
+      { path: Governance + '/city-location', component: CityLocationComponent },
+      { path: '**', redirectTo: '/login', pathMatch: 'full' },
     ],
-     canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
   // {
   //   path: 'sep/gov_cityOfficials/geo_tag',
@@ -305,10 +590,8 @@ const routes: Routes = [
   // }
 ];
 
-
-
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

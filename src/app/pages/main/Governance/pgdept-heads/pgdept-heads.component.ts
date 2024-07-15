@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import { ProvOfficialService } from 'src/app/shared/Governance/prov-official.service';
+import { PGDepartmentHeadsService } from 'src/app/shared/Governance/pg-depHead.service';
 import Swal from 'sweetalert2';
 import { ImportComponent } from 'src/app/components/import/import.component';
 import { PdfComponent } from 'src/app/components/pdf/pdf.component';
@@ -9,15 +9,15 @@ import { PdfService } from 'src/app/services/pdf.service';
 import { ReportsService } from 'src/app/shared/Tools/reports.service';
 
 @Component({
-  selector: 'app-provincial-officials',
-  templateUrl: './provincial-officials.component.html',
-  styleUrls: ['./provincial-officials.component.css'],
+  selector: 'app-pgdept-heads',
+  templateUrl: './pgdept-heads.component.html',
+  styleUrls: ['./pgdept-heads.component.css'],
 })
-export class ProvincialOfficialsComponent implements OnInit {
+export class PGDeptHeadsComponent implements OnInit {
   constructor(
     private pdfService: PdfService,
     private reportService: ReportsService,
-    private service: ProvOfficialService,
+    private service: PGDepartmentHeadsService,
     private auth: AuthService
   ) {}
 
@@ -69,19 +69,18 @@ export class ProvincialOfficialsComponent implements OnInit {
 
   Init() {
     this.getOfficials();
-    this.getPositions();
   }
 
   reports: any = [];
   GeneratePDF() {
     let data: any = [];
 
-    this.reportService.GetProvOfficialReport(this.pdfComponent.data).subscribe({
+    this.reportService.GetPGOfficialReport(this.pdfComponent.data).subscribe({
       next: (response) => {
         this.reports = <any>response;
         console.log(this.reports);
         data.push({
-          text: 'List of Provincial Government Officials of Davao del Norte',
+          text: 'List of PG Department Heads',
           bold: true,
           alignment: 'center',
         });
@@ -116,28 +115,21 @@ export class ProvincialOfficialsComponent implements OnInit {
           const tableData: any = [];
           tableData.push([
             {
-              text: 'Position',
+              text: 'Office',
               fillColor: 'black',
               color: 'white',
               bold: true,
               alignment: 'center',
             },
             {
-              text: 'Name',
+              text: 'Department Heads',
               fillColor: 'black',
               color: 'white',
               bold: true,
               alignment: 'center',
             },
             {
-              text: 'Term',
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
-            },
-            {
-              text: 'Contact #',
+              text: 'ASST. PG DEPT HEAD',
               fillColor: 'black',
               color: 'white',
               bold: true,
@@ -147,23 +139,21 @@ export class ProvincialOfficialsComponent implements OnInit {
           group.forEach((item: any, index: any) => {
             tableData.push([
               {
-                text: item.position,
-                fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+                text: item.office,
+                fillColor: '#FFFFFF',
+                alignment: 'center',
                 border: [true, true, true, true],
               },
               {
-                text: item.name,
-                fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+                text: item.deptName,
+                fillColor: '#FFFFFF',
+                alignment: 'center',
                 border: [true, true, true, true],
               },
               {
-                text: item.term,
-                fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
-                border: [true, true, true, true],
-              },
-              {
-                text: item.contact,
-                fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+                text: item.asstName,
+                fillColor: '#FFFFFF',
+                alignment: 'center',
                 border: [true, true, true, true],
               },
             ]);
@@ -171,7 +161,7 @@ export class ProvincialOfficialsComponent implements OnInit {
           const table = {
             margin: [0, 10, 0, 0],
             table: {
-              widths: ['*', '*', '*', '*'],
+              widths: ['*', '*', '*'],
               body: tableData,
             },
             layout: {
@@ -199,16 +189,10 @@ export class ProvincialOfficialsComponent implements OnInit {
     });
   }
 
-  getPositions() {
-    this.service.GetMunPosition().subscribe((data) => {
-      this.positions = <any>data;
-    });
-  }
-
   getOfficials() {
     // this.Prov.munCityId=this.auth.munCityId;
     this.Prov.setYear = this.auth.activeSetYear;
-    this.service.GetProvOfficial().subscribe((data) => {
+    this.service.GetPgDepHead().subscribe((data) => {
       this.ProOfficial = <any>data;
       // this.import();
 
@@ -217,85 +201,85 @@ export class ProvincialOfficialsComponent implements OnInit {
     });
   }
 
-  message = 'Provincial Officials';
+  message = 'Department Heads';
 
   import() {
     let importData = 'Provincial Officials';
     this.importComponent.import(importData);
   }
   public showOverlay = false;
-  importMethod() {
-    this.showOverlay = true;
-    this.service.Import().subscribe({
-      next: (data) => {
-        this.Init();
-        if (data.length === 0) {
-          this.showOverlay = false;
-          const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.addEventListener('mouseenter', Swal.stopTimer);
-              toast.addEventListener('mouseleave', Swal.resumeTimer);
-            },
-          });
+  // importMethod() {
+  //   this.showOverlay = true;
+  //   this.service.Import().subscribe({
+  //     next: (data) => {
+  //       this.Init();
+  //       if (data.length === 0) {
+  //         this.showOverlay = false;
+  //         const Toast = Swal.mixin({
+  //           toast: true,
+  //           position: 'top-end',
+  //           showConfirmButton: false,
+  //           timer: 3000,
+  //           timerProgressBar: true,
+  //           didOpen: (toast) => {
+  //             toast.addEventListener('mouseenter', Swal.stopTimer);
+  //             toast.addEventListener('mouseleave', Swal.resumeTimer);
+  //           },
+  //         });
 
-          Toast.fire({
-            icon: 'info',
-            title: 'No data from previous year',
-          });
-        } else {
-          this.showOverlay = false;
-          const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.addEventListener('mouseenter', Swal.stopTimer);
-              toast.addEventListener('mouseleave', Swal.resumeTimer);
-            },
-          });
+  //         Toast.fire({
+  //           icon: 'info',
+  //           title: 'No data from previous year',
+  //         });
+  //       } else {
+  //         this.showOverlay = false;
+  //         const Toast = Swal.mixin({
+  //           toast: true,
+  //           position: 'top-end',
+  //           showConfirmButton: false,
+  //           timer: 3000,
+  //           timerProgressBar: true,
+  //           didOpen: (toast) => {
+  //             toast.addEventListener('mouseenter', Swal.stopTimer);
+  //             toast.addEventListener('mouseleave', Swal.resumeTimer);
+  //           },
+  //         });
 
-          Toast.fire({
-            icon: 'success',
-            title: 'Imported Successfully',
-          });
-        }
-      },
-      error: (error) => {
-        const Toast = Swal.mixin({
-          toast: true,
-          position: 'top-end',
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer);
-            toast.addEventListener('mouseleave', Swal.resumeTimer);
-          },
-        });
+  //         Toast.fire({
+  //           icon: 'success',
+  //           title: 'Imported Successfully',
+  //         });
+  //       }
+  //     },
+  //     error: (error) => {
+  //       const Toast = Swal.mixin({
+  //         toast: true,
+  //         position: 'top-end',
+  //         showConfirmButton: false,
+  //         timer: 3000,
+  //         timerProgressBar: true,
+  //         didOpen: (toast) => {
+  //           toast.addEventListener('mouseenter', Swal.stopTimer);
+  //           toast.addEventListener('mouseleave', Swal.resumeTimer);
+  //         },
+  //       });
 
-        Toast.fire({
-          icon: 'warning',
-          title: 'Something went wrong',
-        });
-      },
-      complete: () => {},
-    });
-  }
+  //       Toast.fire({
+  //         icon: 'warning',
+  //         title: 'Something went wrong',
+  //       });
+  //     },
+  //     complete: () => {},
+  //   });
+  // }
 
   addOfficial() {
-    this.toValidate.seqNo =
-      this.Prov.seqNo == '' || this.Prov.seqNo == null ? true : false;
-    this.toValidate.name =
-      this.Prov.name == '' || this.Prov.name == undefined ? true : false;
+    this.toValidate.DeptName =
+      this.Prov.DeptName == '' || this.Prov.DeptName == undefined
+        ? true
+        : false;
 
-    if (this.toValidate.name == true || this.toValidate.seqNo == true) {
+    if (this.toValidate.DeptName == true) {
       Swal.fire(
         'Missing Data!',
         'Please fill out the required fields',
@@ -306,7 +290,7 @@ export class ProvincialOfficialsComponent implements OnInit {
       this.Prov.setYear = this.auth.activeSetYear;
       this.Prov.transId = this.date.transform(Date.now(), 'YYMM');
       // this.Prov.tag = 1;
-      this.service.AddProvOfficial(this.Prov).subscribe(
+      this.service.AddPgHead(this.Prov).subscribe(
         (_data) => {
           if (!this.isCheck) {
             this.closebutton.nativeElement.click();
@@ -336,20 +320,18 @@ export class ProvincialOfficialsComponent implements OnInit {
   //for modal
   update() {
     this.editModal.setYear = this.auth.activeSetYear;
-    this.toValidate.seqNo =
-      this.editModal.seqNo == '' || this.editModal.seqNo == null ? true : false;
-    this.toValidate.name =
-      this.editModal.name == '' || this.editModal.name == undefined
+    this.toValidate.DeptName =
+      this.editModal.DeptName == '' || this.editModal.DeptName == undefined
         ? true
         : false;
-    if (this.toValidate.name == true || this.toValidate.seqNo == true) {
+    if (this.toValidate.name == true) {
       Swal.fire(
         'Missing Data!',
         'Please fill out the required fields',
         'warning'
       );
     } else {
-      this.service.UpdateProvOfficial(this.editModal).subscribe({
+      this.service.UpdatePgHead(this.editModal).subscribe({
         next: (_data) => {
           this.getOfficials();
           this.editModal = {};
@@ -379,7 +361,7 @@ export class ProvincialOfficialsComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         official2.tag = -1;
-        this.service.UpdateProvOfficial(official2).subscribe((_data) => {
+        this.service.UpdatePgHead(official2).subscribe((_data) => {
           Swal.fire('Deleted!', 'Your file has been removed.', 'success');
           this.getOfficials();
           this.Prov = {};
