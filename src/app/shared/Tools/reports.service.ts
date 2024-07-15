@@ -82,6 +82,13 @@ export class ReportsService {
       { responseType: 'json' }
     );
   }
+  GetPGOfficialReport(data: any) {
+    return this.http.post<any[]>(
+      this.Base.url + this.ApiUrl.post_report_pg_officials(),
+      data,
+      { responseType: 'json' }
+    );
+  }
   GetFiscalMatterReport(data: any) {
     return this.http.post<any[]>(
       this.Base.url + this.ApiUrl.post_report_fiscal(),
