@@ -34,24 +34,24 @@ export class CommercialEstablishmentsComponent implements OnInit {
 
   message = 'Commercial Establishments';
 
-  munCityName      : string = this.auth.munCityName;
+  munCityName: string = this.auth.munCityName;
 
-  toValidate       : any    = {};
-  ComEstab         : any    = [];
-  barangays        : any    = [];
-  comm             : any    = {};
-  editmodal        : any    = {};
+  toValidate: any = {};
+  ComEstab: any = [];
+  barangays: any = [];
+  comm: any = {};
+  editmodal: any = {};
 
-  list_of_category :any     = [];
-  list_of_Business :any     = [];
-  listFilterType   :any     = [];
+  list_of_category: any = [];
+  list_of_Business: any = [];
+  listFilterType: any = [];
 
   // Pagination
-  pageSize    = 10;
-  p           : number = 0;
-  count       : number = 0;
-  tableSize   : number = 20;
-  tableSizes  : any    = [20, 40, 60, 80, 100];
+  pageSize = 10;
+  p: number = 0;
+  count: number = 0;
+  tableSize: number = 20;
+  tableSizes: any = [20, 40, 60, 80, 100];
 
   isCheck: boolean = false;
   visible: boolean = true;
@@ -78,7 +78,7 @@ export class CommercialEstablishmentsComponent implements OnInit {
     this.service.Import().subscribe({
       next: (data) => {
         this.ngOnInit();
-        if(data.length === 0){
+        if (data.length === 0) {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -91,14 +91,12 @@ export class CommercialEstablishmentsComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'info',
             title: 'No data from previous year',
           });
-        }
-        else
-        {
+        } else {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -111,7 +109,7 @@ export class CommercialEstablishmentsComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'success',
             title: 'Imported Successfully',
@@ -140,9 +138,9 @@ export class CommercialEstablishmentsComponent implements OnInit {
     });
   }
 
-  filterTypes(catId:any){
+  filterTypes(catId: any) {
     this.listFilterType = this.list_of_Business.filter(
-      (item:any) => item.catId == catId
+      (item: any) => item.catId == catId
     );
   }
 
@@ -167,7 +165,7 @@ export class CommercialEstablishmentsComponent implements OnInit {
     };
     this.gmapComponent.setMarker(this.markerObj);
   }
-  GetListCom(){
+  GetListCom() {
     {
       this.service.Get_Com_Estab().subscribe((data) => {
         this.ComEstab = <any>data;
@@ -180,66 +178,67 @@ export class CommercialEstablishmentsComponent implements OnInit {
   //searchBar
   onChangeSearch(e: any) {
     this.searchText = e.target.value;
-   
   }
-  ExportExcel(){
-    this.reportService.GetExcelExport(this.auth.setYear, this.auth.munCityId, "ComEstab");
+  ExportExcel() {
+    this.reportService.GetExcelExport(
+      this.auth.setYear,
+      this.auth.munCityId,
+      'ComEstab'
+    );
   }
   ImportExcel(e: any) {
     Swal.fire({
       title: 'Are you sure?',
-      text: "",
+      text: '',
       icon: 'info',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, submit it!'
+      confirmButtonText: 'Yes, submit it!',
     }).then((result) => {
-      console.log(result)
+      console.log(result);
       if (result.isConfirmed) {
         this.reportService
-        .Get_ExImport(
-          e.target.files[0],
-          this.auth.setYear,
-          this.auth.munCityId,
-          'ComEstab'
-        )
-        .subscribe((success) => {
-          Swal.fire({
-            title: 'Importing Data',
-            html: 'Please wait for a moment.',
-            timerProgressBar: true,
-            allowOutsideClick: false,
-            didOpen: () => {
-              Swal.showLoading();
-              setTimeout(() => {
-                if (success) {
-                  this.GetListCommercialEstab();
-                  Swal.close();
-                  Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'File imported successfully',
-                    showConfirmButton: true,
-                  });
-                } else {
-                  Swal.close();
-                  Swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: 'Something went wrong. possible invalid file',
-                    showConfirmButton: true,
-                  });
-                }
-              }, 5000);
-            },
+          .Get_ExImport(
+            e.target.files[0],
+            this.auth.setYear,
+            this.auth.munCityId,
+            'ComEstab'
+          )
+          .subscribe((success) => {
+            Swal.fire({
+              title: 'Importing Data',
+              html: 'Please wait for a moment.',
+              timerProgressBar: true,
+              allowOutsideClick: false,
+              didOpen: () => {
+                Swal.showLoading();
+                setTimeout(() => {
+                  if (success) {
+                    this.GetListCommercialEstab();
+                    Swal.close();
+                    Swal.fire({
+                      position: 'center',
+                      icon: 'success',
+                      title: 'File imported successfully',
+                      showConfirmButton: true,
+                    });
+                  } else {
+                    Swal.close();
+                    Swal.fire({
+                      position: 'center',
+                      icon: 'error',
+                      title: 'Something went wrong. possible invalid file',
+                      showConfirmButton: true,
+                    });
+                  }
+                }, 5000);
+              },
+            });
           });
-        });
+      } else {
       }
-      else{
-      }
-    })
-
+    });
   }
 
   GeneratePDF() {
@@ -247,218 +246,305 @@ export class CommercialEstablishmentsComponent implements OnInit {
     let data: any = [];
     let dist1: any = [];
     let dist2: any = [];
-    let contentData:any = [];
+    let contentData: any = [];
 
     this.reportService.GetComEstabReport(this.pdfComponent.data).subscribe({
       next: (response: any = {}) => {
-        reports = response.data;
-        dist1 = response.districtOne;
-        dist2 = response.districtTwo;
-       
-        console.log(response);
+        console.log('API Response:', response);
+        reports = response.data || [];
+        dist1 = response.districtOne || [];
+        dist2 = response.districtTwo || [];
 
-        data.push(    {
-          text: `Number of Business/ Commercial Establishments by Municipality/City and related business Category for the year ${response.year}`, // Add the title text
+        if (!reports.length) {
+          console.error('No reports data available');
+          return;
+        }
+
+        data.push({
+          text: `Number of Business/ Commercial Establishments by Municipality/City and related business Category for the year ${response.year}`,
           fontSize: 14,
-          bold: true, 
+          bold: true,
           alignment: 'center',
-          margin: [0, 10] // Adjust the margin around the title as needed
+          margin: [0, 10],
         });
 
-        reports.forEach((a: any, index: any) => {
-          let columns:any = [];
-          let columnWidth:any = [];
-          const tableData: any = [];
-          let grandTotal:any = [];
-         
-          let subtotal1:any=[];
-              subtotal1.push({
+        reports.forEach((a: any, reportIndex: any) => {
+          const chunkSize = 10; // Limit of columns per page
+          const columnChunks: any[][] = [];
+
+          // Split columns into chunks
+          for (let i = 0; i < a.columnTypes.length; i += chunkSize) {
+            columnChunks.push(a.columnTypes.slice(i, i + chunkSize));
+          }
+
+          columnChunks.forEach((columnsChunk: any[], chunkIndex: number) => {
+            let columns: any = [];
+            let columnWidth: any = [];
+            const tableData: any = [];
+            let grandTotal: any = [];
+
+            let subtotal1: any = [
+              {
                 text: 'SUB TOTAL',
                 fillColor: '#9DB2BF',
-                fontSize: 8
-              });
+                fontSize: 8,
+              },
+            ];
 
-          let subtotal2:any=[];
-              subtotal2.push({
+            let subtotal2: any = [
+              {
                 text: 'SUB TOTAL',
                 fillColor: '#9DB2BF',
-                fontSize: 8
-              });
+                fontSize: 8,
+              },
+            ];
 
-
-          a.columnTypes.forEach((b: any, index: any) => { // GET COLUMN
-            if(index == 0){
-              columnWidth.push('auto');
-              columns.push({
-                text: "Muncipality/ City",
-                fillColor: 'black',
-                color: 'white',
-                bold: true,
-                alignment: 'center',
-                fontSize: 6,
-              });
-            }
-            columnWidth.push('auto');
+            // Define the first column for Municipality/City
             columns.push({
-              text: b.lineBusinessName,
+              text: 'Municipality/ City',
               fillColor: 'black',
               color: 'white',
               bold: true,
               alignment: 'center',
               fontSize: 6,
             });
-          });
+            columnWidth.push('auto');
 
-          contentData.push({ // Categpry Name
-            text: a.catName + ' category',
-            margin: [0, 10, 0, 8],
-            fillColor: 'black',
-            color: 'black',
-            bold: true,
-            alignment: 'left',
-          });
+            columnsChunk.forEach((b: any) => {
+              columnWidth.push('*');
+              columns.push({
+                text: b.lineBusinessName,
+                fillColor: 'black',
+                color: 'white',
+                bold: true,
+                alignment: 'center',
+                fontSize: 6,
+              });
+            });
 
-          tableData.push(columns); // PUSH COLUMN
-                 
-          for (let dataDistrict of a.district) { // LOOP DISTRICT
+            contentData.push({
+              text: `${a.catName} category`,
+              margin: [0, 10, 0, 8],
+              fillColor: 'black',
+              color: 'black',
+              bold: true,
+              alignment: 'left',
+              pageBreak: chunkIndex > 0 ? 'before' : undefined,
+            });
 
-            if (dataDistrict.district==1) { // GET DISTRICT I DATA
-              tableData.push([{ text: `1st Congressional District `, colSpan: columnWidth.length, alignment: 'left',
-              fillColor: '#526D82'}]);
-              
-              for (let d1 of dist1) {
-                let data1=[];
-                data1.push({text:d1.munCityName, fontSize:10});
-            
-                for (let header of a.columnTypes) {
+            tableData.push(columns);
+
+            (a.district || []).forEach((dataDistrict: any) => {
+              if (dataDistrict.district == 1) {
+                tableData.push([
+                  {
+                    text: `1st Congressional District`,
+                    colSpan: columnWidth.length,
+                    alignment: 'left',
+                    fillColor: '#526D82',
+                  },
+                ]);
+
+                dist1.forEach((d1: any) => {
+                  let data1: any = [{ text: d1.munCityName, fontSize: 10 }];
+
+                  columnsChunk.forEach((header: any) => {
                     let count = '-';
-                        for (let t of dataDistrict.lineBusiness) {
-                          if (header.recNo == t.lineBusiness) {
-                            //true
-                            for(let f of t.data){
-                              if (d1.munCityId == f.munCityId && header.recNo == f.lineBusiness) {
-                                count=f.countType;
-                                break;
-                              }
-                            }                              
-                          }       
-                        }
-                        data1.push(count);
-                  }
-                      tableData.push(data1); // PUSH DISTRICT 1 DATA
-              }
-
-                for (let header of a.columnTypes) { // GET DISTRICT 1 SUBTOTAL
-                    let countSubtotal1 = '-';
-                        for (let t of dataDistrict.lineBusiness) {
-                          if (header.recNo == t.lineBusiness) {
-                            countSubtotal1 = t.subtotalType;
-                            break;                                
-                          }       
-                        }
-                        subtotal1.push({
-                          text: countSubtotal1,
-                          fillColor: '#9DB2BF',
-                        });
-                }
-                      tableData.push(subtotal1); // PUSH DISTRICT 1 SUBTOTAL
-            }
-
-            if (dataDistrict.district==2) {// GET DISTRICT II DATA
-              tableData.push([{ text: `2nd Congressional District `, colSpan: columnWidth.length, alignment: 'left',
-              fillColor: '#526D82'}]);
-
-              for (let d2 of dist2) {
-                let data2=[];
-                data2.push({text:d2.munCityName, fontSize:10});
-
-                  for (let header of a.columnTypes) {
-                    let count = '-';
-                        for (let t of dataDistrict.lineBusiness) {
-                          if (header.recNo == t.lineBusiness) {
-                            //true
-                            for(let f of t.data){
-                              if (d2.munCityId == f.munCityId && header.recNo == f.lineBusiness) {
-                                count=f.countType;
-                                break;
-                              }
-                            }
+                    (dataDistrict.lineBusiness || []).forEach((t: any) => {
+                      if (header.recNo == t.lineBusiness) {
+                        (t.data || []).forEach((f: any) => {
+                          if (
+                            d1.munCityId == f.munCityId &&
+                            header.recNo == f.lineBusiness
+                          ) {
+                            count = f.countType;
                           }
-                        }
-                        data2.push(count)
-                  }
-                      tableData.push(data2); // PUSH DISTRICT II DATA
-              }
-
-                for (let header of a.columnTypes) { // GET DISTRICT II SUBTOTAL
-                    let countSubtotal2 = '-';
-                        for (let t of dataDistrict.lineBusiness) {
-                          if (header.recNo == t.lineBusiness) {
-                            countSubtotal2 = t.subtotalType;
-                            break;                                
-                          }       
-                        }
-                        subtotal2.push({
-                          text: countSubtotal2,
-                          fillColor: '#9DB2BF',
                         });
-                }
-                      tableData.push(subtotal2); // PUSH DISTRICT II SUBTOTAL
-            }   
-          }
+                      }
+                    });
+                    data1.push({ text: count.toString(), fontSize: 10 });
+                  });
+                  tableData.push(data1);
+                });
 
-          columnWidth.forEach((b: any, index: any) => {  // GET GRANDTOTAL
-            let grandTotalcount ;
-            if(index == 0){
-              grandTotalcount ='GRAND TOTAL';
-            }
-            else{
-              if(subtotal1.length>1 && subtotal2.length == 1 && index > 0){
-                grandTotalcount = subtotal1[index].text;
+                columnsChunk.forEach((header: any) => {
+                  let countSubtotal1 = '-';
+                  (dataDistrict.lineBusiness || []).forEach((t: any) => {
+                    if (header.recNo == t.lineBusiness) {
+                      countSubtotal1 = t.subtotalType;
+                    }
+                  });
+                  subtotal1.push({
+                    text: countSubtotal1.toString(),
+                    fillColor: '#9DB2BF',
+                  });
+                });
+                tableData.push(subtotal1);
+              }
 
+              if (dataDistrict.district == 2) {
+                tableData.push([
+                  {
+                    text: `2nd Congressional District`,
+                    colSpan: columnWidth.length,
+                    alignment: 'left',
+                    fillColor: '#526D82',
+                  },
+                ]);
+
+                dist2.forEach((d2: any) => {
+                  let data2: any = [{ text: d2.munCityName, fontSize: 10 }];
+
+                  columnsChunk.forEach((header: any) => {
+                    let count = '-';
+                    (dataDistrict.lineBusiness || []).forEach((t: any) => {
+                      if (header.recNo == t.lineBusiness) {
+                        (t.data || []).forEach((f: any) => {
+                          if (
+                            d2.munCityId == f.munCityId &&
+                            header.recNo == f.lineBusiness
+                          ) {
+                            count = f.countType;
+                          }
+                        });
+                      }
+                    });
+                    data2.push({ text: count.toString(), fontSize: 10 });
+                  });
+                  tableData.push(data2);
+                });
+
+                columnsChunk.forEach((header: any) => {
+                  let countSubtotal2 = '-';
+                  (dataDistrict.lineBusiness || []).forEach((t: any) => {
+                    if (header.recNo == t.lineBusiness) {
+                      countSubtotal2 = t.subtotalType;
+                    }
+                  });
+                  subtotal2.push({
+                    text: countSubtotal2.toString(),
+                    fillColor: '#9DB2BF',
+                  });
+                });
+                tableData.push(subtotal2);
               }
-              if(subtotal2.length>1 && subtotal1.length == 1 && index > 0){
-                grandTotalcount = subtotal2[index].text;
-              }
-              if(subtotal1.length>1 && subtotal2.length > 1 && index > 0){ 
-                let sub1 = subtotal1[index].text == '-'? 0: subtotal1[index].text;
-                let sub2 = subtotal2[index].text == '-'? 0: subtotal2[index].text;
-                
-                if(subtotal2[index].text == '-' && subtotal1[index].text == '-'){
-                  grandTotalcount = '-'
+            });
+
+            columnWidth.forEach((b: any, index: any) => {
+              let grandTotalcount;
+              if (index == 0) {
+                grandTotalcount = 'GRAND TOTAL';
+              } else {
+                if (
+                  subtotal1.length > 1 &&
+                  subtotal2.length == 1 &&
+                  index > 0
+                ) {
+                  grandTotalcount = subtotal1[index].text;
                 }
-                else{
-                  grandTotalcount = sub1 + sub2;
-                }          
+                if (
+                  subtotal2.length > 1 &&
+                  subtotal1.length == 1 &&
+                  index > 0
+                ) {
+                  grandTotalcount = subtotal2[index].text;
+                }
+                if (subtotal1.length > 1 && subtotal2.length > 1 && index > 0) {
+                  let sub1 =
+                    subtotal1[index].text == '-'
+                      ? 0
+                      : parseInt(subtotal1[index].text);
+                  let sub2 =
+                    subtotal2[index].text == '-'
+                      ? 0
+                      : parseInt(subtotal2[index].text);
+
+                  if (
+                    subtotal2[index].text == '-' &&
+                    subtotal1[index].text == '-'
+                  ) {
+                    grandTotalcount = '-';
+                  } else {
+                    grandTotalcount = (sub1 + sub2).toString();
+                  }
+                }
               }
-           }
-            grandTotal.push( {  // PUSH GRANDTOTAL
-              text: grandTotalcount,
-              fillColor: '#F1C93B',
-              fontSize: 10
-            });                  
+              grandTotal.push({
+                text: grandTotalcount,
+                fillColor: '#F1C93B',
+                fontSize: 10,
+              });
+            });
+
+            tableData.push(grandTotal);
+
+            contentData.push({
+              margin: [0, 10, 0, 0],
+              table: {
+                widths: columnWidth,
+                body: tableData,
+                dontBreakRows: false,
+              },
+              layout: {
+                hLineWidth: function (
+                  i: number,
+                  node: { table: { body: string | any[] } }
+                ) {
+                  return i === 0 || i === node.table.body.length ? 1 : 0.5;
+                },
+                vLineWidth: function (
+                  i: number,
+                  node: { table: { widths: string | any[] } }
+                ) {
+                  return i === 0 || i === node.table.widths.length ? 1 : 0.5;
+                },
+                hLineColor: function (
+                  i: number,
+                  node: { table: { body: string | any[] } }
+                ) {
+                  return i === 0 || i === node.table.body.length
+                    ? 'black'
+                    : 'gray';
+                },
+                vLineColor: function (
+                  i: number,
+                  node: { table: { widths: string | any[] } }
+                ) {
+                  return i === 0 || i === node.table.widths.length
+                    ? 'black'
+                    : 'gray';
+                },
+                paddingLeft: function (_i: any, node: any) {
+                  return 4;
+                },
+                paddingRight: function (_i: any, node: any) {
+                  return 4;
+                },
+                paddingTop: function (_i: any, node: any) {
+                  return 2;
+                },
+                paddingBottom: function (_i: any, node: any) {
+                  return 2;
+                },
+                dontBreakRows: false, // Allow rows to break across pages
+              },
+            });
           });
-
-          tableData.push(grandTotal);
-
-          contentData.push([{
-            margin: [0, 10, 0, 0],
-            table: {
-           // widths: columnWidth,
-            body: tableData,
-          },
-          }])
         });
 
-        data.push(contentData);
+        data.push(...contentData);
       },
       error: (error: any) => {
-        console.log(error);
+        console.error('Error fetching report:', error);
       },
       complete: () => {
-        let isPortrait = false;
-        this.pdfService.GeneratePdf(data, isPortrait, "");
-        console.log(data);
+        try {
+          let isPortrait = false; // Set to false for landscape orientation
+          this.pdfService.GeneratePdf(data, isPortrait, 'report.pdf');
+          console.log(data);
+        } catch (error) {
+          console.error('Error generating PDF:', error);
+        }
       },
     });
   }
@@ -472,13 +558,13 @@ export class CommercialEstablishmentsComponent implements OnInit {
   }
 
   GetListComEstabCategory() {
-    this.service.Get_Com_Estab_Cat().subscribe((data:any) => {
+    this.service.Get_Com_Estab_Cat().subscribe((data: any) => {
       this.list_of_category = data;
     });
   }
 
   GetListComEstabTypes() {
-    this.service.Get_Com_Estab_Type().subscribe((data:any) => {
+    this.service.Get_Com_Estab_Type().subscribe((data: any) => {
       this.list_of_Business = data;
     });
   }
@@ -672,8 +758,4 @@ export class CommercialEstablishmentsComponent implements OnInit {
     { id: 3, status: 'DELINQUENT' },
     { id: 4, status: 'RETIRED' },
   ];
-
-  
 }
-
-
