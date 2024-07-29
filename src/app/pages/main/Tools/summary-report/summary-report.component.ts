@@ -21207,10 +21207,10 @@ export class SummaryReportComponent implements OnInit {
         dist1 = response.districtOne || [];
         dist2 = response.districtTwo || [];
 
-        if (!reports.length) {
-          console.error('No reports data available');
-          return;
-        }
+        // if (!reports.length) {
+        //   console.error('No reports data available');
+        //   return;
+        // }
 
         data.push({
           text: `Number of Business/ Commercial Establishments by Municipality/City and related business Category for the year ${response.year}`,
