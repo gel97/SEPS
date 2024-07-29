@@ -430,68 +430,56 @@ export class TransportTerminalsComponent implements OnInit {
   }
 
   saveTerminalList() {
-    console.log('saveTerminalList called');
+    // Validate company field
+    this.toValidate.company =
+      this.TerminalList.company == '' || this.TerminalList.company == null
+        ? true
+        : false;
 
-    // Validate input fields
-    this.toValidate.company = !this.TerminalList.company;
-    this.toValidate.unitsNo = !this.TerminalList.unitsNo;
+    // Validate unitsNo field
+    this.toValidate.unitsNo =
+      this.TerminalList.unitsNo == '' || this.TerminalList.unitsNo == undefined
+        ? true
+        : false;
 
-    this.TerminalList.setYear = Number(this.auth.activeSetYear);
+    // Set additional properties
+    this.TerminalList.setYear = this.auth.activeSetYear;
+    this.TerminalList.munCityId = this.auth.munCityId;
     this.TerminalList.tag = 1;
-    this.TerminalList.transportType = Number(this.TerminalList.transportType);
 
-    // Convert all fields to string (if necessary)
-    const formattedTerminalList = {
-      ...this.TerminalList,
-      company: String(this.TerminalList.company),
-      unitsNo: String(this.TerminalList.unitsNo),
-    };
-
-    console.log('Validation:', this.toValidate);
-    console.log('Formatted TerminalList:', formattedTerminalList);
-
-    // Check if all required fields are valid
-    const isValid = !this.toValidate.company && !this.toValidate.unitsNo;
-
-    if (isValid) {
-      // Call the API to save the data
-      this.service.post_save_transpo_terminal(formattedTerminalList).subscribe(
+    // If all required fields are valid
+    if (!this.toValidate.company && !this.toValidate.unitsNo) {
+      // Call the service to save the data
+      this.service.post_save_transpo_terminal(this.TerminalList).subscribe(
         (data) => {
-          console.log('Save success:', data);
-
-          // Display success message
+          // Show success message
           Swal.fire('Saved!', 'Data successfully saved.', 'success');
 
-          // Close modal or perform any other necessary UI actions
+          // Close the modal or form
           this.closebutton.nativeElement.click();
 
-          // Assuming data returned from API includes transportType as an ID
-          const transportType = this.TransportType.find(
-            (t: { id: any }) => t.id === Number((<any>data).transportType)
-          );
-
-          if (transportType) {
-            (<any>data).transportTypeName = transportType.transpotypename; // Adjust as per your data structure
+          // Find and set the transport type name for the new data
+          for (let t of this.TransportType) {
+            if ((<any>data).transportType == t.id) {
+              (<any>data).transpotypename = t.transpotypename;
+              break;
+            }
           }
 
-          // Add the new data to the list and trigger change detection
-          this.TranspoTerminalList.push(data);
-          console.log('Updated TranspoTerminalList:', this.TranspoTerminalList);
+          // Add the new data to the local TerminalList array to update the view
+          this.TranspoTerminalList.push(<any>data);
 
-          // Ensure change detection runs
-          this.changeDetectorRef.detectChanges();
+          // Optionally, trigger change detection or notify the component to update the view
+          // If you use Angular's OnPush change detection strategy, you might need to trigger change detection manually.
+          // this.cdRef.detectChanges();
         },
         (error) => {
-          console.error('Save error:', error);
-          if (error.error) {
-            console.error('Error message:', error.error);
-          }
-          // Display error message
-          Swal.fire('ERROR', 'There was an error saving the data.', 'error');
+          // Show error message
+          alert('ERROR');
         }
       );
     } else {
-      // Display warning for missing data
+      // Show warning message if required fields are missing
       Swal.fire(
         'Missing Data!',
         'Please fill out the required fields.',
@@ -517,6 +505,7 @@ export class TransportTerminalsComponent implements OnInit {
       this.service.put_update_transpo_terminal(this.TerminalList).subscribe(
         (data) => {
           this.closebutton.nativeElement.click();
+
           Swal.fire('Updated!', 'Data successfully updated.', 'success');
         },
         (err) => {

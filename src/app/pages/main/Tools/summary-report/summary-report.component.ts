@@ -17250,47 +17250,30 @@ export class SummaryReportComponent implements OnInit {
         const table = {
           margin: [0, 10, 0, 0],
           table: {
-            widths: [
-              'auto',
-              'auto',
-              'auto',
-              'auto',
-              'auto',
-              'auto',
-              'auto',
-              'auto',
-              'auto',
-              'auto',
-              'auto',
-              'auto',
-              'auto',
-              'auto',
-              'auto',
-              'auto',
-            ],
+            widths: Array(16).fill('auto'), // Ensure this matches the number of columns
             body: tableData,
-            headerRows: 2, // assuming you have two header rows
+            headerRows: 2,
             layout: {
               fillColor: function (rowIndex: number, node: any) {
-                return rowIndex === 0 ? '#CCCCCC' : null; // header row color
+                return rowIndex === 0 ? '#CCCCCC' : null;
               },
               hLineWidth: function (
                 i: number,
                 node: { table: { body: string | any[] } }
               ) {
-                return i === 0 || i === node.table.body.length ? 2 : 1; // top & bottom border of the table
+                return i === 0 || i === node.table.body.length ? 2 : 1;
               },
               vLineWidth: function (
                 i: number,
                 node: { table: { widths: string | any[] } }
               ) {
-                return i === 0 || i === node.table.widths.length ? 2 : 1; // left & right border of the table
+                return i === 0 || i === node.table.widths.length ? 2 : 1;
               },
               hLineColor: function (_i: any, node: any) {
-                return '#999999'; // horizontal line color
+                return '#999999';
               },
               vLineColor: function (_i: any, node: any) {
-                return '#999999'; // vertical line color
+                return '#999999';
               },
             },
           },
@@ -21219,11 +21202,15 @@ export class SummaryReportComponent implements OnInit {
 
     this.reportService.GetComEstabReport(this.params).subscribe({
       next: (response: any = {}) => {
-        console.log('API Response:', response); // Log the entire response for inspection
+        console.log('API Response:', response);
+        reports = response.data || [];
+        dist1 = response.districtOne || [];
+        dist2 = response.districtTwo || [];
 
-        reports = response.data;
-        dist1 = response.districtOne;
-        dist2 = response.districtTwo;
+        if (!reports.length) {
+          console.error('No reports data available');
+          return;
+        }
 
         data.push({
           text: `Number of Business/ Commercial Establishments by Municipality/City and related business Category for the year ${response.year}`,
@@ -21233,217 +21220,283 @@ export class SummaryReportComponent implements OnInit {
           margin: [0, 10],
         });
 
-        reports.forEach((a: any) => {
-          let columns: any = [];
-          const tableData: any = [];
-          let grandTotal: any = [];
-          let subtotal1: any = [];
-          let subtotal2: any = [];
+        reports.forEach((a: any, reportIndex: any) => {
+          const chunkSize = 10; // Limit of columns per page
+          const columnChunks: any[][] = [];
 
-          a.columnTypes.forEach((b: any, index: any) => {
-            // Add column headers
+          // Split columns into chunks
+          for (let i = 0; i < a.columnTypes.length; i += chunkSize) {
+            columnChunks.push(a.columnTypes.slice(i, i + chunkSize));
+          }
+
+          columnChunks.forEach((columnsChunk: any[], chunkIndex: number) => {
+            let columns: any = [];
+            let columnWidth: any = [];
+            const tableData: any = [];
+            let grandTotal: any = [];
+
+            let subtotal1: any = [
+              {
+                text: 'SUB TOTAL',
+                fillColor: '#9DB2BF',
+                fontSize: 8,
+              },
+            ];
+
+            let subtotal2: any = [
+              {
+                text: 'SUB TOTAL',
+                fillColor: '#9DB2BF',
+                fontSize: 8,
+              },
+            ];
+
+            // Define the first column for Municipality/City
             columns.push({
-              text: b.lineBusinessName,
+              text: 'Municipality/ City',
               fillColor: 'black',
               color: 'white',
               bold: true,
               alignment: 'center',
-              fontSize: 10,
-              margin: [0, 5],
-              border: [true, true, true, true], // Specify border for each cell
+              fontSize: 6,
             });
-          });
+            columnWidth.push('auto');
 
-          tableData.push(columns); // Push column headers
+            columnsChunk.forEach((b: any) => {
+              columnWidth.push('*');
+              columns.push({
+                text: b.lineBusinessName,
+                fillColor: 'black',
+                color: 'white',
+                bold: true,
+                alignment: 'center',
+                fontSize: 6,
+              });
+            });
 
-          a.district.forEach((dataDistrict: any) => {
-            if (dataDistrict.district == 1) {
-              // District 1 data
-              tableData.push([
-                {
-                  text: `1st Congressional District`,
-                  colSpan: a.columnTypes.length,
-                  fillColor: '#526D82',
-                  bold: true,
-                  fontSize: 12,
-                  margin: [0, 5],
-                  border: [true, true, true, true], // Specify border for each cell
-                },
-              ]);
+            contentData.push({
+              text: `${a.catName} category`,
+              margin: [0, 10, 0, 8],
+              fillColor: 'black',
+              color: 'black',
+              bold: true,
+              alignment: 'left',
+              pageBreak: chunkIndex > 0 ? 'before' : undefined,
+            });
 
-              dist1.forEach((d1: any) => {
-                let rowData: any = [];
-                rowData.push({
-                  text: d1.munCityName,
-                  fontSize: 10,
-                  margin: [0, 5],
-                  border: [true, true, true, true], // Specify border for each cell
+            tableData.push(columns);
+
+            (a.district || []).forEach((dataDistrict: any) => {
+              if (dataDistrict.district == 1) {
+                tableData.push([
+                  {
+                    text: `1st Congressional District`,
+                    colSpan: columnWidth.length,
+                    alignment: 'left',
+                    fillColor: '#526D82',
+                  },
+                ]);
+
+                dist1.forEach((d1: any) => {
+                  let data1: any = [{ text: d1.munCityName, fontSize: 10 }];
+
+                  columnsChunk.forEach((header: any) => {
+                    let count = '-';
+                    (dataDistrict.lineBusiness || []).forEach((t: any) => {
+                      if (header.recNo == t.lineBusiness) {
+                        (t.data || []).forEach((f: any) => {
+                          if (
+                            d1.munCityId == f.munCityId &&
+                            header.recNo == f.lineBusiness
+                          ) {
+                            count = f.countType;
+                          }
+                        });
+                      }
+                    });
+                    data1.push({ text: count.toString(), fontSize: 10 });
+                  });
+                  tableData.push(data1);
                 });
 
-                a.columnTypes.forEach((header: any) => {
-                  let count = '-';
-                  dataDistrict.lineBusiness.forEach((t: any) => {
+                columnsChunk.forEach((header: any) => {
+                  let countSubtotal1 = '-';
+                  (dataDistrict.lineBusiness || []).forEach((t: any) => {
                     if (header.recNo == t.lineBusiness) {
-                      for (let f of t.data) {
-                        if (
-                          d1.munCityId == f.munCityId &&
-                          header.recNo == f.lineBusiness
-                        ) {
-                          count = f.countType;
-                          break;
-                        }
-                      }
+                      countSubtotal1 = t.subtotalType;
                     }
                   });
-
-                  rowData.push({
-                    text: count.toString(),
-                    fontSize: 10,
-                    margin: [0, 5],
-                    border: [true, true, true, true], // Specify border for each cell
+                  subtotal1.push({
+                    text: countSubtotal1.toString(),
+                    fillColor: '#9DB2BF',
                   });
                 });
+                tableData.push(subtotal1);
+              }
 
-                tableData.push(rowData);
-              });
+              if (dataDistrict.district == 2) {
+                tableData.push([
+                  {
+                    text: `2nd Congressional District`,
+                    colSpan: columnWidth.length,
+                    alignment: 'left',
+                    fillColor: '#526D82',
+                  },
+                ]);
 
-              // District 1 subtotal
-              a.columnTypes.forEach((header: any) => {
-                let countSubtotal1 = '-';
-                dataDistrict.lineBusiness.forEach((t: any) => {
-                  if (header.recNo == t.lineBusiness) {
-                    countSubtotal1 = t.subtotalType;
-                    return;
-                  }
-                });
+                dist2.forEach((d2: any) => {
+                  let data2: any = [{ text: d2.munCityName, fontSize: 10 }];
 
-                subtotal1.push({
-                  text: countSubtotal1.toString(),
-                  fillColor: '#9DB2BF',
-                  fontSize: 10,
-                  margin: [0, 5],
-                  border: [true, true, true, true], // Specify border for each cell
-                });
-              });
-
-              tableData.push(subtotal1); // Push District 1 subtotal
-            }
-
-            if (dataDistrict.district == 2) {
-              // District 2 data
-              tableData.push([
-                {
-                  text: `2nd Congressional District`,
-                  colSpan: a.columnTypes.length,
-                  fillColor: '#526D82',
-                  bold: true,
-                  fontSize: 12,
-                  margin: [0, 5],
-                  border: [true, true, true, true], // Specify border for each cell
-                },
-              ]);
-
-              dist2.forEach((d2: any) => {
-                let rowData: any = [];
-                rowData.push({
-                  text: d2.munCityName,
-                  fontSize: 10,
-                  margin: [0, 5],
-                  border: [true, true, true, true], // Specify border for each cell
-                });
-
-                a.columnTypes.forEach((header: any) => {
-                  let count = '-';
-                  dataDistrict.lineBusiness.forEach((t: any) => {
-                    if (header.recNo == t.lineBusiness) {
-                      for (let f of t.data) {
-                        if (
-                          d2.munCityId == f.munCityId &&
-                          header.recNo == f.lineBusiness
-                        ) {
-                          count = f.countType;
-                          break;
-                        }
+                  columnsChunk.forEach((header: any) => {
+                    let count = '-';
+                    (dataDistrict.lineBusiness || []).forEach((t: any) => {
+                      if (header.recNo == t.lineBusiness) {
+                        (t.data || []).forEach((f: any) => {
+                          if (
+                            d2.munCityId == f.munCityId &&
+                            header.recNo == f.lineBusiness
+                          ) {
+                            count = f.countType;
+                          }
+                        });
                       }
+                    });
+                    data2.push({ text: count.toString(), fontSize: 10 });
+                  });
+                  tableData.push(data2);
+                });
+
+                columnsChunk.forEach((header: any) => {
+                  let countSubtotal2 = '-';
+                  (dataDistrict.lineBusiness || []).forEach((t: any) => {
+                    if (header.recNo == t.lineBusiness) {
+                      countSubtotal2 = t.subtotalType;
                     }
                   });
-
-                  rowData.push({
-                    text: count.toString(),
-                    fontSize: 10,
-                    margin: [0, 5],
-                    border: [true, true, true, true], // Specify border for each cell
+                  subtotal2.push({
+                    text: countSubtotal2.toString(),
+                    fillColor: '#9DB2BF',
                   });
                 });
+                tableData.push(subtotal2);
+              }
+            });
 
-                tableData.push(rowData);
-              });
+            columnWidth.forEach((b: any, index: any) => {
+              let grandTotalcount;
+              if (index == 0) {
+                grandTotalcount = 'GRAND TOTAL';
+              } else {
+                if (
+                  subtotal1.length > 1 &&
+                  subtotal2.length == 1 &&
+                  index > 0
+                ) {
+                  grandTotalcount = subtotal1[index].text;
+                }
+                if (
+                  subtotal2.length > 1 &&
+                  subtotal1.length == 1 &&
+                  index > 0
+                ) {
+                  grandTotalcount = subtotal2[index].text;
+                }
+                if (subtotal1.length > 1 && subtotal2.length > 1 && index > 0) {
+                  let sub1 =
+                    subtotal1[index].text == '-'
+                      ? 0
+                      : parseInt(subtotal1[index].text);
+                  let sub2 =
+                    subtotal2[index].text == '-'
+                      ? 0
+                      : parseInt(subtotal2[index].text);
 
-              // District 2 subtotal
-              a.columnTypes.forEach((header: any) => {
-                let countSubtotal2 = '-';
-                dataDistrict.lineBusiness.forEach((t: any) => {
-                  if (header.recNo == t.lineBusiness) {
-                    countSubtotal2 = t.subtotalType;
-                    return;
+                  if (
+                    subtotal2[index].text == '-' &&
+                    subtotal1[index].text == '-'
+                  ) {
+                    grandTotalcount = '-';
+                  } else {
+                    grandTotalcount = (sub1 + sub2).toString();
                   }
-                });
-
-                subtotal2.push({
-                  text: countSubtotal2.toString(),
-                  fillColor: '#9DB2BF',
-                  fontSize: 10,
-                  margin: [0, 5],
-                  border: [true, true, true, true], // Specify border for each cell
-                });
+                }
+              }
+              grandTotal.push({
+                text: grandTotalcount,
+                fillColor: '#F1C93B',
+                fontSize: 10,
               });
+            });
 
-              tableData.push(subtotal2); // Push District 2 subtotal
-            }
-          });
+            tableData.push(grandTotal);
 
-          // Grand total row
-          let grandTotalRow: any = [];
-          grandTotalRow.push({
-            text: 'GRAND TOTAL',
-            fillColor: '#F1C93B',
-            fontSize: 12,
-            bold: true,
-            colSpan: a.columnTypes.length > 0 ? a.columnTypes.length : 1,
-            margin: [0, 5],
-            border: [true, true, true, true], // Specify border for each cell
-          });
-
-          tableData.push(grandTotalRow); // Push grand total row
-
-          contentData.push({
-            margin: [0, 10],
-            table: {
-              widths: a.columnTypes.map(() => 'auto'), // Set column widths
-              body: tableData,
-            },
+            contentData.push({
+              margin: [0, 10, 0, 0],
+              table: {
+                widths: columnWidth,
+                body: tableData,
+                dontBreakRows: false,
+              },
+              layout: {
+                hLineWidth: function (
+                  i: number,
+                  node: { table: { body: string | any[] } }
+                ) {
+                  return i === 0 || i === node.table.body.length ? 1 : 0.5;
+                },
+                vLineWidth: function (
+                  i: number,
+                  node: { table: { widths: string | any[] } }
+                ) {
+                  return i === 0 || i === node.table.widths.length ? 1 : 0.5;
+                },
+                hLineColor: function (
+                  i: number,
+                  node: { table: { body: string | any[] } }
+                ) {
+                  return i === 0 || i === node.table.body.length
+                    ? 'black'
+                    : 'gray';
+                },
+                vLineColor: function (
+                  i: number,
+                  node: { table: { widths: string | any[] } }
+                ) {
+                  return i === 0 || i === node.table.widths.length
+                    ? 'black'
+                    : 'gray';
+                },
+                paddingLeft: function (_i: any, node: any) {
+                  return 4;
+                },
+                paddingRight: function (_i: any, node: any) {
+                  return 4;
+                },
+                paddingTop: function (_i: any, node: any) {
+                  return 2;
+                },
+                paddingBottom: function (_i: any, node: any) {
+                  return 2;
+                },
+                dontBreakRows: false, // Allow rows to break across pages
+              },
+            });
           });
         });
 
-        data.push(contentData); // Push contentData to data array for PDF generation
-
-        // Generate PDF if reports are found
-        if (reports.length > 0) {
-          let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
-          console.log('PDF generation completed successfully.');
-        } else {
-          console.error('No reports to generate PDF.');
-          this.Error(); // Handle error condition
-        }
+        data.push(...contentData);
       },
       error: (error: any) => {
-        console.error('Error fetching ComEstabReport:', error);
-        // Handle error condition here, e.g., display error message to user
+        console.error('Error fetching report:', error);
       },
       complete: () => {
-        // Optional: Log completion of the observable sequence
-        console.log('ComEstabReport API subscription completed.');
+        try {
+          let isPortrait = false; // Set to false for landscape orientation
+          this.pdfService.GeneratePdf(data, isPortrait, 'report.pdf');
+          console.log(data);
+        } catch (error) {
+          console.error('Error generating PDF:', error);
+        }
       },
     });
   }
@@ -21476,7 +21529,6 @@ export class SummaryReportComponent implements OnInit {
           // Process each report entry
           reports.forEach((a: any, index: any) => {
             let columns: any = [];
-            let columnWidth: any = [];
             const tableData: any = [];
             let grandTotal: any = [];
 
@@ -21496,22 +21548,22 @@ export class SummaryReportComponent implements OnInit {
             // Build column headers based on column types
             a.columnTypes.forEach((b: any, index: any) => {
               if (index == 0) {
-                columnWidth.push('auto');
                 columns.push({
                   text: 'Municipality/ City',
                   fillColor: 'black',
                   color: 'white',
                   bold: true,
                   alignment: 'center',
+                  fontSize: 10, // Adjust font size
                 });
               }
-              columnWidth.push('auto');
               columns.push({
                 text: b.typeName,
                 fillColor: 'black',
                 color: 'white',
                 bold: true,
                 alignment: 'center',
+                fontSize: 10, // Adjust font size
               });
             });
 
@@ -21523,6 +21575,7 @@ export class SummaryReportComponent implements OnInit {
               color: 'white',
               bold: true,
               alignment: 'left',
+              pageBreak: index === 0 ? '' : 'before', // Add page break before each new category except the first
             });
 
             // Push column headers to table data
@@ -21535,9 +21588,10 @@ export class SummaryReportComponent implements OnInit {
                 tableData.push([
                   {
                     text: `1st Congressional District`,
-                    colSpan: columnWidth.length,
+                    colSpan: columns.length,
                     alignment: 'left',
                     fillColor: '#526D82',
+                    fontSize: 10, // Adjust font size
                   },
                 ]);
 
@@ -21578,6 +21632,7 @@ export class SummaryReportComponent implements OnInit {
                   subtotal1.push({
                     text: countSubtotal1,
                     fillColor: '#9DB2BF',
+                    fontSize: 10, // Adjust font size
                   });
                 }
                 tableData.push(subtotal1); // Push District 1 subtotal row
@@ -21588,9 +21643,10 @@ export class SummaryReportComponent implements OnInit {
                 tableData.push([
                   {
                     text: `2nd Congressional District`,
-                    colSpan: columnWidth.length,
+                    colSpan: columns.length,
                     alignment: 'left',
                     fillColor: '#526D82',
+                    fontSize: 10, // Adjust font size
                   },
                 ]);
 
@@ -21631,6 +21687,7 @@ export class SummaryReportComponent implements OnInit {
                   subtotal2.push({
                     text: countSubtotal2,
                     fillColor: '#9DB2BF',
+                    fontSize: 10, // Adjust font size
                   });
                 }
                 tableData.push(subtotal2); // Push District 2 subtotal row
@@ -21645,9 +21702,10 @@ export class SummaryReportComponent implements OnInit {
               fillColor: '#F1C93B',
               alignment: 'center',
               bold: true,
+              fontSize: 10, // Adjust font size
             });
 
-            for (let i = 1; i < columnWidth.length; i++) {
+            for (let i = 1; i < columns.length; i++) {
               let total = 0;
 
               if (
@@ -21683,6 +21741,7 @@ export class SummaryReportComponent implements OnInit {
                 text: total.toString(),
                 fillColor: '#F1C93B',
                 alignment: 'center',
+                fontSize: 10, // Adjust font size
               });
             }
             tableData.push(grandTotalRow); // Push grand total row
@@ -21691,10 +21750,41 @@ export class SummaryReportComponent implements OnInit {
             contentData.push({
               margin: [0, 10, 0, 0],
               table: {
-                widths: columnWidth,
+                widths: Array(columns.length).fill('auto'), // Adjust widths to auto
                 body: tableData,
-                pageBreak: 'before', // Ensure each table starts on a new page
+                dontBreakRows: true, // Prevent row breaks
               },
+              layout: {
+                hLineWidth: function (i: any, node: any) {
+                  return i === 0 || i === node.table.body.length ? 1 : 0.5;
+                },
+                vLineWidth: function (i: any, node: any) {
+                  return i === 0 || i === node.table.widths.length ? 1 : 0.5;
+                },
+                hLineColor: function (i: any, node: any) {
+                  return i === 0 || i === node.table.body.length
+                    ? 'black'
+                    : 'gray';
+                },
+                vLineColor: function (i: any, node: any) {
+                  return i === 0 || i === node.table.widths.length
+                    ? 'black'
+                    : 'gray';
+                },
+                paddingLeft: function (i: any, node: any) {
+                  return 4;
+                },
+                paddingRight: function (i: any, node: any) {
+                  return 4;
+                },
+                paddingTop: function (i: any, node: any) {
+                  return 2;
+                },
+                paddingBottom: function (i: any, node: any) {
+                  return 2;
+                },
+              },
+              pageBreak: 'auto', // Add automatic page breaks
             });
           });
 
@@ -24372,7 +24462,7 @@ export class SummaryReportComponent implements OnInit {
                 text:
                   categoryTitle === 'Elective Officials'
                     ? item.term
-                    : item.employmentStatus,
+                    : item.term,
                 fillColor: '#FFFFFF',
                 border: [true, true, true, true],
                 alignment: 'center',
