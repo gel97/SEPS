@@ -427,7 +427,22 @@ export class ResortsComponent implements OnInit {
             widths: [25, '*', '*', '*', '*'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineColor: function (i: any, node: any) {
+              return i === 0 || i === node.table.body.length ? 'black' : '#aaa';
+            },
+            vLineColor: function (i: any, node: any) {
+              return i === 0 || i === node.table.widths.length
+                ? 'black'
+                : '#aaa';
+            },
+            hLineWidth: function (i: any, node: any) {
+              return 0.5;
+            },
+            vLineWidth: function (i: any, node: any) {
+              return 0.5;
+            },
+          },
         };
 
         data.push(table);

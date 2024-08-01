@@ -414,6 +414,12 @@ export class SummaryReportComponent implements OnInit {
       case 'List of Other Structures by Municipality/ City':
         this.OtherStructGeneratePDF();
         break;
+      case 'List of Physical Environment Profile by Municipality/ City':
+        this.EnvProfileGeneratePDF();
+        break;
+      case 'List of Natural/ Biological Resources by Municipality/ City':
+        this.EnvBioGeneratePDF();
+        break;
       default:
         break;
     }
@@ -15944,7 +15950,7 @@ export class SummaryReportComponent implements OnInit {
           return groups;
         }, {});
 
-        console.log('dist2Group ', dist2);
+        console.log('dist2Group ', dist2Group);
 
         tableData.push([
           {
@@ -16112,7 +16118,26 @@ export class SummaryReportComponent implements OnInit {
             widths: [25, '*', '*', '*', '*', '*'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: (i: number, node: any) => {
+              return i === 0 || i === 1 || i === node.table.body.length ? 2 : 1;
+            },
+            vLineWidth: (i: number, node: any) => {
+              return 1;
+            },
+            hLineColor: (i: number, node: any) => {
+              return 'black';
+            },
+            vLineColor: (i: number, node: any) => {
+              return 'black';
+            },
+            paddingLeft: (i: number, node: any) => {
+              return i === 0 ? 0 : 8;
+            },
+            paddingRight: (i: number, node: any) => {
+              return i === node.table.widths.length - 1 ? 0 : 8;
+            },
+          },
         };
 
         data.push(table);
@@ -16131,6 +16156,7 @@ export class SummaryReportComponent implements OnInit {
       },
     });
   }
+
   WarehouseGeneratePDF() {
     let data: any = [];
     let reports: any = [];
@@ -16192,7 +16218,7 @@ export class SummaryReportComponent implements OnInit {
           return groups;
         }, {});
 
-        console.log('dist2Group ', dist2);
+        console.log('dist2Group ', dist2Group);
 
         tableData.push([
           {
@@ -16344,7 +16370,26 @@ export class SummaryReportComponent implements OnInit {
             widths: [25, '*', '*', '*', '*'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: (i: number, node: any) => {
+              return i === 0 || i === 1 || i === node.table.body.length ? 2 : 1;
+            },
+            vLineWidth: (i: number, node: any) => {
+              return 1;
+            },
+            hLineColor: (i: number, node: any) => {
+              return 'black';
+            },
+            vLineColor: (i: number, node: any) => {
+              return 'black';
+            },
+            paddingLeft: (i: number, node: any) => {
+              return i === 0 ? 0 : 8;
+            },
+            paddingRight: (i: number, node: any) => {
+              return i === node.table.widths.length - 1 ? 0 : 8;
+            },
+          },
         };
 
         data.push(table);
@@ -16363,6 +16408,7 @@ export class SummaryReportComponent implements OnInit {
       },
     });
   }
+
   RicemillsGeneratePDF() {
     let listofRicemill: any = [
       { id: `1`, type: `Cono` },
@@ -16432,8 +16478,9 @@ export class SummaryReportComponent implements OnInit {
           return groups;
         }, {});
 
-        console.log('dist2Group ', dist2);
+        console.log('dist2Group ', dist2Group);
 
+        // Define the table header
         tableData.push([
           {
             text: '#',
@@ -16479,6 +16526,7 @@ export class SummaryReportComponent implements OnInit {
             alignment: 'left',
             fillColor: '#526D82',
             marginLeft: 5,
+            border: [true, true, true, true],
           },
         ]);
 
@@ -16598,7 +16646,26 @@ export class SummaryReportComponent implements OnInit {
             widths: [25, '*', '*', '*', '*'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: (i: number, node: any) => {
+              return i === 0 || i === 1 || i === node.table.body.length ? 2 : 1;
+            },
+            vLineWidth: (i: number, node: any) => {
+              return 1;
+            },
+            hLineColor: (i: number, node: any) => {
+              return 'black';
+            },
+            vLineColor: (i: number, node: any) => {
+              return 'black';
+            },
+            paddingLeft: (i: number, node: any) => {
+              return i === 0 ? 0 : 8;
+            },
+            paddingRight: (i: number, node: any) => {
+              return i === node.table.widths.length - 1 ? 0 : 8;
+            },
+          },
         };
 
         data.push(table);
@@ -16617,6 +16684,7 @@ export class SummaryReportComponent implements OnInit {
       },
     });
   }
+
   LivestockGeneratePDF() {
     let data: any = [];
     let grandTotal: any = {};
@@ -16854,7 +16922,7 @@ export class SummaryReportComponent implements OnInit {
     let columnTypes: any = [];
 
     let reports: any = [];
-    let columnLenght: number = 0;
+    let columnLength: number = 0;
 
     const tableData: any = [];
     this.params.menuId = '3';
@@ -16869,108 +16937,59 @@ export class SummaryReportComponent implements OnInit {
 
         console.log('result: ', response);
 
-        data.push({
-          margin: [0, 40, 0, 0],
-          columns: [
+        // Define a type for table cells
+        interface TableCell {
+          text?: string;
+          fillColor?: string;
+          color?: string;
+          bold?: boolean;
+          alignment?: string;
+          colSpan?: number;
+          rowSpan?: number;
+          marginLeft?: number;
+          fontSize?: number;
+        }
+
+        // Define the headerRow dynamically
+        const headerRow: TableCell[] = [
+          {
+            text: '#',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+            rowSpan: 2,
+          },
+          {
+            text: 'Municipality/ City',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+            rowSpan: 2,
+          },
+        ];
+
+        // Populate headerRow with dynamic column types
+        columnTypes.forEach((type: { name: string }) => {
+          headerRow.push(
             {
-              text: `List of Fisheries/ Aquaculture Production by Municipality/City`,
-              fontSize: 14,
+              text: type.name,
+              fillColor: 'black',
+              color: 'white',
               bold: true,
+              alignment: 'center',
+              colSpan: 2,
             },
-            {
-              text: `Year: ${response.year}`,
-              fontSize: 14,
-              bold: true,
-              alignment: 'right',
-            },
-          ],
+            {}
+          );
         });
 
-        tableData.push(
-          [
-            {
-              text: '#',
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
-              rowSpan: 2,
-            },
-            {
-              text: 'Municipality/ City',
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
-              rowSpan: 2,
-            },
-            {
-              text: 'Bangus',
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
-              colSpan: 2,
-            },
-            {},
-            {
-              text: 'Tilapia',
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
-              colSpan: 2,
-            },
-            {},
-            {
-              text: 'Shrimp',
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
-              colSpan: 2,
-            },
-            {},
-            {
-              text: 'Crabs',
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
-              colSpan: 2,
-            },
-            {},
-            {
-              text: 'Cream Dory',
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
-              colSpan: 2,
-            },
-            {},
-            {
-              text: 'Hito',
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
-              colSpan: 2,
-            },
-            {},
-            {
-              text: 'Others',
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
-              colSpan: 2,
-            },
-            {},
-          ],
-          [
-            {},
-            {},
+        // Define the subHeaderRow for Total Production and Area Harvested
+        const subHeaderRow: TableCell[] = [
+          {},
+          {},
+          ...columnTypes.flatMap(() => [
             {
               text: 'Total Production',
               fillColor: 'black',
@@ -16987,118 +17006,24 @@ export class SummaryReportComponent implements OnInit {
               alignment: 'center',
               fontSize: 8,
             },
-            {
-              text: 'Total Production',
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
-              fontSize: 8,
-            },
-            {
-              text: 'Area Harvested',
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
-              fontSize: 8,
-            },
-            {
-              text: 'Total Production',
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
-              fontSize: 8,
-            },
-            {
-              text: 'Area Harvested',
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
-              fontSize: 8,
-            },
-            {
-              text: 'Total Production',
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
-              fontSize: 8,
-            },
-            {
-              text: 'Area Harvested',
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
-              fontSize: 8,
-            },
-            {
-              text: 'Total Production',
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
-              fontSize: 8,
-            },
-            {
-              text: 'Area Harvested',
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
-              fontSize: 8,
-            },
-            {
-              text: 'Total Production',
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
-              fontSize: 8,
-            },
-            {
-              text: 'Area Harvested',
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
-              fontSize: 8,
-            },
-            {
-              text: 'Total Production',
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
-              fontSize: 8,
-            },
-            {
-              text: 'Area Harvested',
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
-              fontSize: 8,
-            },
-          ]
-        );
+          ]),
+        ];
+
+        // Push rows into tableData
+        tableData.push(headerRow, subHeaderRow);
 
         reports.forEach((a: any) => {
           if (a.district == 1) {
             tableData.push([
               {
                 text: `1st Congressional District `,
-                colSpan: 16,
+                colSpan: headerRow.length,
                 alignment: 'left',
                 fillColor: '#526D82',
               },
             ]);
 
-            let sub: any = [];
-            sub = [
+            let sub: any = [
               {
                 text: 'SUBTOTAL',
                 fillColor: '#9DB2BF',
@@ -17108,8 +17033,10 @@ export class SummaryReportComponent implements OnInit {
               {},
             ];
             district1.forEach((b: any, i: any) => {
-              let d1: any = [];
-              d1 = [{ text: i + 1, marginLeft: 2 }, { text: b.munCityName }];
+              let d1: any = [
+                { text: i + 1, marginLeft: 2 },
+                { text: b.munCityName },
+              ];
 
               columnTypes.forEach((c: any) => {
                 let prod: any = '-';
@@ -17152,14 +17079,13 @@ export class SummaryReportComponent implements OnInit {
             tableData.push([
               {
                 text: `2nd Congressional District `,
-                colSpan: 16,
+                colSpan: headerRow.length,
                 alignment: 'left',
                 fillColor: '#526D82',
               },
             ]);
 
-            let sub: any = [];
-            sub = [
+            let sub: any = [
               {
                 text: 'SUBTOTAL',
                 fillColor: '#9DB2BF',
@@ -17169,8 +17095,10 @@ export class SummaryReportComponent implements OnInit {
               {},
             ];
             district2.forEach((b: any, i: any) => {
-              let d1: any = [];
-              d1 = [{ text: i + 1, marginLeft: 2 }, { text: b.munCityName }];
+              let d1: any = [
+                { text: i + 1, marginLeft: 2 },
+                { text: b.munCityName },
+              ];
 
               columnTypes.forEach((c: any) => {
                 let prod: any = '-';
@@ -17211,8 +17139,7 @@ export class SummaryReportComponent implements OnInit {
           }
         });
 
-        let grand: any = [];
-        grand = [
+        let grand: any = [
           {
             text: 'GRANDTOTAL',
             fillColor: '#F1C93B',
@@ -17232,16 +17159,8 @@ export class SummaryReportComponent implements OnInit {
           });
 
           grand.push(
-            {
-              text: prod,
-              fillColor: '#F1C93B',
-              alignment: 'center',
-            },
-            {
-              text: area,
-              fillColor: '#F1C93B',
-              alignment: 'center',
-            }
+            { text: prod, fillColor: '#F1C93B', alignment: 'center' },
+            { text: area, fillColor: '#F1C93B', alignment: 'center' }
           );
         });
 
@@ -17250,9 +17169,9 @@ export class SummaryReportComponent implements OnInit {
         const table = {
           margin: [0, 10, 0, 0],
           table: {
-            widths: Array(16).fill('auto'), // Ensure this matches the number of columns
+            widths: Array(headerRow.length).fill('auto'), // Ensure this matches the number of columns
             body: tableData,
-            headerRows: 2,
+            headerRows: 2, // Changed to 2 to match header rows
             layout: {
               fillColor: function (rowIndex: number, node: any) {
                 return rowIndex === 0 ? '#CCCCCC' : null;
@@ -17295,6 +17214,7 @@ export class SummaryReportComponent implements OnInit {
       },
     });
   }
+
   AgriProfGeneratePDF() {
     let data: any = [];
     let summary: any = [];
@@ -24704,6 +24624,525 @@ export class SummaryReportComponent implements OnInit {
         if (reports.length > 0) {
           let isPortrait = true;
           this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
+        } else {
+          this.Error();
+        }
+      },
+    });
+  }
+  //ENVIRONMENT
+  EnvProfileGeneratePDF() {
+    let data: any = [];
+    let reports: any = [];
+
+    const tableData: any = [];
+    const dist1: any = [];
+    const dist2: any = [];
+    this.params.menuId = '1';
+
+    this.reportService.GetReportEnvironment(this.params).subscribe({
+      next: (response: any = {}) => {
+        reports = response;
+        console.log('result: ', response);
+
+        // Debug log: check the raw response
+        console.log('Raw response:', response);
+
+        // Assign data to dist1 and dist2
+        reports.forEach((a: any) => {
+          if (a.district === 1) {
+            dist1.push(a);
+          } else {
+            dist2.push(a);
+          }
+        });
+
+        // Sort dist1 and dist2 by munCityName
+        dist1.sort((a: any, b: any) =>
+          a.munCityName.localeCompare(b.munCityName)
+        );
+        dist2.sort((a: any, b: any) =>
+          a.munCityName.localeCompare(b.munCityName)
+        );
+
+        // Debug log: check dist1 and dist2 arrays
+        console.log('dist1:', dist1);
+        console.log('dist2:', dist2);
+
+        if (response.length > 0) {
+          data.push({
+            margin: [0, 20, 0, 0],
+            columns: [
+              {
+                text: `List of Physical Environment Profile by Municipality/City`,
+                fontSize: 14,
+                bold: true,
+              },
+              {
+                text: `Year: ${response[0].setYear}`,
+                fontSize: 14,
+                bold: true,
+                alignment: 'right',
+              },
+            ],
+          });
+        } else {
+          data.push({
+            margin: [0, 20, 0, 0],
+            columns: [
+              {
+                text: `List of Physical Environment Profile by Municipality/City`,
+                fontSize: 14,
+                bold: true,
+              },
+              {
+                text: `Year: N/A`,
+                fontSize: 14,
+                bold: true,
+                alignment: 'right',
+              },
+            ],
+          });
+        }
+
+        // Group data by munCityName
+        const dist1Group = dist1.reduce((groups: any, item: any) => {
+          const { munCityName } = item;
+          if (!groups[munCityName]) {
+            groups[munCityName] = [];
+          }
+          groups[munCityName].push(item);
+          return groups;
+        }, {});
+
+        const dist2Group = dist2.reduce((groups: any, item: any) => {
+          const { munCityName } = item;
+          if (!groups[munCityName]) {
+            groups[munCityName] = [];
+          }
+          groups[munCityName].push(item);
+          return groups;
+        }, {});
+
+        // Debug log: check the grouped data
+        console.log('dist1Group:', dist1Group);
+        console.log('dist2Group:', dist2Group);
+
+        let rowIndex = 1;
+
+        const addRowsForDistrict = (
+          districtGroup: any,
+          districtName: string
+        ) => {
+          if (Object.keys(districtGroup).length > 0) {
+            tableData.push([
+              {
+                text: districtName,
+                colSpan: 2,
+                alignment: 'left',
+                fillColor: '#526D82',
+                margin: [5, 5, 5, 5],
+              },
+              {},
+            ]);
+
+            for (const groupKey in districtGroup) {
+              const group = districtGroup[groupKey];
+
+              if (group.length > 0) {
+                // Add header row for each municipality/city
+                tableData.push([
+                  {
+                    text: groupKey,
+                    colSpan: 2,
+                    alignment: 'left',
+                    fillColor: '#D3E0EA',
+                    margin: [5, 5, 5, 5],
+                  },
+                  {},
+                ]);
+
+                group.forEach((item: any) => {
+                  tableData.push(
+                    [
+                      { text: rowIndex++, margin: [2, 2, 2, 2] },
+                      { text: '', margin: [2, 2, 2, 2] },
+                    ],
+                    [
+                      {
+                        text: 'General Topography',
+                        fillColor: 'white',
+                        color: 'black',
+                        bold: true,
+                        alignment: 'center',
+                        margin: [2, 2, 2, 2],
+                      },
+                      { text: item.desc1 || '', margin: [2, 2, 2, 2] },
+                    ],
+                    [
+                      {
+                        text: 'Geology',
+                        fillColor: 'white',
+                        color: 'black',
+                        bold: true,
+                        alignment: 'center',
+                        margin: [2, 2, 2, 2],
+                      },
+                      { text: item.desc2 || '', margin: [2, 2, 2, 2] },
+                    ],
+                    [
+                      {
+                        text: 'Soils',
+                        fillColor: 'white',
+                        color: 'black',
+                        bold: true,
+                        alignment: 'center',
+                        margin: [2, 2, 2, 2],
+                      },
+                      { text: item.desc3 || '', margin: [2, 2, 2, 2] },
+                    ],
+                    [
+                      {
+                        text: 'Land Classification',
+                        fillColor: 'white',
+                        color: 'black',
+                        bold: true,
+                        alignment: 'center',
+                        margin: [2, 2, 2, 2],
+                      },
+                      { text: item.desc4 || '', margin: [2, 2, 2, 2] },
+                    ],
+                    [
+                      {
+                        text: 'Climate',
+                        fillColor: 'white',
+                        color: 'black',
+                        bold: true,
+                        alignment: 'center',
+                        margin: [2, 2, 2, 2],
+                      },
+                      { text: item.desc5 || '', margin: [2, 2, 2, 2] },
+                    ],
+                    [
+                      {
+                        text: 'Surface Water',
+                        fillColor: 'white',
+                        color: 'black',
+                        bold: true,
+                        alignment: 'center',
+                        margin: [2, 2, 2, 2],
+                      },
+                      { text: item.desc6 || '', margin: [2, 2, 2, 2] },
+                    ],
+                    [
+                      {
+                        text: 'Others/Remarks',
+                        fillColor: 'white',
+                        color: 'black',
+                        bold: true,
+                        alignment: 'center',
+                        margin: [2, 2, 2, 2],
+                      },
+                      { text: item.desc7 || '', margin: [2, 2, 2, 2] },
+                    ]
+                  );
+                });
+              }
+            }
+          }
+        };
+
+        addRowsForDistrict(dist1Group, '1st Congressional District');
+        addRowsForDistrict(dist2Group, '2nd Congressional District');
+
+        const table = {
+          margin: [0, 20, 0, 0],
+          table: {
+            widths: ['auto', '*'],
+            body: tableData,
+          },
+          layout: {
+            hLineWidth: () => 1,
+            vLineWidth: () => 1,
+            hLineColor: () => '#000',
+            vLineColor: () => '#000',
+          },
+        };
+
+        data.push(table);
+      },
+      error: (error: any) => {
+        console.log(error);
+      },
+      complete: () => {
+        if (reports.length > 0) {
+          let isPortrait = false; // Ensure landscape orientation
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
+          console.log(data);
+        } else {
+          this.Error();
+        }
+      },
+    });
+  }
+  EnvBioGeneratePDF() {
+    let data: any = [];
+    let reports: any = [];
+
+    const tableData: any = [];
+    const dist1: any = [];
+    const dist2: any = [];
+    this.params.menuId = '2';
+
+    this.reportService.GetReportEnvironment(this.params).subscribe({
+      next: (response: any = {}) => {
+        reports = response;
+        console.log('result: ', response);
+
+        // Debug log: check the raw response
+        console.log('Raw response:', response);
+
+        // Assign data to dist1 and dist2
+        reports.forEach((a: any) => {
+          if (a.district === 1) {
+            dist1.push(a);
+          } else {
+            dist2.push(a);
+          }
+        });
+
+        // Sort dist1 and dist2 by munCityName
+        dist1.sort((a: any, b: any) =>
+          a.munCityName.localeCompare(b.munCityName)
+        );
+        dist2.sort((a: any, b: any) =>
+          a.munCityName.localeCompare(b.munCityName)
+        );
+
+        // Debug log: check dist1 and dist2 arrays
+        console.log('dist1:', dist1);
+        console.log('dist2:', dist2);
+
+        if (response.length > 0) {
+          data.push({
+            margin: [0, 20, 0, 0],
+            columns: [
+              {
+                text: `List of Natural/ Biological Resources by Municipality/ City`,
+                fontSize: 14,
+                bold: true,
+              },
+              {
+                text: `Year: ${response[0].setYear}`,
+                fontSize: 14,
+                bold: true,
+                alignment: 'right',
+              },
+            ],
+          });
+        } else {
+          data.push({
+            margin: [0, 20, 0, 0],
+            columns: [
+              {
+                text: `List of Natural/ Biological Resources by Municipality/ City`,
+                fontSize: 14,
+                bold: true,
+              },
+              {
+                text: `Year: N/A`,
+                fontSize: 14,
+                bold: true,
+                alignment: 'right',
+              },
+            ],
+          });
+        }
+
+        // Group data by munCityName
+        const dist1Group = dist1.reduce((groups: any, item: any) => {
+          const { munCityName } = item;
+          if (!groups[munCityName]) {
+            groups[munCityName] = [];
+          }
+          groups[munCityName].push(item);
+          return groups;
+        }, {});
+
+        const dist2Group = dist2.reduce((groups: any, item: any) => {
+          const { munCityName } = item;
+          if (!groups[munCityName]) {
+            groups[munCityName] = [];
+          }
+          groups[munCityName].push(item);
+          return groups;
+        }, {});
+
+        // Debug log: check the grouped data
+        console.log('dist1Group:', dist1Group);
+        console.log('dist2Group:', dist2Group);
+
+        let rowIndex = 1;
+
+        const addRowsForDistrict = (
+          districtGroup: any,
+          districtName: string
+        ) => {
+          if (Object.keys(districtGroup).length > 0) {
+            let hasData = false;
+            for (const groupKey in districtGroup) {
+              if (districtGroup[groupKey].length > 0) {
+                hasData = true;
+                break;
+              }
+            }
+
+            if (hasData) {
+              tableData.push([
+                {
+                  text: districtName,
+                  colSpan: 2,
+                  alignment: 'left',
+                  fillColor: '#526D82',
+                  margin: [5, 5, 5, 5],
+                },
+                {},
+              ]);
+
+              for (const groupKey in districtGroup) {
+                const group = districtGroup[groupKey];
+
+                if (group.length > 0) {
+                  // Add header row for each municipality/city
+                  tableData.push([
+                    {
+                      text: groupKey,
+                      colSpan: 2,
+                      alignment: 'left',
+                      fillColor: '#D3E0EA',
+                      margin: [5, 5, 5, 5],
+                    },
+                    {},
+                  ]);
+
+                  group.forEach((item: any) => {
+                    tableData.push(
+                      [
+                        { text: rowIndex++, margin: [2, 2, 2, 2] },
+                        { text: '', margin: [2, 2, 2, 2] },
+                      ],
+                      [
+                        {
+                          text: 'Forest/ Wildlife Resources',
+                          fillColor: 'white',
+                          color: 'black',
+                          bold: true,
+                          alignment: 'center',
+                          margin: [2, 2, 2, 2],
+                        },
+                        { text: item.desc1 || '', margin: [2, 2, 2, 2] },
+                      ],
+                      [
+                        {
+                          text: 'Aquatic/ Marine Resources and Habitats',
+                          fillColor: 'white',
+                          color: 'black',
+                          bold: true,
+                          alignment: 'center',
+                          margin: [2, 2, 2, 2],
+                        },
+                        { text: item.desc2 || '', margin: [2, 2, 2, 2] },
+                      ],
+                      [
+                        {
+                          text: 'Protected Areas',
+                          fillColor: 'white',
+                          color: 'black',
+                          bold: true,
+                          alignment: 'center',
+                          margin: [2, 2, 2, 2],
+                        },
+                        { text: item.desc3 || '', margin: [2, 2, 2, 2] },
+                      ],
+                      [
+                        {
+                          text: 'Land Resources',
+                          fillColor: 'white',
+                          color: 'black',
+                          bold: true,
+                          alignment: 'center',
+                          margin: [2, 2, 2, 2],
+                        },
+                        { text: item.desc4 || '', margin: [2, 2, 2, 2] },
+                      ],
+                      [
+                        {
+                          text: 'Water Resources',
+                          fillColor: 'white',
+                          color: 'black',
+                          bold: true,
+                          alignment: 'center',
+                          margin: [2, 2, 2, 2],
+                        },
+                        { text: item.desc5 || '', margin: [2, 2, 2, 2] },
+                      ],
+                      [
+                        {
+                          text: 'Minerals and Energy Resources',
+                          fillColor: 'white',
+                          color: 'black',
+                          bold: true,
+                          alignment: 'center',
+                          margin: [2, 2, 2, 2],
+                        },
+                        { text: item.desc6 || '', margin: [2, 2, 2, 2] },
+                      ],
+                      [
+                        {
+                          text: 'Others/Remarks',
+                          fillColor: 'white',
+                          color: 'black',
+                          bold: true,
+                          alignment: 'center',
+                          margin: [2, 2, 2, 2],
+                        },
+                        { text: item.desc7 || '', margin: [2, 2, 2, 2] },
+                      ]
+                    );
+                  });
+                }
+              }
+            }
+          }
+        };
+
+        addRowsForDistrict(dist1Group, '1st Congressional District');
+        addRowsForDistrict(dist2Group, '2nd Congressional District');
+
+        const table = {
+          margin: [0, 20, 0, 0],
+          table: {
+            widths: ['auto', '*'],
+            body: tableData,
+          },
+          layout: {
+            hLineWidth: () => 1,
+            vLineWidth: () => 1,
+            hLineColor: () => '#000',
+            vLineColor: () => '#000',
+          },
+        };
+
+        data.push(table);
+      },
+      error: (error: any) => {
+        console.log(error);
+      },
+      complete: () => {
+        if (reports.length > 0) {
+          let isPortrait = false; // Ensure landscape orientation
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
+          console.log(data);
         } else {
           this.Error();
         }

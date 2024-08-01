@@ -123,7 +123,7 @@ export class MajorEconomicActivitiesComponent implements OnInit {
       complete: () => {},
     });
   }
-  GetListMjrcoAct(){
+  GetListMjrcoAct() {
     this.service.GetMajorEco().subscribe((data) => {
       this.MajorAct = <any>data;
       this.MajorAct = this.MajorAct.filter((s: any) => s.tag == 1);
@@ -134,60 +134,58 @@ export class MajorEconomicActivitiesComponent implements OnInit {
   ImportExcel(e: any) {
     Swal.fire({
       title: 'Are you sure?',
-      text: "",
+      text: '',
       icon: 'info',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, submit it!'
+      confirmButtonText: 'Yes, submit it!',
     }).then((result) => {
-      console.log(result)
+      console.log(result);
       if (result.isConfirmed) {
         this.reportService
-        .Get_ExImport(
-          e.target.files[0],
-          this.auth.setYear,
-          this.auth.munCityId,
-          'MjrEcoAct'
-        )
-        .subscribe((success) => {
-          Swal.fire({
-            title: 'Importing Data',
-            html: 'Please wait for a moment.',
-            timerProgressBar: true,
-            allowOutsideClick: false,
-            didOpen: () => {
-              Swal.showLoading();
-              setTimeout(() => {
-                if (success) {
-                  this.GetListMjrcoAct();
-                  Swal.close();
-                  Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'File imported successfully',
-                    showConfirmButton: true,
-                  });
-                } else {
-                  Swal.close();
-                  Swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: 'Something went wrong. possible invalid file',
-                    showConfirmButton: true,
-                  });
-                }
-              }, 5000);
-            },
+          .Get_ExImport(
+            e.target.files[0],
+            this.auth.setYear,
+            this.auth.munCityId,
+            'MjrEcoAct'
+          )
+          .subscribe((success) => {
+            Swal.fire({
+              title: 'Importing Data',
+              html: 'Please wait for a moment.',
+              timerProgressBar: true,
+              allowOutsideClick: false,
+              didOpen: () => {
+                Swal.showLoading();
+                setTimeout(() => {
+                  if (success) {
+                    this.GetListMjrcoAct();
+                    Swal.close();
+                    Swal.fire({
+                      position: 'center',
+                      icon: 'success',
+                      title: 'File imported successfully',
+                      showConfirmButton: true,
+                    });
+                  } else {
+                    Swal.close();
+                    Swal.fire({
+                      position: 'center',
+                      icon: 'error',
+                      title: 'Something went wrong. possible invalid file',
+                      showConfirmButton: true,
+                    });
+                  }
+                }, 5000);
+              },
+            });
           });
-        });
+      } else {
       }
-      else{
-      }
-    })
-
+    });
   }
- reports: any = [];
+  reports: any = [];
   GeneratePDF() {
     let data: any = [];
     const tableData: any = [];
@@ -210,16 +208,16 @@ export class MajorEconomicActivitiesComponent implements OnInit {
         data.push({
           margin: [0, 40, 0, 0],
           columns: [
-          {
-            text: `Major Economic Activities by Municipality/City`,
-            fontSize: 14,
-            bold: true,
-          },
+            {
+              text: `Major Economic Activities by Municipality/City`,
+              fontSize: 14,
+              bold: true,
+            },
             {
               text: `Year: ${response[0].setYear}`,
               fontSize: 14,
               bold: true,
-              alignment: 'right'
+              alignment: 'right',
             },
           ],
         });
@@ -234,7 +232,7 @@ export class MajorEconomicActivitiesComponent implements OnInit {
           return groups;
         }, {});
 
-        console.log("dist1Group ", dist1Group);
+        console.log('dist1Group ', dist1Group);
 
         const dist2Group = dist2.reduce((groups: any, item: any) => {
           const { munCityName } = item;
@@ -246,7 +244,7 @@ export class MajorEconomicActivitiesComponent implements OnInit {
           return groups;
         }, {});
 
-        console.log("dist2Group ", dist2);
+        console.log('dist2Group ', dist2);
 
         tableData.push([
           {
@@ -281,7 +279,7 @@ export class MajorEconomicActivitiesComponent implements OnInit {
           },
         ]);
 
-        for (const groupKey1 in dist1Group) { // Iterate district I data
+        for (const groupKey1 in dist1Group) {
           const group1 = dist1Group[groupKey1];
           const [cityName1] = groupKey1.split('-');
           tableData.push([
@@ -294,21 +292,20 @@ export class MajorEconomicActivitiesComponent implements OnInit {
           ]);
 
           group1.forEach((item: any, index: any) => {
-               tableData.push([
-            {
-              text: index+1,
-              fillColor: '#FFFFFF',
-            },
-            {
-              text: item.mjrActivity,
-              fillColor: '#FFFFFF',
-            },
-            {
-              text: item.description,
-              fillColor: '#FFFFFF',
-            },
-          ]);
-
+            tableData.push([
+              {
+                text: index + 1,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.mjrActivity,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.description,
+                fillColor: '#FFFFFF',
+              },
+            ]);
           });
         }
 
@@ -321,7 +318,7 @@ export class MajorEconomicActivitiesComponent implements OnInit {
           },
         ]);
 
-        for (const groupKey2 in dist2Group) { // Iterate district II data
+        for (const groupKey2 in dist2Group) {
           const group2 = dist2Group[groupKey2];
           const [cityName2] = groupKey2.split('-');
           tableData.push([
@@ -334,21 +331,20 @@ export class MajorEconomicActivitiesComponent implements OnInit {
           ]);
 
           group2.forEach((item: any, index: any) => {
-               tableData.push([
-            {
-              text: index+1,
-              fillColor: '#FFFFFF',
-            },
-            {
-              text: item.mjrActivity,
-              fillColor: '#FFFFFF',
-            },
-            {
-              text: item.description,
-              fillColor: '#FFFFFF',
-            },
-          ]);
-
+            tableData.push([
+              {
+                text: index + 1,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.mjrActivity,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.description,
+                fillColor: '#FFFFFF',
+              },
+            ]);
           });
         }
 
@@ -358,7 +354,22 @@ export class MajorEconomicActivitiesComponent implements OnInit {
             widths: [25, '*', '*'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineColor: function (i: any, node: any) {
+              return i === 0 || i === node.table.body.length ? 'black' : '#aaa';
+            },
+            vLineColor: function (i: any, node: any) {
+              return i === 0 || i === node.table.widths.length
+                ? 'black'
+                : '#aaa';
+            },
+            hLineWidth: function (i: any, node: any) {
+              return 0.5;
+            },
+            vLineWidth: function (i: any, node: any) {
+              return 0.5;
+            },
+          },
         };
 
         data.push(table);
@@ -368,7 +379,7 @@ export class MajorEconomicActivitiesComponent implements OnInit {
       },
       complete: () => {
         let isPortrait = false;
-        this.pdfService.GeneratePdf(data, isPortrait, "");
+        this.pdfService.GeneratePdf(data, isPortrait, '');
         console.log(data);
       },
     });
