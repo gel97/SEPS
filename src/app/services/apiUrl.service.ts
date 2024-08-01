@@ -557,6 +557,7 @@ export class ApiUrl {
   post_environment = () => `/Environment`;
   put_environment = () => `/Environment`;
   delete_environment = (transId: any) => `/Environment/${transId}`;
+  post_report_environment = () => `/Environment/Reports`;
   //Environment Act
   get_list_environment_activities = (setYear: any, munCityId: any) =>
     `/EnvironmentAct/${setYear}/${munCityId}`;

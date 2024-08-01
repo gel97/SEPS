@@ -654,6 +654,14 @@ export class ReportsService {
       { responseType: 'json' }
     );
   }
+  //ENVIRONMENT
+  GetReportEnvironment(data: any) {
+    return this.http.post<any[]>(
+      this.Base.url + this.ApiUrl.post_report_environment(),
+      data,
+      { responseType: 'json' }
+    );
+  }
 
   // Summarized report & validation
   GetReportSummarized(year: number) {
