@@ -163,6 +163,7 @@ import { SearchPipe } from './search.pipe';
 import { LGUComponent } from './Admin/lgu/lgu.component';
 import { CategoryPipe } from './category.pipe';
 import { PGDeptHeadsComponent } from './pages/main/Governance/pgdept-heads/pgdept-heads.component';
+import { UpdateUserComponent } from './pages/main/Update-User/update-user/update-user.component';
 
 @NgModule({
   declarations: [
@@ -313,6 +314,7 @@ import { PGDeptHeadsComponent } from './pages/main/Governance/pgdept-heads/pgdep
     LGUComponent,
     CategoryPipe,
     PGDeptHeadsComponent,
+    UpdateUserComponent,
   ],
   imports: [
     MdbCollapseModule,
