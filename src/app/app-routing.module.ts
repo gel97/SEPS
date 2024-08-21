@@ -92,6 +92,7 @@ import { BarangaysComponent } from './pages/main/Governance/barangays/barangays.
 // import { GeoTaggingComponent } from './pages/GeoTagging/geo-tagging/geo-tagging.component';
 import { GeoProfileComponent } from './pages/main/Governance/geo-profile/geo-profile.component';
 import { AddUserComponent } from './pages/main/Admin-Panel/add-user/add-user.component';
+import { UpdateUserComponent} from './pages/main/Update-User/update-user/update-user.component';
 import { MajorEconomicActivitiesComponent } from './pages/main/Socio-Economic/Trade-and-Industry/major-economic-activities/major-economic-activities.component';
 import { ManufacturingEstablishmentsComponent } from './pages/main/Socio-Economic/Trade-and-Industry/manufacturing-establishments/manufacturing-establishments.component';
 import { CommercialEstablishmentsComponent } from './pages/main/Socio-Economic/Trade-and-Industry/commercial-establishments/commercial-establishments.component';
@@ -164,6 +165,7 @@ const routes: Routes = [
       { path: 'gov_Barangays', component: BarangaysComponent },
       { path: 'gov_geoProfile', component: GeoProfileComponent },
       { path: 'admin/add_user', component: AddUserComponent },
+      { path: 'Update-User/update_user', component: UpdateUserComponent},
       { path: Tools + 'news', component: NewsComponent },
       { path: Tools + 'message-list/:id', component: MessageListComponent },
       { path: Tools + 'summary-reports', component: SummaryReportComponent },
