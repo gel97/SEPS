@@ -1,122 +1,126 @@
 <div class="container">
-    <div class="card o-hidden border-0 shadow-sm my-5">
-        <div class="card-body p-0">
-            <!-- Nested Row within Card Body -->
-            <div class="row p-4">
-                <div class="col-lg-4">            
-                  
-                </div>
-                <div class="container">
-                    <h2>Users Accounts</h2>
-                    <ul class="responsive-table">
-                      <li class="table-header">
-                        <div class="col col-3">User Name</div>
-                        <div class="col col-3">Designation</div>
-                        <div class="col col-3"></div>
-                        
-                      </li>
-                      <li class="table-row">
-                        <div class="col col-3" data-label="Job Id">Sto.tomas </div>
-                        <div class="col col-3" data-label="Customer Name">Sto.tomas</div>
-                        <div class="col col-3 d-inline-flex" data-label="Amount" > <button
-                            type="button"
-                            title="Delete"
-                            class="btn btn-warning btn-circle"
-                          >
-                            <i class="fa fa-trash"></i>
-                          </button> &nbsp;<button
-                          type="button"
-                          title="Edit"
-                          class="btn btn-info btn-circle"
-                          data-toggle="modal"
-                          data-target="#exampleModalLong"
-                        >
-                          <i class="fa fa-pen"></i></button
-                        ></div>
-                      
-                      </li>
-                    </ul>
-                  </div>
-                
-                
-         
-            </div>
+  <div class="card o-hidden border-0 shadow-sm my-5">
+    <div class="card-body p-0">
+      <!-- Nested Row within Card Body -->
+      <div class="row p-4">
+        <div class="col-lg-4"></div>
+        <div class="container">
+          <h2>Users Accounts</h2>
+          <ul class="responsive-table">
+            <li class="table-header">
+              <div class="col col-3">User Name</div>
+              <div class="col col-3">Password</div>
+              <div class="col col-3"></div>
+            </li>
+            <li
+              class="table-row"
+              *ngFor="let item of listData | search : searchText; index as i"
+            >
+              <div class="col col-3">{{ item.username }}</div>
+              <div class="col col-3">{{ item.password }}</div>
+              <div class="col col-3 d-inline-flex">
+                <button
+                  type="button"
+                  title="Delete"
+                  class="btn btn-warning btn-circle"
+                >
+                  <i class="fa fa-trash"></i>
+                </button>
+                &nbsp;<button
+                  type="button"
+                  title="Edit"
+                  class="btn btn-info btn-circle"
+                  data-toggle="modal"
+                  data-target="#exampleModalLong"
+                >
+                  <i class="fa fa-pen"></i>
+                </button>
+              </div>
+            </li>
+          </ul>
         </div>
+      </div>
     </div>
-
+  </div>
 </div>
 <style>
-    body {
-  font-family: 'lato', sans-serif;
-}
-.container {
-  max-width: 1000px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 10px;
-  padding-right: 10px;
-}
+  body {
+    font-family: "lato", sans-serif;
+  }
 
-h2 {
-  font-size: 26px;
-  margin: 20px 0;
-  text-align: center;
-  small {
-    font-size: 0.5em;
+  .container {
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 10px;
+    padding-right: 10px;
   }
-}
 
-.responsive-table {
-  li {
-    border-radius: 3px;
-    padding: 25px 30px;
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 25px;
+  h2 {
+    font-size: 26px;
+    margin: 20px 0;
+    text-align: center;
   }
-  .table-header {
-    background-color: #020808;
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-  }
-  .table-row {
-    background-color: #ffffff;
-    box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.1);
-  }
-  .col-1 {
-    flex-basis: 40%;
-  }
-  .col-2 {
-    flex-basis: 40%;
-  }
-  .col-3 {
-    flex-basis: 25%;
-  }
-  .col-4 {
-    flex-basis: 25%;
-  }
-  
-  @media all and (max-width: 767px) {
-    .table-header {
-      display: none;
-    }
-    .table-row{
-      
-    }
+
+  .responsive-table {
     li {
-      display: block;
-    }
-    .col {
-      
-      flex-basis: 100%;
-      
-    }
-    .col {
+      border-radius: 3px;
+      padding: 25px 30px;
       display: flex;
-      padding: 10px 0;
-      &:before {
-        color: #6C7A89;
+      justify-content: space-between;
+      margin-bottom: 25px;
+    }
+
+    .table-header {
+      background-color: #020808;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .table-row {
+      background-color: #ffffff;
+      box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+    }
+
+    .table-row:hover {
+      background-color: #f0f0f0; /* Background color on hover */
+    }
+
+    .col-1 {
+      flex-basis: 40%;
+    }
+
+    .col-2 {
+      flex-basis: 40%;
+    }
+
+    .col-3 {
+      flex-basis: 25%;
+    }
+
+    .col-4 {
+      flex-basis: 25%;
+    }
+
+    @media all and (max-width: 767px) {
+      .table-header {
+        display: none;
+      }
+
+      li {
+        display: block;
+      }
+
+      .col {
+        flex-basis: 100%;
+        display: flex;
+        padding: 10px 0;
+      }
+
+      .col:before {
+        color: #6c7a89;
         padding-right: 10px;
         content: attr(data-label);
         flex-basis: 50%;
@@ -124,5 +128,78 @@ h2 {
       }
     }
   }
-}
+
+  .container {
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  h2 {
+    font-size: 26px;
+    margin: 20px 0;
+    text-align: center;
+    small {
+      font-size: 0.5em;
+    }
+  }
+
+  .responsive-table {
+    li {
+      border-radius: 3px;
+      padding: 25px 30px;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 25px;
+    }
+    .table-header {
+      background-color: #020808;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .table-row {
+      background-color: #ffffff;
+      box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
+    }
+    .col-1 {
+      flex-basis: 40%;
+    }
+    .col-2 {
+      flex-basis: 40%;
+    }
+    .col-3 {
+      flex-basis: 25%;
+    }
+    .col-4 {
+      flex-basis: 25%;
+    }
+
+    @media all and (max-width: 767px) {
+      .table-header {
+        display: none;
+      }
+      .table-row {
+      }
+      li {
+        display: block;
+      }
+      .col {
+        flex-basis: 100%;
+      }
+      .col {
+        display: flex;
+        padding: 10px 0;
+        &:before {
+          color: #6c7a89;
+          padding-right: 10px;
+          content: attr(data-label);
+          flex-basis: 50%;
+          text-align: right;
+        }
+      }
+    }
+  }
 </style>

@@ -728,6 +728,7 @@ export class ApiUrl {
   post_user_update = () => `/User/Update`;
   post_user_username_check = (username: any) =>
     `/User/UsernameCheck/${username}`;
+  get_user_account = () => `/User`;
 
   get_report_summarized = (year: number) => `/ReportSummarized/${year}`;
   post_report_validation = () => `/ReportValidation`;
