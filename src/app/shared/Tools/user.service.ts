@@ -24,6 +24,7 @@ export class UserService {
     );
   }
   UpdateUser(data: any = {}) {
+    console.log(data);
     return this.Http.post<any[]>(
       this.Base.url + this.ApiUrl.post_user_update(),
       data,
