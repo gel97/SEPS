@@ -725,7 +725,7 @@ export class ApiUrl {
   post_message_seen = (transId: any) => `/Message/SeenMessage/${transId}`;
 
   post_user = () => `/User`;
-  post_user_update = () => `/User/Update`;
+  post_user_update = () => `/User/UpdatePassword`;
   post_user_username_check = (username: any) =>
     `/User/UsernameCheck/${username}`;
   get_user_account = () => `/User`;
