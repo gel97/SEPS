@@ -3,11 +3,22 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ApiUrl } from '../../services/apiUrl.service';
 import { BaseUrl } from 'src/app/services/baseUrl.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
+  verifyToken(requestData: { token: string }): Observable<{ token: string }> {
+    return this.Http.post<{ token: string }>(
+      this.Base.url + this.ApiUrl.verify_token(),
+      requestData, // Send the object with the token
+      {
+        responseType: 'json',
+      }
+    );
+  }
+
   constructor(
     private Http: HttpClient,
     private Auth: AuthService,
@@ -23,14 +34,68 @@ export class UserService {
       { responseType: 'json' }
     );
   }
-  UpdateUser(data: any = {}) {
-    console.log(data);
-    return this.Http.post<any[]>(
+  // service file (e.g., user.service.ts)
+  UpdateUser(editmodal: any = {}): Observable<any> {
+    const updateData = {
+      email: editmodal.email,
+      currentPassword: editmodal.currentPassword,
+      newPassword: editmodal.newPassword,
+      token: editmodal.token, // Include the token in the request data
+    };
+
+    return this.Http.post(
       this.Base.url + this.ApiUrl.post_user_update(),
-      data,
-      { responseType: 'json' }
+      updateData,
+      {
+        responseType: 'json',
+      }
     );
   }
+
+  verifyTokenAndLogin(requestData: { email: string; token: string }) {
+    return this.Http.post(
+      this.Base.url + this.ApiUrl.post_user_update(), // Assuming this URL is correct for verifying the token
+      requestData,
+      {
+        responseType: 'json',
+      }
+    );
+  }
+
+  storeToken(token: string) {
+    localStorage.setItem('authToken', token);
+    return this.Http.post(
+      this.Base.url + this.ApiUrl.post_user_update(),
+      token,
+      {
+        responseType: 'json',
+      }
+    );
+  }
+
+  sendPasswordResetLink(request: { EmailAddress: string; ResetUrl: string }) {
+    return this.Http.post(
+      this.Base.url + this.ApiUrl.post_reset_pass(),
+      request,
+      {
+        responseType: 'json',
+      }
+    );
+  }
+  updatePassword(request: {
+    email: string;
+    currentPassword: string;
+    newPassword: string;
+  }) {
+    return this.Http.post(
+      this.Base.url + this.ApiUrl.post_user_update(),
+      request,
+      {
+        responseType: 'json',
+      }
+    );
+  }
+
   UsernameCheck(username: any) {
     return this.Http.post<any[]>(
       this.Base.url + this.ApiUrl.post_user_username_check(username),

@@ -1,0 +1,139 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-lg" style="margin-top: 50px">
+        <div class="card-header text-center">
+          <h2>Update Password</h2>
+        </div>
+        <div class="card-body">
+          <form
+            #updatePasswordForm="ngForm"
+            (ngSubmit)="UpdateUser()"
+            novalidate
+          >
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                [(ngModel)]="editmodal.email"
+                name="email"
+                placeholder="Enter your email"
+                required
+                aria-required="true"
+                #email="ngModel"
+                [ngClass]="{
+                  'is-invalid': email.invalid && (email.dirty || email.touched)
+                }"
+              />
+              <div
+                *ngIf="email.invalid && (email.dirty || email.touched)"
+                class="invalid-feedback"
+              >
+                Email is required.
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="currentPassword">Current Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="currentPassword"
+                [(ngModel)]="editmodal.currentPassword"
+                name="currentPassword"
+                placeholder="Enter current password"
+                required
+                aria-required="true"
+                #currentPassword="ngModel"
+                [ngClass]="{
+                  'is-invalid':
+                    currentPassword.invalid &&
+                    (currentPassword.dirty || currentPassword.touched)
+                }"
+              />
+              <div
+                *ngIf="
+                  currentPassword.invalid &&
+                  (currentPassword.dirty || currentPassword.touched)
+                "
+                class="invalid-feedback"
+              >
+                Current password is required.
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="newPassword">New Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="newPassword"
+                [(ngModel)]="editmodal.newPassword"
+                name="newPassword"
+                placeholder="Enter new password"
+                required
+                minlength="8"
+                aria-required="true"
+                #newPassword="ngModel"
+                [ngClass]="{
+                  'is-invalid':
+                    newPassword.invalid &&
+                    (newPassword.dirty || newPassword.touched)
+                }"
+              />
+              <div
+                *ngIf="
+                  newPassword.invalid &&
+                  (newPassword.dirty || newPassword.touched)
+                "
+                class="invalid-feedback"
+              >
+                <span *ngIf="newPassword.errors?.['required']">
+                  New password is required.
+                </span>
+                <span *ngIf="newPassword.errors?.['minlength']">
+                  New password must be at least 8 characters long.
+                </span>
+              </div>
+            </div>
+
+            <div class="content">
+              <p>Password must contain:</p>
+              <ul class="requirement-list">
+                <li>
+                  <span>At least 8 characters length</span>
+                </li>
+                <li>
+                  <span>At least 1 number (0...9)</span>
+                </li>
+                <li>
+                  <span>At least 1 lowercase letter (a...z)</span>
+                </li>
+                <li>
+                  <span>At least 1 special symbol (!...$)</span>
+                </li>
+                <li>
+                  <span>At least 1 uppercase letter (A...Z)</span>
+                </li>
+              </ul>
+            </div>
+            <button
+              type="submit"
+              class="btn btn-primary btn-block"
+              [disabled]="updatePasswordForm.invalid || isUpdating"
+            >
+              <i class="fa fa-check"></i> Save changes
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary btn-block"
+              (click)="editmodal = {}"
+            >
+              <i class="fa fa-times"></i> Cancel
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,281 +1,80 @@
 <div class="container">
-  <div class="card o-hidden border-0 shadow-sm my-5">
-    <div class="card-body p-0">
-      <!-- Nested Row within Card Body -->
-      <div class="row p-4">
-        <div class="col-lg-4"></div>
-        <div class="container">
-          <h2>Users Accounts</h2>
-          <ul class="responsive-table">
-            <li class="table-header">
-              <div class="col col-3">User Name</div>
-              <div class="col col-3">Password</div>
-              <div class="col col-3"></div>
-            </li>
-            <li
-              class="table-row"
-              *ngFor="let item of listData | search : searchText; index as i"
-            >
-              <div class="col col-3">{{ item.username }}</div>
-              <div class="col col-3">{{ item.password }}</div>
-              <div class="col col-3 d-inline-flex">
-                <button
-                  type="button"
-                  title="Delete"
-                  class="btn btn-warning btn-circle"
-                >
-                  <i class="fa fa-trash"></i>
-                </button>
-                &nbsp;<button
-                  type="button"
-                  title="Edit"
-                  class="btn btn-info btn-circle"
-                  (click)="selectedUser = item"
-                  data-toggle="modal"
-                  data-target="#openModal"
-                  (click)="SelectUser(item)"
-                >
-                  <i class="fa fa-pen"></i>
-                </button>
-              </div>
-            </li>
-          </ul>
+  <div class="row justify-content-center align-items-center min-vh-100">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h2>Reset Password</h2>
+        </div>
+        <div class="card-body">
+          <p>
+            Please enter the email address associated with your account, and
+            we'll send you a link to reset your password.
+          </p>
+
+          <form (ngSubmit)="sendResetLink()">
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                [(ngModel)]="email"
+                name="email"
+                placeholder="Enter your email address"
+                required
+              />
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">
+              Send Reset Link
+            </button>
+          </form>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-<!-- Modal -->
-<div
-  class="modal fade bd-example-modal-lg"
-  id="openModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="myLargeModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalScrollableTitle">
-          <i class="fa fa-user-edit"></i> Update User Account
-        </h5>
-        <button
-          type="button"
-          #closebutton
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-lg-12">
-            <label><i class="fa fa-lock"></i> Current Password:</label>
-            <input
-              type="password"
-              class="form-control mb-2"
-              [(ngModel)]="selectedUser.currentPassword"
-              [ngClass]="{'is-invalid': toValidate.currentPassword}"
-              placeholder="Enter current password"
-            />
-          </div>
-          <div class="col-lg-12">
-            <label><i class="fa fa-key"></i> New Password:</label>
-            <input
-              type="password"
-              class="form-control mb-2"
-              [(ngModel)]="selectedUser.newPassword"
-              [ngClass]="{'is-invalid': toValidate.newPassword}"
-              placeholder="Enter new password"
-            />
-          </div>
-          <div class="col-lg-12">
-            <label><i class="fa fa-user"></i> New Username:</label>
-            <input
-              type="text"
-              class="form-control mb-2"
-              [(ngModel)]="selectedUser.newUsername"
-              [ngClass]="{'is-invalid': toValidate.newUsername}"
-              placeholder="Enter new username"
-            />
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-primary"
-          (click)="UpdateUser()"
-        >
-          <i class="fa fa-check"></i> Save Changes
-        </button>
-        <button
-          type="button"
-          class="btn btn-secondary"
-          data-dismiss="modal"
-        >
-          <i class="fa fa-times"></i> Close
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
 
 <style>
   body {
-    font-family: "lato", sans-serif;
-  }
-
-  h2 {
-    font-size: 26px;
-    margin: 20px 0;
-    text-align: center;
-  }
-
-  .responsive-table {
-    li {
-      border-radius: 3px;
-      padding: 25px 30px;
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 25px;
-    }
-
-    .table-header {
-      background-color: #020808;
-      font-size: 14px;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-    }
-
-    .table-row {
-      background-color: #ffffff;
-      box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
-      transition: background-color 0.3s ease; /* Smooth transition for hover effect */
-    }
-
-    .table-row:hover {
-      background-color: #f0f0f0; /* Background color on hover */
-    }
-
-    .col-1 {
-      flex-basis: 40%;
-    }
-
-    .col-2 {
-      flex-basis: 40%;
-    }
-
-    .col-3 {
-      flex-basis: 25%;
-    }
-
-    .col-4 {
-      flex-basis: 25%;
-    }
-
-    @media all and (max-width: 767px) {
-      .table-header {
-        display: none;
-      }
-
-      li {
-        display: block;
-      }
-
-      .col {
-        flex-basis: 100%;
-        display: flex;
-        padding: 10px 0;
-      }
-
-      .col:before {
-        color: #6c7a89;
-        padding-right: 10px;
-        content: attr(data-label);
-        flex-basis: 50%;
-        text-align: right;
-      }
-    }
+    font-family: "Lato", sans-serif;
+    background-color: #4ec1ef; /* Sky blue background */
   }
 
   .container {
-    max-width: 1000px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 10px;
-    padding-right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
   }
 
-  h2 {
+  .card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-body {
+    padding: 20px;
+  }
+
+  .card-header h2 {
     font-size: 26px;
-    margin: 20px 0;
     text-align: center;
-    small {
-      font-size: 0.5em;
-    }
   }
 
-  .responsive-table {
-    li {
-      border-radius: 3px;
-      padding: 25px 30px;
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 25px;
-    }
-    .table-header {
-      background-color: #020808;
-      font-size: 14px;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-    }
-    .table-row {
-      background-color: #ffffff;
-      box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
-    }
-    .col-1 {
-      flex-basis: 40%;
-    }
-    .col-2 {
-      flex-basis: 40%;
-    }
-    .col-3 {
-      flex-basis: 25%;
-    }
-    .col-4 {
-      flex-basis: 25%;
-    }
+  .btn-block {
+    width: 100%;
+  }
 
-    @media all and (max-width: 767px) {
-      .table-header {
-        display: none;
-      }
-      .table-row {
-      }
-      li {
-        display: block;
-      }
-      .col {
-        flex-basis: 100%;
-      }
-      .col {
-        display: flex;
-        padding: 10px 0;
-        &:before {
-          color: #6c7a89;
-          padding-right: 10px;
-          content: attr(data-label);
-          flex-basis: 50%;
-          text-align: right;
-        }
-      }
+  .form-group label {
+    font-weight: bold;
+  }
+
+  @media (max-width: 767px) {
+    .container {
+      padding-left: 10px;
+      padding-right: 10px;
     }
   }
 </style>

@@ -1,0 +1,12 @@
+.bg-gradient {
+  background: linear-gradient(
+    135deg,
+    #3d52a0,
+    #7091e6,
+    #8697c4,
+    #adbbda,
+    #ede8f5
+  );
+  background-repeat: no-repeat;
+  background-size: cover;
+}
