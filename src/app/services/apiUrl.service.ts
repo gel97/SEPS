@@ -4,6 +4,9 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class ApiUrl {
+  verify_token() {
+    throw new Error('Method not implemented.');
+  }
   //  GOVERNANCE
   // Municipality/City Officials
   post_get_officials = (munCityId: any, setYear: any) =>
@@ -726,6 +729,7 @@ export class ApiUrl {
 
   post_user = () => `/User`;
   post_user_update = () => `/User/UpdatePassword`;
+  post_reset_pass = () => `/User/sendPasswordResetLink`;
   post_user_username_check = (username: any) =>
     `/User/UsernameCheck/${username}`;
   get_user_account = () => `/User`;

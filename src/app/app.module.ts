@@ -164,6 +164,7 @@ import { LGUComponent } from './Admin/lgu/lgu.component';
 import { CategoryPipe } from './category.pipe';
 import { PGDeptHeadsComponent } from './pages/main/Governance/pgdept-heads/pgdept-heads.component';
 import { UpdateUserComponent } from './pages/main/Update-User/update-user/update-user.component';
+import { ResetFormComponent } from './pages/main/reset-form/reset-form.component';
 
 @NgModule({
   declarations: [
@@ -315,6 +316,7 @@ import { UpdateUserComponent } from './pages/main/Update-User/update-user/update
     CategoryPipe,
     PGDeptHeadsComponent,
     UpdateUserComponent,
+    ResetFormComponent,
   ],
   imports: [
     MdbCollapseModule,
