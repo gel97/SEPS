@@ -574,6 +574,7 @@ export class ApiUrl {
     `/EnvironmentProfile/${setYear}/${munCityId}`;
   post_environment_profile = () => `/EnvironmentProfile`;
   put_environment_profile = () => `/EnvironmentProfile`;
+  post_report_environment_prof = () => `/EnvironmentProfile/Reports`;
   delete_environment_profile = (transId: any) =>
     `/EnvironmentProfile/${transId}`;
 

@@ -662,6 +662,13 @@ export class ReportsService {
       { responseType: 'json' }
     );
   }
+  GetReportEnvironmentProf(data: any) {
+    return this.http.post<any[]>(
+      this.Base.url + this.ApiUrl.post_report_environment_prof(),
+      data,
+      { responseType: 'json' }
+    );
+  }
   GetReportEnviromentAct(data: any) {
     return this.http.post<any[]>(
       this.Base.url + this.ApiUrl.post_report_EnvAct(),

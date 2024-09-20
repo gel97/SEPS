@@ -183,9 +183,9 @@ export class SummaryReportComponent implements OnInit {
       case 'List of Banking Institutions by Municipality/City':
         this.BankingGeneratePdf();
         break;
-      case 'List of Cooperatives by Municipality/City':
-        this.CoopGeneratePdf();
-        break;
+      // case 'List of Cooperatives by Municipality/City':
+      //   this.CoopGeneratePdf();
+      //   break;
       case 'List of Insurance Institutions by Municipality/City':
         this.InsuranceGeneratePdf();
         break;
@@ -431,6 +431,9 @@ export class SummaryReportComponent implements OnInit {
         break;
       case 'List of Environmental Activities by Municipality/ City':
         this.EnvActGeneratePDF();
+        break;
+      case 'List of Historical Disasters by Municipality/ City':
+        this.EnvHistoricalGeneratePDF();
         break;
       default:
         break;
@@ -6026,7 +6029,14 @@ export class SummaryReportComponent implements OnInit {
             widths: [25, '*', '*', '*', '*', '*', '*', '*'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: () => 1,
+            vLineWidth: () => 1,
+            hLineColor: () => '#CCCCCC',
+            vLineColor: () => '#CCCCCC',
+            fillColor: (rowIndex: number) =>
+              rowIndex % 2 === 0 ? '#F5F5F5' : null,
+          },
         };
 
         data.push(table);
@@ -6533,7 +6543,14 @@ export class SummaryReportComponent implements OnInit {
             widths: [25, '*', '*', '*', '*', '*', '*', '*'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: () => 1,
+            vLineWidth: () => 1,
+            hLineColor: () => '#CCCCCC',
+            vLineColor: () => '#CCCCCC',
+            fillColor: (rowIndex: number) =>
+              rowIndex % 2 === 0 ? '#F5F5F5' : null,
+          },
         };
 
         data.push(table);
@@ -6795,7 +6812,14 @@ export class SummaryReportComponent implements OnInit {
             widths: [25, '*', '*', '*', '*', '*', '*'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: () => 1,
+            vLineWidth: () => 1,
+            hLineColor: () => '#CCCCCC',
+            vLineColor: () => '#CCCCCC',
+            fillColor: (rowIndex: number) =>
+              rowIndex % 2 === 0 ? '#F5F5F5' : null,
+          },
         };
 
         data.push(table);
@@ -7053,10 +7077,17 @@ export class SummaryReportComponent implements OnInit {
         const table = {
           margin: [0, 20, 0, 0],
           table: {
-            widths: [25, '*', '*', '*', '*', '*', '*'],
+            widths: [25, 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: () => 1,
+            vLineWidth: () => 1,
+            hLineColor: () => '#CCCCCC',
+            vLineColor: () => '#CCCCCC',
+            fillColor: (rowIndex: number) =>
+              rowIndex % 2 === 0 ? '#F5F5F5' : null,
+          },
         };
 
         data.push(table);
@@ -7083,7 +7114,7 @@ export class SummaryReportComponent implements OnInit {
     const dist1: any = [];
     const dist2: any = [];
 
-    this.params.menuId = '4';
+    this.params.menuId = '5';
 
     this.reportService.GetAssociationReport(this.params).subscribe({
       next: (response: any = {}) => {
@@ -7318,10 +7349,19 @@ export class SummaryReportComponent implements OnInit {
         const table = {
           margin: [0, 20, 0, 0],
           table: {
-            widths: [25, '*', '*', '*', '*', '*', '*'],
+            widths: [25, 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: (i: number, node: any) => 0.5,
+            vLineWidth: (i: number, node: any) => 0.5,
+            hLineColor: (i: number, node: any) => '#000000',
+            vLineColor: (i: number, node: any) => '#000000',
+            paddingLeft: (i: number, node: any) => 4,
+            paddingRight: (i: number, node: any) => 4,
+            paddingTop: (i: number, node: any) => 2,
+            paddingBottom: (i: number, node: any) => 2,
+          },
         };
 
         data.push(table);
@@ -7598,10 +7638,28 @@ export class SummaryReportComponent implements OnInit {
         const table = {
           margin: [0, 20, 0, 0],
           table: {
-            widths: [25, '*', '*', '*', '*', '*', '*', '*'],
+            widths: [
+              25,
+              'auto',
+              'auto',
+              'auto',
+              'auto',
+              'auto',
+              'auto',
+              'auto',
+            ],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: (i: number, node: any) => 0.5,
+            vLineWidth: (i: number, node: any) => 0.5,
+            hLineColor: (i: number, node: any) => '#000000',
+            vLineColor: (i: number, node: any) => '#000000',
+            paddingLeft: (i: number, node: any) => 4,
+            paddingRight: (i: number, node: any) => 4,
+            paddingTop: (i: number, node: any) => 2,
+            paddingBottom: (i: number, node: any) => 2,
+          },
         };
 
         data.push(table);
@@ -7876,10 +7934,28 @@ export class SummaryReportComponent implements OnInit {
         const table = {
           margin: [0, 20, 0, 0],
           table: {
-            widths: [25, '*', '*', '*', '*', '*', '*', '*'],
+            widths: [
+              25,
+              'auto',
+              'auto',
+              'auto',
+              'auto',
+              'auto',
+              'auto',
+              'auto',
+            ],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: (i: number, node: any) => 0.5,
+            vLineWidth: (i: number, node: any) => 0.5,
+            hLineColor: (i: number, node: any) => '#000000',
+            vLineColor: (i: number, node: any) => '#000000',
+            paddingLeft: (i: number, node: any) => 4,
+            paddingRight: (i: number, node: any) => 4,
+            paddingTop: (i: number, node: any) => 2,
+            paddingBottom: (i: number, node: any) => 2,
+          },
         };
 
         data.push(table);
@@ -8161,10 +8237,28 @@ export class SummaryReportComponent implements OnInit {
         const table = {
           margin: [0, 20, 0, 0],
           table: {
-            widths: [25, '*', '*', '*', '*', '*', '*', '*'],
+            widths: [
+              25,
+              'auto',
+              'auto',
+              'auto',
+              'auto',
+              'auto',
+              'auto',
+              'auto',
+            ],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: (i: number, node: any) => 0.5,
+            vLineWidth: (i: number, node: any) => 0.5,
+            hLineColor: (i: number, node: any) => '#000000',
+            vLineColor: (i: number, node: any) => '#000000',
+            paddingLeft: (i: number, node: any) => 4,
+            paddingRight: (i: number, node: any) => 4,
+            paddingTop: (i: number, node: any) => 2,
+            paddingBottom: (i: number, node: any) => 2,
+          },
         };
 
         data.push(table);
@@ -8444,7 +8538,16 @@ export class SummaryReportComponent implements OnInit {
             widths: [25, '*', '*', '*', '*', '*', '*', '*'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: (i: number, node: any) => 0.5,
+            vLineWidth: (i: number, node: any) => 0.5,
+            hLineColor: (i: number, node: any) => '#000000',
+            vLineColor: (i: number, node: any) => '#000000',
+            paddingLeft: (i: number, node: any) => 4,
+            paddingRight: (i: number, node: any) => 4,
+            paddingTop: (i: number, node: any) => 2,
+            paddingBottom: (i: number, node: any) => 2,
+          },
         };
 
         data.push(table);
@@ -8739,7 +8842,16 @@ export class SummaryReportComponent implements OnInit {
             widths: [25, '*', '*', '*', '*', '*', '*', '*', '*'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: (i: number, node: any) => 0.5,
+            vLineWidth: (i: number, node: any) => 0.5,
+            hLineColor: (i: number, node: any) => '#000000',
+            vLineColor: (i: number, node: any) => '#000000',
+            paddingLeft: (i: number, node: any) => 4,
+            paddingRight: (i: number, node: any) => 4,
+            paddingTop: (i: number, node: any) => 2,
+            paddingBottom: (i: number, node: any) => 2,
+          },
         };
 
         data.push(table);
@@ -9012,7 +9124,16 @@ export class SummaryReportComponent implements OnInit {
             widths: [25, '*', '*', '*', '*', '*', '*', '*'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: (i: number, node: any) => 0.5,
+            vLineWidth: (i: number, node: any) => 0.5,
+            hLineColor: (i: number, node: any) => '#000000',
+            vLineColor: (i: number, node: any) => '#000000',
+            paddingLeft: (i: number, node: any) => 4,
+            paddingRight: (i: number, node: any) => 4,
+            paddingTop: (i: number, node: any) => 2,
+            paddingBottom: (i: number, node: any) => 2,
+          },
         };
 
         data.push(table);
@@ -9034,18 +9155,13 @@ export class SummaryReportComponent implements OnInit {
   SettlersGeneratePDF() {
     let data: any = [];
     let grandTotal: any = {};
-
     let reports: any = [];
-    let columnLength: number = 0;
-
     const tableData: any = [];
 
     this.reportService.GetHousingSettlersReport(this.params).subscribe({
       next: (response: any = {}) => {
         reports = response.data;
         grandTotal = response.grandTotal;
-
-        console.log('result: ', response);
 
         data.push({
           margin: [0, 40, 0, 0],
@@ -9065,36 +9181,12 @@ export class SummaryReportComponent implements OnInit {
         });
 
         tableData.push([
-          {
-            text: '#',
-            bold: true,
-            alignment: 'center',
-          },
-          {
-            text: 'Location',
-            bold: true,
-            alignment: 'center',
-          },
-          {
-            text: 'Barangay',
-            bold: true,
-            alignment: 'center',
-          },
-          {
-            text: 'No. of Dwelling Units',
-            bold: true,
-            alignment: 'center',
-          },
-          {
-            text: 'No. of Families',
-            bold: true,
-            alignment: 'center',
-          },
-          {
-            text: 'Remarks',
-            bold: true,
-            alignment: 'center',
-          },
+          { text: '#', bold: true, alignment: 'center', width: 20 },
+          { text: 'Location', bold: true, alignment: 'center' },
+          { text: 'Barangay', bold: true, alignment: 'center' },
+          { text: 'No. of Dwelling Units', bold: true, alignment: 'center' },
+          { text: 'No. of Families', bold: true, alignment: 'center' },
+          { text: 'Remarks', bold: true, alignment: 'center' },
         ]);
 
         reports.forEach((a: any) => {
@@ -9115,82 +9207,39 @@ export class SummaryReportComponent implements OnInit {
 
           a.data.forEach((b: any, index2: any) => {
             tableData.push([
-              {
-                text: index2 + 1,
-                alignment: 'center',
-              },
-              {
-                text: b.location,
-              },
-              {
-                text: b.brgyName,
-              },
-              {
-                text: b.unitsNo,
-                alignment: 'center',
-              },
-              {
-                text: b.familiesNo,
-                alignment: 'center',
-              },
-              {
-                text: b.remarks,
-              },
+              { text: index2 + 1, alignment: 'center', width: 20 },
+              { text: b.location },
+              { text: b.brgyName },
+              { text: b.unitsNo, alignment: 'center' },
+              { text: b.familiesNo, alignment: 'center' },
+              { text: b.remarks },
             ]);
           });
 
           tableData.push([
-            {
-              text: 'SUBTOTAL',
-              colSpan: 2,
-              marginLeft: 5,
-            },
+            { text: 'SUBTOTAL', colSpan: 2, marginLeft: 5 },
             {},
-            {
-              text: a.subtotal.brgyCount,
-            },
-            {
-              text: a.subtotal.unitsNo,
-              alignment: 'center',
-            },
-            {
-              text: a.subtotal.familiesNo,
-              alignment: 'center',
-            },
-            {
-              text: '',
-            },
+            { text: a.subtotal.brgyCount },
+            { text: a.subtotal.unitsNo, alignment: 'center' },
+            { text: a.subtotal.familiesNo, alignment: 'center' },
+            { text: '' },
           ]);
         });
 
         tableData.push([
-          {
-            text: 'GRANDTOTAL',
-            bold: true,
-            colSpan: 2,
-            marginLeft: 5,
-          },
+          { text: 'GRANDTOTAL', bold: true, colSpan: 2, marginLeft: 5 },
           {},
-          {
-            text: grandTotal.brgyCount,
-          },
-          {
-            text: grandTotal.unitsNo,
-            alignment: 'center',
-          },
-          {
-            text: grandTotal.familiesNo,
-            alignment: 'center',
-          },
-          {
-            text: '',
-          },
+          { text: grandTotal.brgyCount },
+          { text: grandTotal.unitsNo, alignment: 'center' },
+          { text: grandTotal.familiesNo, alignment: 'center' },
+          { text: '' },
         ]);
 
         const table = {
           margin: [0, 10, 0, 0],
           table: {
-            widths: [25, '*', '*', '*', '*', '*'],
+            // Adjust the widths to fit the page
+            widths: [25, 'auto', 'auto', 'auto', 'auto', 'auto'],
             body: tableData,
           },
           layout: {
@@ -9207,16 +9256,16 @@ export class SummaryReportComponent implements OnInit {
               return '#000';
             },
             paddingLeft: function (_i: any, node: any) {
-              return 4;
+              return 3;
             },
             paddingRight: function (_i: any, node: any) {
-              return 4;
+              return 3;
             },
             paddingTop: function (_i: any, node: any) {
-              return 2;
+              return 1;
             },
             paddingBottom: function (_i: any, node: any) {
-              return 2;
+              return 1;
             },
           },
         };
@@ -9494,7 +9543,16 @@ export class SummaryReportComponent implements OnInit {
             widths: widths,
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: (i: number, node: any) => 0.5,
+            vLineWidth: (i: number, node: any) => 0.5,
+            hLineColor: (i: number, node: any) => '#000000',
+            vLineColor: (i: number, node: any) => '#000000',
+            paddingLeft: (i: number, node: any) => 4,
+            paddingRight: (i: number, node: any) => 4,
+            paddingTop: (i: number, node: any) => 2,
+            paddingBottom: (i: number, node: any) => 2,
+          },
         };
 
         data.push(table);
@@ -9516,7 +9574,6 @@ export class SummaryReportComponent implements OnInit {
   TanodGeneratePDF() {
     let data: any = [];
     let grandTotal: any = {};
-
     let reports: any = [];
     let columnLenght: number = 0;
 
@@ -9524,11 +9581,21 @@ export class SummaryReportComponent implements OnInit {
 
     this.reportService.GetSafetyTanodReport(this.params).subscribe({
       next: (response: any = {}) => {
+        // Check if response contains data
+        if (!response.data || !response.grandTotal) {
+          console.error(
+            'Error: No data or grand total in the response',
+            response
+          );
+          return;
+        }
+
         reports = response.data;
         grandTotal = response.grandTotal;
 
-        console.log('result: ', response);
+        console.log('Report data: ', reports);
 
+        // Add title and year
         data.push({
           margin: [0, 40, 0, 0],
           columns: [
@@ -9546,6 +9613,7 @@ export class SummaryReportComponent implements OnInit {
           ],
         });
 
+        // Table header
         tableData.push([
           {
             text: '#',
@@ -9577,181 +9645,124 @@ export class SummaryReportComponent implements OnInit {
           },
         ]);
 
+        // Process each report
         reports.forEach((a: any) => {
-          if (a.district === 1) {
-            let columnWidth: number = 0;
-            a.data.forEach((b: any, index: any) => {
-              let dist: any = [];
-              for (let key in b) {
-                let textValue: any = b[key];
-                if (index === 0) {
-                  columnWidth++;
-                }
-
-                dist.push({
-                  text: key === 'munCityId' ? (b[key] = index + 1) : textValue,
-                  fillColor: '#ffffff',
-                  alignment: key === 'munCityName' ? 'left' : 'center',
-                });
-              }
-
+          let columnWidth: number = 0;
+          a.data.forEach((b: any, index: number) => {
+            let row: any = [];
+            for (let key in b) {
+              let value: any = b[key];
               if (index === 0) {
-                tableData.push([
-                  {
-                    text: `1st Congressional District `,
-                    colSpan: columnWidth,
-                    alignment: 'left',
-                    fillColor: '#526D82',
-                    marginLeft: 5,
-                  },
-                ]);
-
-                columnLenght = columnWidth - 1;
+                columnWidth++;
               }
-
-              tableData.push(dist);
-            });
-
-            let sub: any = []; // SUBTOTAL D1
-            for (let key in a.subTotal) {
-              if (key === 'subTotal') {
-                sub.push(
-                  {
-                    text: a.subTotal[key],
-                    fillColor: '#9DB2BF',
-                    alignment: 'left',
-                    colSpan: 2,
-                    marginLeft: 5,
-                  },
-                  {}
-                );
-              } else {
-                let textValue: any = a.subTotal[key];
-                sub.push({
-                  text: textValue,
-                  fillColor: '#9DB2BF',
-                  alignment: 'center',
-                });
-              }
+              row.push({
+                text: key === 'munCityId' ? (index + 1).toString() : value,
+                fillColor: '#ffffff',
+                alignment: key === 'munCityName' ? 'left' : 'center',
+              });
             }
-            tableData.push(sub);
-          } else {
-            let columnWidth: number = 0;
-            a.data.forEach((b: any, index: any) => {
-              let dist: any = [];
-              for (let key in b) {
-                let textValue: any = b[key];
-                if (index === 0) {
-                  columnWidth++;
-                }
 
-                dist.push({
-                  text: key === 'munCityId' ? (b[key] = index + 1) : textValue,
-                  fillColor: '#ffffff',
-                  alignment: key === 'munCityName' ? 'left' : 'center',
-                });
-              }
-
-              if (index === 0) {
-                tableData.push([
-                  {
-                    text: `2nd Congressional District `,
-                    colSpan: columnWidth,
-                    alignment: 'left',
-                    fillColor: '#526D82',
-                    marginLeft: 5,
-                  },
-                ]);
-              }
-
-              tableData.push(dist);
-            });
-
-            let sub: any = []; // SUBTOTAL D2
-            for (let key in a.subTotal) {
-              if (key === 'subTotal') {
-                sub.push(
-                  {
-                    text: a.subTotal[key],
-                    fillColor: '#9DB2BF',
-                    alignment: 'left',
-                    colSpan: 2,
-                    marginLeft: 5,
-                  },
-                  {}
-                );
-              } else {
-                let textValue: any = a.subTotal[key];
-
-                sub.push({
-                  text: textValue,
-                  fillColor: '#9DB2BF',
-                  alignment: 'center',
-                });
-              }
+            // Add district header
+            if (index === 0) {
+              tableData.push([
+                {
+                  text: `${
+                    a.district === 1 ? '1st' : '2nd'
+                  } Congressional District`,
+                  colSpan: columnWidth,
+                  alignment: 'left',
+                  fillColor: '#526D82',
+                },
+                ...new Array(columnWidth - 1).fill({}),
+              ]);
+              columnLenght = columnWidth;
             }
-            tableData.push(sub);
-          }
-        });
 
-        let grand: any = []; // GRAND TOTAL
-        for (let key in grandTotal) {
-          if (key == 'grandTotal') {
-            grand.push(
-              {
-                text: grandTotal[key],
-                fillColor: '#F1C93B',
+            tableData.push(row);
+          });
+
+          // Add subtotal
+          let subTotalRow: any = [];
+          for (let key in a.subTotal) {
+            if (key === 'subTotal') {
+              subTotalRow.push({
+                text: `Subtotal`,
+                fillColor: '#9DB2BF',
                 alignment: 'left',
                 colSpan: 2,
-                marginLeft: 5,
-              },
-              {}
-            );
+              });
+              subTotalRow.push({}); // Empty column for colspan
+            } else {
+              subTotalRow.push({
+                text: a.subTotal[key],
+                fillColor: '#9DB2BF',
+                alignment: 'center',
+              });
+            }
+          }
+          tableData.push(subTotalRow);
+        });
+
+        // Add grand total
+        let grandTotalRow: any = [];
+        for (let key in grandTotal) {
+          if (key === 'grandTotal') {
+            grandTotalRow.push({
+              text: `Grand Total`,
+              fillColor: '#F1C93B',
+              alignment: 'left',
+              colSpan: 2,
+            });
+            grandTotalRow.push({}); // Empty column for colspan
           } else {
-            let textValue: any = grandTotal[key];
-            grand.push({
-              text: textValue,
+            grandTotalRow.push({
+              text: grandTotal[key],
               fillColor: '#F1C93B',
               alignment: 'center',
             });
           }
         }
+        tableData.push(grandTotalRow);
 
-        tableData.push(grand);
+        // Set column widths
+        let widths: any = [20, '*', '*', '*'];
 
-        let widths: any = []; // COLUMN WIDTH
-        for (let index = 0; index < columnLenght; index++) {
-          if (index === 0) {
-            widths.push(20);
-          }
-          widths.push('*');
-        }
-
+        // Define table layout
         const table = {
           margin: [0, 10, 0, 0],
           table: {
             widths: widths,
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: () => 0.5,
+            vLineWidth: () => 0.5,
+            hLineColor: () => '#000000',
+            vLineColor: () => '#000000',
+            paddingLeft: () => 4,
+            paddingRight: () => 4,
+            paddingTop: () => 2,
+            paddingBottom: () => 2,
+          },
         };
 
         data.push(table);
       },
       error: (error: any) => {
-        console.log(error);
+        console.log('Error occurred: ', error);
       },
       complete: () => {
         if (reports.length > 0) {
-          let isPortrait = false;
+          let isPortrait = false; // Generate in landscape mode
           this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
-          console.log(data);
+          console.log('PDF data:', data); // Debug the generated PDF content
         } else {
           this.Error();
         }
       },
     });
   }
+
   FireGeneratePDF() {
     let data: any = [];
     let grandTotal: any = {};
@@ -10037,7 +10048,16 @@ export class SummaryReportComponent implements OnInit {
             widths: widths,
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: (i: number, node: any) => 0.5,
+            vLineWidth: (i: number, node: any) => 0.5,
+            hLineColor: (i: number, node: any) => '#000000',
+            vLineColor: (i: number, node: any) => '#000000',
+            paddingLeft: (i: number, node: any) => 4,
+            paddingRight: (i: number, node: any) => 4,
+            paddingTop: (i: number, node: any) => 2,
+            paddingBottom: (i: number, node: any) => 2,
+          },
         };
 
         data.push(table);
@@ -10350,7 +10370,16 @@ export class SummaryReportComponent implements OnInit {
             widths: widths,
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: (i: number, node: any) => 0.5,
+            vLineWidth: (i: number, node: any) => 0.5,
+            hLineColor: (i: number, node: any) => '#000000',
+            vLineColor: (i: number, node: any) => '#000000',
+            paddingLeft: (i: number, node: any) => 4,
+            paddingRight: (i: number, node: any) => 4,
+            paddingTop: (i: number, node: any) => 2,
+            paddingBottom: (i: number, node: any) => 2,
+          },
         };
 
         data.push(table);
@@ -10530,181 +10559,201 @@ export class SummaryReportComponent implements OnInit {
     let columns: any = [];
     let grandTotal: any = [];
     let _grandTotal: any = [];
-    
+
     const maxColumnsPerPage = 10;
 
     this.reportService.GetHealthHandiReport(this.params).subscribe({
-        next: (response: any = {}) => {
-            reports = response.data;
-            dist1 = response.districtOne;
-            dist2 = response.districtTwo;
-            columns = response.columns;
-            grandTotal = response.grandTotal;
+      next: (response: any = {}) => {
+        reports = response.data;
+        dist1 = response.districtOne;
+        dist2 = response.districtTwo;
+        columns = response.columns;
+        grandTotal = response.grandTotal;
 
-            console.log(response);
-            data.push({
-                text: `Persons with Disability for the year ${response.year}`,
-                fontSize: 14,
-                bold: true,
-                alignment: 'center',
-                margin: [0, 20],
+        console.log(response);
+        data.push({
+          text: `Persons with Disability for the year ${response.year}`,
+          fontSize: 14,
+          bold: true,
+          alignment: 'center',
+          margin: [0, 20],
+        });
+
+        // Split columns into chunks of maxColumnsPerPage
+        for (let i = 0; i < columns.length; i += maxColumnsPerPage) {
+          const chunkColumns = columns.slice(i, i + maxColumnsPerPage);
+          let columnWidth: any = ['auto'];
+          let columnsData: any = [
+            {
+              text: 'Municipality/City',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+              fontSize: 8,
+            },
+          ];
+
+          chunkColumns.forEach((b: any) => {
+            columnWidth.push('auto');
+            columnsData.push({
+              text: b.typeName,
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+              fontSize: 6.8,
             });
+          });
 
-            // Split columns into chunks of maxColumnsPerPage
-            for (let i = 0; i < columns.length; i += maxColumnsPerPage) {
-                const chunkColumns = columns.slice(i, i + maxColumnsPerPage);
-                let columnWidth: any = ['auto'];
-                let columnsData: any = [{
-                    text: 'Municipality/City',
-                    fillColor: 'black',
-                    color: 'white',
-                    bold: true,
-                    alignment: 'center',
-                    fontSize: 8,
-                }];
+          const tableData: any = [];
+          tableData.push(columnsData); // Push column headers
 
-                chunkColumns.forEach((b: any) => {
-                    columnWidth.push('auto');
-                    columnsData.push({
-                        text: b.typeName,
-                        fillColor: 'black',
-                        color: 'white',
-                        bold: true,
-                        alignment: 'center',
-                        fontSize: 6.8,
-                    });
-                });
+          reports.forEach((a: any) => {
+            if (a.district === 1) {
+              tableData.push([
+                {
+                  text: `1st Congressional District`,
+                  fontSize: 8,
+                  colSpan: columnWidth.length,
+                  alignment: 'left',
+                  fillColor: '#526D82',
+                },
+              ]);
 
-                const tableData: any = [];
-                tableData.push(columnsData); // Push column headers
+              dist1.forEach((b: any) => {
+                let _data = [{ text: b.munCityName, fontSize: 8 }];
 
-                reports.forEach((a: any) => {
-                    if (a.district === 1) {
-                        tableData.push([
-                            {
-                                text: `1st Congressional District`,
-                                fontSize: 8,
-                                colSpan: columnWidth.length,
-                                alignment: 'left',
-                                fillColor: '#526D82',
-                            },
-                        ]);
-
-                        dist1.forEach((b: any) => {
-                            let _data = [{ text: b.munCityName, fontSize: 8 }];
-
-                            chunkColumns.forEach((c: any) => {
-                                let count = '-';
-                                a.data.forEach((d: any) => {
-                                    d.munData.forEach((e: any) => {
-                                        if (e.type === c.recNo && d.munCityId === b.munCityId) {
-                                            count = e.total;
-                                        }
-                                    });
-                                });
-                                _data.push({ text: count, fontSize: 8 });
-                            });
-
-                            tableData.push(_data);
-                        });
-
-                        let subTotal: any = [{ text: 'SUBTOTAL', fontSize: 8, fillColor: '#9DB2BF' }];
-                        chunkColumns.forEach((c: any) => {
-                            let count = '-';
-                            a.subTotal.forEach((d: any) => {
-                                if (d.type === c.recNo) {
-                                    count = d.total;
-                                }
-                            });
-                            subTotal.push({ text: count, fontSize: 8, fillColor: '#9DB2BF' });
-                        });
-
-                        tableData.push(subTotal);
-                    } else {
-                        tableData.push([
-                            {
-                                text: `2nd Congressional District`,
-                                fontSize: 8,
-                                colSpan: columnWidth.length,
-                                alignment: 'left',
-                                fillColor: '#526D82',
-                            },
-                        ]);
-
-                        dist2.forEach((b: any) => {
-                            let _data = [{ text: b.munCityName, fontSize: 8 }];
-
-                            chunkColumns.forEach((c: any) => {
-                                let count = '-';
-                                a.data.forEach((d: any) => {
-                                    d.munData.forEach((e: any) => {
-                                        if (e.type === c.recNo && d.munCityId === b.munCityId) {
-                                            count = e.total;
-                                        }
-                                    });
-                                });
-                                _data.push({ text: count, fontSize: 8 });
-                            });
-
-                            tableData.push(_data);
-                        });
-
-                        let subTotal: any = [{ text: 'SUBTOTAL', fontSize: 8, fillColor: '#9DB2BF' }];
-                        chunkColumns.forEach((c: any) => {
-                            let count = '-';
-                            a.subTotal.forEach((d: any) => {
-                                if (d.type === c.recNo) {
-                                    count = d.total;
-                                }
-                            });
-                            subTotal.push({ text: count, fontSize: 8, fillColor: '#9DB2BF' });
-                        });
-
-                        tableData.push(subTotal);
-                    }
-                });
-
-                // Add grand total
-                let _grandTotal: any = [{ text: 'GRANDTOTAL', fontSize: 8, fillColor: '#F1C93B' }];
                 chunkColumns.forEach((c: any) => {
-                    let count = '-';
-                    grandTotal.forEach((d: any) => {
-                        if (d.type === c.recNo) {
-                            count = d.total;
-                        }
+                  let count = '-';
+                  a.data.forEach((d: any) => {
+                    d.munData.forEach((e: any) => {
+                      if (e.type === c.recNo && d.munCityId === b.munCityId) {
+                        count = e.total;
+                      }
                     });
-                    _grandTotal.push({ text: count, fontSize: 8, fillColor: '#F1C93B' });
+                  });
+                  _data.push({ text: count, fontSize: 8 });
                 });
 
-                tableData.push(_grandTotal);
+                tableData.push(_data);
+              });
 
-                // Add each chunked table to contentData with page breaks
-                contentData.push({
-                    margin: [0, 10, 0, 0],
-                    table: {
-                        widths: columnWidth,
-                        body: tableData,
-                    },
-                    pageBreak: i + maxColumnsPerPage < columns.length ? 'after' : '', // Add page break if more chunks are left
+              let subTotal: any = [
+                { text: 'SUBTOTAL', fontSize: 8, fillColor: '#9DB2BF' },
+              ];
+              chunkColumns.forEach((c: any) => {
+                let count = '-';
+                a.subTotal.forEach((d: any) => {
+                  if (d.type === c.recNo) {
+                    count = d.total;
+                  }
                 });
-            }
+                subTotal.push({
+                  text: count,
+                  fontSize: 8,
+                  fillColor: '#9DB2BF',
+                });
+              });
 
-            data.push(contentData);
-        },
-        error: (error: any) => {
-            console.log(error);
-        },
-        complete: () => {
-            if (reports.length > 0) {
-                let isPortrait = false;
-                this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
-                console.log(data);
+              tableData.push(subTotal);
             } else {
-                this.Error();
+              tableData.push([
+                {
+                  text: `2nd Congressional District`,
+                  fontSize: 8,
+                  colSpan: columnWidth.length,
+                  alignment: 'left',
+                  fillColor: '#526D82',
+                },
+              ]);
+
+              dist2.forEach((b: any) => {
+                let _data = [{ text: b.munCityName, fontSize: 8 }];
+
+                chunkColumns.forEach((c: any) => {
+                  let count = '-';
+                  a.data.forEach((d: any) => {
+                    d.munData.forEach((e: any) => {
+                      if (e.type === c.recNo && d.munCityId === b.munCityId) {
+                        count = e.total;
+                      }
+                    });
+                  });
+                  _data.push({ text: count, fontSize: 8 });
+                });
+
+                tableData.push(_data);
+              });
+
+              let subTotal: any = [
+                { text: 'SUBTOTAL', fontSize: 8, fillColor: '#9DB2BF' },
+              ];
+              chunkColumns.forEach((c: any) => {
+                let count = '-';
+                a.subTotal.forEach((d: any) => {
+                  if (d.type === c.recNo) {
+                    count = d.total;
+                  }
+                });
+                subTotal.push({
+                  text: count,
+                  fontSize: 8,
+                  fillColor: '#9DB2BF',
+                });
+              });
+
+              tableData.push(subTotal);
             }
-        },
+          });
+
+          // Add grand total
+          let _grandTotal: any = [
+            { text: 'GRANDTOTAL', fontSize: 8, fillColor: '#F1C93B' },
+          ];
+          chunkColumns.forEach((c: any) => {
+            let count = '-';
+            grandTotal.forEach((d: any) => {
+              if (d.type === c.recNo) {
+                count = d.total;
+              }
+            });
+            _grandTotal.push({
+              text: count,
+              fontSize: 8,
+              fillColor: '#F1C93B',
+            });
+          });
+
+          tableData.push(_grandTotal);
+
+          // Add each chunked table to contentData with page breaks
+          contentData.push({
+            margin: [0, 10, 0, 0],
+            table: {
+              widths: columnWidth,
+              body: tableData,
+            },
+            pageBreak: i + maxColumnsPerPage < columns.length ? 'after' : '', // Add page break if more chunks are left
+          });
+        }
+
+        data.push(contentData);
+      },
+      error: (error: any) => {
+        console.log(error);
+      },
+      complete: () => {
+        if (reports.length > 0) {
+          let isPortrait = false;
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
+          console.log(data);
+        } else {
+          this.Error();
+        }
+      },
     });
-}
+  }
 
   SanitaryGeneratePDF() {
     let data: any = [];
@@ -11350,7 +11399,18 @@ export class SummaryReportComponent implements OnInit {
         const table = {
           margin: [0, 20, 0, 0],
           table: {
-            widths: [25, 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
+            widths: [
+              25,
+              'auto',
+              'auto',
+              'auto',
+              'auto',
+              'auto',
+              'auto',
+              'auto',
+              'auto',
+              'auto',
+            ],
             body: tableData,
           },
           layout: {
@@ -20637,182 +20697,8 @@ export class SummaryReportComponent implements OnInit {
       },
     });
   }
-  CoopGeneratePdf() {
-    this.params.category = 2;
-    let data: any = [];
-    const columnsData: any = [];
-    const columnsWidth: any = [];
-    let countWidth: number = 0;
-    let reports: any = [];
-    let pdf_title: string = '';
-    const tableData: any = [];
-    const dist1: any = [];
-    const dist2: any = [];
 
-    pdf_title = 'Cooperatives';
-    countWidth = 7;
-    columnsData.push(
-      { text: '#', bold: true, alignment: 'center' },
-      { text: 'Name of Cooperative', bold: true, alignment: 'center' },
-      { text: 'Contact Person/ Designation', bold: true, alignment: 'center' },
-      { text: 'Contact Details', bold: true, alignment: 'center' },
-      { text: 'Barangay', bold: true, alignment: 'center' },
-      { text: 'No. of Members', bold: true, alignment: 'center' },
-      { text: 'Total Assets', bold: true, alignment: 'center' }
-    );
-
-    for (let index = 0; index < countWidth; index++) {
-      if (index === 0) {
-        columnsWidth.push(25);
-      } else {
-        columnsWidth.push('auto'); // Let the library auto-calculate width based on content
-      }
-    }
-
-    this.reportService.GetFinancialInsReport(this.params).subscribe({
-      next: (response: any = {}) => {
-        reports = response;
-        console.log('result: ', response);
-
-        reports.forEach((a: any) => {
-          if (a.district === 1) {
-            dist1.push(a);
-          } else {
-            dist2.push(a);
-          }
-        });
-
-        data.push({
-          margin: [0, 40, 0, 0],
-          columns: [
-            {
-              text: `List of ${pdf_title} by Municipality/City`,
-              fontSize: 14,
-              bold: true,
-            },
-            {
-              text: `Year: ${response[0].setYear}`,
-              fontSize: 14,
-              bold: true,
-              alignment: 'right',
-            },
-          ],
-        });
-
-        const dist1Group = dist1.reduce((groups: any, item: any) => {
-          const { munCityName } = item;
-          const groupKey = `${munCityName}`;
-          if (!groups[groupKey]) {
-            groups[groupKey] = [];
-          }
-          groups[groupKey].push(item);
-          return groups;
-        }, {});
-
-        const dist2Group = dist2.reduce((groups: any, item: any) => {
-          const { munCityName } = item;
-          const groupKey = `${munCityName}`;
-          if (!groups[groupKey]) {
-            groups[groupKey] = [];
-          }
-          groups[groupKey].push(item);
-          return groups;
-        }, {});
-
-        tableData.push(columnsData);
-
-        tableData.push([
-          {
-            text: `1st Congressional District `,
-            colSpan: countWidth,
-            alignment: 'left',
-          },
-          ...Array(countWidth - 1).fill({}),
-        ]);
-
-        for (const groupKey1 in dist1Group) {
-          const group1 = dist1Group[groupKey1];
-          const [cityName1] = groupKey1.split('-');
-          tableData.push([
-            { text: cityName1, colSpan: countWidth, alignment: 'left' },
-            ...Array(countWidth - 1).fill({}),
-          ]);
-
-          group1.forEach((item: any, index: any) => {
-            tableData.push([
-              { text: index + 1 },
-              { text: item.name },
-              { text: item.contactPerson },
-              { text: item.contactNo },
-              { text: item.brgyName },
-              { text: item.members },
-              { text: item.totAssets },
-            ]);
-          });
-        }
-
-        tableData.push([
-          {
-            text: `2nd Congressional District `,
-            colSpan: countWidth,
-            alignment: 'left',
-          },
-          ...Array(countWidth - 1).fill({}),
-        ]);
-
-        for (const groupKey2 in dist2Group) {
-          const group2 = dist2Group[groupKey2];
-          const [cityName2] = groupKey2.split('-');
-          tableData.push([
-            { text: cityName2, colSpan: countWidth, alignment: 'left' },
-            ...Array(countWidth - 1).fill({}),
-          ]);
-
-          group2.forEach((item: any, index: any) => {
-            tableData.push([
-              { text: index + 1 },
-              { text: item.name },
-              { text: item.contactPerson },
-              { text: item.contactNo },
-              { text: item.brgyName },
-              { text: item.members },
-              { text: item.totAssets },
-            ]);
-          });
-        }
-
-        const table = {
-          margin: [0, 10, 0, 0],
-          table: {
-            widths: columnsWidth,
-            body: tableData,
-          },
-          layout: {
-            hLineWidth: (i: number, node: any) => {
-              return i === 0 || i === node.table.body.length ? 1 : 1; // thicker lines for first and last row
-            },
-            vLineWidth: () => 1,
-            hLineColor: () => '#000000',
-            vLineColor: () => '#000000',
-          },
-        };
-
-        data.push(table);
-      },
-      error: (error: any) => {
-        console.log(error);
-      },
-      complete: () => {
-        if (reports.length > 0) {
-          let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
-          console.log(data);
-        } else {
-          this.Error();
-        }
-      },
-    });
-  }
+  //CoopGeneratePdf()
 
   BankingGeneratePdf() {
     this.params.category = 1;
@@ -24359,8 +24245,15 @@ export class SummaryReportComponent implements OnInit {
           return groups;
         }, {});
 
-        // Iterate over each group and add it to the PDF
-        for (const groupKey in groupedData) {
+        // Sort the group keys alphabetically by municipality name
+        const sortedGroupKeys = Object.keys(groupedData).sort((a, b) => {
+          const cityA = a.split('-')[0].toLowerCase(); // Extract city name
+          const cityB = b.split('-')[0].toLowerCase(); // Extract city name
+          return cityA.localeCompare(cityB); // Sort alphabetically
+        });
+
+        // Iterate over each sorted group and add it to the PDF
+        for (const groupKey of sortedGroupKeys) {
           const group = groupedData[groupKey];
           const [cityName, year] = groupKey.split('-');
 
@@ -24533,6 +24426,12 @@ export class SummaryReportComponent implements OnInit {
     this.reportService.GetBarangayReport(this.params).subscribe({
       next: (response) => {
         reports = <any>response;
+
+        // Sort reports alphabetically by municipality/city name
+        reports.sort((a: any, b: any) =>
+          a.munCityName.localeCompare(b.munCityName)
+        );
+
         console.log(reports);
         data.push({
           text: 'List of Barangay Officials by Municipality/ City',
@@ -24651,6 +24550,7 @@ export class SummaryReportComponent implements OnInit {
               },
             ]);
           });
+
           const table = {
             margin: [0, 10, 0, 0],
             table: {
@@ -24709,6 +24609,7 @@ export class SummaryReportComponent implements OnInit {
       },
     });
   }
+
   //ENVIRONMENT
   EnvProfileGeneratePDF() {
     let data: any = [];
@@ -26012,5 +25913,335 @@ export class SummaryReportComponent implements OnInit {
         }
       },
     });
+  }
+  EnvHistoricalGeneratePDF() {
+    let disasterType: any = [
+      { id: 1, type_disas: 'Flooding' },
+      { id: 2, type_disas: 'Typhoon with Sheet Flood' },
+      { id: 3, type_disas: 'Flashflood' },
+      { id: 4, type_disas: 'Rainfall-induced Landslides' },
+      { id: 5, type_disas: 'Coastal/ Storm Surges' },
+      { id: 6, type_disas: 'Earthquake' },
+      { id: 7, type_disas: 'Earthquake-induced Landslides Ground Rupture' },
+      { id: 8, type_disas: 'Soil Liquefaction' },
+      { id: 9, type_disas: 'Tsunami' },
+      { id: 10, type_disas: 'Volcanic Eruptions' },
+      { id: 11, type_disas: 'Severe Drought/Heatwave' },
+      { id: 12, type_disas: 'Strong Wind' },
+      { id: 13, type_disas: 'Southeast Monsoon/Habagat' },
+    ];
+
+    let data: any = [];
+    let reports: any = [];
+    const dist1: any = [];
+    const dist2: any = [];
+
+    this.reportService.GetReportEnvironmentProf(this.params).subscribe({
+      next: (response: any = {}) => {
+        console.log('Response:', response);
+        reports = response;
+
+        // if (!reports || reports.length === 0) {
+        //   this.Error('No data available');
+        //   return; // Stop if no data
+        // }
+
+        // Separate reports by district
+        reports.forEach((a: any) => {
+          if (a.district === 1) {
+            dist1.push(a);
+          } else if (a.district === 2) {
+            dist2.push(a);
+          }
+        });
+
+        // Add header
+        data.push({
+          margin: [0, 20, 0, 0],
+          columns: [
+            {
+              text: 'List of Historical Disasters by Municipality/ City',
+              fontSize: 14,
+              bold: true,
+            },
+            {
+              text: `Year: ${response[0]?.setYear || 'N/A'}`,
+              fontSize: 14,
+              bold: true,
+              alignment: 'right',
+            },
+          ],
+        });
+
+        // Process grouped data for District 1 if it has data
+        if (dist1.length > 0) {
+          this.addDistrictData(
+            data,
+            dist1,
+            '1st Congressional District',
+            disasterType
+          );
+        } else {
+          console.log('No data for District 1');
+        }
+
+        // Process grouped data for District 2 if it has data
+        if (dist2.length > 0) {
+          this.addDistrictData(
+            data,
+            dist2,
+            '2nd Congressional District',
+            disasterType
+          );
+        } else {
+          console.log('No data for District 2');
+        }
+      },
+      error: (error: any) => {
+        console.error('Error fetching data:', error);
+        // this.Error('Failed to retrieve data');
+      },
+      complete: () => {
+        console.log('Data to generate PDF:', data); // Ensure data is structured correctly
+        if (reports.length > 0) {
+          let isPortrait = false; // Use landscape orientation
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
+        }
+      },
+    });
+  }
+
+  addDistrictData(
+    data: any[],
+    districtData: any,
+    districtName: string,
+    disasterType: any
+  ) {
+    const districtGroup = districtData.reduce((groups: any, item: any) => {
+      const { munCityName } = item;
+      if (!groups[munCityName]) {
+        groups[munCityName] = [];
+      }
+      groups[munCityName].push(item);
+      return groups;
+    }, {});
+
+    // District title
+    data.push({
+      text: districtName,
+      style: 'header',
+      fontSize: 14,
+      bold: true,
+      margin: [0, 20, 0, 10],
+    });
+
+    for (const city in districtGroup) {
+      const group = districtGroup[city];
+
+      // City name
+      data.push({
+        text: city,
+        style: 'subheader',
+        fontSize: 15,
+        bold: true,
+        margin: [0, 10, 0, 5],
+      });
+
+      group.forEach((item: any) => {
+        let transpo =
+          disasterType.find((a: any) => a.id === item.disasterType)
+            ?.type_disas || 'N/A';
+
+        // Table structure with adjusted widths
+        data.push({
+          table: {
+            widths: ['35%', '65%'], // Adjusted column widths to fit better
+            body: [
+              [
+                {
+                  text: 'Date of Occurrence',
+                  bold: true,
+                  fillColor: '#eeeeee',
+                },
+                { text: item.dateOccurence || 'N/A' },
+              ],
+              [
+                { text: 'Type of Disaster', bold: true, fillColor: '#eeeeee' },
+                { text: transpo },
+              ],
+              [
+                { text: 'Area Affected', bold: true, fillColor: '#eeeeee' },
+                { text: item.areasAffected || 'N/A' },
+              ],
+              [
+                { text: 'Event Description', bold: true, fillColor: '#eeeeee' },
+                { text: item.eventDesc || 'N/A' },
+              ],
+              [
+                {
+                  text: 'No. of People Affected',
+                  bold: true,
+                  fillColor: '#eeeeee',
+                },
+                { text: item.pplAffectedNo || 'N/A' },
+              ],
+              [
+                {
+                  text: 'No. of People Evacuated',
+                  bold: true,
+                  fillColor: '#eeeeee',
+                },
+                { text: item.pplEvacNo || 'N/A' },
+              ],
+              [
+                {
+                  text: 'No. of Families Affected',
+                  bold: true,
+                  fillColor: '#eeeeee',
+                },
+                { text: item.famAffectedNo || 'N/A' },
+              ],
+              [
+                {
+                  text: 'No. of Families Evacuated',
+                  bold: true,
+                  fillColor: '#eeeeee',
+                },
+                { text: item.famEvacNo || 'N/A' },
+              ],
+              [
+                {
+                  text: 'Place of Evacuation',
+                  bold: true,
+                  fillColor: '#eeeeee',
+                },
+                { text: item.placeEvac || 'N/A' },
+              ],
+              [
+                {
+                  text: 'No. of People Injured',
+                  bold: true,
+                  fillColor: '#eeeeee',
+                },
+                { text: item.pplInjuredNo || 'N/A' },
+              ],
+              [
+                {
+                  text: 'Houses Partially Damaged',
+                  bold: true,
+                  fillColor: '#eeeeee',
+                },
+                { text: item.hzPartialDmgNo || 'N/A' },
+              ],
+              [
+                { text: 'No. of Deaths', bold: true, fillColor: '#eeeeee' },
+                { text: item.deathNo || 'N/A' },
+              ],
+              [
+                {
+                  text: 'Houses Totally Damaged',
+                  bold: true,
+                  fillColor: '#eeeeee',
+                },
+                { text: item.hzTotDmgNo || 'N/A' },
+              ],
+              [
+                {
+                  text: 'Estimated Damages to Infrastructure (Php)',
+                  bold: true,
+                  colSpan: 2,
+                  fillColor: '#eeeeee',
+                },
+                {},
+              ],
+              [
+                { text: 'School Facilities', bold: true, fillColor: '#eeeeee' },
+                { text: item.schoolFacilities || 'N/A' },
+              ],
+              [
+                { text: 'Health Facilities', bold: true, fillColor: '#eeeeee' },
+                { text: item.healthFacilities || 'N/A' },
+              ],
+              [
+                { text: 'Roads', bold: true, fillColor: '#eeeeee' },
+                { text: item.roads || 'N/A' },
+              ],
+              [
+                { text: 'Bridges', bold: true, fillColor: '#eeeeee' },
+                { text: item.bridges || 'N/A' },
+              ],
+              [
+                {
+                  text: 'Institutional Structures',
+                  bold: true,
+                  fillColor: '#eeeeee',
+                },
+                { text: item.insStructure || 'N/A' },
+              ],
+              [
+                {
+                  text: 'Other Infrastructures',
+                  bold: true,
+                  fillColor: '#eeeeee',
+                },
+                { text: item.otherInfra || 'N/A' },
+              ],
+              [
+                {
+                  text: 'Estimated Damages to Agriculture (Php)',
+                  bold: true,
+                  colSpan: 2,
+                  fillColor: '#eeeeee',
+                },
+                {},
+              ],
+              [
+                { text: 'Crops Production', bold: true, fillColor: '#eeeeee' },
+                { text: item.cropsProd || 'N/A' },
+              ],
+              [
+                {
+                  text: 'Livestock Production',
+                  bold: true,
+                  fillColor: '#eeeeee',
+                },
+                { text: item.liveStockProd || 'N/A' },
+              ],
+              [
+                { text: 'Poultry', bold: true, fillColor: '#eeeeee' },
+                { text: item.poultry || 'N/A' },
+              ],
+              [
+                { text: 'Fishery', bold: true, fillColor: '#eeeeee' },
+                { text: item.fishery || 'N/A' },
+              ],
+              [
+                { text: 'Forestry', bold: true, fillColor: '#eeeeee' },
+                { text: item.forestry || 'N/A' },
+              ],
+              [
+                { text: 'Others', bold: true, fillColor: '#eeeeee' },
+                { text: item.others || 'N/A' },
+              ],
+            ],
+          },
+          layout: {
+            hLineWidth: function () {
+              return 1;
+            }, // Horizontal line width
+            vLineWidth: function () {
+              return 1;
+            }, // Vertical line width
+            hLineColor: function () {
+              return '#000000';
+            }, // Horizontal line color
+            vLineColor: function () {
+              return '#000000';
+            }, // Vertical line color
+          }, // Add grid lines for better structure
+          margin: [0, 0, 0, 15], // Add margin between tables
+        });
+      });
+    }
   }
 }

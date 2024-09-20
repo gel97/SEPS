@@ -157,10 +157,19 @@ export class UpdateUserComponent implements OnInit {
   }
   sendResetLink() {
     if (this.email) {
+      const baseUrl = window.location.origin;
+      const resetPath = baseUrl.includes('localhost')
+        ? '/reset-form/reset_form'
+        : '/SEPS/reset-form/reset_form';
+
       const requestData = {
         EmailAddress: this.email,
-        ResetUrl: `${window.location.origin}/reset-form/reset_form`, // Remove token generation from frontend
+        ResetUrl: `${baseUrl}${resetPath}`,
       };
+      // const requestData = {
+      //   EmailAddress: this.email,
+      //   ResetUrl: `${window.location.origin}/reset-form/reset_form`,
+      // };
 
       Swal.fire({
         title: 'Sending Email...',

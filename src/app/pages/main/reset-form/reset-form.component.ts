@@ -16,6 +16,8 @@ import Swal from 'sweetalert2';
   styleUrls: ['./reset-form.component.css'],
 })
 export class ResetFormComponent implements OnInit {
+  showCurrentPassword = false;
+  showNewPassword = false;
   editmodal: any = {};
   listData: any[] = [
     { id: 1, username: 'user1', password: 'pass1', showPassword: false },
