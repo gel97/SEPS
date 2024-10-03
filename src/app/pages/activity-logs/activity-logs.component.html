@@ -1,0 +1,153 @@
+<div class="activity-logs-container">
+  <h2 class="activity-logs-title">Activity Logs</h2>
+
+  <!-- <div class="filter-section">
+    <label for="month" class="filter-label">Select Month:</label>
+    <select id="month" [(ngModel)]="selectedMonth" class="filter-select">
+      <option value="" disabled>Select Month</option>
+      <option
+        *ngFor="let month of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]"
+        [value]="month"
+      >
+        {{ month }}
+      </option>
+    </select>
+
+    <label for="year" class="filter-label">Select Year:</label>
+    <input
+      type="number"
+      id="year"
+      [(ngModel)]="selectedYear"
+      placeholder="Enter Year"
+      class="filter-input"
+    />
+
+    <button (click)="filterLogs()" class="filter-button">Filter Logs</button>
+    <button (click)="clearLogs()" class="clear-button">Clear Logs</button>
+  </div> -->
+
+  <table class="logs-table">
+    <thead>
+      <tr>
+        <!-- <th>Full Name</th> -->
+        <th>Municipality/City</th>
+        <th>Login Time</th>
+        <th>Logout Time</th>
+        <th>IP Address</th>
+        <th>Browser Info</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let log of activityLogs">
+        <!-- <td>{{ log.fullName }}</td> -->
+        <td>{{ log.munCityName }}</td>
+        <td>{{ log.loginTime | date : "short" }}</td>
+        <td>
+          {{
+            log.logoutTime ? (log.logoutTime | date : "short") : "Still Logged"
+          }}
+        </td>
+        <td>{{ log.ipAddress }}</td>
+        <td>{{ log.browserInfo }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<style>
+  .activity-logs-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff; /* Change this color for a different background */
+  }
+
+  .activity-logs-title {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+  .filter-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .filter-label {
+    margin-right: 10px;
+    font-weight: bold;
+  }
+
+  .filter-select,
+  .filter-input,
+  .filter-button,
+  .clear-button {
+    padding: 8px 12px;
+    margin: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+
+  .filter-button {
+    background-color: #4caf50; /* Green color */
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .filter-button:hover {
+    background-color: #45a049;
+  }
+
+  .clear-button {
+    background-color: #f44336; /* Red color */
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .clear-button:hover {
+    background-color: #d32f2f;
+  }
+
+  .logs-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+
+  .logs-table th,
+  .logs-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .logs-table th {
+    background-color: #f2f2f2;
+    color: #333;
+  }
+
+  .logs-table tr:hover {
+    background-color: #f9f9f9; /* Light grey for row hover */
+  }
+
+  @media (max-width: 600px) {
+    .filter-section {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .filter-button,
+    .clear-button {
+      width: 100%;
+      margin: 5px 0;
+    }
+  }
+</style>

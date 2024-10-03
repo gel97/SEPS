@@ -1,33 +1,30 @@
 import { Injectable } from '@angular/core';
-import * as pdfMake from "pdfmake/build/pdfmake";
-import * as pdfFonts from "pdfmake/build/vfs_fonts";
+import * as pdfMake from 'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 //pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PdfService {
-
   pdfMake: any;
-  remarks:string = "";
+  remarks: string = '';
 
   constructor() {}
 
   async loadPdfMaker() {
     if (!this.pdfMake) {
-      const pdfMakeModule = await import("pdfmake/build/pdfmake");
-      const pdfFontsModule = await import("pdfmake/build/vfs_fonts");
+      const pdfMakeModule = await import('pdfmake/build/pdfmake');
+      const pdfFontsModule = await import('pdfmake/build/vfs_fonts');
       this.pdfMake = pdfMakeModule;
       this.pdfMake.vfs = pdfFontsModule.pdfMake.vfs;
     }
   }
 
-
-
-    headerFunction = async (currentPage: any, pageCount: any) => {
+  headerFunction = async (currentPage: any, pageCount: any) => {
     if (currentPage == 1) {
-      const imageUrl = "assets/img/davnor.png";   
-      const imageData = await this.getBase64ImageFromURL(imageUrl);
+      const imageUrl = 'assets/img/davnor.png';
+      // const imageData = await this.getBase64ImageFromURL(imageUrl);
       return {
         columns: [
           {
@@ -41,7 +38,7 @@ export class PdfService {
             fontSize: 16,
             bold: true,
             alignment: 'center',
-          }
+          },
         ],
       };
     }
@@ -49,36 +46,48 @@ export class PdfService {
     return null;
   };
 
-  async GeneratePdf(data: any = [], isPortrait: boolean, remarks:string) {
+  async GeneratePdf(data: any = [], isPortrait: boolean, remarks: string) {
     console.log(data);
     this.remarks = remarks;
     console.log(this.remarks);
 
     await this.loadPdfMaker();
-    let _pageOrientation = isPortrait ? "portrait" : "landscape";
+    let _pageOrientation = isPortrait ? 'portrait' : 'landscape';
 
     const def = {
-      header: (currentPage:any, pageCount:any) =>{  
-        if(currentPage === 1){
-        return {
-        columns: [
-          // {
-          //   image: this.getBase64ImageFromURL("assets/img/davnor.png"),
-          //   width: 60,
-          //   height: 60,
-          //   marginLeft: 100,
-          // },
-          {
-            text: 'Provincial Government of Davao del Norte',
-            fontSize: 16,
-            bold: true,
-            alignment: 'center',
-          }
-        ],
-      }}else{
-        return null;
-      }
-    },
+      header: (currentPage: any, pageCount: any) => {
+        if (currentPage === 1) {
+          const imageBase64 = '';
+
+          // const logoWidth = 50;
+          // const logoHeight = 50;
+
+          return {
+            columns: [
+              // {
+              //   image: imageBase64,
+              //   width: logoWidth,
+              //   height: logoHeight,
+              //   margin: [70, 15, 30, 40], // Keep logo on the left with no margin left
+              // },
+              {
+                text: 'Provincial Government of Davao del Norte',
+                fontSize: 16,
+                bold: true,
+                alignment: 'center',
+                margin: [0, 20, 0, 0], // Centered text
+              },
+              // {
+              //   text: '', // Empty column to balance the layout
+              //   width: logoWidth, // Same width as the logo for perfect alignment
+              // },
+            ],
+            columnGap: 10, // Optional: Adjust spacing between columns
+          };
+        } else {
+          return null;
+        }
+      },
       content: data,
       pageOrientation: _pageOrientation,
       pageSize: 'legal',
@@ -88,44 +97,43 @@ export class PdfService {
   }
 
   footerFunction(currentPage: any, pageCount: any) {
-    return [ 
+    return [
       {
         text: this.remarks,
         alignment: 'left',
         margin: [20, 0, 0, 0],
       },
       {
-      text: 'Page ' + currentPage.toString() + ' of ' + pageCount.toString(),
-      alignment: 'right',
-      margin: [0, 0, 40, 20],
-    }];
+        text: 'Page ' + currentPage.toString() + ' of ' + pageCount.toString(),
+        alignment: 'right',
+        margin: [0, 0, 40, 20],
+      },
+    ];
   }
 
   getBase64ImageFromURL(url: string) {
     return new Promise((resolve, reject) => {
       var img = new Image();
-      img.setAttribute("crossOrigin", "anonymous");
+      img.setAttribute('crossOrigin', 'anonymous');
 
       img.onload = () => {
-        var canvas = document.createElement("canvas");
+        var canvas = document.createElement('canvas');
         canvas.width = img.width;
         canvas.height = img.height;
 
-        var ctx = canvas.getContext("2d");
+        var ctx = canvas.getContext('2d');
         ctx!.drawImage(img, 0, 0);
 
-        var dataURL = canvas.toDataURL("image/png");
+        var dataURL = canvas.toDataURL('image/png');
 
         resolve(dataURL);
       };
 
-      img.onerror = error => {
+      img.onerror = (error) => {
         reject(error);
       };
 
       img.src = url;
     });
   }
-
-  
 }

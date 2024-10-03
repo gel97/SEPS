@@ -93,6 +93,7 @@ import { BarangaysComponent } from './pages/main/Governance/barangays/barangays.
 import { GeoProfileComponent } from './pages/main/Governance/geo-profile/geo-profile.component';
 import { AddUserComponent } from './pages/main/Admin-Panel/add-user/add-user.component';
 import { UpdateUserComponent } from './pages/main/Update-User/update-user/update-user.component';
+import { ActivityLogsComponent } from './pages/activity-logs/activity-logs.component';
 import { ResetFormComponent } from './pages/main/reset-form/reset-form.component';
 import { MajorEconomicActivitiesComponent } from './pages/main/Socio-Economic/Trade-and-Industry/major-economic-activities/major-economic-activities.component';
 import { ManufacturingEstablishmentsComponent } from './pages/main/Socio-Economic/Trade-and-Industry/manufacturing-establishments/manufacturing-establishments.component';
@@ -152,6 +153,10 @@ const routes: Routes = [
     component: LoginComponent,
   },
   {
+    path: 'home',
+    component: GuestHomeComponent,
+  },
+  {
     path: 'register',
     component: RegisterComponent,
   },
@@ -168,6 +173,7 @@ const routes: Routes = [
       { path: 'gov_Barangays', component: BarangaysComponent },
       { path: 'gov_geoProfile', component: GeoProfileComponent },
       { path: 'admin/add_user', component: AddUserComponent },
+      { path: 'activity-logs/activity-logs', component: ActivityLogsComponent },
       { path: Tools + 'news', component: NewsComponent },
       { path: Tools + 'message-list/:id', component: MessageListComponent },
       { path: Tools + 'summary-reports', component: SummaryReportComponent },
@@ -587,7 +593,7 @@ const routes: Routes = [
   //   component: MainLayoutComponent,
   //   children:[
 
-  //     {path: '', redirectTo: 'sep/home/', pathMatch: 'full'},
+  { path: '', redirectTo: 'sep/home/', pathMatch: 'full' },
   //     {path: 'gov_cityOfficials',component:CityOfficialsComponent},
   //     {path:'gov_Barangays',component:BarangaysComponent},
   //   ]

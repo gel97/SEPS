@@ -1284,6 +1284,9 @@
           <div class="bg-lightblue py-2 collapse-inner rounded">
             <h6 class="collapse-header">User Screens:</h6>
             <a class="collapse-item" routerLink="/admin/add_user">Add User</a>
+            <a class="collapse-item" routerLink="/activity-logs/activity-logs"
+              >Activity Logs</a
+            >
             <!-- <a class="collapse-item" routerLink="/Update-User/update_user"
               >Update User</a
             > -->
@@ -1443,11 +1446,15 @@
                 <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                 Settings
               </a>
-              <a class="dropdown-item" href="#">
-                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                Activity Log
-              </a>
-
+              <app-ddn>
+                <a
+                  class="dropdown-item"
+                  routerLink="/activity-logs/activity-logs"
+                >
+                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Activity Log
+                </a>
+              </app-ddn>
               <div class="dropdown-divider"></div>
               <a
                 class="dropdown-item"

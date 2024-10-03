@@ -741,4 +741,10 @@ export class ApiUrl {
   delete_report_validation = (transId: any) => `/ReportValidation/${transId}`;
 
   get_sep_year = () => `/SepYear`;
+
+  //Activity Logs
+  get_logs_act = (userId: any) => `/Logs/${userId}`;
+  post_logs_act = () => `Logs`;
+  get_date_act = (month: number, year: number) =>
+    `/logs/filter-by-month/${month}/${year}`;
 }
