@@ -201,11 +201,45 @@ export class MainLayoutComponent implements OnInit {
       .subscribe();
   }
   signOut() {
-    //localStorage.removeItem('token');
-    this.service.clearSession();
-    this.socialAuthService.signOut();
-    this.router.navigate(['login']);
+    const user = {
+      userId: localStorage.getItem('userId'), // Get userId or any other data needed
+    };
+
+    this.service.signOut(user).subscribe({
+      next: (response) => {
+        console.log(response.message); // Display logout message if needed
+
+        // Clear session only if logout is successful
+        this.service.clearSession();
+
+        // Update activity logs if needed
+        let activityLogs = JSON.parse(
+          localStorage.getItem('activityLogs') || '[]'
+        );
+        if (activityLogs.length > 0) {
+          activityLogs[activityLogs.length - 1].logoutTime =
+            new Date().toLocaleString();
+          localStorage.setItem('activityLogs', JSON.stringify(activityLogs));
+        }
+        console.log('User logged out successfully.');
+
+        this.router.navigate(['home']); // Navigate to login page after logout
+      },
+      error: (error) => {
+        console.error('Sign-out failed:', error); // Log error if sign-out fails
+      },
+      complete: () => {
+        console.log('Sign-out process complete.'); // Indicate completion of sign-out
+      },
+    });
   }
+
+  // signOut() {
+  //   //localStorage.removeItem('token');
+  //   this.service.clearSession();
+  //   this.socialAuthService.signOut();
+  //   this.router.navigate(['login']);
+  // }
 
   toggleSidebar() {
     $('body').toggleClass('sidebar-toggled');

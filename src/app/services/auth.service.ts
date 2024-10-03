@@ -21,6 +21,8 @@ export class AuthService {
   readonly apiurlGoogle = this.Base.url + '/AuthGoogle';
   readonly apiurlFb = this.Base.url + '/AuthFb';
   readonly apiurlUser = this.Base.url + '/User';
+  readonly apiSignOut = this.Base.url + '/Auth/logout';
+  readonly apiDatefilter = this.Base.url + '/Auth/logs/filter-by-month';
 
   token: any = localStorage.getItem('token');
   munCityId: any = localStorage.getItem('munCityId');
@@ -34,10 +36,13 @@ export class AuthService {
   activesetYear: any;
 
   signin(user: any): Observable<any> {
+    const loginTime = new Date().toLocaleString();
+    const logoutTime = 'Still Logged';
     const now = new Date();
     const formattedDate = now.toLocaleString(); // formats the date and time as a string
     console.log(formattedDate);
     console.log(user);
+
     return this.http.post(this.apiurl, user).pipe(
       tap((response: any) => {
         localStorage.setItem('token', response.token);
@@ -52,7 +57,6 @@ export class AuthService {
         localStorage.setItem('expire', response.expire);
         localStorage.setItem('designation', response.designation);
 
-        //console.log(localStorage.getItem("userData"));
         this.token = localStorage.getItem('token');
         this.userId = localStorage.getItem('userId');
         this.munCityId = localStorage.getItem('munCityId');
@@ -63,10 +67,68 @@ export class AuthService {
         this.setYear = localStorage.getItem('setYear');
         this.designation = localStorage.getItem('designation');
         console.log(this.munCityId);
+
+        // Create activity log
+        const activityLog = {
+          munCityId: response.munCityId,
+          munCityName: response.munCityName,
+          loginTime: loginTime,
+          logoutTime: logoutTime, // You can update this later on logout
+          ipAddress: response.ipAddress, // Fetch dynamically if available
+          browserInfo: navigator.userAgent,
+          userId: response.userId,
+        };
+
+        // Send the activity log to the backend API (replace with your actual API URL)
+        this.http.post(`${this.Base.url}/logs`, activityLog).subscribe({
+          next: (logResponse) => {
+            console.log('Log recorded successfully:', logResponse);
+          },
+          error: (error) => {
+            console.error('Error recording log:', error);
+          },
+        });
+
+        // Save activity logs locally
+        let activityLogs = JSON.parse(
+          localStorage.getItem('activityLogs') || '[]'
+        );
+        activityLogs.push(activityLog);
+        localStorage.setItem('activityLogs', JSON.stringify(activityLogs));
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error('Login error:', error);
+        return throwError(() => new Error('Login failed'));
+      })
+    );
+  }
+  getActivityLogsByMonth(month: number, year: number): Observable<any> {
+    const params = { month: month.toString(), year: year.toString() }; // Convert to string if needed
+    return this.http.get(this.apiDatefilter, { params }).pipe(
+      retry(2), // Optional: retry the request a few times in case of failure
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error fetching activity logs:', error);
+        return throwError(() => new Error('Failed to fetch activity logs'));
       })
     );
   }
 
+  signOut(out: any): Observable<any> {
+    return this.http.post(this.apiSignOut, out).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Logout error:', error);
+        return throwError(() => new Error('Logout failed')); // Ensure proper error propagation
+      })
+    );
+  }
+
+  // Logs(userId: any) {
+  //   return this.http.post;
+  // }
+  clearActivityLogs() {
+    localStorage.removeItem('activityLogs'); // This will remove the logs from localStorage
+    console.log('Activity logs cleared.');
+  }
   signinGoogle(user: any): Observable<any> {
     const now = new Date();
     const formattedDate = now.toLocaleString(); // formats the date and time as a string
@@ -91,7 +153,7 @@ export class AuthService {
     const formattedDate = now.toLocaleString(); // formats the date and time as a string
     console.log(formattedDate);
     console.log(user);
-    return this.http.post(this.apiurlFb, user).pipe(
+    return this.http.post(this.apiurl + '/logout', user).pipe(
       tap((response: any) => {
         localStorage.setItem('token', response.token);
         localStorage.setItem('activeSetYear', response.activeSetYear);
@@ -107,6 +169,7 @@ export class AuthService {
 
   clearSession() {
     localStorage.removeItem('token');
+    localStorage.removeItem('userId');
     localStorage.removeItem('munCityId');
     localStorage.removeItem('o_munCityId');
     localStorage.removeItem('o_munCityName');
@@ -116,6 +179,7 @@ export class AuthService {
     localStorage.removeItem('expire');
     localStorage.removeItem('userData');
     localStorage.removeItem('userId');
+    localStorage.removeItem('designation');
     this.o_munCityId = '';
   }
 

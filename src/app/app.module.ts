@@ -165,6 +165,8 @@ import { CategoryPipe } from './category.pipe';
 import { PGDeptHeadsComponent } from './pages/main/Governance/pgdept-heads/pgdept-heads.component';
 import { UpdateUserComponent } from './pages/main/Update-User/update-user/update-user.component';
 import { ResetFormComponent } from './pages/main/reset-form/reset-form.component';
+import { ActivityLogsComponent } from './pages/activity-logs/activity-logs.component';
+import { FilterDatePipe } from './filter-date.pipe';
 
 @NgModule({
   declarations: [
@@ -317,6 +319,8 @@ import { ResetFormComponent } from './pages/main/reset-form/reset-form.component
     PGDeptHeadsComponent,
     UpdateUserComponent,
     ResetFormComponent,
+    ActivityLogsComponent,
+    FilterDatePipe,
   ],
   imports: [
     MdbCollapseModule,

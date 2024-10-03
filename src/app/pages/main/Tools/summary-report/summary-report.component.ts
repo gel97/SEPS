@@ -3449,7 +3449,14 @@ export class SummaryReportComponent implements OnInit {
             widths: [25, '*', '*', '*', '*', '*', '*', '*'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: () => 1,
+            vLineWidth: () => 1,
+            hLineColor: () => '#CCCCCC',
+            vLineColor: () => '#CCCCCC',
+            fillColor: (rowIndex: number) =>
+              rowIndex % 2 === 0 ? '#F5F5F5' : null,
+          },
         };
 
         data.push(table);
@@ -3727,7 +3734,14 @@ export class SummaryReportComponent implements OnInit {
             widths: [25, '*', '*', '*', '*', '*', '*', '*'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: () => 1,
+            vLineWidth: () => 1,
+            hLineColor: () => '#CCCCCC',
+            vLineColor: () => '#CCCCCC',
+            fillColor: (rowIndex: number) =>
+              rowIndex % 2 === 0 ? '#F5F5F5' : null,
+          },
         };
 
         data.push(table);
@@ -23502,14 +23516,25 @@ export class SummaryReportComponent implements OnInit {
           groups[groupKey].push(item);
           return groups;
         }, {});
+        data.push({
+          margin: [0, 20, 0, 0],
+          columns: [
+            {
+              text: `List of Physical / Geographic Profile by Municipality/ City`,
+              fontSize: 14,
+              bold: true,
+            },
+            {
+              text: `Year: ${response[0].setYear}`,
+              fontSize: 14,
+              bold: true,
+              alignment: 'right',
+            },
+          ],
+        });
 
         // Initialize table data
         const tableData: any[] = [];
-
-        // Add page break before each table (except the first one)
-        if (data.length > 1) {
-          data.push({ text: '', pageBreak: 'before' });
-        }
 
         // Table header
         const headerRow = [
@@ -23682,6 +23707,7 @@ export class SummaryReportComponent implements OnInit {
               return 3;
             },
           },
+          margin: [0, 20, 0, 0], // Add margin before the table
           styles: styles,
         };
 

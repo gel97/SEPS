@@ -1,63 +1,179 @@
-<div id="demo" class="carousel slide" data-ride="carousel">
-
-    <!-- Indicators -->
-    <ul class="carousel-indicators">
-      <li data-target="#demo" data-slide-to="0" class="active"></li>
-      <li data-target="#demo" data-slide-to="1"></li>
-      <li data-target="#demo" data-slide-to="2"></li>
-    </ul>
-  
-    <!-- The slideshow -->
-    <div class="carousel-inner">
-        <div class="carousel-item active" style="background-image: url('assets/img/kuyagov2.jpg');background-size: cover; height: 90vh;">
-            <div style="background-color: #FFFFFF; height: 700px;width:900px; position:absolute; left: 700px; top:100px;  border: 2px; text-align:justify;
-              border-radius: 25px; padding: 30px 50px 30px 50px;">
-           <br/>
-           <span style="margin-top: 20px; font-size: 18px; font-weight:bold">MESSAGE OF THE GOVERNOR</span>
-           <br><br><br>
-           <span  style="margin-top: 20px; font-size: 16px; ">
-               The Socio Economic Profiling System (SEPS) Online serves as the consolidation of all data of the eight (8) municipalities and three (3) cities of the Province of Davao del Norte.
-           </span>
-           <br><br>
-           <span  style="margin-top: 20px; font-size: 16px; ">
-               Since it was established in 2014, it has been regulary updated through the active participation of Local Government Units (LGUs), who continually assign SEPS encoders to gather data and encode important and current socio-economic data. Hence, SEPS Online is a rich source of information about the province of Davao del Norte. By this, we encourage you and the team of researchers be it from the academe, the business sector and other fields of interest to make full use of our data trove. And in return, we look forward to the day that you develop, create and introduce development in various forms and avenues that could be beneficial to all the people of Davao del Norte.  
-           </span>
-           <br><br>
-           <span  style="margin-top: 20px; font-size: 16px; ">
-               Kudos to the staff of Provincial Planning and Development Office (PPDO) for spearheading and establishing this online portal.        
-           </span>
-           <br><br>
-           <span  style="margin-top: 20px; font-size: 16px; ">
-               Mabuhay.
-           </span>
-           <br><br><br> <br><br>   
-           <span style="margin-top: 20px; font-size: 18px; font-weight:bold">
-               EDWIN I. JUBAHIB
-           </span>
-           <br>
-           <span  style="margin-top: 20px; font-size: 18px; ">
-               Provincial Governor
-           </span>
-   
-           </div>
-         </div>
-        
-
-
-      <div class="carousel-item" style="height: 90vh ;">
-        <img src="chicago.jpg" alt="Chicago">
-      </div>
-      <div class="carousel-item" style="height: 90vh ;">
-        <img src="ny.jpg" alt="New York">
-      </div>
+<div class="background-image">
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">
+      <img
+        src="assets/img/davnor.png"
+        alt="Davao Norte Logo"
+        class="logo-image"
+      />
+      <span
+        style="
+          font-size: 20px;
+          font-weight: bold;
+          background: linear-gradient(90deg, #1a73e8, #34a853);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        "
+        >SOCIO ECONOMIC PROFILING SYSTEM</span
+      >
+      <img src="assets/img/one.png" alt="One Logo" class="logo-image" />
     </div>
-  
-    <!-- Left and right controls -->
-    <a class="carousel-control-prev" href="#demo" data-slide="prev">
-      <span class="carousel-control-prev-icon"></span>
-    </a>
-    <a class="carousel-control-next" href="#demo" data-slide="next">
-      <span class="carousel-control-next-icon"></span>
-    </a>
-  
+    <ul>
+      <li>
+        <a routerLink="/login/login" class="login -button">Login</a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Message Box -->
+  <div class="message-box">
+    <span class="message-title">MESSAGE OF THE GOVERNOR</span>
+    <p>
+      The Socio Economic Profiling System (SEPS) Online serves as the
+      consolidation of all data of the eight (8) municipalities and three (3)
+      cities of the Province of Davao del Norte.
+    </p>
+    <p>
+      Since it was established in 2014, it has been regularly updated through
+      the active participation of Local Government Units (LGUs), who continually
+      assign SEPS encoders to gather data and encode important and current
+      socio-economic data. Hence, SEPS Online is a rich source of information
+      about the province of Davao del Norte. By this, we encourage you and the
+      team of researchers, whether from the academe, the business sector, or
+      other fields of interest, to make full use of our data trove. And in
+      return, we look forward to the day that you develop, create, and introduce
+      development in various forms and avenues that could be beneficial to all
+      the people of Davao del Norte.
+    </p>
+    <p>
+      Kudos to the staff of Provincial Planning and Development Office (PPDO)
+      for spearheading and establishing this online portal.
+    </p>
+    <p><strong>Mabuhay.</strong></p>
+    <span class="governor-name">EDWIN I. JUBAHIB</span>
+    <span class="governor-title">Provincial Governor</span>
   </div>
+</div>
+
+<!-- Styles -->
+<style>
+  @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700&display=swap");
+
+  body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to right, #96c93d, #00b09b);
+  }
+
+  .background-image {
+    background-image: url("assets/img/kuyagov2.jpg");
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+    background-size: cover; /* Cover the entire container */
+    height: 100vh; /* Full viewport height */
+    position: relative; /* For absolute positioning of the message box */
+  }
+
+  .login-button {
+    padding: 0.5em 1em;
+    color: #fff; /* Button text color */
+    background-color: #007bff; /* Button background color */
+    border: none;
+    border-radius: 5px; /* Rounded corners */
+    text-decoration: none; /* Remove underline */
+    font-family: "Source Sans Pro", sans-serif;
+    font-weight: 600; /* Make text bolder */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+  }
+
+  .login-button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+  }
+
+  .navbar {
+    height: 70px;
+    width: 70%;
+    padding: 0 1em;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Space between logo and nav items */
+    position: absolute; /* Make it absolute to overlap the background */
+    top: 20px; /* Position it slightly down */
+    left: 50%; /* Position the left edge at the center of the viewport */
+    transform: translateX(-50%); /* Shift it back by half its width */
+    z-index: 2; /* Ensure it appears above background items */
+    background-color: rgba(
+      255,
+      255,
+      255,
+      0.8
+    ); /* Semi-transparent background */
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+  }
+
+  .logo {
+    display: flex; /* Use flexbox for the logo items */
+    align-items: center; /* Center the logos and text vertically */
+  }
+
+  .logo-image {
+    height: 40px; /* Set a height for the logos */
+    margin: 0 10px; /* Add margin for spacing */
+  }
+
+  .navbar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex; /* Use flexbox for the nav items */
+  }
+
+  .navbar ul li {
+    margin: 0 1em; /* Add margin for spacing between nav items */
+  }
+
+  .navbar ul li a {
+    padding: 0.25em 1em;
+    color: #090909;
+    text-decoration: none;
+    font-family: "Source Sans Pro", sans-serif;
+    font-weight: 400;
+  }
+
+  .navbar a:hover {
+    color: #777;
+    transition-duration: 0.3s;
+  }
+
+  .message-box {
+    background-color: rgba(255, 255, 255, 0.9);
+    width: 80%; /* Adjust width to be responsive */
+    max-width: 900px; /* Max width for large screens */
+    margin: auto; /* Center it */
+    border-radius: 25px;
+    padding: 30px 50px;
+    position: absolute;
+    top: 200px; /* Position it down */
+    left: 50%;
+    transform: translateX(-50%); /* Center horizontally */
+    z-index: 1; /* Ensure it appears above the background */
+  }
+
+  .message-title {
+    font-size: 18px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 20px;
+  }
+
+  .governor-name,
+  .governor-title {
+    display: block;
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+</style>
