@@ -7,213 +7,448 @@
   <div *ngIf="showOverlay">
     <app-import-loading></app-import-loading>
   </div>
-  <div *ngIf="Voter.length>0; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
+  <div
+    *ngIf="Voter.length > 0; else isEmpty"
+    class="card o-hidden border-2 shadow-sm my-5"
+  >
     <div class="card-body p-0">
       <!-- Nested Row within Card Body -->
       <div class="row">
         <div class="col-lg-12">
           <div class="p-5">
             <div class="text-center">
-              <h1 class="h4 text-gray-900 mb-4">Polling Precincts and Registered Voters</h1>
-              <label><strong>Governance - {{modifyCityMun(munCityName)}} </strong></label><br>    
+              <h1 class="h4 text-gray-900 mb-4">
+                Polling Precincts and Registered Voters
+              </h1>
+              <label
+                ><strong
+                  >Governance - {{ modifyCityMun(munCityName) }}
+                </strong></label
+              ><br />
             </div>
             <div class="x-space-between">
               <div class="x-space-between">
-                <app-export-excel apiControllerName="RegVoters"></app-export-excel>
+                <app-export-excel
+                  apiControllerName="RegVoters"
+                ></app-export-excel>
               </div>
               <div class="x-space-between">
                 <app-admin>
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd "><i
-                      class="fa fa-plus"></i>
-                    Registered Voters
-                  </button>&nbsp;
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    data-toggle="modal"
+                    data-target="#ModalAdd "
+                  >
+                    <i class="fa fa-plus"></i>
+                    Registered Voters</button
+                  >&nbsp;
                 </app-admin>
-                <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
+                <app-admin>
+                  <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
+                </app-admin>
               </div>
             </div>
             <div class="row">
               <div class="">
                 <p>Number of Precincts and Registered Voters</p>
                 <div class="input-group col-sm-3">
-                  <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                      aria-label="Search" aria-describedby="basic-addon2" [(ngModel)]="searchText" >
-              </div>
+                  <input
+                    type="text"
+                    class="form-control bg-light border-0 small"
+                    placeholder="Search for..."
+                    aria-label="Search"
+                    aria-describedby="basic-addon2"
+                    [(ngModel)]="searchText"
+                  />
+                </div>
               </div>
             </div>
             <div class="table-responsive">
               <div class="table-responsive">
-              <br>
-              <table class="table table-light table-striped">
-                <thead class="table-dark">
-                  <tr>
-                    <th>#</th>
-                    <th scope="col" class="text-center">Barangay</th>
-                    <th scope="col" class="text-center">No. of Puroks </th>
-                    <th scope="col" class="text-center">No. of Established Precincts</th>
-                    <th scope="col" class="text-center">No. of Clustered Precincts</th>
-                    <th scope="col" class="text-center">No. of Voting Centers</th>
-                    <th scope="col" class="text-center">No. of Registered Voters </th>
-                    <th></th>
-                  </tr>
-                </thead>
+                <br />
+                <table class="table table-light table-striped">
+                  <thead class="table-dark">
+                    <tr>
+                      <th>#</th>
+                      <th scope="col" class="text-center">Barangay</th>
+                      <th scope="col" class="text-center">No. of Puroks</th>
+                      <th scope="col" class="text-center">
+                        No. of Established Precincts
+                      </th>
+                      <th scope="col" class="text-center">
+                        No. of Clustered Precincts
+                      </th>
+                      <th scope="col" class="text-center">
+                        No. of Voting Centers
+                      </th>
+                      <th scope="col" class="text-center">
+                        No. of Registered Voters
+                      </th>
+                      <th></th>
+                    </tr>
+                  </thead>
 
-                <tbody>
-                  <tr *ngFor="let text of Voter | search: searchText , let i = index">
-                    <td>{{i + 1}}</td>
-                    <td>{{text.brgyName}}</td>
-                    <td class="text-center">{{text.purokNo}}</td>
-                    <td class="text-center">{{text.estabNo}}</td>
-                    <td class="text-center">{{text.clusterNo}}</td>
-                    <td class="text-center">{{text.votingCntrNo}}</td>
-                    <td class="text-center">{{text.regVoterNo}}</td>
+                  <tbody>
+                    <tr
+                      *ngFor="
+                        let text of Voter | search : searchText;
+                        let i = index
+                      "
+                    >
+                      <td>{{ i + 1 }}</td>
+                      <td>{{ text.brgyName }}</td>
+                      <td class="text-center">{{ text.purokNo }}</td>
+                      <td class="text-center">{{ text.estabNo }}</td>
+                      <td class="text-center">{{ text.clusterNo }}</td>
+                      <td class="text-center">{{ text.votingCntrNo }}</td>
+                      <td class="text-center">{{ text.regVoterNo }}</td>
 
-                    <td>
-                      <div class="d-inline-flex">
-                        <app-admin>
-                          <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info btn-circle"
-                            data-toggle="modal" data-target="#ModalEdit"><i class="fa fa-pen"></i> </button>
-                        </app-admin>&nbsp;
-                        <app-admin>
-                          <button type="button" title="Delete" class="btn btn-warning btn-circle"
-                            (click)="delete(text.transId,i)"><i class="fa fa-trash"></i> </button>&nbsp;
-                        </app-admin>
-                      </div>
-                    </td>
-
-                  </tr>
-                </tbody>
-              </table>
-              <p>*** Data are based on Commission On Elections ***</p>
+                      <td>
+                        <div class="d-inline-flex">
+                          <app-admin>
+                            <button
+                              type="button"
+                              title="Edit"
+                              (click)="editmodal = text"
+                              class="btn btn-info btn-circle"
+                              data-toggle="modal"
+                              data-target="#ModalEdit"
+                            >
+                              <i class="fa fa-pen"></i>
+                            </button> </app-admin
+                          >&nbsp;
+                          <app-admin>
+                            <button
+                              type="button"
+                              title="Delete"
+                              class="btn btn-warning btn-circle"
+                              (click)="delete(text.transId, i)"
+                            >
+                              <i class="fa fa-trash"></i></button
+                            >&nbsp;
+                          </app-admin>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2" class="text-center">
+                        <strong>Total</strong>
+                      </td>
+                      <td class="text-center">
+                        <strong>{{ totals.purokNo }}</strong>
+                      </td>
+                      <td class="text-center">
+                        <strong>{{ totals.estabNo }}</strong>
+                      </td>
+                      <td class="text-center">
+                        <strong>{{ totals.clusterNo }}</strong>
+                      </td>
+                      <td class="text-center">
+                        <strong>{{ totals.votingCntrNo }}</strong>
+                      </td>
+                      <td class="text-center">
+                        <strong>{{ totals.regVoterNo }}</strong>
+                      </td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p>*** Data are based on Commission On Elections ***</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Add (Modal) -->
-<div class="modal fade bd-example-modal-lg " id="ModalAdd" tabindex="-1" role="dialog"
-  aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Registered Voters</h5>
-        <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
+  <!-- Add (Modal) -->
+  <div
+    class="modal fade bd-example-modal-lg"
+    id="ModalAdd"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Registered Voters</h5>
+          <button
+            type="button"
+            #closebutton
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-12">
+              <br />
+              <label for="type">Barangay :</label>
+              <select
+                class="form-select"
+                aria-label="Default select example"
+                [(ngModel)]="voter.brgyId"
+                [ngClass]="toValidate.brgyId ? 'is-invalid' : ''"
+                (ngModelChange)="toValidate.brgyId = false"
+              >
+                <option
+                  *ngFor="let item of barangays"
+                  value="{{ item.brgyId }}"
+                >
+                  {{ item.brgyName }}
+                </option>
+              </select>
+            </div>
 
-          <div class="col-lg-12"> <br>
-            <label for="type">Barangay :</label>
-            <select class="form-select" aria-label="Default select example" [(ngModel)]="voter.brgyId"
-              [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false">
-              <option *ngFor="let item  of barangays" value={{item.brgyId}}>{{item.brgyName}}</option>
-            </select>
-          </div>
-
-          <!-- <div class="col-lg-12"><br>
+            <!-- <div class="col-lg-12"><br>
             <label for="exampleFormControlTextarea1">No. of Puroks:</label>
             <input type="text" class="form-control" id="" name="" [(ngModel)]="voter.purokNo" placeholder="">
           </div> -->
 
-          <div class="col-lg-12"><br>
-            <label for="exampleFormControlTextarea1">No. of Established Precincts:</label>
-            <input type="text" class="form-control" id="" name="" [(ngModel)]="voter.estabNo" placeholder=""
-              [ngClass]="toValidate.estabNo?'is-invalid':''" (keyup)="toValidate.estabNo=false">
-          </div>
-          <div class="col-lg-12"><br>
-            <label for="exampleFormControlTextarea1">No. of Clustered Precincts:</label>
-            <input type="text" class="form-control" name="" id="" [(ngModel)]="voter.clusterNo" placeholder=""
-              [ngClass]="toValidate.clusterNo?'is-invalid':''" (keyup)="toValidate.clusterNo=false">
-          </div>
-          <div class="col-lg-12"><br>
-            <label for="exampleFormControlTextarea1">No. of Voting Centers:</label>
-            <input type="text" class="form-control" name="" id="" [(ngModel)]="voter.votingCntrNo" placeholder=""
-              [ngClass]="toValidate.votingCntrNo?'is-invalid':''" (keyup)="toValidate.votingCntrNo=false">
-          </div>
-          <div class="col-lg-12"><br>
-            <label for="exampleFormControlTextarea1">No. of Registered Voters:</label>
-            <input type="text" class="form-control" name="" id="" [(ngModel)]="voter.regVoterNo" placeholder=""
-              [ngClass]="toValidate.regVoterNo?'is-invalid':''" (keyup)="toValidate.regVoterNo=false">
+            <div class="col-lg-12">
+              <br />
+              <label for="exampleFormControlTextarea1"
+                >No. of Established Precincts:</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id=""
+                name=""
+                [(ngModel)]="voter.estabNo"
+                placeholder=""
+                [ngClass]="toValidate.estabNo ? 'is-invalid' : ''"
+                (keyup)="toValidate.estabNo = false"
+              />
+            </div>
+            <div class="col-lg-12">
+              <br />
+              <label for="exampleFormControlTextarea1"
+                >No. of Clustered Precincts:</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                name=""
+                id=""
+                [(ngModel)]="voter.clusterNo"
+                placeholder=""
+                [ngClass]="toValidate.clusterNo ? 'is-invalid' : ''"
+                (keyup)="toValidate.clusterNo = false"
+              />
+            </div>
+            <div class="col-lg-12">
+              <br />
+              <label for="exampleFormControlTextarea1"
+                >No. of Voting Centers:</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                name=""
+                id=""
+                [(ngModel)]="voter.votingCntrNo"
+                placeholder=""
+                [ngClass]="toValidate.votingCntrNo ? 'is-invalid' : ''"
+                (keyup)="toValidate.votingCntrNo = false"
+              />
+            </div>
+            <div class="col-lg-12">
+              <br />
+              <label for="exampleFormControlTextarea1"
+                >No. of Registered Voters:</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                name=""
+                id=""
+                [(ngModel)]="voter.regVoterNo"
+                placeholder=""
+                [ngClass]="toValidate.regVoterNo ? 'is-invalid' : ''"
+                (keyup)="toValidate.regVoterNo = false"
+              />
 
-            <div class="modal-footer">
-              <div class="left-absolute" *ngIf="visible">
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-                    (ngModelChange)="onChange(isCheck)" [(ngModel)]="isCheck">
-                  <label class="form-check-label" for="flexCheckDefault">
-                    Several data
-                  </label>
+              <div class="modal-footer">
+                <div class="left-absolute" *ngIf="visible">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      value=""
+                      id="flexCheckDefault"
+                      (ngModelChange)="onChange(isCheck)"
+                      [(ngModel)]="isCheck"
+                    />
+                    <label class="form-check-label" for="flexCheckDefault">
+                      Several data
+                    </label>
+                  </div>
                 </div>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  (click)="addVoter()"
+                >
+                  <i class="fa fa-check"></i>Save</button
+                >&nbsp;
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  (click)="voter = {}"
+                >
+                  <i class="fa fa-times"></i>Close
+                </button>
               </div>
-              <button type="button" class="btn btn-primary" (click)=" addVoter()"><i
-                  class="fa fa-check"></i>Save</button>&nbsp;
-              <button type="button" class="btn btn-secondary" (click)="voter={}"><i
-                  class="fa fa-times"></i>Close</button>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
+  <!-- edit (Modal) -->
+  <div
+    class="modal fade bd-example-modal-lg"
+    id="ModalEdit"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Registered Voters</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-12">
+              <br />
+              <label for="type">Barangay :</label>
+              <select
+                class="form-select"
+                aria-label="Default select example"
+                [(ngModel)]="editmodal.brgyId"
+                disabled="true"
+              >
+                <option
+                  *ngFor="let item of barangays"
+                  value="{{ item.brgyId }}"
+                >
+                  {{ item.brgyName }}
+                </option>
+              </select>
+            </div>
+            <div class="col-lg-12">
+              <br />
+              <label for="exampleFormControlTextarea1">No. of Puroks:</label>
+              <input
+                type="text"
+                class="form-control"
+                id=""
+                name=""
+                disabled="true"
+                [(ngModel)]="editmodal.purokNo"
+                placeholder=""
+              />
+            </div>
 
-<!-- edit (Modal) -->
-<div class="modal fade bd-example-modal-lg" id="ModalEdit" tabindex="-1" role="dialog"
-  aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Registered Voters</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
+            <div class="col-lg-12">
+              <br />
+              <label for="exampleFormControlTextarea1"
+                >No. of Established Precincts:</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id=""
+                name=""
+                [(ngModel)]="editmodal.estabNo"
+                placeholder=""
+                [ngClass]="toValidate.estabNo ? 'is-invalid' : ''"
+                (keyup)="toValidate.estabNo = false"
+              />
+            </div>
+            <div class="col-lg-12">
+              <br />
+              <label for="exampleFormControlTextarea1"
+                >No. of Clustered Precincts:</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                name=""
+                id=""
+                [(ngModel)]="editmodal.clusterNo"
+                placeholder=""
+                [ngClass]="toValidate.clusterNo ? 'is-invalid' : ''"
+                (keyup)="toValidate.clusterNo = false"
+              />
+            </div>
+            <div class="col-lg-12">
+              <br />
+              <label for="exampleFormControlTextarea1"
+                >No. of Voting Centers:</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                name=""
+                id=""
+                [(ngModel)]="editmodal.votingCntrNo"
+                placeholder=""
+                [ngClass]="toValidate.votingCntrNo ? 'is-invalid' : ''"
+                (keyup)="toValidate.votingCntrNo = false"
+              />
+            </div>
+            <div class="col-lg-12">
+              <br />
+              <label for="exampleFormControlTextarea1"
+                >No. of Registered Voters:</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                name=""
+                id=""
+                [(ngModel)]="editmodal.regVoterNo"
+                placeholder=""
+                [ngClass]="toValidate.regVoterNo ? 'is-invalid' : ''"
+                (keyup)="toValidate.regVoterNo = false"
+              />
 
-          <div class="col-lg-12"> <br>
-            <label for="type">Barangay :</label>
-            <select class="form-select" aria-label="Default select example" [(ngModel)]="editmodal.brgyId"
-              disabled="true">
-              <option *ngFor="let item  of barangays" value={{item.brgyId}}>{{item.brgyName}}</option>
-            </select>
-          </div>
-          <div class="col-lg-12"><br>
-            <label for="exampleFormControlTextarea1">No. of Puroks:</label>
-            <input type="text" class="form-control" id="" name="" disabled="true" [(ngModel)]="editmodal.purokNo"
-              placeholder="">
-          </div>
-
-          <div class="col-lg-12"><br>
-            <label for="exampleFormControlTextarea1">No. of Established Precincts:</label>
-            <input type="text" class="form-control" id="" name="" [(ngModel)]="editmodal.estabNo" placeholder=""
-              [ngClass]="toValidate.estabNo?'is-invalid':''" (keyup)="toValidate.estabNo=false">
-          </div>
-          <div class="col-lg-12"><br>
-            <label for="exampleFormControlTextarea1">No. of Clustered Precincts:</label>
-            <input type="text" class="form-control" name="" id="" [(ngModel)]="editmodal.clusterNo" placeholder=""
-              [ngClass]="toValidate.clusterNo?'is-invalid':''" (keyup)="toValidate.clusterNo=false">
-          </div>
-          <div class="col-lg-12"><br>
-            <label for="exampleFormControlTextarea1">No. of Voting Centers:</label>
-            <input type="text" class="form-control" name="" id="" [(ngModel)]="editmodal.votingCntrNo" placeholder=""
-              [ngClass]="toValidate.votingCntrNo?'is-invalid':''" (keyup)="toValidate.votingCntrNo=false">
-          </div>
-          <div class="col-lg-12"><br>
-            <label for="exampleFormControlTextarea1">No. of Registered Voters:</label>
-            <input type="text" class="form-control" name="" id="" [(ngModel)]="editmodal.regVoterNo" placeholder=""
-              [ngClass]="toValidate.regVoterNo?'is-invalid':''" (keyup)="toValidate.regVoterNo=false">
-
-            <div class="modal-footer">
-              <button type="button" class="btn btn-primary" (click)="updateVoter()"><i class="fa fa-check"></i>Save
-                Changes</button>&nbsp;
-              <button type="button" class="btn btn-secondary" data-dismiss="modal"><i
-                  class="fa fa-times"></i>Cancel</button>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  (click)="updateVoter()"
+                >
+                  <i class="fa fa-check"></i>Save Changes</button
+                >&nbsp;
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  <i class="fa fa-times"></i>Cancel
+                </button>
+              </div>
             </div>
           </div>
         </div>

@@ -12,7 +12,7 @@ import { BaseUrl } from './baseUrl.service';
   providedIn: 'root',
 })
 export class AuthService {
-  setSession(response: any) {
+  login(username: string, password: string) {
     throw new Error('Method not implemented.');
   }
   constructor(private http: HttpClient, private Base: BaseUrl) {}
@@ -77,6 +77,7 @@ export class AuthService {
           ipAddress: response.ipAddress, // Fetch dynamically if available
           browserInfo: navigator.userAgent,
           userId: response.userId,
+          role: response.role,
         };
 
         // Send the activity log to the backend API (replace with your actual API URL)
@@ -166,6 +167,19 @@ export class AuthService {
       })
     );
   }
+  setSession(response: any) {
+    localStorage.setItem('token', response.token);
+    localStorage.setItem('userId', response.userId);
+    localStorage.setItem('munCityId', response.munCityId);
+    localStorage.setItem('munCityName', response.munCityName);
+    localStorage.setItem('o_munCityId', response.munCityId);
+    localStorage.setItem('o_munCityName', response.munCityName);
+    localStorage.setItem('activeSetYear', response.activeSetYear);
+    localStorage.setItem('setYear', response.activeSetYear);
+    localStorage.setItem('userData', JSON.stringify(response));
+    localStorage.setItem('expire', response.expire);
+    localStorage.setItem('designation', response.designation);
+  }
 
   clearSession() {
     localStorage.removeItem('token');
@@ -196,10 +210,13 @@ export class AuthService {
     return localStorage.getItem('userData');
   }
   public isLoggedIn() {
-    const datenow = new Date();
-    var get_expire_token = localStorage.getItem('expire')?.toLowerCase();
-    const expire_token = new Date(get_expire_token!);
-    return localStorage.getItem('token') !== null && expire_token >= datenow;
+    const expireToken = localStorage.getItem('expire');
+    const isTokenPresent = !!localStorage.getItem('token');
+    const isTokenValid = expireToken
+      ? new Date(expireToken) >= new Date()
+      : false;
+
+    return isTokenPresent && isTokenValid;
   }
 
   public logout() {

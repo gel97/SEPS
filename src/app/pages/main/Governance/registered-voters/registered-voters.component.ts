@@ -29,10 +29,10 @@ export class RegisteredVotersComponent implements OnInit {
 
   toValidate: any = {};
   barangays: any = {};
-  Voter: any = [];
+  Voter: any = ([] = []);
   voter: any = {};
   editmodal: any = {};
-  searchText= '';
+  searchText = '';
   isCheck: boolean = false;
   visible: boolean = true;
   not_visible: boolean = true;
@@ -57,6 +57,34 @@ export class RegisteredVotersComponent implements OnInit {
     this.visible = true;
     // this.required = false;
   }
+  get totals() {
+    return this.Voter.reduce(
+      (
+        acc: {
+          purokNo: any;
+          estabNo: any;
+          clusterNo: any;
+          votingCntrNo: any;
+          regVoterNo: any;
+        },
+        text: {
+          purokNo: any;
+          estabNo: any;
+          clusterNo: any;
+          votingCntrNo: any;
+          regVoterNo: any;
+        }
+      ) => {
+        acc.purokNo += text.purokNo || 0;
+        acc.estabNo += text.estabNo || 0;
+        acc.clusterNo += text.clusterNo || 0;
+        acc.votingCntrNo += text.votingCntrNo || 0;
+        acc.regVoterNo += text.regVoterNo || 0;
+        return acc;
+      },
+      { purokNo: 0, estabNo: 0, clusterNo: 0, votingCntrNo: 0, regVoterNo: 0 }
+    );
+  }
 
   public showOverlay = false;
   importMethod() {
@@ -64,7 +92,7 @@ export class RegisteredVotersComponent implements OnInit {
     this.service.Import().subscribe({
       next: (data) => {
         this.Init();
-        if(data.length === 0){
+        if (data.length === 0) {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -77,14 +105,12 @@ export class RegisteredVotersComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'info',
             title: 'No data from previous year',
           });
-        }
-        else
-        {
+        } else {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -97,7 +123,7 @@ export class RegisteredVotersComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'success',
             title: 'Imported Successfully',
@@ -136,262 +162,136 @@ export class RegisteredVotersComponent implements OnInit {
     const dist1: any = [];
     const dist2: any = [];
 
-    this.reportService.GetRegvoterReport(this.pdfComponent.data).subscribe({
-      next: (response:any ={}) => {
+    // Fetch the report data from the service
+    this.reportService.GetRegvoterMunReport(this.pdfComponent.data).subscribe({
+      next: (response: any = {}) => {
         this.reports = response.data;
         subtotal1 = response.subtotalData[0];
         subtotal2 = response.subtotalData[1];
         grandtotal = response.grandTotal;
-        console.log(response);
-        
-        data.push({text:'Number of Precincts and Registered Voters by Municipality/City', bold: true, alignment:'center'});
 
-        this.reports.forEach((a: any) => {
-          console.log(a);
-          if(a.district === 1){
-           dist1.push(a)
-          }
-          else{
-            dist2.push(a)
-          }
-
+        // Title for the PDF
+        data.push({
+          text: 'Number of Precincts and Registered Voters by Municipality/City',
+          bold: true,
+          alignment: 'center',
         });
 
+        // Organize reports into districts (optional, can keep for data categorization)
+        this.reports.forEach((item: any) => {
+          item.district === 1 ? dist1.push(item) : dist2.push(item);
+        });
+
+        // Year header
         data.push({
           margin: [0, 40, 0, 0],
           columns: [
             {
-              text: `Year: ${response.data[0].setYear}`,
+              text: `Year: ${response.data[0]?.setYear || ''}`,
               fontSize: 14,
               bold: true,
             },
           ],
         });
 
+        // Define table headers
+        const headers = [
+          {
+            text: 'Municipality/City',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'No. of Puroks',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'No. of Established Precincts',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'No. of Clustered Precincts',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'No. of Voting Centers',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'No. of Registered Voters',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+        ];
 
-           tableData.push([
-           {
-             text: 'Municipality/ City',
-             fillColor: 'black',
-             color: 'white',
-             bold: true,
-             alignment: 'center',
-           },
-           {
-             text: 'No. of Puroks	',
-             fillColor: 'black',
-             color: 'white',
-             bold: true,
-             alignment: 'center',
-           },
-           {
-             text: 'No. of Established Precincts',
-             fillColor: 'black',
-             color: 'white',
-             bold: true,
-             alignment: 'center',
-           },
-           {
-             text: 'No. of Clustered Precincts',
-             fillColor: 'black',
-             color: 'white',
-             bold: true,
-             alignment: 'center',
-           },
-           {
-             text: 'No. of Voting Centers',
-             fillColor: 'black',
-             color: 'white',
-             bold: true,
-             alignment: 'center',
-           },
-           {
-             text: 'No. of Registered Voters',
-             fillColor: 'black',
-             color: 'white',
-             bold: true,
-             alignment: 'center',
-           },
-         
-         ]);
+        // Add headers to tableData
+        tableData.push(headers);
 
-         tableData.push([
-          { text: `1st Congressional District `, colSpan: 6, alignment: 'left',
-          fillColor: '#526D82'}
-        ],
-          );
-
-        dist1.forEach((item: any, index: any) => {
+        // Function to add district data (now without district labels)
+        const addDistrictData = (districtData: any[]) => {
+          districtData.forEach((item: any) => {
             tableData.push([
-              {
-                text: item.munCityName,
-                fillColor: '#FFFFFF',
-              },
-              {
-                text: item.totalPurokNo,
-                fillColor: '#FFFFFF',
-              },
-              {
-                text: item.totalEstabNo,
-                fillColor: '#FFFFFF',
-              },
-              {
-                text: item.totalClusterNo,
-                fillColor: '#FFFFFF',
-              },
-              {
-                text: item.totalVotingCntrNo,
-                fillColor: '#FFFFFF',
-              },
-              {
-                text: item.totalRegVoterNo,
-                fillColor: '#FFFFFF',
-              },
-             
+              { text: item.munCityName, alignment: 'center' },
+              { text: item.totalPurokNo, alignment: 'center' },
+              { text: item.totalEstabNo, alignment: 'center' },
+              { text: item.totalClusterNo, alignment: 'center' },
+              { text: item.totalVotingCntrNo, alignment: 'center' },
+              { text: item.totalRegVoterNo, alignment: 'center' },
             ]);
           });
+        };
 
-          tableData.push([
-            {
-              text: 'SUBTOTAL',
-              fillColor: '#9DB2BF',
-            },
-            {
-              text: subtotal1.purokNo,
-              fillColor: '#9DB2BF',
-            },
-            {
-              text: subtotal1.estabNo,
-              fillColor: '#9DB2BF',
-            },
-            {
-              text: subtotal1.clusterNo,
-              fillColor: '#9DB2BF',
-            },
-            {
-              text: subtotal1.votingCntrNo,
-              fillColor: '#9DB2BF',
-            },
-            {
-              text: subtotal1.regVoterNo,
-              fillColor: '#9DB2BF',
-            },
-           
-          ]);
+        // Add data for District 1 and District 2 (without district labels)
+        addDistrictData(dist1);
+        addDistrictData(dist2);
 
-         tableData.push([
-              { text: `2nd Congressional District `, colSpan: 6, alignment: 'left',
-              fillColor: '#526D82' }
-            ],
-              );
-
-        dist2.forEach((item: any, index: any) => {
-            tableData.push([
-              {
-                text: item.munCityName,
-                fillColor: '#FFFFFF',
-              },
-              {
-                text: item.totalPurokNo,
-                fillColor: '#FFFFFF',
-              },
-              {
-                text: item.totalEstabNo,
-                fillColor: '#FFFFFF',
-              },
-              {
-                text: item.totalClusterNo,
-                fillColor: '#FFFFFF',
-              },
-              {
-                text: item.totalVotingCntrNo,
-                fillColor: '#FFFFFF',
-              },
-              {
-                text: item.totalRegVoterNo,
-                fillColor: '#FFFFFF',
-              },
-             
-            ]);
-          });
-
-          tableData.push([
-            {
-              text: 'SUBTOTAL',
-              fillColor: '#9DB2BF',
-            },
-            {
-              text: subtotal2.purokNo,
-              fillColor: '#9DB2BF',
-            },
-            {
-              text: subtotal2.estabNo,
-              fillColor: '#9DB2BF',
-            },
-            {
-              text: subtotal2.clusterNo,
-              fillColor: '#9DB2BF',
-            },
-            {
-              text: subtotal2.votingCntrNo,
-              fillColor: '#9DB2BF',
-            },
-            {
-              text: subtotal2.regVoterNo,
-              fillColor: '#9DB2BF',
-            },
-           
-          ]);  
-
-          tableData.push([
-            {
-              text: 'GRANDTOTAL',
-              fillColor: '#F1C93B',
-            },
-            {
-              text: grandtotal.purokNo,
-              fillColor: '#F1C93B',
-            },
-            {
-              text: grandtotal.estabNo,
-              fillColor: '#F1C93B',
-            },
-            {
-              text: grandtotal.clusterNo,
-              fillColor: '#F1C93B',
-            },
-            {
-              text: grandtotal.votingCntrNo,
-              fillColor: '#F1C93B',
-            },
-            {
-              text: grandtotal.regVoterNo,
-              fillColor: '#F1C93B',
-            },
-           
-          ]);  
-              
-        const table = {
+        // Define table layout and push it to the PDF data
+        data.push({
           margin: [0, 40, 0, 0],
           table: {
             widths: ['*', '*', '*', '*', '*', '*'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
-        };
-
-        data.push(table);
+          layout: {
+            hLineWidth: (i: any) => (i === 0 ? 2 : 1), // Bold line for header
+            vLineWidth: () => 1,
+            hLineColor: () => '#CCCCCC',
+            vLineColor: () => '#CCCCCC',
+            paddingLeft: () => 5,
+            paddingRight: () => 5,
+            paddingTop: () => 3,
+            paddingBottom: () => 3,
+          },
+        });
       },
       error: (error: any) => {
-        console.log(error);
+        console.error('Error fetching report data:', error);
       },
       complete: () => {
-        let isPortrait = false;
-        this.pdfService.GeneratePdf(data, isPortrait, "");
+        // Generate the PDF after fetching the data
+        const isPortrait = false;
+        this.pdfService.GeneratePdf(data, isPortrait, '');
         console.log(data);
       },
     });
   }
+
   date = new DatePipe('en-PH');
   ngOnInit(): void {
     this.Init();
