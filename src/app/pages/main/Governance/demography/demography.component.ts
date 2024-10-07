@@ -96,53 +96,52 @@ export class DemographyComponent implements OnInit {
       console.log(this.Demo);
     });
   }
-  ExportExcel(){
-    this.reportService.GetExcelExport(this.auth.setYear, this.auth.munCityId, "Demography");
+  ExportExcel() {
+    this.reportService.GetExcelExport(
+      this.auth.setYear,
+      this.auth.munCityId,
+      'Demography'
+    );
   }
 
   GeneratePDF() {
     let data: any = [];
     let reports: any = [];
-
     const tableData: any = [];
-    let dist1: any = [];
-    let dist2: any = [];
+    let grandTotal: any = [];
+    let columns: any = [];
 
-    let grandTotal:any = [];
-    let columns:any = [];
+    // Prepare the report data
+    this.reportService
+      .GetDemographyReportMun(this.pdfComponent.data) // Assuming this retrieves data for the user's municipality
+      .subscribe({
+        next: (response: any = {}) => {
+          reports = response.data;
+          grandTotal = response.grandTotal;
+          columns = response.columns;
 
+          console.log('result: ', response);
 
-    this.reportService.GetDemographyReport(this.pdfComponent.data).subscribe({
-      next: (response: any = {}) => {
-        reports = response.data;
-        grandTotal = response.grandTotal;
-        dist1 = response.districtOne;
-        dist2 = response.districtTwo;
-        columns = response.columns;
+          data.push({
+            margin: [0, 40, 0, 0],
+            columns: [
+              {
+                text: `Total Population and Households by Municipality/City`, // Updated to reflect specific municipality
+                fontSize: 14,
+                bold: true,
+              },
+              {
+                text: `Year: ${response.fromYear} - ${response.year}`,
+                fontSize: 14,
+                bold: true,
+                alignment: 'right',
+              },
+            ],
+          });
 
-        console.log('result: ', response);
-
-        data.push({
-          margin: [0, 40, 0, 0],
-          columns: [
+          // Header Row
+          const headerRow = [
             {
-              text: `Total Population and Households by Municipality/City`,
-              fontSize: 14,
-              bold: true,
-            },
-            {
-              text: `Year: ${response.fromYear} - ${response.year}`,
-              fontSize: 14,
-              bold: true,
-              alignment: 'right',
-            },
-          ],
-        });
-
-        let columnData:any=[];
-        columns.forEach((a:any,index:any) => {
-          if(index==0){
-            columnData.push({
               text: '#',
               fillColor: 'black',
               color: 'white',
@@ -155,305 +154,109 @@ export class DemographyComponent implements OnInit {
               color: 'white',
               bold: true,
               alignment: 'center',
-            },)
-          }
-          columnData.push({
-            text: a.description,
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-          },{
-            text: a.male,
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-          },{
-            text: a.female,
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-          },{
-            text: a.household,
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-          },);
-        });
-        tableData.push(columnData);
-
-        reports.forEach((a:any, index:any) => {
-          if(a.district === 1){
-            tableData.push([
+            },
+            ...columns.flatMap((col: any) => [
               {
-                text: `1st Congressional District `,
-                colSpan: 14,
-                alignment: 'left',
-                fillColor: '#526D82',
-                marginLeft: 5,
+                text: `${col.setYear} Population`,
+                fillColor: 'black',
+                color: 'white',
+                bold: true,
+                alignment: 'center',
               },
-            ]);
-            dist1.forEach((b:any, index2:any) => {
-              let d1:any= [];
-              d1.push({
-                text: index2 + 1,
-                alignment: 'center'
-              },{
-                text: b.munCityName,
-              });
-
-                columns.forEach((c:any, index3:any) => {
-                  let _population:any = "-";
-                  let _male:any = "-";
-                  let _female:any = "-";
-                  let _householdNo:any = "-";
-
-                  a.data.forEach((d:any, index4:any) => {
-                    if(b.munCityId === d.munCityId){
-                      d.munData.forEach((e:any, index5:any) => {
-                      if(c.setYear === e.setYear){
-                      _population = e.population;
-                      _male = e.male;
-                      _female = e.female;
-                      _householdNo = e.female;
-
-                    }
-                      });
-                    }
-
-                  });
-                   d1.push({
-                    text: _population,
-                    alignment: 'center'
-                  },{
-                    text: _male,
-                    alignment: 'center'
-                  },{
-                    text: _female,
-                    alignment: 'center'
-                  },{
-                    text: _householdNo,
-                    alignment: 'center'
-                  });        
-                });                  
-              tableData.push(d1);
-              
-            });
-
-            let _subTotal:any=[];
-            _subTotal.push({
-              text: 'SUBTOTAL',
-              colSpan: 2,
-              marginLeft: 5,
-              fillColor: '#9DB2BF',
-            },{});
-            columns.forEach((c:any, index3:any) => {
-              let _population:any = "-";
-              let _male:any = "-";
-              let _female:any = "-";
-              let _householdNo:any = "-";
-
-              a.subTotal.forEach((e:any, index5:any) => {
-                  if(c.setYear === e.setYear){
-                  _population = e.population;
-                  _male = e.male;
-                  _female = e.female;
-                  _householdNo = e.householdNo;
-
-                }
-                  }); 
-              _subTotal.push({
-                text: _population,
-                alignment: 'center',
-                fillColor: '#9DB2BF',
-              },{
-                text: _male,
-                alignment: 'center',
-                fillColor: '#9DB2BF',
-              },{
-                text: _female,
-                alignment: 'center',
-                fillColor: '#9DB2BF',
-              },{
-                text: _householdNo,
-                alignment: 'center',
-                fillColor: '#9DB2BF',
-              });        
-            });                  
-          tableData.push(_subTotal);
-
-          }
-          if(a.district === 2){
-            tableData.push([
               {
-                text: `2nd Congressional District `,
-                colSpan: 14,
-                alignment: 'left',
-                fillColor: '#526D82',
-                marginLeft: 5,
+                text: `${col.setYear} Male`,
+                fillColor: 'black',
+                color: 'white',
+                bold: true,
+                alignment: 'center',
               },
-            ]);
-            dist2.forEach((b:any, index2:any) => {
-              let d2:any= [];
-              d2.push({
-                text: index2 + 1,
-                alignment: 'center'
-              },{
-                text: b.munCityName,
-              });
+              {
+                text: `${col.setYear} Female`,
+                fillColor: 'black',
+                color: 'white',
+                bold: true,
+                alignment: 'center',
+              },
+              {
+                text: `${col.setYear} No. of Households`,
+                fillColor: 'black',
+                color: 'white',
+                bold: true,
+                alignment: 'center',
+              },
+            ]),
+          ];
+          tableData.push(headerRow);
 
-                columns.forEach((c:any, index3:any) => {
-                  let _population:any = "-";
-                  let _male:any = "-";
-                  let _female:any = "-";
-                  let _householdNo:any = "-";
+          reports.forEach((a: any) => {
+            if (a.data) {
+              a.data.forEach((b: any, index2: any) => {
+                let d1: any = [];
+                d1.push({ text: index2 + 1, alignment: 'center' });
+                d1.push({ text: b.munCityName });
 
-                  a.data.forEach((d:any, index4:any) => {
-                    if(b.munCityId === d.munCityId){
-                      d.munData.forEach((e:any, index5:any) => {
-                      if(c.setYear === e.setYear){
-                      _population = e.population;
-                      _male = e.male;
-                      _female = e.female;
-                      _householdNo = e.householdNo;
+                columns.forEach((c: any) => {
+                  let _population: any = 'N/A'; // Default to N/A if no data
+                  let _male: any = 'N/A';
+                  let _female: any = 'N/A';
+                  let _householdNo: any = 'N/A';
 
+                  // Find the matching data
+                  b.munData.forEach((e: any) => {
+                    if (c.setYear === e.setYear) {
+                      _population = e.population || 'N/A';
+                      _male = e.male || 'N/A';
+                      _female = e.female || 'N/A';
+                      _householdNo = e.householdNo || 'N/A';
                     }
-                      });
-                    }
-
                   });
-                   d2.push({
-                    text: _population,
-                    alignment: 'center'
-                  },{
-                    text: _male,
-                    alignment: 'center'
-                  },{
-                    text: _female,
-                    alignment: 'center'
-                  },{
-                    text: _householdNo,
-                    alignment: 'center'
-                  });        
-                });                  
-              tableData.push(d2);
-              
-            });
 
-            let _subTotal:any=[];
-            _subTotal.push({
-              text: 'SUBTOTAL',
-              colSpan: 2,
-              marginLeft: 5,
-              fillColor: '#9DB2BF',
-            },{});
-            columns.forEach((c:any, index3:any) => {
-              let _population:any = "-";
-              let _male:any = "-";
-              let _female:any = "-";
-              let _householdNo:any = "-";
+                  d1.push(
+                    { text: _population, alignment: 'center' },
+                    { text: _male, alignment: 'center' },
+                    { text: _female, alignment: 'center' },
+                    { text: _householdNo, alignment: 'center' }
+                  );
+                });
+                tableData.push(d1);
+              });
+            }
+          });
 
-              a.subTotal.forEach((e:any, index5:any) => {
-                  if(c.setYear === e.setYear){
-                  _population = e.population;
-                  _male = e.male;
-                  _female = e.female;
-                  _householdNo = e.householdNo;
+          // Create the table with a defined layout
+          const table = {
+            margin: [0, 20, 0, 0],
+            table: {
+              widths: [
+                25,
+                'auto',
+                ...Array(columns.length * 4).fill('auto'), // 4 entries per year
+              ],
+              body: tableData,
+            },
+            layout: {
+              hLineWidth: (i: any) => (i === 0 ? 2 : 1), // Bold line for header
+              vLineWidth: () => 1,
+              hLineColor: () => '#CCCCCC',
+              vLineColor: () => '#CCCCCC',
+              paddingLeft: () => 5,
+              paddingRight: () => 5,
+              paddingTop: () => 3,
+              paddingBottom: () => 3,
+            },
+          };
 
-                }
-                  }); 
-              _subTotal.push({
-                text: _population,
-                alignment: 'center',
-                fillColor: '#9DB2BF',
-              },{
-                text: _male,
-                alignment: 'center',
-                fillColor: '#9DB2BF',
-              },{
-                text: _female,
-                alignment: 'center',
-                fillColor: '#9DB2BF',
-              },{
-                text: _householdNo,
-                alignment: 'center',
-                fillColor: '#9DB2BF',
-              });        
-            });                  
-          tableData.push(_subTotal);
-
-          }
-          
-        });
-
-        let _grandTotal:any=[];
-            _grandTotal.push({
-              text: 'GRANDTOTAL',
-              colSpan: 2,
-              marginLeft: 5,
-              fillColor: '#F1C93B',
-            },{});
-            columns.forEach((c:any, index3:any) => {
-              let _population:any = "-";
-              let _male:any = "-";
-              let _female:any = "-";
-              let _householdNo:any = "-";
-
-              grandTotal.forEach((e:any, index5:any) => {
-                  if(c.setYear === e.setYear){
-                  _population = e.population;
-                  _male = e.male;
-                  _female = e.female;
-                  _householdNo = e.householdNo;
-
-                }
-                  }); 
-              _grandTotal.push({
-                text: _population,
-                alignment: 'center',
-                fillColor: '#F1C93B',
-              },{
-                text: _male,
-                alignment: 'center',
-                fillColor: '#F1C93B',
-              },{
-                text: _female,
-                alignment: 'center',
-                fillColor: '#F1C93B',
-              },{
-                text: _householdNo,
-                alignment: 'center',
-                fillColor: '#F1C93B',
-              });        
-            });                  
-          tableData.push(_grandTotal);
-
-     
-     
-
-        const table = {
-          margin: [0, 20, 0, 0],
-          table: {
-            widths: [25, 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', '*'],
-            body: tableData,
-          },
-          layout: 'lightHorizontalLines',
-        };
-
-        data.push(table);
-      },
-      error: (error: any) => {
-        console.log(error);
-      },
-      complete: () => {
-        let isPortrait = false;
-        this.pdfService.GeneratePdf(data, isPortrait, "");
-        console.log(data);
-      },
-    });
+          data.push(table);
+        },
+        error: (error: any) => {
+          console.log(error);
+        },
+        complete: () => {
+          let isPortrait = false;
+          this.pdfService.GeneratePdf(data, isPortrait, '');
+          console.log(data);
+        },
+      });
   }
 
   import() {

@@ -39,6 +39,8 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     // console.log("INIT LOGIN PAGE")
     this.router.navigate(['/']);
+    this.checkIfLoggedIn();
+    this.initializeGoogleSDK();
 
     this.googleAuthSDK();
     this.socialAuthService.authState.subscribe((user) => {
@@ -63,6 +65,21 @@ export class LoginComponent implements OnInit {
         }
       );
     });
+  }
+  checkIfLoggedIn() {
+    if (this.service.isLoggedIn()) {
+      this.router.navigate(['/']);
+    }
+  }
+  initializeGoogleSDK() {
+    (<any>window)['googleSDKLoaded'] = () => {
+      (<any>window)['gapi'].load('auth2', () => {
+        this.auth2 = (<any>window)['gapi'].auth2.init({
+          client_id: 'YOUR_CLIENT_ID.apps.googleusercontent.com',
+          // other options
+        });
+      });
+    };
   }
 
   loginWithFacebook(): void {

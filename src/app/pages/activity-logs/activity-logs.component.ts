@@ -27,6 +27,8 @@ export class ActivityLogsComponent implements OnInit {
 
   clearLogs() {
     this.authService.clearActivityLogs();
+    this.activityLogs = [];
+    Swal.fire('Logs cleared successfully!', '', 'success');
   }
   filterLogs() {
     if (this.selectedMonth && this.selectedYear) {

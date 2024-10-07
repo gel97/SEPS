@@ -23,11 +23,13 @@
                 </app-admin>
               </form>
               &nbsp;
+              <app-admin>
               <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
-            </div><br><br>
-            <app-admin>
-              <app-export-excel  (myEvent)="ExportExcel()" apiControllerName="Demography"></app-export-excel>
             </app-admin>
+            </div><br><br>
+            <!-- <app-admin>
+              <app-export-excel  (myEvent)="ExportExcel()" apiControllerName="Demography"></app-export-excel>
+            </app-admin> -->
             <div class="row">
               <div class="col-lg-4">
                 <p>List of Demography:</p>

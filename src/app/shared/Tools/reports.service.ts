@@ -33,6 +33,13 @@ export class ReportsService {
       { responseType: 'json' }
     );
   }
+  GetDemographyReportMun(data: any) {
+    return this.http.post<any[]>(
+      this.Base.url + this.ApiUrl.post_reportMun_demography(),
+      data,
+      { responseType: 'json' }
+    );
+  }
   GetCityOfficialsReport(data: any) {
     return this.http.post<any[]>(
       this.Base.url + this.ApiUrl.post_report_officials(),
@@ -68,9 +75,23 @@ export class ReportsService {
       { responseType: 'json' }
     );
   }
+  GetRegvoterMunReport(data: any) {
+    return this.http.post<any[]>(
+      this.Base.url + this.ApiUrl.post_reportMun_regvoter(),
+      data,
+      { responseType: 'json' }
+    );
+  }
   GetRegSkvoterReport(data: any) {
     return this.http.post<any[]>(
       this.Base.url + this.ApiUrl.post_report_skVoter(),
+      data,
+      { responseType: 'json' }
+    );
+  }
+  GetRegSkMunvoterReport(data: any) {
+    return this.http.post<any[]>(
+      this.Base.url + this.ApiUrl.post_reportMun_regSKvoter(),
       data,
       { responseType: 'json' }
     );

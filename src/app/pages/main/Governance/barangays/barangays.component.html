@@ -36,7 +36,9 @@
                 ></app-export-excel>
               </div>
               <div class="x-space-between">
-                <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
+                <app-admin>
+                  <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
+                </app-admin>
               </div>
             </div>
             <br />

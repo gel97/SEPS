@@ -92,6 +92,7 @@ export class ApiUrl {
   post_list_barangay_demo = (munCityId: any) =>
     `/Barangay/ListBarangays?munCityId=${munCityId}`;
   post_report_demography = () => `/Demography/Reports`;
+  post_reportMun_demography = () => `/Demography/Reports/Mun`;
 
   //Provincial Fiscal
   post_get_provincialfiscal = (setYear: any) =>
@@ -108,6 +109,7 @@ export class ApiUrl {
   delete_regVoter = (transId: any) => `/RegVoters/${transId}`;
   post_report_regvoter = () => `/RegVoters/Reports`;
   post_import_regvoter = () => `/RegVoters/Import`;
+  post_reportMun_regvoter = () => `/RegVoters/Reports/Mun`;
 
   //SK Registered Voter
   post_get_skvoter = (munCityId: any, setYear: any) =>
@@ -117,6 +119,7 @@ export class ApiUrl {
   delete_skVoter = (transId: any) => `/RegSkVoters/${transId}`;
   post_report_skVoter = () => `/RegSkVoters/Reports`;
   post_import_skVoter = () => `/RegSkVoters/Import`;
+  post_reportMun_regSKvoter = () => `/RegSkVoters/Reports/Mun`;
 
   //Provincial official
   post_get_prov_official = (setYear: any) =>
