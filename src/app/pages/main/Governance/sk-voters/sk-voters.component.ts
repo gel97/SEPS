@@ -163,6 +163,13 @@ export class SkVotersComponent implements OnInit {
     const dist1: any = [];
     const dist2: any = [];
 
+    // Initialize totals
+    let totalPurokNo = 0;
+    let totalEstabNo = 0;
+    let totalClusterNo = 0;
+    let totalVotingCntrNo = 0;
+    let totalRegSkVoterNo = 0;
+
     // Fetch the report data from the service
     this.reportService
       .GetRegSkMunvoterReport(this.pdfComponent.data)
@@ -175,7 +182,7 @@ export class SkVotersComponent implements OnInit {
 
           // Title for the PDF
           data.push({
-            text: 'Number of Precincts and Registered SK Voters by Municipality/City',
+            text: 'Number of Precincts and Registered Sk Voters by Municipality/City',
             bold: true,
             alignment: 'center',
           });
@@ -200,7 +207,7 @@ export class SkVotersComponent implements OnInit {
           // Define table headers
           const headers = [
             {
-              text: 'Municipality/City',
+              text: 'Barangay',
               fillColor: 'black',
               color: 'white',
               bold: true,
@@ -235,7 +242,7 @@ export class SkVotersComponent implements OnInit {
               alignment: 'center',
             },
             {
-              text: 'No. of Registered SK Voters',
+              text: 'No. of Registered Voters',
               fillColor: 'black',
               color: 'white',
               bold: true,
@@ -250,20 +257,35 @@ export class SkVotersComponent implements OnInit {
           const addDistrictData = (districtData: any[]) => {
             districtData.forEach((item: any) => {
               tableData.push([
-                { text: item.munCityName, alignment: 'center' },
+                { text: item.brgyName, alignment: 'center' },
                 { text: item.totalPurokNo, alignment: 'center' },
                 { text: item.totalEstabNo, alignment: 'center' },
                 { text: item.totalClusterNo, alignment: 'center' },
                 { text: item.totalVotingCntrNo, alignment: 'center' },
                 { text: item.totalRegSkVoterNo, alignment: 'center' },
               ]);
+
+              totalPurokNo += item.totalPurokNo || 0;
+              totalEstabNo += item.totalEstabNo || 0;
+              totalClusterNo += item.totalClusterNo || 0;
+              totalVotingCntrNo += item.totalVotingCntrNo || 0;
+              totalRegSkVoterNo += item.totalRegSkVoterNo || 0;
             });
           };
-
           // Add data for District 1 and District 2 (without district labels)
           addDistrictData(dist1);
           addDistrictData(dist2);
 
+          const totalsRow = [
+            { text: 'Total', bold: true, alignment: 'center' },
+            { text: totalPurokNo.toString(), alignment: 'center' },
+            { text: totalEstabNo.toString(), alignment: 'center' },
+            { text: totalClusterNo.toString(), alignment: 'center' },
+            { text: totalVotingCntrNo.toString(), alignment: 'center' },
+            { text: totalRegSkVoterNo.toString(), alignment: 'center' },
+          ];
+
+          tableData.push(totalsRow);
           // Define table layout and push it to the PDF data
           data.push({
             margin: [0, 40, 0, 0],

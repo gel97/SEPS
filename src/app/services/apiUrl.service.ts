@@ -29,6 +29,13 @@ export class ApiUrl {
   post_barangay_report = () => `/Barangay/Reports`;
   post_import_report = () => `/Barangay/Import`;
 
+  // Purok Chair
+  post_save_purokchair = () => `/PurokChair/SavePurokChair`;
+  post_update_purok = () => `/PurokChair/`;
+  delete_purok = (transId: any) => `/Barangay/${transId}`;
+  get_list_purok = (munCityId: any, setYear: any) =>
+    `/PurokChairman/${setYear}/${munCityId}`;
+
   //Physical Geographic Profile
   get_get_geo = (munCityId: any, setYear: any) =>
     `/PhyGeoProf/${setYear}/${munCityId}`;

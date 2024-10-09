@@ -31,7 +31,7 @@ export class DemographyComponent implements OnInit {
     private modifyService: ModifyCityMunService
   ) {}
   demo: any = {};
-  Demo: any = [];
+  Demo: any = ([] = []);
   editmodal: any = {};
   ViewBarangayOfficial: any = {};
   barangays: any = {};
@@ -57,6 +57,44 @@ export class DemographyComponent implements OnInit {
 
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
+  }
+  get totals() {
+    return this.Demo.reduce(
+      (
+        acc: {
+          male: any;
+          female: any;
+          householdPop: any;
+          householdNo: any;
+          avgHouseholdSz: any;
+          popGrowthRate: any;
+        },
+        text: {
+          male: any;
+          female: any;
+          householdPop: any;
+          householdNo: any;
+          avgHouseholdSz: any;
+          popGrowthRate: any;
+        }
+      ) => {
+        acc.male += text.male || 0;
+        acc.female += text.female || 0;
+        acc.householdPop += text.householdPop || 0;
+        acc.householdNo += text.householdNo || 0;
+        acc.avgHouseholdSz += text.avgHouseholdSz || 0;
+        acc.popGrowthRate += text.popGrowthRate || 0;
+        return acc;
+      },
+      {
+        male: 0,
+        female: 0,
+        householdPop: 0,
+        householdNo: 0,
+        avgHouseholdSz: 0,
+        popGrowthRate: 0,
+      }
+    );
   }
 
   SetMarker(data: any = {}) {
@@ -111,9 +149,22 @@ export class DemographyComponent implements OnInit {
     let grandTotal: any = [];
     let columns: any = [];
 
+    // Function to add district data to the table
+    const addDistrictData = (districtData: any[]) => {
+      districtData.forEach((item: any) => {
+        tableData.push([
+          { text: item.brgyName, alignment: 'center' },
+          { text: item.Population, alignment: 'center' },
+          { text: item.Male, alignment: 'center' },
+          { text: item.Female, alignment: 'center' },
+          { text: item.HouseholdNo, alignment: 'center' },
+        ]);
+      });
+    };
+
     // Prepare the report data
     this.reportService
-      .GetDemographyReportMun(this.pdfComponent.data) // Assuming this retrieves data for the user's municipality
+      .GetDemographyReportMun(this.pdfComponent.data) // Retrieves data for the user's municipality
       .subscribe({
         next: (response: any = {}) => {
           reports = response.data;
@@ -121,6 +172,10 @@ export class DemographyComponent implements OnInit {
           columns = response.columns;
 
           console.log('result: ', response);
+
+          // Check if fromYear and year are defined
+          const fromYear = response.fromYear || 'N/A'; // Default to 'N/A' if undefined
+          const toYear = response.year || 'N/A'; // Default to 'N/A' if undefined
 
           data.push({
             margin: [0, 40, 0, 0],
@@ -131,7 +186,7 @@ export class DemographyComponent implements OnInit {
                 bold: true,
               },
               {
-                text: `Year: ${response.fromYear} - ${response.year}`,
+                text: `Year: ${fromYear} - ${toYear}`, // Ensure years are defined
                 fontSize: 14,
                 bold: true,
                 alignment: 'right',
@@ -139,7 +194,7 @@ export class DemographyComponent implements OnInit {
             ],
           });
 
-          // Header Row
+          // Header Row for Municipality
           const headerRow = [
             {
               text: '#',
@@ -149,7 +204,7 @@ export class DemographyComponent implements OnInit {
               alignment: 'center',
             },
             {
-              text: 'Municipality/ City',
+              text: 'Barangay',
               fillColor: 'black',
               color: 'white',
               bold: true,
@@ -190,10 +245,11 @@ export class DemographyComponent implements OnInit {
 
           reports.forEach((a: any) => {
             if (a.data) {
+              // Adding data for each municipality
               a.data.forEach((b: any, index2: any) => {
                 let d1: any = [];
                 d1.push({ text: index2 + 1, alignment: 'center' });
-                d1.push({ text: b.munCityName });
+                d1.push({ text: b.brgyName });
 
                 columns.forEach((c: any) => {
                   let _population: any = 'N/A'; // Default to N/A if no data
@@ -219,7 +275,49 @@ export class DemographyComponent implements OnInit {
                   );
                 });
                 tableData.push(d1);
+
+                // Adding barangay data under the municipality
+                if (b.barangays) {
+                  b.barangays.forEach((barangay: any) => {
+                    let barangayData: any = [];
+                    barangayData.push({ text: '', alignment: 'center' }); // Empty cell for numbering
+                    barangayData.push({
+                      text: `${barangay.brgyName} (Barangay)`,
+                      bold: true,
+                    }); // Barangay name
+
+                    columns.forEach((c: any) => {
+                      let _Population: any = 'N/A';
+                      let _Male: any = 'N/A';
+                      let _Female: any = 'N/A';
+                      let _HouseholdNo: any = 'N/A';
+
+                      // Find matching barangay data
+                      barangay.data.forEach((e: any) => {
+                        if (c.setYear === e.setYear) {
+                          _Population = e.population || 'N/A';
+                          _Male = e.male || 'N/A';
+                          _Female = e.female || 'N/A';
+                          _HouseholdNo = e.householdNo || 'N/A';
+                        }
+                      });
+
+                      barangayData.push(
+                        { text: _Population, alignment: 'center' },
+                        { text: _Male, alignment: 'center' },
+                        { text: _Female, alignment: 'center' },
+                        { text: _HouseholdNo, alignment: 'center' }
+                      );
+                    });
+                    tableData.push(barangayData); // Add barangay data to table
+                  });
+                }
               });
+            }
+
+            // Adding district data if available
+            if (a.districtData) {
+              addDistrictData(a.districtData); // Call the function to add district data
             }
           });
 
