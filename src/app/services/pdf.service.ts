@@ -91,25 +91,25 @@ export class PdfService {
       content: data,
       pageOrientation: _pageOrientation,
       pageSize: 'legal',
-      footer: this.footerFunction.bind(this),
+      // footer: this.footerFunction.bind(this),
     };
     this.pdfMake.createPdf(def).open();
   }
 
-  footerFunction(currentPage: any, pageCount: any) {
-    return [
-      {
-        text: this.remarks,
-        alignment: 'left',
-        margin: [20, 0, 0, 0],
-      },
-      {
-        text: 'Page ' + currentPage.toString() + ' of ' + pageCount.toString(),
-        alignment: 'right',
-        margin: [0, 0, 40, 20],
-      },
-    ];
-  }
+  // footerFunction(currentPage: any, pageCount: any) {
+  //   return [
+  //     {
+  //       text: this.remarks,
+  //       alignment: 'left',
+  //       margin: [20, 0, 0, 0],
+  //     },
+  //     {
+  //       text: 'Page ' + currentPage.toString() + ' of ' + pageCount.toString(),
+  //       alignment: 'right',
+  //       margin: [0, 0, 40, 20],
+  //     },
+  //   ];
+  // }
 
   getBase64ImageFromURL(url: string) {
     return new Promise((resolve, reject) => {

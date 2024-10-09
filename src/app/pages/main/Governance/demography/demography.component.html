@@ -63,35 +63,62 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let text of Demo | search: searchText , let i = index">
-                    <td>{{i + 1}}</td>
-                    <td>{{text.setYear}}</td>
-                    <td class="text-center">{{text.brgyName}}</td>
-                    <td class="text-center">{{text.male}}</td>
-                    <td class="text-center">{{text.female}}</td>
-                    <td class="text-center">{{text.householdPop}}</td>
-                    <td class="text-center">{{text.householdNo}}</td>
-                    <td class="text-center">{{text.avgHouseholdSz}}</td>
-                    <td class="text-center">{{text.popGrowthRate}}</td>
+                  <tr *ngFor="let text of Demo | search: searchText; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ text.setYear }}</td>
+                    <td class="text-center">{{ text.brgyName }}</td>
+                    <td class="text-center">{{ text.male }}</td>
+                    <td class="text-center">{{ text.female }}</td>
+                    <td class="text-center">{{ text.householdPop }}</td>
+                    <td class="text-center">{{ text.householdNo }}</td>
+                    <td class="text-center">{{ text.avgHouseholdSz }}</td>
+                    <td class="text-center">{{ text.popGrowthRate }}</td>
                     <td></td>
                     <td>
                       <div class="d-inline-flex">
                         <app-admin>
-                          <button type="button" title="Edit" (click)="editmodal=text" class="btn btn-info btn-circle"
-                            data-toggle="modal" data-target="#ModalEdit"><i class="fa fa-pen"></i> </button>&nbsp;
-                        </app-admin>&nbsp;
-                        <!-- <button (click)="SetMarker(text)" class="btn btn-success btn-circle" role="button"
-                                   (click)="editmodal=text" data-toggle="modal" data-target="#gmapModal">
-                                   <i class="fa fa-globe"> </i> </button>&nbsp; -->
+                          <button type="button" title="Edit" (click)="editmodal = text" class="btn btn-info btn-circle"
+                            data-toggle="modal" data-target="#ModalEdit">
+                            <i class="fa fa-pen"></i>
+                          </button>
+                        </app-admin>
                         <app-admin>
                           <button type="button" title="Delete" class="btn btn-warning btn-circle"
-                            (click)="delete(text.transId,i)"><i class="fa fa-trash"></i> </button>
+                            (click)="delete(text.transId, i)">
+                            <i class="fa fa-trash"></i>
+                          </button>
                         </app-admin>
                       </div>
                     </td>
-
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td colspan="2" class="text-center">
+                      <strong>Total</strong>
+                    </td>
+                    <td class="text-center">
+                      <strong>{{ totals.male }}</strong>
+                    </td>
+                    <td class="text-center">
+                      <strong>{{ totals.female }}</strong>
+                    </td>
+                    <td class="text-center">
+                      <strong>{{ totals.householdPop }}</strong>
+                    </td>
+                    <td class="text-center">
+                      <strong>{{ totals.householdNo }}</strong>
+                    </td>
+                    <td class="text-center">
+                      <strong>{{ totals.avgHouseholdSz | number: '1.0-0' }}</strong>
+                    </td>
+                    <td class="text-center">
+                      <strong>{{ totals.popGrowthRate | number: '1.0-0' }}</strong>
+                    </td>
+                    <td></td>
+                    <td></td>
                   </tr>
                 </tbody>
+                
               </table>
               <p>*** Data are based on Philippine Statistics Authority ***</p>
             </div>

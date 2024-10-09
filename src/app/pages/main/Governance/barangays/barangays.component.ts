@@ -8,6 +8,7 @@ import { PdfComponent } from 'src/app/components/pdf/pdf.component';
 import { PdfService } from 'src/app/services/pdf.service';
 import { ReportsService } from 'src/app/shared/Tools/reports.service';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
+import { isEmptyObject } from 'jquery';
 @Component({
   selector: 'app-barangays',
   templateUrl: './barangays.component.html',
@@ -40,10 +41,10 @@ export class BarangaysComponent implements OnInit {
 
   ViewBarangayOfficial: any = [];
   listBarangay: any = [];
-
+  isBarangay: boolean = true;
   listData: any = [];
   data: any = {};
-  searchText= '';
+  searchText = '';
 
   ngOnInit(): void {
     this.Init();
@@ -54,69 +55,70 @@ export class BarangaysComponent implements OnInit {
     this.GetListBarangay();
   }
 
-  GetLisbarangay(){
+  GetLisbarangay() {
     this.service.GetBarangay().subscribe((data) => {
       this.listBarangay = <any>data;
       this.listBarangay = this.listBarangay.filter((s: any) => s.tag == 1);
       console.log(this.listBarangay);
     });
   }
+  handleOnTabChange(isBarangay: boolean) {
+    this.isBarangay = isBarangay;
+  }
 
   ImportExcel(e: any) {
     Swal.fire({
       title: 'Are you sure?',
-      text: "",
+      text: '',
       icon: 'info',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, submit it!'
+      confirmButtonText: 'Yes, submit it!',
     }).then((result) => {
-      console.log(result)
+      console.log(result);
       if (result.isConfirmed) {
         this.reportService
-        .Get_ExImport(
-          e.target.files[0],
-          this.auth.setYear,
-          this.auth.munCityId,
-          'MajorAct'
-        )
-        .subscribe((success) => {
-          Swal.fire({
-            title: 'Importing Data',
-            html: 'Please wait for a moment.',
-            timerProgressBar: true,
-            allowOutsideClick: false,
-            didOpen: () => {
-              Swal.showLoading();
-              setTimeout(() => {
-                if (success) {
-                  this.listBarangay();
-                  Swal.close();
-                  Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'File imported successfully',
-                    showConfirmButton: true,
-                  });
-                } else {
-                  Swal.close();
-                  Swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: 'Something went wrong. possible invalid file',
-                    showConfirmButton: true,
-                  });
-                }
-              }, 5000);
-            },
+          .Get_ExImport(
+            e.target.files[0],
+            this.auth.setYear,
+            this.auth.munCityId,
+            'MajorAct'
+          )
+          .subscribe((success) => {
+            Swal.fire({
+              title: 'Importing Data',
+              html: 'Please wait for a moment.',
+              timerProgressBar: true,
+              allowOutsideClick: false,
+              didOpen: () => {
+                Swal.showLoading();
+                setTimeout(() => {
+                  if (success) {
+                    this.listBarangay();
+                    Swal.close();
+                    Swal.fire({
+                      position: 'center',
+                      icon: 'success',
+                      title: 'File imported successfully',
+                      showConfirmButton: true,
+                    });
+                  } else {
+                    Swal.close();
+                    Swal.fire({
+                      position: 'center',
+                      icon: 'error',
+                      title: 'Something went wrong. possible invalid file',
+                      showConfirmButton: true,
+                    });
+                  }
+                }, 5000);
+              },
+            });
           });
-        });
+      } else {
       }
-      else{
-      }
-    })
-
+    });
   }
 
   GeneratePDF() {
@@ -126,8 +128,12 @@ export class BarangaysComponent implements OnInit {
     this.reportService.GetBarangayReport(this.pdfComponent.data).subscribe({
       next: (response) => {
         reports = <any>response;
-        console.log(reports)
-        data.push({text:'List of Barangay Officials by Municipality/ City', bold: true, alignment:'center'});
+        console.log(reports);
+        data.push({
+          text: 'List of Barangay Officials by Municipality/ City',
+          bold: true,
+          alignment: 'center',
+        });
 
         const groupedData = reports.reduce((groups: any, item: any) => {
           const { munCityName, setYear } = item;
@@ -251,7 +257,7 @@ export class BarangaysComponent implements OnInit {
       },
       complete: () => {
         let isPortrait = true;
-        this.pdfService.GeneratePdf(data, isPortrait, "");
+        this.pdfService.GeneratePdf(data, isPortrait, '');
         console.log(data);
       },
     });
@@ -360,20 +366,112 @@ export class BarangaysComponent implements OnInit {
           brgyId: a.brgyId,
           brgyName: a.brgyName,
         });
-     
       }
     });
+  }
+  //Purok Chairman
+  Addprk() {
+    if (isEmptyObject(this.data)) {
+      Swal.fire(
+        'Missing Data!',
+        'Please fill out the required fields',
+        'warning'
+      );
+    } else {
+      // Assign values for munCityId and setYear
+      this.data.munCityId = this.auth.munCityId;
+      this.data.setYear = this.auth.activeSetYear;
 
+      // Ensure brgyId is properly assigned from the form or input
+      if (!this.data.brgyId) {
+        Swal.fire(
+          'Missing Barangay ID!',
+          'Please select a valid Barangay ID',
+          'warning'
+        );
+        return; // Stop execution if brgyId is missing
+      }
+
+      // Debug log to check brgyId value (can be removed in production)
+      console.log('brgyId:', this.data.brgyId);
+
+      // Proceed with the service call if data is valid
+      this.service.AddPurokChair(this.data).subscribe({
+        next: (request) => {
+          // Find the corresponding barangay and update it
+          let index = this.listData.findIndex(
+            (obj: any) => obj.brgyId === this.data.brgyId
+          );
+          if (index !== -1) {
+            this.listData[index] = request; // Update existing entry
+          } else {
+            this.listData.push(request); // If not found, add new entry
+          }
+        },
+        error: (err) => {
+          Swal.fire(
+            'Error!',
+            'An error occurred while saving the data.',
+            'error'
+          );
+          console.error('Service error:', err); // Log the error
+        },
+        complete: () => {
+          // Reset the form and close the modal
+          this.data = {};
+          this.closebutton.nativeElement.click();
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Your work has been saved',
+            showConfirmButton: false,
+            timer: 1000,
+          });
+        },
+      });
+    }
   }
 
+  DeleteprkData(transId: any, index: any, data: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.service.Deleteprk(transId).subscribe({
+          next: (_data) => {},
+          error: (err) => {
+            Swal.fire('Oops!', 'Something went wrong.', 'error');
+          },
+          complete: () => {
+            this.listData[index] = {};
+            this.listData[index].brgyId = data.brgyId;
+            this.listData[index].brgyName = data.brgyName;
+            this.Init();
+            Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+          },
+        });
+      }
+    });
+  }
+  //end of PrkChairman
   AddData() {
     this.toValidate.punongBrgy =
       this.data.punongBrgy == '' || this.data.punongBrgy == null ? true : false;
     this.toValidate.purokNo =
-    this.data.purokNo == '' || this.data.purokNo == null ? true : false;
+      this.data.purokNo == '' || this.data.purokNo == null ? true : false;
     this.toValidate.address =
       this.data.address == '' || this.data.address == undefined ? true : false;
-    if (this.toValidate.punongBrgy == true || this.toValidate.address == true || this.toValidate.purokNo == true) {
+    if (
+      this.toValidate.punongBrgy == true ||
+      this.toValidate.address == true ||
+      this.toValidate.purokNo == true
+    ) {
       Swal.fire(
         'Missing Data!',
         'Please fill out the required fields',
