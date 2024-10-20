@@ -197,6 +197,15 @@ export class RegisteredVotersComponent implements OnInit {
               text: `Year: ${response.data[0]?.setYear || ''}`,
               fontSize: 14,
               bold: true,
+              alignment: 'left', // Align the "Year" text to the left
+            },
+            {
+              text: `Municipality/City of ${
+                response.data[0]?.munCityName || ''
+              }`,
+              fontSize: 14,
+              bold: true,
+              alignment: 'right', // Align the "Municipality/City" text to the right
             },
           ],
         });
