@@ -9,6 +9,7 @@ import { PdfService } from 'src/app/services/pdf.service';
 import { ReportsService } from 'src/app/shared/Tools/reports.service';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 import { isEmptyObject } from 'jquery';
+import { request } from 'express';
 @Component({
   selector: 'app-barangays',
   templateUrl: './barangays.component.html',
@@ -40,18 +41,25 @@ export class BarangaysComponent implements OnInit {
   isAdd: boolean = false;
 
   ViewBarangayOfficial: any = [];
+  ViewPrkChair: any = [];
   listBarangay: any = [];
+  listPrkBrgy: any = [];
   isBarangay: boolean = true;
+  editPrk: any = {};
   listData: any = [];
+  listPrk: any = [];
+  visible: boolean = true;
+  not_visible: boolean = true;
   data: any = {};
   searchText = '';
 
   ngOnInit(): void {
     this.Init();
   }
-
   Init() {
     this.GetBarangay();
+    this.GetBarangayPrk();
+    // this.ListPrkBrgy();
     this.GetListBarangay();
   }
 
@@ -62,6 +70,14 @@ export class BarangaysComponent implements OnInit {
       console.log(this.listBarangay);
     });
   }
+  //for PrkBrgy
+  GetBarangayPrk() {
+    this.service.GetBarangayPrk().subscribe((data) => {
+      this.listPrkBrgy = data;
+      console.log(this.listPrkBrgy);
+    });
+  }
+
   handleOnTabChange(isBarangay: boolean) {
     this.isBarangay = isBarangay;
   }
@@ -331,7 +347,14 @@ export class BarangaysComponent implements OnInit {
   message = 'Barangays';
   viewData: boolean = false;
   parentMethod() {
+    this.data = {};
     this.viewData = true;
+    this.not_visible = false;
+    this.visible = false;
+  }
+  editToggle() {
+    this.not_visible = true;
+    this.visible = false;
   }
 
   GetListBarangay() {
@@ -345,6 +368,15 @@ export class BarangaysComponent implements OnInit {
       },
     });
   }
+  // ListPrkBrgy() {
+  //   this.service.ListPrkBrgy().subscribe({
+  //     next: (response) => {
+  //       this.listPrkBrgy = <any>response;
+  //     },
+  //     error: (error) => {},
+  //     complete: () => {},
+  //   });
+  // }
 
   FilterList() {
     let isExist;
@@ -369,70 +401,86 @@ export class BarangaysComponent implements OnInit {
       }
     });
   }
-  //Purok Chairman
-  Addprk() {
-    if (isEmptyObject(this.data)) {
-      Swal.fire(
-        'Missing Data!',
-        'Please fill out the required fields',
-        'warning'
-      );
-    } else {
-      // Assign values for munCityId and setYear
+
+  AddPrkChair() {
+    if (!isEmptyObject(this.data)) {
       this.data.munCityId = this.auth.munCityId;
       this.data.setYear = this.auth.activeSetYear;
 
-      // Ensure brgyId is properly assigned from the form or input
+      // Check if brgyId is present
       if (!this.data.brgyId) {
-        Swal.fire(
-          'Missing Barangay ID!',
-          'Please select a valid Barangay ID',
-          'warning'
-        );
-        return; // Stop execution if brgyId is missing
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: 'Barangay ID is required',
+          showConfirmButton: true,
+        });
+        return;
       }
 
-      // Debug log to check brgyId value (can be removed in production)
-      console.log('brgyId:', this.data.brgyId);
-
-      // Proceed with the service call if data is valid
-      this.service.AddPurokChair(this.data).subscribe({
+      this.service.AddPrkChair(this.data).subscribe({
         next: (request) => {
-          // Find the corresponding barangay and update it
-          let index = this.listData.findIndex(
-            (obj: any) => obj.brgyId === this.data.brgyId
-          );
-          if (index !== -1) {
-            this.listData[index] = request; // Update existing entry
-          } else {
-            this.listData.push(request); // If not found, add new entry
-          }
-        },
-        error: (err) => {
-          Swal.fire(
-            'Error!',
-            'An error occurred while saving the data.',
-            'error'
-          );
-          console.error('Service error:', err); // Log the error
+          console.log('Purok Chair Data:', request);
+          console.log('Update listPrkBrgy:', this.listPrkBrgy);
+          this.GetBarangayPrk();
         },
         complete: () => {
-          // Reset the form and close the modal
-          this.data = {};
-          this.closebutton.nativeElement.click();
+          this.data = {}; // Reset form data
+          this.closebutton.nativeElement.click(); // Close the modal
+
           Swal.fire({
             position: 'center',
             icon: 'success',
-            title: 'Your work has been saved',
+            title: 'Purok Chair has been added successfully!',
             showConfirmButton: false,
             timer: 1000,
           });
+          this.data = {};
+          this.closebutton.nativeElement.click();
         },
+        error: (err) => {
+          console.error('Error adding Purok Chair: ', err);
+          Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'Error adding Purok Chair',
+            showConfirmButton: true,
+          });
+        },
+      });
+    } else {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Please fill out the required fields',
+        showConfirmButton: true,
       });
     }
   }
+  EditPrk() {
+    this.editPrk.setYear = this.auth.activeSetYear;
 
-  DeleteprkData(transId: any, index: any, data: any) {
+    // Make the API call to update the Purok data
+    this.service.EditPrk(this.editPrk).subscribe({
+      next: (request) => {
+        // Close modal and reset data on success
+        this.closebutton.nativeElement.click();
+        this.editPrk = {};
+      },
+      complete: () => {
+        // Show success message once the process is completed
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Your work has been updated',
+          showConfirmButton: false,
+          timer: 1000,
+        });
+      },
+    });
+  }
+
+  DeletePrk(transId: any, index: any, data: any) {
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -443,7 +491,7 @@ export class BarangaysComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.service.Deleteprk(transId).subscribe({
+        this.service.DeletePrk(transId).subscribe({
           next: (_data) => {},
           error: (err) => {
             Swal.fire('Oops!', 'Something went wrong.', 'error');
@@ -459,7 +507,7 @@ export class BarangaysComponent implements OnInit {
       }
     });
   }
-  //end of PrkChairman
+
   AddData() {
     this.toValidate.punongBrgy =
       this.data.punongBrgy == '' || this.data.punongBrgy == null ? true : false;
@@ -591,7 +639,11 @@ export class BarangaysComponent implements OnInit {
       this.pdfMake.vfs = pdfFontsModule.pdfMake.vfs;
     }
   }
-
+  clearData() {
+    this.data = {};
+    this.not_visible;
+    this.visible;
+  }
   async GeneratePdf() {
     await this.loadPdfMaker();
 

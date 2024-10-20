@@ -31,10 +31,15 @@ export class ApiUrl {
 
   // Purok Chair
   post_save_purokchair = () => `/PurokChair/SavePurokChair`;
-  post_update_purok = () => `/PurokChair/`;
+  post_update_purok = () => `/PurokChair/Update`;
   delete_purok = (transId: any) => `/Barangay/${transId}`;
   get_list_purok = (munCityId: any, setYear: any) =>
     `/PurokChairman/${setYear}/${munCityId}`;
+  post_get_prkBrgy = (munCityId: any, setYear: any) =>
+    `/PurokChair/GetPurokBarangays?munCityId=${munCityId}&setYear=${setYear}`;
+  post_list_PrkBarangay = (munCityId: any) =>
+    `/Barangay/ListBarangays?munCityId=${munCityId}`;
+  delete_Prk = (transId: any) => `/PurokChair/${transId}`;
 
   //Physical Geographic Profile
   get_get_geo = (munCityId: any, setYear: any) =>
@@ -99,7 +104,7 @@ export class ApiUrl {
   post_list_barangay_demo = (munCityId: any) =>
     `/Barangay/ListBarangays?munCityId=${munCityId}`;
   post_report_demography = () => `/Demography/Reports`;
-  post_reportMun_demography = () => `/Demography/Reports/Mun`;
+  post_reportMun_demography = () => `/Demography/Reports/MunV2`;
 
   //Provincial Fiscal
   post_get_provincialfiscal = (setYear: any) =>

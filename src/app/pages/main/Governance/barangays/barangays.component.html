@@ -169,13 +169,15 @@
               </div>
             </div>
 
-            <!--Purok Chairmanskie-->
-
+            <!-----------------------Purok Chairmanskie---------------------------->
             <div class="table-responsive" *ngIf="!isBarangay">
               <div id="main">
                 <div class="container">
                   <div class="accordion" id="faq">
-                    <div class="card" *ngFor="let item of listData; index as i">
+                    <div
+                      class="card"
+                      *ngFor="let barangay of listPrkBrgy; index as i"
+                    >
                       <div class="card-header" [id]="'faqhead' + i">
                         <a
                           href="#"
@@ -185,7 +187,7 @@
                           [attr.aria-expanded]="false"
                           [attr.aria-controls]="'faq' + i"
                         >
-                          <b>{{ item.brgyName }}</b>
+                          <b>{{ barangay.brgyName }}</b>
                         </a>
                       </div>
 
@@ -200,80 +202,71 @@
                             type="button"
                             class="btn btn-primary btn-circle"
                             data-toggle="modal"
-                            data-target="#ModalAdd2 "
+                            data-target="#ModalAdd2"
+                            (click)="data.brgyId = barangay.brgyId"
                           >
-                            <i class="fa fa-plus"></i></button
-                          >&nbsp;
-                          <table
-                            class="table table-framed table-hover table-striped"
-                          >
-                            <thead class="table-dark">
+                            <i class="fa fa-plus"></i>
+                          </button>
+                          <br />
+                          <table class="table table-hover table-striped">
+                            <thead class="thead-dark">
                               <tr>
-                                <th style="text-align: center">Barangay</th>
-                                <th style="text-align: center">
-                                  Name of Purok
+                                <!-- <th class="text-center">Barangay1</th> -->
+                                <th class="text-center">Name of Purok</th>
+                                <th class="text-center">Population</th>
+                                <th class="text-center"># of Households</th>
+                                <th class="text-center">
+                                  Distance from Poblacion (km)
                                 </th>
-                                <th style="text-align: center">Population</th>
-                                <th style="text-align: center">
-                                  # of Households
-                                </th>
-                                <th style="text-align: center">
-                                  Distance from Brgy Poblacion
-                                </th>
-                                <th style="text-align: center">Area in Has</th>
-                                <th style="text-align: center">
-                                  Purok Chairman
-                                </th>
-                                <th style="text-align: center">Action</th>
+                                <th class="text-center">Area (Has)</th>
+                                <th class="text-center">Purok Chairman</th>
+                                <th class="text-center">Action</th>
                               </tr>
                             </thead>
                             <tbody>
-                              <tr>
-                                <td>
-                                  <b>{{ item.brgyName }}</b>
+                              <!-- Loop through purokChairs for the current barangay -->
+                              <tr *ngFor="let purok of barangay.purokChairman">
+                                <!-- <td>
+                                  <b>{{ barangay.brgyName }}</b>
+                                </td> -->
+                                <td class="text-center">
+                                  {{ purok.nameOfPurok }}
                                 </td>
-                                <td style="text-align: center">
-                                  {{ item.nameOfPurok }}
+                                <td class="text-center">
+                                  {{ purok.population }}
                                 </td>
-                                <td style="text-align: center">
-                                  {{ item.population }}
+                                <td class="text-center">
+                                  {{ purok.noOfHouse }}
                                 </td>
-                                <td style="text-align: center">
-                                  {{ item.numHouseholds }}
+                                <td class="text-center">
+                                  {{ purok.disFromBarangay }}
                                 </td>
-                                <td style="text-align: center">
-                                  {{ item.distanceFromPoblacion }}
+                                <td class="text-center">
+                                  {{ purok.area }}
                                 </td>
-                                <td style="text-align: center">
-                                  {{ item.areaInHas }}
+                                <td class="text-center">
+                                  {{ purok.purokChair }}
                                 </td>
-                                <td style="text-align: center">
-                                  {{ item.purokChairman }}
-                                </td>
-                                <td style="text-align: center">
-                                  <div class="d-inline-flex">
-                                    <app-admin>
-                                      <button
-                                        (click)="data = item; isAdd = false"
-                                        class="btn btn-info btn-circle"
-                                        data-toggle="modal"
-                                        data-target="#openModal2"
-                                      >
-                                        <i class="fa fa-pen"></i>
-                                      </button>
-                                    </app-admin>
-                                    <app-admin>
-                                      <button
-                                        type="button"
-                                        title="Delete"
-                                        class="btn btn-warning btn-circle"
-                                        (click)="
-                                          DeleteprkData(item.transId, i, item)
-                                        "
-                                      >
-                                        <i class="fa fa-trash"></i>
-                                      </button>
-                                    </app-admin>
+                                <td class="text-center">
+                                  <div class="btn-group" role="group">
+                                    <button
+                                      class="btn btn-sm btn-info"
+                                      data-toggle="modal"
+                                      (click)="editPrk = purok"
+                                      data-target="#ModalEdit"
+                                      title="Edit"
+                                    >
+                                      <i class="fa fa-pen"></i>
+                                    </button>
+                                    <button
+                                      class="btn btn-sm btn-warning"
+                                      title="Delete"
+                                      (click)="
+                                        DeletePrk(purok.transId, i, purok)
+                                      "
+                                    >
+                                      <i class="fa fa-trash"></i>
+                                    </button>
                                   </div>
                                 </td>
                               </tr>
@@ -399,7 +392,7 @@
   <!---edit Modal for purok-->
   <div
     class="modal fade bd-example-modal-lg"
-    id="openModal2"
+    id="ModalEdit"
     tabindex="-1"
     role="dialog"
     aria-labelledby="myLargeModalLabel"
@@ -422,40 +415,97 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class="row"><br /><br /></div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-primary"
-              (click)="isAdd ? AddData() : EditData()"
-            >
-              <i class="fa fa-check"></i> Save Changes
-            </button>
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-dismiss="modal"
-            >
-              <i class="fa fa-time"></i>Close
-            </button>
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="col-lg-12">
+                <label>Name of Purok:</label>
+                <input
+                  type="text"
+                  class="form-control mb-2"
+                  [(ngModel)]="editPrk.nameOfPurok"
+                />
+              </div>
+              <div class="col-lg-12">
+                <label>Population:</label>
+                <input
+                  type="text"
+                  class="form-control mb-2"
+                  [(ngModel)]="editPrk.population"
+                />
+              </div>
+              <div class="col-lg-12">
+                <label># of Households:</label>
+                <input
+                  type="text"
+                  class="form-control mb-2"
+                  [(ngModel)]="editPrk.noOfHouse"
+                />
+              </div>
+              <div class="col-lg-12">
+                <label>Distance from Poblacion (km):</label>
+                <input
+                  type="text"
+                  class="form-control mb-2"
+                  [(ngModel)]="editPrk.disFromBarangay"
+                />
+              </div>
+              <div class="col-lg-12">
+                <label>Area (Has):</label>
+                <input
+                  type="text"
+                  class="form-control mb-2"
+                  [(ngModel)]="editPrk.area"
+                />
+              </div>
+              <div class="col-lg-12">
+                <label>Purok Chairman:</label>
+                <input
+                  type="text"
+                  class="form-control mb-2"
+                  [(ngModel)]="editPrk.purokChair"
+                />
+              </div>
+              <br /><br />
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-primary"
+                (click)="EditPrk()"
+                id="closeModal"
+              >
+                <i class="fa fa-check"></i> Save Changes
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+                data-target="#exampleModal"
+              >
+                <i class="fa fa-time"></i>Close
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <!--Add purok-->
+  <!--Add purok Chair-->
+  <!-- (click)="isAdd ? AddData() : EditData()"-->
   <div
     class="modal fade bd-example-modal-lg"
     id="ModalAdd2"
     tabindex="-1"
     role="dialog"
-    aria-labelledby="exampleModalLabel"
+    aria-labelledby="myLargeModalLabel"
     aria-hidden="true"
   >
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Add Purok Chairman</h5>
+          <h5 class="modal-title" id="exampleModalScrollableTitle">
+            Purok Chairman
+          </h5>
           <button
             type="button"
             #closebutton
@@ -469,205 +519,185 @@
         <div class="modal-body">
           <div class="row">
             <div class="col-lg-12">
-              <br />
-              <label for="exampleFormControlTextarea1">Name of Purok:</label>
-              <input
-                type="text"
-                class="form-control"
-                id="nameOfPurok"
-                name="nameOfPurok"
-                placeholder=""
-                [(ngModel)]="data.nameOfPurok"
-              />
-            </div>
-            <div class="col-lg-12">
-              <br />
-              <label for="exampleFormControlTextarea1">Population:</label>
-              <input
-                type="text"
-                class="form-control"
-                name="population"
-                id="population"
-                placeholder=""
-                [(ngModel)]="data.population"
-              />
-            </div>
-            <div class="col-lg-12">
-              <br />
-              <label for="exampleFormControlTextarea1"># of Households:</label>
-              <input
-                type="text"
-                class="form-control"
-                name="noOfHouse"
-                id="noOfHouse"
-                placeholder=""
-                [(ngModel)]="data.noOfHouse"
-              />
-            </div>
-            <div class="col-lg-12">
-              <br />
-              <label for="exampleFormControlTextarea1"
-                >Distance from Brgy Poblacion:</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                name="disFromBarangay"
-                id="disFromBarangay"
-                placeholder=""
-                [(ngModel)]="data.disFromBarangay"
-              />
-            </div>
-            <div class="col-lg-12">
-              <br />
-              <label for="exampleFormControlTextarea1">Area in Has:</label>
-              <input
-                type="text"
-                class="form-control"
-                name="area"
-                id="area"
-                placeholder=""
-                [(ngModel)]="data.area"
-              />
-            </div>
-            <div class="col-lg-12">
-              <br />
-              <label for="exampleFormControlTextarea1">Purok Chairman:</label>
-              <input
-                type="text"
-                class="form-control"
-                name="purokChair"
-                id="purokChair"
-                placeholder=""
-                [(ngModel)]="data.purokChair"
-              />
+              <div class="col-lg-12">
+                <label>Name of Purok:</label>
+                <input
+                  type="text"
+                  class="form-control mb-2"
+                  [(ngModel)]="data.nameOfPurok"
+                />
+              </div>
+              <div class="col-lg-12">
+                <label>Population:</label>
+                <input
+                  type="text"
+                  class="form-control mb-2"
+                  [(ngModel)]="data.population"
+                />
+              </div>
+              <div class="col-lg-12">
+                <label># of Households:</label>
+                <input
+                  type="text"
+                  class="form-control mb-2"
+                  [(ngModel)]="data.noOfHouse"
+                />
+              </div>
+              <div class="col-lg-12">
+                <label>Distance from Poblacion (km):</label>
+                <input
+                  type="text"
+                  class="form-control mb-2"
+                  [(ngModel)]="data.disFromBarangay"
+                />
+              </div>
+              <div class="col-lg-12">
+                <label>Area (Has):</label>
+                <input
+                  type="text"
+                  class="form-control mb-2"
+                  [(ngModel)]="data.area"
+                />
+              </div>
+              <div class="col-lg-12">
+                <label>Purok Chairman:</label>
+                <input
+                  type="text"
+                  class="form-control mb-2"
+                  [(ngModel)]="data.purokChair"
+                />
+              </div>
+              <br /><br />
             </div>
             <div class="modal-footer">
-              <div class="left-absolute" *ngIf="">
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                  />
-                  <label class="form-check-label" for="flexCheckDefault">
-                    Several data
-                  </label>
-                </div>
-              </div>
-              <button type="button" class="btn btn-primary" (click)="Addprk()">
-                <i class="fa fa-check"></i>Save</button
-              >&nbsp;
-              <button type="button" class="btn btn-secondary">
-                <i class="fa fa-times"></i>Close
+              <button
+                type="button"
+                class="btn btn-primary"
+                (click)="AddPrkChair()"
+                id="closeModal"
+              >
+                <i class="fa fa-check"></i> Save
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+                data-target="#exampleModal"
+              >
+                <i class="fa fa-time"></i>Close
               </button>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <!-- gmap modal area -->
-  <div
-    class="modal fade"
-    id="gmapModal"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">
-            SEPS GEOLOCATION TAGGING
-          </h5>
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Close"
-          >
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <app-gmap></app-gmap>
-        </div>
-        <div class="modal-footer">
-          <app-admin>
+    <!--Prk Editassssssssssssssssssss-->
+
+    <!-- gmap modal area -->
+    <div
+      class="modal fade"
+      id="gmapModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              SEPS GEOLOCATION TAGGING
+            </h5>
             <button
               type="button"
-              class="btn btn-secondary"
+              class="close"
               data-dismiss="modal"
+              aria-label="Close"
             >
-              Close
+              <span aria-hidden="true">&times;</span>
             </button>
-            <button type="button" class="btn btn-primary" (click)="EditData()">
-              Save changes
-            </button>
-          </app-admin>
+          </div>
+          <div class="modal-body">
+            <app-gmap></app-gmap>
+          </div>
+          <div class="modal-footer">
+            <app-admin>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                (click)="EditData()"
+              >
+                Save changes
+              </button>
+            </app-admin>
+          </div>
         </div>
       </div>
     </div>
   </div>
+
+  <style>
+    #main {
+      margin: 50px 0;
+    }
+
+    #main #faq .card {
+      margin-bottom: 30px;
+      border: 0;
+    }
+
+    #main #faq .card .card-header {
+      border: 0;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Reduced shadow */
+      border-radius: 2px;
+      padding: 0;
+      background: #f0f0f0; /* Light gray background for header */
+    }
+
+    #main #faq .card .card-header .btn-header-link {
+      color: #333; /* Darker text for better readability */
+      display: block;
+      text-align: left;
+      background: #e0e0e0; /* Slightly darker background */
+      padding: 15px; /* Reduced padding */
+    }
+
+    #main #faq .card .card-header .btn-header-link:after {
+      content: "\f107";
+      font-family: "Font Awesome 5 Free";
+      font-weight: 900;
+      float: right;
+    }
+
+    #main #faq .card .card-header .btn-header-link.collapsed {
+      background: #cccccc; /* Gray background for collapsed state */
+      color: #000; /* Dark text */
+    }
+
+    #main #faq .card .card-header .btn-header-link.collapsed:after {
+      content: "\f106";
+    }
+
+    #main #faq .card .collapsing {
+      background: #e0e0e0; /* Consistent background color */
+      line-height: 30px;
+    }
+
+    #main #faq .card .collapse {
+      border: 0;
+    }
+
+    #main #faq .card .collapse.show {
+      background: #f0f0f0; /* Light gray for open state */
+      line-height: 30px;
+      color: #333; /* Darker text */
+    }
+  </style>
 </div>
-
-<style>
-  #main {
-    margin: 50px 0;
-  }
-
-  #main #faq .card {
-    margin-bottom: 30px;
-    border: 0;
-  }
-
-  #main #faq .card .card-header {
-    border: 0;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Reduced shadow */
-    border-radius: 2px;
-    padding: 0;
-    background: #f0f0f0; /* Light gray background for header */
-  }
-
-  #main #faq .card .card-header .btn-header-link {
-    color: #333; /* Darker text for better readability */
-    display: block;
-    text-align: left;
-    background: #e0e0e0; /* Slightly darker background */
-    padding: 15px; /* Reduced padding */
-  }
-
-  #main #faq .card .card-header .btn-header-link:after {
-    content: "\f107";
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    float: right;
-  }
-
-  #main #faq .card .card-header .btn-header-link.collapsed {
-    background: #cccccc; /* Gray background for collapsed state */
-    color: #000; /* Dark text */
-  }
-
-  #main #faq .card .card-header .btn-header-link.collapsed:after {
-    content: "\f106";
-  }
-
-  #main #faq .card .collapsing {
-    background: #e0e0e0; /* Consistent background color */
-    line-height: 30px;
-  }
-
-  #main #faq .card .collapse {
-    border: 0;
-  }
-
-  #main #faq .card .collapse.show {
-    background: #f0f0f0; /* Light gray for open state */
-    line-height: 30px;
-    color: #333; /* Darker text */
-  }
-</style>

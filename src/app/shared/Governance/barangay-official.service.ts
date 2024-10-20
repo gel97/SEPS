@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ApiUrl } from '../../services/apiUrl.service';
 import { BaseUrl } from 'src/app/services/baseUrl.service';
+import { response } from 'express';
 
 @Injectable({
   providedIn: 'root',
@@ -74,33 +75,39 @@ export class BarangayOfficialService {
       { responseType: 'json' }
     );
   }
-  //PrkChairman
-  GetPurokChair(): Observable<any[]> {
-    return this.Http.get<any[]>(
+  //for Purok
+  GetBarangayPrk(): Observable<any[]> {
+    return this.Http.post<any[]>(
       this.Base.url +
-        this.ApiUrl.get_list_purok(this.Auth.munCityId, this.Auth.setYear),
+        this.ApiUrl.post_get_prkBrgy(this.Auth.munCityId, this.Auth.setYear),
       { responseType: 'json' }
     );
   }
-  AddPurokChair(prk: any = {}) {
-    console.log(prk);
+  AddPrkChair(ViewPrkChair: any = {}) {
     return this.Http.post(
       this.Base.url + this.ApiUrl.post_save_purokchair(),
-      prk,
-      {
-        responseType: 'json',
-      }
+      ViewPrkChair,
+      { responseType: 'json' }
     );
   }
-  EditPhyGeoBrgy(prk: any = {}) {
-    console.log(prk);
-    return this.Http.put(this.Base.url + this.ApiUrl.post_update_purok(), prk, {
-      responseType: 'json',
-    });
+  EditPrk(editPrk: any = {}) {
+    console.log(editPrk);
+    return this.Http.post(
+      this.Base.url + this.ApiUrl.post_update_purok(),
+      editPrk,
+      { responseType: 'json' }
+    );
   }
-  Deleteprk(transId: any) {
-    return this.Http.delete(this.Base.url + this.ApiUrl.delete_purok(transId), {
+
+  DeletePrk(transId: any) {
+    return this.Http.delete(this.Base.url + this.ApiUrl.delete_Prk(transId), {
       responseType: 'text',
     });
+  }
+  ListPrkBrgy() {
+    return this.Http.post<any[]>(
+      this.Base.url + this.ApiUrl.post_list_PrkBarangay(this.Auth.munCityId),
+      { responseType: 'json' }
+    );
   }
 }
