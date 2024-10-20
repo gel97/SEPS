@@ -82,7 +82,7 @@ export class PdfService {
               //   width: logoWidth, // Same width as the logo for perfect alignment
               // },
             ],
-            columnGap: 10, // Optional: Adjust spacing between columns
+            columnGap: 0, // Optional: Adjust spacing between columns
           };
         } else {
           return null;

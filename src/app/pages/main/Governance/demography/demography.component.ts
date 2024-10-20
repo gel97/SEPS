@@ -161,7 +161,7 @@ export class DemographyComponent implements OnInit {
         ]);
       });
     };
-
+    console.log(this.pdfComponent.data);
     // Prepare the report data
     this.reportService
       .GetDemographyReportMun(this.pdfComponent.data) // Retrieves data for the user's municipality
@@ -170,23 +170,26 @@ export class DemographyComponent implements OnInit {
           reports = response.data;
           grandTotal = response.grandTotal;
           columns = response.columns;
+          var total = response.total;
+          var munCityName = response.munDetail.munCityName;
 
           console.log('result: ', response);
 
           // Check if fromYear and year are defined
-          const fromYear = response.fromYear || 'N/A'; // Default to 'N/A' if undefined
-          const toYear = response.year || 'N/A'; // Default to 'N/A' if undefined
+          const fromYear = this.pdfComponent.data.year - 2 || 'N/A'; // Adjusted calculation based on your logic
+          const toYear = this.pdfComponent.data.year || 'N/A';
 
           data.push({
             margin: [0, 40, 0, 0],
             columns: [
               {
-                text: `Total Population and Households by Municipality/City`, // Updated to reflect specific municipality
+                text: `Total Population and Households by Municipality/City-${munCityName} `,
                 fontSize: 14,
                 bold: true,
               },
+
               {
-                text: `Year: ${fromYear} - ${toYear}`, // Ensure years are defined
+                text: `Year: ${fromYear} - ${toYear}`, // Use the correctly derived years
                 fontSize: 14,
                 bold: true,
                 alignment: 'right',
@@ -198,42 +201,99 @@ export class DemographyComponent implements OnInit {
           const headerRow = [
             {
               text: '#',
+              rowSpan: 2,
               fillColor: 'black',
+              fontSize: 9,
               color: 'white',
               bold: true,
               alignment: 'center',
             },
             {
               text: 'Barangay',
+              rowSpan: 2,
+              fontSize: 9,
               fillColor: 'black',
               color: 'white',
               bold: true,
               alignment: 'center',
             },
+            // {
+            //   text: `2021`,
+            //   fontSize: 9,
+            //   colSpan: 3,
+            //   fillColor: 'black',
+            //   color: 'white',
+            //   bold: true,
+            //   alignment: 'center',
+            // },
+            // {},
+            // {},
+
             ...columns.flatMap((col: any) => [
               {
-                text: `${col.setYear} Population`,
+                text: `${col.setYear}`,
+                fontSize: 9,
+                colSpan: 6,
+                fillColor: 'black',
+                color: 'white',
+                bold: true,
+                alignment: 'center',
+              },
+              {},
+              {},
+              {},
+              {},
+              {},
+            ]),
+          ];
+
+          const header1 = [
+            '',
+            '',
+            ...columns.flatMap((col: any) => [
+              {
+                text: `${col.description}`,
+                fontSize: 9,
                 fillColor: 'black',
                 color: 'white',
                 bold: true,
                 alignment: 'center',
               },
               {
-                text: `${col.setYear} Male`,
+                text: `${col.male}`,
+                fontSize: 9,
                 fillColor: 'black',
                 color: 'white',
                 bold: true,
                 alignment: 'center',
               },
               {
-                text: `${col.setYear} Female`,
+                text: `${col.female}`,
+                fontSize: 9,
                 fillColor: 'black',
                 color: 'white',
                 bold: true,
                 alignment: 'center',
               },
               {
-                text: `${col.setYear} No. of Households`,
+                text: `${col.household}`,
+                fontSize: 9,
+                fillColor: 'black',
+                color: 'white',
+                bold: true,
+                alignment: 'center',
+              },
+              {
+                text: `Ave. HH Size`,
+                fontSize: 9,
+                fillColor: 'black',
+                color: 'white',
+                bold: true,
+                alignment: 'center',
+              },
+              {
+                text: `Growth Rate`,
+                fontSize: 9,
                 fillColor: 'black',
                 color: 'white',
                 bold: true,
@@ -241,99 +301,186 @@ export class DemographyComponent implements OnInit {
               },
             ]),
           ];
+
           tableData.push(headerRow);
+          tableData.push(header1);
 
-          reports.forEach((a: any) => {
-            if (a.data) {
-              // Adding data for each municipality
-              a.data.forEach((b: any, index2: any) => {
-                let d1: any = [];
-                d1.push({ text: index2 + 1, alignment: 'center' });
-                d1.push({ text: b.brgyName });
+          console.log('iduno');
 
-                columns.forEach((c: any) => {
-                  let _population: any = 'N/A'; // Default to N/A if no data
-                  let _male: any = 'N/A';
-                  let _female: any = 'N/A';
-                  let _householdNo: any = 'N/A';
+          reports.forEach((b: any, index2: any) => {
+            console.log('heree');
+            let d1: any = [];
+            let d2: any = [];
 
-                  // Find the matching data
-                  b.munData.forEach((e: any) => {
-                    if (c.setYear === e.setYear) {
-                      _population = e.population || 'N/A';
-                      _male = e.male || 'N/A';
-                      _female = e.female || 'N/A';
-                      _householdNo = e.householdNo || 'N/A';
-                    }
-                  });
+            d1.push({ text: index2 + 1, alignment: 'center' });
+            d1.push({ text: b.brgyName });
+            //prev1
+            d1.push(
+              {
+                text: b.previous1 == null ? '' : b.previous1.population,
+                alignment: 'center',
+              },
+              {
+                text: b.previous1 == null ? '' : b.previous1.male,
+                alignment: 'center',
+              },
+              {
+                text: b.previous1 == null ? '' : b.previous1.female,
+                alignment: 'center',
+              },
+              {
+                text: b.previous1 == null ? '' : b.previous1.householdNo,
+                alignment: 'center',
+              },
 
-                  d1.push(
-                    { text: _population, alignment: 'center' },
-                    { text: _male, alignment: 'center' },
-                    { text: _female, alignment: 'center' },
-                    { text: _householdNo, alignment: 'center' }
-                  );
-                });
-                tableData.push(d1);
+              { text: b.previous1 == null ? '' : b.previous1.avgHouseholdSz },
+              { text: b.previous1 == null ? '' : b.previous1.popGrowthRate }
+            );
+            //prev
+            d1.push(
+              {
+                text: b.previous == null ? '' : b.previous.population,
+                alignment: 'center',
+              },
+              {
+                text: b.previous == null ? '' : b.previous.male,
+                alignment: 'center',
+              },
+              {
+                text: b.previous == null ? '' : b.previous.female,
+                alignment: 'center',
+              },
+              {
+                text: b.previous == null ? '' : b.previous.householdNo,
+                alignment: 'center',
+              },
+              { text: b.previous == null ? '' : b.previous.avgHouseholdSz },
+              { text: b.previous == null ? '' : b.previous.popGrowthRate }
+            );
+            //current
+            d1.push(
+              {
+                text: b.current == null ? '' : b.current.population,
+                alignment: 'center',
+              },
+              {
+                text: b.current == null ? '' : b.current.male,
+                alignment: 'center',
+              },
+              {
+                text: b.current == null ? '' : b.current.female,
+                alignment: 'center',
+              },
+              {
+                text: b.current == null ? '' : b.current.householdNo,
+                alignment: 'center',
+              },
+              { text: b.current == null ? '' : b.current.avgHouseholdSz },
+              { text: b.current == null ? '' : b.current.popGrowthRate }
+            );
+            tableData.push(d1); // Add the row to tableData
 
-                // Adding barangay data under the municipality
-                if (b.barangays) {
-                  b.barangays.forEach((barangay: any) => {
-                    let barangayData: any = [];
-                    barangayData.push({ text: '', alignment: 'center' }); // Empty cell for numbering
-                    barangayData.push({
-                      text: `${barangay.brgyName} (Barangay)`,
-                      bold: true,
-                    }); // Barangay name
+            if (index2 + 1 == reports.length) {
+              d2.push({ text: '', alignment: 'center' });
+              d2.push({ text: 'Total', alignment: 'center' });
+              //prev1
+              d2.push(
+                {
+                  text:
+                    total.previous1 == null ? '' : total.previous1.population,
+                  alignment: 'center',
+                },
+                {
+                  text: total.previous1 == null ? '' : total.previous1.male,
+                  alignment: 'center',
+                },
+                {
+                  text: total.previous1 == null ? '' : total.previous1.female,
+                  alignment: 'center',
+                },
+                {
+                  text:
+                    total.previous1 == null ? '' : total.previous1.householdNo,
+                  alignment: 'center',
+                },
 
-                    columns.forEach((c: any) => {
-                      let _Population: any = 'N/A';
-                      let _Male: any = 'N/A';
-                      let _Female: any = 'N/A';
-                      let _HouseholdNo: any = 'N/A';
-
-                      // Find matching barangay data
-                      barangay.data.forEach((e: any) => {
-                        if (c.setYear === e.setYear) {
-                          _Population = e.population || 'N/A';
-                          _Male = e.male || 'N/A';
-                          _Female = e.female || 'N/A';
-                          _HouseholdNo = e.householdNo || 'N/A';
-                        }
-                      });
-
-                      barangayData.push(
-                        { text: _Population, alignment: 'center' },
-                        { text: _Male, alignment: 'center' },
-                        { text: _Female, alignment: 'center' },
-                        { text: _HouseholdNo, alignment: 'center' }
-                      );
-                    });
-                    tableData.push(barangayData); // Add barangay data to table
-                  });
-                }
-              });
-            }
-
-            // Adding district data if available
-            if (a.districtData) {
-              addDistrictData(a.districtData); // Call the function to add district data
+                { text: '' },
+                { text: '' }
+              );
+              //prev
+              d2.push(
+                {
+                  text: total.previous == null ? '' : total.previous.population,
+                  alignment: 'center',
+                },
+                {
+                  text: total.previous == null ? '' : total.previous.male,
+                  alignment: 'center',
+                },
+                {
+                  text: total.previous == null ? '' : total.previous.female,
+                  alignment: 'center',
+                },
+                {
+                  text:
+                    total.previous == null ? '' : total.previous.householdNo,
+                  alignment: 'center',
+                },
+                { text: '' },
+                { text: '' }
+              );
+              //current
+              d2.push(
+                {
+                  text: total.current == null ? '' : total.current.population,
+                  alignment: 'center',
+                },
+                {
+                  text: total.current == null ? '' : total.current.male,
+                  alignment: 'center',
+                },
+                {
+                  text: total.current == null ? '' : total.current.female,
+                  alignment: 'center',
+                },
+                {
+                  text: total.current == null ? '' : total.current.householdNo,
+                  alignment: 'center',
+                },
+                { text: '' },
+                { text: '' }
+              );
+              tableData.push(d2); // Add the row to tableData
             }
           });
+
+          // var tota
+
+          // Add the row to tableData
+
+          //last row end
 
           // Create the table with a defined layout
           const table = {
             margin: [0, 20, 0, 0],
+
             table: {
+              // widths: [25, 'auto', ...Array(columns.length * 4).fill('auto')], // Ensure widths match the number of columns
               widths: [
-                25,
+                15,
                 'auto',
-                ...Array(columns.length * 4).fill('auto'), // 4 entries per year
-              ],
-              body: tableData,
+                ...Array(columns.length * 4).fill('auto'),
+                'auto',
+                'auto',
+                'auto',
+                'auto',
+                'auto',
+                'auto',
+              ], // Ensure widths match the number of columns
+              body: tableData, // Make sure tableData has rows and columns
             },
             layout: {
-              hLineWidth: (i: any) => (i === 0 ? 2 : 1), // Bold line for header
+              hLineWidth: (i: number) => (i === 0 ? 2 : 1), // Header line width
               vLineWidth: () => 1,
               hLineColor: () => '#CCCCCC',
               vLineColor: () => '#CCCCCC',

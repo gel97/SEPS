@@ -13,6 +13,7 @@ import {
   SocialUser,
 } from 'angularx-social-login';
 import { request } from 'http';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -97,12 +98,21 @@ export class LoginComponent implements OnInit {
       error: (error) => {
         this.isLogin = false;
         this.errorLogin = error.error;
+
+        // SweetAlert for wrong password or login error
+        Swal.fire({
+          icon: 'error',
+          title: 'Login Failed',
+          text: 'Incorrect password or email. Please try again!',
+          confirmButtonText: 'OK',
+        });
       },
       complete: () => {
         this.isLogin = false;
       },
     });
   }
+
   callLoginButton() {
     this.auth2.attachClickHandler(
       this.loginElement.nativeElement,
