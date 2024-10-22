@@ -167,6 +167,7 @@ import { UpdateUserComponent } from './pages/main/Update-User/update-user/update
 import { ResetFormComponent } from './pages/main/reset-form/reset-form.component';
 import { ActivityLogsComponent } from './pages/activity-logs/activity-logs.component';
 import { FilterDatePipe } from './filter-date.pipe';
+import { LunchingComponent } from './lunching/lunching.component';
 
 @NgModule({
   declarations: [
@@ -321,6 +322,7 @@ import { FilterDatePipe } from './filter-date.pipe';
     ResetFormComponent,
     ActivityLogsComponent,
     FilterDatePipe,
+    LunchingComponent,
   ],
   imports: [
     MdbCollapseModule,

@@ -31,6 +31,9 @@ import { Location } from '@angular/common';
   styleUrls: ['./main-layout.component.css'],
 })
 export class MainLayoutComponent implements OnInit {
+  goToDashboard() {
+    this.router.navigate(['/dashboard']);
+  }
   @ViewChild('closeModal')
   closeModal!: ElementRef;
   fakeObservable = of('dummy').pipe(delay(100000));

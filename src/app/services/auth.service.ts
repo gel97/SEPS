@@ -25,6 +25,7 @@ export class AuthService {
   readonly apiDatefilter = this.Base.url + '/Auth/logs/filter-by-month';
 
   token: any = localStorage.getItem('token');
+  hash: any = localStorage.getItem('hash');
   munCityId: any = localStorage.getItem('munCityId');
   munCityName: any = localStorage.getItem('munCityName');
   o_munCityId: any = localStorage.getItem('o_munCityId');
@@ -46,6 +47,7 @@ export class AuthService {
     return this.http.post(this.apiurl, user).pipe(
       tap((response: any) => {
         localStorage.setItem('token', response.token);
+        localStorage.setItem('hash', response.hash);
         localStorage.setItem('userId', response.userId);
         localStorage.setItem('munCityId', response.munCityId);
         localStorage.setItem('munCityName', response.munCityName);
@@ -58,6 +60,7 @@ export class AuthService {
         localStorage.setItem('designation', response.designation);
 
         this.token = localStorage.getItem('token');
+        this.hash = localStorage.getItem('hash');
         this.userId = localStorage.getItem('userId');
         this.munCityId = localStorage.getItem('munCityId');
         this.munCityName = localStorage.getItem('munCityName');
@@ -138,6 +141,7 @@ export class AuthService {
     return this.http.post(this.apiurlGoogle, user).pipe(
       tap((response: any) => {
         localStorage.setItem('token', response.token);
+        localStorage.setItem('hash', response.hash);
         localStorage.setItem('activeSetYear', response.activeSetYear);
         localStorage.setItem('setYear', response.activeSetYear);
         localStorage.setItem('expire', response.expire);
@@ -169,6 +173,7 @@ export class AuthService {
   }
   setSession(response: any) {
     localStorage.setItem('token', response.token);
+    localStorage.setItem('hash', response.hash);
     localStorage.setItem('userId', response.userId);
     localStorage.setItem('munCityId', response.munCityId);
     localStorage.setItem('munCityName', response.munCityName);
@@ -183,6 +188,7 @@ export class AuthService {
 
   clearSession() {
     localStorage.removeItem('token');
+    localStorage.removeItem('hash');
     localStorage.removeItem('userId');
     localStorage.removeItem('munCityId');
     localStorage.removeItem('o_munCityId');

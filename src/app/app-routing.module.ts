@@ -124,6 +124,7 @@ import { SummaryReportComponent } from './pages/main/Tools/summary-report/summar
 import { MessageListComponent } from './pages/main/Tools/message-list/message-list.component';
 import { DdnDashboardComponent } from './pages/main/Dashboard/ddn-dashboard/ddn-dashboard.component';
 import { PrevRateComponent } from './pages/main/SocialProfile/Health/prev-rate/prev-rate.component';
+import { LunchingComponent } from './lunching/lunching.component';
 const socioEconomic_TradeIndustry: string =
   'socio-economic/trade-and-industry/';
 const socioEconomic_Tourism: string = 'socio-economic/Tourism/';
@@ -155,6 +156,10 @@ const routes: Routes = [
   {
     path: 'home',
     component: GuestHomeComponent,
+  },
+  {
+    path: 'lunching',
+    component: LunchingComponent,
   },
   {
     path: 'register',
@@ -593,7 +598,8 @@ const routes: Routes = [
   //   component: MainLayoutComponent,
   //   children:[
 
-  { path: '', redirectTo: 'sep/home/', pathMatch: 'full' },
+  // { path: '', redirectTo: 'sep/home/', pathMatch: 'full' },
+
   //     {path: 'gov_cityOfficials',component:CityOfficialsComponent},
   //     {path:'gov_Barangays',component:BarangaysComponent},
   //   ]

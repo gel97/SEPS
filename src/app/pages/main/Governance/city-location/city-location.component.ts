@@ -26,6 +26,7 @@ export class CityLocationComponent implements OnInit {
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
   }
+  munCityName: string = this.auth.munCityName;
   setYear = this.auth.setYear;
   editmodal: any = {};
   MunBuild: any = {};

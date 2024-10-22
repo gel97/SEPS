@@ -71,4 +71,15 @@ export class MunCityLocService {
       { responseType: 'text' }
     );
   }
+  //GIS TOKEN
+  PostGisToken(giToken: any = {}) {
+    console.log(giToken);
+    return this.Http.post(
+      this.Base.url + this.ApiUrl.post_gis_token(),
+      giToken,
+      {
+        responseType: 'json',
+      }
+    );
+  }
 }
