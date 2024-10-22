@@ -82,7 +82,8 @@ export class ApiUrl {
   post_upload_muncity_logo = () => `/Image/UploadMunLogo`;
   get_image_org = (munCityId: any) => `/Image/GetOrg/${munCityId}`;
   post_upload_image_org = () => `/Image/UploadOrg`;
-
+  // GIS Token
+  post_gis_token = () => `/GisToken`;
   // MUN/CITY LIST
   get_all_muncity = () => `/MunLoc/List`;
   post_update_muncity = () => `/MunLoc/Update`;

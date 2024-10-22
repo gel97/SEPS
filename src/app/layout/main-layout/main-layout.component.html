@@ -14,8 +14,12 @@
       routerLink=""
     >
       <div class="sidebar-brand-icon">
-        <img src="assets/img/sepsfinal.png" style="height: 50px" alt="" />
+        <!-- <img src="assets/img/sepsfinal.png" style="height: 50px;" alt=""> -->
+        <img [src]="croppedImagee" style="height: 50px" />
       </div>
+      <!-- <div class="sidebar-brand-icon">
+        <img src="assets/img/sepsfinal.png" style="height: 50px" alt="" />
+      </div> -->
       <div class="sidebar-brand-text mx-2">
         <span style="color: rgb(54, 127, 223); font-size: 25px"> SEPS </span>
       </div>
@@ -48,10 +52,6 @@
         class="sidebar-brand d-flex align-items-center justify-content-center"
         routerLink=""
       >
-        <div class="sidebar-brand-icon">
-          <!-- <img src="assets/img/sepsfinal.png" style="height: 50px;" alt=""> -->
-          <img [src]="croppedImagee" style="height: 50px" />
-        </div>
         <div class="sidebar-brand-text mx-2">
           <span
             *ngIf="munCityName"
@@ -192,6 +192,12 @@
                 routerLinkActive="active"
                 routerLink="socio-economic/Agriculture/provincial-crops-total-production"
                 >Provincial Crops Total Production</a
+              >
+              <a
+                class="collapse-item"
+                routerLinkActive="active"
+                routerLink="Governance/city-location"
+                >Municipal/City Locations</a
               >
             </app-ddn>
           </div>
@@ -1338,7 +1344,12 @@
 
             </form> -->
 
-        <!-- Topbar Navbar -->
+        <!-- Topbar Navbar (click)="" -->
+        <!-- <app-ddn>
+          <button class="btn btn-primary" routerLink="/dashboard/ddn">
+            <i class="fa fa-home"></i> Home
+          </button>
+        </app-ddn> -->
         <ul class="navbar-nav ml-auto">
           <!-- Nav Item - Search Dropdown (Visible Only XS) -->
           <li class="nav-item dropdown no-arrow d-sm-none">
@@ -1611,3 +1622,5 @@
     </div>
   </div>
 </div>
+
+<!--DDN-->

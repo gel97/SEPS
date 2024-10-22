@@ -136,6 +136,8 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('munCityId', JSON.stringify(null));
 
         localStorage.setItem('token', this.userData.token);
+        localStorage.setItem('hash', this.userData.hash);
+        console.log(this.userData.hash);
         localStorage.setItem('userData', JSON.stringify(this.userData));
 
         this.user.email = profile.getEmail();
