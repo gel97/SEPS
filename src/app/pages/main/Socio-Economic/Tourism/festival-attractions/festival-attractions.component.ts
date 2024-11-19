@@ -273,6 +273,7 @@ export class FestivalAttractionsComponent implements OnInit {
 
         console.log('dist2Group ', dist2);
 
+        // Add table headers
         tableData.push([
           {
             text: '#',
@@ -280,6 +281,7 @@ export class FestivalAttractionsComponent implements OnInit {
             color: 'white',
             bold: true,
             alignment: 'center',
+            border: [true, true, true, true], // Add borders
           },
           {
             text: 'Name of Fiesta/ Festival',
@@ -287,6 +289,7 @@ export class FestivalAttractionsComponent implements OnInit {
             color: 'white',
             bold: true,
             alignment: 'center',
+            border: [true, true, true, true], // Add borders
           },
           {
             text: 'Contact Person/ Designation',
@@ -294,6 +297,7 @@ export class FestivalAttractionsComponent implements OnInit {
             color: 'white',
             bold: true,
             alignment: 'center',
+            border: [true, true, true, true], // Add borders
           },
           {
             text: 'Contact Details',
@@ -301,6 +305,7 @@ export class FestivalAttractionsComponent implements OnInit {
             color: 'white',
             bold: true,
             alignment: 'center',
+            border: [true, true, true, true], // Add borders
           },
           {
             text: 'Barangay',
@@ -308,6 +313,7 @@ export class FestivalAttractionsComponent implements OnInit {
             color: 'white',
             bold: true,
             alignment: 'center',
+            border: [true, true, true, true], // Add borders
           },
           {
             text: 'Brief Description',
@@ -315,15 +321,18 @@ export class FestivalAttractionsComponent implements OnInit {
             color: 'white',
             bold: true,
             alignment: 'center',
+            border: [true, true, true, true], // Add borders
           },
         ]);
 
+        // 1st Congressional District
         tableData.push([
           {
             text: `1st Congressional District `,
             colSpan: 6,
             alignment: 'left',
             fillColor: '#526D82',
+            border: [true, true, true, true], // Add borders
           },
         ]);
 
@@ -337,6 +346,7 @@ export class FestivalAttractionsComponent implements OnInit {
               colSpan: 6,
               alignment: 'left',
               fillColor: '#9DB2BF',
+              border: [true, true, true, true], // Add borders
             },
           ]);
 
@@ -345,37 +355,45 @@ export class FestivalAttractionsComponent implements OnInit {
               {
                 text: index + 1,
                 fillColor: '#FFFFFF',
+                border: [true, true, true, true], // Add borders
               },
               {
                 text: item.name,
                 fillColor: '#FFFFFF',
+                border: [true, true, true, true], // Add borders
               },
               {
                 text: item.contactPerson,
                 fillColor: '#FFFFFF',
+                border: [true, true, true, true], // Add borders
               },
               {
                 text: item.contactNo,
                 fillColor: '#FFFFFF',
+                border: [true, true, true, true], // Add borders
               },
               {
                 text: item.brgyName,
                 fillColor: '#FFFFFF',
+                border: [true, true, true, true], // Add borders
               },
               {
                 text: item.description,
                 fillColor: '#FFFFFF',
+                border: [true, true, true, true], // Add borders
               },
             ]);
           });
         }
 
+        // 2nd Congressional District
         tableData.push([
           {
             text: `2nd Congressional District `,
             colSpan: 6,
             alignment: 'left',
             fillColor: '#526D82',
+            border: [true, true, true, true], // Add borders
           },
         ]);
 
@@ -389,6 +407,7 @@ export class FestivalAttractionsComponent implements OnInit {
               colSpan: 6,
               alignment: 'left',
               fillColor: '#9DB2BF',
+              border: [true, true, true, true], // Add borders
             },
           ]);
 
@@ -397,26 +416,32 @@ export class FestivalAttractionsComponent implements OnInit {
               {
                 text: index + 1,
                 fillColor: '#FFFFFF',
+                border: [true, true, true, true], // Add borders
               },
               {
                 text: item.name,
                 fillColor: '#FFFFFF',
+                border: [true, true, true, true], // Add borders
               },
               {
                 text: item.contactPerson,
                 fillColor: '#FFFFFF',
+                border: [true, true, true, true], // Add borders
               },
               {
                 text: item.contactNo,
                 fillColor: '#FFFFFF',
+                border: [true, true, true, true], // Add borders
               },
               {
                 text: item.brgyName,
                 fillColor: '#FFFFFF',
+                border: [true, true, true, true], // Add borders
               },
               {
                 text: item.description,
                 fillColor: '#FFFFFF',
+                border: [true, true, true, true], // Add borders
               },
             ]);
           });
@@ -428,7 +453,12 @@ export class FestivalAttractionsComponent implements OnInit {
             widths: [25, '*', '*', '*', '*', '*'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: () => 1,
+            vLineWidth: () => 1,
+            hLineColor: () => '#000',
+            vLineColor: () => '#000',
+          },
         };
 
         data.push(table);

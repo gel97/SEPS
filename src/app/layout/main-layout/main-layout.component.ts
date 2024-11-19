@@ -131,6 +131,15 @@ export class MainLayoutComponent implements OnInit {
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
   }
+  backtohome() {
+    var o_munCityId = localStorage.getItem('o_munCityId');
+    var o_munCityName = localStorage.getItem('o_munCityName');
+
+    //localStorage.setItem("setYear", this.set_year);
+    localStorage.setItem('munCityId', o_munCityId!);
+    localStorage.setItem('munCityName', o_munCityName!);
+    window.location.reload();
+  }
 
   dataURItoBlob(dataURI: any) {
     const byteString = atob(dataURI.split(',')[1]);

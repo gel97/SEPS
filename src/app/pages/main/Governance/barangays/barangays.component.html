@@ -181,10 +181,9 @@
                       <div class="card-header" [id]="'faqhead' + i">
                         <a
                           href="#"
-                          class="btn btn-header-link collapsed"
-                          data-toggle="collapse"
-                          [attr.data-target]="'#faq' + i"
-                          [attr.aria-expanded]="false"
+                          class="btn btn-header-link"
+                          (click)="toggleAccordion(i); $event.preventDefault()"
+                          [attr.aria-expanded]="isAccordionOpen[i]"
                           [attr.aria-controls]="'faq' + i"
                         >
                           <b>{{ barangay.brgyName }}</b>
@@ -194,6 +193,7 @@
                       <div
                         [id]="'faq' + i"
                         class="collapse"
+                        [class.show]="isAccordionOpen[i]"
                         [attr.aria-labelledby]="'faqhead' + i"
                         data-parent="#faq"
                       >
@@ -207,6 +207,18 @@
                           >
                             <i class="fa fa-plus"></i>
                           </button>
+                          <div class="x-space-between">
+                            <div class="x-space-between">
+                              <!-- <app-export-excel
+                                apiControllerName="PurokChair"
+                              ></app-export-excel> -->
+                            </div>
+                            <!-- <div class="x-space-between">
+                            <app-admin>
+                              <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
+                            </app-admin>
+                          </div> -->
+                          </div>
                           <br />
                           <table class="table table-hover table-striped">
                             <thead class="thead-dark">
@@ -227,8 +239,8 @@
                               <!-- Loop through purokChairs for the current barangay -->
                               <tr *ngFor="let purok of barangay.purokChairman">
                                 <!-- <td>
-                                  <b>{{ barangay.brgyName }}</b>
-                                </td> -->
+                                <b>{{ barangay.brgyName }}</b>
+                              </td> -->
                                 <td class="text-center">
                                   {{ purok.nameOfPurok }}
                                 </td>
@@ -592,57 +604,51 @@
       </div>
     </div>
     <!--Prk Editassssssssssssssssssss-->
-
-    <!-- gmap modal area -->
-    <div
-      class="modal fade"
-      id="gmapModal"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">
-              SEPS GEOLOCATION TAGGING
-            </h5>
+  </div>
+  <!-- gmap modal area -->
+  <div
+    class="modal fade"
+    id="gmapModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">
+            SEPS GEOLOCATION TAGGING
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <app-gmap></app-gmap>
+        </div>
+        <div class="modal-footer">
+          <app-admin>
             <button
               type="button"
-              class="close"
+              class="btn btn-secondary"
               data-dismiss="modal"
-              aria-label="Close"
             >
-              <span aria-hidden="true">&times;</span>
+              Close
             </button>
-          </div>
-          <div class="modal-body">
-            <app-gmap></app-gmap>
-          </div>
-          <div class="modal-footer">
-            <app-admin>
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-dismiss="modal"
-              >
-                Close
-              </button>
-              <button
-                type="button"
-                class="btn btn-primary"
-                (click)="EditData()"
-              >
-                Save changes
-              </button>
-            </app-admin>
-          </div>
+            <button type="button" class="btn btn-primary" (click)="EditData()">
+              Save changes
+            </button>
+          </app-admin>
         </div>
       </div>
     </div>
   </div>
-
   <style>
     #main {
       margin: 50px 0;

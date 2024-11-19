@@ -707,7 +707,14 @@ export class SummaryReportComponent implements OnInit {
             widths: [25, '*', '*', '*', '*', '*', '*'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: (i: number, node: any) => {
+              return i === 0 || i === node.table.body.length ? 2 : 1; // thicker lines for first and last row
+            },
+            vLineWidth: () => 1,
+            hLineColor: () => '#bfbfbf',
+            vLineColor: () => '#bfbfbf',
+          },
         };
 
         data.push(table);
@@ -965,10 +972,17 @@ export class SummaryReportComponent implements OnInit {
         const table = {
           margin: [0, 20, 0, 0],
           table: {
-            widths: [25, '*', '*', '*', '*', '*', '*'],
+            widths: [25, 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: (i: number, node: any) => {
+              return i === 0 || i === node.table.body.length ? 1 : 1; // thicker lines for first and last row
+            },
+            vLineWidth: () => 1,
+            hLineColor: () => '#000000',
+            vLineColor: () => '#000000',
+          },
         };
 
         data.push(table);
@@ -1229,7 +1243,14 @@ export class SummaryReportComponent implements OnInit {
             widths: [25, '*', '*', '*', '*', '*', '*'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: (i: number, node: any) => {
+              return i === 0 || i === node.table.body.length ? 2 : 1; // thicker lines for first and last row
+            },
+            vLineWidth: () => 1,
+            hLineColor: () => '#bfbfbf',
+            vLineColor: () => '#bfbfbf',
+          },
         };
 
         data.push(table);
@@ -1487,10 +1508,17 @@ export class SummaryReportComponent implements OnInit {
         const table = {
           margin: [0, 20, 0, 0],
           table: {
-            widths: [25, '*', '*', '*', '*', '*', '*'],
+            widths: [25, 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: () => 1,
+            vLineWidth: () => 1,
+            hLineColor: () => '#CCCCCC',
+            vLineColor: () => '#CCCCCC',
+            fillColor: (rowIndex: number) =>
+              rowIndex % 2 === 0 ? '#F5F5F5' : null,
+          },
         };
 
         data.push(table);
@@ -1751,7 +1779,14 @@ export class SummaryReportComponent implements OnInit {
             widths: [25, '*', '*', '*', '*', '*', '*'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: () => 1,
+            vLineWidth: () => 1,
+            hLineColor: () => '#CCCCCC',
+            vLineColor: () => '#CCCCCC',
+            fillColor: (rowIndex: number) =>
+              rowIndex % 2 === 0 ? '#F5F5F5' : null,
+          },
         };
 
         data.push(table);
@@ -2012,7 +2047,14 @@ export class SummaryReportComponent implements OnInit {
             widths: [25, '*', '*', '*', '*', '*', '*'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: (i: number, node: any) => {
+              return i === 0 || i === node.table.body.length ? 2 : 1; // thicker lines for first and last row
+            },
+            vLineWidth: () => 1,
+            hLineColor: () => '#bfbfbf',
+            vLineColor: () => '#bfbfbf',
+          },
         };
 
         data.push(table);
@@ -2287,7 +2329,14 @@ export class SummaryReportComponent implements OnInit {
             widths: [25, '*', '*', '*', '*', '*', '*', '*'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: (i: number, node: any) => {
+              return i === 0 || i === node.table.body.length ? 2 : 1; // thicker lines for first and last row
+            },
+            vLineWidth: () => 1,
+            hLineColor: () => '#bfbfbf',
+            vLineColor: () => '#bfbfbf',
+          },
         };
 
         data.push(table);
@@ -2561,7 +2610,14 @@ export class SummaryReportComponent implements OnInit {
             widths: [25, '*', '*', '*', '*', '*', '*', '*'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: () => 1,
+            vLineWidth: () => 1,
+            hLineColor: () => '#CCCCCC',
+            vLineColor: () => '#CCCCCC',
+            fillColor: (rowIndex: number) =>
+              rowIndex % 2 === 0 ? '#F5F5F5' : null,
+          },
         };
 
         data.push(table);
@@ -2839,7 +2895,14 @@ export class SummaryReportComponent implements OnInit {
             widths: [25, '*', '*', '*', '*', '*', '*', '*'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: () => 1,
+            vLineWidth: () => 1,
+            hLineColor: () => '#CCCCCC',
+            vLineColor: () => '#CCCCCC',
+            fillColor: (rowIndex: number) =>
+              rowIndex % 2 === 0 ? '#F5F5F5' : null,
+          },
         };
 
         data.push(table);
@@ -3175,7 +3238,14 @@ export class SummaryReportComponent implements OnInit {
             widths: [25, '*', '*', '*', '*', '*', '*', '*', '*'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: () => 1,
+            vLineWidth: () => 1,
+            hLineColor: () => '#CCCCCC',
+            vLineColor: () => '#CCCCCC',
+            fillColor: (rowIndex: number) =>
+              rowIndex % 2 === 0 ? '#F5F5F5' : null,
+          },
         };
 
         data.push(table);
@@ -4062,7 +4132,14 @@ export class SummaryReportComponent implements OnInit {
             widths: [25, '*', '*', '*', '*', '*', '*', '*', '*'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: () => 1,
+            vLineWidth: () => 1,
+            hLineColor: () => '#CCCCCC',
+            vLineColor: () => '#CCCCCC',
+            fillColor: (rowIndex: number) =>
+              rowIndex % 2 === 0 ? '#F5F5F5' : null,
+          },
         };
 
         data.push(table);
@@ -4327,7 +4404,14 @@ export class SummaryReportComponent implements OnInit {
             widths: [25, '*', '*', '*', '*', '*'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: () => 1,
+            vLineWidth: () => 1,
+            hLineColor: () => '#CCCCCC',
+            vLineColor: () => '#CCCCCC',
+            fillColor: (rowIndex: number) =>
+              rowIndex % 2 === 0 ? '#F5F5F5' : null,
+          },
         };
 
         data.push(table);
@@ -4556,7 +4640,14 @@ export class SummaryReportComponent implements OnInit {
             widths: [25, '*', '*', '*', '*'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: () => 1,
+            vLineWidth: () => 1,
+            hLineColor: () => '#CCCCCC',
+            vLineColor: () => '#CCCCCC',
+            fillColor: (rowIndex: number) =>
+              rowIndex % 2 === 0 ? '#F5F5F5' : null,
+          },
         };
 
         data.push(table);
@@ -4840,7 +4931,32 @@ export class SummaryReportComponent implements OnInit {
             widths: [25, '*', '*', '*', '*', '*', '*'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: function (i: any, node: any) {
+              return 1;
+            },
+            vLineWidth: function (i: any, node: any) {
+              return 1;
+            },
+            hLineColor: function (i: any, node: any) {
+              return '#CCCCCC';
+            },
+            vLineColor: function (i: any, node: any) {
+              return '#CCCCCC';
+            },
+            paddingLeft: function (i: any, node: any) {
+              return 5;
+            },
+            paddingRight: function (i: any, node: any) {
+              return 5;
+            },
+            paddingTop: function (i: any, node: any) {
+              return 3;
+            },
+            paddingBottom: function (i: any, node: any) {
+              return 3;
+            },
+          },
         };
 
         data.push(table);
@@ -4859,6 +4975,7 @@ export class SummaryReportComponent implements OnInit {
       },
     });
   }
+
   TelgraphGeneratePDF() {
     let data: any = [];
     let reports: any = [];
@@ -5122,7 +5239,14 @@ export class SummaryReportComponent implements OnInit {
             widths: [25, '*', '*', '*', '*', '*', '*', '*'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: () => 1,
+            vLineWidth: () => 1,
+            hLineColor: () => '#CCCCCC',
+            vLineColor: () => '#CCCCCC',
+            fillColor: (rowIndex: number) =>
+              rowIndex % 2 === 0 ? '#F5F5F5' : null,
+          },
         };
 
         data.push(table);
@@ -5422,10 +5546,27 @@ export class SummaryReportComponent implements OnInit {
         const table = {
           margin: [0, 20, 0, 0],
           table: {
-            widths: [25, '*', '*', '*', '*', '*', '*', '*', '*'],
+            widths: [
+              25,
+              'auto',
+              'auto',
+              'auto',
+              'auto',
+              'auto',
+              'auto',
+              'auto',
+              'auto',
+            ],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: () => 1,
+            vLineWidth: () => 1,
+            hLineColor: () => '#CCCCCC',
+            vLineColor: () => '#CCCCCC',
+            fillColor: (rowIndex: number) =>
+              rowIndex % 2 === 0 ? '#F5F5F5' : null,
+          },
         };
 
         data.push(table);
@@ -5767,7 +5908,14 @@ export class SummaryReportComponent implements OnInit {
             widths: [25, '*', '*', '*', '*', '*', '*', '*', '*', '*', '*'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: () => 1,
+            vLineWidth: () => 1,
+            hLineColor: () => '#CCCCCC',
+            vLineColor: () => '#CCCCCC',
+            fillColor: (rowIndex: number) =>
+              rowIndex % 2 === 0 ? '#F5F5F5' : null,
+          },
         };
 
         data.push(table);
@@ -6277,7 +6425,14 @@ export class SummaryReportComponent implements OnInit {
             widths: [25, '*', '*', '*', '*'],
             body: tableData,
           },
-          layout: 'lightHorizontalLines',
+          layout: {
+            hLineWidth: () => 1,
+            vLineWidth: () => 1,
+            hLineColor: () => '#CCCCCC',
+            vLineColor: () => '#CCCCCC',
+            fillColor: (rowIndex: number) =>
+              rowIndex % 2 === 0 ? '#F5F5F5' : null,
+          },
         };
 
         data.push(table);
@@ -18591,8 +18746,9 @@ export class SummaryReportComponent implements OnInit {
           return groups;
         }, {});
 
-        console.log('dist2Group ', dist2Group);
+        console.log('dist2Group ', dist2);
 
+        // Add table headers
         tableData.push([
           {
             text: '#',
@@ -18600,6 +18756,7 @@ export class SummaryReportComponent implements OnInit {
             color: 'white',
             bold: true,
             alignment: 'center',
+            border: [true, true, true, true], // Add borders
           },
           {
             text: 'Name of Fiesta/ Festival',
@@ -18607,6 +18764,7 @@ export class SummaryReportComponent implements OnInit {
             color: 'white',
             bold: true,
             alignment: 'center',
+            border: [true, true, true, true], // Add borders
           },
           {
             text: 'Contact Person/ Designation',
@@ -18614,6 +18772,7 @@ export class SummaryReportComponent implements OnInit {
             color: 'white',
             bold: true,
             alignment: 'center',
+            border: [true, true, true, true], // Add borders
           },
           {
             text: 'Contact Details',
@@ -18621,6 +18780,7 @@ export class SummaryReportComponent implements OnInit {
             color: 'white',
             bold: true,
             alignment: 'center',
+            border: [true, true, true, true], // Add borders
           },
           {
             text: 'Barangay',
@@ -18628,6 +18788,7 @@ export class SummaryReportComponent implements OnInit {
             color: 'white',
             bold: true,
             alignment: 'center',
+            border: [true, true, true, true], // Add borders
           },
           {
             text: 'Brief Description',
@@ -18635,21 +18796,19 @@ export class SummaryReportComponent implements OnInit {
             color: 'white',
             bold: true,
             alignment: 'center',
+            border: [true, true, true, true], // Add borders
           },
         ]);
 
+        // 1st Congressional District
         tableData.push([
           {
             text: `1st Congressional District `,
             colSpan: 6,
             alignment: 'left',
             fillColor: '#526D82',
+            border: [true, true, true, true], // Add borders
           },
-          {},
-          {},
-          {},
-          {},
-          {},
         ]);
 
         for (const groupKey1 in dist1Group) {
@@ -18662,12 +18821,8 @@ export class SummaryReportComponent implements OnInit {
               colSpan: 6,
               alignment: 'left',
               fillColor: '#9DB2BF',
+              border: [true, true, true, true], // Add borders
             },
-            {},
-            {},
-            {},
-            {},
-            {},
           ]);
 
           group1.forEach((item: any, index: any) => {
@@ -18675,43 +18830,46 @@ export class SummaryReportComponent implements OnInit {
               {
                 text: index + 1,
                 fillColor: '#FFFFFF',
+                border: [true, true, true, true], // Add borders
               },
               {
                 text: item.name,
                 fillColor: '#FFFFFF',
+                border: [true, true, true, true], // Add borders
               },
               {
                 text: item.contactPerson,
                 fillColor: '#FFFFFF',
+                border: [true, true, true, true], // Add borders
               },
               {
                 text: item.contactNo,
                 fillColor: '#FFFFFF',
+                border: [true, true, true, true], // Add borders
               },
               {
                 text: item.brgyName,
                 fillColor: '#FFFFFF',
+                border: [true, true, true, true], // Add borders
               },
               {
                 text: item.description,
                 fillColor: '#FFFFFF',
+                border: [true, true, true, true], // Add borders
               },
             ]);
           });
         }
 
+        // 2nd Congressional District
         tableData.push([
           {
             text: `2nd Congressional District `,
             colSpan: 6,
             alignment: 'left',
             fillColor: '#526D82',
+            border: [true, true, true, true], // Add borders
           },
-          {},
-          {},
-          {},
-          {},
-          {},
         ]);
 
         for (const groupKey2 in dist2Group) {
@@ -18724,12 +18882,8 @@ export class SummaryReportComponent implements OnInit {
               colSpan: 6,
               alignment: 'left',
               fillColor: '#9DB2BF',
+              border: [true, true, true, true], // Add borders
             },
-            {},
-            {},
-            {},
-            {},
-            {},
           ]);
 
           group2.forEach((item: any, index: any) => {
@@ -18737,26 +18891,32 @@ export class SummaryReportComponent implements OnInit {
               {
                 text: index + 1,
                 fillColor: '#FFFFFF',
+                border: [true, true, true, true], // Add borders
               },
               {
                 text: item.name,
                 fillColor: '#FFFFFF',
+                border: [true, true, true, true], // Add borders
               },
               {
                 text: item.contactPerson,
                 fillColor: '#FFFFFF',
+                border: [true, true, true, true], // Add borders
               },
               {
                 text: item.contactNo,
                 fillColor: '#FFFFFF',
+                border: [true, true, true, true], // Add borders
               },
               {
                 text: item.brgyName,
                 fillColor: '#FFFFFF',
+                border: [true, true, true, true], // Add borders
               },
               {
                 text: item.description,
                 fillColor: '#FFFFFF',
+                border: [true, true, true, true], // Add borders
               },
             ]);
           });
@@ -18782,13 +18942,9 @@ export class SummaryReportComponent implements OnInit {
         console.log(error);
       },
       complete: () => {
-        if (reports.length > 0) {
-          let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
-          console.log(data);
-        } else {
-          this.Error();
-        }
+        let isPortrait = false;
+        this.pdfService.GeneratePdf(data, isPortrait, '');
+        console.log(data);
       },
     });
   }
@@ -24103,14 +24259,6 @@ export class SummaryReportComponent implements OnInit {
           generateTable(cityName, expenditureData, 'Expenditure', false);
         };
 
-        // Function to format amount with commas
-        const formatAmount = (amount: number) => {
-          return amount.toLocaleString('en-US', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          });
-        };
-
         // Function to generate a table for a municipality
         const generateTable = (
           cityName: string,
@@ -24166,7 +24314,7 @@ export class SummaryReportComponent implements OnInit {
               fontSize: 10,
             },
             {
-              text: formatAmount(item.amount),
+              text: item.amount,
               fillColor: '#FFFFFF',
               border: [true, true, true, true],
               alignment: 'center',
@@ -24177,7 +24325,7 @@ export class SummaryReportComponent implements OnInit {
           // Add table to data
           if (tableData.length > 0) {
             // Add page break only if required
-            if (data.length > 1 && addPageBreak) {
+            if (addPageBreak && data.length > 0) {
               data.push({ text: '', pageBreak: 'before' });
             }
 
