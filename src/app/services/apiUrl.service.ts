@@ -227,6 +227,14 @@ export class ApiUrl {
   get_manuf_estab_types = () => `/ManEstabType/List`;
 
   //Excel
+  get_export_with_menuId_BrgyId = (
+    setYear: any,
+    MunCityId: any,
+    apiControllerName: string,
+    menuId: string,
+    brgyId: string
+  ) =>
+    `/${apiControllerName}/export_excel/${menuId}/${setYear}/${MunCityId}/${brgyId}`;
   post_ExImport = (apiControllerName: string) =>
     `/${apiControllerName}/import_excel`;
   get_ExExport = (setYear: any, MunCityId: any, apiControllerName: string) =>
@@ -238,8 +246,10 @@ export class ApiUrl {
     setYear: any,
     MunCityId: any,
     apiControllerName: string,
-    menuId: string
-  ) => `/${apiControllerName}/export_excel/${menuId}/${setYear}/${MunCityId}`;
+    menuId: string,
+    brgyId: string
+  ) =>
+    `/${apiControllerName}/export_excel/${menuId}/${setYear}/${MunCityId}/${brgyId}`;
   get_import_with_menuId = (
     setYear: any,
     MunCityId: any,

@@ -21,8 +21,8 @@ export class BarangaysComponent implements OnInit {
   @ViewChild(PdfComponent)
   private pdfComponent!: PdfComponent;
 
-  @ViewChild('closebutton')
-  closebutton!: { nativeElement: { click: () => void } };
+  @ViewChild('closebutton') closebutton!: ElementRef;
+  apiControllerName!: string;
 
   constructor(
     private pdfService: PdfService,
@@ -52,9 +52,14 @@ export class BarangaysComponent implements OnInit {
   not_visible: boolean = true;
   data: any = {};
   searchText = '';
+  isAccordionOpen: boolean[] = [];
 
   ngOnInit(): void {
     this.Init();
+    this.isAccordionOpen = this.listPrkBrgy.map(() => false);
+  }
+  toggleAccordion(index: number) {
+    this.isAccordionOpen[index] = !this.isAccordionOpen[index];
   }
   Init() {
     this.GetBarangay();
@@ -62,6 +67,13 @@ export class BarangaysComponent implements OnInit {
     // this.ListPrkBrgy();
     this.GetListBarangay();
   }
+  // ExportExcel() {
+  //   this.reportService.GetExcelExport(
+  //     this.auth.setYear,
+  //     this.auth.munCityId,
+  //     'PurokChair'
+  //   );
+  // }
 
   GetLisbarangay() {
     this.service.GetBarangay().subscribe((data) => {
@@ -76,6 +88,15 @@ export class BarangaysComponent implements OnInit {
       this.listPrkBrgy = data;
       console.log(this.listPrkBrgy);
     });
+  }
+  ExportExcelBrgy() {
+    this.reportService.GetExcelExportWithMenuIdBrgyId(
+      this.auth.setYear,
+      this.auth.munCityId,
+      this.apiControllerName,
+      this.auth.brgyId,
+      'PurokChair'
+    );
   }
 
   handleOnTabChange(isBarangay: boolean) {
@@ -422,7 +443,9 @@ export class BarangaysComponent implements OnInit {
         next: (request) => {
           console.log('Purok Chair Data:', request);
           console.log('Update listPrkBrgy:', this.listPrkBrgy);
+          this.listPrkBrgy.push({ ...this.data });
           this.GetBarangayPrk();
+          this.isAccordionOpen.push(false);
         },
         complete: () => {
           this.data = {}; // Reset form data
@@ -500,6 +523,22 @@ export class BarangaysComponent implements OnInit {
             this.listData[index] = {};
             this.listData[index].brgyId = data.brgyId;
             this.listData[index].brgyName = data.brgyName;
+            const wasOpen = this.isAccordionOpen[index];
+            if (index >= 0 && index < this.listData.length) {
+              this.listData.splice(index, 1);
+              this.isAccordionOpen.splice(index, 1);
+            }
+            if (wasOpen && this.isAccordionOpen.length > 0) {
+              const newIndextoOpen =
+                index < this.isAccordionOpen.length ? index : index - 1;
+              this.isAccordionOpen[newIndextoOpen] = true;
+            }
+            // this.listData.splice(index, 1);
+            // this.isAccordionOpen.splice(index, 1);
+            // if (this.isAccordionOpen.length > 0) {
+            //   this.isAccordionOpen[index > 0 ? index - 1 : 0] = true;
+            // }
+
             this.Init();
             Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
           },

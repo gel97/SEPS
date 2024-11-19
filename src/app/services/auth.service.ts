@@ -28,6 +28,8 @@ export class AuthService {
   hash: any = localStorage.getItem('hash');
   munCityId: any = localStorage.getItem('munCityId');
   munCityName: any = localStorage.getItem('munCityName');
+  brgyId: any = localStorage.getItem('brgyId');
+  brgyName: any = localStorage.getItem('brgyName');
   o_munCityId: any = localStorage.getItem('o_munCityId');
   o_munCityName: any = localStorage.getItem('o_munCityName');
   activeSetYear: any = localStorage.getItem('activeSetYear');
