@@ -1,0 +1,342 @@
+<div class="">
+  <ng-template #isEmpty>
+    <app-import [data]="message"></app-import>
+    <app-export-excel apiControllerName="RegSkVoters"></app-export-excel>
+  </ng-template>
+
+  <div class="card o-hidden border-2 shadow-sm my-5">
+    <div class="card-body p-0">
+      <!-- Nested Row within Card Body -->
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="p-5">
+            <div class="text-center">
+              <h1 class="h4 text-gray-900 mb-4">Age Group</h1>
+              <label
+                ><strong
+                  >Governance - {{ modifyCityMun(munCityName) }}
+                </strong></label
+              ><br />
+            </div>
+            <div class="x-space-between">
+              <div class="x-space-between">
+                <app-export-excel
+                  apiControllerName="RegSkVoters"
+                ></app-export-excel>
+              </div>
+              <div class="x-space-between">
+                <app-admin>
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    data-toggle="modal"
+                    data-target="#ModalAdd "
+                  >
+                    <i class="fa fa-plus"></i>
+                    Age Group</button
+                  >&nbsp;
+                </app-admin>
+                <app-admin>
+                  <app-pdf></app-pdf>
+                </app-admin>
+              </div>
+            </div>
+            <div class="row">
+              <div class="">
+                <p>Number of Age Group</p>
+                <div class="input-group col-sm-3">
+                  <input
+                    type="text"
+                    class="form-control bg-light border-0 small"
+                    placeholder="Search for..."
+                    aria-label="Search"
+                    aria-describedby="basic-addon2"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <div class="table-responsive">
+                <br />
+                <table class="table table-light table-striped">
+                  <thead class="table-dark">
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Barangay</th>
+                      <th scope="col" class="text-center">Age Group</th>
+                      <th scope="col" class="text-center">Both Sexes</th>
+                      <th scope="col" class="text-center">Male</th>
+                      <th scope="col" class="text-center">Female</th>
+
+                      <th widh="8%"></th>
+                    </tr>
+                    <!-- Totals Row -->
+                  </thead>
+
+                  <tbody>
+                    <tr *ngFor="let a of agegrouplist; let i = index">
+                      <td>{{ i + 1 }}</td>
+                      <td class="text-center">{{ a.brgyName }}</td>
+                      <td class="text-center">{{ a.catNumber }}</td>
+                      <td class="text-center">{{ a.bothSexes }}</td>
+                      <td class="text-center">{{ a.male }}</td>
+                      <td class="text-center">{{ a.female }}</td>
+                      <td>
+                        <div class="d-inline-flex">
+                          <app-admin>
+                            <button
+                              type="button"
+                              title="Edit"
+                              class="btn btn-info btn-circle"
+                              data-toggle="modal"
+                              data-target="#ModalEdit"
+                              (click)="editmodal = a"
+                            >
+                              <i class="fa fa-pen"></i>
+                            </button> </app-admin
+                          >&nbsp;
+                          <app-admin>
+                            <button
+                              type="button"
+                              title="Delete"
+                              class="btn btn-warning btn-circle"
+                              (click)="delete(a.transId, i)"
+                            >
+                              <i class="fa fa-trash"></i></button
+                            >&nbsp;
+                          </app-admin>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p>*** Data are based on Commission On Elections ***</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add (Modal) -->
+  <div
+    class="modal fade bd-example-modal-lg"
+    id="ModalAdd"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Age group</h5>
+          <button
+            type="button"
+            #closebutton
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-12">
+              <br />
+              <label for="type">Barangay :</label>
+              <select
+                class="form-select"
+                aria-label="Default select example"
+                [(ngModel)]="data.brgyId"
+                [ngClass]="toValidate.brgyId ? 'is-invalid' : ''"
+                (ngModelChange)="toValidate.brgyId = false"
+              >
+                <option *ngFor="let item of barangays" [value]="item.brgyId">
+                  {{ item.brgyName }}
+                </option>
+              </select>
+            </div>
+
+            <div class="col-lg-12">
+              <br />
+              <label for="type">Age Group :</label>
+              <select
+                class="form-select"
+                aria-label="Default select example"
+                [(ngModel)]="data.category"
+                [ngClass]="toValidate.category ? 'is-invalid' : ''"
+                (ngModelChange)="toValidate.category = false"
+              >
+                <option
+                  *ngFor="let item of listofAgeGroup"
+                  [value]="item.recNo"
+                >
+                  {{ item.catNumber }}
+                </option>
+              </select>
+            </div>
+            <!-- <div class ="col-lg-12"><br>
+              <label for="exampleFormControlTextarea1" >No. of Puroks:</label>
+              <input type="text" class="form-control" id=""  name =""  [(ngModel)]="voter.purokNo"  placeholder="">
+            </div> -->
+            <div class="col-lg-12">
+              <br />
+              <label for="exampleFormControlTextarea1">Male:</label>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="data.male"
+                name=""
+                id=""
+                placeholder=""
+              />
+            </div>
+            <div class="col-lg-12">
+              <br />
+              <label for="exampleFormControlTextarea1">Female:</label>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="data.female"
+                name=""
+                id=""
+                placeholder=""
+              />
+            </div>
+            <div class="col-lg-12">
+              <div class="modal-footer">
+                <div class="left-absolute">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      value=""
+                      (ngModelChange)="onChange(isCheck)"
+                      [(ngModel)]="isCheck"
+                      id="flexCheckDefault"
+                    />
+                    <label class="form-check-label" for="flexCheckDefault">
+                      Several data
+                    </label>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  *ngIf="visible"
+                  (click)="AddAgeGroup()"
+                  id="closeModal"
+                  class="btn btn-primary"
+                >
+                  <i class="fa fa-check"></i>Save</button
+                >&nbsp;
+                <button type="button" class="btn btn-secondary">
+                  <i class="fa fa-times"></i>Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- edit (Modal) -->
+  <div
+    class="modal fade bd-example-modal-lg"
+    id="ModalEdit"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Age Group</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-4">
+              <label for="category">Barangay :</label>
+              <select
+                class="form-select"
+                aria-label="Default select example"
+                [(ngModel)]="editmodal.brgyId"
+              >
+                <option
+                  *ngFor="let item of barangays"
+                  value="{{ item.brgyId }}"
+                >
+                  {{ item.brgyName }}
+                </option>
+              </select>
+            </div>
+            <div class="col-lg-12">
+              <br />
+              <label for="type">Age Group :</label>
+              <select
+                class="form-select"
+                aria-label="Default select example"
+                [(ngModel)]="editmodal.category"
+              >
+                <option
+                  *ngFor="let item of listofAgeGroup"
+                  [value]="item.recNo"
+                >
+                  {{ item.catNumber }}
+                </option>
+              </select>
+            </div>
+            <div class="col-lg-12">
+              <br />
+              <label for="exampleFormControlTextarea1">Male:</label>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="editmodal.male"
+                name=""
+                id=""
+                placeholder=""
+              />
+            </div>
+            <div class="col-lg-12">
+              <br />
+              <label for="exampleFormControlTextarea1">Female:</label>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="editmodal.female"
+                name=""
+                id=""
+                placeholder=""
+              />
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary">
+                <i class="fa fa-check" (click)="update()"></i>Save Changes</button
+              >&nbsp;
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                <i class="fa fa-times"></i>Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

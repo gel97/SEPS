@@ -463,6 +463,7 @@ export class RecreationFacilitiesComponent implements OnInit {
 
   GetTourismTypeList() {
     this.Service.GetTourismTypeList().subscribe((response) => {
+      console.log('recreationList:', response);
       this.listofRecreation = <any>response;
     });
   }
