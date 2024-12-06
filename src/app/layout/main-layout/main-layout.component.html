@@ -154,6 +154,12 @@
                 routerLink="Governance/city-location"
                 >Municipal/City Locations</a
               >
+              <a
+                class="collapse-item"
+                routerLinkActive="active"
+                routerLink="Governance/age-group"
+                >AgeGroup</a
+              >
             </app-menu>
 
             <app-ddn>
@@ -1257,6 +1263,14 @@
               routerLink="Tools/summary-reports"
               >Summary Reports</a
             >
+            <app-nga>
+              <a
+                class="collapse-item"
+                routerLinkActive="active"
+                routerLink="Tools/summary-reports"
+                >Summary Reports</a
+              >
+            </app-nga>
           </div>
         </div>
       </li>
@@ -1350,6 +1364,11 @@
             <i class="fa fa-home"></i> Home
           </button>
         </app-ddn>
+        <app-nga>
+          <button class="btn btn-primary" (click)="backtohome()">
+            <i class="fa fa-home"></i> Home
+          </button>
+        </app-nga>
         <ul class="navbar-nav ml-auto">
           <!-- Nav Item - Search Dropdown (Visible Only XS) -->
           <li class="nav-item dropdown no-arrow d-sm-none">

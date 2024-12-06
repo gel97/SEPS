@@ -18,6 +18,17 @@ export class ApiUrl {
   post_report_officials = () => `/MunCityOfficial/Reports`;
   post_import_officials = () => `/MunCityOfficial/Import`;
 
+  //Age Group
+  post_get_AgeGroup = (munCityId: any, setYear: any) =>
+    `/AgeGroup${munCityId}&setYear=${setYear}`;
+  post_get_groupage = (setYear: any) => `/AgeGroup/List?setYear=${setYear}`;
+  post_save_AgeGroup = () => `/AgeGroup`;
+  get_list_ageGroup = () => `/AgeGroupCat/List`;
+  get_list_ageGroupbyYear = (setYear: any, munCityId: any) =>
+    `/AgeGroup/${setYear}/${munCityId}`;
+  delete_agegroup = (transId: any) => `/AgeGroup/${transId}`;
+  post_update_agegroup = () => `/AgeGroup/Update`;
+
   // Barangay Officials
   post_get_barangay_officials = (munCityId: any, setYear: any) =>
     `/Barangay/GetBarangays?munCityId=${munCityId}&setYear=${setYear}`;

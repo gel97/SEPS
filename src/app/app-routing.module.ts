@@ -125,6 +125,7 @@ import { MessageListComponent } from './pages/main/Tools/message-list/message-li
 import { DdnDashboardComponent } from './pages/main/Dashboard/ddn-dashboard/ddn-dashboard.component';
 import { PrevRateComponent } from './pages/main/SocialProfile/Health/prev-rate/prev-rate.component';
 import { LunchingComponent } from './lunching/lunching.component';
+import { AgeGroupComponent } from './pages/main/Governance/age-group/age-group.component';
 const socioEconomic_TradeIndustry: string =
   'socio-economic/trade-and-industry/';
 const socioEconomic_Tourism: string = 'socio-economic/Tourism/';
@@ -574,6 +575,7 @@ const routes: Routes = [
         component: RegisteredVotersComponent,
       },
       { path: Governance + '/sk-voters', component: SkVotersComponent },
+      { path: Governance + '/age-group', component: AgeGroupComponent },
       {
         path: Governance + '/provincial-officials',
         component: ProvincialOfficialsComponent,

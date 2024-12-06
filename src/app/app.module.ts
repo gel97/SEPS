@@ -168,6 +168,8 @@ import { ResetFormComponent } from './pages/main/reset-form/reset-form.component
 import { ActivityLogsComponent } from './pages/activity-logs/activity-logs.component';
 import { FilterDatePipe } from './filter-date.pipe';
 import { LunchingComponent } from './lunching/lunching.component';
+import { NGAComponent } from './Admin/nga/nga.component';
+import { AgeGroupComponent } from './pages/main/Governance/age-group/age-group.component';
 
 @NgModule({
   declarations: [
@@ -323,6 +325,8 @@ import { LunchingComponent } from './lunching/lunching.component';
     ActivityLogsComponent,
     FilterDatePipe,
     LunchingComponent,
+    NGAComponent,
+    AgeGroupComponent,
   ],
   imports: [
     MdbCollapseModule,
