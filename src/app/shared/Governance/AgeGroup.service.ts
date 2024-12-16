@@ -34,8 +34,8 @@ export class AgeGroupService {
   }
   Updateagegroup(group: any = {}) {
     console.log(group);
-    return this.Http.post(
-      this.Base.url + this.ApiUrl.post_update_agegroup,
+    return this.Http.put(
+      this.Base.url + this.ApiUrl.post_update_agegroup(),
       group,
       {
         responseType: 'json',
