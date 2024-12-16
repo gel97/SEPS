@@ -22,7 +22,7 @@ export class AgeGroupComponent implements OnInit {
     private service: AgeGroupService,
     private auth: AuthService,
     private modifyService: ModifyCityMunService
-  ) {}
+  ) { }
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
   }
@@ -48,6 +48,12 @@ export class AgeGroupComponent implements OnInit {
   required: boolean = true;
   data: any = {};
   editmodal: any = {};
+  //paginate
+  pageSize = 10;
+  p: number = 0;
+  count: number = 0;
+  tableSize: number = 20;
+  tableSizes: any = [20, 40, 60, 80, 100];
 
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
@@ -55,6 +61,15 @@ export class AgeGroupComponent implements OnInit {
   onChange(isCheck: boolean) {
     this.isCheck = isCheck;
     console.log('isCheck:', this.isCheck);
+  }
+  onTableDataChange(page: any) {
+    //paginate
+    this.p = page;
+  }
+  onTableSizeChange(event: any) {
+    //paginate
+    this.tableSize = event.target.value;
+    this.p = 1;
   }
 
   ngOnInit(): void {
@@ -79,8 +94,8 @@ export class AgeGroupComponent implements OnInit {
   agegrouplist: any;
   getageGroup() {
     this.group.setYear = this.auth.activeSetYear;
-    this.service.GetAgeGroupListByYear().subscribe((data) => {
-      this.agegrouplist = data;
+    this.service.GetAgeGroupListByYear().subscribe((data: any[]) => {
+      this.agegrouplist = data.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
       console.log('groupList---', this.agegrouplist);
     });
   }
@@ -100,6 +115,70 @@ export class AgeGroupComponent implements OnInit {
       );
       console.log('Filtered Age Group List:', this.listofAgeGroup);
     });
+  }
+
+  ExportExcel() {
+    this.reportService.GetExcelExport(
+      this.auth.setYear,
+      this.auth.munCityId,
+      'AgeGroup'
+    );
+  }
+  ImportExcel(e: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "",
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, submit it!'
+    }).then((result) => {
+      console.log(result)
+      if (result.isConfirmed) {
+        this.reportService
+        .Get_ExImport(
+          e.target.files[0],
+          this.auth.setYear,
+          this.auth.munCityId,
+          'AgeGroup'
+        )
+        .subscribe((success) => {
+          Swal.fire({
+            title: 'Importing Data',
+            html: 'Please wait for a moment.',
+            timerProgressBar: true,
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+              setTimeout(() => {
+                if (success) {
+                  this.getageGroup();
+                  Swal.close();
+                  Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'File imported successfully',
+                    showConfirmButton: true,
+                  });
+                } else {
+                  Swal.close();
+                  Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Something went wrong. possible invalid file',
+                    showConfirmButton: true,
+                  });
+                }
+              }, 5000);
+            },
+          });
+        });
+      }
+      else{
+      }
+    })
+
   }
 
   AddAgeGroup() {
@@ -207,7 +286,7 @@ export class AgeGroupComponent implements OnInit {
         }
 
         // Call the service to delete the item from the backend
-        this.service.DeleteAgeGroup(transId).subscribe((_data) => {});
+        this.service.DeleteAgeGroup(transId).subscribe((_data) => { });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         // Handle cancel action if needed
       }
