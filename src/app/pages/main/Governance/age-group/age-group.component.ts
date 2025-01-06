@@ -16,13 +16,16 @@ import { isEmptyObject } from 'jquery';
   styleUrls: ['./age-group.component.css'],
 })
 export class AgeGroupComponent implements OnInit {
+  totalAllAges: any;
+  totalMale: any;
+  totalFemale: any;
   constructor(
     private pdfService: PdfService,
     private reportService: ReportsService,
     private service: AgeGroupService,
     private auth: AuthService,
     private modifyService: ModifyCityMunService
-  ) { }
+  ) {}
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
   }
@@ -95,7 +98,10 @@ export class AgeGroupComponent implements OnInit {
   getageGroup() {
     this.group.setYear = this.auth.activeSetYear;
     this.service.GetAgeGroupListByYear().subscribe((data: any[]) => {
-      this.agegrouplist = data.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+      this.agegrouplist = data.sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      );
       console.log('groupList---', this.agegrouplist);
     });
   }
@@ -127,58 +133,56 @@ export class AgeGroupComponent implements OnInit {
   ImportExcel(e: any) {
     Swal.fire({
       title: 'Are you sure?',
-      text: "",
+      text: '',
       icon: 'info',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, submit it!'
+      confirmButtonText: 'Yes, submit it!',
     }).then((result) => {
-      console.log(result)
+      console.log(result);
       if (result.isConfirmed) {
         this.reportService
-        .Get_ExImport(
-          e.target.files[0],
-          this.auth.setYear,
-          this.auth.munCityId,
-          'AgeGroup'
-        )
-        .subscribe((success) => {
-          Swal.fire({
-            title: 'Importing Data',
-            html: 'Please wait for a moment.',
-            timerProgressBar: true,
-            allowOutsideClick: false,
-            didOpen: () => {
-              Swal.showLoading();
-              setTimeout(() => {
-                if (success) {
-                  this.getageGroup();
-                  Swal.close();
-                  Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'File imported successfully',
-                    showConfirmButton: true,
-                  });
-                } else {
-                  Swal.close();
-                  Swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: 'Something went wrong. possible invalid file',
-                    showConfirmButton: true,
-                  });
-                }
-              }, 5000);
-            },
+          .Get_ExImport(
+            e.target.files[0],
+            this.auth.setYear,
+            this.auth.munCityId,
+            'AgeGroup'
+          )
+          .subscribe((success) => {
+            Swal.fire({
+              title: 'Importing Data',
+              html: 'Please wait for a moment.',
+              timerProgressBar: true,
+              allowOutsideClick: false,
+              didOpen: () => {
+                Swal.showLoading();
+                setTimeout(() => {
+                  if (success) {
+                    this.getageGroup();
+                    Swal.close();
+                    Swal.fire({
+                      position: 'center',
+                      icon: 'success',
+                      title: 'File imported successfully',
+                      showConfirmButton: true,
+                    });
+                  } else {
+                    Swal.close();
+                    Swal.fire({
+                      position: 'center',
+                      icon: 'error',
+                      title: 'Something went wrong. possible invalid file',
+                      showConfirmButton: true,
+                    });
+                  }
+                }, 5000);
+              },
+            });
           });
-        });
+      } else {
       }
-      else{
-      }
-    })
-
+    });
   }
 
   AddAgeGroup() {
@@ -265,33 +269,54 @@ export class AgeGroupComponent implements OnInit {
     });
   }
 
-  delete(transId: any, index: any) {
+  delete(transId: any): void {
     Swal.fire({
-      text: 'Do you want to remove this file?',
+      text: 'Do you want to remove this record?',
       icon: 'warning',
       showConfirmButton: true,
       showCancelButton: true,
       confirmButtonText: 'Yes, remove it!',
     }).then((result) => {
-      if (result.value) {
-        // Find the index of the item to delete in the Demo array
-        const itemIndex = this.agegrouplist.findIndex(
-          (item: any) => item.transId === transId
-        );
-
-        if (itemIndex !== -1) {
-          this.agegrouplist.splice(itemIndex, 1); // Remove the item from the Demo array
-          //this.Init(); // Reinitialize the view or data
-          Swal.fire('Deleted!', 'Your file has been removed.', 'success');
-        }
-
+      if (result.isConfirmed) {
         // Call the service to delete the item from the backend
-        this.service.DeleteAgeGroup(transId).subscribe((_data) => { });
+        this.service.DeleteAgeGroup(transId).subscribe(
+          (response: any) => {
+            // Update the local list by filtering out the deleted item
+            this.agegrouplist = this.agegrouplist.filter(
+              (item: any) => item.transId !== transId
+            );
+  
+            // Update the totals in the UI based on the response
+            if (response.updatedTotals) {
+              this.totalAllAges = response.updatedTotals.TotAllAges;
+              this.totalMale = response.updatedTotals.TotMale;
+              this.totalFemale = response.updatedTotals.TotFemale;
+            }
+  
+            // Show a success alert
+            Swal.fire(
+              'Deleted!',
+              'The record has been removed successfully.',
+              'success'
+            );
+          },
+          (error) => {
+            // Log and display the error
+            console.error('Error deleting record:', error);
+            Swal.fire(
+              'Error',
+              'Failed to delete the record. Please try again.',
+              'error'
+            );
+          }
+        );
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        // Handle cancel action if needed
+        // Optional: Show a cancel message
+        Swal.fire('Cancelled', 'The record was not removed.', 'info');
       }
     });
   }
+  
 
   clearData() {
     this.data = {};

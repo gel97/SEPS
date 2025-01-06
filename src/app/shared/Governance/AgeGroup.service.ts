@@ -67,8 +67,8 @@ export class AgeGroupService {
     );
   }
 
-  DeleteAgeGroup(transId: any) {
-    return this.Http.delete(
+  DeleteAgeGroup(transId: string): Observable<any> {
+    return this.Http.delete<any>(
       this.Base.url + this.ApiUrl.delete_agegroup(transId),
       { responseType: 'json' }
     );
