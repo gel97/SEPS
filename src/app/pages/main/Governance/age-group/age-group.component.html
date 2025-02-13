@@ -1,170 +1,179 @@
 <div class="">
   <ng-template #isEmpty>
-    <app-import [data]="message"></app-import>
+    <app-import
+      [data]="message"
+      (testEvent)="parentMethod()"
+      (importData)="importMethod()"
+    ></app-import>
     <app-export-excel apiControllerName="AgeGroup"></app-export-excel>
     <app-import-excel (myEvent)="ImportExcel($event)"></app-import-excel>
   </ng-template>
 
-  <div class="card o-hidden border-2 shadow-sm my-5">
-    <div class="card-body p-0">
-      <!-- Nested Row within Card Body -->
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="p-5">
-            <div class="text-center">
-              <h1 class="h4 text-gray-900 mb-4">Age Group</h1>
-              <label
-                ><strong
-                  >Governance - {{ modifyCityMun(munCityName) }}
-                </strong></label
-              ><br />
-            </div>
-            <div class="x-space-between">
-              <div class="x-space-between">
-                <app-export-excel
-                  apiControllerName="AgeGroup"
-                ></app-export-excel>
-                <!--<app-import-excel
-                  (myEvent)="ImportExcel($event)"
-                ></app-import-excel>-->
+  <div *ngIf="showOverlay">
+    <app-import-loading></app-import-loading>
+  </div>
+  <div *ngIf="agegrouplist?.length > 0; else isEmpty">
+    <div class="card o-hidden border-2 shadow-sm my-5">
+      <div class="card-body p-0">
+        <!-- Nested Row within Card Body -->
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="p-5">
+              <div class="text-center">
+                <h1 class="h4 text-gray-900 mb-4">Age Group</h1>
+                <label
+                  ><strong
+                    >Governance - {{ modifyCityMun(munCityName) }}
+                  </strong></label
+                ><br />
               </div>
               <div class="x-space-between">
-                <app-admin>
-                  <button
-                    type="button"
-                    class="btn btn-primary"
-                    data-toggle="modal"
-                    data-target="#ModalAdd "
-                  >
-                    <i class="fa fa-plus"></i>
-                    Age Group</button
-                  >&nbsp;
-                </app-admin>
-                <app-admin>
-                  <!--<app-pdf></app-pdf>-->
-                </app-admin>
-              </div>
-            </div>
-            <div class="row">
-              <div class="">
-                <p>Number of Age Group</p>
-                <div class="input-group col-sm-3">
-                  <input
-                    type="text"
-                    class="form-control bg-light border-0 small"
-                    placeholder="Search for..."
-                    aria-label="Search"
-                    aria-describedby="basic-addon2"
-                  />
+                <div class="x-space-between">
+                  <app-export-excel
+                    apiControllerName="AgeGroup"
+                  ></app-export-excel>
+                  <app-import-excel
+                    (myEvent)="ImportExcel($event)"
+                  ></app-import-excel>
+                </div>
+                <div class="x-space-between">
+                  <app-admin>
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      data-toggle="modal"
+                      data-target="#ModalAdd "
+                    >
+                      <i class="fa fa-plus"></i>
+                      Age Group</button
+                    >&nbsp;
+                  </app-admin>
+                  <app-admin>
+                    <!--<app-pdf></app-pdf>-->
+                  </app-admin>
                 </div>
               </div>
-            </div>
-            <div class="table-responsive">
-              <div class="table-responsive">
-                <br />
-                <table class="table table-light table-striped">
-                  <thead class="table-dark">
-                    <tr>
-                      <th scope="col" colspan="7"></th>
-                      <!-- Empty space to align Commodities -->
-                      <th scope="col" colspan="2" style="text-align: center">
-                        Percentage
-                      </th>
-                      <th scope="col" colspan="2"></th>
-                      <!-- Empty space to balance Commodities -->
-                    </tr>
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">Barangay</th>
-                      <th scope="col" class="text-center">Age Group</th>
-                      <th scope="col" class="text-center">Both Sexes</th>
-                      <th scope="col" class="text-center">Male</th>
-                      <th scope="col" class="text-center">Female</th>
-                      <th scope="col" class="text-center">Both Sexes %</th>
-                      <th scope="col" class="text-center">Male %</th>
-                      <th scope="col" class="text-center">Female %</th>
-                      <th scope="col" class="text-center">Sex Ratio</th>
-                      <th style="width: 8%"></th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    <tr
-                      *ngFor="
-                        let a of agegrouplist
-                          | search : searchText
-                          | paginate
-                            : {
-                                itemsPerPage: tableSize,
-                                currentPage: p,
-                                totalItems: count
-                              };
-                        let i = index
-                      "
-                    >
-                      <td>{{ i + 1 }}</td>
-                      <td class="text-center">{{ a.brgyName }}</td>
-                      <td class="text-center">{{ a.catNumber }}</td>
-                      <td class="text-center">
-                        {{ a.bothSexes | number : "1.2-2" }}
-                      </td>
-                      <td class="text-center">
-                        {{ a.male | number : "1.2-2" }}
-                      </td>
-                      <td class="text-center">
-                        {{ a.female | number : "1.2-2" }}
-                      </td>
-                      <td class="text-center">{{ a.bothSexesPercentage }}</td>
-                      <td class="text-center">{{ a.malePercentage }}</td>
-                      <td class="text-center">{{ a.femalePercentage }}</td>
-                      <td class="text-center">{{ a.sexRatioPercentage }}</td>
-                      <td>
-                        <div class="d-inline-flex">
-                          <app-admin>
-                            <button
-                              type="button"
-                              title="Edit"
-                              class="btn btn-info btn-circle"
-                              data-toggle="modal"
-                              data-target="#ModalEdit"
-                              (click)="editmodal = a"
-                            >
-                              <i class="fa fa-pen"></i>
-                            </button> </app-admin
-                          >&nbsp;
-                          <app-admin>
-                            <button
-                              type="button"
-                              title="Delete"
-                              class="btn btn-warning btn-circle"
-                              (click)="delete(a.transId)"
-                            >
-                              <i class="fa fa-trash"></i></button
-                            >&nbsp;
-                          </app-admin>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
               <div class="row">
-                <div class="col-lg-12">
-                  <form class="form-inline float-right">
-                    <pagination-controls
-                      previousLabel="Prev"
-                      currentPage="Next"
-                      (pageChange)="onTableDataChange($event)"
-                    >
-                    </pagination-controls>
-                    <ul>
-                      <select (change)="onTableSizeChange($event)">
-                        <option *ngFor="let size of tableSizes">
-                          {{ size }}
-                        </option>
-                      </select>
-                    </ul>
-                  </form>
+                <div class="">
+                  <p>Number of Age Group</p>
+                  <div class="input-group col-sm-3">
+                    <input
+                      type="text"
+                      class="form-control bg-light border-0 small"
+                      placeholder="Search for..."
+                      aria-label="Search"
+                      aria-describedby="basic-addon2"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="table-responsive">
+                <div class="table-responsive">
+                  <br />
+                  <table class="table table-light table-striped">
+                    <thead class="table-dark">
+                      <tr>
+                        <th scope="col" colspan="7"></th>
+                        <!-- Empty space to align Commodities -->
+                        <th scope="col" colspan="2" style="text-align: center">
+                          Percentage
+                        </th>
+                        <th scope="col" colspan="2"></th>
+                        <!-- Empty space to balance Commodities -->
+                      </tr>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Barangay</th>
+                        <th scope="col" class="text-center">Age Group</th>
+                        <th scope="col" class="text-center">Both Sexes</th>
+                        <th scope="col" class="text-center">Male</th>
+                        <th scope="col" class="text-center">Female</th>
+                        <th scope="col" class="text-center">Both Sexes %</th>
+                        <th scope="col" class="text-center">Male %</th>
+                        <th scope="col" class="text-center">Female %</th>
+                        <th scope="col" class="text-center">Sex Ratio</th>
+                        <th style="width: 8%"></th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr
+                        *ngFor="
+                          let a of agegrouplist
+                            | search : searchText
+                            | paginate
+                              : {
+                                  itemsPerPage: tableSize,
+                                  currentPage: p,
+                                  totalItems: count
+                                };
+                          let i = index
+                        "
+                      >
+                        <td>{{ i + 1 }}</td>
+                        <td class="text-center">{{ a.brgyName }}</td>
+                        <td class="text-center">{{ a.catNumber }}</td>
+                        <td class="text-center">
+                          {{ a.bothSexes | number : "1.2-2" }}
+                        </td>
+                        <td class="text-center">
+                          {{ a.male | number : "1.2-2" }}
+                        </td>
+                        <td class="text-center">
+                          {{ a.female | number : "1.2-2" }}
+                        </td>
+                        <td class="text-center">{{ a.bothSexesPercentage }}</td>
+                        <td class="text-center">{{ a.malePercentage }}</td>
+                        <td class="text-center">{{ a.femalePercentage }}</td>
+                        <td class="text-center">{{ a.sexRatioPercentage }}</td>
+                        <td>
+                          <div class="d-inline-flex">
+                            <app-admin>
+                              <button
+                                type="button"
+                                title="Edit"
+                                class="btn btn-info btn-circle"
+                                data-toggle="modal"
+                                data-target="#ModalEdit"
+                                (click)="editmodal = a"
+                              >
+                                <i class="fa fa-pen"></i>
+                              </button> </app-admin
+                            >&nbsp;
+                            <app-admin>
+                              <button
+                                type="button"
+                                title="Delete"
+                                class="btn btn-warning btn-circle"
+                                (click)="delete(a.transId)"
+                              >
+                                <i class="fa fa-trash"></i></button
+                              >&nbsp;
+                            </app-admin>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="row">
+                  <div class="col-lg-12">
+                    <form class="form-inline float-right">
+                      <pagination-controls
+                        previousLabel="Prev"
+                        currentPage="Next"
+                        (pageChange)="onTableDataChange($event)"
+                      >
+                      </pagination-controls>
+                      <ul>
+                        <select (change)="onTableSizeChange($event)">
+                          <option *ngFor="let size of tableSizes">
+                            {{ size }}
+                          </option>
+                        </select>
+                      </ul>
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>

@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { EnvironmentService } from 'src/app/shared/Environment/environment.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { ImportComponent } from 'src/app/components/import/import.component';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -13,6 +14,8 @@ export class EnvironmentalHazardsComponent implements OnInit {
 
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
+  @ViewChild(ImportComponent)
+  private importComponent!: ImportComponent;
   menuId = 5;
   setYear = Number(this.Auth.activeSetYear);
   munCityId = this.Auth.munCityId;
@@ -21,6 +24,9 @@ export class EnvironmentalHazardsComponent implements OnInit {
   listHazard: any = [];
   addData: any = {};
   editData: any = {};
+  visible: boolean = true;
+  not_visible: boolean = true;
+  required: boolean = true;
 
   idCounter: number = 1;
   updateForm: boolean = false;
@@ -59,7 +65,79 @@ export class EnvironmentalHazardsComponent implements OnInit {
         },
       });
   }
+  parentMethod() {
+    // alert('parent Method');
+    this.addData = {};
+    this.not_visible = false;
+    this.visible = true;
+    this.required = false;
+  }
 
+  public showOverlay = false;
+  importMethod() {
+    this.showOverlay = true;
+    this.service.Import(this.menuId).subscribe({
+      next: (data) => {
+        this.ngOnInit();
+        if (data.length === 0) {
+          this.showOverlay = false;
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            },
+          });
+
+          Toast.fire({
+            icon: 'info',
+            title: 'No data from previous year',
+          });
+        } else {
+          this.showOverlay = false;
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            },
+          });
+
+          Toast.fire({
+            icon: 'success',
+            title: 'Imported Successfully',
+          });
+        }
+      },
+      error: (error) => {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'warning',
+          title: 'Something went wrong',
+        });
+      },
+      complete: () => {},
+    });
+  }
   AddDescription(addData: any): void {
     addData.setYear = Number(this.setYear);
     addData.menuId = String(this.menuId);

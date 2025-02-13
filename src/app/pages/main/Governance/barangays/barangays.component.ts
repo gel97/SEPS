@@ -303,45 +303,50 @@ export class BarangaysComponent implements OnInit {
   public showOverlay = false;
   importMethod() {
     this.showOverlay = true;
+
     this.service.Import().subscribe({
       next: (data) => {
-        this.Init();
-      },
-      error: (error) => {
-        const Toast = Swal.mixin({
-          toast: true,
-          position: 'top-end',
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer);
-            toast.addEventListener('mouseleave', Swal.resumeTimer);
+        this.service.Import2().subscribe({
+          next: (data2) => {
+            this.Init();
           },
-        });
+          error: (error) => {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+              },
+            });
 
-        Toast.fire({
-          icon: 'warning',
-          title: 'Something went wrong',
-        });
-      },
-      complete: () => {
-        this.showOverlay = false;
-        const Toast = Swal.mixin({
-          toast: true,
-          position: 'top-end',
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer);
-            toast.addEventListener('mouseleave', Swal.resumeTimer);
+            Toast.fire({
+              icon: 'warning',
+              title: 'Something went wrong',
+            });
           },
-        });
+          complete: () => {
+            this.showOverlay = false;
+            const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+              },
+            });
 
-        Toast.fire({
-          icon: 'success',
-          title: 'Imported Successfully',
+            Toast.fire({
+              icon: 'success',
+              title: 'Imported Successfully',
+            });
+          },
         });
       },
     });

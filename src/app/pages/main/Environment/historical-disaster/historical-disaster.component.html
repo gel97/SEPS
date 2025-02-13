@@ -1,33 +1,43 @@
 <div class="">
   <ng-template #isEmpty>
-    <app-import [data]="message" (testEvent)="parentMethod()"></app-import>
+    <app-import
+      [data]="message"
+      (testEvent)="parentMethod()"
+      (importData)="importMethod()"
+    ></app-import>
   </ng-template>
-  <div *ngIf="listHis.length>0; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
+  <div *ngIf="showOverlay">
+    <app-import-loading></app-import-loading>
+  </div>
+  <div
+    *ngIf="listHis.length > 0; else isEmpty"
+    class="card o-hidden border-2 shadow-sm my-5"
+  >
     <div class="card-body p-0">
       <!-- Nested Row within Card Body -->
       <div class="row">
-
         <div class="col-lg-12">
           <div class="p-5">
-            <div class="">
-            </div>
+            <div class=""></div>
             <div class="text-center">
-              <h1 class="h4 text-gray-900 mb-4"> Historical Disaster Profile</h1>
+              <h1 class="h4 text-gray-900 mb-4">Historical Disaster Profile</h1>
             </div>
             <div class="d-flex justify-content-end">
-              <button (click)="resetForm(); updateForm=false" class="btn btn-primary" data-toggle="modal"
-                data-target="#ModalAdd">
+              <button
+                (click)="resetForm(); updateForm = false"
+                class="btn btn-primary"
+                data-toggle="modal"
+                data-target="#ModalAdd"
+              >
                 <i class="fa fa-plus"></i>&nbsp;Historical Disaster
               </button>
             </div>
 
             <div class="row">
               <div class="col-lg-6">
-                <p>List of Historical Disasters </p>
+                <p>List of Historical Disasters</p>
               </div>
-              <div class="col-lg-6 ">
-
-              </div>
+              <div class="col-lg-6"></div>
             </div>
 
             <table class="table table-lightgrey table-striped">
@@ -38,431 +48,916 @@
                   <th scope="col">Type of Disaster</th>
                   <th scope="col">Area Affected</th>
                   <th scope="col">Event Description</th>
-                  <th scope="col"> </th>
+                  <th scope="col"></th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let historical of listHis;let i=index">
-
-                  <td>{{i+1}}.</td>
-                  <td>{{historical.dateOccurence}}</td>
+                <tr *ngFor="let historical of listHis; let i = index">
+                  <td>{{ i + 1 }}.</td>
+                  <td>{{ historical.dateOccurence }}</td>
                   <td>
                     <div *ngFor="let disasterType of list_of_disaster">
-                      <span *ngIf="disasterType.id === historical.disasterType">{{ disasterType.type_disas }}</span>
+                      <span
+                        *ngIf="disasterType.id === historical.disasterType"
+                        >{{ disasterType.type_disas }}</span
+                      >
                     </div>
                   </td>
-                  <td>{{historical.areasAffected}}</td>
-                  <td>{{historical.eventDesc}}</td>
+                  <td>{{ historical.areasAffected }}</td>
+                  <td>{{ historical.eventDesc }}</td>
 
                   <td>
                     <div class="d-inline-flex">
                       <app-admin>
-                        <button (click)="addData = historical; updateForm = true" class="btn btn-primary btn-circle"
-                          data-toggle="modal" data-target="#exampleModal2"><i class="fa fa-eye"></i>
+                        <button
+                          (click)="addData = historical; updateForm = true"
+                          class="btn btn-primary btn-circle"
+                          data-toggle="modal"
+                          data-target="#exampleModal2"
+                        >
+                          <i class="fa fa-eye"></i>
                         </button>
                       </app-admin>
                       &nbsp;
-                      <button (click)="addData = historical; updateForm = true" class="btn btn-info btn-circle"
-                        role="button" data-toggle="modal" data-target="#ModalAdd">
-                        <i class="fa fa-pen">
-                        </i>
+                      <button
+                        (click)="addData = historical; updateForm = true"
+                        class="btn btn-info btn-circle"
+                        role="button"
+                        data-toggle="modal"
+                        data-target="#ModalAdd"
+                      >
+                        <i class="fa fa-pen"> </i>
                       </button>
                       &nbsp;
                       <app-admin>
-                        <button type="button" title="Delete" class="btn btn-warning btn-circle"
-                          (click)="DeleteDescription(historical.transId)"><i class="fa fa-trash"></i>
-                        </button>&nbsp;
+                        <button
+                          type="button"
+                          title="Delete"
+                          class="btn btn-warning btn-circle"
+                          (click)="DeleteDescription(historical.transId)"
+                        >
+                          <i class="fa fa-trash"></i></button
+                        >&nbsp;
                       </app-admin>
                     </div>
                   </td>
-
                 </tr>
               </tbody>
             </table>
-            <br>
+            <br />
           </div>
         </div>
       </div>
     </div>
   </div>
-
 </div>
-
-
 
 <!-- Modal -->
 
-<div class="modal fade" id="ModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+<div
+  class="modal fade"
+  id="ModalAdd"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable"
+  >
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Historical Disaster Profile</h1>
-        <button type="button" #closebutton class="btn-close" data-dismiss="modal" data-bs-dismiss="modal"
-          aria-label="Close"></button>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          Historical Disaster Profile
+        </h1>
+        <button
+          type="button"
+          #closebutton
+          class="btn-close"
+          data-dismiss="modal"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
         <form class="user collapse show" id="collapseExample">
           <div class="form-group">
             <div class="row">
+              <div class="col-lg-4"></div>
               <div class="col-lg-4">
-
+                <br />
+                <label for="exampleFormControlTextarea1"
+                  >Date of Occurence:</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="dateOccurence"
+                  placeholder=""
+                  [(ngModel)]="addData.dateOccurence"
+                  name="dateOccurence"
+                />
               </div>
-              <div class="col-lg-4"><br>
-                <label for="exampleFormControlTextarea1">Date of Occurence:</label>
-                <input type="text" class="form-control" id="dateOccurence" placeholder=""
-                  [(ngModel)]="addData.dateOccurence" name="dateOccurence">
-              </div>
 
+              <div class="col-lg-12">
+                <br />
+                <label for="exampleFormControlTextarea1"
+                  >Type of Disaster :</label
+                >
 
-              <div class="col-lg-12"><br>
-                <label for="exampleFormControlTextarea1">Type of Disaster :</label>
-
-
-                <select class="form-select" aria-label="Default select example" name="list_of_category"
-                  [(ngModel)]="addData.disasterType">
-                  <option *ngFor="let list of list_of_disaster" value={{list.id}}>{{list.type_disas}}</option>
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  name="list_of_category"
+                  [(ngModel)]="addData.disasterType"
+                >
+                  <option
+                    *ngFor="let list of list_of_disaster"
+                    value="{{ list.id }}"
+                  >
+                    {{ list.type_disas }}
+                  </option>
                 </select>
-
               </div>
 
-              <div class="col-lg-12"><br>
-                <label for="exampleFormControlTextarea1">Barangays / Area Affected :</label>
-                <input type="text" class="form-control" id="areasAffected" placeholder=""
-                  [(ngModel)]="addData.areasAffected" name="areasAffected">
+              <div class="col-lg-12">
+                <br />
+                <label for="exampleFormControlTextarea1"
+                  >Barangays / Area Affected :</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="areasAffected"
+                  placeholder=""
+                  [(ngModel)]="addData.areasAffected"
+                  name="areasAffected"
+                />
               </div>
-              <div class="col-lg-12"><br>
-                <label for="exampleFormControlTextarea1">Event Description :</label>
-                <textarea class="form-control" id="eventDesc" rows="4" [(ngModel)]="addData.eventDesc"
-                  name="eventDesc"></textarea>
-              </div>
-
-              <div class="col-lg-6"><br>
-                <label for="exampleFormControlTextarea1">No. of People Affected :</label>
-                <input type="number" class="form-control" id="pplAffectedNo" placeholder=""
-                  [(ngModel)]="addData.pplAffectedNo" name="pplAffectedNo">
-              </div>
-
-              <div class="col-lg-6"><br>
-                <label for="exampleFormControlTextarea1">No. of People Evacuated :</label>
-                <input type="number" class="form-control" id="pplEvacNo" placeholder="" [(ngModel)]="addData.pplEvacNo"
-                  name="pplEvacNo">
-              </div>
-
-              <div class="col-lg-6"><br>
-                <label for="exampleFormControlTextarea1"> No. of Families Affected :</label>
-                <input type="number" class="form-control" id="famAffectedNo" placeholder=""
-                  [(ngModel)]="addData.famAffectedNo" name="famAffectedNo">
-              </div>
-
-              <div class="col-lg-6"><br>
-                <label for="exampleFormControlTextarea1">No. of Families Evacuated :</label>
-                <input type="number" class="form-control" id="famEvacNo" placeholder="" [(ngModel)]="addData.famEvacNo"
-                  name="famEvacNo">
-              </div>
-
-              <div class="col-lg-12"><br>
-                <label for="exampleFormControlTextarea1">Place of Evacuation :</label>
-                <input type="text" class="form-control" id="placeEvac" placeholder="" [(ngModel)]="addData.placeEvac"
-                  name="placeEvac">
-              </div>
-
-              <div class="col-lg-6"><br>
-                <label for="exampleFormControlTextarea1">No. of People Injured :</label>
-                <input type="number" class="form-control" id="pplInjuredNo" placeholder=""
-                  [(ngModel)]="addData.pplInjuredNo" name="pplInjuredNo">
-              </div>
-
-              <div class="col-lg-6"><br>
-                <label for="exampleFormControlTextarea1">Houses Partially Damaged:</label>
-                <input type="number" class="form-control" id="hzPartialDmgNo" placeholder=""
-                  [(ngModel)]="addData.hzPartialDmgNo" name="hzPartialDmgNo">
-              </div>
-
-              <div class="col-lg-6"><br>
-                <label for="exampleFormControlTextarea1"> No. of Deaths :</label>
-                <input type="number" class="form-control" id="deathNo" placeholder="" [(ngModel)]="addData.deathNo"
-                  name="deathNo">
-              </div>
-
-              <div class="col-lg-6"><br>
-                <label for="exampleFormControlTextarea1"> Houses Totally Damaged :</label>
-                <input type="number" class="form-control" id="hzTotDmgNo" placeholder=""
-                  [(ngModel)]="addData.hzTotDmgNo" name="hzTotDmgNo">
-              </div>
-
-              <div class="col-lg-6"><br>
-                <br>
-                <label> Estimated Amount of Damages to Infrastructure (Php)</label>
+              <div class="col-lg-12">
+                <br />
+                <label for="exampleFormControlTextarea1"
+                  >Event Description :</label
+                >
+                <textarea
+                  class="form-control"
+                  id="eventDesc"
+                  rows="4"
+                  [(ngModel)]="addData.eventDesc"
+                  name="eventDesc"
+                ></textarea>
               </div>
 
               <div class="col-lg-6">
-                <br><br>
-                <label for="exampleFormControlTextarea1"> Estimated Amount of Damages to Agriculture (Php)</label>
+                <br />
+                <label for="exampleFormControlTextarea1"
+                  >No. of People Affected :</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="pplAffectedNo"
+                  placeholder=""
+                  [(ngModel)]="addData.pplAffectedNo"
+                  name="pplAffectedNo"
+                />
               </div>
 
-              <div class="col-lg-6"><br>
-                <label for="exampleFormControlTextarea1"> School Facilities :</label>
-                <input type="number" class="form-control" id="schoolFacilities" placeholder=""
-                  [(ngModel)]="addData.schoolFacilities" name="schoolFacilities">
+              <div class="col-lg-6">
+                <br />
+                <label for="exampleFormControlTextarea1"
+                  >No. of People Evacuated :</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="pplEvacNo"
+                  placeholder=""
+                  [(ngModel)]="addData.pplEvacNo"
+                  name="pplEvacNo"
+                />
               </div>
 
-              <div class="col-lg-6"><br>
-                <label for="exampleFormControlTextarea1">Crops Production :</label>
-                <input type="number" class="form-control" id="cropsProd" placeholder="" [(ngModel)]="addData.cropsProd"
-                  name="cropsProd">
+              <div class="col-lg-6">
+                <br />
+                <label for="exampleFormControlTextarea1">
+                  No. of Families Affected :</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="famAffectedNo"
+                  placeholder=""
+                  [(ngModel)]="addData.famAffectedNo"
+                  name="famAffectedNo"
+                />
               </div>
 
-              <div class="col-lg-6"><br>
-                <label for="exampleFormControlTextarea1">Health Facilities :</label>
-                <input type="number" class="form-control" id="healthFacilities" placeholder=""
-                  [(ngModel)]="addData.healthFacilities" name="healthFacilities">
+              <div class="col-lg-6">
+                <br />
+                <label for="exampleFormControlTextarea1"
+                  >No. of Families Evacuated :</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="famEvacNo"
+                  placeholder=""
+                  [(ngModel)]="addData.famEvacNo"
+                  name="famEvacNo"
+                />
               </div>
 
-              <div class="col-lg-6"><br>
-                <label for="exampleFormControlTextarea1">Livestock Production :</label>
-                <input type="number" class="form-control" id="liveStockProd" placeholder=""
-                  [(ngModel)]="addData.liveStockProd" name="liveStockProd">
+              <div class="col-lg-12">
+                <br />
+                <label for="exampleFormControlTextarea1"
+                  >Place of Evacuation :</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="placeEvac"
+                  placeholder=""
+                  [(ngModel)]="addData.placeEvac"
+                  name="placeEvac"
+                />
               </div>
 
-              <div class="col-lg-6"><br>
+              <div class="col-lg-6">
+                <br />
+                <label for="exampleFormControlTextarea1"
+                  >No. of People Injured :</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="pplInjuredNo"
+                  placeholder=""
+                  [(ngModel)]="addData.pplInjuredNo"
+                  name="pplInjuredNo"
+                />
+              </div>
+
+              <div class="col-lg-6">
+                <br />
+                <label for="exampleFormControlTextarea1"
+                  >Houses Partially Damaged:</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="hzPartialDmgNo"
+                  placeholder=""
+                  [(ngModel)]="addData.hzPartialDmgNo"
+                  name="hzPartialDmgNo"
+                />
+              </div>
+
+              <div class="col-lg-6">
+                <br />
+                <label for="exampleFormControlTextarea1">
+                  No. of Deaths :</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="deathNo"
+                  placeholder=""
+                  [(ngModel)]="addData.deathNo"
+                  name="deathNo"
+                />
+              </div>
+
+              <div class="col-lg-6">
+                <br />
+                <label for="exampleFormControlTextarea1">
+                  Houses Totally Damaged :</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="hzTotDmgNo"
+                  placeholder=""
+                  [(ngModel)]="addData.hzTotDmgNo"
+                  name="hzTotDmgNo"
+                />
+              </div>
+
+              <div class="col-lg-6">
+                <br />
+                <br />
+                <label>
+                  Estimated Amount of Damages to Infrastructure (Php)</label
+                >
+              </div>
+
+              <div class="col-lg-6">
+                <br /><br />
+                <label for="exampleFormControlTextarea1">
+                  Estimated Amount of Damages to Agriculture (Php)</label
+                >
+              </div>
+
+              <div class="col-lg-6">
+                <br />
+                <label for="exampleFormControlTextarea1">
+                  School Facilities :</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="schoolFacilities"
+                  placeholder=""
+                  [(ngModel)]="addData.schoolFacilities"
+                  name="schoolFacilities"
+                />
+              </div>
+
+              <div class="col-lg-6">
+                <br />
+                <label for="exampleFormControlTextarea1"
+                  >Crops Production :</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="cropsProd"
+                  placeholder=""
+                  [(ngModel)]="addData.cropsProd"
+                  name="cropsProd"
+                />
+              </div>
+
+              <div class="col-lg-6">
+                <br />
+                <label for="exampleFormControlTextarea1"
+                  >Health Facilities :</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="healthFacilities"
+                  placeholder=""
+                  [(ngModel)]="addData.healthFacilities"
+                  name="healthFacilities"
+                />
+              </div>
+
+              <div class="col-lg-6">
+                <br />
+                <label for="exampleFormControlTextarea1"
+                  >Livestock Production :</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="liveStockProd"
+                  placeholder=""
+                  [(ngModel)]="addData.liveStockProd"
+                  name="liveStockProd"
+                />
+              </div>
+
+              <div class="col-lg-6">
+                <br />
                 <label for="exampleFormControlTextarea1">Roads :</label>
-                <input type="number" class="form-control" id="roads" placeholder="" [(ngModel)]="addData.roads"
-                  name="roads">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="roads"
+                  placeholder=""
+                  [(ngModel)]="addData.roads"
+                  name="roads"
+                />
               </div>
 
-              <div class="col-lg-6"><br>
+              <div class="col-lg-6">
+                <br />
                 <label for="exampleFormControlTextarea1">Poultry :</label>
-                <input type="number" class="form-control" id="poultry" placeholder="" [(ngModel)]="addData.poultry"
-                  name="poultry">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="poultry"
+                  placeholder=""
+                  [(ngModel)]="addData.poultry"
+                  name="poultry"
+                />
               </div>
 
-              <div class="col-lg-6"><br>
+              <div class="col-lg-6">
+                <br />
                 <label for="exampleFormControlTextarea1">Bridges :</label>
-                <input type="number" class="form-control" id="bridges" placeholder="" [(ngModel)]="addData.bridges"
-                  name="bridges">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="bridges"
+                  placeholder=""
+                  [(ngModel)]="addData.bridges"
+                  name="bridges"
+                />
               </div>
 
-              <div class="col-lg-6"><br>
+              <div class="col-lg-6">
+                <br />
                 <label for="exampleFormControlTextarea1">Fishery :</label>
-                <input type="number" class="form-control" id="fishery" placeholder="" [(ngModel)]="addData.fishery"
-                  name="fishery">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="fishery"
+                  placeholder=""
+                  [(ngModel)]="addData.fishery"
+                  name="fishery"
+                />
               </div>
 
-              <div class="col-lg-6"><br>
-                <label for="exampleFormControlTextarea1">Institutional Structures :</label>
-                <input type="number" class="form-control" id="insStructure" placeholder=""
-                  [(ngModel)]="addData.insStructure" name="insStructure">
+              <div class="col-lg-6">
+                <br />
+                <label for="exampleFormControlTextarea1"
+                  >Institutional Structures :</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="insStructure"
+                  placeholder=""
+                  [(ngModel)]="addData.insStructure"
+                  name="insStructure"
+                />
               </div>
 
-              <div class="col-lg-6"><br>
+              <div class="col-lg-6">
+                <br />
                 <label for="exampleFormControlTextarea1">Forestry :</label>
-                <input type="number" class="form-control" id="forestry" placeholder="" [(ngModel)]="addData.forestry"
-                  name="forestry">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="forestry"
+                  placeholder=""
+                  [(ngModel)]="addData.forestry"
+                  name="forestry"
+                />
               </div>
 
-              <div class="col-lg-6"><br>
-                <label for="exampleFormControlTextarea1">Other Infrastructures :</label>
-                <input type="number" class="form-control" id="otherInfra" placeholder=""
-                  [(ngModel)]="addData.otherInfra" name="otherInfra">
+              <div class="col-lg-6">
+                <br />
+                <label for="exampleFormControlTextarea1"
+                  >Other Infrastructures :</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="otherInfra"
+                  placeholder=""
+                  [(ngModel)]="addData.otherInfra"
+                  name="otherInfra"
+                />
               </div>
 
-              <div class="col-lg-6"><br>
+              <div class="col-lg-6">
+                <br />
                 <label for="exampleFormControlTextarea1">Others : </label>
-                <input type="number" class="form-control" id="others" placeholder="" [(ngModel)]="addData.others"
-                  name="others">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="others"
+                  placeholder=""
+                  [(ngModel)]="addData.others"
+                  name="others"
+                />
               </div>
 
-              <div class="col-lg-12"><br>
+              <div class="col-lg-12">
+                <br />
                 <label for="exampleFormControlTextarea1">Remarks:</label>
-                <textarea class="form-control" id="remarks" rows="4" [(ngModel)]="addData.remarks"
-                  name="remarks"></textarea>
+                <textarea
+                  class="form-control"
+                  id="remarks"
+                  rows="4"
+                  [(ngModel)]="addData.remarks"
+                  name="remarks"
+                ></textarea>
               </div>
-
             </div>
           </div>
-          <br>
-
-
-
+          <br />
         </form>
-
-
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-bs-dismiss="modal">
-          Close</button>
-        <button type="button" *ngIf="updateForm == true" (click)="EditDescription()" class="btn btn-primary">
-          Update</button>
-        <button type="button" *ngIf="updateForm==false" (click)="AddDescription()" class="btn btn-primary">
-          Save Changes</button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+        <button
+          type="button"
+          *ngIf="updateForm == true"
+          (click)="EditDescription()"
+          class="btn btn-primary"
+        >
+          Update
+        </button>
+        <button
+          type="button"
+          *ngIf="updateForm == false"
+          (click)="AddDescription()"
+          class="btn btn-primary"
+        >
+          Save Changes
+        </button>
       </div>
     </div>
   </div>
 </div>
 
 <!-- Modal 2 -->
-<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+<div
+  class="modal fade"
+  id="exampleModal2"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable"
+  >
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Historical Disaster Profile</h1>
-        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          Historical Disaster Profile
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
         <form class="user collapse show" id="collapseExample">
           <div class="form-group">
             <div class="row">
-
-
-              <div class="col-lg-6"><br>
-                <label for="exampleFormControlTextarea1">No. of People Affected :</label>
-                <input type="number" class="form-control" id="pplAffectedNo" placeholder=""
-                  [(ngModel)]="addData.pplAffectedNo" name="pplAffectedNo" disabled>
-              </div>
-
-              <div class="col-lg-6"><br>
-                <label for="exampleFormControlTextarea1">No. of People Evacuated :</label>
-                <input type="number" class="form-control" id="pplEvacNo" placeholder="" [(ngModel)]="addData.pplEvacNo"
-                  name="pplEvacNo" disabled>
-              </div>
-
-              <div class="col-lg-6"><br>
-                <label for="exampleFormControlTextarea1"> No. of Families Affected :</label>
-                <input type="number" class="form-control" id="famAffectedNo" placeholder=""
-                  [(ngModel)]="addData.famAffectedNo" name="famAffectedNo" disabled>
-              </div>
-
-              <div class="col-lg-6"><br>
-                <label for="exampleFormControlTextarea1">No. of Families Evacuated :</label>
-                <input type="number" class="form-control" id="famEvacNo" placeholder="" [(ngModel)]="addData.famEvacNo"
-                  name="famEvacNo" disabled>
-              </div>
-
-              <div class="col-lg-12"><br>
-                <label for="exampleFormControlTextarea1">Place of Evacuation :</label>
-                <input type="text" class="form-control" id="placeEvac" placeholder="" [(ngModel)]="addData.placeEvac"
-                  name="placeEvac" disabled>
-              </div>
-
-              <div class="col-lg-6"><br>
-                <label for="exampleFormControlTextarea1">No. of People Injured :</label>
-                <input type="number" class="form-control" id="pplInjuredNo" placeholder=""
-                  [(ngModel)]="addData.pplInjuredNo" name="pplInjuredNo" disabled>
-              </div>
-
-              <div class="col-lg-6"><br>
-                <label for="exampleFormControlTextarea1">Houses Partially Damaged:</label>
-                <input type="number" class="form-control" id="hzPartialDmgNo" placeholder=""
-                  [(ngModel)]="addData.hzPartialDmgNo" name="hzPartialDmgNo" disabled>
-              </div>
-
-              <div class="col-lg-6"><br>
-                <label for="exampleFormControlTextarea1"> No. of Deaths :</label>
-                <input type="number" class="form-control" id="deathNo" placeholder="" [(ngModel)]="addData.deathNo"
-                  name="deathNo" disabled>
-              </div>
-
-              <div class="col-lg-6"><br>
-                <label for="exampleFormControlTextarea1"> Houses Totally Damaged :</label>
-                <input type="number" class="form-control" id="hzTotDmgNo" placeholder=""
-                  [(ngModel)]="addData.hzTotDmgNo" name="hzTotDmgNo" disabled>
-              </div>
-
-              <div class="col-lg-6"><br>
-                <br>
-                <label> Estimated Amount of Damages to Infrastructure (Php)</label>
+              <div class="col-lg-6">
+                <br />
+                <label for="exampleFormControlTextarea1"
+                  >No. of People Affected :</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="pplAffectedNo"
+                  placeholder=""
+                  [(ngModel)]="addData.pplAffectedNo"
+                  name="pplAffectedNo"
+                  disabled
+                />
               </div>
 
               <div class="col-lg-6">
-                <br><br>
-                <label for="exampleFormControlTextarea1"> Estimated Amount of Damages to Agriculture (Php)</label>
+                <br />
+                <label for="exampleFormControlTextarea1"
+                  >No. of People Evacuated :</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="pplEvacNo"
+                  placeholder=""
+                  [(ngModel)]="addData.pplEvacNo"
+                  name="pplEvacNo"
+                  disabled
+                />
               </div>
 
-              <div class="col-lg-6"><br>
-                <label for="exampleFormControlTextarea1"> School Facilities :</label>
-                <input type="number" class="form-control" id="schoolFacilities" placeholder=""
-                  [(ngModel)]="addData.schoolFacilities" name="schoolFacilities" disabled>
+              <div class="col-lg-6">
+                <br />
+                <label for="exampleFormControlTextarea1">
+                  No. of Families Affected :</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="famAffectedNo"
+                  placeholder=""
+                  [(ngModel)]="addData.famAffectedNo"
+                  name="famAffectedNo"
+                  disabled
+                />
               </div>
 
-              <div class="col-lg-6"><br>
-                <label for="exampleFormControlTextarea1">Crops Production :</label>
-                <input type="number" class="form-control" id="cropsProd" placeholder="" [(ngModel)]="addData.cropsProd"
-                  name="cropsProd" disabled>
+              <div class="col-lg-6">
+                <br />
+                <label for="exampleFormControlTextarea1"
+                  >No. of Families Evacuated :</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="famEvacNo"
+                  placeholder=""
+                  [(ngModel)]="addData.famEvacNo"
+                  name="famEvacNo"
+                  disabled
+                />
               </div>
 
-              <div class="col-lg-6"><br>
-                <label for="exampleFormControlTextarea1">Health Facilities :</label>
-                <input type="number" class="form-control" id="healthFacilities" placeholder=""
-                  [(ngModel)]="addData.healthFacilities" name="healthFacilities" disabled>
+              <div class="col-lg-12">
+                <br />
+                <label for="exampleFormControlTextarea1"
+                  >Place of Evacuation :</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="placeEvac"
+                  placeholder=""
+                  [(ngModel)]="addData.placeEvac"
+                  name="placeEvac"
+                  disabled
+                />
               </div>
 
-              <div class="col-lg-6"><br>
-                <label for="exampleFormControlTextarea1">Livestock Production :</label>
-                <input type="number" class="form-control" id="liveStockProd" placeholder=""
-                  [(ngModel)]="addData.liveStockProd" name="liveStockProd" disabled>
+              <div class="col-lg-6">
+                <br />
+                <label for="exampleFormControlTextarea1"
+                  >No. of People Injured :</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="pplInjuredNo"
+                  placeholder=""
+                  [(ngModel)]="addData.pplInjuredNo"
+                  name="pplInjuredNo"
+                  disabled
+                />
               </div>
 
-              <div class="col-lg-6"><br>
+              <div class="col-lg-6">
+                <br />
+                <label for="exampleFormControlTextarea1"
+                  >Houses Partially Damaged:</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="hzPartialDmgNo"
+                  placeholder=""
+                  [(ngModel)]="addData.hzPartialDmgNo"
+                  name="hzPartialDmgNo"
+                  disabled
+                />
+              </div>
+
+              <div class="col-lg-6">
+                <br />
+                <label for="exampleFormControlTextarea1">
+                  No. of Deaths :</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="deathNo"
+                  placeholder=""
+                  [(ngModel)]="addData.deathNo"
+                  name="deathNo"
+                  disabled
+                />
+              </div>
+
+              <div class="col-lg-6">
+                <br />
+                <label for="exampleFormControlTextarea1">
+                  Houses Totally Damaged :</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="hzTotDmgNo"
+                  placeholder=""
+                  [(ngModel)]="addData.hzTotDmgNo"
+                  name="hzTotDmgNo"
+                  disabled
+                />
+              </div>
+
+              <div class="col-lg-6">
+                <br />
+                <br />
+                <label>
+                  Estimated Amount of Damages to Infrastructure (Php)</label
+                >
+              </div>
+
+              <div class="col-lg-6">
+                <br /><br />
+                <label for="exampleFormControlTextarea1">
+                  Estimated Amount of Damages to Agriculture (Php)</label
+                >
+              </div>
+
+              <div class="col-lg-6">
+                <br />
+                <label for="exampleFormControlTextarea1">
+                  School Facilities :</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="schoolFacilities"
+                  placeholder=""
+                  [(ngModel)]="addData.schoolFacilities"
+                  name="schoolFacilities"
+                  disabled
+                />
+              </div>
+
+              <div class="col-lg-6">
+                <br />
+                <label for="exampleFormControlTextarea1"
+                  >Crops Production :</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="cropsProd"
+                  placeholder=""
+                  [(ngModel)]="addData.cropsProd"
+                  name="cropsProd"
+                  disabled
+                />
+              </div>
+
+              <div class="col-lg-6">
+                <br />
+                <label for="exampleFormControlTextarea1"
+                  >Health Facilities :</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="healthFacilities"
+                  placeholder=""
+                  [(ngModel)]="addData.healthFacilities"
+                  name="healthFacilities"
+                  disabled
+                />
+              </div>
+
+              <div class="col-lg-6">
+                <br />
+                <label for="exampleFormControlTextarea1"
+                  >Livestock Production :</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="liveStockProd"
+                  placeholder=""
+                  [(ngModel)]="addData.liveStockProd"
+                  name="liveStockProd"
+                  disabled
+                />
+              </div>
+
+              <div class="col-lg-6">
+                <br />
                 <label for="exampleFormControlTextarea1">Roads :</label>
-                <input type="number" class="form-control" id="roads" placeholder="" [(ngModel)]="addData.roads"
-                  name="roads" disabled>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="roads"
+                  placeholder=""
+                  [(ngModel)]="addData.roads"
+                  name="roads"
+                  disabled
+                />
               </div>
 
-              <div class="col-lg-6"><br>
+              <div class="col-lg-6">
+                <br />
                 <label for="exampleFormControlTextarea1">Poultry :</label>
-                <input type="number" class="form-control" id="poultry" placeholder="" [(ngModel)]="addData.poultry"
-                  name="poultry" disabled>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="poultry"
+                  placeholder=""
+                  [(ngModel)]="addData.poultry"
+                  name="poultry"
+                  disabled
+                />
               </div>
 
-              <div class="col-lg-6"><br>
+              <div class="col-lg-6">
+                <br />
                 <label for="exampleFormControlTextarea1">Bridges :</label>
-                <input type="number" class="form-control" id="bridges" placeholder="" [(ngModel)]="addData.bridges"
-                  name="bridges" disabled>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="bridges"
+                  placeholder=""
+                  [(ngModel)]="addData.bridges"
+                  name="bridges"
+                  disabled
+                />
               </div>
 
-              <div class="col-lg-6"><br>
+              <div class="col-lg-6">
+                <br />
                 <label for="exampleFormControlTextarea1">Fishery :</label>
-                <input type="number" class="form-control" id="fishery" placeholder="" [(ngModel)]="addData.fishery"
-                  name="fishery" disabled>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="fishery"
+                  placeholder=""
+                  [(ngModel)]="addData.fishery"
+                  name="fishery"
+                  disabled
+                />
               </div>
 
-              <div class="col-lg-6"><br>
-                <label for="exampleFormControlTextarea1">Institutional Structures :</label>
-                <input type="number" class="form-control" id="insStructure" placeholder=""
-                  [(ngModel)]="addData.insStructure" name="insStructure" disabled>
+              <div class="col-lg-6">
+                <br />
+                <label for="exampleFormControlTextarea1"
+                  >Institutional Structures :</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="insStructure"
+                  placeholder=""
+                  [(ngModel)]="addData.insStructure"
+                  name="insStructure"
+                  disabled
+                />
               </div>
 
-              <div class="col-lg-6"><br>
+              <div class="col-lg-6">
+                <br />
                 <label for="exampleFormControlTextarea1">Forestry :</label>
-                <input type="number" class="form-control" id="forestry" placeholder="" [(ngModel)]="addData.forestry"
-                  name="forestry" disabled>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="forestry"
+                  placeholder=""
+                  [(ngModel)]="addData.forestry"
+                  name="forestry"
+                  disabled
+                />
               </div>
 
-              <div class="col-lg-6"><br>
-                <label for="exampleFormControlTextarea1">Other Infrastructures :</label>
-                <input type="number" class="form-control" id="otherInfra" placeholder=""
-                  [(ngModel)]="addData.otherInfra" name="otherInfra" disabled>
+              <div class="col-lg-6">
+                <br />
+                <label for="exampleFormControlTextarea1"
+                  >Other Infrastructures :</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="otherInfra"
+                  placeholder=""
+                  [(ngModel)]="addData.otherInfra"
+                  name="otherInfra"
+                  disabled
+                />
               </div>
 
-              <div class="col-lg-6"><br>
+              <div class="col-lg-6">
+                <br />
                 <label for="exampleFormControlTextarea1">Others : </label>
-                <input type="number" class="form-control" id="others" placeholder="" [(ngModel)]="addData.others"
-                  name="others" disabled>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="others"
+                  placeholder=""
+                  [(ngModel)]="addData.others"
+                  name="others"
+                  disabled
+                />
               </div>
 
-              <div class="col-lg-12"><br>
+              <div class="col-lg-12">
+                <br />
                 <label for="exampleFormControlTextarea1">Remarks:</label>
-                <textarea class="form-control" id="remarks" rows="4" [(ngModel)]="addData.remarks" name="remarks"
-                  disabled></textarea>
+                <textarea
+                  class="form-control"
+                  id="remarks"
+                  rows="4"
+                  [(ngModel)]="addData.remarks"
+                  name="remarks"
+                  disabled
+                ></textarea>
               </div>
             </div>
           </div>
-          <br>
+          <br />
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">
-          Close</button>
+          Close
+        </button>
       </div>
     </div>
   </div>

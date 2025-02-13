@@ -1,26 +1,42 @@
 <div class="">
   <ng-template #isEmpty>
-    <app-import [data]="message" (testEvent)="parentMethod()"></app-import>
+    <app-import
+      [data]="message"
+      (testEvent)="parentMethod()"
+      (importData)="importMethod()"
+    ></app-import>
   </ng-template>
-  <div *ngIf="dataList.length>0; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
+  <div *ngIf="showOverlay">
+    <app-import-loading></app-import-loading>
+  </div>
+  <div
+    *ngIf="dataList.length > 0; else isEmpty"
+    class="card o-hidden border-2 shadow-sm my-5"
+  >
     <div class="card-body p-0">
       <!-- Nested Row within Card Body -->
       <div class="row">
-
         <div class="col-lg-12">
           <div class="p-5">
-            <div class="">
-            </div>
+            <div class=""></div>
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-4">Environmental Activities</h1>
             </div>
             <form class="user collapse show" id="collapseExample">
-              <button type="button" (click)="clearData()" class="btn btn-labeled btn btn-primary float-right"
-                data-toggle="modal" data-target="#ModalAdd">
-                <span class="btn-label"><i class="fa fa-plus"></i></span> Environmental activity</button>
+              <button
+                type="button"
+                (click)="clearData()"
+                class="btn btn-labeled btn btn-primary float-right"
+                data-toggle="modal"
+                data-target="#ModalAdd"
+              >
+                <span class="btn-label"><i class="fa fa-plus"></i></span>
+                Environmental activity
+              </button>
             </form>
             <div class="row">
-              <div class="col-lg-9"><br>
+              <div class="col-lg-9">
+                <br />
                 <p>List of Environmental Activities</p>
               </div>
             </div>
@@ -41,31 +57,45 @@
               </thead>
               <tbody>
                 <tr *ngFor="let dataItem of dataList; let i = index">
-                  <td>{{i+1}}</td>
-                  <td>{{dataItem.name}}</td>
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ dataItem.name }}</td>
                   <td>
                     <div *ngFor="let item of listofActivities">
-                      <span *ngIf="item.id == dataItem.type">{{item.type}}</span>
+                      <span *ngIf="item.id == dataItem.type">{{
+                        item.type
+                      }}</span>
                     </div>
                   </td>
-                  <td>{{dataItem.description}}</td>
-                  <td>{{dataItem.contactPerson}}</td>
-                  <td>{{dataItem.contactNo}}</td>
-                  <td>{{dataItem.location}}</td>
-                  <td>{{dataItem.brgyName}}</td>
-                  <td>{{dataItem.longtitude}}, {{dataItem.latitude}}</td>
+                  <td>{{ dataItem.description }}</td>
+                  <td>{{ dataItem.contactPerson }}</td>
+                  <td>{{ dataItem.contactNo }}</td>
+                  <td>{{ dataItem.location }}</td>
+                  <td>{{ dataItem.brgyName }}</td>
+                  <td>{{ dataItem.longtitude }}, {{ dataItem.latitude }}</td>
                   <td>
-
-                    <button (click)="addData = dataItem" data-toggle="modal" (click)="editToggle()"
-                      data-target="#ModalAdd" class="btn btn-info btn-circle">
-                      <i class="fa fa-pen"></i></button>&nbsp;
-                    <button (click)="SetMarker(dataItem); addData = dataItem" data-toggle="modal"
-                      data-target="#gmapModal" class="btn btn-success btn-circle">
-                      <i class="fas fa-globe"></i></button>&nbsp;
-                    <button class="btn btn-warning btn-circle" (click)="DeleteEnvironmentalActivities(dataItem)">
+                    <button
+                      (click)="addData = dataItem"
+                      data-toggle="modal"
+                      (click)="editToggle()"
+                      data-target="#ModalAdd"
+                      class="btn btn-info btn-circle"
+                    >
+                      <i class="fa fa-pen"></i></button
+                    >&nbsp;
+                    <button
+                      (click)="SetMarker(dataItem); addData = dataItem"
+                      data-toggle="modal"
+                      data-target="#gmapModal"
+                      class="btn btn-success btn-circle"
+                    >
+                      <i class="fas fa-globe"></i></button
+                    >&nbsp;
+                    <button
+                      class="btn btn-warning btn-circle"
+                      (click)="DeleteEnvironmentalActivities(dataItem)"
+                    >
                       <i class="fas fa-trash"></i>
                     </button>
-
                   </td>
                 </tr>
               </tbody>
@@ -79,21 +109,41 @@
 
 <!-- Modal -->
 
-<div class="modal fade" id="ModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
+<div
+  class="modal fade"
+  id="ModalAdd"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title text-dark" id="exampleModalLabel">Environmental Activities</h5>
-        <button type="button" #closebutton class="btn-close" data-dismiss="modal" data-target="#exampleModal"
-          aria-hidden="true" aria-label="Close"></button>
+        <h5 class="modal-title text-dark" id="exampleModalLabel">
+          Environmental Activities
+        </h5>
+        <button
+          type="button"
+          #closebutton
+          class="btn-close"
+          data-dismiss="modal"
+          data-target="#exampleModal"
+          aria-hidden="true"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
         <div class="row">
           <div class="col-lg-6">
             <label for="category">Barangay :</label>
-            <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.brgyId"
-              [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false">
+            <select
+              class="form-select"
+              aria-label="Default select example"
+              [(ngModel)]="addData.brgyId"
+              [ngClass]="toValidate.brgyId ? 'is-invalid' : ''"
+              (ngModelChange)="toValidate.brgyId = false"
+            >
               <option value="" disabled selected>Select Barangay</option>
               <option *ngFor="let item of barangayList" [value]="item.brgyId">
                 {{ item.brgyName }}
@@ -102,7 +152,11 @@
           </div>
           <div class="col-lg-6">
             <label for="category">Environmental Activity :</label>
-            <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.type">
+            <select
+              class="form-select"
+              aria-label="Default select example"
+              [(ngModel)]="addData.type"
+            >
               <option value="" disabled selected>Select Activity</option>
               <option value="1">Preservation/ Protection</option>
               <option value="2">Reforestation</option>
@@ -115,52 +169,103 @@
               <option value="9">Groundwater Extraction</option>
               <option value="10">Hunting of Wildlife Species</option>
               <option value="11">Others</option>
-
             </select>
           </div>
-        </div><br>
+        </div>
+        <br />
         <div class="form-group">
           <div class="">
             <div class="">
-              <label for="exampleFormControlInput1">Organization/Operator Name:</label>
-              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.name"
-                [(ngModel)]="dummy_addData.name" />
+              <label for="exampleFormControlInput1"
+                >Organization/Operator Name:</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id=""
+                placeholder=""
+                [(ngModel)]="addData.name"
+                [(ngModel)]="dummy_addData.name"
+              />
             </div>
             <br />
             <div class="">
-              <label for="exampleFormControlTextarea1">Description/Remarks :</label>
-              <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"
-                [(ngModel)]="addData.description"></textarea>
+              <label for="exampleFormControlTextarea1"
+                >Description/Remarks :</label
+              >
+              <textarea
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                rows="4"
+                [(ngModel)]="addData.description"
+              ></textarea>
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-lg-4">
-            <label for="exampleFormControlInput1">Contact Person/ Designation :</label>
-            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.contactPerson" />
+            <label for="exampleFormControlInput1"
+              >Contact Person/ Designation :</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id=""
+              placeholder=""
+              [(ngModel)]="addData.contactPerson"
+            />
           </div>
           <div class="col-lg-4">
             <label for="exampleFormControlInput1">Contact Details :</label>
-            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.contactNo" />
+            <input
+              type="text"
+              class="form-control"
+              id=""
+              placeholder=""
+              [(ngModel)]="addData.contactNo"
+            />
           </div>
           <div class="col-lg-4">
             <label>Location (#/Bldg/St./Purok) :</label>
-            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.location" />
+            <input
+              type="text"
+              class="form-control"
+              id=""
+              placeholder=""
+              [(ngModel)]="addData.location"
+            />
           </div>
         </div>
         <br />
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-target="#exampleModal"
-          aria-hidden="true">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          data-target="#exampleModal"
+          aria-hidden="true"
+        >
           <i class="fas fa-times">&nbsp;</i>Close
         </button>
-        <button type="button" *ngIf="visible" (click)="AddEnvironmentalActivities()" id="closeModal"
-          class="btn btn-primary">
+        <button
+          type="button"
+          *ngIf="visible"
+          (click)="AddEnvironmentalActivities()"
+          id="closeModal"
+          class="btn btn-primary"
+        >
           Submit
         </button>
-        <button type="button" *ngIf="not_visible" (click)="EditEnvironmentalActivities()" data-toggle="modal"
-          data-target="#exampleModal" aria-hidden="true" class="btn btn-primary">
+        <button
+          type="button"
+          *ngIf="not_visible"
+          (click)="EditEnvironmentalActivities()"
+          data-toggle="modal"
+          data-target="#exampleModal"
+          aria-hidden="true"
+          class="btn btn-primary"
+        >
           Save changes
         </button>
       </div>
@@ -169,13 +274,26 @@
 </div>
 
 <!-- modal area GEO -->
-<div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
+<div
+  class="modal fade"
+  id="gmapModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">SEPS GEOLOCATION TAGGING</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h5 class="modal-title" id="exampleModalLabel">
+          SEPS GEOLOCATION TAGGING
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -183,8 +301,16 @@
         <app-gmap></app-gmap>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="EditEnvironmentalActivities()">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="EditEnvironmentalActivities()"
+        >
+          Save changes
+        </button>
       </div>
     </div>
   </div>

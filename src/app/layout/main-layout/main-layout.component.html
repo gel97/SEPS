@@ -160,6 +160,12 @@
                 routerLink="Governance/age-group"
                 >AgeGroup</a
               >
+              <a
+                class="collapse-item"
+                routerLinkActive="active"
+                routerLink="Governance/population-of-indigenous-people"
+                >Population of Indigenous People</a
+              >
             </app-menu>
 
             <app-ddn>
@@ -204,6 +210,12 @@
                 routerLinkActive="active"
                 routerLink="Governance/city-location"
                 >Municipal/City Locations</a
+              >
+              <a
+                class="collapse-item"
+                routerLinkActive="active"
+                routerLink="Governance/flood-affected"
+                >Flood_Affected</a
               >
             </app-ddn>
           </div>
@@ -1428,6 +1440,7 @@
           <div class="topbar-divider d-none d-sm-block"></div>
           <li class="nav-item dropdown no-arrow mx-1">
             <span
+              role="button"
               *ngIf="set_year == active_set_year; else notActive"
               class="badge bg-success mt-4"
               >{{ set_year }}</span

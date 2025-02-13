@@ -110,4 +110,10 @@ export class BarangayOfficialService {
       { responseType: 'json' }
     );
   }
+  Import2(): Observable<any[]> {
+    return this.Http.post<any[]>(
+      this.Base.url + this.ApiUrl.post_import_purok(),
+      { responseType: 'json' }
+    );
+  }
 }

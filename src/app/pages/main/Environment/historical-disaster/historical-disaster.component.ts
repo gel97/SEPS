@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import Swal from 'sweetalert2';
 import { EnvironmentProfileService } from 'src/app/shared/Environment/environment-profile.service';
+import { ImportComponent } from 'src/app/components/import/import.component';
 
 @Component({
   selector: 'app-historical-disaster',
@@ -18,12 +19,15 @@ export class HistoricalDisasterComponent implements OnInit {
   setYear = Number(this.Auth.activeSetYear);
   munCityId = this.Auth.munCityId;
   userId = this.Auth.userId;
-
+  @ViewChild(ImportComponent)
+  private importComponent!: ImportComponent;
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
 
   message = 'Historical Disaster Profile';
-
+  visible: boolean = true;
+  not_visible: boolean = true;
+  required: boolean = true;
   listHis: any = [];
   addData: any = {};
   editData: any = {};
@@ -57,7 +61,9 @@ export class HistoricalDisasterComponent implements OnInit {
   parentMethod() {
     // alert('parent Method');
     this.addData = {};
-    // this.not_visible = false;
+    this.not_visible = false;
+    this.visible = true;
+    this.required = false;
     this.updateForm = false;
     this.resetForm();
     // this.required = false;
@@ -76,7 +82,76 @@ export class HistoricalDisasterComponent implements OnInit {
       },
     });
   }
+  import() {
+    let importData = 'EnvironmentProfile';
+    // this.view = this.importComponent.viewData;
+    this.importComponent.import(importData);
+  }
+  public showOverlay = false;
+  importMethod() {
+    this.showOverlay = true;
+    this.service.Import().subscribe({
+      next: (data) => {
+        this.ngOnInit();
+        if (data === null) {
+          this.showOverlay = false;
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            },
+          });
 
+          Toast.fire({
+            icon: 'info',
+            title: 'No data from previous year',
+          });
+        } else {
+          this.showOverlay = false;
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            },
+          });
+
+          Toast.fire({
+            icon: 'success',
+            title: 'Imported Successfully',
+          });
+        }
+      },
+      error: (error) => {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'warning',
+          title: 'Something went wrong',
+        });
+      },
+      complete: () => {},
+    });
+  }
   AddDescription(): void {
     this.addData.setYear = Number(this.setYear);
     this.addData.menuId = String(this.menuId);

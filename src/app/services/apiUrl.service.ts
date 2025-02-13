@@ -17,6 +17,10 @@ export class ApiUrl {
   delete_officials = (transId: any) => `/MunCityOfficial/${transId}`;
   post_report_officials = () => `/MunCityOfficial/Reports`;
   post_import_officials = () => `/MunCityOfficial/Import`;
+  get_Governance = (munCityId: any, setYear: any) =>
+    `/Menu/tGovernance/${munCityId}/${setYear}`;
+  get_SocioEcAct = (munCityId: any, setYear: any) =>
+    `/Menu/tSocio-EconomicAct/${munCityId}/${setYear}`;
 
   //Age Group
   post_get_AgeGroup = (munCityId: any, setYear: any) =>
@@ -28,6 +32,17 @@ export class ApiUrl {
     `/AgeGroup/${setYear}/${munCityId}`;
   delete_agegroup = (transId: any) => `/AgeGroup/${transId}`;
   post_update_agegroup = () => `/AgeGroup/Update`;
+  post_import_agegroup = () => `/AgeGroup/Import`;
+
+  //Ip People
+  post_get_PopIp = (munCityId: any, setYear: any) =>
+    `/Benificiaries${munCityId}&setYear=${setYear}`;
+  get_list_IPbyYear = (setYear: any, munCityId: any) =>
+    `/Benificiaries/${setYear}/${munCityId}`;
+  post_save_IP = () => `/Benificiaries`;
+  post_update_IP = () => `/Benificiaries/update`;
+  delete_IP = (transId: any) => `/Benificiaries/${transId}`;
+  post_import_IP = () => `/Benificiaries/Import`;
 
   // Barangay Officials
   post_get_barangay_officials = (munCityId: any, setYear: any) =>
@@ -51,6 +66,7 @@ export class ApiUrl {
   post_list_PrkBarangay = (munCityId: any) =>
     `/Barangay/ListBarangays?munCityId=${munCityId}`;
   delete_Prk = (transId: any) => `/PurokChair/${transId}`;
+  post_import_purok = () => `/PurokChair/Import`;
 
   //Physical Geographic Profile
   get_get_geo = (munCityId: any, setYear: any) =>
@@ -95,6 +111,9 @@ export class ApiUrl {
   post_upload_image_org = () => `/Image/UploadOrg`;
   // GIS Token
   post_gis_token = () => `/GisToken`;
+  //new pdf
+  get_pdf = (setYear: any, munCityId: any) =>
+    `/FloodAffected/generate_pdf/${setYear}/${munCityId}`;
   // MUN/CITY LIST
   get_all_muncity = () => `/MunLoc/List`;
   post_update_muncity = () => `/MunLoc/Update`;
@@ -117,6 +136,7 @@ export class ApiUrl {
     `/Barangay/ListBarangays?munCityId=${munCityId}`;
   post_report_demography = () => `/Demography/Reports`;
   post_reportMun_demography = () => `/Demography/Reports/MunV2`;
+  post_import_demo = () => `/Demography/Import`;
 
   //Provincial Fiscal
   post_get_provincialfiscal = (setYear: any) =>
@@ -598,6 +618,7 @@ export class ApiUrl {
   put_environment = () => `/Environment`;
   delete_environment = (transId: any) => `/Environment/${transId}`;
   post_report_environment = () => `/Environment/Reports`;
+  post_import_Environment = (menuId: any) => `/Environment/Import/${menuId}`;
   //Environment Act
   get_list_environment_activities = (setYear: any, munCityId: any) =>
     `/EnvironmentAct/${setYear}/${munCityId}`;
@@ -606,6 +627,7 @@ export class ApiUrl {
   delete_environment_activities = (transId: any) =>
     `/EnvironmentAct/${transId}`;
   post_report_EnvAct = () => `/EnvironmentAct/Reports`;
+  post_import_EnvAct = () => `/EnvironmentAct/Import`;
   //Environmen Profile
   get_list_environment_profile = (setYear: any, munCityId: any) =>
     `/EnvironmentProfile/${setYear}/${munCityId}`;
@@ -614,7 +636,12 @@ export class ApiUrl {
   post_report_environment_prof = () => `/EnvironmentProfile/Reports`;
   delete_environment_profile = (transId: any) =>
     `/EnvironmentProfile/${transId}`;
-
+  post_import_environment = () => `/EnvironmentProfile/Import`;
+  //Environment-affected-flood
+  post_environment_affected_flood = () => `/FloodAffected`;
+  get_environment_affected_flood = () => `/FloodAffected/AllList`;
+  delete_environment_affectd = (transId: any) => `/FloodAffected/${transId}`;
+  post_update_environment_affected_flood = () => `/FloodAffected/update`;
   //INFRASTRUCTURE & UTILITIES
 
   // Utility - SERVICES
