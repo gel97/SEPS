@@ -30,7 +30,82 @@
   />
 </div>
 <br />
+<!-- <div class="row w-row">
+  <div *ngIf="totalGovernanceData" class="col w-col w-col-6">
+    <div class="number-card number-card-content1">
+      <div class="number-card-dollars">Total Governance Data Count:</div>
+      <h1 class="number-card-number">{{ totalGovernanceData.totalData }}</h1>
+      <div class="number-card-divider"></div>
+      <div class="number-card-progress-wrapper"></div>
+    </div>
+  </div>
+  <div *ngIf="!totalGovernanceData">
+    <p>No governance data available.</p>
+  </div>
 
+  <div *ngIf="totalSocioEcAct" class="col w-col w-col-6">
+    <div class="number-card number-card-content2">
+      <div class="number-card-dollars">
+        Total Socio-Economic Act. Data Count:
+      </div>
+      <h1 class="number-card-number">{{ totalSocioEcAct.totalData }}</h1>
+      <div class="number-card-divider"></div>
+      <div class="number-card-progress-wrapper"></div>
+    </div>
+  </div>
+  <div *ngIf="!totalSocioEcAct">
+    <p>No SocioEcAct data available.</p>
+  </div>
+</div>
+<div class="row w-row">
+  <div *ngIf="totalSocioEcAct" class="col w-col w-col-6">
+    <div class="number-card number-card-content3">
+      <div class="number-card-dollars">Total Social Profile Data Count:</div>
+      <h1 class="number-card-number">Under Process</h1>
+      <div class="number-card-divider"></div>
+      <div class="number-card-progress-wrapper">
+        <div class="progress-spinner"></div>
+        <div class="progress-message">Processing data...</div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!totalSocioEcAct">
+    <p>No Social Profile data available.</p>
+  </div>
+  <div *ngIf="totalSocioEcAct" class="col w-col w-col-6">
+    <div class="number-card number-card-content4">
+      <div class="number-card-dollars">Total Environment Data Count:</div>
+      <h1 class="number-card-number">Under Process</h1>
+      <div class="number-card-divider"></div>
+      <div class="number-card-progress-wrapper">
+        <div class="progress-spinner"></div>
+        <div class="progress-message">Processing data...</div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!totalSocioEcAct">
+    <p>No Environment data available.</p>
+  </div>
+</div>
+
+<div *ngIf="totalSocioEcAct" class="col w-col w-col-6">
+  <div
+    class="number-card number-card-content4"
+    style="width: 500px; padding: 20px; margin: 10px auto"
+  >
+    <div class="number-card-dollars">
+      Total Infrastructure and Utilities Data Count:
+    </div>
+    <h1 class="number-card-number">Under Process</h1>
+    <div class="number-card-divider"></div>
+    <div class="number-card-progress-wrapper">
+      <div class="progress-spinner"></div>
+      <div class="progress-message">Processing data...</div>
+    </div>
+  </div>
+</div> -->
+
+<br />
 <div *ngFor="let item of filterNews" class="card shadow-sm mb-3">
   <!-- Card Header - Dropdown -->
   <!-- <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -122,3 +197,85 @@
     </div>
   </div>
 </div>
+<style>
+  .number-card {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  .w-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .w-col {
+    flex: 0 0 48%; /* Adjust width to allow some spacing between columns */
+    margin-bottom: 20px; /* Space between cards */
+  }
+
+  .number-card-number {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    color: #fff;
+    font-weight: 300;
+    font-size: 38px;
+    line-height: 44px;
+  }
+
+  .number-card-dollars {
+    color: hsla(0, 0%, 100%, 0.8);
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .number-card-divider {
+    height: 1px;
+    margin-top: 10px;
+    margin-bottom: 14px;
+    background-color: hsla(0, 0%, 100%, 0.15);
+  }
+
+  .number-card-progress-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .number-card-progress {
+    color: #fff;
+    text-align: right;
+  }
+
+  .tagline.number-card-currency {
+    color: #fff;
+  }
+
+  .number-card-content1 {
+    background-image: linear-gradient(
+      180deg,
+      #007bff,
+      #87ceeb
+    ); /* Blue to Sky Blue */
+  }
+  .number-card-content2 {
+    background-image: linear-gradient(
+      180deg,
+      #007bff,
+      #87ceeb
+    ); /* Blue to Sky Blue */
+  }
+  .number-card-content3 {
+    background-image: linear-gradient(
+      180deg,
+      #007bff,
+      #87ceeb
+    ); /* Blue to Sky Blue */
+  }
+  .number-card-content4 {
+    background-image: linear-gradient(
+      180deg,
+      #007bff,
+      #87ceeb
+    ); /* Blue to Sky Blue */
+  }
+</style>

@@ -57,7 +57,8 @@ export class AgeGroupComponent implements OnInit {
   count: number = 0;
   tableSize: number = 20;
   tableSizes: any = [20, 40, 60, 80, 100];
-
+  @ViewChild(ImportComponent)
+  private importComponent!: ImportComponent;
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
 
@@ -74,12 +75,87 @@ export class AgeGroupComponent implements OnInit {
     this.tableSize = event.target.value;
     this.p = 1;
   }
+  Init() {
+    this.list_of_barangay();
+    this.GetAgeGroupList();
+    this.getageGroup();
+  }
 
   ngOnInit(): void {
     this.list_of_barangay();
     this.GetAgeGroupList();
     this.getageGroup();
   }
+  import() {
+    let importData = 'EnvironmentAct';
+    // this.view = this.importComponent.viewData;
+    this.importComponent.import(importData);
+  }
+  importMethod() {
+    this.showOverlay = true;
+    this.service.Import().subscribe({
+      next: (data) => {
+        this.ngOnInit();
+        if (data === null) {
+          this.showOverlay = false;
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            },
+          });
+
+          Toast.fire({
+            icon: 'info',
+            title: 'No data from previous year',
+          });
+        } else {
+          this.showOverlay = false;
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            },
+          });
+
+          Toast.fire({
+            icon: 'success',
+            title: 'Imported Successfully',
+          });
+        }
+      },
+      error: (error) => {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'warning',
+          title: 'Something went wrong',
+        });
+      },
+      complete: () => {},
+    });
+  }
+  public showOverlay = false;
   editagegroup(group: any = {}) {
     this.editmodal = group;
     this.getageGroup();
@@ -285,14 +361,14 @@ export class AgeGroupComponent implements OnInit {
             this.agegrouplist = this.agegrouplist.filter(
               (item: any) => item.transId !== transId
             );
-  
+
             // Update the totals in the UI based on the response
             if (response.updatedTotals) {
               this.totalAllAges = response.updatedTotals.TotAllAges;
               this.totalMale = response.updatedTotals.TotMale;
               this.totalFemale = response.updatedTotals.TotFemale;
             }
-  
+
             // Show a success alert
             Swal.fire(
               'Deleted!',
@@ -316,7 +392,6 @@ export class AgeGroupComponent implements OnInit {
       }
     });
   }
-  
 
   clearData() {
     this.data = {};

@@ -50,7 +50,7 @@ export class CommunityHospitalComponent implements OnInit {
   dummyData: any = {};
   visible: boolean = true;
   not_visible: boolean = true;
-  isAdd:boolean = true;
+  isAdd: boolean = true;
   //required == not_visible
   required: boolean = true;
   latitude: any;
@@ -96,7 +96,7 @@ export class CommunityHospitalComponent implements OnInit {
     this.Service.Import(this.menuId).subscribe({
       next: (data) => {
         this.ngOnInit();
-        if(data.length === 0){
+        if (data.length === 0) {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -109,14 +109,12 @@ export class CommunityHospitalComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'info',
             title: 'No data from previous year',
           });
-        }
-        else
-        {
+        } else {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -129,7 +127,7 @@ export class CommunityHospitalComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'success',
             title: 'Imported Successfully',
@@ -245,7 +243,7 @@ export class CommunityHospitalComponent implements OnInit {
               bold: true,
               alignment: 'center',
             },
-             {
+            {
               text: 'Occupancy Rate',
               fillColor: 'black',
               color: 'white',
@@ -439,7 +437,7 @@ export class CommunityHospitalComponent implements OnInit {
         },
         complete: () => {
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait, "");
+          this.pdfService.GeneratePdf(data, isPortrait, '');
           console.log(data);
         },
       });
@@ -470,16 +468,12 @@ export class CommunityHospitalComponent implements OnInit {
   }
 
   AddHealthFacilities() {
-    // console.log('trap', this.addData);
-    // console.log('brgyid', this.addData.brgyId);
-    // this.dummy_addData = this.addData;
-    // console.log('trap_2', this.dummy_addData);
     this.toValidate.brgyId =
       this.addData.brgyId == '' || this.addData.brgyId == null ? true : false;
     this.toValidate.name =
       this.addData.name == '' || this.addData.name == undefined ? true : false;
 
-    if (this.toValidate.brgyId == true || this.toValidate.name == true) {
+    if (this.toValidate.brgyId || this.toValidate.name) {
       Swal.fire(
         'Missing Data!',
         'Please fill out the required fields',
@@ -493,21 +487,21 @@ export class CommunityHospitalComponent implements OnInit {
         this.addData.setYear = this.setYear;
         this.addData.munCityId = this.munCityId;
         this.addData.menuId = this.menuId;
-        console.log('brgylist', this.barangayList);
 
         const result = this.findBrgyId(this.addData.brgyId);
         this.longtitude = result.longitude;
         this.addData.longtitude = this.longtitude;
-        console.log('long', this.longtitude);
         this.latitude = result.latitude;
         this.addData.latitude = this.latitude;
-        console.log('lat', this.latitude);
 
         this.Service.AddHealthFacilities(this.addData).subscribe((request) => {
           if (!this.isCheck) {
-            this.closebutton.nativeElement.click();
+            if (this.closebutton?.nativeElement) {
+              this.closebutton.nativeElement.click();
+            } else {
+              console.error('closebutton is not defined');
+            }
           }
-          console.log('add', request);
           this.clearData();
           this.GetHealthFacilities();
           Swal.fire({
@@ -585,11 +579,12 @@ export class CommunityHospitalComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.Service.DeleteHealthFacilities(dataItem.transId).subscribe(
-          (request) => { this.ngOnInit();
+          (request) => {
+            this.ngOnInit();
           }
         );
         Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
-       // this.ngOnInit();
+        // this.ngOnInit();
       }
     });
   }

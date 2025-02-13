@@ -73,4 +73,12 @@ export class AgeGroupService {
       { responseType: 'json' }
     );
   }
+  Import(): Observable<any[]> {
+    return this.Http.post<any[]>(
+      this.Base.url + this.ApiUrl.post_import_agegroup(),
+      {
+        responseType: 'json',
+      }
+    );
+  }
 }

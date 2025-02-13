@@ -170,6 +170,8 @@ import { FilterDatePipe } from './filter-date.pipe';
 import { LunchingComponent } from './lunching/lunching.component';
 import { NGAComponent } from './Admin/nga/nga.component';
 import { AgeGroupComponent } from './pages/main/Governance/age-group/age-group.component';
+import { FloodaffectedComponent } from './pages/main/Environment/floodaffected/floodaffected.component';
+import { PopulationOfIndigenousPeopleComponent } from './pages/main/Governance/population-of-indigenous-people/population-of-indigenous-people.component';
 
 @NgModule({
   declarations: [
@@ -327,6 +329,8 @@ import { AgeGroupComponent } from './pages/main/Governance/age-group/age-group.c
     LunchingComponent,
     NGAComponent,
     AgeGroupComponent,
+    FloodaffectedComponent,
+    PopulationOfIndigenousPeopleComponent,
   ],
   imports: [
     MdbCollapseModule,

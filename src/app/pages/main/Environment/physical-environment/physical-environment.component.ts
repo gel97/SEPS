@@ -17,7 +17,9 @@ export class PhysicalEnvironmentComponent implements OnInit {
   setYear = Number(this.Auth.activeSetYear);
   munCityId: any = this.Auth.munCityId;
   userId: any = this.Auth.userId;
-
+  visible: boolean = true;
+  not_visible: boolean = true;
+  required: boolean = true;
   listEnvironment: any = [];
   AddData: any = {};
 
@@ -35,6 +37,16 @@ export class PhysicalEnvironmentComponent implements OnInit {
     this.AddData.desc6 = '';
     this.AddData.desc7 = '';
   }
+  parentMethod() {
+    // alert('parent Method');
+    this.AddData = {};
+    this.not_visible = false;
+    this.visible = true;
+    this.required = false;
+    //this.updateForm = false;
+    //this.resetForm();
+    // this.required = false;
+  }
 
   ngOnInit(): void {
     this.GetEnvironment();
@@ -43,6 +55,71 @@ export class PhysicalEnvironmentComponent implements OnInit {
 
   clearForm(): void {
     this.AddData = {};
+  }
+  public showOverlay = false;
+  importMethod() {
+    this.showOverlay = true;
+    this.EnvironmentService.Import(this.menuId).subscribe({
+      next: (data) => {
+        this.ngOnInit();
+        if (data === null) {
+          this.showOverlay = false;
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            },
+          });
+
+          Toast.fire({
+            icon: 'info',
+            title: 'No data from previous year',
+          });
+        } else {
+          this.showOverlay = false;
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            },
+          });
+
+          Toast.fire({
+            icon: 'success',
+            title: 'Imported Successfully',
+          });
+        }
+      },
+      error: (error) => {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'warning',
+          title: 'Something went wrong',
+        });
+      },
+      complete: () => {},
+    });
   }
 
   message = 'Physical Environment Profile';

@@ -18,7 +18,6 @@ export class ReportsService {
     private ApiUrl: ApiUrl,
     private Base: BaseUrl
   ) {}
-
   GetBarangayReport(data: any) {
     return this.http.post<any[]>(
       this.Base.url + this.ApiUrl.post_barangay_report(),

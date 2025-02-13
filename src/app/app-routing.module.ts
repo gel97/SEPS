@@ -126,6 +126,8 @@ import { DdnDashboardComponent } from './pages/main/Dashboard/ddn-dashboard/ddn-
 import { PrevRateComponent } from './pages/main/SocialProfile/Health/prev-rate/prev-rate.component';
 import { LunchingComponent } from './lunching/lunching.component';
 import { AgeGroupComponent } from './pages/main/Governance/age-group/age-group.component';
+import { FloodaffectedComponent } from './pages/main/Environment/floodaffected/floodaffected.component';
+import { PopulationOfIndigenousPeopleComponent } from './pages/main/Governance/population-of-indigenous-people/population-of-indigenous-people.component';
 const socioEconomic_TradeIndustry: string =
   'socio-economic/trade-and-industry/';
 const socioEconomic_Tourism: string = 'socio-economic/Tourism/';
@@ -576,6 +578,14 @@ const routes: Routes = [
       },
       { path: Governance + '/sk-voters', component: SkVotersComponent },
       { path: Governance + '/age-group', component: AgeGroupComponent },
+      {
+        path: Governance + '/flood-affected',
+        component: FloodaffectedComponent,
+      },
+      {
+        path: Governance + '/population-of-indigenous-people',
+        component: PopulationOfIndigenousPeopleComponent,
+      },
       {
         path: Governance + '/provincial-officials',
         component: ProvincialOfficialsComponent,

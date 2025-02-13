@@ -42,6 +42,7 @@ export class DemographyComponent implements OnInit {
   isCheck: boolean = false;
   visible: boolean = true;
   not_visible: boolean = true;
+  required: boolean = true;
 
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
@@ -509,6 +510,77 @@ export class DemographyComponent implements OnInit {
     this.importComponent.import(importData);
   }
 
+  parentMethod() {
+    this.demo = {};
+    this.not_visible = false;
+    this.visible = true;
+    this.required = false;
+  }
+  public showOverlay = false;
+  importMethod() {
+    this.showOverlay = true;
+    this.service.Import().subscribe({
+      next: (data) => {
+        this.Init();
+        if (data === null) {
+          this.showOverlay = false;
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            },
+          });
+
+          Toast.fire({
+            icon: 'info',
+            title: 'No data from previous year',
+          });
+        } else {
+          this.showOverlay = false;
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            },
+          });
+
+          Toast.fire({
+            icon: 'success',
+            title: 'Imported Successfully',
+          });
+        }
+      },
+      error: (error) => {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'warning',
+          title: 'Something went wrong',
+        });
+      },
+      complete: () => {},
+    });
+  }
   list_of_barangay() {
     this.service.ListBarangay().subscribe((data) => {
       this.barangays = <any>data;

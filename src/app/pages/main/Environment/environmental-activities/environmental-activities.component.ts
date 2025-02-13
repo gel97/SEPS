@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import Swal from 'sweetalert2';
+import { ImportComponent } from 'src/app/components/import/import.component';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
 import { EnvironmentActService } from 'src/app/shared/Environment/environment-act.service';
 
@@ -24,7 +25,8 @@ export class EnvironmentalActivitiesComponent implements OnInit {
     this.isCheck = isCheck;
     console.log('isCheck:', this.isCheck);
   }
-
+  @ViewChild(ImportComponent)
+  private importComponent!: ImportComponent;
   munCityName: string = this.Auth.munCityName;
   menuId = '3';
   dataList: any = [];
@@ -110,6 +112,76 @@ export class EnvironmentalActivitiesComponent implements OnInit {
     return this.barangayList.find(
       (item: { brgyId: any }) => item.brgyId === brgyId
     );
+  }
+  import() {
+    let importData = 'EnvironmentAct';
+    // this.view = this.importComponent.viewData;
+    this.importComponent.import(importData);
+  }
+  public showOverlay = false;
+  importMethod() {
+    this.showOverlay = true;
+    this.Service.Import().subscribe({
+      next: (data) => {
+        this.ngOnInit();
+        if (data === null) {
+          this.showOverlay = false;
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            },
+          });
+
+          Toast.fire({
+            icon: 'info',
+            title: 'No data from previous year',
+          });
+        } else {
+          this.showOverlay = false;
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            },
+          });
+
+          Toast.fire({
+            icon: 'success',
+            title: 'Imported Successfully',
+          });
+        }
+      },
+      error: (error) => {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'warning',
+          title: 'Something went wrong',
+        });
+      },
+      complete: () => {},
+    });
   }
 
   AddEnvironmentalActivities() {
