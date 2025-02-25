@@ -27,11 +27,10 @@ export class ExportExcelComponent implements OnInit {
 
   ExportExcel() {
     if (this.menuId !== undefined) {
-      this.reportService.GetExcelExportWithMenuIdBrgyId(
+      this.reportService.GetExcelExportWithMenuId(
         this.authService.setYear,
         this.authService.munCityId,
         this.apiControllerName,
-        this.authService.brgyId,
         this.menuId
       );
     } else {
@@ -42,23 +41,23 @@ export class ExportExcelComponent implements OnInit {
       );
     }
   }
-  ExportExcelBrgy() {
-    if (this.menuId !== undefined) {
-      this.reportService.GetExcelExportWithMenuIdBrgyId(
-        this.authService.setYear,
-        this.authService.munCityId,
-        this.apiControllerName,
-        this.authService.brgyId,
-        this.menuId
-      );
-    } else {
-      this.reportService.GetExcelExport(
-        this.authService.setYear,
-        this.authService.munCityId,
-        this.apiControllerName
-      );
-    }
-  }
+  // ExportExcelBrgy() {
+  //   if (this.menuId !== undefined) {
+  //     this.reportService.GetExcelExportWithMenuIdBrgyId(
+  //       this.authService.setYear,
+  //       this.authService.munCityId,
+  //       this.apiControllerName,
+  //       this.authService.brgyId,
+  //       this.menuId
+  //     );
+  //   } else {
+  //     this.reportService.GetExcelExport(
+  //       this.authService.setYear,
+  //       this.authService.munCityId,
+  //       this.apiControllerName
+  //     );
+  //   }
+  // }
   GetListSepYear() {
     this.sepDataService.ListSepYear().subscribe({
       next: (response) => {

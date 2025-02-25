@@ -92,6 +92,14 @@ export class FinancialInstitutionsComponent implements OnInit {
     this.visible = true;
     // this.required = false;
   }
+  Maps() {
+    var seps = 'SepsId?ModuleId=2&MunCityId=112314';
+
+    var decoded = btoa(seps);
+    var url = 'http://172.16.19.108/gis/seps/' + decoded;
+    console.log(url);
+    window.open(url, '_blank');
+  }
 
   public showOverlay = false;
   importMethod() {
@@ -169,58 +177,56 @@ export class FinancialInstitutionsComponent implements OnInit {
   ImportExcel(e: any) {
     Swal.fire({
       title: 'Are you sure?',
-      text: "",
+      text: '',
       icon: 'info',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, submit it!'
+      confirmButtonText: 'Yes, submit it!',
     }).then((result) => {
-      console.log(result)
+      console.log(result);
       if (result.isConfirmed) {
         this.reportService
-        .Get_ExImport(
-          e.target.files[0],
-          this.auth.setYear,
-          this.auth.munCityId,
-          'FinIns'
-        )
-        .subscribe((success) => {
-          Swal.fire({
-            title: 'Importing Data',
-            html: 'Please wait for a moment.',
-            timerProgressBar: true,
-            allowOutsideClick: false,
-            didOpen: () => {
-              Swal.showLoading();
-              setTimeout(() => {
-                if (success) {
-                  this.GetListFinancial();
-                  Swal.close();
-                  Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'File imported successfully',
-                    showConfirmButton: true,
-                  });
-                } else {
-                  Swal.close();
-                  Swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: 'Something went wrong. possible invalid file',
-                    showConfirmButton: true,
-                  });
-                }
-              }, 5000);
-            },
+          .Get_ExImport(
+            e.target.files[0],
+            this.auth.setYear,
+            this.auth.munCityId,
+            'FinIns'
+          )
+          .subscribe((success) => {
+            Swal.fire({
+              title: 'Importing Data',
+              html: 'Please wait for a moment.',
+              timerProgressBar: true,
+              allowOutsideClick: false,
+              didOpen: () => {
+                Swal.showLoading();
+                setTimeout(() => {
+                  if (success) {
+                    this.GetListFinancial();
+                    Swal.close();
+                    Swal.fire({
+                      position: 'center',
+                      icon: 'success',
+                      title: 'File imported successfully',
+                      showConfirmButton: true,
+                    });
+                  } else {
+                    Swal.close();
+                    Swal.fire({
+                      position: 'center',
+                      icon: 'error',
+                      title: 'Something went wrong. possible invalid file',
+                      showConfirmButton: true,
+                    });
+                  }
+                }, 5000);
+              },
+            });
           });
-        });
+      } else {
       }
-      else{
-      }
-    })
-
+    });
   }
 
   generatePdf(cat: number) {
@@ -584,7 +590,6 @@ export class FinancialInstitutionsComponent implements OnInit {
               ]);
             });
           }
-
         }
 
         tableData.push([
@@ -596,7 +601,8 @@ export class FinancialInstitutionsComponent implements OnInit {
           },
         ]);
 
-        for (const groupKey2 in dist2Group) { // Iterate district II data
+        for (const groupKey2 in dist2Group) {
+          // Iterate district II data
           const group2 = dist2Group[groupKey2];
           const [cityName2] = groupKey2.split('-');
           tableData.push([
@@ -708,7 +714,6 @@ export class FinancialInstitutionsComponent implements OnInit {
               ]);
             });
           }
-       
         }
 
         const table = {
@@ -727,7 +732,7 @@ export class FinancialInstitutionsComponent implements OnInit {
       },
       complete: () => {
         let isPortrait = false;
-        this.pdfService.GeneratePdf(data, isPortrait, "");
+        this.pdfService.GeneratePdf(data, isPortrait, '');
         console.log(data);
       },
     });

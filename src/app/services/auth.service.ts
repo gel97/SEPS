@@ -12,6 +12,9 @@ import { BaseUrl } from './baseUrl.service';
   providedIn: 'root',
 })
 export class AuthService {
+  menuId(setYear: any, munCityId: any, menuId: any, arg3: string, brgyId: any) {
+    throw new Error('Method not implemented.');
+  }
   login(username: string, password: string) {
     throw new Error('Method not implemented.');
   }

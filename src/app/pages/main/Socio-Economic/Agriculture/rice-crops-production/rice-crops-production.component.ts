@@ -12,10 +12,10 @@ import { ReportsService } from 'src/app/shared/Tools/reports.service';
 })
 export class RiceCropsProductionComponent implements OnInit {
   constructor(
-    private Auth          : AuthService,
-    private Service       : AgricultureService,
-    private modifyService : ModifyCityMunService,
-    private reportService : ReportsService,
+    private Auth: AuthService,
+    private Service: AgricultureService,
+    private modifyService: ModifyCityMunService,
+    private reportService: ReportsService
   ) {}
 
   modifyCityMun(cityMunName: string) {
@@ -135,59 +135,65 @@ export class RiceCropsProductionComponent implements OnInit {
   ImportExcel(e: any) {
     Swal.fire({
       title: 'Are you sure?',
-      text: "",
+      text: '',
       icon: 'info',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, submit it!'
+      confirmButtonText: 'Yes, submit it!',
     }).then((result) => {
-      console.log(result)
+      console.log(result);
       if (result.isConfirmed) {
         this.reportService
-        .PostImportWithMenuId(
-          e.target.files[0],
-          this.Auth.setYear,
-          this.Auth.munCityId,
-          'Agriculture',
-          "2"
-        )
-        .subscribe((success) => {
-          Swal.fire({
-            title: 'Importing Data',
-            html: 'Please wait for a moment.',
-            timerProgressBar: true,
-            allowOutsideClick: false,
-            didOpen: () => {
-              Swal.showLoading();
-              setTimeout(() => {
-                if (success) {
-                  this.GetListAgriculture();
-                  Swal.close();
-                  Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'File imported successfully',
-                    showConfirmButton: true,
-                  });
-                } else {
-                  Swal.close();
-                  Swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: 'Something went wrong. possible invalid file',
-                    showConfirmButton: true,
-                  });
-                }
-              }, 5000);
-            },
+          .PostImportWithMenuId(
+            e.target.files[0],
+            this.Auth.setYear,
+            this.Auth.munCityId,
+            'Agriculture',
+            '2'
+          )
+          .subscribe((success) => {
+            Swal.fire({
+              title: 'Importing Data',
+              html: 'Please wait for a moment.',
+              timerProgressBar: true,
+              allowOutsideClick: false,
+              didOpen: () => {
+                Swal.showLoading();
+                setTimeout(() => {
+                  if (success) {
+                    this.GetListAgriculture();
+                    Swal.close();
+                    Swal.fire({
+                      position: 'center',
+                      icon: 'success',
+                      title: 'File imported successfully',
+                      showConfirmButton: true,
+                    });
+                  } else {
+                    Swal.close();
+                    Swal.fire({
+                      position: 'center',
+                      icon: 'error',
+                      title: 'Something went wrong. possible invalid file',
+                      showConfirmButton: true,
+                    });
+                  }
+                }, 5000);
+              },
+            });
           });
-        });
+      } else {
       }
-      else{
-      }
-    })
-
+    });
+  }
+  ExportExcel() {
+    this.reportService.GetExcelExportWithMenuId(
+      this.Auth.setYear,
+      this.munCityId,
+      'Agriculture',
+      this.menuId
+    );
   }
 
   public showOverlay = false;
@@ -196,7 +202,7 @@ export class RiceCropsProductionComponent implements OnInit {
     this.Service.Import(this.menuId).subscribe({
       next: (data) => {
         this.ngOnInit();
-        if(data.length === 0){
+        if (data.length === 0) {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -209,14 +215,12 @@ export class RiceCropsProductionComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'info',
             title: 'No data from previous year',
           });
-        }
-        else
-        {
+        } else {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -229,7 +233,7 @@ export class RiceCropsProductionComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'success',
             title: 'Imported Successfully',
