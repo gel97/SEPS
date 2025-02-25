@@ -64,68 +64,74 @@ export class IndustrialEstatesComponent implements OnInit {
     this.visible = true;
     // this.required = false;
   }
-  GetListInd(){
+  GetListInd() {
     this.service.GetIndustrial().subscribe((data) => {
       this.Industrial = <any>data;
       this.Industrial = this.Industrial.filter((s: any) => s.tag == 1);
       console.log(this.Industrial);
     });
   }
+  Maps() {
+    var seps = 'SepsId?ModuleId=2&MunCityId=112314';
+
+    var decoded = btoa(seps);
+    var url = 'http://172.16.19.108/gis/seps/' + decoded;
+    console.log(url);
+    window.open(url, '_blank');
+  }
   ImportExcel(e: any) {
     Swal.fire({
       title: 'Are you sure?',
-      text: "",
+      text: '',
       icon: 'info',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, submit it!'
+      confirmButtonText: 'Yes, submit it!',
     }).then((result) => {
-      console.log(result)
+      console.log(result);
       if (result.isConfirmed) {
         this.reportService
-        .Get_ExImport(
-          e.target.files[0],
-          this.auth.setYear,
-          this.auth.munCityId,
-          'IndEst'
-        )
-        .subscribe((success) => {
-          Swal.fire({
-            title: 'Importing Data',
-            html: 'Please wait for a moment.',
-            timerProgressBar: true,
-            allowOutsideClick: false,
-            didOpen: () => {
-              Swal.showLoading();
-              setTimeout(() => {
-                if (success) {
-                  this.GetIndustrialEstates();
-                  Swal.close();
-                  Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'File imported successfully',
-                    showConfirmButton: true,
-                  });
-                } else {
-                  Swal.close();
-                  Swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: 'Something went wrong. possible invalid file',
-                    showConfirmButton: true,
-                  });
-                }
-              }, 5000);
-            },
+          .Get_ExImport(
+            e.target.files[0],
+            this.auth.setYear,
+            this.auth.munCityId,
+            'IndEst'
+          )
+          .subscribe((success) => {
+            Swal.fire({
+              title: 'Importing Data',
+              html: 'Please wait for a moment.',
+              timerProgressBar: true,
+              allowOutsideClick: false,
+              didOpen: () => {
+                Swal.showLoading();
+                setTimeout(() => {
+                  if (success) {
+                    this.GetIndustrialEstates();
+                    Swal.close();
+                    Swal.fire({
+                      position: 'center',
+                      icon: 'success',
+                      title: 'File imported successfully',
+                      showConfirmButton: true,
+                    });
+                  } else {
+                    Swal.close();
+                    Swal.fire({
+                      position: 'center',
+                      icon: 'error',
+                      title: 'Something went wrong. possible invalid file',
+                      showConfirmButton: true,
+                    });
+                  }
+                }, 5000);
+              },
+            });
           });
-        });
+      } else {
       }
-      else{
-      }
-    })
-
+    });
   }
 
   GeneratePDF() {
@@ -176,7 +182,7 @@ export class IndustrialEstatesComponent implements OnInit {
           return groups;
         }, {});
 
-        console.log("dist1Group ", dist1Group);
+        console.log('dist1Group ', dist1Group);
 
         const dist2Group = dist2.reduce((groups: any, item: any) => {
           const { munCityName } = item;
@@ -188,7 +194,7 @@ export class IndustrialEstatesComponent implements OnInit {
           return groups;
         }, {});
 
-        console.log("dist2Group ", dist2);
+        console.log('dist2Group ', dist2);
 
         tableData.push([
           {
@@ -212,14 +218,14 @@ export class IndustrialEstatesComponent implements OnInit {
             bold: true,
             alignment: 'center',
           },
-           {
+          {
             text: 'No. of Locators',
             fillColor: 'black',
             color: 'white',
             bold: true,
             alignment: 'center',
           },
-           {
+          {
             text: 'Barangay',
             fillColor: 'black',
             color: 'white',
@@ -237,7 +243,8 @@ export class IndustrialEstatesComponent implements OnInit {
           },
         ]);
 
-        for (const groupKey1 in dist1Group) { // Iterate district I data
+        for (const groupKey1 in dist1Group) {
+          // Iterate district I data
           const group1 = dist1Group[groupKey1];
           const [cityName1] = groupKey1.split('-');
           tableData.push([
@@ -250,30 +257,28 @@ export class IndustrialEstatesComponent implements OnInit {
           ]);
 
           group1.forEach((item: any, index: any) => {
-               tableData.push([
-            {
-              text: index+1,
-              fillColor: '#FFFFFF',
-            },
-            {
-              text: item.name,
-              fillColor: '#FFFFFF',
-            },
-            {
-              text: item.area,
-              fillColor: '#FFFFFF',
-            },
-             {
-              text: item.locatorsNo,
-              fillColor: '#FFFFFF',
-            },
-             {
-              text: item.brgyName,
-              fillColor: '#FFFFFF',
-            }
-             
-          ]);
-
+            tableData.push([
+              {
+                text: index + 1,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.name,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.area,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.locatorsNo,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.brgyName,
+                fillColor: '#FFFFFF',
+              },
+            ]);
           });
         }
 
@@ -286,7 +291,8 @@ export class IndustrialEstatesComponent implements OnInit {
           },
         ]);
 
-        for (const groupKey2 in dist2Group) { // Iterate district II data
+        for (const groupKey2 in dist2Group) {
+          // Iterate district II data
           const group2 = dist2Group[groupKey2];
           const [cityName2] = groupKey2.split('-');
           tableData.push([
@@ -299,36 +305,35 @@ export class IndustrialEstatesComponent implements OnInit {
           ]);
 
           group2.forEach((item: any, index: any) => {
-               tableData.push([
-           {
-              text: index+1,
-              fillColor: '#FFFFFF',
-            },
-            {
-              text: item.name,
-              fillColor: '#FFFFFF',
-            },
-            {
-              text: item.area,
-              fillColor: '#FFFFFF',
-            },
-             {
-              text: item.locatorsNo,
-              fillColor: '#FFFFFF',
-            },
-             {
-              text: item.brgyName,
-              fillColor: '#FFFFFF',
-            },
-          ]);
-
+            tableData.push([
+              {
+                text: index + 1,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.name,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.area,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.locatorsNo,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.brgyName,
+                fillColor: '#FFFFFF',
+              },
+            ]);
           });
         }
 
         const table = {
           margin: [0, 40, 0, 0],
           table: {
-            widths: [25, '*', '*','*', '*'],
+            widths: [25, '*', '*', '*', '*'],
             body: tableData,
           },
           layout: 'lightHorizontalLines',
@@ -341,7 +346,7 @@ export class IndustrialEstatesComponent implements OnInit {
       },
       complete: () => {
         let isPortrait = false;
-        this.pdfService.GeneratePdf(data, isPortrait, "");
+        this.pdfService.GeneratePdf(data, isPortrait, '');
         console.log(data);
       },
     });
@@ -353,7 +358,7 @@ export class IndustrialEstatesComponent implements OnInit {
     this.service.Import().subscribe({
       next: (data) => {
         this.ngOnInit();
-        if(data.length === 0){
+        if (data.length === 0) {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -366,14 +371,12 @@ export class IndustrialEstatesComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'info',
             title: 'No data from previous year',
           });
-        }
-        else
-        {
+        } else {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -386,7 +389,7 @@ export class IndustrialEstatesComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'success',
             title: 'Imported Successfully',

@@ -8,6 +8,7 @@ import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 import { PdfComponent } from 'src/app/components/pdf/pdf.component';
 import { PdfService } from 'src/app/services/pdf.service';
 import { ReportsService } from 'src/app/shared/Tools/reports.service';
+import { forkJoin } from 'rxjs';
 @Component({
   selector: 'app-commercial-establishments',
   templateUrl: './commercial-establishments.component.html',
@@ -19,6 +20,7 @@ export class CommercialEstablishmentsComponent implements OnInit {
   searchText: string = '';
   @ViewChild(PdfComponent)
   private pdfComponent!: PdfComponent;
+  selectedCategory: string = 'all';
 
   constructor(
     private pdfService: PdfService,
@@ -35,9 +37,14 @@ export class CommercialEstablishmentsComponent implements OnInit {
   message = 'Commercial Establishments';
 
   munCityName: string = this.auth.munCityName;
-
+  selectedCommercial: boolean = true; // Checkbox for Commercial
+  selectedBusiness: boolean = true; // Checkbox for Business
+  filteredEstab: any[] = []; // Stores the filtered list
   toValidate: any = {};
-  ComEstab: any = [];
+  ComEstab: any[] = [];
+  CommercialEstablishments: any[] = [];
+  BusinessEstablishments: any[] = [];
+  selectedEstabType: string = 'all';
   barangays: any = [];
   comm: any = {};
   editmodal: any = {};
@@ -148,6 +155,131 @@ export class CommercialEstablishmentsComponent implements OnInit {
   ngOnInit(): void {
     this.GetListCommercialEstab();
     this.list_of_barangay();
+    this.GetSeparatedData();
+    //this.selectedCategory = 'all';
+  }
+  GetSeparatedData() {
+    this.service.Get_separate().subscribe({
+      next: (response) => {
+        console.log('API Response:', response); // Debugging API response
+
+        if (!response || typeof response !== 'object') {
+          console.error('Unexpected API response format:', response);
+          alert('Unexpected data format. Please check the API.');
+          return;
+        }
+
+        // Separate data properly
+        this.CommercialEstablishments = response.CommercialEstablishments || [];
+        this.BusinessEstablishments = response.BusinessEstablishments || [];
+        this.ComEstab = [
+          ...this.CommercialEstablishments,
+          ...this.BusinessEstablishments,
+        ].map((item) => ({
+          ...item,
+          selected: false,
+        }));
+
+        this.applyFilters();
+      },
+      error: (error) => {
+        console.error('Error fetching data:', error);
+        alert('Failed to load data. Please check the API.');
+      },
+    });
+  }
+
+  applyFilters() {
+    if (this.selectedCategory === 'commercial') {
+      this.filteredEstab = [...this.CommercialEstablishments];
+    } else if (this.selectedCategory === 'business') {
+      this.filteredEstab = [...this.BusinessEstablishments];
+    } else {
+      this.filteredEstab = [
+        ...this.CommercialEstablishments,
+        ...this.BusinessEstablishments,
+      ];
+    }
+  }
+
+  moveToCategory(type: string) {
+    const selectedItems = this.ComEstab.filter((item) => item.selected);
+
+    if (selectedItems.length === 0) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'No Selection',
+        text: 'Please select at least one establishment.',
+      });
+      return;
+    }
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `You are about to move ${
+        selectedItems.length
+      } establishment(s) to ${
+        type === 'CommercialEstablishments' ? 'Commercial' : 'Business'
+      } category.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, move it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Remove selected items from original list
+        this.ComEstab = this.ComEstab.filter((item) => !item.selected);
+
+        // Prepare updated items with new category
+        const updatedItems = selectedItems.map((item) => ({
+          ...item,
+          category:
+            type === 'CommercialEstablishments' ? 'Commercial' : 'Business',
+        }));
+
+        // Call the API for each selected item
+        const updateRequests = updatedItems.map((item) =>
+          this.service.UpdateBuilding(item.transId, type)
+        );
+
+        // Execute all API calls and wait for completion
+        forkJoin(updateRequests).subscribe(
+          (responses) => {
+            console.log('Updated Successfully:', responses);
+
+            // Move items to the correct category list
+            if (type === 'CommercialEstablishments') {
+              this.CommercialEstablishments.push(...updatedItems);
+            } else {
+              this.BusinessEstablishments.push(...updatedItems);
+            }
+
+            // Refresh displayed data
+            this.applyFilters();
+
+            Swal.fire({
+              icon: 'success',
+              title: 'Success!',
+              text: 'Selected establishments have been moved successfully.',
+            });
+          },
+          (error) => {
+            console.error('Error updating category:', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops!',
+              text: 'Failed to update. Please try again.',
+            });
+          }
+        );
+      }
+    });
+  }
+
+  toggleSelectAll(event: any) {
+    const isChecked = event.target.checked;
+    this.ComEstab.forEach((item) => (item.selected = isChecked));
   }
 
   markerObj: any = {};

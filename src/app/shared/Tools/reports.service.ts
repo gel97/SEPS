@@ -287,76 +287,75 @@ export class ReportsService {
       },
     });
   }
-  GetExcelExportWithMenuIdBrgyId(
-    setYear: number,
-    munCityId: string,
-    apiControllerName: string,
-    menuId: string,
-    brgyId: string
-  ) {
-    Swal.fire({
-      title: 'Exporting Data',
-      html: 'Please wait for a moment.',
-      timerProgressBar: true,
-      allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading();
-        const httpOptions: any = {
-          headers: new HttpHeaders({
-            Accept:
-              'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-          }),
-          responseType: 'blob',
-          observe: 'response',
-        };
+  // GetExcelExportWithMenuIdBrgyId(
+  //   setYear: number,
+  //   munCityId: string,
+  //   apiControllerName: string,
+  //   menuId: string,
+  //   brgyId: string
+  // ) {
+  //   Swal.fire({
+  //     title: 'Exporting Data',
+  //     html: 'Please wait for a moment.',
+  //     timerProgressBar: true,
+  //     allowOutsideClick: false,
+  //     didOpen: () => {
+  //       Swal.showLoading();
+  //       const httpOptions: any = {
+  //         headers: new HttpHeaders({
+  //           Accept:
+  //             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  //         }),
+  //         responseType: 'blob',
+  //         observe: 'response',
+  //       };
 
-        this.http
-          .get<HttpResponse<Blob>>(
-            this.Base.url +
-              this.ApiUrl.get_export_with_menuId_BrgyId(
-                setYear,
-                munCityId,
-                apiControllerName,
-                menuId,
-                brgyId
-              ),
-            httpOptions
-          )
-          .subscribe((response: any) => {
-            const contentDispositionHeader = response.headers.get(
-              'Content-Disposition'
-            );
-            const fileNameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-            const matches = fileNameRegex.exec(contentDispositionHeader);
-            const fileName =
-              matches !== null && matches[1]
-                ? matches[1].replace(/['"]/g, '')
-                : 'file.xlsx';
+  //       this.http
+  //         .get<HttpResponse<Blob>>(
+  //           this.Base.url +
+  //             this.ApiUrl.get_export_with_menuId_BrgyId(
+  //               setYear,
+  //               munCityId,
+  //               apiControllerName,
+  //               menuId,
+  //               brgyId
+  //             ),
+  //           httpOptions
+  //         )
+  //         .subscribe((response: any) => {
+  //           const contentDispositionHeader = response.headers.get(
+  //             'Content-Disposition'
+  //           );
+  //           const fileNameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+  //           const matches = fileNameRegex.exec(contentDispositionHeader);
+  //           const fileName =
+  //             matches !== null && matches[1]
+  //               ? matches[1].replace(/['"]/g, '')
+  //               : 'file.xlsx';
 
-            const blob = new Blob([response.body], {
-              type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            });
+  //           const blob = new Blob([response.body], {
+  //             type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  //           });
 
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = fileName;
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-            document.body.removeChild(a);
-            Swal.close();
-          });
-      },
-    });
-  }
+  //           const url = window.URL.createObjectURL(blob);
+  //           const a = document.createElement('a');
+  //           a.href = url;
+  //           a.download = fileName;
+  //           document.body.appendChild(a);
+  //           a.click();
+  //           window.URL.revokeObjectURL(url);
+  //           document.body.removeChild(a);
+  //           Swal.close();
+  //         });
+  //     },
+  //   });
+  // }
 
   GetExcelExportWithMenuId(
     setYear: number,
     munCityId: string,
     apiControllerName: string,
-    menuId: string,
-    brgyId: string
+    menuId: any
   ) {
     Swal.fire({
       title: 'Exporting Data',
@@ -377,18 +376,16 @@ export class ReportsService {
           setYear,
           munCityId,
           apiControllerName,
-          brgyId,
           menuId,
         });
         this.http
           .get<HttpResponse<Blob>>(
             this.Base.url +
               this.ApiUrl.get_export_with_menuId(
+                menuId,
                 setYear,
                 munCityId,
-                apiControllerName,
-                menuId,
-                brgyId
+                apiControllerName
               ),
             httpOptions
           )

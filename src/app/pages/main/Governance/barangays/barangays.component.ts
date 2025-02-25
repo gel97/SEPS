@@ -89,15 +89,15 @@ export class BarangaysComponent implements OnInit {
       console.log(this.listPrkBrgy);
     });
   }
-  ExportExcelBrgy() {
-    this.reportService.GetExcelExportWithMenuIdBrgyId(
-      this.auth.setYear,
-      this.auth.munCityId,
-      this.apiControllerName,
-      this.auth.brgyId,
-      'PurokChair'
-    );
-  }
+  // ExportExcelBrgy() {
+  //   this.reportService.GetExcelExportWithMenuIdBrgyId(
+  //     this.auth.setYear,
+  //     this.auth.munCityId,
+  //     this.apiControllerName,
+  //     this.auth.brgyId,
+  //     'PurokChair'
+  //   );
+  // }
 
   handleOnTabChange(isBarangay: boolean) {
     this.isBarangay = isBarangay;

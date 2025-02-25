@@ -84,6 +84,14 @@ export class ResortsComponent implements OnInit {
     this.gmapComponent.setMarker(this.markerObj);
     console.log('marker', this.markerObj);
   }
+  Maps() {
+    var seps = 'SepsId?ModuleId=2&MunCityId=112314';
+
+    var decoded = btoa(seps);
+    var url = 'http://172.16.19.108/gis/seps/' + decoded;
+    console.log(url);
+    window.open(url, '_blank');
+  }
 
   public showOverlay = false;
   importMethod() {

@@ -199,6 +199,10 @@ export class ApiUrl {
 
   get_com_estab_cat = () => `/ComEstabCategory/List`;
   get_com_estab_type = () => `/ComEstabLineBusiness/List`;
+  get_com_estab_separate = (munCityId: any, setYear: any) =>
+    `/ComEstab/separate/${setYear}/${munCityId}`;
+  put_com_estab_building = (transId: any, type: any) =>
+    `/ComEstab/update-building/${transId}/${type}`;
 
   //Summary Commercial
   get_summ_commercial = (munCityId: any, setYear: any) =>
@@ -258,14 +262,14 @@ export class ApiUrl {
   get_manuf_estab_types = () => `/ManEstabType/List`;
 
   //Excel
-  get_export_with_menuId_BrgyId = (
-    setYear: any,
-    MunCityId: any,
-    apiControllerName: string,
-    menuId: string,
-    brgyId: string
-  ) =>
-    `/${apiControllerName}/export_excel/${menuId}/${setYear}/${MunCityId}/${brgyId}`;
+  // get_export_with_menuId_BrgyId = (
+  //   setYear: any,
+  //   MunCityId: any,
+  //   apiControllerName: string,
+  //   menuId: string,
+  //   brgyId: string
+  // ) =>
+  //   `/${apiControllerName}/export_excel/${menuId}/${setYear}/${MunCityId}/${brgyId}`;
   post_ExImport = (apiControllerName: string) =>
     `/${apiControllerName}/import_excel`;
   get_ExExport = (setYear: any, MunCityId: any, apiControllerName: string) =>
@@ -274,13 +278,12 @@ export class ApiUrl {
     `/${apiController}/export_template/${munCityId}`;
 
   get_export_with_menuId = (
+    menuId: string,
     setYear: any,
     MunCityId: any,
-    apiControllerName: string,
-    menuId: string,
-    brgyId: string
-  ) =>
-    `/${apiControllerName}/export_excel/${menuId}/${setYear}/${MunCityId}/${brgyId}`;
+    apiControllerName: string
+  ) => `/${apiControllerName}/export_excel/${menuId}/${setYear}/${MunCityId}`;
+
   get_import_with_menuId = (
     setYear: any,
     MunCityId: any,
