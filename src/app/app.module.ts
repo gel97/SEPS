@@ -172,6 +172,9 @@ import { NGAComponent } from './Admin/nga/nga.component';
 import { AgeGroupComponent } from './pages/main/Governance/age-group/age-group.component';
 import { FloodaffectedComponent } from './pages/main/Environment/floodaffected/floodaffected.component';
 import { PopulationOfIndigenousPeopleComponent } from './pages/main/Governance/population-of-indigenous-people/population-of-indigenous-people.component';
+import { AgriProfComponent } from './pages/main/Province/agri-prof/agri-prof.component';
+import { SusceptibleFloodComponent } from './pages/main/Province/susceptible-flood/susceptible-flood.component';
+import { RainInducedComponent } from './pages/main/Province/rain-induced/rain-induced.component';
 
 @NgModule({
   declarations: [
@@ -331,6 +334,9 @@ import { PopulationOfIndigenousPeopleComponent } from './pages/main/Governance/p
     AgeGroupComponent,
     FloodaffectedComponent,
     PopulationOfIndigenousPeopleComponent,
+    AgriProfComponent,
+    SusceptibleFloodComponent,
+    RainInducedComponent,
   ],
   imports: [
     MdbCollapseModule,

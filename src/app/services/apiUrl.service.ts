@@ -116,6 +116,7 @@ export class ApiUrl {
     `/FloodAffected/generate_pdf/${setYear}/${munCityId}`;
   // MUN/CITY LIST
   get_all_muncity = () => `/MunLoc/List`;
+  get_dis_muncity = () => `/MunLoc/byDistrict`;
   post_update_muncity = () => `/MunLoc/Update`;
 
   // Mun Loc Building
@@ -199,7 +200,7 @@ export class ApiUrl {
 
   get_com_estab_cat = () => `/ComEstabCategory/List`;
   get_com_estab_type = () => `/ComEstabLineBusiness/List`;
-  get_com_estab_separate = (munCityId: any, setYear: any) =>
+  get_com_estab_separate = (setYear: any, munCityId: any) =>
     `/ComEstab/separate/${setYear}/${munCityId}`;
   put_com_estab_building = (transId: any, type: any) =>
     `/ComEstab/update-building/${transId}/${type}`;
@@ -506,6 +507,21 @@ export class ApiUrl {
   delete_health_prev_rate = (transId: any) => `/HealthPrevRate/${transId}`;
   post_import_health_prev_rate = () => `/HealthPrevRate/Import`;
   post_report_health_prev_rate = () => `/HealthPrevRate/Reports `;
+  //susceptible-flood
+  get_list_susceptible = (setYear: any) => `/SusceptibleFlood/List/${setYear}`;
+  post_susceptible = () => `/SusceptibleFlood`;
+  put_susceptible = () => `/SusceptibleFlood`;
+  delete_susceptible = (transId: any) => `/SusceptibleFlood/${transId}`;
+  //Rain-Induced
+  get_list_rainInduced = (setYear: any) => `/RainInduced/List/${setYear}`;
+  post_rainInduced = () => `/RainInduced`;
+  put_rainInduced = () => `/RainInduced`;
+  delete_rainInduced = (transId: any) => `/RainInduced/${transId}`;
+
+  //pdfp
+  post_save_pdfp = () => `/pdfp/upload`;
+  get_list_pdfp = (setYear: any, munCityId: any) =>
+    `/pdfp/${setYear}/${munCityId}`;
 
   // Health -> Sanitary
   get_list_health_sanitary = (setYear: any, munCityId: any) =>
@@ -544,6 +560,13 @@ export class ApiUrl {
   post_safety_crime_types = () => `/SafetyCrimeTypes`;
   put_safety_crime_types = () => `/SafetyCrimeTypes`;
   delete_safety_crime_types = (recNo: any) => `/SafetyCrimeTypes/${recNo}`;
+  //Provincial Agri Prof
+  get_list_provincial_agri = () => `/AgriProf/List`;
+  get_provincial_agri = (setYear: any, munCityId: any) =>
+    `/ProvAgri/${setYear}/${munCityId}`;
+  post_provincial_agri = () => `/ProvAgri`;
+  put_provincial_agri = () => `/ProvAgri/update`;
+  delete_provincial_agri = (transId: any) => `/ProvAgri/${transId}`;
 
   // Safety -> SafetyStatistics
   get_safety_statistics = (setYear: any, munCityId: any) =>

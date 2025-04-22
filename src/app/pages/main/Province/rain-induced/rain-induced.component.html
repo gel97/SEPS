@@ -1,0 +1,315 @@
+<div class="bg-lightblue py-2 collapse-inner rounded">
+  <!-- Upload Button -->
+  <button (click)="triggerFileInput()" class="btn btn-primary btn-sm ml-2">
+    + Upload File
+  </button>
+  <input
+    type="file"
+    #fileInput
+    (change)="onFileSelected($event)"
+    hidden
+    accept=".xlsx, .xls"
+  />
+  <!-- Render multiple tables -->
+  <div *ngFor="let table of structuredTableData" class="mt-4">
+    <h5 class="font-weight-bold text-dark">{{ table.title }}</h5>
+
+    <div *ngIf="table.sheetNames?.length">
+      <small><strong>Sheets:</strong> {{ table.sheetNames.join(", ") }}</small>
+    </div>
+
+    <table class="table table-bordered mt-2">
+      <thead>
+        <!-- Main Headers -->
+        <tr>
+          <ng-container *ngFor="let header of table.mainHeaders">
+            <th
+              [attr.colspan]="
+                header.subHeaders?.length > 0 ? header.subHeaders.length : 1
+              "
+              [attr.rowspan]="header.subHeaders?.length > 0 ? 1 : 2"
+            >
+              {{ header.name }}
+            </th>
+          </ng-container>
+        </tr>
+
+        <!-- Subheaders Row (only if at least one header has subheaders) -->
+        <tr *ngIf="hasSubHeaders(table.mainHeaders)">
+          <ng-container *ngFor="let header of table.mainHeaders">
+            <ng-container *ngIf="header.subHeaders?.length > 0">
+              <th *ngFor="let sub of header.subHeaders">
+                {{ sub }}
+              </th>
+            </ng-container>
+          </ng-container>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let row of table.structuredData">
+          <td *ngFor="let cell of row" [attr.rowspan]="cell.rowSpan">
+            {{ cell.value }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- <pre>{{ table.mainHeaders | json }}</pre> -->
+    <!-- ✅ Action buttons below the table -->
+    <div class="mb-3">
+      <ng-container *ngIf="!table.isEditing">
+        <button class="btn btn-warning btn-sm mr-2" (click)="startEdit(table)">
+          Edit
+        </button>
+        <button class="btn btn-danger btn-sm mr-2" (click)="deleteTable(table)">
+          Delete
+        </button>
+      </ng-container>
+
+      <ng-container *ngIf="table.isEditing">
+        <button class="btn btn-success btn-sm mr-2" (click)="saveEdit(table)">
+          Save
+        </button>
+        <button class="btn btn-secondary btn-sm" (click)="cancelEdit(table)">
+          Cancel
+        </button>
+      </ng-container>
+
+      <!-- Optional Export Buttons -->
+      <!-- <button class="btn btn-outline-success btn-sm mr-2" (click)="exportTableToExcel(table)">
+        Export to Excel
+      </button>
+      <button class="btn btn-outline-danger btn-sm" (click)="exportTableToPDF(table)">
+        Export to PDF
+      </button> -->
+    </div>
+  </div>
+
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      border: 1px solid black;
+      padding: 5px;
+      text-align: center; /* Ensures numbers are centered */
+    }
+  </style>
+
+  <!-- <div class="">
+  <div class="card o-hidden border-2 shadow-sm my-5">
+    <div class="card-body p-0">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="p-5">
+            <div class="text-center">
+              <h1 class="h4 mb-4">Rain-Induced Landslide</h1>
+              <label
+                ><strong>
+                  Provincial Development and Physical Framework Plan
+                </strong></label
+              ><br />
+            </div>
+            <div class="row">
+              <div class="col-lg-9">
+                <br />
+                <p>List of Municipality</p>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="table-responsive">
+                  <table class="table table-framed table-hover table-striped">
+                    <thead class="table-dark">
+                      <tr>
+                        <th scope="col" class="text-center" rowspan="2">
+                          Municipality/City
+                        </th>
+                        <th scope="col" class="text-center" colspan="3">
+                          Susceptibility (has.)
+                        </th>
+                        <th scope="col" class="text-center" rowspan="2">
+                          Action
+                        </th>
+                      </tr>
+                      <tr>
+                        <th scope="col" class="text-center">High</th>
+                        <th scope="col" class="text-center">Moderate</th>
+                        <th scope="col" class="text-center">Low</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr *ngFor="let item of listData; index as i">
+                        <td class="text-center">
+                          <b>{{ item.munCityName }}</b>
+                        </td>
+                        <td class="text-center">{{ item.high }}</td>
+                        <td class="text-center">{{ item.moderate }}</td>
+                        <td class="text-center">{{ item.low }}</td>
+                        <td
+                          *ngIf="
+                            item.transId && item.munCityId == o_munCityId;
+                            else isADD
+                          "
+                          class="text-center"
+                        >
+                          <app-admin>
+                            <div class="d-inline-flex">
+                              <button
+                                (click)="data = item; isAdd = false"
+                                class="btn btn-info btn-circle"
+                                data-toggle="modal"
+                                data-target="#openModal"
+                              >
+                                <i class="fa fa-pen"></i>
+                              </button>
+                              &nbsp;
+                              <button
+                                type="button"
+                                title="Delete"
+                                class="btn btn-warning btn-circle"
+                                (click)="DeleteData(item.transId, i, item)"
+                              >
+                                <i class="fa fa-trash"></i>
+                              </button>
+                            </div>
+                          </app-admin>
+                        </td>
+                        <ng-template #isADD>
+                          <td class="text-center">
+                            <app-admin>
+                              <button
+                                *ngIf="item.munCityId == o_munCityId"
+                                (click)="data = item; isAdd = true"
+                                class="btn btn-primary btn-circle"
+                                data-toggle="modal"
+                                data-target="#openModal "
+                              >
+                                <i class="fa fa-plus"></i>
+                              </button>
+                            </app-admin>
+                          </td>
+                        </ng-template>
+                      </tr>
+
+                      
+                      <tr class="font-weight-bold">
+                        <td class="text-center">
+                          <b>Davao del Norte (Total)</b>
+                        </td>
+                        <td class="text-center">
+                          <b>{{ getTotal("high") }}</b>
+                        </td>
+                        <td class="text-center">
+                          <b>{{ getTotal("moderate") }}</b>
+                        </td>
+                        <td class="text-center">
+                          <b>{{ getTotal("low") }}</b>
+                        </td>
+                        <td class="text-center"><b></b></td>
+                    
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="modal fade bd-example-modal-lg"
+    id="openModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="myLargeModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalScrollableTitle">
+            Prevalence Rate
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <form>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="high">High:</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="high"
+                    placeholder="Enter value"
+                    [(ngModel)]="data.high"
+                    [ngModelOptions]="{ standalone: true }"
+                    pattern="^\d*\.?\d+$"
+                  />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="moderate">Moderate:</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="moderate"
+                    placeholder="Enter value"
+                    [(ngModel)]="data.moderate"
+                    [ngModelOptions]="{ standalone: true }"
+                    pattern="^\d*\.?\d+$"
+                  />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="low">Low:</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="low"
+                    placeholder="Enter value"
+                    [(ngModel)]="data.low"
+                    [ngModelOptions]="{ standalone: true }"
+                    pattern="^\d*\.?\d+$"
+                  />
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="isAdd ? AddData() : EditData()"
+          >
+            Save Changes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+</div>

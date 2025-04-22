@@ -1,149 +1,230 @@
 <div class="">
   <ng-template #isEmpty>
-    <app-import [data]="message" (testEvent)="parentMethod()" (importData)="importMethod()"></app-import>
+    <app-import
+      [data]="message"
+      (testEvent)="parentMethod()"
+      (importData)="importMethod()"
+    ></app-import>
   </ng-template>
 
   <div *ngIf="showOverlay">
     <app-import-loading></app-import-loading>
   </div>
-  <div *ngIf="viewData ; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
+  <div
+    *ngIf="viewData; else isEmpty"
+    class="card o-hidden border-2 shadow-sm my-5"
+  >
     <div class="card-body p-0">
       <!-- Nested Row within Card Body -->
       <div class="row">
         <div class="col-lg-12">
           <div class="p-5">
             <div class="text-center">
-              <h1 class="h4 text-gray-900 mb-4">General Agricultural Profile </h1>
-              <label><strong>Agriculture - {{modifyCityMun(munCityName)}} </strong></label><br>
-
+              <h1 class="h4 text-gray-900 mb-4">
+                General Agricultural Profile
+              </h1>
+              <label
+                ><strong
+                  >Agriculture - {{ modifyCityMun(munCityName) }}
+                </strong></label
+              ><br />
             </div>
-            <div  class="form-inline float-right ">
+            <div class="form-inline float-right">
               <app-admin>
-                <button *ngIf="!Data" (click)="isAdd = true; isCheck=true" class="btn btn-primary" data-bs-toggle="modal"
-                  data-bs-target="#mEducation">
+                <button
+                  *ngIf="!Data"
+                  (click)="isAdd = true; isCheck = true"
+                  class="btn btn-primary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#mEducation"
+                >
                   <i class="fa fa-plus"></i>
                   Agriultural Profile
                 </button>
               </app-admin>
               &nbsp;
               <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
-            </div><br>
-            <br>&nbsp;&nbsp;
+            </div>
+            <br />
+            <br />&nbsp;&nbsp;
             <div class="table-responsive">
               <table class="table table-light table-striped">
                 <thead class="table-dark">
                   <tr>
-                    <th style="text-align: center;">Commodities</th>
-                    <th style="text-align: center;">No. of Hectares</th>
-                    <th style="text-align: center;">No. of Farmers</th>
+                    <th style="text-align: center">Commodities</th>
+                    <th style="text-align: center">No. of Hectares</th>
+                    <th style="text-align: center">No. of Farmers</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td scope="col"><strong>{{modifyCityMun(munCityName)}}</strong></td>
-                    <td style="text-align: center;"></td>
+                       <td scope="col">
+                      <strong>{{ modifyCityMun(munCityName) }}</strong>
+                    </td>
+                    <td style="text-align: center"></td>
                     <td></td>
+                  </tr>
+
                   <tr>
                     <td scope="col">Paddy Rice - Irrigated:</td>
-                    <td style="text-align: center;">{{addData.riceIrrigArea}}</td>
-                    <td style="text-align: center;">{{addData.riceIrrigFarmersNo}}</td>
-
+                    <td style="text-align: center">
+                      {{ addData.riceIrrigArea }}
+                    </td>
+                    <td style="text-align: center">
+                      {{ addData.riceIrrigFarmersNo }}
+                    </td>
                   </tr>
                   <tr>
                     <td scope="col">Paddy Rice - Rain Fed</td>
-                    <td style="text-align: center;">{{addData.riceRainArea}}</td>
-                    <td style="text-align: center;">{{addData.riceRainFarmersNo}}</td>
+                    <td style="text-align: center">
+                      {{ addData.riceRainArea }}
+                    </td>
+                    <td style="text-align: center">
+                      {{ addData.riceRainFarmersNo }}
+                    </td>
                   </tr>
                   <tr>
                     <td scope="col">Corn - White:</td>
-                    <td style="text-align: center;">{{addData.cornWhiteArea}}</td>
-                    <td style="text-align: center;">{{addData.cornWhiteFarmersNo}}</td>
+                    <td style="text-align: center">
+                      {{ addData.cornWhiteArea }}
+                    </td>
+                    <td style="text-align: center">
+                      {{ addData.cornWhiteFarmersNo }}
+                    </td>
                   </tr>
                   <tr>
                     <td scope="col">Corn - Yellow:</td>
-                    <td style="text-align: center;">{{addData.cornYellowArea}}</td>
-                    <td style="text-align: center;">{{addData.cornYellowFarmersNo}}</td>
+                    <td style="text-align: center">
+                      {{ addData.cornYellowArea }}
+                    </td>
+                    <td style="text-align: center">
+                      {{ addData.cornYellowFarmersNo }}
+                    </td>
                   </tr>
                   <tr>
                     <td scope="col">Banana - Cavendish:</td>
-                    <td style="text-align: center;">{{addData.bananaCavArea}}</td>
-                    <td style="text-align: center;">{{addData.bananaCavFarmersNo}}</td>
+                    <td style="text-align: center">
+                      {{ addData.bananaCavArea }}
+                    </td>
+                    <td style="text-align: center">
+                      {{ addData.bananaCavFarmersNo }}
+                    </td>
                   </tr>
                   <tr>
                     <td scope="col">Banana -Saba Banana:</td>
-                    <td style="text-align: center;">{{addData.bananaSabaArea}}</td>
-                    <td style="text-align: center;">{{addData.bananaSabaFarmersNo}}</td>
+                    <td style="text-align: center">
+                      {{ addData.bananaSabaArea }}
+                    </td>
+                    <td style="text-align: center">
+                      {{ addData.bananaSabaFarmersNo }}
+                    </td>
                   </tr>
                   <tr>
                     <td scope="col">Banana -Other Banana</td>
-                    <td style="text-align: center;">{{addData.bananaOtherArea}}</td>
-                    <td style="text-align: center;">{{addData.bananaFarmersNo}}</td>
+                    <td style="text-align: center">
+                      {{ addData.bananaOtherArea }}
+                    </td>
+                    <td style="text-align: center">
+                      {{ addData.bananaFarmersNo }}
+                    </td>
                   </tr>
                   <tr>
                     <td scope="col">Mango:</td>
-                    <td style="text-align: center;">{{addData.mangoArea}}</td>
-                    <td style="text-align: center;">{{addData.mangoFarmersNo}}</td>
+                    <td style="text-align: center">{{ addData.mangoArea }}</td>
+                    <td style="text-align: center">
+                      {{ addData.mangoFarmersNo }}
+                    </td>
                   </tr>
                   <tr>
                     <td scope="col">Durian:</td>
-                    <td style="text-align: center;">{{addData.durianArea}}</td>
-                    <td style="text-align: center;">{{addData.durianFarmersNo}}</td>
+                    <td style="text-align: center">{{ addData.durianArea }}</td>
+                    <td style="text-align: center">
+                      {{ addData.durianFarmersNo }}
+                    </td>
                   </tr>
                   <tr>
                     <td scope="col">Coffee:</td>
-                    <td style="text-align: center;">{{addData.coffeeArea}}</td>
-                    <td style="text-align: center;">{{addData.coffeeFarmersNo}}</td>
+                    <td style="text-align: center">{{ addData.coffeeArea }}</td>
+                    <td style="text-align: center">
+                      {{ addData.coffeeFarmersNo }}
+                    </td>
                   </tr>
                   <tr>
                     <td scope="col">Cacao:</td>
-                    <td style="text-align: center;">{{addData.cacaoArea}}</td>
-                    <td style="text-align: center;">{{addData.cacaoFarmersNo}}</td>
+                    <td style="text-align: center">{{ addData.cacaoArea }}</td>
+                    <td style="text-align: center">
+                      {{ addData.cacaoFarmersNo }}
+                    </td>
                   </tr>
                   <tr>
                     <td scope="col">Abaca:</td>
-                    <td style="text-align: center;">{{addData.abacaArea}}</td>
-                    <td style="text-align: center;">{{addData.abacaFarmersNo}}</td>
+                    <td style="text-align: center">{{ addData.abacaArea }}</td>
+                    <td style="text-align: center">
+                      {{ addData.abacaFarmersNo }}
+                    </td>
                   </tr>
                   <tr>
                     <td scope="col">Rubber:</td>
-                    <td style="text-align: center;">{{addData.rubberArea}}</td>
-                    <td style="text-align: center;">{{addData.rubberFarmerNo}}</td>
+                    <td style="text-align: center">{{ addData.rubberArea }}</td>
+                    <td style="text-align: center">
+                      {{ addData.rubberFarmerNo }}
+                    </td>
                   </tr>
                   <tr>
                     <td scope="col">Oil Palm:</td>
-                    <td style="text-align: center;">{{addData.oilpalmArea}}</td>
-                    <td style="text-align: center;">{{addData.oilpalmArea}}</td>
+                    <td style="text-align: center">
+                      {{ addData.oilpalmArea }}
+                    </td>
+                    <td style="text-align: center">
+                      {{ addData.oilpalmArea }}
+                    </td>
                   </tr>
                   <tr>
                     <td scope="col">Coconut:</td>
-                    <td style="text-align: center;">{{addData.coconutArea}}</td>
-                    <td style="text-align: center;">{{addData.coconutNo}}</td>
+                    <td style="text-align: center">
+                      {{ addData.coconutArea }}
+                    </td>
+                    <td style="text-align: center">{{ addData.coconutNo }}</td>
                   </tr>
                   <tr>
                     <td scope="col">Vegetables and Spices:</td>
-                    <td style="text-align: center;">{{addData.veggieArea}}</td>
-                    <td style="text-align: center;">{{addData.veggieFarmersNo}}</td>
+                    <td style="text-align: center">{{ addData.veggieArea }}</td>
+                    <td style="text-align: center">
+                      {{ addData.veggieFarmersNo }}
+                    </td>
                   </tr>
                   <tr>
                     <td scope="col">Other Crops:</td>
-                    <td style="text-align: center;">{{addData.otherCropsArea}}</td>
-                    <td style="text-align: center;">{{addData.otherCropsNo}}</td>
+                    <td style="text-align: center">
+                      {{ addData.otherCropsArea }}
+                    </td>
+                    <td style="text-align: center">
+                      {{ addData.otherCropsNo }}
+                    </td>
                   </tr>
                 </tbody>
-
               </table>
-              <div *ngIf="Data" class="form-inline float-right">
+              <div class="form-inline float-right">
                 <app-admin>
-                  <button (click)="isAdd=false; editData = addData" class="btn btn-info btn-circle" data-toggle="modal"
-                    data-target="#mEducation"><i class="fa fa-pen"></i>
-                  </button>
-                </app-admin>&nbsp;
+                  <button
+                    (click)="isAdd = false; editData = addData"
+                    class="btn btn-info btn-circle"
+                    data-toggle="modal"
+                    data-target="#mEducation"
+                  >
+                    <i class="fa fa-pen"></i>
+                  </button> </app-admin
+                >&nbsp;
                 <app-admin>
-                  <button type="button" title="Delete" class="btn btn-warning btn-circle"
-                    (click)="DeleteAgricultureProfile(addData.transId)"><i class="fa fa-trash"></i>
+                  <button
+                    type="button"
+                    title="Delete"
+                    class="btn btn-warning btn-circle"
+                    (click)="DeleteAgricultureProfile(addData.transId)"
+                  >
+                    <i class="fa fa-trash"></i>
                   </button>
                 </app-admin>
-
               </div>
             </div>
           </div>
@@ -153,679 +234,1072 @@
   </div>
 </div>
 
-
 <!-- MODAL for EDIT -->
-<div class="modal fade" id="mEducation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="mEducation"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title text-dark" id="exampleModalLabel">General Agricultural Profile
+        <h5 class="modal-title text-dark" id="exampleModalLabel">
+          General Agricultural Profile
         </h5>
-        <br>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true" aria-label="Close"></button>
+        <br />
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-hidden="true"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
-        <form *ngIf="isAdd; else isEdit" class="user collapse show" id="collapseExample">
-
+        <form
+          *ngIf="isAdd; else isEdit"
+          class="user collapse show"
+          id="collapseExample"
+        >
           <div class="row">
-            <div class="col-lg-3">
-              Paddy Rice - Irrigated:<br>
-            </div>
+            <div class="col-lg-3">Paddy Rice - Irrigated:<br /></div>
             <div class="col-lg-5">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares" name="data"
-                  [(ngModel)]="addData.riceIrrigArea">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfHectares"
+                  name="data"
+                  [(ngModel)]="addData.riceIrrigArea"
+                />
                 <label for="floatingInput">No. of Hectares</label>
               </div>
             </div>
             <div class="col-lg-4">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers" name="data"
-                  [(ngModel)]="addData.riceIrrigFarmersNo">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfFarmers"
+                  name="data"
+                  [(ngModel)]="addData.riceIrrigFarmersNo"
+                />
                 <label for="floatingInput">No. of Farmers</label>
               </div>
             </div>
-          </div><br>
+          </div>
+          <br />
           <div class="row">
-            <div class="col-lg-3">
-              Paddy Rice - Rain Fed:
-            </div>
+            <div class="col-lg-3">Paddy Rice - Rain Fed:</div>
             <div class="col-lg-5">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares" name="data"
-                  [(ngModel)]="addData.riceRainArea">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfHectares"
+                  name="data"
+                  [(ngModel)]="addData.riceRainArea"
+                />
                 <label for="floatingInput">No. of Hectares</label>
               </div>
             </div>
             <div class="col-lg-4">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers" name="data"
-                  [(ngModel)]="addData.riceRainFarmersNo">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfFarmers"
+                  name="data"
+                  [(ngModel)]="addData.riceRainFarmersNo"
+                />
                 <label for="floatingInput">No. of Farmers</label>
               </div>
             </div>
-          </div><br>
+          </div>
+          <br />
           <div class="row">
-            <div class="col-lg-3">
-              Corn - White:
-            </div>
+            <div class="col-lg-3">Corn - White:</div>
             <div class="col-lg-5">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares" name="data"
-                  [(ngModel)]="addData.cornWhiteArea">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfHectares"
+                  name="data"
+                  [(ngModel)]="addData.cornWhiteArea"
+                />
                 <label for="floatingInput">No. of Hectares</label>
               </div>
             </div>
             <div class="col-lg-4">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers" name="data"
-                  [(ngModel)]="addData.cornWhiteFarmersNo">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfFarmers"
+                  name="data"
+                  [(ngModel)]="addData.cornWhiteFarmersNo"
+                />
                 <label for="floatingInput">No. of Farmers</label>
               </div>
             </div>
-          </div><br>
+          </div>
+          <br />
           <div class="row">
-            <div class="col-lg-3">
-              Corn - Yellow:
-            </div>
+            <div class="col-lg-3">Corn - Yellow:</div>
             <div class="col-lg-5">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares" name="data"
-                  [(ngModel)]="addData.cornYellowArea">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfHectares"
+                  name="data"
+                  [(ngModel)]="addData.cornYellowArea"
+                />
                 <label for="floatingInput">No. of Hectares</label>
               </div>
             </div>
             <div class="col-lg-4">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers" name="data"
-                  [(ngModel)]="addData.cornYellowFarmersNo">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfFarmers"
+                  name="data"
+                  [(ngModel)]="addData.cornYellowFarmersNo"
+                />
                 <label for="floatingInput">No. of Farmers</label>
               </div>
             </div>
-          </div><br>
+          </div>
+          <br />
           <div class="row">
-            <div class="col-lg-3">
-              Banana - Cavendish:
-            </div>
+            <div class="col-lg-3">Banana - Cavendish:</div>
             <div class="col-lg-5">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares" name="data"
-                  [(ngModel)]="addData.bananaCavArea">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfHectares"
+                  name="data"
+                  [(ngModel)]="addData.bananaCavArea"
+                />
                 <label for="floatingInput">No. of Hectares</label>
               </div>
             </div>
             <div class="col-lg-4">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers" name="data"
-                  [(ngModel)]="addData.bananaCavFarmersNo">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfFarmers"
+                  name="data"
+                  [(ngModel)]="addData.bananaCavFarmersNo"
+                />
                 <label for="floatingInput">No. of Farmers</label>
               </div>
             </div>
-          </div><br>
+          </div>
+          <br />
           <div class="row">
-            <div class="col-lg-3">
-              Banana - Saba Banana:
-            </div>
+            <div class="col-lg-3">Banana - Saba Banana:</div>
             <div class="col-lg-5">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares" name="data"
-                  [(ngModel)]="addData.bananaSabaArea">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfHectares"
+                  name="data"
+                  [(ngModel)]="addData.bananaSabaArea"
+                />
                 <label for="floatingInput">No. of Hectares</label>
               </div>
             </div>
             <div class="col-lg-4">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers" name="data"
-                  [(ngModel)]="addData.bananaSabaFarmersNo">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfFarmers"
+                  name="data"
+                  [(ngModel)]="addData.bananaSabaFarmersNo"
+                />
                 <label for="floatingInput">No. of Farmers</label>
               </div>
             </div>
-          </div><br>
+          </div>
+          <br />
           <div class="row">
-            <div class="col-lg-3">
-              Banana - Other Banana:
-            </div>
+            <div class="col-lg-3">Banana - Other Banana:</div>
             <div class="col-lg-5">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares" name="data"
-                  [(ngModel)]="addData.bananaOtherArea">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfHectares"
+                  name="data"
+                  [(ngModel)]="addData.bananaOtherArea"
+                />
                 <label for="floatingInput">No. of Hectares</label>
               </div>
             </div>
             <div class="col-lg-4">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers" name="data"
-                  [(ngModel)]="addData.bananaFarmersNo">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfFarmers"
+                  name="data"
+                  [(ngModel)]="addData.bananaFarmersNo"
+                />
                 <label for="floatingInput">No. of Farmers</label>
               </div>
             </div>
-          </div><br>
+          </div>
+          <br />
           <div class="row">
-            <div class="col-lg-3">
-              Mango:
-            </div>
+            <div class="col-lg-3">Mango:</div>
             <div class="col-lg-5">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares" name="data"
-                  [(ngModel)]="addData.mangoArea">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfHectares"
+                  name="data"
+                  [(ngModel)]="addData.mangoArea"
+                />
                 <label for="floatingInput">No. of Hectares</label>
               </div>
             </div>
             <div class="col-lg-4">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers" name="data"
-                  [(ngModel)]="addData.mangoFarmersNo">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfFarmers"
+                  name="data"
+                  [(ngModel)]="addData.mangoFarmersNo"
+                />
                 <label for="floatingInput">No. of Farmers</label>
               </div>
             </div>
-          </div><br>
+          </div>
+          <br />
           <div class="row">
-            <div class="col-lg-3">
-              Durian:
-            </div>
+            <div class="col-lg-3">Durian:</div>
             <div class="col-lg-5">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares" name="data"
-                  [(ngModel)]="addData.durianArea">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfHectares"
+                  name="data"
+                  [(ngModel)]="addData.durianArea"
+                />
                 <label for="floatingInput">No. of Hectares</label>
               </div>
             </div>
             <div class="col-lg-4">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers" name="data"
-                  [(ngModel)]="addData.durianFarmersNo">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfFarmers"
+                  name="data"
+                  [(ngModel)]="addData.durianFarmersNo"
+                />
                 <label for="floatingInput">No. of Farmers</label>
               </div>
             </div>
-          </div><br>
+          </div>
+          <br />
           <div class="row">
-            <div class="col-lg-3">
-              Coffee:
-            </div>
+            <div class="col-lg-3">Coffee:</div>
             <div class="col-lg-5">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares" name="data"
-                  [(ngModel)]="addData.coffeeArea">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfHectares"
+                  name="data"
+                  [(ngModel)]="addData.coffeeArea"
+                />
                 <label for="floatingInput">No. of Hectares</label>
               </div>
             </div>
             <div class="col-lg-4">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers" name="data"
-                  [(ngModel)]="addData.coffeeFarmersNo">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfFarmers"
+                  name="data"
+                  [(ngModel)]="addData.coffeeFarmersNo"
+                />
                 <label for="floatingInput">No. of Farmers</label>
               </div>
             </div>
-          </div><br>
+          </div>
+          <br />
           <div class="row">
-            <div class="col-lg-3">
-              Cacao:
-            </div>
+            <div class="col-lg-3">Cacao:</div>
             <div class="col-lg-5">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares" name="data"
-                  [(ngModel)]="addData.cacaoArea">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfHectares"
+                  name="data"
+                  [(ngModel)]="addData.cacaoArea"
+                />
                 <label for="floatingInput">No. of Hectares</label>
               </div>
             </div>
             <div class="col-lg-4">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers" name="data"
-                  [(ngModel)]="addData.cacaoFarmersNo">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfFarmers"
+                  name="data"
+                  [(ngModel)]="addData.cacaoFarmersNo"
+                />
                 <label for="floatingInput">No. of Farmers</label>
               </div>
             </div>
-          </div><br>
+          </div>
+          <br />
           <div class="row">
-            <div class="col-lg-3">
-              Abaca:
-            </div>
+            <div class="col-lg-3">Abaca:</div>
             <div class="col-lg-5">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares" name="data"
-                  [(ngModel)]="addData.abacaArea">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfHectares"
+                  name="data"
+                  [(ngModel)]="addData.abacaArea"
+                />
                 <label for="floatingInput">No. of Hectares</label>
               </div>
             </div>
             <div class="col-lg-4">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers" name="data"
-                  [(ngModel)]="addData.abacaFarmersNo">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfFarmers"
+                  name="data"
+                  [(ngModel)]="addData.abacaFarmersNo"
+                />
                 <label for="floatingInput">No. of Farmers</label>
               </div>
             </div>
-          </div><br>
+          </div>
+          <br />
           <div class="row">
-            <div class="col-lg-3">
-              Rubber:
-            </div>
+            <div class="col-lg-3">Rubber:</div>
             <div class="col-lg-5">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares" name="data"
-                  [(ngModel)]="addData.rubberArea">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfHectares"
+                  name="data"
+                  [(ngModel)]="addData.rubberArea"
+                />
                 <label for="floatingInput">No. of Hectares</label>
               </div>
             </div>
             <div class="col-lg-4">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers" name="data"
-                  [(ngModel)]="addData.rubberFarmerNo">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfFarmers"
+                  name="data"
+                  [(ngModel)]="addData.rubberFarmerNo"
+                />
                 <label for="floatingInput">No. of Farmers</label>
               </div>
             </div>
-          </div><br>
+          </div>
+          <br />
           <div class="row">
-            <div class="col-lg-3">
-              Oil Palm:
-            </div>
+            <div class="col-lg-3">Oil Palm:</div>
             <div class="col-lg-5">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares" name="data"
-                  [(ngModel)]="addData.oilpalmArea">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfHectares"
+                  name="data"
+                  [(ngModel)]="addData.oilpalmArea"
+                />
                 <label for="floatingInput">No. of Hectares</label>
               </div>
             </div>
             <div class="col-lg-4">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers" name="data"
-                  [(ngModel)]="addData.oilpalmFarmersNo">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfFarmers"
+                  name="data"
+                  [(ngModel)]="addData.oilpalmFarmersNo"
+                />
                 <label for="floatingInput">No. of Farmers</label>
               </div>
             </div>
-          </div><br>
+          </div>
+          <br />
           <div class="row">
-            <div class="col-lg-3">
-              Coconut:
-            </div>
+            <div class="col-lg-3">Coconut:</div>
             <div class="col-lg-5">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares" name="data"
-                  [(ngModel)]="addData.coconutArea">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfHectares"
+                  name="data"
+                  [(ngModel)]="addData.coconutArea"
+                />
                 <label for="floatingInput">No. of Hectares</label>
               </div>
             </div>
             <div class="col-lg-4">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers" name="data"
-                  [(ngModel)]="addData.coconutNo">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfFarmers"
+                  name="data"
+                  [(ngModel)]="addData.coconutNo"
+                />
                 <label for="floatingInput">No. of Farmers</label>
               </div>
             </div>
-          </div><br>
+          </div>
+          <br />
           <div class="row">
-            <div class="col-lg-3">
-              Vegetables and Spices:
-            </div>
+            <div class="col-lg-3">Vegetables and Spices:</div>
             <div class="col-lg-5">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares" name="data"
-                  [(ngModel)]="addData.veggieArea">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfHectares"
+                  name="data"
+                  [(ngModel)]="addData.veggieArea"
+                />
                 <label for="floatingInput">No. of Hectares</label>
               </div>
             </div>
             <div class="col-lg-4">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers" name="data"
-                  [(ngModel)]="addData.veggieFarmersNo">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfFarmers"
+                  name="data"
+                  [(ngModel)]="addData.veggieFarmersNo"
+                />
                 <label for="floatingInput">No. of Farmers</label>
               </div>
             </div>
-          </div><br>
+          </div>
+          <br />
           <div class="row">
-            <div class="col-lg-3">
-              Other Crops:
-            </div>
+            <div class="col-lg-3">Other Crops:</div>
             <div class="col-lg-5">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares" name="data"
-                  [(ngModel)]="addData.otherCropsArea">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfHectares"
+                  name="data"
+                  [(ngModel)]="addData.otherCropsArea"
+                />
                 <label for="floatingInput">No. of Hectares</label>
               </div>
             </div>
             <div class="col-lg-4">
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers" name="data"
-                  [(ngModel)]="addData.otherCropsNo">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="NoOfFarmers"
+                  name="data"
+                  [(ngModel)]="addData.otherCropsNo"
+                />
                 <label for="floatingInput">No. of Farmers</label>
               </div>
             </div>
-          </div><br>
+          </div>
+          <br />
         </form>
         <ng-template #isEdit>
           <form class="user collapse show" id="collapseExample">
-
             <div class="row">
-              <div class="col-lg-3">
-                Paddy Rice - Irrigated:<br>
-              </div>
+              <div class="col-lg-3">Paddy Rice - Irrigated:<br /></div>
               <div class="col-lg-5">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares"
-                    [(ngModel)]="editData.riceIrrigArea" name="riceirig">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfHectares"
+                    [(ngModel)]="editData.riceIrrigArea"
+                    name="riceirig"
+                  />
                   <label for="floatingInput">No. of Hectares</label>
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers"
-                    [(ngModel)]="editData.riceIrrigFarmersNo" name="riceirig">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfFarmers"
+                    [(ngModel)]="editData.riceIrrigFarmersNo"
+                    name="riceirig"
+                  />
                   <label for="floatingInput">No. of Farmers</label>
                 </div>
               </div>
-            </div><br>
+            </div>
+            <br />
             <div class="row">
-              <div class="col-lg-3">
-                Paddy Rice - Rain Fed:
-              </div>
+              <div class="col-lg-3">Paddy Rice - Rain Fed:</div>
               <div class="col-lg-5">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares"
-                    [(ngModel)]="editData.riceRainArea" name="ricerain">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfHectares"
+                    [(ngModel)]="editData.riceRainArea"
+                    name="ricerain"
+                  />
                   <label for="floatingInput">No. of Hectares</label>
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers"
-                    [(ngModel)]="editData.riceRainFarmersNo" name="ricerain">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfFarmers"
+                    [(ngModel)]="editData.riceRainFarmersNo"
+                    name="ricerain"
+                  />
                   <label for="floatingInput">No. of Farmers</label>
                 </div>
               </div>
-            </div><br>
+            </div>
+            <br />
             <div class="row">
-              <div class="col-lg-3">
-                Corn - White:
-              </div>
+              <div class="col-lg-3">Corn - White:</div>
               <div class="col-lg-5">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares"
-                    [(ngModel)]="editData.cornWhiteArea" name="cornwhite">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfHectares"
+                    [(ngModel)]="editData.cornWhiteArea"
+                    name="cornwhite"
+                  />
                   <label for="floatingInput">No. of Hectares</label>
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers"
-                    [(ngModel)]="editData.cornWhiteFarmersNo" name="cornwhite">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfFarmers"
+                    [(ngModel)]="editData.cornWhiteFarmersNo"
+                    name="cornwhite"
+                  />
                   <label for="floatingInput">No. of Farmers</label>
                 </div>
               </div>
-            </div><br>
+            </div>
+            <br />
             <div class="row">
-              <div class="col-lg-3">
-                Corn - Yellow:
-              </div>
+              <div class="col-lg-3">Corn - Yellow:</div>
               <div class="col-lg-5">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares"
-                    [(ngModel)]="editData.cornYellowArea" name="cornyellow">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfHectares"
+                    [(ngModel)]="editData.cornYellowArea"
+                    name="cornyellow"
+                  />
                   <label for="floatingInput">No. of Hectares</label>
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers"
-                    [(ngModel)]="editData.cornYellowFarmersNo" name="cornyellow">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfFarmers"
+                    [(ngModel)]="editData.cornYellowFarmersNo"
+                    name="cornyellow"
+                  />
                   <label for="floatingInput">No. of Farmers</label>
                 </div>
               </div>
-            </div><br>
+            </div>
+            <br />
             <div class="row">
-              <div class="col-lg-3">
-                Banana - Cavendish:
-              </div>
+              <div class="col-lg-3">Banana - Cavendish:</div>
               <div class="col-lg-5">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares"
-                    [(ngModel)]="editData.bananaCavArea" name="bancav">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfHectares"
+                    [(ngModel)]="editData.bananaCavArea"
+                    name="bancav"
+                  />
                   <label for="floatingInput">No. of Hectares</label>
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers"
-                    [(ngModel)]="editData.bananaCavFarmersNo" name="bancav">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfFarmers"
+                    [(ngModel)]="editData.bananaCavFarmersNo"
+                    name="bancav"
+                  />
                   <label for="floatingInput">No. of Farmers</label>
                 </div>
               </div>
-            </div><br>
+            </div>
+            <br />
             <div class="row">
-              <div class="col-lg-3">
-                Banana - Saba Banana:
-              </div>
+              <div class="col-lg-3">Banana - Saba Banana:</div>
               <div class="col-lg-5">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares"
-                    [(ngModel)]="editData.bananaSabaArea" name="bansab">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfHectares"
+                    [(ngModel)]="editData.bananaSabaArea"
+                    name="bansab"
+                  />
                   <label for="floatingInput">No. of Hectares</label>
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers"
-                    [(ngModel)]="editData.bananaSabaFarmersNo" name="bansab">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfFarmers"
+                    [(ngModel)]="editData.bananaSabaFarmersNo"
+                    name="bansab"
+                  />
                   <label for="floatingInput">No. of Farmers</label>
                 </div>
               </div>
-            </div><br>
+            </div>
+            <br />
             <div class="row">
-              <div class="col-lg-3">
-                Banana - Other Banana:
-              </div>
+              <div class="col-lg-3">Banana - Other Banana:</div>
               <div class="col-lg-5">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares"
-                    [(ngModel)]="editData.bananaOtherArea" name="banoth">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfHectares"
+                    [(ngModel)]="editData.bananaOtherArea"
+                    name="banoth"
+                  />
                   <label for="floatingInput">No. of Hectares</label>
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers"
-                    [(ngModel)]="editData.bananaFarmersNo" name="banoth">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfFarmers"
+                    [(ngModel)]="editData.bananaFarmersNo"
+                    name="banoth"
+                  />
                   <label for="floatingInput">No. of Farmers</label>
                 </div>
               </div>
-            </div><br>
+            </div>
+            <br />
             <div class="row">
-              <div class="col-lg-3">
-                Mango:
-              </div>
+              <div class="col-lg-3">Mango:</div>
               <div class="col-lg-5">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares"
-                    [(ngModel)]="editData.mangoArea" name="mango">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfHectares"
+                    [(ngModel)]="editData.mangoArea"
+                    name="mango"
+                  />
                   <label for="floatingInput">No. of Hectares</label>
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers"
-                    [(ngModel)]="editData.mangoFarmersNo" name="mango">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfFarmers"
+                    [(ngModel)]="editData.mangoFarmersNo"
+                    name="mango"
+                  />
                   <label for="floatingInput">No. of Farmers</label>
                 </div>
               </div>
-            </div><br>
+            </div>
+            <br />
             <div class="row">
-              <div class="col-lg-3">
-                Durian:
-              </div>
+              <div class="col-lg-3">Durian:</div>
               <div class="col-lg-5">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares"
-                    [(ngModel)]="editData.durianArea" name="durian">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfHectares"
+                    [(ngModel)]="editData.durianArea"
+                    name="durian"
+                  />
                   <label for="floatingInput">No. of Hectares</label>
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers"
-                    [(ngModel)]="editData.durianFarmersNo" name="durian">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfFarmers"
+                    [(ngModel)]="editData.durianFarmersNo"
+                    name="durian"
+                  />
                   <label for="floatingInput">No. of Farmers</label>
                 </div>
               </div>
-            </div><br>
+            </div>
+            <br />
             <div class="row">
-              <div class="col-lg-3">
-                Coffee:
-              </div>
+              <div class="col-lg-3">Coffee:</div>
               <div class="col-lg-5">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares"
-                    [(ngModel)]="editData.coffeeArea" name="coffee">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfHectares"
+                    [(ngModel)]="editData.coffeeArea"
+                    name="coffee"
+                  />
                   <label for="floatingInput">No. of Hectares</label>
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers"
-                    [(ngModel)]="editData.coffeeFarmersNo" name="coffee">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfFarmers"
+                    [(ngModel)]="editData.coffeeFarmersNo"
+                    name="coffee"
+                  />
                   <label for="floatingInput">No. of Farmers</label>
                 </div>
               </div>
-            </div><br>
+            </div>
+            <br />
             <div class="row">
-              <div class="col-lg-3">
-                Cacao:
-              </div>
+              <div class="col-lg-3">Cacao:</div>
               <div class="col-lg-5">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares"
-                    [(ngModel)]="editData.cacaoArea" name="cacao">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfHectares"
+                    [(ngModel)]="editData.cacaoArea"
+                    name="cacao"
+                  />
                   <label for="floatingInput">No. of Hectares</label>
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers"
-                    [(ngModel)]="editData.cacaoFarmersNo" name="cacao">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfFarmers"
+                    [(ngModel)]="editData.cacaoFarmersNo"
+                    name="cacao"
+                  />
                   <label for="floatingInput">No. of Farmers</label>
                 </div>
               </div>
-            </div><br>
+            </div>
+            <br />
             <div class="row">
-              <div class="col-lg-3">
-                Abaca:
-              </div>
+              <div class="col-lg-3">Abaca:</div>
               <div class="col-lg-5">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares"
-                    [(ngModel)]="editData.abacaArea" name="abaca">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfHectares"
+                    [(ngModel)]="editData.abacaArea"
+                    name="abaca"
+                  />
                   <label for="floatingInput">No. of Hectares</label>
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers"
-                    [(ngModel)]="editData.abacaFarmersNo" name="abaca">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfFarmers"
+                    [(ngModel)]="editData.abacaFarmersNo"
+                    name="abaca"
+                  />
                   <label for="floatingInput">No. of Farmers</label>
                 </div>
               </div>
-            </div><br>
+            </div>
+            <br />
             <div class="row">
-              <div class="col-lg-3">
-                Rubber:
-              </div>
+              <div class="col-lg-3">Rubber:</div>
               <div class="col-lg-5">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares"
-                    [(ngModel)]="editData.rubberArea" name="rubber">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfHectares"
+                    [(ngModel)]="editData.rubberArea"
+                    name="rubber"
+                  />
                   <label for="floatingInput">No. of Hectares</label>
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers"
-                    [(ngModel)]="editData.rubberFarmerNo" name="rubber">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfFarmers"
+                    [(ngModel)]="editData.rubberFarmerNo"
+                    name="rubber"
+                  />
                   <label for="floatingInput">No. of Farmers</label>
                 </div>
               </div>
-            </div><br>
+            </div>
+            <br />
             <div class="row">
-              <div class="col-lg-3">
-                Oil Palm:
-              </div>
+              <div class="col-lg-3">Oil Palm:</div>
               <div class="col-lg-5">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares"
-                    [(ngModel)]="editData.oilpalmArea" name="oil">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfHectares"
+                    [(ngModel)]="editData.oilpalmArea"
+                    name="oil"
+                  />
                   <label for="floatingInput">No. of Hectares</label>
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers"
-                    [(ngModel)]="editData.oilpalmFarmersNo" name="oil">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfFarmers"
+                    [(ngModel)]="editData.oilpalmFarmersNo"
+                    name="oil"
+                  />
                   <label for="floatingInput">No. of Farmers</label>
                 </div>
               </div>
-            </div><br>
+            </div>
+            <br />
             <div class="row">
-              <div class="col-lg-3">
-                Coconut:
-              </div>
+              <div class="col-lg-3">Coconut:</div>
               <div class="col-lg-5">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares"
-                    [(ngModel)]="editData.coconutArea" name="coconut">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfHectares"
+                    [(ngModel)]="editData.coconutArea"
+                    name="coconut"
+                  />
                   <label for="floatingInput">No. of Hectares</label>
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers"
-                    [(ngModel)]="editData.coconutNo" name="coconut">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfFarmers"
+                    [(ngModel)]="editData.coconutNo"
+                    name="coconut"
+                  />
                   <label for="floatingInput">No. of Farmers</label>
                 </div>
               </div>
-            </div><br>
+            </div>
+            <br />
             <div class="row">
-              <div class="col-lg-3">
-                Vegetables and Spices:
-              </div>
+              <div class="col-lg-3">Vegetables and Spices:</div>
               <div class="col-lg-5">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares"
-                    [(ngModel)]="editData.veggieArea" name="vege">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfHectares"
+                    [(ngModel)]="editData.veggieArea"
+                    name="vege"
+                  />
                   <label for="floatingInput">No. of Hectares</label>
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers"
-                    [(ngModel)]="editData.veggieFarmersNo" name="vege">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfFarmers"
+                    [(ngModel)]="editData.veggieFarmersNo"
+                    name="vege"
+                  />
                   <label for="floatingInput">No. of Farmers</label>
                 </div>
               </div>
-            </div><br>
+            </div>
+            <br />
             <div class="row">
-              <div class="col-lg-3">
-                Other Crops:
-              </div>
+              <div class="col-lg-3">Other Crops:</div>
               <div class="col-lg-5">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfHectares"
-                    [(ngModel)]="editData.otherCropsArea" name="othercrop">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfHectares"
+                    [(ngModel)]="editData.otherCropsArea"
+                    name="othercrop"
+                  />
                   <label for="floatingInput">No. of Hectares</label>
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="form-floating mb-3">
-                  <input type="number" class="form-control" id="floatingInput" placeholder="NoOfFarmers"
-                    [(ngModel)]="editData.otherCropsNo" name="othercrop">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="NoOfFarmers"
+                    [(ngModel)]="editData.otherCropsNo"
+                    name="othercrop"
+                  />
                   <label for="floatingInput">No. of Farmers</label>
                 </div>
               </div>
-            </div><br>
+            </div>
+            <br />
           </form>
         </ng-template>
-
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-school" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary"
-          (click)="isAdd? AddAgricultureProfile(): EditAgricultureProfile()">Save
-          changes</button>
+        <button type="button" class="btn btn-school" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="isAdd ? AddAgricultureProfile() : EditAgricultureProfile()"
+        >
+          Save changes
+        </button>
       </div>
     </div>
   </div>

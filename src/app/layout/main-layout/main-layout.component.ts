@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { ImagesService } from 'src/app/services/image.service';
 import { BaseUrl } from 'src/app/services/baseUrl.service';
+
 import {
   Dimensions,
   ImageCroppedEvent,
@@ -31,6 +32,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./main-layout.component.css'],
 })
 export class MainLayoutComponent implements OnInit {
+  http: any;
   goToDashboard() {
     this.router.navigate(['/dashboard']);
   }
@@ -115,6 +117,7 @@ export class MainLayoutComponent implements OnInit {
         };
       });
   }
+
   isMatchURL: boolean = false;
   isMatchUrl(text: string) {
     if (this.currentUrl.includes(text)) {
