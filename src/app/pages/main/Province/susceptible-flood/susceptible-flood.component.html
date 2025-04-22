@@ -1,0 +1,234 @@
+<div class="">
+  <div class="card o-hidden border-2 shadow-sm my-5">
+    <div class="card-body p-0">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="p-5">
+            <div class="text-center">
+              <h1 class="h4 mb-4">Susceptible-flood</h1>
+              <label
+                ><strong>
+                  Provincial Development and Physical Framework Plan
+                </strong></label
+              ><br />
+            </div>
+            <div class="row">
+              <div class="col-lg-9">
+                <br />
+                <p>List of Municipality</p>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="table-responsive">
+                  <table class="table table-framed table-hover table-striped">
+                    <thead class="table-dark">
+                      <tr>
+                        <th scope="col" class="text-center">
+                          Municipality/City
+                        </th>
+                        <th scope="col" class="text-center">
+                          Very-high Susceptibility Area (VHSA)
+                        </th>
+                        <th scope="col" class="text-center">
+                          High Susceptibility Area (HAS)
+                        </th>
+                        <th scope="col" class="text-center">
+                          Moderate Susceptibility Area (MSA)
+                        </th>
+                        <th scope="col" class="text-center">
+                          Low Susceptibility Area (LSA)
+                        </th>
+                        <th scope="col" class="text-center">Action</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr *ngFor="let item of listData; index as i">
+                        <td class="text-center">
+                          <b>{{ item.munCityName }}</b>
+                        </td>
+                        <td class="text-center">{{ item.vhsa }}</td>
+                        <td class="text-center">{{ item.msa }}</td>
+                        <td class="text-center">{{ item.has }}</td>
+                        <td class="text-center">{{ item.lsa }}</td>
+                        <td
+                          *ngIf="
+                            item.transId && item.munCityId == o_munCityId;
+                            else isADD
+                          "
+                        >
+                          <app-admin>
+                            <div class="d-inline-flex">
+                              <button
+                                (click)="data = item; isAdd = false"
+                                class="btn btn-info btn-circle"
+                                data-toggle="modal"
+                                data-target="#openModal"
+                              >
+                                <i class="fa fa-pen"></i>
+                              </button>
+                              &nbsp;
+                              <button
+                                type="button"
+                                title="Delete"
+                                class="btn btn-warning btn-circle"
+                                (click)="DeleteData(item.transId, i, item)"
+                              >
+                                <i class="fa fa-trash"></i>
+                              </button>
+                            </div>
+                          </app-admin>
+                        </td>
+                        <ng-template #isADD>
+                          <td>
+                            <app-admin>
+                              <button
+                                *ngIf="item.munCityId == o_munCityId"
+                                (click)="data = item; isAdd = true"
+                                class="btn btn-primary btn-circle"
+                                data-toggle="modal"
+                                data-target="#openModal "
+                              >
+                                <i class="fa fa-plus"></i>
+                              </button>
+                            </app-admin>
+                          </td>
+                        </ng-template>
+                      </tr>
+
+                      <!-- Total Row -->
+                      <tr class="font-weight-bold">
+                        <td class="text-center">
+                          <b>Davao del Norte (Total)</b>
+                        </td>
+                        <td class="text-center">
+                          <b>{{ getTotal("vhsa") }}</b>
+                        </td>
+                        <td class="text-center">
+                          <b>{{ getTotal("msa") }}</b>
+                        </td>
+                        <td class="text-center">
+                          <b>{{ getTotal("has") }}</b>
+                        </td>
+                        <td class="text-center">
+                          <b>{{ getTotal("lsa") }}</b>
+                        </td>
+                        <td class="text-center"><b></b></td>
+                        <!-- Empty cell for actions -->
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="modal fade bd-example-modal-lg"
+    id="openModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="myLargeModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalScrollableTitle">
+            Prevalence Rate
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <form>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="vhsa"
+                    >Very-high Susceptibility Area (VHSA):</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="vhsa"
+                    placeholder="Enter value"
+                    [(ngModel)]="data.vhsa"
+                    [ngModelOptions]="{ standalone: true }"
+                    pattern="^\d*\.?\d+$"
+                  />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="has">High Susceptibility Area (HAS):</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="has"
+                    placeholder="Enter value"
+                    [(ngModel)]="data.has"
+                    [ngModelOptions]="{ standalone: true }"
+                    pattern="^\d*\.?\d+$"
+                  />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="msa">Moderate Susceptibility Area (MSA):</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="msa"
+                    placeholder="Enter value"
+                    [(ngModel)]="data.msa"
+                    [ngModelOptions]="{ standalone: true }"
+                    pattern="^\d*\.?\d+$"
+                  />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="lsa">Low Susceptibility Area (LSA):</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="lsa"
+                    placeholder="Enter value"
+                    [(ngModel)]="data.lsa"
+                    [ngModelOptions]="{ standalone: true }"
+                    pattern="^\d*\.?\d+$"
+                  />
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="isAdd ? AddData() : EditData()"
+          >
+            Save Changes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

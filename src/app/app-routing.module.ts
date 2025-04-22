@@ -128,6 +128,10 @@ import { LunchingComponent } from './lunching/lunching.component';
 import { AgeGroupComponent } from './pages/main/Governance/age-group/age-group.component';
 import { FloodaffectedComponent } from './pages/main/Environment/floodaffected/floodaffected.component';
 import { PopulationOfIndigenousPeopleComponent } from './pages/main/Governance/population-of-indigenous-people/population-of-indigenous-people.component';
+import { AgriProfComponent } from './pages/main/Province/agri-prof/agri-prof.component';
+import { SusceptibleFloodComponent } from './pages/main/Province/susceptible-flood/susceptible-flood.component';
+import { RainInducedComponent } from './pages/main/Province/rain-induced/rain-induced.component';
+
 const socioEconomic_TradeIndustry: string =
   'socio-economic/trade-and-industry/';
 const socioEconomic_Tourism: string = 'socio-economic/Tourism/';
@@ -142,6 +146,7 @@ const Infrastructure_Transportation: string = 'Insfrastructure/Transportation';
 const Infrastructure_Communications: string = 'Infrastructure/Communications';
 const Infrastructure_Utility: string = 'Infrastructure/Utility';
 const Governance: string = 'Governance';
+const Province: string = 'Province';
 const Tools: string = 'Tools/';
 
 const routes: Routes = [
@@ -590,6 +595,19 @@ const routes: Routes = [
         path: Governance + '/provincial-officials',
         component: ProvincialOfficialsComponent,
       },
+      {
+        path: Province + '/agri-prof',
+        component: AgriProfComponent,
+      },
+      {
+        path: Province + '/susceptible-flood',
+        component: SusceptibleFloodComponent,
+      },
+      {
+        path: Province + '/rain-induced',
+        component: RainInducedComponent,
+      },
+
       { path: Governance + '/pgdept-heads', component: PGDeptHeadsComponent },
       { path: Governance + '/fiscal-report', component: FiscalReportComponent },
       { path: Governance + '/city-location', component: CityLocationComponent },

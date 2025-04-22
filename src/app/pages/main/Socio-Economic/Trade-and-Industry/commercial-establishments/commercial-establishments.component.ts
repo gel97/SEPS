@@ -8,7 +8,8 @@ import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 import { PdfComponent } from 'src/app/components/pdf/pdf.component';
 import { PdfService } from 'src/app/services/pdf.service';
 import { ReportsService } from 'src/app/shared/Tools/reports.service';
-import { forkJoin } from 'rxjs';
+import { response } from 'express';
+// import { forkJoin } from 'rxjs';
 @Component({
   selector: 'app-commercial-establishments',
   templateUrl: './commercial-establishments.component.html',
@@ -20,7 +21,7 @@ export class CommercialEstablishmentsComponent implements OnInit {
   searchText: string = '';
   @ViewChild(PdfComponent)
   private pdfComponent!: PdfComponent;
-  selectedCategory: string = 'all';
+  //selectedCategory: string = 'all';
 
   constructor(
     private pdfService: PdfService,
@@ -37,17 +38,19 @@ export class CommercialEstablishmentsComponent implements OnInit {
   message = 'Commercial Establishments';
 
   munCityName: string = this.auth.munCityName;
-  selectedCommercial: boolean = true; // Checkbox for Commercial
-  selectedBusiness: boolean = true; // Checkbox for Business
-  filteredEstab: any[] = []; // Stores the filtered list
   toValidate: any = {};
   ComEstab: any[] = [];
-  CommercialEstablishments: any[] = [];
-  BusinessEstablishments: any[] = [];
-  selectedEstabType: string = 'all';
   barangays: any = [];
   comm: any = {};
   editmodal: any = {};
+  selectedFilter: string = 'all';
+  CommercialEstablishments: any = [];
+  BusinessEstablishments: any = [];
+  allEstablishments: any[] = [];
+  displayedEstablishments: any[] = [];
+  establishments: any[] = [];
+  filteredEstablishments: any[] = [];
+  selectAllChecked = false;
 
   list_of_category: any = [];
   list_of_Business: any = [];
@@ -155,131 +158,202 @@ export class CommercialEstablishmentsComponent implements OnInit {
   ngOnInit(): void {
     this.GetListCommercialEstab();
     this.list_of_barangay();
-    this.GetSeparatedData();
+    //this.GetSeparatedData();
     //this.selectedCategory = 'all';
+    this.fetchEstablishments();
   }
-  GetSeparatedData() {
-    this.service.Get_separate().subscribe({
-      next: (response) => {
-        console.log('API Response:', response); // Debugging API response
+  fetchEstablishments(): void {
+    this.service.Get_separate().subscribe(
+      (data) => {
+        console.log('✅ Raw API Response:', JSON.stringify(data, null, 2));
 
-        if (!response || typeof response !== 'object') {
-          console.error('Unexpected API response format:', response);
-          alert('Unexpected data format. Please check the API.');
+        if (!data || typeof data !== 'object') {
+          console.error('❌ API response is null or incorrect format.');
           return;
         }
 
-        // Separate data properly
-        this.CommercialEstablishments = response.CommercialEstablishments || [];
-        this.BusinessEstablishments = response.BusinessEstablishments || [];
-        this.ComEstab = [
+        // Debugging specific properties
+        console.log(
+          '🟠 commercialEstablishments Type:',
+          typeof data.commercialEstablishments
+        );
+        console.log(
+          '🟠 businessEstablishments Type:',
+          typeof data.businessEstablishments
+        );
+        console.log(
+          '🟠 commercialEstablishments Content:',
+          data.commercialEstablishments
+        );
+        console.log(
+          '🟠 businessEstablishments Content:',
+          data.businessEstablishments
+        );
+
+        // Store API response while ensuring it's an array
+        this.CommercialEstablishments = Array.isArray(
+          data.commercialEstablishments
+        )
+          ? data.commercialEstablishments
+          : [];
+        this.BusinessEstablishments = Array.isArray(data.businessEstablishments)
+          ? data.businessEstablishments
+          : [];
+
+        // Combine all establishments
+        this.allEstablishments = [
           ...this.CommercialEstablishments,
           ...this.BusinessEstablishments,
-        ].map((item) => ({
-          ...item,
-          selected: false,
-        }));
+        ];
 
-        this.applyFilters();
+        console.log(
+          '📌 Fixed Commercial Establishments:',
+          this.CommercialEstablishments
+        );
+        console.log(
+          '📌 Fixed Business Establishments:',
+          this.BusinessEstablishments
+        );
+        console.log('📌 All Establishments:', this.allEstablishments);
+
+        // Ensure category & type are properly loaded
+        this.GetListCommercialEstab();
+
+        // Update displayed establishments based on the selected filter
+        this.updateDisplayedEstablishments();
       },
-      error: (error) => {
-        console.error('Error fetching data:', error);
-        alert('Failed to load data. Please check the API.');
-      },
-    });
+      (error) => {
+        console.error('❌ API Error:', error);
+        this.CommercialEstablishments = [];
+        this.BusinessEstablishments = [];
+        this.allEstablishments = [];
+        this.updateDisplayedEstablishments();
+      }
+    );
   }
 
-  applyFilters() {
-    if (this.selectedCategory === 'commercial') {
-      this.filteredEstab = [...this.CommercialEstablishments];
-    } else if (this.selectedCategory === 'business') {
-      this.filteredEstab = [...this.BusinessEstablishments];
+  updateDisplayedEstablishments(): void {
+    console.log('🟢 Selected Filter:', this.selectedFilter);
+
+    if (this.selectedFilter === 'CommercialEstablishments') {
+      this.displayedEstablishments = [...this.CommercialEstablishments];
+    } else if (this.selectedFilter === 'BusinessEstablishments') {
+      this.displayedEstablishments = [...this.BusinessEstablishments];
     } else {
-      this.filteredEstab = [
-        ...this.CommercialEstablishments,
-        ...this.BusinessEstablishments,
-      ];
+      this.displayedEstablishments = [...this.ComEstab];
     }
+
+    console.log(
+      '🔹 Updated Displayed Establishments:',
+      this.displayedEstablishments
+    );
   }
 
-  moveToCategory(type: string) {
-    const selectedItems = this.ComEstab.filter((item) => item.selected);
+  updateSelectedBuildings(type: string) {
+    const selectedItems = this.displayedEstablishments.filter(
+      (item) => item.selected
+    );
 
     if (selectedItems.length === 0) {
       Swal.fire({
         icon: 'warning',
         title: 'No Selection',
         text: 'Please select at least one establishment.',
+        confirmButtonColor: '#f39c12',
       });
       return;
     }
 
+    // Filter out items that are already in the target category
+    const itemsToUpdate = selectedItems.filter(
+      (item) => item.Building !== type
+    );
+
+    if (itemsToUpdate.length === 0) {
+      Swal.fire({
+        icon: 'info',
+        title: 'No Changes',
+        text: 'All selected establishments are already in the chosen category.',
+        confirmButtonColor: '#3085d6',
+      });
+      return;
+    }
+
+    // Confirm action before updating
     Swal.fire({
       title: 'Are you sure?',
-      text: `You are about to move ${
-        selectedItems.length
-      } establishment(s) to ${
-        type === 'CommercialEstablishments' ? 'Commercial' : 'Business'
-      } category.`,
-      icon: 'warning',
+      text: `You are about to update ${itemsToUpdate.length} establishments to ${type}.`,
+      icon: 'question',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, move it!',
+      confirmButtonText: 'Yes, update it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        // Remove selected items from original list
-        this.ComEstab = this.ComEstab.filter((item) => !item.selected);
+        let updateCount = 0;
 
-        // Prepare updated items with new category
-        const updatedItems = selectedItems.map((item) => ({
-          ...item,
-          category:
-            type === 'CommercialEstablishments' ? 'Commercial' : 'Business',
-        }));
+        itemsToUpdate.forEach((item) => {
+          this.service.UpdateBuilding(item.transId, type).subscribe(
+            () => {
+              console.log(`✅ Updated ${item.transId} to ${type}`);
+              item.Building = type; // Update UI state
+              updateCount++;
 
-        // Call the API for each selected item
-        const updateRequests = updatedItems.map((item) =>
-          this.service.UpdateBuilding(item.transId, type)
-        );
+              if (updateCount === itemsToUpdate.length) {
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Updated!',
+                  text: `${updateCount} establishments updated to ${type}.`,
+                  confirmButtonColor: '#3085d6',
+                });
 
-        // Execute all API calls and wait for completion
-        forkJoin(updateRequests).subscribe(
-          (responses) => {
-            console.log('Updated Successfully:', responses);
+                // 🔄 **Refresh Establishments Data Properly**
+                this.fetchEstablishments(); // Reload updated data
+                this.GetListCommercialEstab(); // Ensure category & type persist
 
-            // Move items to the correct category list
-            if (type === 'CommercialEstablishments') {
-              this.CommercialEstablishments.push(...updatedItems);
-            } else {
-              this.BusinessEstablishments.push(...updatedItems);
+                // Refresh displayed list after updates
+                this.updateDisplayedEstablishments();
+              }
+            },
+            (error) => {
+              console.error('❌ Update failed', error);
+              Swal.fire({
+                icon: 'error',
+                title: 'Update Failed',
+                text: `Failed to update some establishments.`,
+                confirmButtonColor: '#d33',
+              });
             }
-
-            // Refresh displayed data
-            this.applyFilters();
-
-            Swal.fire({
-              icon: 'success',
-              title: 'Success!',
-              text: 'Selected establishments have been moved successfully.',
-            });
-          },
-          (error) => {
-            console.error('Error updating category:', error);
-            Swal.fire({
-              icon: 'error',
-              title: 'Oops!',
-              text: 'Failed to update. Please try again.',
-            });
-          }
-        );
+          );
+        });
       }
     });
   }
 
-  toggleSelectAll(event: any) {
-    const isChecked = event.target.checked;
-    this.ComEstab.forEach((item) => (item.selected = isChecked));
+  toggleSelectAll() {
+    this.selectAllChecked = !this.selectAllChecked;
+
+    // Ensure all items in displayedEstablishments are selected/deselected
+    this.displayedEstablishments.forEach(
+      (estab) => (estab.selected = this.selectAllChecked)
+    );
+
+    // Update the main data source (ComEstab)
+    this.ComEstab.forEach((estab) => {
+      const match = this.displayedEstablishments.find(
+        (item) => item.transId === estab.transId
+      );
+      if (match) {
+        estab.selected = this.selectAllChecked;
+      }
+    });
+  }
+
+  checkIfAllSelected() {
+    // Check if all displayedEstablishments are selected
+    this.selectAllChecked = this.displayedEstablishments.every(
+      (estab) => estab.selected
+    );
   }
 
   markerObj: any = {};
@@ -686,6 +760,8 @@ export class CommercialEstablishmentsComponent implements OnInit {
       this.ComEstab = <any>data;
       this.GetListComEstabCategory();
       this.GetListComEstabTypes();
+
+      this.updateDisplayedEstablishments();
     });
   }
 
@@ -708,36 +784,21 @@ export class CommercialEstablishmentsComponent implements OnInit {
     });
   }
   Add_Com_Estab() {
-    this.toValidate.brgyId =
-      this.comm.brgyId == '' || this.comm.brgyId == null ? true : false;
-    this.toValidate.permitNo =
-      this.comm.permitNo == '' || this.comm.permitNo == undefined
-        ? true
-        : false;
-    this.toValidate.estabName =
-      this.comm.estabName == '' || this.comm.estabName == undefined
-        ? true
-        : false;
-    this.toValidate.category =
-      this.comm.category == '' || this.comm.category == undefined
-        ? true
-        : false;
-    this.toValidate.status =
-      this.comm.status == '' || this.comm.status == undefined ? true : false;
-    this.toValidate.lineBusiness =
-      this.comm.lineBusiness == '' || this.comm.lineBusiness == undefined
-        ? true
-        : false;
-    this.toValidate.owner =
-      this.comm.owner == '' || this.comm.owner == undefined ? true : false;
+    this.toValidate.brgyId = !this.comm.brgyId;
+    this.toValidate.permitNo = !this.comm.permitNo;
+    this.toValidate.estabName = !this.comm.estabName;
+    this.toValidate.category = !this.comm.category;
+    this.toValidate.status = !this.comm.status;
+    this.toValidate.lineBusiness = !this.comm.lineBusiness;
+    this.toValidate.owner = !this.comm.owner;
 
     if (
-      this.toValidate.brgyId == true ||
-      this.toValidate.permitNo == true ||
-      this.toValidate.estab == true ||
-      this.toValidate.category == true ||
-      this.toValidate.status == true ||
-      this.toValidate.lineBusiness == true ||
+      this.toValidate.brgyId ||
+      this.toValidate.permitNo ||
+      this.toValidate.estabName ||
+      this.toValidate.category ||
+      this.toValidate.status ||
+      this.toValidate.lineBusiness ||
       this.toValidate.owner
     ) {
       Swal.fire(
@@ -745,26 +806,26 @@ export class CommercialEstablishmentsComponent implements OnInit {
         'Please fill out the required fields',
         'warning'
       );
-    } else {
-      this.comm.munCityId = this.auth.munCityId;
-      this.comm.setYear = this.auth.setYear;
-      this.comm.transId = this.date.transform(Date.now(), 'YYMM');
-      //this.comm.tag = 1;
-      this.service.Add_Com_Estab(this.comm).subscribe((request) => {
-        if (!this.isCheck) {
-          this.closebutton.nativeElement.click();
-        }
-        console.log(request);
-        this.clearData();
-        this.GetListCommercialEstab();
-
-        console.log(request);
-        Swal.fire('Good job!', 'Data Added Successfully!', 'success');
-
-        this.comm = {};
-        this.ComEstab.push(request);
-      });
+      return;
     }
+
+    this.comm.munCityId = this.auth.munCityId;
+    this.comm.setYear = this.auth.setYear;
+    this.comm.transId = this.date.transform(Date.now(), 'YYMM');
+
+    this.service.Add_Com_Estab(this.comm).subscribe((request) => {
+      if (!this.isCheck) {
+        this.closebutton.nativeElement.click();
+      }
+      console.log(request);
+      this.clearData();
+      this.GetListCommercialEstab();
+      Swal.fire('Good job!', 'Data Added Successfully!', 'success');
+
+      this.comm = {};
+      // this.allEstablishments.push(request); // Add to AllEstablishments
+      this.updateDisplayedEstablishments();
+    });
   }
 
   edit_estab(edit_estab: any = {}) {
@@ -854,23 +915,24 @@ export class CommercialEstablishmentsComponent implements OnInit {
       confirmButtonText: 'Yes, remove it!',
     }).then((result) => {
       if (result.value) {
-        for (let i = 0; i < this.ComEstab.length; i++) {
-          if (this.ComEstab[i].transId == transId) {
-            this.ComEstab.splice(i, 1);
-            Swal.fire('Deleted!', 'Your file has been removed.', 'success');
-          }
-        }
+        // Remove from ComEstab as well
+        this.ComEstab = this.ComEstab.filter(
+          (estab) => estab.transId !== transId
+        );
+        this.allEstablishments = this.allEstablishments.filter(
+          (estab) => estab.transId !== transId
+        );
 
-        this.service.Delete_Com_Estab(transId).subscribe((_data) => {
-          // this.MajorAct.splice(index,1);
+        this.updateDisplayedEstablishments();
 
-          this.GetListCommercialEstab();
-          // this.mjr = {};
+        Swal.fire('Deleted!', 'Your file has been removed.', 'success');
+
+        // Call API to delete it from backend
+        this.service.Delete_Com_Estab(transId).subscribe(() => {
+          // Refresh data, but ensure UI updates immediately
+          setTimeout(() => this.GetListCommercialEstab(), 500);
         });
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
       }
-      // this.Init();
-      // this.mjr = {};
     });
   }
 

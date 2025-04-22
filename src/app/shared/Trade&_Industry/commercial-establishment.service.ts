@@ -77,20 +77,22 @@ export class CommercialEstablishmentService {
     );
   }
   Get_separate(): Observable<{
-    CommercialEstablishments: any[];
-    BusinessEstablishments: any[];
+    commercialEstablishments: any[];
+    businessEstablishments: any[];
   }> {
-    return this.Http.get<{
-      CommercialEstablishments: any[];
-      BusinessEstablishments: any[];
-    }>(
+    const apiUrl =
       this.Base.url +
-        this.ApiUrl.get_com_estab_separate(
-          this.Auth.munCityId,
-          this.Auth.setYear
-        ),
-      { responseType: 'json' }
-    );
+      this.ApiUrl.get_com_estab_separate(
+        this.Auth.setYear,
+        this.Auth.munCityId
+      );
+
+    console.log('API Requesting from:', apiUrl); // Debugging log
+
+    return this.Http.get<{
+      commercialEstablishments: any[];
+      businessEstablishments: any[];
+    }>(apiUrl, { responseType: 'json' });
   }
 
   UpdateBuilding(transId: string, type: string) {
