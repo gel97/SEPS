@@ -1,0 +1,559 @@
+<div class="">
+  <div
+    class="card o-hidden border-2 shadow-sm my-5"
+    style="border-color: #4e73df; background-color: #f8f9fc"
+  >
+    <div class="card-body p-0">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="p-5">
+            <div class="text-center mb-4">
+              <h1 class="h4 card-header-title">
+                Child Development Centers Profile
+              </h1>
+              <label
+                ><strong
+                  >Provincial Development and Physical Framework Plan</strong
+                ></label
+              >
+            </div>
+
+            <div *ngIf="isChildDEvBrgy" class="row mb-3">
+              <div class="col-lg-12">
+                <p class="section-label">📍 List of Municipalities</p>
+              </div>
+            </div>
+            <div *ngIf="!isChildDEvBrgy" class="row mb-3">
+              <div class="col-lg-12">
+                <p class="section-label">📍 List of Barangay</p>
+              </div>
+            </div>
+            <ul class="nav nav-tabs pb-2">
+              <li class="nav-item" (click)="handleOnTabChange(true)">
+                <a
+                  class="nav-link x-cursor"
+                  [ngClass]="isChildDEvBrgy ? 'active fw-bold' : ''"
+                  aria-current="page"
+                  >Municipality/City
+                </a>
+              </li>
+              <li class="nav-item" (click)="handleOnTabChange(false)">
+                <a
+                  class="nav-link x-cursor"
+                  [ngClass]="!isChildDEvBrgy ? 'active fw-bold' : ''"
+                  >Barangay</a
+                >
+              </li>
+            </ul>
+            <div class="form-group">
+              <div class="row">
+                <div class="table-responsive" *ngIf="isChildDEvBrgy">
+                  <table class="styled-lightdark-table">
+                    <thead class="table-dark text-center">
+                      <tr>
+                        <th rowspan="2">City/Municipality</th>
+                        <th rowspan="2">No. of Child Development Centers</th>
+                        <th colspan="3">No. of Child Development Workers</th>
+                        <th colspan="3">Children Served (3 and 4 yrs old)</th>
+                        <th></th>
+                      </tr>
+                      <tr>
+                        <th>Male</th>
+                        <th>Female</th>
+                        <th>Total</th>
+                        <th>Male</th>
+                        <th>Female</th>
+                        <th>Total</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr *ngFor="let item of listData; index as i">
+                        <td class="text-center">
+                          <b>{{ item.munCityName }}</b>
+                        </td>
+                        <td class="text-center">{{ item.noOfChild }}</td>
+
+                        <td class="text-center">{{ item.cDmale }}</td>
+                        <td class="text-center">{{ item.cDfemale }}</td>
+                        <td class="text-center">
+                          {{ (item.cDmale || 0) + (item.cDfemale || 0) }}
+                        </td>
+
+                        <td class="text-center">{{ item.cSmale }}</td>
+                        <td class="text-center">{{ item.cSfemale }}</td>
+                        <td class="text-center">
+                          {{ (item.cSmale || 0) + (item.cSfemale || 0) }}
+                        </td>
+                        <td
+                          *ngIf="
+                            item.transId && item.munCityId == o_munCityId;
+                            else isADD
+                          "
+                        >
+                          <app-admin>
+                            <div class="d-inline-flex">
+                              <button
+                                (click)="data = item; isAdd = false"
+                                class="btn btn-info btn-circle"
+                                data-toggle="modal"
+                                data-target="#openModal"
+                              >
+                                <i class="fa fa-pen"></i>
+                              </button>
+                              &nbsp;
+                              <button
+                                type="button"
+                                title="Delete"
+                                class="btn btn-warning btn-circle"
+                                (click)="DeleteData(item.transId, i, item)"
+                              >
+                                <i class="fa fa-trash"></i>
+                              </button>
+                            </div>
+                          </app-admin>
+                        </td>
+                        <ng-template #isADD>
+                          <td>
+                            <app-admin>
+                              <button
+                                *ngIf="item.munCityId == o_munCityId"
+                                (click)="data = item; isAdd = true"
+                                class="btn btn-primary btn-circle"
+                                data-toggle="modal"
+                                data-target="#openModal "
+                              >
+                                <i class="fa fa-plus"></i>
+                              </button>
+                            </app-admin>
+                          </td>
+                        </ng-template>
+                      </tr>
+
+                      <!-- Total Row -->
+                      <tr class="font-weight-bold">
+                        <td class="text-center"><b>Total</b></td>
+                        <td class="text-center">
+                          <b>{{ totals.noOfChild }}</b>
+                        </td>
+                        <td class="text-center">
+                          <b>{{ totals.cDmale }}</b>
+                        </td>
+                        <td class="text-center">
+                          <b>{{ totals.cDfemale }}</b>
+                        </td>
+                        <td class="text-center">
+                          <b>{{ totals.cDmale + totals.cDfemale }}</b>
+                        </td>
+                        <td class="text-center">
+                          <b>{{ totals.cSmale }}</b>
+                        </td>
+                        <td class="text-center">
+                          <b>{{ totals.cSfemale }}</b>
+                        </td>
+                        <td class="text-center">
+                          <b>{{ totals.cSmale + totals.cSfemale }}</b>
+                        </td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div
+                  class="modal fade bd-example-modal-lg"
+                  id="openModal"
+                  tabindex="-1"
+                  role="dialog"
+                  aria-labelledby="myLargeModalLabel"
+                  aria-hidden="true"
+                >
+                  <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5
+                          class="modal-title"
+                          id="exampleModalScrollableTitle"
+                        >
+                          Child Development Centers
+                        </h5>
+                        <button
+                        #closeMunicipalityBtn
+                          type="button"
+                          class="close"
+                          data-dismiss="modal"
+                          aria-label="Close"
+                        >
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+
+                      <div class="modal-body">
+                        <form>
+                          <div class="row g-3">
+                            <div class="col-md-6">
+                              <label class="form-label section-label"
+                                >Child Development Centers</label
+                              >
+                              <input
+                                type="number"
+                                class="form-control"
+                                placeholder="Enter number"
+                                [(ngModel)]="data.noOfChild"
+                                [ngModelOptions]="{ standalone: true }"
+                              />
+                            </div>
+
+                            <div class="col-md-12">
+                              <label class="section-label"
+                                >Child Development Workers</label
+                              >
+                              <div class="row g-2">
+                                <div class="col-md-4">
+                                  <input
+                                    type="number"
+                                    class="form-control"
+                                    placeholder="Male"
+                                    [(ngModel)]="data.cDmale"
+                                    [ngModelOptions]="{ standalone: true }"
+                                  />
+                                </div>
+                                <div class="col-md-4">
+                                  <input
+                                    type="number"
+                                    class="form-control"
+                                    placeholder="Female"
+                                    [(ngModel)]="data.cDfemale"
+                                    [ngModelOptions]="{ standalone: true }"
+                                  />
+                                </div>
+                                <div class="col-md-4">
+                                  <input
+                                    type="number"
+                                    class="form-control"
+                                    placeholder="Total"
+                                    [value]="
+                                      (data.cDmale || 0) + (data.cDfemale || 0)
+                                    "
+                                    readonly
+                                  />
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="col-md-12 mt-3">
+                              <label class="section-label"
+                                >Children Served (3 and 4 yrs old)</label
+                              >
+                              <div class="row g-2">
+                                <div class="col-md-4">
+                                  <input
+                                    type="number"
+                                    class="form-control"
+                                    placeholder="Male"
+                                    [(ngModel)]="data.cSmale"
+                                    [ngModelOptions]="{ standalone: true }"
+                                  />
+                                </div>
+                                <div class="col-md-4">
+                                  <input
+                                    type="number"
+                                    class="form-control"
+                                    placeholder="Female"
+                                    [(ngModel)]="data.cSfemale"
+                                    [ngModelOptions]="{ standalone: true }"
+                                  />
+                                </div>
+                                <div class="col-md-4">
+                                  <input
+                                    type="number"
+                                    class="form-control"
+                                    placeholder="Total"
+                                    [value]="
+                                      (data.cSmale || 0) + (data.cSfemale || 0)
+                                    "
+                                    readonly
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+
+                      <div class="modal-footer">
+                        <button
+                          type="button"
+                          class="btn btn-outline-secondary"
+                          data-dismiss="modal"
+                        >
+                          <i class="fa fa-times"></i> Cancel
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-primary"
+                          (click)="isAdd ? AddData() : EditData()"
+                        >
+                          <i class="fa fa-save"></i> Save Changes
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!--Barangay-->
+                <div class="table-responsive" *ngIf="!isChildDEvBrgy">
+                  <table class="styled-lightdark-table">
+                    <thead class="table-dark text-center">
+                      <tr>
+                        <th rowspan="2">Barangay</th>
+                        <th rowspan="2">No. of Child Development Centers</th>
+                        <th colspan="3">No. of Child Development Workers</th>
+                        <th colspan="3">Children Served (3 and 4 yrs old)</th>
+                        <th></th>
+                      </tr>
+                      <tr>
+                        <th>Male</th>
+                        <th>Female</th>
+                        <th>Total</th>
+                        <th>Male</th>
+                        <th>Female</th>
+                        <th>Total</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr *ngFor="let item of listDataBrgy; index as i">
+                        <td class="text-center">
+                          <b>{{ item.brgyName }}</b>
+                        </td>
+                        <td class="text-center">{{ item.brgyNoOfChild }}</td>
+
+                        <td class="text-center">{{ item.brgyCDmale }}</td>
+                        <td class="text-center">{{ item.brgyCDfemale }}</td>
+                        <td class="text-center">
+                          {{
+                            (item.brgyCDmale || 0) + (item.brgyCDfemale || 0)
+                          }}
+                        </td>
+
+                        <td class="text-center">{{ item.brgyCSmale }}</td>
+                        <td class="text-center">{{ item.brgyCSfemale }}</td>
+                        <td class="text-center">
+                          {{
+                            (item.brgyCSmale || 0) + (item.brgyCSfemale || 0)
+                          }}
+                        </td>
+                        <td *ngIf="item.transId; else isADD">
+                          <div class="d-inline-flex">
+                            <app-admin>
+                              <button
+                                (click)="data = item; isAdd = false"
+                                class="btn btn-info btn-circle"
+                                data-toggle="modal"
+                                data-target="#openModal2"
+                              >
+                                <i class="fa fa-pen"></i>
+                              </button> </app-admin
+                            >&nbsp;
+                            <app-admin>
+                              <button
+                                type="button"
+                                title="Delete"
+                                class="btn btn-warning btn-circle"
+                                (click)="DeleteDataBrgy(item.transId, i, item)"
+                              >
+                                <i class="fa fa-trash"></i></button
+                              >&nbsp;
+                            </app-admin>
+                          </div>
+                        </td>
+                        <ng-template #isADD>
+                          <td>
+                            <app-admin>
+                              <button
+                                (click)="data = item; isAdd = true"
+                                type="button"
+                                class="btn btn-primary btn-circle"
+                                data-toggle="modal"
+                                data-target="#openModal2 "
+                              >
+                                <i class="fa fa-plus"></i>
+                              </button>
+                            </app-admin>
+                          </td>
+                        </ng-template>
+                      </tr>
+
+                      <!-- Total Row -->
+                      <tr class="font-weight-bold">
+                        <td class="text-center"><b>Total</b></td>
+                        <td class="text-center">
+                          <b>{{ totals2.brgyNoOfChild }}</b>
+                        </td>
+                        <td class="text-center">
+                          <b>{{ totals2.brgyCDmale }}</b>
+                        </td>
+                        <td class="text-center">
+                          <b>{{ totals2.brgyCDfemale }}</b>
+                        </td>
+                        <td class="text-center">
+                          <b>{{ totals2.brgyCDmale + totals2.brgyCDfemale }}</b>
+                        </td>
+                        <td class="text-center">
+                          <b>{{ totals2.brgyCSmale }}</b>
+                        </td>
+                        <td class="text-center">
+                          <b>{{ totals2.brgyCSfemale }}</b>
+                        </td>
+                        <td class="text-center">
+                          <b>{{ totals2.brgyCSmale + totals2.brgyCSfemale }}</b>
+                        </td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="modal fade bd-example-modal-lg"
+    id="openModal2"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="myLargeModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalScrollableTitle">
+            Child Development Centers
+          </h5>
+          <button
+          #closeBarangayBtn
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <form>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label section-label"
+                  >Child Development Centers</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  placeholder="Enter number"
+                  [(ngModel)]="data.brgyNoOfChild"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+              </div>
+
+              <div class="col-md-12">
+                <label class="section-label">Child Development Workers</label>
+                <div class="row g-2">
+                  <div class="col-md-4">
+                    <input
+                      type="number"
+                      class="form-control"
+                      placeholder="Male"
+                      [(ngModel)]="data.brgyCDmale"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                  </div>
+                  <div class="col-md-4">
+                    <input
+                      type="number"
+                      class="form-control"
+                      placeholder="Female"
+                      [(ngModel)]="data.brgyCDfemale"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                  </div>
+                  <div class="col-md-4">
+                    <input
+                      type="number"
+                      class="form-control"
+                      placeholder="Total"
+                      [value]="
+                        (data.brgyCDmale || 0) + (data.brgyCDfemale || 0)
+                      "
+                      readonly
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12 mt-3">
+                <label class="section-label"
+                  >Children Served (3 and 4 yrs old)</label
+                >
+                <div class="row g-2">
+                  <div class="col-md-4">
+                    <input
+                      type="number"
+                      class="form-control"
+                      placeholder="Male"
+                      [(ngModel)]="data.brgyCSmale"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                  </div>
+                  <div class="col-md-4">
+                    <input
+                      type="number"
+                      class="form-control"
+                      placeholder="Female"
+                      [(ngModel)]="data.brgyCSfemale"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                  </div>
+                  <div class="col-md-4">
+                    <input
+                      type="number"
+                      class="form-control"
+                      placeholder="Total"
+                      [value]="
+                        (data.brgyCSmale || 0) + (data.brgyCSfemale || 0)
+                      "
+                      readonly
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            data-dismiss="modal"
+          >
+            <i class="fa fa-times"></i> Cancel
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="isAdd ? AddDataBrgy() : EditDataBrgy()"
+          >
+            <i class="fa fa-save"></i> Save Changes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

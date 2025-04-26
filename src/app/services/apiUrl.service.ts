@@ -85,6 +85,20 @@ export class ApiUrl {
   delete_profbrgy = (transId: any) => `/PhyGeoProfBrgy/${transId}`;
   post_report_geobrgy = () => `/PhyGeoProfBrgy/Reports`;
 
+  //BrgyChildDev
+  get_list_brgyChildDev = (munCityId: any, setYear: any) =>
+    `/BrgyChildDev/${setYear}/${munCityId}`;
+  post_save_brgyChildDev = () => `/BrgyChildDev`;
+  put_update_brgyChildDev = () => `/BrgyChildDev`;
+  delete_brgyChildDev = (transId: any) => `/BrgyChildDev/${transId}`;
+
+  //BrgyPYAP
+  get_list_brgyPYAP = (munCityId: any, setYear: any) =>
+    `/BrgyPYAP/${setYear}/${munCityId}`;
+  post_save_brgyPYAP = () => `/BrgyPYAP`;
+  put_update_brgyPYAP = () => `/BrgyPYAP`;
+  delete_brgyPYAP = (transId: any) => `/BrgyPYAP/${transId}`;
+
   // Organization & Staffing Pattern
   get_get_org = (munCityId: any, setYear: any) =>
     `/OrgStaffPattern/${setYear}/${munCityId}`;
@@ -512,6 +526,18 @@ export class ApiUrl {
   post_susceptible = () => `/SusceptibleFlood`;
   put_susceptible = () => `/SusceptibleFlood`;
   delete_susceptible = (transId: any) => `/SusceptibleFlood/${transId}`;
+
+  //ChildDevelopment
+  get_list_ChildDev = (setYear: any) => `/ChildDevelopment/List/${setYear}`;
+  post_ChildDev = () => `/ChildDevelopment`;
+  put_ChildDev = () => `/ChildDevelopment`;
+  delete_ChildDev = (transId: any) => `/ChildDevelopment/${transId}`;
+  //PYAP
+  get_list_PYAP = (setYear: any) => `/PYAP/List/${setYear}`;
+  post_PYAP = () => `/PYAP`;
+  put_PYAP = () => `/PYAP`;
+  delete_PYAP = (transId: any) => `/PYAP/${transId}`;
+
   //Rain-Induced
   get_list_rainInduced = (setYear: any) => `/RainInduced/List/${setYear}`;
   post_rainInduced = () => `/RainInduced`;
