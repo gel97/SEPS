@@ -131,6 +131,8 @@ import { PopulationOfIndigenousPeopleComponent } from './pages/main/Governance/p
 import { AgriProfComponent } from './pages/main/Province/agri-prof/agri-prof.component';
 import { SusceptibleFloodComponent } from './pages/main/Province/susceptible-flood/susceptible-flood.component';
 import { RainInducedComponent } from './pages/main/Province/rain-induced/rain-induced.component';
+import { ChildDevComponent } from './pages/main/Province/child-dev/child-dev.component';
+import { PYAPComponent } from './pages/main/Province/pyap/pyap.component';
 
 const socioEconomic_TradeIndustry: string =
   'socio-economic/trade-and-industry/';
@@ -606,6 +608,14 @@ const routes: Routes = [
       {
         path: Province + '/rain-induced',
         component: RainInducedComponent,
+      },
+      {
+        path: Province + '/child-dev',
+        component: ChildDevComponent,
+      },
+      {
+        path: Province + '/pyap',
+        component: PYAPComponent,
       },
 
       { path: Governance + '/pgdept-heads', component: PGDeptHeadsComponent },

@@ -175,6 +175,8 @@ import { PopulationOfIndigenousPeopleComponent } from './pages/main/Governance/p
 import { AgriProfComponent } from './pages/main/Province/agri-prof/agri-prof.component';
 import { SusceptibleFloodComponent } from './pages/main/Province/susceptible-flood/susceptible-flood.component';
 import { RainInducedComponent } from './pages/main/Province/rain-induced/rain-induced.component';
+import { ChildDevComponent } from './pages/main/Province/child-dev/child-dev.component';
+import { PYAPComponent } from './pages/main/Province/pyap/pyap.component';
 
 @NgModule({
   declarations: [
@@ -337,6 +339,8 @@ import { RainInducedComponent } from './pages/main/Province/rain-induced/rain-in
     AgriProfComponent,
     SusceptibleFloodComponent,
     RainInducedComponent,
+    ChildDevComponent,
+    PYAPComponent,
   ],
   imports: [
     MdbCollapseModule,
