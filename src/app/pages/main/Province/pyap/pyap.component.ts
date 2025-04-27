@@ -200,9 +200,9 @@ export class PYAPComponent implements OnInit {
           Swal.fire({
             position: 'center',
             icon: 'success',
-            title: 'Your work has been updated',
+            title: 'Good job Data Added Successfully! success',
             showConfirmButton: false,
-            timer: 1000,
+            timer: 2000,
           });
         },
       });
@@ -222,7 +222,7 @@ export class PYAPComponent implements OnInit {
           icon: 'success',
           title: 'Your work has been updated',
           showConfirmButton: false,
-          timer: 1000,
+          timer: 2000,
         });
       },
     });
@@ -300,9 +300,9 @@ export class PYAPComponent implements OnInit {
           Swal.fire({
             position: 'center',
             icon: 'success',
-            title: 'Your work has been updated',
+            title: 'Good job Data Added Successfully! success',
             showConfirmButton: false,
-            timer: 1000,
+            timer: 2000,
           });
         },
       });
@@ -322,7 +322,7 @@ export class PYAPComponent implements OnInit {
           icon: 'success',
           title: 'Your work has been updated',
           showConfirmButton: false,
-          timer: 1000,
+          timer: 2000,
         });
       },
     });

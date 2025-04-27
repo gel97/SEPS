@@ -99,6 +99,13 @@ export class ApiUrl {
   put_update_brgyPYAP = () => `/BrgyPYAP`;
   delete_brgyPYAP = (transId: any) => `/BrgyPYAP/${transId}`;
 
+  //BrgyFedPWD
+  get_list_BrgyFedPWD = (munCityId: any, setYear: any) =>
+    `/BrgyFedPWD/${setYear}/${munCityId}`;
+  post_save_BrgyFedPWD = () => `/BrgyFedPWD`;
+  put_update_BrgyFedPWD = () => `/BrgyFedPWD`;
+  delete_BrgyFedPWD = (transId: any) => `/BrgyFedPWD/${transId}`;
+
   // Organization & Staffing Pattern
   get_get_org = (munCityId: any, setYear: any) =>
     `/OrgStaffPattern/${setYear}/${munCityId}`;
@@ -537,6 +544,12 @@ export class ApiUrl {
   post_PYAP = () => `/PYAP`;
   put_PYAP = () => `/PYAP`;
   delete_PYAP = (transId: any) => `/PYAP/${transId}`;
+
+  //FedPWD
+  get_list_PWD = (setYear: any) => `/FedPwd/List/${setYear}`;
+  post_PWD = () => `/FedPwd`;
+  put_PWD = () => `/FedPwd`;
+  delete_PWD = (transId: any) => `/FedPwd/${transId}`;
 
   //Rain-Induced
   get_list_rainInduced = (setYear: any) => `/RainInduced/List/${setYear}`;
