@@ -177,6 +177,7 @@ import { SusceptibleFloodComponent } from './pages/main/Province/susceptible-flo
 import { RainInducedComponent } from './pages/main/Province/rain-induced/rain-induced.component';
 import { ChildDevComponent } from './pages/main/Province/child-dev/child-dev.component';
 import { PYAPComponent } from './pages/main/Province/pyap/pyap.component';
+import { FedPWDComponent } from './pages/main/Province/fed-pwd/fed-pwd.component';
 
 @NgModule({
   declarations: [
@@ -341,6 +342,7 @@ import { PYAPComponent } from './pages/main/Province/pyap/pyap.component';
     RainInducedComponent,
     ChildDevComponent,
     PYAPComponent,
+    FedPWDComponent,
   ],
   imports: [
     MdbCollapseModule,

@@ -1,25 +1,25 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import { ChilDevService } from 'src/app/shared/Province/ChildDev.Service';
+import { FedPwdService } from 'src/app/shared/Province/FedPwd.Service';
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import { isEmptyObject } from 'jquery';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 import { response } from 'express';
+
 @Component({
-  selector: 'app-child-dev',
-  templateUrl: './child-dev.component.html',
-  styleUrls: ['./child-dev.component.css'],
+  selector: 'app-fed-pwd',
+  templateUrl: './fed-pwd.component.html',
+  styleUrls: ['./fed-pwd.component.css'],
 })
-export class ChildDevComponent implements OnInit {
+export class FedPWDComponent implements OnInit {
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
   @ViewChild('closeMunicipalityBtn') closeMunicipalityBtn!: ElementRef;
   @ViewChild('closeBarangayBtn') closeBarangayBtn!: ElementRef;
-
   constructor(
     private auth: AuthService,
-    private service: ChilDevService,
+    private Service: FedPwdService,
     private modifyService: ModifyCityMunService
   ) {
     this.o_munCityId = this.auth.o_munCityId;
@@ -29,51 +29,34 @@ export class ChildDevComponent implements OnInit {
   }
   munCityName: string = this.auth.munCityName;
   o_munCityId: any = '';
+  isPWDBrgy: boolean = true;
   listData: any = [];
-  listDataBrgy: any = [];
-  listChildDev: any = [];
-  listChildDevBrgy: any = [];
+  listPWD: any[] = [];
+  listPWDBrgy: any = [];
   listMunCity: any = {};
+  listDataBrgy: any = [];
+  listBarangay: any = [];
+
   data: any = {};
   isAdd: boolean = false;
-  isChildDEvBrgy: boolean = true;
-  listBarangay: any = [];
+
+  handleOnTabChange(isPWDBrgy: boolean) {
+    this.isPWDBrgy = isPWDBrgy;
+  }
 
   ngOnInit(): void {
     this.Init();
+    this.GetPWD();
+    this.GetBrgyPWD();
   }
   Init() {
-    this.GetChilDev();
     this.GetListMunicipality();
-    this.GetBrgyChildDev();
   }
-  GetChilDev() {
-    this.service.GetChilDev(this.auth.setYear).subscribe({
+  GetBrgyPWD() {
+    this.Service.GetBrgyPWD().subscribe({
       next: (response) => {
-        this.listChildDev = <any>response;
-      },
-      error: (error) => {},
-      complete: () => {
-        this.GetListMunicipality();
-      },
-    });
-  }
-  GetListMunicipality() {
-    this.service.ListOfMunicipality().subscribe({
-      next: (response) => {
-        this.listMunCity = <any>response;
-      },
-      error: (error) => {},
-      complete: () => {
-        this.FilterList();
-      },
-    });
-  }
-  GetBrgyChildDev() {
-    this.service.GetBrgyChildDev().subscribe({
-      next: (response) => {
-        this.listChildDevBrgy = <any>response;
-        console.log(this.listChildDevBrgy);
+        this.listPWDBrgy = <any>response;
+        console.log(this.listPWDBrgy);
       },
       error: (error) => {
         console.error('Error fetching phy geo brgy', error);
@@ -83,9 +66,8 @@ export class ChildDevComponent implements OnInit {
       },
     });
   }
-
   GetListBarangay() {
-    this.service.ListOfBarangay(this.auth.munCityId).subscribe({
+    this.Service.ListOfBarangay(this.auth.munCityId).subscribe({
       next: (response) => {
         this.listBarangay = <any>response;
         this.FilterList2();
@@ -95,15 +77,12 @@ export class ChildDevComponent implements OnInit {
       },
     });
   }
-  handleOnTabChange(isChildDEvBrgy: boolean) {
-    this.isChildDEvBrgy = isChildDEvBrgy;
-  }
   FilterList2() {
     let isExist;
     this.listDataBrgy = [];
 
     this.listBarangay.forEach((a: any) => {
-      this.listChildDevBrgy.forEach((b: any) => {
+      this.listPWDBrgy.forEach((b: any) => {
         if (a.brgyId == b.brgyId) {
           isExist = this.listDataBrgy.filter((x: any) => x.brgyId == a.brgyId);
           if (isExist.length == 0) {
@@ -121,13 +100,41 @@ export class ChildDevComponent implements OnInit {
       }
     });
   }
-
+  GetPWD() {
+    {
+      this.Service.GetPWD(this.auth.setYear).subscribe({
+        next: (response) => {
+          this.listPWD = <any>response;
+        },
+        error: (error) => {},
+        complete: () => {
+          this.GetListMunicipality();
+        },
+      });
+    }
+  }
+  GetListMunicipality() {
+    this.Service.ListOfMunicipality().subscribe({
+      next: (response) => {
+        this.listMunCity = <any>response;
+      },
+      error: (error) => {},
+      complete: () => {
+        this.FilterList();
+      },
+    });
+  }
   FilterList() {
     let isExist;
     this.listData = [];
 
+    if (!Array.isArray(this.listMunCity) || !Array.isArray(this.listPWD)) {
+      console.warn('Either listMunCity or listPWD is not an array yet.');
+      return;
+    }
+
     this.listMunCity.forEach((a: any) => {
-      this.listChildDev.forEach((b: any) => {
+      this.listPWD.forEach((b: any) => {
         if (a.munCityId == b.munCityId) {
           isExist = this.listData.filter(
             (x: any) => x.munCityId == a.munCityId
@@ -151,38 +158,25 @@ export class ChildDevComponent implements OnInit {
     return this.listData.reduce(
       (
         acc: {
-          noOfChild: number;
-          cDmale: number;
-          cDfemale: number;
-          cSmale: number;
-          cSfemale: number;
+          male: number;
+          female: number;
         },
         item: {
-          noOfChild: any;
-          cDmale: any;
-          cDfemale: any;
-          cSmale: any;
-          cSfemale: any;
+          male: any;
+          female: any;
         }
       ) => {
-        acc.noOfChild += item.noOfChild || 0;
-        acc.cDmale += item.cDmale || 0;
-        acc.cDfemale += item.cDfemale || 0;
-        acc.cSmale += item.cSmale || 0;
-        acc.cSfemale += item.cSfemale || 0;
+        acc.male += item.male || 0;
+        acc.female += item.female || 0;
         return acc;
       },
       {
-        noOfChild: 0,
-        cDmale: 0,
-        cDfemale: 0,
-        cSmale: 0,
-        cSfemale: 0,
+        male: 0,
+        female: 0,
       }
     );
   }
-
-  AddData() {
+  AddPWD() {
     if (isEmptyObject(this.data)) {
       Swal.fire(
         'Missing Data!',
@@ -192,15 +186,15 @@ export class ChildDevComponent implements OnInit {
     } else {
       this.data.munCityId = this.auth.munCityId;
       this.data.setYear = this.auth.activeSetYear;
-      this.service.AddChilDev(this.data).subscribe({
-        next: (request) => {
+      this.Service.AddPWD(this.data).subscribe({
+        next: (response) => {
           let index = this.listData.findIndex(
-            (obj: any) => obj.brgyId === this.data.brgyId
+            (obj: any) => obj.munCityId === this.data.munCityId
           );
-          this.listData[index] = request;
+          this.listData[index] = response;
         },
         complete: () => {
-          this.GetChilDev(); // ⬅️ THIS refreshes the list
+          this.GetPWD();
           this.closeMunicipalityBtn.nativeElement.click();
           Swal.fire({
             position: 'center',
@@ -213,14 +207,14 @@ export class ChildDevComponent implements OnInit {
       });
     }
   }
-  EditData() {
+  EditPWD() {
     this.data.setYear = this.auth.activeSetYear;
-    this.service.EditChilDev(this.data).subscribe({
+    this.Service.EditPWD(this.data).subscribe({
       next: (request) => {
         this.data = {};
       },
       complete: () => {
-        this.GetChilDev(); // ⬅️ Add this
+        this.GetPWD(); // ⬅️ Add this
         this.closeMunicipalityBtn.nativeElement.click();
         Swal.fire({
           position: 'center',
@@ -232,7 +226,7 @@ export class ChildDevComponent implements OnInit {
       },
     });
   }
-  DeleteData(transId: any, index: any, data: any) {
+  DeletePWD(transId: any, index: any, data: any) {
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -243,7 +237,7 @@ export class ChildDevComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.service.DeleteChildDev(transId).subscribe({
+        this.Service.DeletePWD(transId).subscribe({
           next: (_data) => {},
           error: (err) => {
             Swal.fire('Oops!', 'Something went wrong.', 'error');
@@ -258,42 +252,30 @@ export class ChildDevComponent implements OnInit {
       }
     });
   }
-  //Add Barangay Child Dev
-  get totals2() {
+  //Barangay
+  get total() {
     return this.listDataBrgy.reduce(
       (
         acc: {
-          brgyNoOfChild: number;
-          brgyCDmale: number;
-          brgyCDfemale: number;
-          brgyCSmale: number;
-          brgyCSfemale: number;
+          brgyMale: number;
+          brgyfemale: number;
         },
         item: {
-          brgyNoOfChild: any;
-          brgyCDmale: any;
-          brgyCDfemale: any;
-          brgyCSmale: any;
-          brgyCSfemale: any;
+          brgyMale: any;
+          brgyfemale: any;
         }
       ) => {
-        acc.brgyNoOfChild += item.brgyNoOfChild || 0;
-        acc.brgyCDmale += item.brgyCDmale || 0;
-        acc.brgyCDfemale += item.brgyCDfemale || 0;
-        acc.brgyCSmale += item.brgyCSmale || 0;
-        acc.brgyCSfemale += item.brgyCSfemale || 0;
+        acc.brgyMale += item.brgyMale || 0;
+        acc.brgyfemale += item.brgyfemale || 0;
         return acc;
       },
       {
-        brgyNoOfChild: 0,
-        brgyCDmale: 0,
-        brgyCDfemale: 0,
-        brgyCSmale: 0,
-        brgyCSfemale: 0,
+        brgyMale: 0,
+        brgyfemale: 0,
       }
     );
   }
-  AddDataBrgy() {
+  AddBrgyPWD() {
     if (isEmptyObject(this.data)) {
       Swal.fire(
         'Missing Data!',
@@ -303,7 +285,7 @@ export class ChildDevComponent implements OnInit {
     } else {
       this.data.munCityId = this.auth.munCityId;
       this.data.setYear = this.auth.activeSetYear;
-      this.service.AddBrgyChildDev(this.data).subscribe({
+      this.Service.AddBrgyPWD(this.data).subscribe({
         next: (request) => {
           let index = this.listData.findIndex(
             (obj: any) => obj.brgyId === this.data.brgyId
@@ -311,7 +293,7 @@ export class ChildDevComponent implements OnInit {
           this.listData[index] = request;
         },
         complete: () => {
-          this.GetBrgyChildDev(); // ⬅️ THIS refreshes the list
+          this.GetBrgyPWD(); // ⬅️ THIS refreshes the list
           this.closeBarangayBtn.nativeElement.click();
           Swal.fire({
             position: 'center',
@@ -324,14 +306,14 @@ export class ChildDevComponent implements OnInit {
       });
     }
   }
-  EditDataBrgy() {
+  EditBrgyPWD() {
     this.data.setYear = this.auth.activeSetYear;
-    this.service.EditBrgyChilDev(this.data).subscribe({
+    this.Service.EditBrgyPWD(this.data).subscribe({
       next: (request) => {
         this.data = {};
       },
       complete: () => {
-        this.GetBrgyChildDev(); // ⬅️ Add this
+        this.GetBrgyPWD(); // ⬅️ Add this
         this.closeBarangayBtn.nativeElement.click();
         Swal.fire({
           position: 'center',
@@ -343,8 +325,7 @@ export class ChildDevComponent implements OnInit {
       },
     });
   }
-
-  DeleteDataBrgy(transId: any, index: any, data: any) {
+  DeleteBrgyPWD(transId: any, index: any, data: any) {
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -355,7 +336,7 @@ export class ChildDevComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.service.DeleteBrgyChildDev(transId).subscribe({
+        this.Service.DeleteBrgyPWD(transId).subscribe({
           next: () => {
             Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
           },
@@ -363,7 +344,7 @@ export class ChildDevComponent implements OnInit {
             Swal.fire('Oops!', 'Something went wrong.', 'error');
           },
           complete: () => {
-            this.GetBrgyChildDev(); // ⬅️ Re-fetch fresh data list
+            this.GetBrgyPWD(); // ⬅️ Re-fetch fresh data list
           },
         });
       }
