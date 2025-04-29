@@ -1,0 +1,184 @@
+<div class="">
+  <div
+    class="card o-hidden border-2 shadow-sm my-5"
+    style="border-color: #4e73df; background-color: #f8f9fc"
+  >
+    <div class="card-body p-0">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="p-5">
+            <div class="text-center mb-4">
+              <h1 class="h4 card-header-title">
+                Tourist Arrival in the Tourist Destination in Davao del Norte
+              </h1>
+              <label
+                ><strong
+                  >Provincial Development and Physical Framework Plan</strong
+                ></label
+              >
+            </div>
+            <div class="row mb-3">
+              <div class="col-lg-12">
+                <p class="section-label">📍 List of Municipalities</p>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="styled-lightdark-table">
+                <thead class="table-dark text-center">
+                  <tr>
+                    <th>City/Municipality</th>
+                    <th>Percent of Tourist Arrival</th>
+                    <th>Total Tourist Spending (PhP in Millions)</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of listData; index as i">
+                    <td class="text-center">
+                      <b>{{ item.munCityName }}</b>
+                    </td>
+                    <td class="text-center">{{ item.arrival }}</td>
+                    <td class="text-center">{{ item.totalSpending }}</td>
+                    <td
+                      *ngIf="
+                        item.transId && item.munCityId == o_munCityId;
+                        else isADD
+                      "
+                    >
+                      <app-admin>
+                        <div class="d-inline-flex">
+                          <button
+                            (click)="data = item; isAdd = false"
+                            class="btn btn-info btn-circle"
+                            data-toggle="modal"
+                            data-target="#openModal"
+                          >
+                            <i class="fa fa-pen"></i>
+                          </button>
+                          &nbsp;
+                          <button
+                            type="button"
+                            title="Delete"
+                            class="btn btn-warning btn-circle"
+                            (click)="DeleteArrival(item.transId, i, item)"
+                          >
+                            <i class="fa fa-trash"></i>
+                          </button>
+                        </div>
+                      </app-admin>
+                    </td>
+                    <ng-template #isADD>
+                      <td>
+                        <app-admin>
+                          <button
+                            *ngIf="item.munCityId == o_munCityId"
+                            (click)="data = item; isAdd = true"
+                            class="btn btn-primary btn-circle"
+                            data-toggle="modal"
+                            data-target="#openModal"
+                          >
+                            <i class="fa fa-plus"></i>
+                          </button>
+                        </app-admin>
+                      </td>
+                    </ng-template>
+                  </tr>
+
+                  <!-- Total Row -->
+                  <tr class="font-weight-bold">
+                    <td class="text-center"><b>Total</b></td>
+                    <td class="text-center">
+                      <b>{{ totals.arrival }}</b>
+                    </td>
+                    <td class="text-center">
+                      <b>{{ totals.totalSpending }}</b>
+                    </td>
+                    <td class="text-center">
+                      <b></b>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div
+              class="modal fade bd-example-modal-lg"
+              id="openModal"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="myLargeModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalScrollableTitle">
+                      Tourist Arrival
+                    </h5>
+                    <button
+                      #closeMunicipalityBtn
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+
+                  <div class="modal-body">
+                    <form>
+                      <div class="row g-3">
+                        <div class="col-md-12">
+                          <label class="section-label"
+                            >Tourist Arrival in the Tourist Destination
+                          </label>
+                          <div class="row g-2">
+                            <div class="col-md-6">
+                              <input
+                                type="number"
+                                class="form-control"
+                                placeholder="Percent of TouristArrival"
+                                [(ngModel)]="data.arrival"
+                                [ngModelOptions]="{ standalone: true }"
+                              />
+                            </div>
+                            <div class="col-md-6">
+                              <input
+                                type="number"
+                                class="form-control"
+                                placeholder="Total Tourist Spending"
+                                [(ngModel)]="data.totalSpending"
+                                [ngModelOptions]="{ standalone: true }"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-outline-secondary"
+                      data-dismiss="modal"
+                    >
+                      <i class="fa fa-times"></i> Cancel
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      (click)="isAdd ? AddArrival() : EditArrival()"
+                    >
+                      <i class="fa fa-save"></i> Save Changes
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

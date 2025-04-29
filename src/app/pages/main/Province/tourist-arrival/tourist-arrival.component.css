@@ -1,0 +1,76 @@
+.card-header-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #4e73df;
+}
+
+.section-label {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #1b1b1b;
+}
+
+.table td,
+.table th {
+  vertical-align: middle;
+}
+
+.modal-header {
+  background-color: #4e73df;
+  color: #fff;
+}
+
+.modal-footer {
+  justify-content: space-between;
+}
+
+input[readonly] {
+  background-color: #e9ecef;
+}
+/* Light-Dark Emphasized Table */
+.styled-lightdark-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 0.6rem;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 0.95rem;
+}
+
+.styled-lightdark-table thead {
+  background-color: #2f3542;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.styled-lightdark-table th {
+  padding: 12px;
+  text-align: center;
+  border-radius: 8px 8px 0 0;
+}
+
+.styled-lightdark-table td {
+  background-color: #f1f2f6;
+  padding: 12px;
+  text-align: center;
+  color: #2f3542;
+  font-weight: 500;
+  border-radius: 6px;
+  border: 1px solid #dee2e6;
+}
+
+.styled-lightdark-table tbody tr:hover {
+  background-color: #dfe4ea;
+  transition: all 0.2s ease;
+  transform: scale(1.002);
+}
+
+.styled-lightdark-table .btn-circle {
+  border-radius: 50%;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}

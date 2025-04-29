@@ -134,6 +134,8 @@ import { RainInducedComponent } from './pages/main/Province/rain-induced/rain-in
 import { ChildDevComponent } from './pages/main/Province/child-dev/child-dev.component';
 import { PYAPComponent } from './pages/main/Province/pyap/pyap.component';
 import { FedPWDComponent } from './pages/main/Province/fed-pwd/fed-pwd.component';
+import { ProvIncomeComponent } from './pages/main/Province/prov-income/prov-income.component';
+import { TouristArrivalComponent } from './pages/main/Province/tourist-arrival/tourist-arrival.component';
 
 const socioEconomic_TradeIndustry: string =
   'socio-economic/trade-and-industry/';
@@ -621,6 +623,14 @@ const routes: Routes = [
       {
         path: Province + '/fed-pwd',
         component: FedPWDComponent,
+      },
+      {
+        path: Province + '/prov-income',
+        component: ProvIncomeComponent,
+      },
+      {
+        path: Province + '/tourist-arrival',
+        component: TouristArrivalComponent,
       },
 
       { path: Governance + '/pgdept-heads', component: PGDeptHeadsComponent },
