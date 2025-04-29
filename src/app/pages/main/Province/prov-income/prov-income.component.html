@@ -1,0 +1,773 @@
+<div class="">
+  <div
+    class="card o-hidden border-2 shadow-sm my-5"
+    style="border-color: #4e73df; background-color: #f8f9fc"
+  >
+    <div class="card-body p-0">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="p-5">
+            <div class="text-center mb-4">
+              <h1 class="h4 card-header-title">
+                Provincial Income from Major Industries of Cities and
+                Municipalities
+              </h1>
+              <label
+                ><strong
+                  >Provincial Development and Physical Framework Plan</strong
+                ></label
+              >
+            </div>
+            <div class="row mb-3">
+              <div class="col-lg-12">
+                <p class="section-label">📍 List of Municipalities</p>
+              </div>
+              <!-- Button to Open Modal -->
+              <div class="text-center mt-3">
+                <button
+                  class="btn btn-info"
+                  data-toggle="modal"
+                  data-target="#legendModal"
+                >
+                  View Legend
+                </button>
+              </div>
+
+              <div class="table-responsive">
+                <table class="styled-lightdark-table">
+                  <thead class="table-dark text-center">
+                    <tr>
+                      <th>LGU/Industry</th>
+                      <th>AF F</th>
+                      <th>M Q</th>
+                      <th>M</th>
+                      <th>EGS ACS</th>
+                      <th>WSS WM</th>
+                      <th>C</th>
+                      <th>WRTR MVM</th>
+                      <th>TS</th>
+                      <th>AFSA</th>
+                      <th>IC</th>
+                      <th>FIA</th>
+                      <th>REA</th>
+                      <th>PSTA</th>
+                      <th>ASSA</th>
+                      <th>E</th>
+                      <th>HHSWA</th>
+                      <th>AER</th>
+                      <th>OSA</th>
+                      <th>TOTAL</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <tr *ngFor="let item of listData; index as i">
+                      <td class="text-center">
+                        <b>{{ item.munCityName }}</b>
+                      </td>
+
+                      <!-- List all fields and format to 2 decimals -->
+                      <td class="text-center">
+                        {{ item.aff }}
+                      </td>
+                      <td class="text-center">
+                        {{ item.mq }}
+                      </td>
+                      <td class="text-center">
+                        {{ item.m }}
+                      </td>
+                      <td class="text-center">
+                        {{ item.egsacs }}
+                      </td>
+                      <td class="text-center">
+                        {{ item.wsswm }}
+                      </td>
+                      <td class="text-center">
+                        {{ item.c }}
+                      </td>
+                      <td class="text-center">
+                        {{ item.wrtrmvm }}
+                      </td>
+                      <td class="text-center">
+                        {{ item.ts }}
+                      </td>
+                      <td class="text-center">
+                        {{ item.afsa }}
+                      </td>
+                      <td class="text-center">
+                        {{ item.ic }}
+                      </td>
+                      <td class="text-center">
+                        {{ item.fia }}
+                      </td>
+                      <td class="text-center">
+                        {{ item.rea }}
+                      </td>
+                      <td class="text-center">
+                        {{ item.psta }}
+                      </td>
+                      <td class="text-center">
+                        {{ item.assa }}
+                      </td>
+                      <td class="text-center">
+                        {{ item.e }}
+                      </td>
+                      <td class="text-center">
+                        {{ item.hhswa }}
+                      </td>
+                      <td class="text-center">
+                        {{ item.aer }}
+                      </td>
+                      <td class="text-center">
+                        {{ item.osa }}
+                      </td>
+
+                      <!-- TOTAL for the row -->
+                      <td class="text-center">
+                        <b>{{
+                          (
+                            (item.aff || 0) +
+                            (item.mq || 0) +
+                            (item.m || 0) +
+                            (item.egsacs || 0) +
+                            (item.wsswm || 0) +
+                            (item.c || 0) +
+                            (item.wrtrmvm || 0) +
+                            (item.ts || 0) +
+                            (item.afsa || 0) +
+                            (item.ic || 0) +
+                            (item.fia || 0) +
+                            (item.rea || 0) +
+                            (item.psta || 0) +
+                            (item.assa || 0) +
+                            (item.e || 0) +
+                            (item.hhswa || 0) +
+                            (item.aer || 0) +
+                            (item.osa || 0)
+                          ).toFixed(2)
+                        }}</b>
+                      </td>
+
+                      <!-- Action buttons -->
+                      <td
+                        *ngIf="
+                          item.transId && item.munCityId == o_munCityId;
+                          else isADD
+                        "
+                      >
+                        <app-admin>
+                          <div class="d-inline-flex">
+                            <button
+                              (click)="data = item; isAdd = false"
+                              class="btn btn-info btn-circle"
+                              data-toggle="modal"
+                              data-target="#openModal"
+                            >
+                              <i class="fa fa-pen"></i>
+                            </button>
+                            &nbsp;
+                            <button
+                              type="button"
+                              title="Delete"
+                              class="btn btn-warning btn-circle"
+                              (click)="DeleteIncome(item.transId, i, item)"
+                            >
+                              <i class="fa fa-trash"></i>
+                            </button>
+                          </div>
+                        </app-admin>
+                      </td>
+
+                      <ng-template #isADD>
+                        <td>
+                          <app-admin>
+                            <button
+                              *ngIf="item.munCityId == o_munCityId"
+                              (click)="data = item; isAdd = true"
+                              class="btn btn-primary btn-circle"
+                              data-toggle="modal"
+                              data-target="#openModal"
+                            >
+                              <i class="fa fa-plus"></i>
+                            </button>
+                          </app-admin>
+                        </td>
+                      </ng-template>
+                    </tr>
+
+                    <!-- TOTAL Row for whole table -->
+                    <tr class="font-weight-bold">
+                      <td class="text-center"><b>TOTAL</b></td>
+                      <td class="text-center">
+                        <b>{{ totals.aff }}</b>
+                      </td>
+                      <td class="text-center">
+                        <b>{{ totals.mq }}</b>
+                      </td>
+                      <td class="text-center">
+                        <b>{{ totals.m }}</b>
+                      </td>
+                      <td class="text-center">
+                        <b>{{ totals.egsacs }}</b>
+                      </td>
+                      <td class="text-center">
+                        <b>{{ totals.wsswm }}</b>
+                      </td>
+                      <td class="text-center">
+                        <b>{{ totals.c }}</b>
+                      </td>
+                      <td class="text-center">
+                        <b>{{ totals.wrtrmvm }}</b>
+                      </td>
+                      <td class="text-center">
+                        <b>{{ totals.ts }}</b>
+                      </td>
+                      <td class="text-center">
+                        <b>{{ totals.afsa }}</b>
+                      </td>
+                      <td class="text-center">
+                        <b>{{ totals.ic }}</b>
+                      </td>
+                      <td class="text-center">
+                        <b>{{ totals.fia }}</b>
+                      </td>
+                      <td class="text-center">
+                        <b>{{ totals.rea }}</b>
+                      </td>
+                      <td class="text-center">
+                        <b>{{ totals.psta }}</b>
+                      </td>
+                      <td class="text-center">
+                        <b>{{ totals.assa }}</b>
+                      </td>
+                      <td class="text-center">
+                        <b>{{ totals.e }}</b>
+                      </td>
+                      <td class="text-center">
+                        <b>{{ totals.hhswa }}</b>
+                      </td>
+                      <td class="text-center">
+                        <b>{{ totals.aer }}</b>
+                      </td>
+                      <td class="text-center">
+                        <b>{{ totals.osa }}</b>
+                      </td>
+
+                      <!-- Grand total of all fields -->
+                      <td class="text-center">
+                        <b>{{
+                          (
+                            totals.aff +
+                            totals.mq +
+                            totals.m +
+                            totals.egsacs +
+                            totals.wsswm +
+                            totals.c +
+                            totals.wrtrmvm +
+                            totals.ts +
+                            totals.afsa +
+                            totals.ic +
+                            totals.fia +
+                            totals.rea +
+                            totals.psta +
+                            totals.assa +
+                            totals.e +
+                            totals.hhswa +
+                            totals.aer +
+                            totals.osa
+                          ).toFixed(2)
+                        }}</b>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div
+                class="modal fade bd-example-modal-lg"
+                id="openModal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="myLargeModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog modal-lg" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalScrollableTitle">
+                        Provincial Income
+                      </h5>
+                      <button
+                        #closeMunicipalityBtn
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+
+                    <div class="modal-body">
+                      <form>
+                        <div class="row g-3">
+                          <div class="col-md-12">
+                            <label class="section-label"
+                              >Provincial Income</label
+                            >
+                            <div class="row">
+                              <div class="col-lg-4">
+                                <div class="form-floating mb-3">
+                                  <input
+                                    type="number"
+                                    class="form-control"
+                                    id="floatingInput"
+                                    placeholder="AFF"
+                                    name="data"
+                                    [(ngModel)]="data.aff"
+                                  />
+                                  <label for="floatingInput">AFF</label>
+                                </div>
+                              </div>
+                              <div class="col-lg-4">
+                                <div class="form-floating mb-3">
+                                  <input
+                                    type="number"
+                                    class="form-control"
+                                    id="floatingInput"
+                                    placeholder="MQ"
+                                    name="data"
+                                    [(ngModel)]="data.mq"
+                                  />
+                                  <label for="floatingInput">MQ</label>
+                                </div>
+                              </div>
+                              <div class="col-lg-4">
+                                <div class="form-floating mb-3">
+                                  <input
+                                    type="number"
+                                    class="form-control"
+                                    id="floatingInput"
+                                    placeholder="M"
+                                    name="data"
+                                    [(ngModel)]="data.m"
+                                  />
+                                  <label for="floatingInput">M</label>
+                                </div>
+                              </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                              <div class="col-lg-4">
+                                <div class="form-floating mb-3">
+                                  <input
+                                    type="number"
+                                    class="form-control"
+                                    id="floatingInput"
+                                    placeholder="EGSACS"
+                                    name="data"
+                                    [(ngModel)]="data.egsacs"
+                                  />
+                                  <label for="floatingInput">EGSACS</label>
+                                </div>
+                              </div>
+                              <div class="col-lg-4">
+                                <div class="form-floating mb-3">
+                                  <input
+                                    type="number"
+                                    class="form-control"
+                                    id="floatingInput"
+                                    placeholder="WSSWM"
+                                    name="data"
+                                    [(ngModel)]="data.wsswm"
+                                  />
+                                  <label for="floatingInput">WSSWM</label>
+                                </div>
+                              </div>
+                              <div class="col-lg-4">
+                                <div class="form-floating mb-3">
+                                  <input
+                                    type="number"
+                                    class="form-control"
+                                    id="floatingInput"
+                                    placeholder="C"
+                                    name="data"
+                                    [(ngModel)]="data.c"
+                                  />
+                                  <label for="floatingInput">C</label>
+                                </div>
+                              </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                              <div class="col-lg-4">
+                                <div class="form-floating mb-3">
+                                  <input
+                                    type="number"
+                                    class="form-control"
+                                    id="floatingInput"
+                                    placeholder="WRTRMVM"
+                                    name="data"
+                                    [(ngModel)]="data.wrtrmvm"
+                                  />
+                                  <label for="floatingInput">WRTRMVM</label>
+                                </div>
+                              </div>
+                              <div class="col-lg-4">
+                                <div class="form-floating mb-3">
+                                  <input
+                                    type="number"
+                                    class="form-control"
+                                    id="floatingInput"
+                                    placeholder="TS"
+                                    name="data"
+                                    [(ngModel)]="data.ts"
+                                  />
+                                  <label for="floatingInput">TS</label>
+                                </div>
+                              </div>
+                              <div class="col-lg-4">
+                                <div class="form-floating mb-3">
+                                  <input
+                                    type="number"
+                                    class="form-control"
+                                    id="floatingInput"
+                                    placeholder="AFSA"
+                                    name="data"
+                                    [(ngModel)]="data.afsa"
+                                  />
+                                  <label for="floatingInput">AFSA</label>
+                                </div>
+                              </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                              <div class="col-lg-4">
+                                <div class="form-floating mb-3">
+                                  <input
+                                    type="number"
+                                    class="form-control"
+                                    id="floatingInput"
+                                    placeholder="IC"
+                                    name="data"
+                                    [(ngModel)]="data.ic"
+                                  />
+                                  <label for="floatingInput">IC</label>
+                                </div>
+                              </div>
+                              <div class="col-lg-4">
+                                <div class="form-floating mb-3">
+                                  <input
+                                    type="number"
+                                    class="form-control"
+                                    id="floatingInput"
+                                    placeholder="FIA"
+                                    name="data"
+                                    [(ngModel)]="data.fia"
+                                  />
+                                  <label for="floatingInput">FIA</label>
+                                </div>
+                              </div>
+                              <div class="col-lg-4">
+                                <div class="form-floating mb-3">
+                                  <input
+                                    type="number"
+                                    class="form-control"
+                                    id="floatingInput"
+                                    placeholder="REA"
+                                    name="data"
+                                    [(ngModel)]="data.rea"
+                                  />
+                                  <label for="floatingInput">REA</label>
+                                </div>
+                              </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                              <div class="col-lg-4">
+                                <div class="form-floating mb-3">
+                                  <input
+                                    type="number"
+                                    class="form-control"
+                                    id="floatingInput"
+                                    placeholder="PSTA"
+                                    name="data"
+                                    [(ngModel)]="data.psta"
+                                  />
+                                  <label for="floatingInput">PSTA</label>
+                                </div>
+                              </div>
+                              <div class="col-lg-4">
+                                <div class="form-floating mb-3">
+                                  <input
+                                    type="number"
+                                    class="form-control"
+                                    id="floatingInput"
+                                    placeholder="ASSA"
+                                    name="data"
+                                    [(ngModel)]="data.assa"
+                                  />
+                                  <label for="floatingInput">ASSA</label>
+                                </div>
+                              </div>
+                              <div class="col-lg-4">
+                                <div class="form-floating mb-3">
+                                  <input
+                                    type="number"
+                                    class="form-control"
+                                    id="floatingInput"
+                                    placeholder="E"
+                                    name="data"
+                                    [(ngModel)]="data.e"
+                                  />
+                                  <label for="floatingInput">E</label>
+                                </div>
+                              </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                              <div class="col-lg-4">
+                                <div class="form-floating mb-3">
+                                  <input
+                                    type="number"
+                                    class="form-control"
+                                    id="floatingInput"
+                                    placeholder="HHSWA"
+                                    name="data"
+                                    [(ngModel)]="data.hhswa"
+                                  />
+                                  <label for="floatingInput">HHSWA</label>
+                                </div>
+                              </div>
+                              <div class="col-lg-4">
+                                <div class="form-floating mb-3">
+                                  <input
+                                    type="number"
+                                    class="form-control"
+                                    id="floatingInput"
+                                    placeholder="AER"
+                                    name="data"
+                                    [(ngModel)]="data.aer"
+                                  />
+                                  <label for="floatingInput">AER</label>
+                                </div>
+                              </div>
+                              <div class="col-lg-4">
+                                <div class="form-floating mb-3">
+                                  <input
+                                    type="number"
+                                    class="form-control"
+                                    id="floatingInput"
+                                    placeholder="OSA"
+                                    name="data"
+                                    [(ngModel)]="data.osa"
+                                  />
+                                  <label for="floatingInput">OSA</label>
+                                </div>
+                              </div>
+                            </div>
+                            <br />
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-outline-secondary"
+                        data-dismiss="modal"
+                      >
+                        <i class="fa fa-times"></i> Cancel
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-primary"
+                        (click)="isAdd ? AddIncome() : EditIncome()"
+                      >
+                        <i class="fa fa-save"></i> Save Changes
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="legendModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="legendModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="legendModalLabel">Legend Description</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Landscape format using flex -->
+        <div class="legend-container container">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <div class="legend-item">
+                <span class="legend-label">AFF:</span>
+                <span class="legend-description"
+                  >Agriculture, Forestry & Fishing</span
+                >
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="legend-item">
+                <span class="legend-label">MQ:</span>
+                <span class="legend-description">Mining and Quarrying</span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="legend-item">
+                <span class="legend-label">M:</span>
+                <span class="legend-description">Manufacturing</span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="legend-item">
+                <span class="legend-label">EGSACS:</span>
+                <span class="legend-description"
+                  >Electricity, Gas, Steam and Airconditioning Supply</span
+                >
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="legend-item">
+                <span class="legend-label">WSSWM:</span>
+                <span class="legend-description"
+                  >Water supply, Sewerage, Waste Management</span
+                >
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="legend-item">
+                <span class="legend-label">C:</span>
+                <span class="legend-description">Construction</span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="legend-item">
+                <span class="legend-label">WRTRMVM:</span>
+                <span class="legend-description"
+                  >Wholesale and Retail Trade; Repair of Motorcycles</span
+                >
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="legend-item">
+                <span class="legend-label">TS:</span>
+                <span class="legend-description"
+                  >Transportation and Storage</span
+                >
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="legend-item">
+                <span class="legend-label">AFSA:</span>
+                <span class="legend-description"
+                  >Accommodation and Food Service Activities</span
+                >
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="legend-item">
+                <span class="legend-label">IC:</span>
+                <span class="legend-description"
+                  >Information and Communication</span
+                >
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="legend-item">
+                <span class="legend-label">FIA:</span>
+                <span class="legend-description"
+                  >Financial and Insurance Activities</span
+                >
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="legend-item">
+                <span class="legend-label">REA:</span>
+                <span class="legend-description">Real Estate Activities</span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="legend-item">
+                <span class="legend-label">PSTA:</span>
+                <span class="legend-description"
+                  >Professional, Scientific and Technical Activities</span
+                >
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="legend-item">
+                <span class="legend-label">ASSA:</span>
+                <span class="legend-description"
+                  >Administrative and Support Services Activities</span
+                >
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="legend-item">
+                <span class="legend-label">E:</span>
+                <span class="legend-description">Education</span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="legend-item">
+                <span class="legend-label">HHSWA:</span>
+                <span class="legend-description"
+                  >Human, Health and Social Work Activities</span
+                >
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="legend-item">
+                <span class="legend-label">AER:</span>
+                <span class="legend-description"
+                  >Arts, Entertainment and Recreation</span
+                >
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="legend-item">
+                <span class="legend-label">OSA:</span>
+                <span class="legend-description"
+                  >Other Services Activities</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

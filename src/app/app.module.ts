@@ -178,6 +178,8 @@ import { RainInducedComponent } from './pages/main/Province/rain-induced/rain-in
 import { ChildDevComponent } from './pages/main/Province/child-dev/child-dev.component';
 import { PYAPComponent } from './pages/main/Province/pyap/pyap.component';
 import { FedPWDComponent } from './pages/main/Province/fed-pwd/fed-pwd.component';
+import { ProvIncomeComponent } from './pages/main/Province/prov-income/prov-income.component';
+import { TouristArrivalComponent } from './pages/main/Province/tourist-arrival/tourist-arrival.component';
 
 @NgModule({
   declarations: [
@@ -343,6 +345,8 @@ import { FedPWDComponent } from './pages/main/Province/fed-pwd/fed-pwd.component
     ChildDevComponent,
     PYAPComponent,
     FedPWDComponent,
+    ProvIncomeComponent,
+    TouristArrivalComponent,
   ],
   imports: [
     MdbCollapseModule,

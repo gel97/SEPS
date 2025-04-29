@@ -551,6 +551,18 @@ export class ApiUrl {
   put_PWD = () => `/FedPwd`;
   delete_PWD = (transId: any) => `/FedPwd/${transId}`;
 
+  //ProvIncome
+  get_list_Income = (setYear: any) => `/ProvIncome/List/${setYear}`;
+  post_Income = () => `/ProvIncome`;
+  put_Income = () => `/ProvIncome`;
+  delete_Income = (transId: any) => `/ProvIncome/${transId}`;
+
+  //TourismArrival
+  get_list_Arrival = (setYear: any) => `/TouristArrival/List/${setYear}`;
+  post_Arrival = () => `/TouristArrival`;
+  put_Arrival = () => `/TouristArrival`;
+  delete_Arrival = (transId: any) => `/TouristArrival/${transId}`;
+
   //Rain-Induced
   get_list_rainInduced = (setYear: any) => `/RainInduced/List/${setYear}`;
   post_rainInduced = () => `/RainInduced`;
