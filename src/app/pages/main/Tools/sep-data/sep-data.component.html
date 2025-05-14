@@ -1,26 +1,65 @@
-<i class="fa fa-database" data-bs-toggle="modal" data-bs-target="#mSepYear" aria-hidden="true"></i>
-  <!-- Modal -->
-  <div class="modal fade" id="mSepYear" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title text-dark" id="exampleModalLabel">SELECT</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <label class="text-dark">SEP Year:</label>
-            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" [(ngModel)]="set_year">
-                <option *ngFor="let item of list_sep_year" value={{item.setYear}}>{{item.setYear}}</option>  
-            </select>
-            <label class="text-dark">Muncipality / City:</label>
-            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" [(ngModel)]="muncity_id">
-              <option *ngFor="let item of list_muncity" value={{item.munCityId}}>{{item.munCityName}}</option>            
+<i
+  class="fa fa-database"
+  data-bs-toggle="modal"
+  data-bs-target="#mSepYear"
+  aria-hidden="true"
+></i>
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="mSepYear"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-dark" id="exampleModalLabel">SELECT</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <label class="text-dark">SEP Year:</label>
+        <select
+          class="form-select form-select-lg mb-3"
+          aria-label=".form-select-lg example"
+          [(ngModel)]="set_year"
+        >
+          <option *ngFor="let item of list_sep_year" [value]="item.setYear">
+            {{ item.setYear }}
+          </option>
+        </select>
+
+        <!-- Show this only if user is Guest -->
+        <!-- Only show after isGuestUser has a defined value -->
+        <!-- Show this only if user is NOT a guest -->
+        <!-- Only show this section if NOT a guest user -->
+        <div *ngIf="!isGuestUser">
+          <label class="text-dark">Municipality / City:</label>
+          <select
+            class="form-select form-select-lg mb-3"
+            [(ngModel)]="muncity_id"
+          >
+            <option *ngFor="let item of list_muncity" [value]="item.munCityId">
+              {{ item.munCityName }}
+            </option>
           </select>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" (click)="SetData()">Save changes</button>
-        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-primary" (click)="SetData()">
+          Save changes
+        </button>
       </div>
     </div>
   </div>
+</div>
+<!-- Debug: show user type -->

@@ -27,6 +27,7 @@ export class AuthService {
   readonly apiurlUser = this.Base.url + '/User';
   readonly apiSignOut = this.Base.url + '/Auth/logout';
   readonly apiDatefilter = this.Base.url + '/Auth/logs/filter-by-month';
+  readonly apiGetLogs = this.Base.url + '/Auth/logs';
 
   token: any = localStorage.getItem('token');
   hash: any = localStorage.getItem('hash');
@@ -112,15 +113,28 @@ export class AuthService {
       })
     );
   }
-  getActivityLogsByMonth(month: number, year: number): Observable<any> {
-    const params = { month: month.toString(), year: year.toString() }; // Convert to string if needed
+
+  getActivityLogsByMonth(params: any): Observable<any> {
     return this.http.get(this.apiDatefilter, { params }).pipe(
-      retry(2), // Optional: retry the request a few times in case of failure
+      retry(2),
       catchError((error: HttpErrorResponse) => {
         console.error('Error fetching activity logs:', error);
         return throwError(() => new Error('Failed to fetch activity logs'));
       })
     );
+  }
+  getAllLogs(params: any): Observable<any> {
+    return this.http
+      .get(`${this.apiGetLogs}/all`)
+      .pipe(retry(2), catchError(this.handleError));
+  }
+  private handleError(error: HttpErrorResponse) {
+    console.error('Error fetching activity logs:', error);
+    return throwError(() => new Error('Failed to fetch activity logs'));
+  }
+
+  getAllActivityLogs(): Observable<any> {
+    return this.http.get('api/Logs');
   }
 
   signOut(out: any): Observable<any> {

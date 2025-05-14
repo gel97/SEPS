@@ -43,8 +43,10 @@
                         [(ngModel)]="user.username"
                         name="username"
                         placeholder="Enter Username..."
+                        required
                       />
                     </div>
+
                     <div class="form-group">
                       <input
                         type="password"
@@ -53,8 +55,10 @@
                         name="password"
                         id="exampleInputPassword"
                         placeholder="Password"
+                        required
                       />
                     </div>
+
                     <div class="form-group">
                       <div class="custom-control custom-checkbox small">
                         <input
@@ -68,11 +72,12 @@
                       </div>
                     </div>
 
-                    <a
+                    <button
                       (click)="signIn()"
                       class="btn btn-primary btn-user btn-block"
+                      [disabled]="isLogin"
                     >
-                      <div *ngIf="isLogin; else login">
+                      <ng-container *ngIf="isLogin; else login">
                         <div
                           class="spinner-border spinner-border-sm"
                           role="status"
@@ -80,9 +85,10 @@
                           <span class="visually-hidden">Loading...</span>
                         </div>
                         Loading...
-                      </div>
-                      <ng-template #login> Login </ng-template>
-                    </a>
+                      </ng-container>
+                      <ng-template #login>Login</ng-template>
+                    </button>
+
                     <hr />
 
                     <button class="btn btn-google btn-user btn-block" #loginRef>
@@ -95,6 +101,13 @@
                       >Forgot Password?</a
                     >
                   </div>
+                  <div class="text-center">
+                    <span class="small">Don't have an account? </span>
+                    <a class="small" routerLink="/register"
+                      >Create an account</a
+                    >
+                  </div>
+
                   <br />
                   <div class="d-flex justify-content-center align-items-center">
                     <div class="text-center">

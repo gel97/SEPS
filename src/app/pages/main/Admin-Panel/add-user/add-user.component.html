@@ -1,72 +1,130 @@
 <div class="container">
-    <div class="card o-hidden border-0 shadow-sm my-5">
-        <div class="card-body p-0">
-            <!-- Nested Row within Card Body -->
-            <div class="row p-4">
-                <div class="col-lg-4">            
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <label>Username:</label>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="input-group mb-3">
-                                <input type="text" [(ngModel)]="user.username" (ngModelChange)="UsernameCheck($event)" class="form-control" [ngClass]="toValidate.username?'is-invalid':''" (keyup)="toValidate.username=false">
-                                <span class="input-group-text" id="basic-addon2"> 
-                                 <div *ngIf="isLoading; else show"  class="spinner-border spinner-border-sm" role="status"></div>
-                                 <ng-template #show>
-                                    <i *ngIf="errorUname; else notError " class="fa fa-times text-danger" aria-hidden="true"></i>
-                                    <ng-template #notError>
-                                        <i class="fa fa-check text-success" aria-hidden="true"></i>
-                                    </ng-template>
-                                </ng-template>
-                                </span>
-                               
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <p *ngIf="user.username?.length > 0 && user.username?.length < 8" class="text-warning">
-                                Minimum of 8 characters.
-                            </p>
-                            <!-- <span *ngIf="user.username.length>0 && user.username.length <8" class="text-danger">
+  <div class="card o-hidden border-0 shadow-sm my-5">
+    <div class="card-body p-0">
+      <!-- Nested Row within Card Body -->
+      <div class="row p-4">
+        <div class="col-lg-4">
+          <div class="row">
+            <div class="col-lg-12">
+              <label>Username:</label>
+            </div>
+            <div class="col-lg-12">
+              <div class="input-group mb-3">
+                <input
+                  type="text"
+                  [(ngModel)]="user.username"
+                  (ngModelChange)="UsernameCheck($event)"
+                  class="form-control"
+                  [ngClass]="toValidate.username ? 'is-invalid' : ''"
+                  (keyup)="toValidate.username = false"
+                />
+                <span class="input-group-text" id="basic-addon2">
+                  <div
+                    *ngIf="isLoading; else show"
+                    class="spinner-border spinner-border-sm"
+                    role="status"
+                  ></div>
+                  <ng-template #show>
+                    <i
+                      *ngIf="errorUname; else notError"
+                      class="fa fa-times text-danger"
+                      aria-hidden="true"
+                    ></i>
+                    <ng-template #notError>
+                      <i
+                        class="fa fa-check text-success"
+                        aria-hidden="true"
+                      ></i>
+                    </ng-template>
+                  </ng-template>
+                </span>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <p
+                *ngIf="user.username?.length > 0 && user.username?.length < 8"
+                class="text-warning"
+              >
+                Minimum of 8 characters.
+              </p>
+              <!-- <span *ngIf="user.username.length>0 && user.username.length <8" class="text-danger">
                                 
                             </span> -->
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <label>Password:</label>
-                    <input type="password" class="form-control mb-2" [(ngModel)]="user.password" [ngClass]="toValidate.password?'is-invalid':''" (keyup)="toValidate.password=false">
-                </div>
-                <div class="col-lg-4">
-                    <label>Confirm Password:</label>
-                    <input type="password" class="form-control mb-2" [(ngModel)]="user.confirmPassword" [ngClass]="toValidate.confirmPassword?'is-invalid':''" (keyup)="toValidate.confirmPassword=false">
-                </div>
-                <div class="col-lg-8">
-                    <label>Fullname:</label>
-                    <input type="text" class="form-control mb-2" [(ngModel)]="user.fullName" [ngClass]="toValidate.fullName?'is-invalid':''" (keyup)="toValidate.fullName=false">
-                </div>
-                <div class="col-lg-4">
-                    <!-- <label>Designation:</label>
-                    <input type="text" class="form-control mb-2" [(ngModel)]="user.designation"> -->
-                    <label class="text-dark">Muncipality / City:</label>
-                    <select class="form-select mb-3" [(ngModel)]="user.munCityId" [ngClass]="toValidate.munCityId?'is-invalid':''" (ngModelChange)="CheckIfnotempty($event)">
-                      <option *ngFor="let item of list_muncity" value={{item.munCityId}}>{{item.munCityName}}</option>            
-                  </select>
-                </div>
-                <div class="col-4">
-                    <button class="btn btn-primary" (click)="isLoadingSubmit?'':AddUser()">
-                        <div *ngIf="isLoadingSubmit; else submit">
-                            <div class="spinner-border spinner-border-sm mb-1" role="status"></div>
-                            &nbsp; SUBMITTING ...
-                        </div>
-                        <ng-template #submit>
-                           SUBMIT
-                       </ng-template>    
-                    </button>
-                </div>     
             </div>
+          </div>
         </div>
+        <div class="col-lg-4">
+          <label>Password:</label>
+          <input
+            type="password"
+            class="form-control mb-2"
+            [(ngModel)]="user.password"
+            [ngClass]="toValidate.password ? 'is-invalid' : ''"
+            (keyup)="toValidate.password = false"
+          />
+        </div>
+        <div class="col-lg-4">
+          <label>Confirm Password:</label>
+          <input
+            type="password"
+            class="form-control mb-2"
+            [(ngModel)]="user.confirmPassword"
+            [ngClass]="toValidate.confirmPassword ? 'is-invalid' : ''"
+            (keyup)="toValidate.confirmPassword = false"
+          />
+        </div>
+        <div class="col-lg-8">
+          <label>Fullname:</label>
+          <input
+            type="text"
+            class="form-control mb-2"
+            [(ngModel)]="user.fullName"
+            [ngClass]="toValidate.fullName ? 'is-invalid' : ''"
+            (keyup)="toValidate.fullName = false"
+          />
+        </div>
+        <div class="col-lg-8">
+          <label>email:</label>
+          <input
+            type="text"
+            class="form-control mb-2"
+            [(ngModel)]="user.email"
+          />
+        </div>
+        <div class="col-lg-4">
+          <!-- <label>Designation:</label>
+                    <input type="text" class="form-control mb-2" [(ngModel)]="user.designation"> -->
+          <label class="text-dark">Muncipality / City:</label>
+          <select
+            class="form-select mb-3"
+            [(ngModel)]="user.munCityId"
+            [ngClass]="toValidate.munCityId ? 'is-invalid' : ''"
+            (ngModelChange)="CheckIfnotempty($event)"
+          >
+            <option
+              *ngFor="let item of list_muncity"
+              value="{{ item.munCityId }}"
+            >
+              {{ item.munCityName }}
+            </option>
+          </select>
+        </div>
+        <div class="col-4">
+          <button
+            class="btn btn-primary"
+            (click)="isLoadingSubmit ? '' : AddUser()"
+          >
+            <div *ngIf="isLoadingSubmit; else submit">
+              <div
+                class="spinner-border spinner-border-sm mb-1"
+                role="status"
+              ></div>
+              &nbsp; SUBMITTING ...
+            </div>
+            <ng-template #submit> SUBMIT </ng-template>
+          </button>
+        </div>
+      </div>
     </div>
-
+  </div>
 </div>

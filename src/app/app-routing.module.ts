@@ -136,6 +136,9 @@ import { PYAPComponent } from './pages/main/Province/pyap/pyap.component';
 import { FedPWDComponent } from './pages/main/Province/fed-pwd/fed-pwd.component';
 import { ProvIncomeComponent } from './pages/main/Province/prov-income/prov-income.component';
 import { TouristArrivalComponent } from './pages/main/Province/tourist-arrival/tourist-arrival.component';
+import { GuestSelectLoginComponent } from './pages/guest/guest-select-login/guest-select-login.component';
+import { AccomEstabComponent } from './pages/main/Province/accom-estab/accom-estab.component';
+import { ApprovalComponent } from './pages/approval/approval.component';
 
 const socioEconomic_TradeIndustry: string =
   'socio-economic/trade-and-industry/';
@@ -178,6 +181,10 @@ const routes: Routes = [
     path: 'register',
     component: RegisterComponent,
   },
+  {
+    path: 'guest-select-login',
+    component: GuestSelectLoginComponent,
+  },
   { path: 'Update-User/update_user', component: UpdateUserComponent },
   { path: 'reset-form/reset_form', component: ResetFormComponent },
   {
@@ -192,6 +199,7 @@ const routes: Routes = [
       { path: 'gov_geoProfile', component: GeoProfileComponent },
       { path: 'admin/add_user', component: AddUserComponent },
       { path: 'activity-logs/activity-logs', component: ActivityLogsComponent },
+      { path: 'approval/approval', component: ApprovalComponent },
       { path: Tools + 'news', component: NewsComponent },
       { path: Tools + 'message-list/:id', component: MessageListComponent },
       { path: Tools + 'summary-reports', component: SummaryReportComponent },
@@ -631,6 +639,10 @@ const routes: Routes = [
       {
         path: Province + '/tourist-arrival',
         component: TouristArrivalComponent,
+      },
+      {
+        path: Province + '/accom-estab',
+        component: AccomEstabComponent,
       },
 
       { path: Governance + '/pgdept-heads', component: PGDeptHeadsComponent },
