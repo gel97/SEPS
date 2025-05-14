@@ -1,46 +1,90 @@
 <div class="table-responsive">
-  <table *ngFor="let a of data" class="table table-framed table-hover table-striped">
+  <table
+    *ngFor="let a of data"
+    class="table table-framed table-hover table-striped"
+  >
     <thead class="table-dark">
       <tr>
-        <th>{{a.sectorName}}</th>
+        <th>{{ a.sectorName }}</th>
         <th>Remarks</th>
         <th>
-          <app-ngo>
-            Action
-          </app-ngo>
+          <app-ddn> Action </app-ddn>
         </th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let b of a.subMenu">
-        <td (click)="showReport(b.reportName, b?.details?.remarks)">{{b.reportName}}</td>
-        <td (click)="showReport(b.reportName, b?.details?.remarks)">{{b?.details?.remarks}}</td>
+        <td (click)="showReport(b.reportName, b?.details?.remarks)">
+          {{ b.reportName }}
+        </td>
+        <td (click)="showReport(b.reportName, b?.details?.remarks)">
+          {{ b?.details?.remarks }}
+        </td>
         <td>
-          <app-ngo>
-            <button *ngIf="b.details === null; else ShowEditBtn" type="button" (click)="isAdd = true; fields.remarks = null; fields.reportId = b.reportId" class="btn btn-primary btn-circle" data-toggle="modal"
-              data-target="#openModal ">
+          <app-ddn>
+            <button
+              *ngIf="b.details === null; else ShowEditBtn"
+              type="button"
+              (click)="
+                isAdd = true;
+                fields.remarks = null;
+                fields.reportId = b.reportId
+              "
+              class="btn btn-primary btn-circle"
+              data-toggle="modal"
+              data-target="#openModal "
+            >
               <i class="fa fa-plus"></i>
             </button>
             <ng-template #ShowEditBtn>
-              <button type="button" title="Edit" (click)="isAdd = false; fields.reportId = b.reportId; setData(b?.details)" class="btn btn-info btn-circle"
-              data-toggle="modal" data-target="#openModal"><i class="fa fa-pen"></i> </button>
-              <button (click)="DeleteReportValidation(b?.details?.transId)" class="btn btn-warning btn-circle">
+              <button
+                type="button"
+                title="Edit"
+                (click)="
+                  isAdd = false;
+                  fields.reportId = b.reportId;
+                  setData(b?.details)
+                "
+                class="btn btn-info btn-circle"
+                data-toggle="modal"
+                data-target="#openModal"
+              >
+                <i class="fa fa-pen"></i>
+              </button>
+              <button
+                (click)="DeleteReportValidation(b?.details?.transId)"
+                class="btn btn-warning btn-circle"
+              >
                 <i class="fas fa-trash"></i>
               </button>
             </ng-template>
-          </app-ngo>
+          </app-ddn>
         </td>
       </tr>
     </tbody>
   </table>
   <!-- Modal -->
-  <div class="modal fade bd-example-modal-lg" id="openModal" tabindex="-1" role="dialog"
-    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div
+    class="modal fade bd-example-modal-lg"
+    id="openModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="myLargeModalLabel"
+    aria-hidden="true"
+  >
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalScrollableTitle">Data validation</h5>
-          <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
+          <h5 class="modal-title" id="exampleModalScrollableTitle">
+            Data validation
+          </h5>
+          <button
+            type="button"
+            #closebutton
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -48,17 +92,31 @@
           <div class="row">
             <div class="col-lg-12">
               <label>Remarks:</label>
-              <textarea class="form-control" [(ngModel)]="fields.remarks" [ngClass]="toValidate.remarks?'is-invalid':''" (keyup)="toValidate.remarks=false">
+              <textarea
+                class="form-control"
+                [(ngModel)]="fields.remarks"
+                [ngClass]="toValidate.remarks ? 'is-invalid' : ''"
+                (keyup)="toValidate.remarks = false"
+              >
               </textarea>
-              <p *ngIf="toValidate.remarks" class="text-danger">Required field.</p>
+              <p *ngIf="toValidate.remarks" class="text-danger">
+                Required field.
+              </p>
             </div>
           </div>
-          <br><br>
+          <br /><br />
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" (click)="isAdd? AddReportValidation(): EditReportValidation()"><i class="fa fa-check"></i>
-            Save Changes</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-time"></i>Close</button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="isAdd ? AddReportValidation() : EditReportValidation()"
+          >
+            <i class="fa fa-check"></i> Save Changes
+          </button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            <i class="fa fa-time"></i>Close
+          </button>
         </div>
       </div>
     </div>

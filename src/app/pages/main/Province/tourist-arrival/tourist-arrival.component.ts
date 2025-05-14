@@ -34,6 +34,7 @@ export class TouristArrivalComponent implements OnInit {
   listArrival: any[] = [];
   data: any = {};
   isAdd: boolean = false;
+  selectedFile: File | null = null;
   ngOnInit(): void {
     this.Init();
     this.GetArrival();
@@ -41,6 +42,54 @@ export class TouristArrivalComponent implements OnInit {
   Init() {
     this.GetListMunicipality();
   }
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('setYear', this.auth.activeSetYear); // Include active year
+
+      this.Service.uploadExcel(formData).subscribe({
+        next: () => {
+          Swal.fire(
+            'Uploaded!',
+            'Excel file uploaded successfully.',
+            'success'
+          );
+          this.GetArrival(); // refresh the list after upload
+        },
+        error: () => {
+          Swal.fire('Error!', 'Failed to upload file.', 'error');
+        },
+      });
+    }
+  }
+
+  onDownloadExcel() {
+    Swal.fire({
+      title: 'Downloading...',
+      text: 'Please wait while the file is being downloaded.',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
+    this.Service.downloadExcel().subscribe({
+      next: (blob: any) => {
+        const url = window.URL.createObjectURL(new Blob([blob]));
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'TouristArrivalTemplate.xlsx';
+        a.click();
+        Swal.close(); // ✅ Close loading alert
+      },
+      error: () => {
+        Swal.fire('Error!', 'Failed to download template.', 'error');
+      },
+    });
+  }
+
   get totals() {
     return this.listData.reduce(
       (

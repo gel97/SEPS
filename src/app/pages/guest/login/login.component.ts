@@ -88,27 +88,36 @@ export class LoginComponent implements OnInit {
   }
 
   signIn() {
+    if (!this.user.username || !this.user.password) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Missing Credentials',
+        text: 'Please enter both username and password.',
+      });
+      return;
+    }
+
     this.isLogin = true;
+
     this.service.signin(this.user).subscribe({
       next: (response) => {
         if (response.token != null) {
           this.router.navigate(['/']);
+        } else {
+          this.isLogin = false; // Just in case response doesn't include token
         }
       },
       error: (error) => {
-        this.isLogin = false;
+        this.isLogin = false; // <<== this is key to stop the loading spinner
+
         this.errorLogin = error.error;
 
-        // SweetAlert for wrong password or login error
         Swal.fire({
           icon: 'error',
           title: 'Login Failed',
           text: 'Incorrect password or email. Please try again!',
           confirmButtonText: 'OK',
         });
-      },
-      complete: () => {
-        this.isLogin = false;
       },
     });
   }

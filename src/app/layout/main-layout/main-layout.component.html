@@ -57,7 +57,7 @@
             *ngIf="munCityName"
             style="color: rgb(54, 127, 223); font-size: 12px"
           >
-            {{ modifyCityMun(munCityName) }}
+            {{ munCityName }}
           </span>
         </div>
       </a>
@@ -1314,6 +1314,9 @@
           <div class="bg-lightblue py-2 collapse-inner rounded">
             <h6 class="collapse-header">User Screens:</h6>
             <a class="collapse-item" routerLink="/admin/add_user">Add User</a>
+            <!-- <a class="collapse-item" routerLink="/approval/approval"
+              >User Management</a
+            > -->
             <!-- <a class="collapse-item" routerLink="/activity-logs/activity-logs"
               >Activity Logs</a
             > -->
@@ -1326,105 +1329,44 @@
     </app-ddn>
     <!--Province <i class="fa fa-university" aria-hidden="true"></i>-->
     <!--PDFP-->
-    <li class="nav-item">
-      <a
-        class="nav-link collapsed"
-        href="#"
-        data-toggle="collapse"
-        data-target="#collapseProvince"
-        aria-expanded="true"
-        aria-controls="collapseProv"
-      >
-        <span>Provincial Development And Physical Framework Plan</span>
-      </a>
-      <div
-        id="collapseProvince"
-        class="collapse"
-        aria-labelledby="headingUtilities"
-        data-parent="#collapseProvince"
-      >
-        <h6 class="collapse-header">Core elements of the PDPFP:</h6>
-        <div class="bg-lightblue collapse-inner rounded">
-          <li class="nav-item" routerLinkActive="active">
-            <a
-              class="nav-link collapsed"
-              href="#"
-              data-toggle="collapse"
-              data-target="#collapseframework"
-              aria-expanded="true"
-              aria-controls="collapseUtilities"
-            >
-              <i class="fas fa-exchange-alt"></i>
-              <span>Population</span>
-            </a>
-            <div
-              id="collapseframework"
-              class="collapse"
-              aria-labelledby="headingUtilities"
-              data-parent="#collapseProvince"
-            >
-              <div class="bg-lightblue py-2 collapse-inner rounded">
-                <a class="collapse-item" routerLinkActive="active" routerLink=""
-                  >Work in Progress
-                </a>
-              </div>
-            </div>
-          </li>
-        </div>
-      </div>
-      <div
-        id="collapseProvince"
-        class="collapse"
-        aria-labelledby="headingUtilities"
-        data-parent="#collapseProvince"
-      >
-        <div class="bg-lightblue collapse-inner rounded">
-          <li class="nav-item">
-            <a
-              class="nav-link collapsed"
-              routerLink=""
-              data-toggle="collapse"
-              data-target="#collapseframework2"
-            >
-              <i class="fas fa-exchange-alt"></i>
-              <span>Economic Activity</span>
-            </a>
-            <div id="collapseframework2" class="collapse">
+    <app-hidefromguestmenu>
+      <li class="nav-item">
+        <a
+          class="nav-link collapsed"
+          href="#"
+          data-toggle="collapse"
+          data-target="#collapseProvince"
+          aria-expanded="true"
+          aria-controls="collapseProv"
+        >
+          <span>Provincial Development And Physical Framework Plan</span>
+        </a>
+        <div
+          id="collapseProvince"
+          class="collapse"
+          aria-labelledby="headingUtilities"
+          data-parent="#collapseProvince"
+        >
+          <h6 class="collapse-header">Core elements of the PDPFP:</h6>
+          <div class="bg-lightblue collapse-inner rounded">
+            <li class="nav-item" routerLinkActive="active">
               <a
-                class="collapse-item"
-                routerLinkActive="active"
-                routerLink="Province/prov-income"
-                >Provincial Income from Major Industries
+                class="nav-link collapsed"
+                href="#"
+                data-toggle="collapse"
+                data-target="#collapseframework"
+                aria-expanded="true"
+                aria-controls="collapseUtilities"
+              >
+                <i class="fas fa-exchange-alt"></i>
+                <span>Population</span>
               </a>
-              <a
-                class="collapse-item"
-                routerLinkActive="active"
-                routerLink="Province/tourist-arrival"
-                >Tourist Arrival in the Tourist Destination
-              </a>
-            </div>
-          </li>
-        </div>
-        <div class="bg-lightblue collapse-inner rounded">
-          <li class="nav-item" routerLinkActive="active">
-            <a
-              class="nav-link collapsed"
-              href="#"
-              data-toggle="collapse"
-              data-target="#collapseframework3"
-              aria-expanded="true"
-              aria-controls="collapseUtilities"
-            >
-              <i class="fas fa-exchange-alt"></i>
-              <span>Physical Resources</span>
-            </a>
-            <div
-              id="collapseframework3"
-              class="collapse"
-              aria-labelledby="headingUtilities"
-              data-parent="#collapseProvince"
-            >
-              <div class="bg-lightblue py-2 collapse-inner rounded">
+              <div
+                id="collapseframework"
+                class="collapse"
+                aria-labelledby="headingUtilities"
+                data-parent="#collapseProvince"
+              >
                 <div class="bg-lightblue py-2 collapse-inner rounded">
                   <a
                     class="collapse-item"
@@ -1434,77 +1376,186 @@
                   </a>
                 </div>
               </div>
-            </div>
-          </li>
+            </li>
+          </div>
         </div>
-        <div class="bg-lightblue collapse-inner rounded">
-          <li class="nav-item" routerLinkActive="active">
-            <a
-              class="nav-link collapsed"
-              href="#"
-              data-toggle="collapse"
-              data-target="#collapseframework4"
-              aria-expanded="true"
-              aria-controls="collapseUtilities"
-            >
-              <i class="fas fa-exchange-alt"></i>
-              <span>Income/Access to services</span>
-            </a>
-            <div
-              id="collapseframework4"
-              class="collapse"
-              aria-labelledby="headingUtilities"
-              data-parent="#collapseProvince"
-            >
-              <div class="bg-lightblue py-2 collapse-inner rounded">
+        <div
+          id="collapseProvince"
+          class="collapse"
+          aria-labelledby="headingUtilities"
+          data-parent="#collapseProvince"
+        >
+          <div class="bg-lightblue collapse-inner rounded">
+            <li class="nav-item">
+              <a
+                class="nav-link collapsed"
+                routerLink=""
+                data-toggle="collapse"
+                data-target="#collapseframework2"
+              >
+                <i class="fas fa-exchange-alt"></i>
+                <span>Economic Activity</span>
+              </a>
+              <div id="collapseframework2" class="collapse">
                 <a
                   class="collapse-item"
                   routerLinkActive="active"
-                  routerLink="Province/child-dev"
-                  >Child Development
+                  routerLink="Province/prov-income"
+                  >Provincial Income from Major Industries
                 </a>
                 <a
                   class="collapse-item"
                   routerLinkActive="active"
-                  routerLink="Province/pyap"
-                  >Registered Youth Members of Pag-asa Youth
+                  routerLink="Province/tourist-arrival"
+                  >Tourist Arrival in the Tourist Destination
                 </a>
-                <a
+                <!-- <a
                   class="collapse-item"
                   routerLinkActive="active"
-                  routerLink="Province/fed-pwd"
-                  >Federation of Persons with Disability
-                </a>
+                  routerLink="Province/accom-estab"
+                  >Number of Accommodation Establishments </a
+                ><a
+                  class="collapse-item"
+                  routerLinkActive="active"
+                  routerLink=""
+                  >Number of Travel and Tour Operators
+                </a> -->
               </div>
-            </div>
-          </li>
+            </li>
+          </div>
+          <div class="bg-lightblue collapse-inner rounded">
+            <li class="nav-item" routerLinkActive="active">
+              <a
+                class="nav-link collapsed"
+                href="#"
+                data-toggle="collapse"
+                data-target="#collapseframework3"
+                aria-expanded="true"
+                aria-controls="collapseUtilities"
+              >
+                <i class="fas fa-exchange-alt"></i>
+                <span>Physical Resources</span>
+              </a>
+              <div
+                id="collapseframework3"
+                class="collapse"
+                aria-labelledby="headingUtilities"
+                data-parent="#collapseProvince"
+              >
+                <div class="bg-lightblue py-2 collapse-inner rounded">
+                  <div class="bg-lightblue py-2 collapse-inner rounded">
+                    <a
+                      class="collapse-item"
+                      routerLinkActive="active"
+                      routerLink=""
+                      >Work in Progress
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </div>
+          <div class="bg-lightblue collapse-inner rounded">
+            <li class="nav-item" routerLinkActive="active">
+              <a
+                class="nav-link collapsed"
+                href="#"
+                data-toggle="collapse"
+                data-target="#collapseframework4"
+                aria-expanded="true"
+                aria-controls="collapseUtilities"
+              >
+                <i class="fas fa-exchange-alt"></i>
+                <span>Income/Access to services</span>
+              </a>
+              <div
+                id="collapseframework4"
+                class="collapse"
+                aria-labelledby="headingUtilities"
+                data-parent="#collapseProvince"
+              >
+                <div class="bg-lightblue py-2 collapse-inner rounded">
+                  <a
+                    class="collapse-item"
+                    routerLinkActive="active"
+                    routerLink="Province/child-dev"
+                    >Child Development
+                  </a>
+                  <a
+                    class="collapse-item"
+                    routerLinkActive="active"
+                    routerLink="Province/pyap"
+                    >Registered Youth Members of Pag-asa Youth
+                  </a>
+                  <a
+                    class="collapse-item"
+                    routerLinkActive="active"
+                    routerLink="Province/fed-pwd"
+                    >Federation of Persons with Disability
+                  </a>
+                </div>
+              </div>
+            </li>
+          </div>
+          <div class="bg-lightblue collapse-inner rounded">
+            <li class="nav-item" routerLinkActive="active">
+              <a
+                class="nav-link collapsed"
+                href="#"
+                data-toggle="collapse"
+                data-target="#collapseframework5"
+                aria-expanded="true"
+                aria-controls="collapseUtilities"
+              >
+                <i class="fas fa-exchange-alt"></i>
+                <span>Land Use</span>
+              </a>
+              <div
+                id="collapseframework5"
+                class="collapse"
+                aria-labelledby="headingUtilities"
+                data-parent="#collapseProvince"
+              >
+                <div class="bg-lightblue py-2 collapse-inner rounded">
+                  <a
+                    class="collapse-item"
+                    routerLinkActive="active"
+                    routerLink=""
+                    >Work in Progress
+                  </a>
+                </div>
+              </div>
+            </li>
+          </div>
         </div>
+      </li>
+    </app-hidefromguestmenu>
+
+    <li class="nav-item" routerLinkActive="active">
+      <a
+        class="nav-link collapsed"
+        href="#"
+        data-toggle="collapse"
+        data-target="#collapseTools"
+        aria-expanded="true"
+        aria-controls="collapseTwo"
+      >
+        <i class="fa fa-fw fa-wrench"></i>
+        <span>Tools</span>
+      </a>
+      <div
+        id="collapseTools"
+        class="collapse"
+        aria-labelledby="headingTwo"
+        data-parent="#accordionSidebar"
+      >
         <div class="bg-lightblue collapse-inner rounded">
-          <li class="nav-item" routerLinkActive="active">
-            <a
-              class="nav-link collapsed"
-              href="#"
-              data-toggle="collapse"
-              data-target="#collapseframework5"
-              aria-expanded="true"
-              aria-controls="collapseUtilities"
-            >
-              <i class="fas fa-exchange-alt"></i>
-              <span>Land Use</span>
-            </a>
-            <div
-              id="collapseframework5"
-              class="collapse"
-              aria-labelledby="headingUtilities"
-              data-parent="#collapseProvince"
-            >
-              <div class="bg-lightblue py-2 collapse-inner rounded">
-                <a class="collapse-item" routerLinkActive="active" routerLink=""
-                  >Work in Progress
-                </a>
-              </div>
-            </div>
-          </li>
+          <a
+            class="collapse-item"
+            routerLinkActive="active"
+            routerLink="Tools/summary-reports"
+            >Summary Reports</a
+          >
         </div>
       </div>
     </li>

@@ -180,6 +180,9 @@ import { PYAPComponent } from './pages/main/Province/pyap/pyap.component';
 import { FedPWDComponent } from './pages/main/Province/fed-pwd/fed-pwd.component';
 import { ProvIncomeComponent } from './pages/main/Province/prov-income/prov-income.component';
 import { TouristArrivalComponent } from './pages/main/Province/tourist-arrival/tourist-arrival.component';
+import { GuestSelectLoginComponent } from './pages/guest/guest-select-login/guest-select-login.component';
+import { AccomEstabComponent } from './pages/main/Province/accom-estab/accom-estab.component';
+import { ApprovalComponent } from './pages/approval/approval.component';
 
 @NgModule({
   declarations: [
@@ -347,6 +350,9 @@ import { TouristArrivalComponent } from './pages/main/Province/tourist-arrival/t
     FedPWDComponent,
     ProvIncomeComponent,
     TouristArrivalComponent,
+    GuestSelectLoginComponent,
+    AccomEstabComponent,
+    ApprovalComponent,
   ],
   imports: [
     MdbCollapseModule,

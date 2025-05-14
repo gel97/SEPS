@@ -49,4 +49,19 @@ export class TourismArrivalService {
       responseType: 'json',
     });
   }
+  uploadExcel(formData: FormData) {
+    return this.http.post<any>(
+      this.Base.url + this.ApiUrl.upload_excel_Arrival(),
+      formData
+    );
+  }
+
+  downloadExcel() {
+    return this.http.get(
+      this.Base.url + this.ApiUrl.download_template_Arrival(),
+      {
+        responseType: 'blob', // <- important to receive a file
+      }
+    );
+  }
 }

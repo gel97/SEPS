@@ -322,6 +322,13 @@ export class ApiUrl {
   delete_tourism = (transId: any) => `/Tourism/${transId}`;
   post_import_tourism = (menuId: any) => `/Tourism/Import/${menuId}`;
   post_report_tourism = () => `/Tourism/Reports`;
+  //AccomAndTravel
+  post_Accom = () => `/AccomandTravel`;
+  post_upload_Accom = (menuId: any) => `/AccomandTravel/upload-excel/${menuId}`;
+  post_download_Accom = (menuId: any) =>
+    `/AccomandTravel/download-template/${menuId}`;
+  get_list_Accom = (menuId: any, setYear: any, munCityId: any) =>
+    `/AccomandTravel/${menuId}/${setYear}/${munCityId}`;
 
   // Agriculture Profile
   post_agriculture_profile = () => `/AgricultureProfile`;
@@ -562,7 +569,8 @@ export class ApiUrl {
   post_Arrival = () => `/TouristArrival`;
   put_Arrival = () => `/TouristArrival`;
   delete_Arrival = (transId: any) => `/TouristArrival/${transId}`;
-
+  upload_excel_Arrival = () => `/TouristArrival/upload-excel`;
+  download_template_Arrival = () => `/TouristArrival/download-template`;
   //Rain-Induced
   get_list_rainInduced = (setYear: any) => `/RainInduced/List/${setYear}`;
   post_rainInduced = () => `/RainInduced`;
@@ -884,8 +892,11 @@ export class ApiUrl {
   get_sep_year = () => `/SepYear`;
 
   //Activity Logs
-  get_logs_act = (userId: any) => `/Logs/${userId}`;
-  post_logs_act = () => `Logs`;
-  get_date_act = (month: number, year: number) =>
-    `/logs/filter-by-month/${month}/${year}`;
+  get_logs_act = (userId: string) => `api/Logs?userId=${userId}`;
+  get_logs_admin = () => `api/Logs`; // if admin, no userId
+  get_logs = () => `api/Logs/all`; // if admin, no userId
+  get_date_act = (month: number, year: number, userId?: string) =>
+    userId
+      ? `api/Logs/filter-by-month?month=${month}&year=${year}&userId=${userId}`
+      : `api/Logs/filter-by-month?month=${month}&year=${year}`;
 }
