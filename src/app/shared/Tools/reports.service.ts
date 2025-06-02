@@ -32,6 +32,13 @@ export class ReportsService {
       { responseType: 'json' }
     );
   }
+  GetDemographyBarangayReport(data: any) {
+    return this.http.post<any[]>(
+      this.Base.url + this.ApiUrl.post_reportMun_demography_barangay(),
+      data,
+      { responseType: 'json' }
+    );
+  }
   GetDemographyReportMun(data: any) {
     return this.http.post<any[]>(
       this.Base.url + this.ApiUrl.post_reportMun_demography(),

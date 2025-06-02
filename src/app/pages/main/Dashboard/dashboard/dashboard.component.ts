@@ -35,6 +35,7 @@ export class DashboardComponent implements OnInit {
   progressvalue = 0;
   totalGovernanceData: any; // Variable to store the governance data total
   totalSocioEcAct: any;
+  cityData: any;
   constructor(
     private router: Router,
     private newsService: NewsService,
@@ -56,6 +57,20 @@ export class DashboardComponent implements OnInit {
     // if(this.auth.munCityId === null){
     //   this.router.navigate(['dashboard/ddn']);
     // }
+    this.cityData = [
+      { name: 'Asuncion', percent: 100 },
+      { name: 'Braulio E. Dujali', percent: 100 },
+      { name: 'Carmen', percent: 100 },
+      { name: 'City Of Panabo', percent: 100 },
+      { name: 'City Of Tagum', percent: 99.51 },
+      { name: 'Island Garden City Of Samal', percent: 100 },
+      { name: 'Kapalong', percent: 100 },
+      { name: 'New Corella', percent: 100 },
+      { name: 'San Isidro', percent: 100 },
+      { name: 'Santo Tomas', percent: 100 },
+      { name: 'Talaingod', percent: 100 },
+    ];
+
     this.imagesService
       .GetImage(
         this.auth.munCityId === 'null' && this.isGuest

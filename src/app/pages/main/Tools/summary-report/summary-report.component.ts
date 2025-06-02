@@ -162,6 +162,9 @@ export class SummaryReportComponent implements OnInit {
       case 'Demography':
         this.DemographyGeneratePDF();
         break;
+      case 'List of Barangay Demography':
+        this.DemographyBarangayGeneratePDF();
+        break;
       case 'Number of Precincts and Registered Voters by Municipality/City':
         this.VotersGeneratePDF();
         break;
@@ -22764,6 +22767,304 @@ export class SummaryReportComponent implements OnInit {
           console.log(data);
         } else {
           this.Error();
+        }
+      },
+    });
+  }
+  DemographyBarangayGeneratePDF() {
+    const data: any[] = [];
+    const tableData: any[] = [];
+    let reports: any[] = [];
+    let grandTotal: any[] = [];
+    let columns: any[] = [];
+    let dist1: any[] = [];
+    let dist2: any[] = [];
+
+    this.reportService.GetDemographyBarangayReport(this.params).subscribe({
+      next: (response: any = {}) => {
+        reports = response.data || [];
+        grandTotal = response.grandTotal || [];
+        dist1 = response.districtOne || [];
+        dist2 = response.districtTwo || [];
+        columns = response.columns || [];
+
+        // Title
+        data.push({
+          margin: [0, 40, 0, 0],
+          columns: [
+            {
+              text: `Total Population and Households by Municipality/City and Barangay`,
+              fontSize: 14,
+              bold: true,
+            },
+            {
+              text: `Year: ${response.fromYear} - ${response.year}`,
+              fontSize: 14,
+              bold: true,
+              alignment: 'right',
+            },
+          ],
+        });
+
+        // Header row
+        const columnHeader = [
+          {
+            text: '#',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          {
+            text: 'Municipality/Barangay',
+            fillColor: 'black',
+            color: 'white',
+            bold: true,
+            alignment: 'center',
+          },
+          ...columns.flatMap((col: any) => [
+            {
+              text: col.description,
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: col.male,
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: col.female,
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: col.household,
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+          ]),
+        ];
+        tableData.push(columnHeader);
+
+        const buildDistrictSection = (
+          label: string,
+          districtData: any[],
+          reportData: any
+        ) => {
+          tableData.push([
+            {
+              text: label,
+              colSpan: 2 + columns.length * 4,
+              fillColor: '#526D82',
+              bold: true,
+              alignment: 'left',
+            },
+            ...Array(1 + columns.length * 4).fill({}),
+          ]);
+
+          districtData.forEach((city: any, cityIndex: number) => {
+            const cityReport = reportData.data?.find(
+              (d: any) => `${d.munCityId}` === `${city.munCityId}`
+            ) || { barangays: [], munData: [] };
+
+            // City row
+            const cityRow = [
+              { text: cityIndex + 1, alignment: 'center', bold: true },
+              { text: city.munCityName || 'Unknown City', bold: true },
+            ];
+
+            columns.forEach((col: any) => {
+              const yearData =
+                cityReport.munData?.find(
+                  (m: any) => m.setYear === col.setYear
+                ) || {};
+              cityRow.push(
+                {
+                  text: yearData.population ?? '-',
+                  alignment: 'center',
+                } as any,
+                { text: yearData.male ?? '-', alignment: 'center' } as any,
+                { text: yearData.female ?? '-', alignment: 'center' } as any,
+                {
+                  text: yearData.householdNo ?? '-',
+                  alignment: 'center',
+                } as any
+              );
+            });
+
+            tableData.push(cityRow);
+
+            // Barangay rows
+            cityReport.barangays?.forEach((brgy: any) => {
+              const brgyRow = [
+                { text: '', alignment: 'center' },
+                {
+                  text: `- ${brgy.brgyName || 'Unknown Barangay'}`,
+                  margin: [10, 0, 0, 0],
+                  italics: true,
+                },
+              ];
+
+              columns.forEach((col: any) => {
+                const yearData =
+                  brgy.records?.find((r: any) => r.setYear === col.setYear) ||
+                  {};
+                brgyRow.push(
+                  {
+                    text: yearData.population ?? '-',
+                    alignment: 'center',
+                    fontSize: 9,
+                  } as any,
+                  {
+                    text: yearData.male ?? '-',
+                    alignment: 'center',
+                    fontSize: 9,
+                  } as any,
+                  {
+                    text: yearData.female ?? '-',
+                    alignment: 'center',
+                    fontSize: 9,
+                  } as any,
+                  {
+                    text: yearData.householdNo ?? '-',
+                    alignment: 'center',
+                    fontSize: 9,
+                  } as any
+                );
+              });
+
+              tableData.push(brgyRow);
+            });
+          });
+
+          // Subtotal row
+          const subtotalRow = [
+            {
+              text: 'SUBTOTAL',
+              colSpan: 2,
+              fillColor: '#9DB2BF',
+              bold: true,
+              alignment: 'left',
+            },
+            {},
+          ];
+          columns.forEach((col: any) => {
+            const sub =
+              reportData.subTotal?.find(
+                (s: any) => s.setYear === col.setYear
+              ) || {};
+            subtotalRow.push(
+              {
+                text: sub.population ?? '-',
+                alignment: 'center',
+                fillColor: '#9DB2BF',
+              } as any,
+              {
+                text: sub.male ?? '-',
+                alignment: 'center',
+                fillColor: '#9DB2BF',
+              } as any,
+              {
+                text: sub.female ?? '-',
+                alignment: 'center',
+                fillColor: '#9DB2BF',
+              } as any,
+              {
+                text: sub.householdNo ?? '-',
+                alignment: 'center',
+                fillColor: '#9DB2BF',
+              } as any
+            );
+          });
+          tableData.push(subtotalRow);
+        };
+
+        // Add both districts
+        reports.forEach((report: any) => {
+          if (report.district === 1) {
+            buildDistrictSection('1st Congressional District', dist1, report);
+          } else if (report.district === 2) {
+            buildDistrictSection('2nd Congressional District', dist2, report);
+          }
+        });
+
+        // Grand total
+        const grandTotalRow = [
+          {
+            text: 'GRANDTOTAL',
+            colSpan: 2,
+            fillColor: '#F1C93B',
+            bold: true,
+            alignment: 'left',
+          },
+          {},
+        ];
+        columns.forEach((col: any) => {
+          const total =
+            grandTotal.find((g: any) => g.setYear === col.setYear) || {};
+          grandTotalRow.push(
+            {
+              text: total.population ?? '-',
+              alignment: 'center',
+              fillColor: '#F1C93B',
+            } as any,
+            {
+              text: total.male ?? '-',
+              alignment: 'center',
+              fillColor: '#F1C93B',
+            } as any,
+            {
+              text: total.female ?? '-',
+              alignment: 'center',
+              fillColor: '#F1C93B',
+            } as any,
+            {
+              text: total.householdNo ?? '-',
+              alignment: 'center',
+              fillColor: '#F1C93B',
+            } as any
+          );
+        });
+        tableData.push(grandTotalRow);
+
+        // Final table
+        data.push({
+          margin: [0, 20, 0, 0],
+          table: {
+            widths: [25, 180, ...Array(columns.length * 4).fill(45)],
+            body: tableData,
+          },
+          layout: {
+            hLineWidth: () => 1,
+            vLineWidth: () => 1,
+            hLineColor: () => 'black',
+            vLineColor: () => 'black',
+            paddingLeft: () => 4,
+            paddingRight: () => 4,
+            paddingTop: () => 2,
+            paddingBottom: () => 2,
+          },
+        });
+      },
+
+      error: (error: any) => {
+        console.error('PDF generation error:', error);
+        this.Error();
+      },
+
+      complete: () => {
+        if (reports.length > 0) {
+          const isPortrait = false;
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
         }
       },
     });

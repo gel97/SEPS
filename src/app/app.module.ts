@@ -183,6 +183,19 @@ import { TouristArrivalComponent } from './pages/main/Province/tourist-arrival/t
 import { GuestSelectLoginComponent } from './pages/guest/guest-select-login/guest-select-login.component';
 import { AccomEstabComponent } from './pages/main/Province/accom-estab/accom-estab.component';
 import { ApprovalComponent } from './pages/approval/approval.component';
+import { TravelOpsComponent } from './pages/main/Province/travel-ops/travel-ops.component';
+import { NumberOfRestEstComponent } from './pages/main/Province/number-of-rest-est/number-of-rest-est.component';
+import { SlopeComponent } from './pages/main/Province/slope/slope.component';
+import { RainComponent } from './pages/main/Province/rain/rain.component';
+import { RegSeniorComponent } from './pages/main/Province/reg-senior/reg-senior.component';
+import { CrisisInComponent } from './pages/main/Province/crisis-in/crisis-in.component';
+import { PopShareComponent } from './pages/main/Province/pop-share/pop-share.component';
+import { UploadDataComponent } from './layout/upload-data/upload-data.component';
+import { TablesCapsv2Pipe } from './pipes/tableCapsv2';
+import { DataRequestComponent } from './pages/main/Province/data-request/data-request.component';
+import { UtilityComponent } from './pages/main/Province/utility/utility.component';
+import { ForGuestOnlyComponent } from './Admin/for-guest-only/for-guest-only.component';
+import { CDRAComponent } from './pages/main/Province/cdra/cdra.component';
 
 @NgModule({
   declarations: [
@@ -298,6 +311,7 @@ import { ApprovalComponent } from './pages/approval/approval.component';
 
     SepDataComponent,
     FilterPipe,
+    TablesCapsv2Pipe,
     FilterallPipe,
     GmapComponent,
     AdminComponent,
@@ -353,6 +367,18 @@ import { ApprovalComponent } from './pages/approval/approval.component';
     GuestSelectLoginComponent,
     AccomEstabComponent,
     ApprovalComponent,
+    TravelOpsComponent,
+    NumberOfRestEstComponent,
+    SlopeComponent,
+    RainComponent,
+    RegSeniorComponent,
+    CrisisInComponent,
+    PopShareComponent,
+    UploadDataComponent,
+    DataRequestComponent,
+    UtilityComponent,
+    ForGuestOnlyComponent,
+    CDRAComponent,
   ],
   imports: [
     MdbCollapseModule,

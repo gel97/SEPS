@@ -125,9 +125,10 @@ export class AuthService {
   }
   getAllLogs(params: any): Observable<any> {
     return this.http
-      .get(`${this.apiGetLogs}/all`)
+      .get('api/Logs/version1', { params })
       .pipe(retry(2), catchError(this.handleError));
   }
+
   private handleError(error: HttpErrorResponse) {
     console.error('Error fetching activity logs:', error);
     return throwError(() => new Error('Failed to fetch activity logs'));

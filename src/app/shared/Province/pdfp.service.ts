@@ -23,6 +23,13 @@ export class pdfpService {
       responseType: 'json',
     });
   }
+  Postupload(data: any = {}) {
+    console.log(data);
+
+    return this.http.post(this.Base.url + this.ApiUrl.post_upload(), data, {
+      responseType: 'json',
+    });
+  }
   ListOfMunicipality() {
     return this.http.get<any[]>(this.Base.url + this.ApiUrl.get_all_muncity(), {
       responseType: 'json',
