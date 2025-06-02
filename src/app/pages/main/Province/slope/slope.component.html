@@ -1,0 +1,236 @@
+<div class="">
+  <div
+    class="card o-hidden border-2 shadow-sm my-5"
+    style="border-color: #4e73df; background-color: #f8f9fc"
+  >
+    <div class="card-body p-0">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="p-5">
+            <div class="text-center mb-4">
+              <h1 class="h4 card-header-title">
+                Slope Classification by City/Municipality
+              </h1>
+              <label
+                ><strong
+                  >Provincial Development and Physical Framework Plan</strong
+                ></label
+              >
+            </div>
+            <div class="row mb-3">
+              <div class="col-lg-12">
+                <p class="section-label">📍 List of Municipalities</p>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="styled-lightdark-table">
+                <thead class="table-dark text-center">
+                  <tr>
+                    <th>City/Municipality</th>
+                    <th>0-8% Slope, Rolling to Hilly</th>
+                    <th>18-30% Slope, Rolling to Hilly</th>
+                    <th>30-50% Slope, Hilly to Mountainous</th>
+                    <th>8-18% Slope, Undulating to Rolling</th>
+                    <th>Above 50% Slope, Mountainous</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of listData; index as i">
+                    <td class="text-center">
+                      <b>{{ item.munCityName }}</b>
+                    </td>
+                    <td class="text-center">{{ item.slopeFirst }}</td>
+                    <td class="text-center">{{ item.slopeSecond }}</td>
+                    <td class="text-center">{{ item.slopeMountain }}</td>
+                    <td class="text-center">{{ item.slopeUndulating }}</td>
+                    <td class="text-center">{{ item.slopeAbove }}</td>
+                    <td
+                      *ngIf="
+                        item.transId && item.munCityId == o_munCityId;
+                        else isADD
+                      "
+                    >
+                      <app-admin>
+                        <div class="d-inline-flex">
+                          <button
+                            (click)="data = item; isAdd = false"
+                            class="btn btn-info btn-circle"
+                            data-toggle="modal"
+                            data-target="#openModal"
+                          >
+                            <i class="fa fa-pen"></i>
+                          </button>
+                          &nbsp;
+                          <button
+                            type="button"
+                            title="Delete"
+                            class="btn btn-warning btn-circle"
+                            (click)="DeleteSlope(item.transId, i, item)"
+                          >
+                            <i class="fa fa-trash"></i>
+                          </button>
+                        </div>
+                      </app-admin>
+                    </td>
+                    <ng-template #isADD>
+                      <td>
+                        <app-admin>
+                          <button
+                            *ngIf="item.munCityId == o_munCityId"
+                            (click)="data = item; isAdd = true"
+                            class="btn btn-primary btn-circle"
+                            data-toggle="modal"
+                            data-target="#openModal"
+                          >
+                            <i class="fa fa-plus"></i>
+                          </button>
+                        </app-admin>
+                      </td>
+                    </ng-template>
+                  </tr>
+
+                  <!-- Total Row -->
+                  <tr class="font-weight-bold">
+                    <td class="text-center"><b>Total</b></td>
+                    <td class="text-center">
+                      <b>{{ totals.slopeFirst }}</b>
+                    </td>
+                    <td class="text-center">
+                      <b>{{ totals.slopeSecond }}</b>
+                    </td>
+                    <td class="text-center">
+                      <b>{{ totals.slopeMountain }}</b>
+                    </td>
+                    <td class="text-center">
+                      <b>{{ totals.slopeUndulating }}</b>
+                    </td>
+                    <td class="text-center">
+                      <b>{{ totals.slopeAbove }}</b>
+                    </td>
+                    <td class="text-center"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div
+              class="modal fade bd-example-modal-lg"
+              id="openModal"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="myLargeModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalScrollableTitle">
+                      Slope Classification
+                    </h5>
+                    <button
+                      #closeMunicipalityBtn
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+
+                  <div class="modal-body">
+                    <form>
+                      <div class="row">
+                        <!-- 0-8 Slope -->
+                        <div class="col-md-6">
+                          <label class="section-label">0-8 Slope</label>
+                          <input
+                            type="number"
+                            class="form-control"
+                            placeholder="0-8 Slope"
+                            [(ngModel)]="data.slopeFirst"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </div>
+
+                        <!-- 8-18 Slope -->
+                        <div class="col-md-6">
+                          <label class="section-label">8-18 Slope</label>
+                          <input
+                            type="number"
+                            class="form-control"
+                            placeholder="8-18 Slope"
+                            [(ngModel)]="data.slopeSecond"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="row mt-3">
+                        <!-- 18-30 Slope -->
+                        <div class="col-md-6">
+                          <label class="section-label">18-30 Slope</label>
+                          <input
+                            type="number"
+                            class="form-control"
+                            placeholder="18-30 Slope"
+                            [(ngModel)]="data.slopeMountain"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </div>
+
+                        <!-- 30-50 Slope -->
+                        <div class="col-md-6">
+                          <label class="section-label">30-50 Slope</label>
+                          <input
+                            type="number"
+                            class="form-control"
+                            placeholder="30-50 Slope"
+                            [(ngModel)]="data.slopeUndulating"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="row mt-3">
+                        <!-- Above 50 Slope -->
+                        <div class="col-md-6">
+                          <label class="section-label">Above 50 Slope</label>
+                          <input
+                            type="number"
+                            class="form-control"
+                            placeholder="Above 50 Slope"
+                            [(ngModel)]="data.slopeAbove"
+                            [ngModelOptions]="{ standalone: true }"
+                          />
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-outline-secondary"
+                      data-dismiss="modal"
+                    >
+                      <i class="fa fa-times"></i> Cancel
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      (click)="isAdd ? AddSlope() : EditSlope()"
+                    >
+                      <i class="fa fa-save"></i> Save Changes
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

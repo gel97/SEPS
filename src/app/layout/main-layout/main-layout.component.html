@@ -221,6 +221,64 @@
           </div>
         </div>
       </li>
+      <app-ddn>
+        <li class="nav-item" routerLinkActive="active">
+          <a
+            class="nav-link collapsed"
+            href="#"
+            data-toggle="collapse"
+            data-target="#collapseTemplate"
+            aria-expanded="true"
+            aria-controls="collapseTwo"
+          >
+            <i class="fa fa-th-list" aria-hidden="true"></i>
+            <span>Utility</span>
+          </a>
+          <div
+            id="collapseTemplate"
+            class="collapse"
+            aria-labelledby="headingThree"
+            data-parent="#accordionSidebar"
+          >
+            <div class="bg-lightblue collapse-inner rounded">
+              <a
+                class="collapse-item"
+                routerLinkActive="active"
+                routerLink="Province/utility"
+                >Template</a
+              >
+            </div>
+          </div>
+        </li>
+        <li class="nav-item" routerLinkActive="active">
+          <a
+            class="nav-link collapsed"
+            href="#"
+            data-toggle="collapse"
+            data-target="#collapseDataRequest"
+            aria-expanded="true"
+            aria-controls="collapseTwo"
+          >
+            <i class="fa fa-table" aria-hidden="true"></i>
+            <span>Data Request</span>
+          </a>
+          <div
+            id="collapseDataRequest"
+            class="collapse"
+            aria-labelledby="headingThree"
+            data-parent="#accordionSidebar"
+          >
+            <div class="bg-lightblue collapse-inner rounded">
+              <a
+                class="collapse-item"
+                routerLinkActive="active"
+                routerLink="Province/data-request"
+                >Data Request</a
+              >
+            </div>
+          </div>
+        </li>
+      </app-ddn>
       <app-menu>
         <!-- Nav Item - Socio-Economic Activities -->
         <li class="nav-item">
@@ -1371,8 +1429,8 @@
                   <a
                     class="collapse-item"
                     routerLinkActive="active"
-                    routerLink=""
-                    >Work in Progress
+                    routerLink="Province/pop-share"
+                    >Davao del Norte Population Shares
                   </a>
                 </div>
               </div>
@@ -1409,7 +1467,7 @@
                   routerLink="Province/tourist-arrival"
                   >Tourist Arrival in the Tourist Destination
                 </a>
-                <!-- <a
+                <a
                   class="collapse-item"
                   routerLinkActive="active"
                   routerLink="Province/accom-estab"
@@ -1417,9 +1475,15 @@
                 ><a
                   class="collapse-item"
                   routerLinkActive="active"
-                  routerLink=""
+                  routerLink="Province/travel-ops"
                   >Number of Travel and Tour Operators
-                </a> -->
+                </a>
+                <a
+                  class="collapse-item"
+                  routerLinkActive="active"
+                  routerLink="Province/number-of-rest-est"
+                  >Number of Restaurants and Food Establishment
+                </a>
               </div>
             </li>
           </div>
@@ -1447,9 +1511,20 @@
                     <a
                       class="collapse-item"
                       routerLinkActive="active"
-                      routerLink=""
-                      >Work in Progress
+                      routerLink="Province/slope"
+                      >Slope Classification by City/Municipality
                     </a>
+                    <a
+                      class="collapse-item"
+                      routerLink="Province/susceptible-flood"
+                      >Susceptible Flood</a
+                    >
+                    <!-- <a class="collapse-item" routerLink="Province/rain"
+                      >Display Table</a
+                    >
+                    <a class="collapse-item" routerLink="layout/upload-data"
+                      >test</a
+                    > -->
                   </div>
                 </div>
               </div>
@@ -1493,6 +1568,18 @@
                     routerLink="Province/fed-pwd"
                     >Federation of Persons with Disability
                   </a>
+                  <a
+                    class="collapse-item"
+                    routerLinkActive="active"
+                    routerLink="Province/reg-senior"
+                    >Profile of Registered Senior Citizens
+                  </a>
+                  <a
+                    class="collapse-item"
+                    routerLinkActive="active"
+                    routerLink="Province/crisis-in"
+                    >Crisis Intervention Services
+                  </a>
                 </div>
               </div>
             </li>
@@ -1531,34 +1618,94 @@
       </li>
     </app-hidefromguestmenu>
 
-    <li class="nav-item" routerLinkActive="active">
-      <a
-        class="nav-link collapsed"
-        href="#"
-        data-toggle="collapse"
-        data-target="#collapseTools"
-        aria-expanded="true"
-        aria-controls="collapseTwo"
-      >
-        <i class="fa fa-fw fa-wrench"></i>
-        <span>Tools</span>
-      </a>
-      <div
-        id="collapseTools"
-        class="collapse"
-        aria-labelledby="headingTwo"
-        data-parent="#accordionSidebar"
-      >
-        <div class="bg-lightblue collapse-inner rounded">
-          <a
-            class="collapse-item"
-            routerLinkActive="active"
-            routerLink="Tools/summary-reports"
-            >Summary Reports</a
-          >
+    <app-ddn>
+      <li class="nav-item" routerLinkActive="active">
+        <a
+          class="nav-link collapsed"
+          href="#"
+          data-toggle="collapse"
+          data-target="#collapseCDRA"
+          aria-expanded="true"
+          aria-controls="collapsefive"
+        >
+          <i class="fa fa-map" aria-hidden="true"></i>
+          <span>CDRA Maps</span>
+        </a>
+        <div
+          id="collapseCDRA"
+          class="collapse"
+          aria-labelledby="headingfive"
+          data-parent="#accordionSidebar"
+        >
+          <div class="bg-lightblue collapse-inner rounded">
+            <a
+              class="collapse-item"
+              routerLinkActive="active"
+              routerLink="Province/cdra"
+              >Maps</a
+            >
+          </div>
         </div>
-      </div>
-    </li>
+      </li>
+    </app-ddn>
+    <app-for-guest-only>
+      <li class="nav-item" routerLinkActive="active">
+        <a
+          class="nav-link collapsed"
+          href="#"
+          data-toggle="collapse"
+          data-target="#collapseTools"
+          aria-expanded="true"
+          aria-controls="collapseTwo"
+        >
+          <i class="fa fa-fw fa-wrench"></i>
+          <span>Tools</span>
+        </a>
+        <div
+          id="collapseTools"
+          class="collapse"
+          aria-labelledby="headingTwo"
+          data-parent="#accordionSidebar"
+        >
+          <div class="bg-lightblue collapse-inner rounded">
+            <a
+              class="collapse-item"
+              routerLinkActive="active"
+              routerLink="Tools/summary-reports"
+              >Summary Reports</a
+            >
+          </div>
+        </div>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a
+          class="nav-link collapsed"
+          href="#"
+          data-toggle="collapse"
+          data-target="#collapseCDRA"
+          aria-expanded="true"
+          aria-controls="collapsefive"
+        >
+          <i class="fa fa-map" aria-hidden="true"></i>
+          <span>CDRA Maps</span>
+        </a>
+        <div
+          id="collapseCDRA"
+          class="collapse"
+          aria-labelledby="headingfive"
+          data-parent="#accordionSidebar"
+        >
+          <div class="bg-lightblue collapse-inner rounded">
+            <a
+              class="collapse-item"
+              routerLinkActive="active"
+              routerLink="Province/cdra"
+              >Maps</a
+            >
+          </div>
+        </div>
+      </li>
+    </app-for-guest-only>
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">
       <button

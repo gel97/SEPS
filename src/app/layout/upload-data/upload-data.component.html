@@ -1,0 +1,316 @@
+<main id="main" class="main">
+  <section class="section p-2">
+    <div class="row">
+      <div class="col-sm-5">
+        <h2>Upload Excel File</h2>
+        <form id="file-upload-form" class="uploader" action="">
+          <input
+            id="file-upload"
+            type="file"
+            class="form-control"
+            (change)="fileUpload($event)"
+            name="fileUpload"
+            accept=".xls,.xlsx"
+          />
+        </form>
+        <br />
+
+        <div *ngIf="jsonData" class="d-grid gap-2 mt-2">
+          <textarea
+            [(ngModel)]="remark"
+            class="form-control"
+            placeholder="Remark"
+          ></textarea>
+          <button class="btn btn-primary" (click)="saveData()">Save</button>
+        </div>
+      </div>
+    </div>
+    <hr />
+
+    <!-- <div class="row" >
+         <i>TEMPLATES</i>
+         <div class="col-sm-3">
+            <i style="cursor: pointer; font-size: 50pt;" class="ri ri-file-excel-2-fill"></i>
+            <br>
+            <span>PHO</span>
+         </div>
+         <div class="col-sm-3">
+            <i style="cursor: pointer; font-size: 50pt;" class="ri ri-file-excel-2-fill"></i>
+            <br>
+            <span>DEP-ED</span>
+         </div>
+         <div class="col-sm-3">
+            <i style="cursor: pointer; font-size: 50pt;" class="ri ri-file-excel-2-fill"></i>
+            <br>
+            <span>PSYDO</span>
+         </div>
+      </div> -->
+  </section>
+
+  <div *ngIf="jsonData" class="mt-5 p-3" style="background-color: #fff">
+    <div *ngFor="let item of jsonData">
+      <div>
+        <strong>{{ item.Title }}</strong>
+      </div>
+
+      <div>
+        <div id="data-{{ item.DataBuilderId }}"></div>
+        {{ item | tableCapsv2 }}
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-5">
+    <!-- <div *ngFor="let item of jsonData" >
+      <div>
+        <strong> {{item.Title}}</strong>
+      </div>
+     <div class="d-flex flex-sm-row mt-1" >
+         <div *ngFor="let main of item.MainColumns" class="myborder">
+            <div class="px-3 text-center">
+              <strong> {{main.Name}}</strong>
+            </div>
+            <div id="flex-bottom">
+               <div *ngFor="let infos of main.Informations" class="px-4 border-y">{{infos.Name}}</div>
+               
+               <div class="d-flex flex-sm-row">
+                  <div class="border-x border-top" *ngFor="let sub of main.SubColumns">
+                     <div class="px-4 text-center">
+                       <strong> {{sub.Name}}</strong>
+                     </div>
+                     <div *ngFor="let infos of sub.Informations" class="px-4 border-y">{{infos.Name}}</div>
+                     <div class="d-flex flex-sm-row">
+                        <div class="border-y border-x" *ngFor="let more of sub.MoreSubColumns">
+                           <div class="px-4 text-center">
+                              <strong> {{more.Name}}</strong>
+                           </div>
+                           <div *ngFor="let info of more.Informations" class="px-4 border-y">{{info.Name}}</div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+     </div>
+     <br> <br>
+     <hr>
+   </div> -->
+  </div>
+
+  <br />
+
+  <div>
+    <!-- <table class="table table-bordered text-center">
+     <thead>
+      <tr>
+         <th rowspan="3">
+            Type of Family Planning Type of Family Planning
+         </th>
+         <th colspan="4">
+            Percentage of Users
+         </th>
+      </tr>
+      <tr>
+         <th colspan="2">sub1</th>
+         <th colspan="2">sub2</th>
+      </tr>
+      <tr>
+         <th>more1</th>
+         <th>more2</th>
+         <th>more3</th>
+         <th>more4</th>
+      </tr>
+     </thead>
+     <tbody>
+      <tr>
+         <td>dasdsad</td>
+         <td>dasdsad</td>
+         <td>dasdsad</td>
+         <td>dasdsad</td>
+         <td>dasdsad</td>
+      </tr>
+     </tbody>
+   </table> -->
+    <br />
+    <!-- <hr> -->
+
+    <!-- 
+   <div *ngFor="let item of builderData" >
+      <div>
+        <strong> {{item.title}}</strong>
+      </div>
+     <div class="d-flex flex-sm-row mt-1" >
+         <div *ngFor="let main of item.mainColumns" class="myborder">
+            <div class="px-3 text-center">
+              <strong> {{main.name}}</strong>
+            </div>
+            <div id="flex-bottom">
+               <div *ngFor="let infos of main.informations" class="px-4 border-y">{{infos.name}}</div>
+               
+               <div class="d-flex flex-sm-row">
+                  <div class="border-x border-top" *ngFor="let sub of main.subColumns">
+                     <div class="px-4 text-center">
+                       <strong> {{sub.name}}</strong>
+                     </div>
+                     <div *ngFor="let infos of sub.informations" class="px-4 border-y">{{infos.name}}</div>
+                     <div class="d-flex flex-sm-row">
+                        <div class="border-y border-x" *ngFor="let more of sub.moreSubColumns">
+                           <div class="px-4 text-center">
+                              <strong> {{more.name}}</strong>
+                           </div>
+                           <div *ngFor="let info of more.informations" class="px-4 border-y">{{info.name}}</div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+     </div>
+     <br> <br>
+   </div> -->
+
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">DATA FORMAT</h5>
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">WRONG</h5>
+                <div
+                  id="carouselExampleSlidesOnly"
+                  class="carousel slide"
+                  data-bs-ride="carousel"
+                >
+                  <div class="carousel-inner">
+                    <div class="carousel-item active">
+                      <img
+                        src="assets/img/Tutorial/Tut1-a.png"
+                        class="d-block w-100"
+                        alt="..."
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">CORRECT</h5>
+                <div
+                  id="carouselExampleSlidesOnly"
+                  class="carousel slide"
+                  data-bs-ride="carousel"
+                >
+                  <div class="carousel-inner">
+                    <div class="carousel-item active">
+                      <img
+                        src="assets/img/Tutorial/Tut1-b.png"
+                        class="d-block w-100"
+                        alt="..."
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">WRONG</h5>
+                <div
+                  id="carouselExampleSlidesOnly"
+                  class="carousel slide"
+                  data-bs-ride="carousel"
+                >
+                  <div class="carousel-inner">
+                    <div class="carousel-item active">
+                      <img
+                        src="assets/img/Tutorial/Tut2-a.png"
+                        class="d-block w-100"
+                        alt="..."
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">CORRECT</h5>
+                <div
+                  id="carouselExampleSlidesOnly"
+                  class="carousel slide"
+                  data-bs-ride="carousel"
+                >
+                  <div class="carousel-inner">
+                    <div class="carousel-item active">
+                      <img
+                        src="assets/img/Tutorial/Tut2-b.png"
+                        class="d-block w-100"
+                        alt="..."
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">WRONG</h5>
+                <div
+                  id="carouselExampleSlidesOnly"
+                  class="carousel slide"
+                  data-bs-ride="carousel"
+                >
+                  <div class="carousel-inner">
+                    <div class="carousel-item active">
+                      <img
+                        src="assets/img/Tutorial/Tut3-a.png"
+                        class="d-block w-100"
+                        alt="..."
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">CORRECT</h5>
+                <div
+                  id="carouselExampleSlidesOnly"
+                  class="carousel slide"
+                  data-bs-ride="carousel"
+                >
+                  <div class="carousel-inner">
+                    <div class="carousel-item active">
+                      <img
+                        src="assets/img/Tutorial/Tut3-b.png"
+                        class="d-block w-100"
+                        alt="..."
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

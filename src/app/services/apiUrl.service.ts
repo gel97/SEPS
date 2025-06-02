@@ -140,6 +140,9 @@ export class ApiUrl {
   get_dis_muncity = () => `/MunLoc/byDistrict`;
   post_update_muncity = () => `/MunLoc/Update`;
 
+  //CoreElements
+  get_Core_Elements = () => `/CoreElements/List`;
+
   // Mun Loc Building
   get_all_building = () => `/MunCityBuilding/List`;
   get_mun_building = (munCityId: any, setYear: any) =>
@@ -158,6 +161,7 @@ export class ApiUrl {
     `/Barangay/ListBarangays?munCityId=${munCityId}`;
   post_report_demography = () => `/Demography/Reports`;
   post_reportMun_demography = () => `/Demography/Reports/MunV2`;
+  post_reportMun_demography_barangay = () => `/Demography/ReportsV2`;
   post_import_demo = () => `/Demography/Import`;
 
   //Provincial Fiscal
@@ -571,6 +575,51 @@ export class ApiUrl {
   delete_Arrival = (transId: any) => `/TouristArrival/${transId}`;
   upload_excel_Arrival = () => `/TouristArrival/upload-excel`;
   download_template_Arrival = () => `/TouristArrival/download-template`;
+
+  //Accommodation
+  get_list_accommodation = (setYear: any) => `/Accommodation/List/${setYear}`;
+  post_accommodation = () => `/Accommodation`;
+  put_accommodation = () => `/Accommodation`;
+  delete_accommodation = (transId: any) => `/Accommodation/${transId}`;
+
+  //TravelAndOperations
+  get_list_Trav = (setYear: any) => `/TravelAndOperations/List/${setYear}`;
+  post_Trav = () => `/TravelAndOperations`;
+  put_Trav = () => `/TravelAndOperations`;
+  delete_Trav = (transId: any) => `/TravelAndOperations/${transId}`;
+
+  //NumberOfRestEst
+  get_list_RestEst = (setYear: any) => `/NumberOfRestEst/List/${setYear}`;
+  post_RestEst = () => `/NumberOfRestEst`;
+  put_RestEst = () => `/NumberOfRestEst`;
+  delete_RestEst = (transId: any) => `/NumberOfRestEst/${transId}`;
+
+  //RegSenior
+  get_list_RegSenior = (setYear: any) => `/RegSenior/List/${setYear}`;
+  post_RegSenior = () => `/RegSenior`;
+  put_RegSenior = () => `/RegSenior`;
+  delete_RegSenior = (transId: any) => `/RegSenior/${transId}`;
+
+  //PopulationShare
+  get_list_PopShare = (setYear: any) => `/PopulationShare/List/${setYear}`;
+  post_PopShare = () => `/PopulationShare`;
+  put_PopShare = () => `/PopulationShare`;
+  delete_PopShare = (transId: any) => `/PopulationShare/${transId}`;
+
+  //CrisisIntervention
+  get_list_CrisisIn = (setYear: any, munCityId: any) =>
+    `/CrisisIntervention/${setYear}/${munCityId}`;
+  post_CrisisIn = () => `/CrisisIntervention`;
+  put_CrisisIn = () => `/CrisisIntervention`;
+  delete_CrisisIn = (transId: any) => `/CrisisIntervention/${transId}`;
+  get_list_types = () => `/CrisisTypesOfAssistance/List`;
+
+  //SlopeClassification
+  get_list_Slope = (setYear: any) => `/SlopeClassification/List/${setYear}`;
+  post_Slope = () => `/SlopeClassification`;
+  put_Slope = () => `/SlopeClassification`;
+  delete_Slope = (transId: any) => `/SlopeClassification/${transId}`;
+
   //Rain-Induced
   get_list_rainInduced = (setYear: any) => `/RainInduced/List/${setYear}`;
   post_rainInduced = () => `/RainInduced`;
@@ -581,6 +630,7 @@ export class ApiUrl {
   post_save_pdfp = () => `/pdfp/upload`;
   get_list_pdfp = (setYear: any, munCityId: any) =>
     `/pdfp/${setYear}/${munCityId}`;
+  post_upload = () => `/pdfp/uploadData`;
 
   // Health -> Sanitary
   get_list_health_sanitary = (setYear: any, munCityId: any) =>
@@ -727,6 +777,11 @@ export class ApiUrl {
   get_environment_affected_flood = () => `/FloodAffected/AllList`;
   delete_environment_affectd = (transId: any) => `/FloodAffected/${transId}`;
   post_update_environment_affected_flood = () => `/FloodAffected/update`;
+
+  //CDRA
+  post_save_CDRA = () => `/CDRA/upload`;
+  get_CDRA = (setYear: any) => `/CDRA/setYear/${setYear}`;
+
   //INFRASTRUCTURE & UTILITIES
 
   // Utility - SERVICES
@@ -895,6 +950,7 @@ export class ApiUrl {
   get_logs_act = (userId: string) => `api/Logs?userId=${userId}`;
   get_logs_admin = () => `api/Logs`; // if admin, no userId
   get_logs = () => `api/Logs/all`; // if admin, no userId
+  get_logs_version1 = () => `api/Logs/version1`;
   get_date_act = (month: number, year: number, userId?: string) =>
     userId
       ? `api/Logs/filter-by-month?month=${month}&year=${year}&userId=${userId}`

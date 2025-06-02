@@ -139,6 +139,18 @@ import { TouristArrivalComponent } from './pages/main/Province/tourist-arrival/t
 import { GuestSelectLoginComponent } from './pages/guest/guest-select-login/guest-select-login.component';
 import { AccomEstabComponent } from './pages/main/Province/accom-estab/accom-estab.component';
 import { ApprovalComponent } from './pages/approval/approval.component';
+import { TravelOpsComponent } from './pages/main/Province/travel-ops/travel-ops.component';
+import { NumberOfRestEstComponent } from './pages/main/Province/number-of-rest-est/number-of-rest-est.component';
+import { SlopeComponent } from './pages/main/Province/slope/slope.component';
+import { RainComponent } from './pages/main/Province/rain/rain.component';
+import { RegSeniorComponent } from './pages/main/Province/reg-senior/reg-senior.component';
+import { CrisisInComponent } from './pages/main/Province/crisis-in/crisis-in.component';
+import { PopShareComponent } from './pages/main/Province/pop-share/pop-share.component';
+import { TablesCapsv2Pipe } from './pipes/tableCapsv2';
+import { UploadDataComponent } from './layout/upload-data/upload-data.component';
+import { DataRequestComponent } from './pages/main/Province/data-request/data-request.component';
+import { UtilityComponent } from './pages/main/Province/utility/utility.component';
+import { CDRAComponent } from './pages/main/Province/cdra/cdra.component';
 
 const socioEconomic_TradeIndustry: string =
   'socio-economic/trade-and-industry/';
@@ -155,6 +167,7 @@ const Infrastructure_Communications: string = 'Infrastructure/Communications';
 const Infrastructure_Utility: string = 'Infrastructure/Utility';
 const Governance: string = 'Governance';
 const Province: string = 'Province';
+const layout: string = 'layout';
 const Tools: string = 'Tools/';
 
 const routes: Routes = [
@@ -643,6 +656,50 @@ const routes: Routes = [
       {
         path: Province + '/accom-estab',
         component: AccomEstabComponent,
+      },
+      {
+        path: Province + '/travel-ops',
+        component: TravelOpsComponent,
+      },
+      {
+        path: Province + '/number-of-rest-est',
+        component: NumberOfRestEstComponent,
+      },
+      {
+        path: Province + '/slope',
+        component: SlopeComponent,
+      },
+      {
+        path: Province + '/rain',
+        component: RainComponent,
+      },
+      {
+        path: Province + '/reg-senior',
+        component: RegSeniorComponent,
+      },
+      {
+        path: Province + '/crisis-in',
+        component: CrisisInComponent,
+      },
+      {
+        path: Province + '/pop-share',
+        component: PopShareComponent,
+      },
+      {
+        path: layout + '/upload-data',
+        component: UploadDataComponent,
+      },
+      {
+        path: Province + '/data-request',
+        component: DataRequestComponent,
+      },
+      {
+        path: Province + '/utility',
+        component: UtilityComponent,
+      },
+      {
+        path: Province + '/cdra',
+        component: CDRAComponent,
       },
 
       { path: Governance + '/pgdept-heads', component: PGDeptHeadsComponent },

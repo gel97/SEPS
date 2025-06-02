@@ -40,7 +40,13 @@ export class ActivityLogsComponent implements OnInit, OnDestroy {
   }
 
   loadAllLogsForAdmin() {
-    this.authService.getAllActivityLogs().subscribe(
+    const storedUserId = localStorage.getItem('userId');
+    const params = {
+      userId: storedUserId || '',
+      Take: 100, // or any number you want to take
+    };
+
+    this.authService.getAllLogs(params).subscribe(
       (logs: any) => {
         this.activityLogs = logs;
       },
@@ -66,13 +72,12 @@ export class ActivityLogsComponent implements OnInit, OnDestroy {
       const params: any = {
         month: this.selectedMonth,
         year: this.selectedYear,
+        Take: 100, // optional: default or custom
       };
 
-      if (!this.isAdmin) {
-        const storedUserId = localStorage.getItem('userId');
-        if (storedUserId) {
-          params.userId = storedUserId;
-        }
+      const storedUserId = localStorage.getItem('userId');
+      if (storedUserId) {
+        params.userId = storedUserId;
       }
 
       this.authService.getAllLogs(params).subscribe(
