@@ -1519,12 +1519,12 @@
                       routerLink="Province/susceptible-flood"
                       >Susceptible Flood</a
                     >
-                    <!-- <a class="collapse-item" routerLink="Province/rain"
+                    <a class="collapse-item" routerLink="Province/rain"
                       >Display Table</a
                     >
                     <a class="collapse-item" routerLink="layout/upload-data"
                       >test</a
-                    > -->
+                    >
                   </div>
                 </div>
               </div>
@@ -1647,6 +1647,31 @@
           </div>
         </div>
       </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a
+          class="nav-link collapsed"
+          href="#"
+          data-toggle="collapse"
+          data-target="#collapseExposure"
+          aria-expanded="true"
+          aria-controls="collapsefive"
+        >
+          <i class="fa fa-map" aria-hidden="true"></i>
+          <span>Exposure Database</span>
+        </a>
+        <div
+          id="collapseExposure"
+          class="collapse"
+          aria-labelledby="headingfive"
+          data-parent="#accordionSidebar"
+        >
+          <div class="bg-lightblue collapse-inner rounded">
+            <a class="collapse-item" routerLinkActive="active" routerLink=""
+              >Lifeline Exposed to Flooding</a
+            >
+          </div>
+        </div>
+      </li>
     </app-ddn>
     <app-for-guest-only>
       <li class="nav-item" routerLinkActive="active">
@@ -1701,6 +1726,31 @@
               routerLinkActive="active"
               routerLink="Province/cdra"
               >Maps</a
+            >
+          </div>
+        </div>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a
+          class="nav-link collapsed"
+          href="#"
+          data-toggle="collapse"
+          data-target="#collapseExposure"
+          aria-expanded="true"
+          aria-controls="collapsefive"
+        >
+          <i class="fa fa-database" aria-hidden="true"></i>
+          <span>Exposure Database</span>
+        </a>
+        <div
+          id="collapseExposure"
+          class="collapse"
+          aria-labelledby="headingfive"
+          data-parent="#accordionSidebar"
+        >
+          <div class="bg-lightblue collapse-inner rounded">
+            <a class="collapse-item" routerLinkActive="active" routerLink=""
+              >Lifeline Exposed to Flooding</a
             >
           </div>
         </div>

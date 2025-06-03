@@ -57,8 +57,7 @@ export class CDRAComponent implements OnInit {
     });
   }
   previewImage(item: any): void {
-    this.selectedImageSrc = encodeURI(item.image);
-    // ✅ USE the full URL as returned from backend
+    this.selectedImageSrc = item.imageUrl; // ✅ use full URL
     this.selectedImageName = item.imageName;
 
     const modalEl = document.getElementById('imagePreviewModal');

@@ -6,49 +6,88 @@ import { Observable, throwError } from 'rxjs';
 import { ApiUrl } from './apiUrl.service';
 
 @Injectable({
-    providedIn: 'root'
-  })
+  providedIn: 'root',
+})
 export class ImagesService {
   api: any;
 
-  constructor(private http: HttpClient, private ApiUrl: ApiUrl, private Base:BaseUrl ) {
+  constructor(
+    private http: HttpClient,
+    private ApiUrl: ApiUrl,
+    private Base: BaseUrl
+  ) {
     this.api = this.Base.url;
   }
 
-  public GetLogo(munCityId:any){
-    return this.http.get(this.api + this.ApiUrl.get_muncity_logo(munCityId), {responseType: 'blob'});
-  }
-
-  public UploadLogo(inpudata:any){
-    return this.http.post(this.api + this.ApiUrl.post_upload_muncity_logo(), inpudata, {
-      reportProgress:true,
-      observe:'events'
+  public GetLogo(munCityId: any) {
+    return this.http.get(this.api + this.ApiUrl.get_muncity_logo(munCityId), {
+      responseType: 'blob',
     });
   }
 
-  public GetImage(munCityId:any){
-    return this.http.get(this.api + this.ApiUrl.get_image_banner(munCityId) , {responseType: 'blob'}).pipe(retry(1), catchError(this.handleError));
+  public UploadLogo(inpudata: any) {
+    return this.http.post(
+      this.api + this.ApiUrl.post_upload_muncity_logo(),
+      inpudata,
+      {
+        reportProgress: true,
+        observe: 'events',
+      }
+    );
   }
 
-  public UploadImage(inpudata:any){
-    return this.http.post(this.api + this.ApiUrl.post_upload_image_banner(), inpudata, {
-      reportProgress:true,
-      observe:'events'
+  public GetImage(munCityId: any) {
+    return this.http
+      .get(this.api + this.ApiUrl.get_image_banner(munCityId), {
+        responseType: 'blob',
+      })
+      .pipe(retry(1), catchError(this.handleError));
+  }
+
+  public UploadImage(inpudata: any) {
+    return this.http.post(
+      this.api + this.ApiUrl.post_upload_image_banner(),
+      inpudata,
+      {
+        reportProgress: true,
+        observe: 'events',
+      }
+    );
+  }
+  public UploadCDRA(inputdata: any) {
+    return this.http.post(this.api + this.ApiUrl.post_cdra_maps(), inputdata, {
+      reportProgress: true,
+      observe: 'events',
     });
   }
-
-  public GetOrg(munCityId:any){
-    return this.http.get(this.api + this.ApiUrl.get_image_org(munCityId) , {responseType: 'blob'}).pipe(retry(1), catchError(this.handleError));
+  public GetCDRA(munCityId: any) {
+    return this.http
+      .get(this.api + this.ApiUrl.get_cdra_maps(munCityId), {
+        responseType: 'blob',
+      })
+      .pipe(retry(1), catchError(this.handleError));
   }
 
-  public UploadOrg(inpudata:any){
-    return this.http.post(this.api + this.ApiUrl.post_upload_image_org(), inpudata, {
-      reportProgress:true,
-      observe:'events'
-    });
+  public GetOrg(munCityId: any) {
+    return this.http
+      .get(this.api + this.ApiUrl.get_image_org(munCityId), {
+        responseType: 'blob',
+      })
+      .pipe(retry(1), catchError(this.handleError));
   }
 
-  handleError(error:any) {
+  public UploadOrg(inpudata: any) {
+    return this.http.post(
+      this.api + this.ApiUrl.post_upload_image_org(),
+      inpudata,
+      {
+        reportProgress: true,
+        observe: 'events',
+      }
+    );
+  }
+
+  handleError(error: any) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
       // client-side error
@@ -59,7 +98,7 @@ export class ImagesService {
     }
     console.log(errorMessage);
     return throwError(() => {
-        return errorMessage;
+      return errorMessage;
     });
   }
 }
