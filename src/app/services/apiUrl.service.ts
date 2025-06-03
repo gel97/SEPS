@@ -130,6 +130,9 @@ export class ApiUrl {
   post_upload_muncity_logo = () => `/Image/UploadMunLogo`;
   get_image_org = (munCityId: any) => `/Image/GetOrg/${munCityId}`;
   post_upload_image_org = () => `/Image/UploadOrg`;
+  post_cdra_maps = () => `/Image/UploadCDRA_Maps`;
+  get_cdra_maps = (munCityId: any) => `/Image/GetImageCDRA/${munCityId}`;
+
   // GIS Token
   post_gis_token = () => `/GisToken`;
   //new pdf
