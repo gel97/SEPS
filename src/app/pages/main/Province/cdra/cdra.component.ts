@@ -57,7 +57,7 @@ export class CDRAComponent implements OnInit {
     });
   }
   previewImage(item: any): void {
-    this.selectedImageSrc = item.imageUrl; // ✅ use full URL
+    this.selectedImageSrc = item.imageUrl; // use valid relative or absolute URL
     this.selectedImageName = item.imageName;
 
     const modalEl = document.getElementById('imagePreviewModal');

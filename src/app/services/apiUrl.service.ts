@@ -781,6 +781,12 @@ export class ApiUrl {
   delete_environment_affectd = (transId: any) => `/FloodAffected/${transId}`;
   post_update_environment_affected_flood = () => `/FloodAffected/update`;
 
+  //LifeLine Utilities
+  post_LifeLine = () => `/LifeLineFloods`;
+  get_LifeLine = () => `/LifeLineFloods/AllList`;
+  delete_LifeLine = (transId: any) => `/LifeLineFloods/${transId}`;
+  post_update_LifeLine = () => `/LifeLineFloods/update`;
+
   //CDRA
   post_save_CDRA = () => `/CDRA/upload`;
   get_CDRA = (setYear: any) => `/CDRA/setYear/${setYear}`;

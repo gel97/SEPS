@@ -196,6 +196,7 @@ import { DataRequestComponent } from './pages/main/Province/data-request/data-re
 import { UtilityComponent } from './pages/main/Province/utility/utility.component';
 import { ForGuestOnlyComponent } from './Admin/for-guest-only/for-guest-only.component';
 import { CDRAComponent } from './pages/main/Province/cdra/cdra.component';
+import { ExposureDBComponent } from './pages/main/Province/exposure-db/exposure-db.component';
 
 @NgModule({
   declarations: [
@@ -379,6 +380,7 @@ import { CDRAComponent } from './pages/main/Province/cdra/cdra.component';
     UtilityComponent,
     ForGuestOnlyComponent,
     CDRAComponent,
+    ExposureDBComponent,
   ],
   imports: [
     MdbCollapseModule,
