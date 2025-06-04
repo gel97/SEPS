@@ -223,6 +223,7 @@
       </div>
       <div class="modal-body text-center">
         <img
+          *ngIf="selectedImageSrc"
           [src]="selectedImageSrc"
           class="img-fluid rounded shadow"
           alt="Large Map"

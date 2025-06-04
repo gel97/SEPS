@@ -151,6 +151,7 @@ import { UploadDataComponent } from './layout/upload-data/upload-data.component'
 import { DataRequestComponent } from './pages/main/Province/data-request/data-request.component';
 import { UtilityComponent } from './pages/main/Province/utility/utility.component';
 import { CDRAComponent } from './pages/main/Province/cdra/cdra.component';
+import { ExposureDBComponent } from './pages/main/Province/exposure-db/exposure-db.component';
 
 const socioEconomic_TradeIndustry: string =
   'socio-economic/trade-and-industry/';
@@ -700,6 +701,10 @@ const routes: Routes = [
       {
         path: Province + '/cdra',
         component: CDRAComponent,
+      },
+      {
+        path: Province + '/exposure-db',
+        component: ExposureDBComponent,
       },
 
       { path: Governance + '/pgdept-heads', component: PGDeptHeadsComponent },
