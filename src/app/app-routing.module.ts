@@ -152,6 +152,7 @@ import { DataRequestComponent } from './pages/main/Province/data-request/data-re
 import { UtilityComponent } from './pages/main/Province/utility/utility.component';
 import { CDRAComponent } from './pages/main/Province/cdra/cdra.component';
 import { ExposureDBComponent } from './pages/main/Province/exposure-db/exposure-db.component';
+import { UseUrbanComponent } from './pages/main/Province/use-urban/use-urban.component';
 
 const socioEconomic_TradeIndustry: string =
   'socio-economic/trade-and-industry/';
@@ -705,6 +706,10 @@ const routes: Routes = [
       {
         path: Province + '/exposure-db',
         component: ExposureDBComponent,
+      },
+      {
+        path: Province + '/use-urban',
+        component: UseUrbanComponent,
       },
 
       { path: Governance + '/pgdept-heads', component: PGDeptHeadsComponent },

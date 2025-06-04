@@ -1,13 +1,13 @@
 <div class="">
   <ng-template #isEmpty>
     <app-import [data]="message"></app-import>
-    <app-export-excel apiControllerName="LifeLineFloods"></app-export-excel>
+    <app-export-excel apiControllerName="UrbanUse"></app-export-excel>
     <app-import-excel (myEvent)="ImportExcel($event)"></app-import-excel>
   </ng-template>
 
   <!--<div *ngIf="showOverlay"></div>-->
   <div
-    *ngIf="lifeline.length > 0; else isEmpty"
+    *ngIf="urban.length > 0; else isEmpty"
     class="card o-hidden border-2 shadow-sm my-5"
   >
     <!-- *ngIf="ProOfficial.length > 0 ; else isEmpty" -->
@@ -23,15 +23,13 @@
                               </button> -->
             </div>
             <div class="text-center">
-              <h1 class="h4 text-gray-900 mb-4">
-                Lifeline Exposed to Flooding
-              </h1>
+              <h1 class="h4 text-gray-900 mb-4">UrbanUse to Flooding</h1>
             </div>
 
             <div class="x-space-between">
               <div class="x-space-between">
                 <app-export-excel
-                  apiControllerName="LifeLineFloods"
+                  apiControllerName="UrbanUse"
                 ></app-export-excel>
                 <app-import-excel
                   (myEvent)="ImportExcel($event)"
@@ -82,7 +80,7 @@
             <div class="row">
               <div class="col-lg-8">
                 <br />
-                <p>List of Lifeline Exposed to Flooding:</p>
+                <p>List of Urban Use to Flooding:</p>
               </div>
             </div>
 
@@ -94,14 +92,10 @@
                     <thead class="table-dark">
                       <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Lifeline facilities</th>
-                        <th scope="col" class="text-center">Company Name</th>
-                        <th scope="col" class="text-center">Province</th>
-                        <th scope="col" class="text-center">BARANGAY</th>
-                        <th scope="col" class="text-center">
-                          FloodSusceptibility
-                        </th>
+                        <th scope="col">Land Use</th>
                         <th scope="col" class="text-center">Municipality</th>
+                        <th scope="col" class="text-center">Exposure</th>
+                        <th scope="col" class="text-center">Risk</th>
                         <th scope="col" class="text-center">Longitude</th>
                         <th scope="col" class="text-center">Latitude</th>
                         <th width="8%"></th>
@@ -111,26 +105,17 @@
                       <tr></tr>
                       <tr
                         *ngFor="
-                          let text of lifeline | search : searchText;
+                          let text of urban | search : searchText;
                           let i = index
                         "
                       >
                         <th scope="row">{{ i + 1 }}</th>
                         <td class="text-center">
-                          {{ text.lifeLineFacilities }}
+                          {{ text.landUse }}
                         </td>
-                        <td class="text-center">{{ text.companyName }}</td>
-                        <td class="text-center">{{ text.province }}</td>
-                        <td class="text-center">{{ text.barangay }}</td>
-                        <td class="text-center">
-                          <i
-                            class="fas fa-water"
-                            title="Flood"
-                            style="color: blue"
-                          ></i>
-                          {{ text.flood }}
-                        </td>
-                        <td class="text-center">{{ text.barangay }}</td>
+                        <td class="text-center">{{ text.muncity }}</td>
+                        <td class="text-center">{{ text.exposure }}</td>
+                        <td class="text-center">{{ text.risk }}</td>
                         <td class="text-center">{{ text.longitude }}</td>
                         <td class="text-center">{{ text.latitude }}</td>
                         <td>

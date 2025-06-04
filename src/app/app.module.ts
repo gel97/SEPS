@@ -197,6 +197,7 @@ import { UtilityComponent } from './pages/main/Province/utility/utility.componen
 import { ForGuestOnlyComponent } from './Admin/for-guest-only/for-guest-only.component';
 import { CDRAComponent } from './pages/main/Province/cdra/cdra.component';
 import { ExposureDBComponent } from './pages/main/Province/exposure-db/exposure-db.component';
+import { UseUrbanComponent } from './pages/main/Province/use-urban/use-urban.component';
 
 @NgModule({
   declarations: [
@@ -381,6 +382,7 @@ import { ExposureDBComponent } from './pages/main/Province/exposure-db/exposure-
     ForGuestOnlyComponent,
     CDRAComponent,
     ExposureDBComponent,
+    UseUrbanComponent,
   ],
   imports: [
     MdbCollapseModule,

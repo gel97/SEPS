@@ -787,6 +787,11 @@ export class ApiUrl {
   delete_LifeLine = (transId: any) => `/LifeLineFloods/${transId}`;
   post_update_LifeLine = () => `/LifeLineFloods/update`;
 
+  //UrbanUse
+  post_Urban = () => `/UrbanUse`;
+  get_Urban = () => `/UrbanUse/AllList`;
+  delete_Urban = (transId: any) => `/UrbanUse/${transId}`;
+  post_update_Urban = () => `/UrbanUse/update`;
   //CDRA
   post_save_CDRA = () => `/CDRA/upload`;
   get_CDRA = (setYear: any) => `/CDRA/setYear/${setYear}`;
