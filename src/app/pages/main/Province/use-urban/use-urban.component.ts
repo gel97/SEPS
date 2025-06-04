@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { LifeLineFloodsService } from 'src/app/shared/Province/LifeLineFloods.Service';
+import { UseUrbanService } from 'src/app/shared/Province/UrbanUse.service';
 import { AuthService } from 'src/app/services/auth.service';
 import Swal from 'sweetalert2';
 import { GmapComponent } from 'src/app/components/gmap/gmap.component';
@@ -9,11 +9,11 @@ import { ReportsService } from 'src/app/shared/Tools/reports.service';
 import { ImportComponent } from 'src/app/components/import/import.component';
 
 @Component({
-  selector: 'app-exposure-db',
-  templateUrl: './exposure-db.component.html',
-  styleUrls: ['./exposure-db.component.css'],
+  selector: 'app-use-urban',
+  templateUrl: './use-urban.component.html',
+  styleUrls: ['./use-urban.component.css'],
 })
-export class ExposureDBComponent implements OnInit {
+export class UseUrbanComponent implements OnInit {
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;
 
@@ -28,7 +28,7 @@ export class ExposureDBComponent implements OnInit {
   constructor(
     private pdfService: PdfService,
     private reportService: ReportsService,
-    private service: LifeLineFloodsService,
+    private service: UseUrbanService,
     private auth: AuthService
   ) {}
   SetMarker(data: any = {}) {
@@ -51,7 +51,7 @@ export class ExposureDBComponent implements OnInit {
   longitude: any;
   markerObj: any = {};
   munCityName: string = this.auth.munCityName;
-  lifeline: any;
+  urban: any;
   data: any = {};
   editModal: any = {};
   pageSize = 25;
@@ -63,14 +63,14 @@ export class ExposureDBComponent implements OnInit {
   not_visible: boolean = true;
   searchText = '';
   ngOnInit(): void {
-    this.lifeline = [];
-    this.GetLifeLineFloods();
+    this.urban = [];
+    this.GetUseUrban();
   }
-  GetLifeLineFloods() {
-    this.service.GetLifeLineFloods().subscribe({
+  GetUseUrban() {
+    this.service.GetUseUrban().subscribe({
       next: (response) => {
-        this.lifeline = response; // Assign API response to totalGovernanceData
-        console.log('LifeLine Data:', this.lifeline.TotalData); // Check if the value is correct
+        this.urban = response; // Assign API response to totalGovernanceData
+        console.log('Urban Data:', this.urban.TotalData); // Check if the value is correct
       },
       error: (error) => {
         console.error('Error fetching governance data:', error);
@@ -81,10 +81,10 @@ export class ExposureDBComponent implements OnInit {
     this.reportService.GetExcelExport(
       this.auth.setYear,
       this.auth.munCityId,
-      'LifeLineFloods'
+      'UrbanUse'
     );
   }
-  message = 'LifeLineFloods';
+  message = 'UrbanUse';
   ImportExcel(e: any) {
     Swal.fire({
       title: 'Are you sure?',
@@ -102,7 +102,7 @@ export class ExposureDBComponent implements OnInit {
             e.target.files[0],
             this.auth.setYear,
             this.auth.munCityId,
-            'LifeLineFloods'
+            'UrbanUse'
           )
           .subscribe((success) => {
             Swal.fire({
@@ -114,7 +114,7 @@ export class ExposureDBComponent implements OnInit {
                 Swal.showLoading();
                 setTimeout(() => {
                   if (success) {
-                    this.GetLifeLineFloods();
+                    this.GetUseUrban();
                     Swal.close();
                     Swal.fire({
                       position: 'center',
@@ -141,23 +141,23 @@ export class ExposureDBComponent implements OnInit {
   }
   onTableDataChange(page: any) {
     this.p = page;
-    this.GetLifeLineFloods();
+    this.GetUseUrban();
   }
 
   onTableSizeChange(event: any) {
     this.tableSize = event.target.value;
     this.p = 1;
-    this.GetLifeLineFloods();
+    this.GetUseUrban();
   }
-  editaffected(editlifeline: any = {}) {
-    this.editModal = editlifeline;
-    this.GetLifeLineFloods();
+  editurban(editurban: any = {}) {
+    this.editModal = editurban;
+    this.GetUseUrban();
   }
   update() {
     // Call the service to update the affected flood data
-    this.service.UpdateLifeLineFloods(this.editModal).subscribe({
+    this.service.UpdateUseUrban(this.editModal).subscribe({
       next: (_data) => {
-        this.GetLifeLineFloods(); // Refresh the affected flood data
+        this.GetUseUrban(); // Refresh the affected flood data
         this.editModal = {}; // Clear the edit modal data
       },
     });
@@ -186,11 +186,9 @@ export class ExposureDBComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.service
-          .DeleteLifeLineFloods(dataItem.transId)
-          .subscribe((request) => {
-            this.GetLifeLineFloods();
-          });
+        this.service.DeleteUseUrban(dataItem.transId).subscribe((request) => {
+          this.GetUseUrban();
+        });
         Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
       }
     });
