@@ -24,4 +24,28 @@ export class DataRequestService {
       responseType: 'json',
     });
   }
+  GetListRequest(dataRequestId?: any) {
+    return this.http.get<any>(
+      this.Base.url + this.ApiUrl.get_requets(dataRequestId),
+      { responseType: 'json' }
+    );
+  }
+
+  GetSepYears() {
+    return this.http.get<any[]>(this.Base.url + this.ApiUrl.get_sep_year(), {
+      responseType: 'json',
+    });
+  }
+
+  GetTemplateById(transId: any) {
+    return this.http.get<any>(
+      this.Base.url + this.ApiUrl.get_template(transId),
+      { responseType: 'json' }
+    );
+  }
+  GetAllTemplates() {
+    return this.http.get<any[]>(this.Base.url + this.ApiUrl.get_templates(), {
+      responseType: 'json',
+    });
+  }
 }

@@ -27,4 +27,37 @@ export class TemplateService {
       }
     );
   }
+  // POST: Save a new template
+  saveTemplate(data: any) {
+    return this.http.post(
+      this.Base.url + this.ApiUrl.post_save_template(),
+      data
+    );
+  }
+
+  // GET: Get a specific template
+  getTemplate(transId: any) {
+    return this.http.get(this.Base.url + this.ApiUrl.get_template(transId));
+  }
+  // In your service (no argument needed)
+  getAllTemplates() {
+    return this.http.get<any[]>(this.Base.url + this.ApiUrl.get_templates(), {
+      responseType: 'json',
+    });
+  }
+
+  // PUT or POST: Update an existing template
+  updateTemplate(data: any) {
+    return this.http.post(
+      this.Base.url + this.ApiUrl.post_update_template(),
+      data
+    );
+  }
+
+  // DELETE: Delete a template
+  deleteTemplate(transId: any) {
+    return this.http.delete(
+      this.Base.url + this.ApiUrl.delete_template(transId)
+    );
+  }
 }

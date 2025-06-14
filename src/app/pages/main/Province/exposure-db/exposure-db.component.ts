@@ -32,12 +32,8 @@ export class ExposureDBComponent implements OnInit {
     private auth: AuthService
   ) {}
   SetMarker(data: any = {}) {
-    console.log('lnglat', data.longitude + ' , ' + data.latitude);
+    console.log('lnglat: ', data.longtitude + ' , ' + data.latitude);
 
-    if (data.longitude == undefined && data.latitude == undefined) {
-      data.longitude = this.longitude;
-      data.latitude = this.latitude;
-    }
     this.markerObj = {
       lat: data.latitude,
       lng: data.longtitude,
@@ -46,6 +42,7 @@ export class ExposureDBComponent implements OnInit {
       munCityName: this.munCityName,
       draggable: true,
     };
+    this.gmapComponent.setMarker(this.markerObj);
   }
   latitude: any;
   longitude: any;
@@ -53,7 +50,7 @@ export class ExposureDBComponent implements OnInit {
   munCityName: string = this.auth.munCityName;
   lifeline: any;
   data: any = {};
-  editModal: any = {};
+  editmodal: any = {};
   pageSize = 25;
   p: string | number | undefined;
   count: number = 0;
@@ -150,15 +147,17 @@ export class ExposureDBComponent implements OnInit {
     this.GetLifeLineFloods();
   }
   editaffected(editlifeline: any = {}) {
-    this.editModal = editlifeline;
+    this.editmodal = editlifeline;
     this.GetLifeLineFloods();
   }
   update() {
     // Call the service to update the affected flood data
-    this.service.UpdateLifeLineFloods(this.editModal).subscribe({
+    this.editmodal.longtitude = this.gmapComponent.markers.lng;
+    this.editmodal.latitude = this.gmapComponent.markers.lat;
+    this.service.UpdateLifeLineFloods(this.editmodal).subscribe({
       next: (_data) => {
         this.GetLifeLineFloods(); // Refresh the affected flood data
-        this.editModal = {}; // Clear the edit modal data
+        this.editmodal = {}; // Clear the edit modal data
       },
     });
 
@@ -173,7 +172,7 @@ export class ExposureDBComponent implements OnInit {
 
     // Close the modal
     document.getElementById('exampleModalLong')?.click();
-    this.editModal = {};
+    this.editmodal = {};
   }
   DeleteAffectedFlood(dataItem: any) {
     Swal.fire({
@@ -196,13 +195,13 @@ export class ExposureDBComponent implements OnInit {
     });
   }
   clearData() {
-    this.editModal = {};
+    this.editmodal = {};
     this.not_visible = false;
     this.visible = true;
   }
   parentMethod() {
     // alert('parent Method');
-    this.editModal = {};
+    this.editmodal = {};
     this.not_visible = false;
     this.visible = true;
   }
