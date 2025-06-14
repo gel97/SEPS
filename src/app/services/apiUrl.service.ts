@@ -143,8 +143,20 @@ export class ApiUrl {
   get_dis_muncity = () => `/MunLoc/byDistrict`;
   post_update_muncity = () => `/MunLoc/Update`;
 
+  //DataRequest
+  get_requets = (dataRequestId?: any) =>
+    dataRequestId ? `/DataRequests/${dataRequestId}` : `/DataRequests`;
+  post_save_request = () => `/DataRequests/DataRequests`;
+
   //CoreElements
   get_Core_Elements = () => `/CoreElements/List`;
+
+  //Templates
+  post_save_template = () => `/Templates/Templates`;
+  get_template = (transId: any) => `/Templates/${transId}`;
+  get_templates = () => `/Templates`;
+  post_update_template = () => `/Templates`;
+  delete_template = (transId: any) => `/Templates/${transId}`;
 
   // Mun Loc Building
   get_all_building = () => `/MunCityBuilding/List`;

@@ -134,37 +134,106 @@
     <div [innerHTML]="item.bodyContent"></div>
   </div>
 </div>
-<!-- <div class="card border-0 shadow-sm mt-4">
+<div class="card border-0 shadow-sm mt-4">
   <div class="card-body">
     <h5 class="card-title text-primary fw-bold mb-4">
       📍 CITIES AND MUNICIPALITIES FROM DAVAO DEL NORTE
     </h5>
+
     <div class="row text-center">
-      <div class="col-6 col-md-4 col-lg-3 mb-4" *ngFor="let city of cityData">
+      <!-- Tagum City -->
+      <div class="col-6 col-md-4 col-lg-3 mb-4">
+        <div class="p-3 border rounded shadow-sm h-100">
+          <!-- Overall % -->
+          <div
+            class="rounded-circle d-flex align-items-center justify-content-center mx-auto mb-2"
+            style="
+              width: 70px;
+              height: 70px;
+              border: 4px solid #ffc107;
+              color: #ffc107;
+              font-weight: bold;
+              font-size: 18px;
+            "
+          >
+            82%
+          </div>
+          <div>Tagum City</div>
+
+          <!-- Sector Breakdown -->
+          <div class="mt-2 text-start small">
+            <div><strong>Governance:</strong> 100%</div>
+            <div><strong>Socio-Economic Activity:</strong> 80%</div>
+            <div><strong>Social Profile:</strong> 90%</div>
+            <div><strong>Environment:</strong> 75%</div>
+            <div><strong>Infrastructure:</strong> 60%</div>
+            <div><strong>Utilities:</strong> 85%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panabo City -->
+      <div class="col-6 col-md-4 col-lg-3 mb-4">
         <div class="p-3 border rounded shadow-sm h-100">
           <div
             class="rounded-circle d-flex align-items-center justify-content-center mx-auto mb-2"
-            [ngStyle]="{
-              width: '70px',
-              height: '70px',
-              border:
-                '4px solid ' + (city.percent === 100 ? '#28a745' : '#ffc107'),
-              color: city.percent === 100 ? '#28a745' : '#ffc107',
-              fontWeight: 'bold',
-              fontSize: '18px'
-            }"
+            style="
+              width: 70px;
+              height: 70px;
+              border: 4px solid #28a745;
+              color: #28a745;
+              font-weight: bold;
+              font-size: 18px;
+            "
           >
-            {{ city.percent }}%
+            100%
           </div>
-          <div [ngClass]="{ 'text-success': city.percent === 100 }">
-            {{ city.name }}
+          <div class="text-success">Panabo City</div>
+
+          <div class="mt-2 text-start small">
+            <div><strong>Governance:</strong> 100%</div>
+            <div><strong>Socio-Economic Activity:</strong> 100%</div>
+            <div><strong>Social Profile:</strong> 100%</div>
+            <div><strong>Environment:</strong> 100%</div>
+            <div><strong>Infrastructure:</strong> 100%</div>
+            <div><strong>Utilities:</strong> 100%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Carmen -->
+      <div class="col-6 col-md-4 col-lg-3 mb-4">
+        <div class="p-3 border rounded shadow-sm h-100">
+          <div
+            class="rounded-circle d-flex align-items-center justify-content-center mx-auto mb-2"
+            style="
+              width: 70px;
+              height: 70px;
+              border: 4px solid #ffc107;
+              color: #ffc107;
+              font-weight: bold;
+              font-size: 18px;
+            "
+          >
+            66%
+          </div>
+          <div>Carmen</div>
+
+          <div class="mt-2 text-start small">
+            <div><strong>Governance:</strong> 70%</div>
+            <div><strong>Socio-Economic Activity:</strong> 60%</div>
+            <div><strong>Social Profile:</strong> 80%</div>
+            <div><strong>Environment:</strong> 65%</div>
+            <div><strong>Infrastructure:</strong> 50%</div>
+            <div><strong>Utilities:</strong> 70%</div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div> -->
-<!-- Modal -->
+</div>
+
+<!--  Modal
 <div
   class="modal fade"
   id="uploadModal"
@@ -319,4 +388,4 @@
     font-weight: bold;
     font-size: 18px;
   }
-</style>
+</style> -->

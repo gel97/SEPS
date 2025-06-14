@@ -125,7 +125,7 @@ export class AuthService {
   }
   getAllLogs(params: any): Observable<any> {
     return this.http
-      .get('api/Logs/version1', { params })
+      .get(`${this.Base.url}/Logs/version1`, { params })
       .pipe(retry(2), catchError(this.handleError));
   }
 

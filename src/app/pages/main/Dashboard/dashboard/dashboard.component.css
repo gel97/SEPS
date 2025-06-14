@@ -1,12 +1,29 @@
 .center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .pointer {
-    cursor: pointer;
-  }
-  .selector-class {
-    overflow: hidden;
-  }
+.pointer {
+  cursor: pointer;
+}
+.selector-class {
+  overflow: hidden;
+}
+.sector-details {
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  font-size: 0.85rem;
+  padding: 0;
+}
+
+.sector-details.active {
+  max-height: 500px;
+  font-size: 1rem;
+  padding-top: 1rem;
+}
+
+.circle-clickable {
+  cursor: pointer;
+}

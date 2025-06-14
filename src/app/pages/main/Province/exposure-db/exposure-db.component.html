@@ -131,7 +131,7 @@
                           {{ text.flood }}
                         </td>
                         <td class="text-center">{{ text.barangay }}</td>
-                        <td class="text-center">{{ text.longitude }}</td>
+                        <td class="text-center">{{ text.longtitude }}</td>
                         <td class="text-center">{{ text.latitude }}</td>
                         <td>
                           <div
@@ -150,16 +150,18 @@
                               </button> -->
                             </app-admin>
                             &nbsp;
-                            <!-- <app-admin>
+                            <app-admin>
                               <button
-                                (click)="SetMarker(text); editModal = text"
+                                (click)="SetMarker(text)"
+                                class="btn btn-success btn-circle"
+                                role="button"
+                                (click)="editmodal = text"
                                 data-toggle="modal"
                                 data-target="#gmapModal"
-                                class="btn btn-success btn-circle"
                               >
-                                <i class="fas fa-globe"></i>
+                                <i class="fa fa-globe"></i>
                               </button>
-                            </app-admin> -->
+                            </app-admin>
                             &nbsp;
                             <app-admin>
                               <!-- <button
@@ -250,7 +252,7 @@
                 class="form-control"
                 name="Lifeline facilities"
                 id="Lifeline facilities"
-                [(ngModel)]="editModal.lifeLineFacilities"
+                [(ngModel)]="editmodal.lifeLineFacilities"
                 placeholder=""
               />
             </div>
@@ -265,7 +267,7 @@
                 class="form-control"
                 id="Company Name"
                 name="Company Name"
-                [(ngModel)]="editModal.companyName"
+                [(ngModel)]="editmodal.companyName"
                 placeholder=""
               />
             </div>
@@ -277,7 +279,7 @@
                 class="form-control"
                 name="Province"
                 id="Province"
-                [(ngModel)]="editModal.province"
+                [(ngModel)]="editmodal.province"
                 placeholder=""
               />
             </div>
@@ -289,7 +291,7 @@
                 class="form-control"
                 name="BARANGAY"
                 id="BARANGAY"
-                [(ngModel)]="editModal.barangay"
+                [(ngModel)]="editmodal.barangay"
                 placeholder=""
               />
             </div>
@@ -301,7 +303,7 @@
                 class="form-control"
                 name="Affected"
                 id="Affected"
-                [(ngModel)]="editModal.affected"
+                [(ngModel)]="editmodal.affected"
                 placeholder=""
               />
             </div>
@@ -313,7 +315,7 @@
                 class="form-control"
                 name="barangay"
                 id="barangay"
-                [(ngModel)]="editModal.barangay"
+                [(ngModel)]="editmodal.barangay"
                 placeholder=""
               />
             </div>
@@ -325,7 +327,7 @@
                 class="form-control"
                 name="longitude"
                 id="longitude"
-                [(ngModel)]="editModal.longitude"
+                [(ngModel)]="editmodal.longitude"
                 placeholder=""
               />
             </div>
@@ -337,7 +339,7 @@
                 class="form-control"
                 name="term"
                 id="term"
-                [(ngModel)]="editModal.latitude"
+                [(ngModel)]="editmodal.latitude"
                 placeholder=""
               />
             </div>
