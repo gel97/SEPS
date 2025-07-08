@@ -1,7 +1,7 @@
 import { catchError, Observable, throwError } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { ApiUrl } from '../../services/apiUrl.service';
 import { BaseUrl } from 'src/app/services/baseUrl.service';
 
@@ -65,5 +65,36 @@ export class ProvOfficialService {
     return this.Http.get(this.Base.url + this.ApiUrl.get_prov_position(), {
       responseType: 'json',
     });
+  }
+  GetPercentageGov(
+    setYear: string | number,
+    munCityId: string
+  ): Observable<any> {
+    const url =
+      this.Base.url + this.ApiUrl.get_percentage_Gov(munCityId, setYear);
+    return this.Http.get<any>(url, { responseType: 'json' });
+  }
+
+  GetAllPercentage(
+    setYear: string | number,
+    munCityId: string,
+    notApplicableModules: string[] = []
+  ): Observable<any> {
+    let params = new HttpParams()
+      .set('setYear', setYear.toString())
+      .set('munCityId', munCityId);
+
+    notApplicableModules.forEach(
+      (module) => (params = params.append('notApplicableModules', module))
+    );
+
+    return this.Http.get<any>(this.Base.url + '/Menu/municipality-percentage', {
+      params,
+      responseType: 'json',
+    });
+  }
+
+  ListOfMunicipality(): Observable<any[]> {
+    return this.Http.get<any[]>(this.Base.url + this.ApiUrl.get_all_muncity());
   }
 }

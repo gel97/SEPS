@@ -1,6 +1,13 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ElementRef,
+  ViewChild,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { ImagesService } from 'src/app/services/image.service';
+import { EnvironmentService } from 'src/app/shared/Environment/environment.service';
 import { BaseUrl } from 'src/app/services/baseUrl.service';
 
 import {
@@ -33,6 +40,7 @@ import { Location } from '@angular/common';
 })
 export class MainLayoutComponent implements OnInit {
   http: any;
+
   goToDashboard() {
     this.router.navigate(['/dashboard']);
   }
@@ -50,16 +58,561 @@ export class MainLayoutComponent implements OnInit {
   set_year: any;
   active_set_year: any;
   currentUrl: any;
+  updatedModules: string[] = [];
   showDashboardAndHeader: boolean = true;
+  socioUpdatedModules: string[] = []; // separate array for socio-economic
+  socialUpdatedModules: string[] = []; // separate array for social profile
+  InfraUpdatedModules: string[] = []; // separate array for Infrastructure
+  environmentModules = [
+    {
+      name: 'Physical Environment Profile',
+      route: 'Environment/physical-environment',
+      key: 'ENV_Menu1',
+    },
+    {
+      name: 'Natural/ Biological Resources',
+      route: 'Environment/natural-resources',
+      key: 'ENV_Menu2',
+    },
+    {
+      name: 'Environmental Activities',
+      route: 'Environment/environmental-activities',
+      key: 'tEnvActivities',
+    },
+    {
+      name: 'Urban Environment Quality',
+      route: 'Environment/urban-environment',
+      key: 'ENV_Menu4',
+    },
+    {
+      name: 'Environmental Hazards',
+      route: 'Environment/environmental-hazards',
+      key: 'ENV_Menu5',
+    },
+    {
+      name: 'Social Condition/ Vulnerabilty',
+      route: 'Environment/social-condition',
+      key: 'ENV_Menu6',
+    },
+    {
+      name: 'Historical Disaster Profile',
+      route: 'Environment/historical-disaster',
+      key: 'tEnvProfile',
+    },
+  ];
+  governanceModules = [
+    {
+      name: 'City/Muncipal Officials',
+      route: 'gov_cityOfficials',
+      key: 'tGovMunCityOffcial',
+    },
+    {
+      name: 'Barangay Officials',
+      route: 'gov_Barangays',
+      key: 'tGovBarangay',
+    },
+    {
+      name: 'Physical / Geographic Profile',
+      route: 'gov_geoProfile',
+      key: 'tGovPhyGeoProf',
+    },
+    {
+      name: 'Organization & Staffing Pattern',
+      route: 'Governance/org-staffing',
+      key: 'tGovOrgStaffPattern',
+    },
+    {
+      name: 'Fiscal Matters',
+      route: 'Governance/fiscal-matters',
+      key: 'tGovFiscalMatters',
+    },
+    {
+      name: 'Demography',
+      route: 'Governance/demography',
+      key: 'tGovDemography',
+    },
+    {
+      name: 'Precincts/ Registered Voters',
+      route: 'Governance/registered-voters',
+      key: 'tGovRegVoters',
+    },
+    {
+      name: 'Precincts/ Registered SK Voters',
+      route: 'Governance/sk-voters',
+      key: 'tGovRegSkVoters',
+    },
+    {
+      name: 'Municipal/City Locations',
+      route: 'Governance/city-location',
+      key: 'tRefAddressMun',
+    },
+    {
+      name: 'AgeGroup',
+      route: 'Governance/age-group',
+      key: 'tGovAgeGroup',
+    },
+    {
+      name: 'Population of Indigenous People',
+      route: 'Governance/population-of-indigenous-people',
+      key: 'tGovBenificiaries',
+    },
+  ];
+  TradeIndustryModules = [
+    {
+      name: 'Major Economic Activities',
+      route: 'socio-economic/trade-and-industry/major-economic-activities',
+      key: 'tTIMjrEcoAct',
+    },
+    {
+      name: 'Manufacturing Establishments',
+      route: 'socio-economic/trade-and-industry/manufacturing-establishments',
+      key: 'tTIManEstab',
+    },
+    {
+      name: 'Commercial Establishments',
+      route: 'socio-economic/trade-and-industry/comercial-establishments',
+      key: 'tTIComEstab',
+    },
+    {
+      name: 'Summary - Commercial Est.',
+      route: 'socio-economic/trade-and-industry/summary-commercial',
+      key: 'tTIComEstab',
+    },
+    {
+      name: 'Industrial Estates',
+      route: 'socio-economic/trade-and-industry/industrial-estates',
+      key: 'tTIIndEst',
+    },
+    {
+      name: 'Financial Institutions',
+      route: 'socio-economic/trade-and-industry/financial-institutions',
+      key: 'tTIFinIns',
+    },
+  ];
+  tourismModules = [
+    {
+      name: 'Resorts',
+      route: 'socio-economic/Tourism/resorts',
+      key: 'tSEATourism_Menu1',
+    },
+    {
+      name: 'Recreation Facilities',
+      route: 'socio-economic/Tourism/recreation-facilities',
+      key: 'tSEATourism_Menu2',
+    },
+    {
+      name: 'Lodging Houses',
+      route: 'socio-economic/Tourism/hotels-lodging-houses',
+      key: 'tSEATourism_Menu3',
+    },
+    {
+      name: 'Cinema/ Movie Houses',
+      route: 'socio-economic/Tourism/cinema-movie-houses',
+      key: 'tSEATourism_Menu4',
+    },
+    {
+      name: 'Natural/ Man-made Tourist Attractions',
+      route: 'socio-economic/Tourism/naturals-attractions',
+      key: 'tSEATourism_Menu5',
+    },
+    {
+      name: 'Cultural/ Religious Attractions',
+      route: 'socio-economic/Tourism/cultural-attractions',
+      key: 'tSEATourism_Menu6',
+    },
+    {
+      name: 'Fiestas and Festivals',
+      route: 'socio-economic/Tourism/festival-attractions',
+      key: 'tSEATourism_Menu7',
+    },
+  ];
+  agricultureModules = [
+    {
+      name: 'Agricultural Profile',
+      route: 'socio-economic/Agriculture/agricultural-profile',
+      key: 'tSEAAgriProf',
+    },
+    {
+      name: 'Rice/ Crops Production',
+      route: 'socio-economic/Agriculture/rice-crops-production',
+      key: 'tSEAAgri_Menu2',
+    },
+    {
+      name: 'Fisheries/ Aquaculture',
+      route: 'socio-economic/Agriculture/fisheries-aquaculture',
+      key: 'tSEAAgri_Menu3',
+    },
+    {
+      name: 'Livestock / Poultry',
+      route: 'socio-economic/Agriculture/livestock-production',
+      key: 'tSEAAgriLivestock',
+    },
+    {
+      name: 'Ricemills',
+      route: 'socio-economic/Agriculture/ricemills',
+      key: 'tSEAAgri_Menu5',
+    },
+    {
+      name: 'Warehouses',
+      route: 'socio-economic/Agriculture/warehouses',
+      key: 'tSEAAgri_Menu6',
+    },
+    {
+      name: 'Slaughterhouses',
+      route: 'socio-economic/Agriculture/slaughterhouses',
+      key: 'tSEAAgri_Menu7',
+    },
+  ];
+  facilitiesModules = [
+    {
+      name: 'Public and Private',
+      route: 'socialProfile/education/facilities/public-private',
+      key: 'tSPEducationStat',
+    },
+    {
+      name: 'Tertiary Ins.',
+      route: 'socialProfile/education/facilities/tertiary-institutions',
+      key: 'tSPEducationTertiary',
+    },
+    {
+      name: 'Technical Vocational Ins.',
+      route: 'socialProfile/education/facilities/techvoc-institutions',
+      key: 'tSPEducationTechVoc',
+    },
+  ];
+  privateModules = [
+    {
+      name: 'Elementary/ Pre-elementary',
+      route: 'socialProfile/education/private/elementary',
+      key: 'tEducationSchools_Menu1',
+    },
+    {
+      name: 'Secondary',
+      route: 'socialProfile/education/private/secondary',
+      key: 'tEducationSchools_Menu2',
+    },
+  ];
+  publicModules = [
+    {
+      name: 'Day Care Centers',
+      route: 'socialProfile/education/public/day-care',
+      key: 'tEducationSchools_Menu3',
+    },
+    {
+      name: 'Elementary/ Pre-elementary',
+      route: 'socialProfile/education/public/elementary',
+      key: 'tEducationSchools_Menu4',
+    },
+    {
+      name: 'Secondary',
+      route: 'socialProfile/education/public/pub-secondary',
+      key: 'tEducationSchools_Menu5',
+    },
+  ];
+  TertiaryModules = [
+    {
+      name: 'Enrolment',
+      route: 'socialProfile/education/public/tertiary-enrolment',
+      key: 'tSPEducationTertiary',
+    },
+    {
+      name: 'Graduates',
+      route: 'socialProfile/education/public/tertiary-graduates',
+      key: 'tSPEducationTertiaryGrad',
+    },
+  ];
+  techvocModules = [
+    {
+      name: 'Programs',
+      route: 'socialProfile/education/public/tech-voc/programs',
+      key: 'tSPEducationTechVoc',
+    },
+    {
+      name: 'Enrolment & Graduates',
+      route: 'socialProfile/education/public/tech-voc/enrolment-graduates',
+      key: 'tSPEducationTechVoc',
+    },
+  ];
+  othersModules = [
+    {
+      name: 'Training Centers',
+      route: 'socialProfile/education/public/training-center',
+      key: 'tSPEducation_Menu8',
+    },
+    {
+      name: 'SPED Enrolments',
+      route: 'socialProfile/education/public/spedenrolments',
+      key: 'tSPEducation_Menu9',
+    },
+    {
+      name: 'Out of School Youth',
+      route: 'socialProfile/education/public/oschool-youth',
+      key: 'tSPEducationOsy',
+    },
+  ];
+  healthModules = [
+    {
+      name: 'Public Health Service Workers',
+      route: 'socialProfile/health/public-health',
+      key: 'tSPHealthWorkers',
+    },
+    {
+      name: 'RHU / Community Hospital',
+      route: 'socialProfile/health/community-hospital',
+      key: 'Facilities_Menu2',
+    },
+    {
+      name: 'Barangay Health Stations',
+      route: 'socialProfile/health/barangay-health',
+      key: 'Facilities_Menu3',
+    },
+    {
+      name: 'Private Hospitals/ Clinics',
+      route: 'socialProfile/health/private-hospital',
+      key: 'Facilities_Menu4',
+    },
+    {
+      name: 'Sanitary/Water Facilities',
+      route: 'socialProfile/health/sanitary-facilities',
+      key: 'tSPHealthSanitary',
+    },
+    {
+      name: 'Malnutrition (Revised Form)',
+      route: 'socialProfile/health/malnutrition-revised',
+      key: 'tSPHealthMalnut',
+    },
+    {
+      name: 'Prevalence Rate',
+      route: 'socialProfile/health/prevalence-rate',
+      key: 'tSPHealthPrevRate',
+    },
+    {
+      name: 'Persons with Disability',
+      route: 'socialProfile/health/person-disability',
+      key: 'tSPHealthHandi',
+    },
+    // {
+    //   name: 'Provincial/ District Hospitals',
+    //   route: 'socialProfile/health/provincial-hospital',
+    //   key: 'tSPHealthHosp',
+    // },
+    {
+      name: 'Provincial Health Profile',
+      route: 'socialProfile/health/provincial-health',
+      key: 'tSPHealthProf',
+    },
+  ];
+  publicorderModules = [
+    {
+      name: 'Police Services',
+      route: 'socialProfile/PublicOrder/police-services',
+      key: 'tSPSafetyPoliceServices',
+    },
+    {
+      name: 'Fire Protection Services',
+      route: 'socialProfile/PublicOrder/fire-protection',
+      key: 'tSPSafetyFireProtection',
+    },
+    {
+      name: 'Barangay Peacekeeping/ Tanod',
+      route: 'socialProfile/PublicOrder/barangay-peacekeeping',
+      key: 'tSPSafetyTanod',
+    },
+    {
+      name: 'Crime Statistics',
+      route: 'socialProfile/PublicOrder/crime-stat',
+      key: 'tSPSafetyStat',
+    },
+    {
+      name: 'No. of Index Crime',
+      route: 'socialProfile/PublicOrder/index-crime',
+      key: 'tSPSafetyIndexCrime',
+    },
+  ];
+  housingModules = [
+    {
+      name: 'Informal Settlers',
+      route: 'socialProfile/Housing/informal-settlers',
+      key: 'tSPHousingSettlers',
+    },
+    {
+      name: 'Government Housing Projects',
+      route: 'socialProfile/Housing/government-housing',
+      key: 'tSPHousingProj',
+    },
+    {
+      name: 'Subdivisions',
+      route: 'socialProfile/Housing/subdivisions',
+      key: 'tSPHousingSubdv',
+    },
+  ];
+  associationModules = [
+    {
+      name: 'Civic Organizations',
+      route: 'socialProfile/Associations/civic-org',
+      key: 'Association_Menu1',
+    },
+    {
+      name: 'Religious',
+      route: 'socialProfile/Associations/civic-org',
+      key: 'Association_Menu2',
+    },
+    {
+      name: 'Professional',
+      route: 'socialProfile/Associations/professional',
+      key: 'Association_Menu3',
+    },
+    {
+      name: 'Commercial/Industrial/Labor',
+      route: 'socialProfile/Associations/commercial',
+      key: 'Association_Menu4',
+    },
+    {
+      name: 'Cooperatives',
+      route: 'socialProfile/Associations/cooperatives',
+      key: 'Association_Menu5',
+    },
+    {
+      name: 'Foundations',
+      route: 'socialProfile/Associations/foundations',
+      key: 'Association_Menu6',
+    },
+    {
+      name: 'Sectoral',
+      route: 'socialProfile/Associations/sectoral',
+      key: 'Association_Menu7',
+    },
+  ];
+  infraModules = [
+    {
+      name: 'Telecommunication Systems',
+      route: 'Infrastructure/Communications/telecommunication',
+      key: 'tIUCTelcoSystem',
+    },
+    {
+      name: 'Cell Sites/ Towers',
+      route: 'Infrastructure/Communications/cell-sites',
+      key: 'tIUCCellSites',
+    },
+    {
+      name: 'Telegraph Facilities',
+      route: 'Infrastructure/Communications/telegraph',
+      key: 'tIUCTelFacilities',
+    },
+    {
+      name: 'Express Mail',
+      route: 'Infrastructure/Communications/express-mail',
+      key: 'tIUCExpressMail',
+    },
+    {
+      name: 'Postal Services',
+      route: 'Infrastructure/Communications/postal-services',
+      key: 'tIUCPostalServices',
+    },
+    {
+      name: 'Internet Service Providers',
+      route: 'Infrastructure/Communications/internet-service',
+      key: 'tIUCISP',
+    },
+  ];
+  transportModules = [
+    {
+      name: 'Roads',
+      route: 'Insfrastructure/Transportation/roads',
+      key: 'tIUTRoads',
+    },
+    {
+      name: 'Bridges',
+      route: 'Insfrastructure/Transportation/bridges',
+      key: 'tIUTBridges',
+    },
+    {
+      name: 'Transport Terminals',
+      route: 'Insfrastructure/Transportation/transport-terminals',
+      key: 'tIUTTransport',
+    },
+    {
+      name: 'Ports',
+      route: 'Insfrastructure/Transportation/ports',
+      key: 'tIUTPorts',
+    },
+  ];
+  utilityModules = [
+    {
+      name: 'Water Utility Service Provider',
+      route: 'Infrastructure/Utility/water-utility',
+      key: 'Utilities_Menu1',
+    },
+    {
+      name: 'Water Pump Stations',
+      route: 'Infrastructure/Utility/water-pump',
+      key: 'Stations_Menu2',
+    },
+    {
+      name: 'Irrigation Systems',
+      route: 'Infrastructure/Utility/irrigation-system',
+      key: 'tIUUSIrrigation',
+    },
+    {
+      name: 'Power System Utilities',
+      route: 'Infrastructure/Utility/power-system',
+      key: 'Utilities_Menu4',
+    },
+    {
+      name: 'Power Sub-stations',
+      route: 'Infrastructure/Utility/power-sub',
+      key: 'Stations_Menu5',
+    },
+    {
+      name: 'Waste Management Facilities',
+      route: 'Infrastructure/Utility/waste-management',
+      key: 'Facilities_Menu6',
+    },
+    {
+      name: 'Ice Plant/ Cold Storage',
+      route: 'Infrastructure/Utility/ice-plant',
+      key: 'Facilities_Menu7',
+    },
+    {
+      name: 'Market/ Supermarkets',
+      route: 'Infrastructure/Utility/market-supermarkets',
+      key: 'Facilities_Menu8',
+    },
+    {
+      name: 'Department Stores',
+      route: 'Infrastructure/Utility/department-store',
+      key: 'Facilities_Menu9',
+    },
+    {
+      name: 'Cemetery/ Memorial Parks',
+      route: 'Infrastructure/Utility/ memorial-parks',
+      key: 'Facilities_Menu10',
+    },
+    {
+      name: 'Churches/ Worship Houses',
+      route: 'Infrastructure/Utility/worship-houses',
+      key: 'Facilities_Menu11',
+    },
+    {
+      name: 'Other Structures',
+      route: 'Infrastructure/Utility/other-structure',
+      key: 'Facilities_Menu12',
+    },
+  ];
+  notApplicableModules: string[] = [];
+  confirmModule: any = null;
 
   constructor(
     private service: AuthService,
+    private auth: AuthService,
     private router: Router,
     private baseUrl: BaseUrl,
     private imagesService: ImagesService,
     private socialAuthService: SocialAuthService,
     private modifyService: ModifyCityMunService,
-    private location: Location
+    private Service: EnvironmentService,
+    private location: Location,
+    private cdRef: ChangeDetectorRef
   ) {
     console.log(router.url);
 
@@ -77,6 +630,17 @@ export class MainLayoutComponent implements OnInit {
   guest: any;
 
   ngOnInit(): void {
+    const munCityId = this.getMunCityId();
+
+    const saved = localStorage.getItem(`notApplicableModules_${munCityId}`);
+    if (saved) {
+      this.notApplicableModules = JSON.parse(saved);
+      this.Service.setNotApplicableModules(this.notApplicableModules);
+    }
+    this.getNA(this.auth.activeSetYear, munCityId);
+    this.getSocioNA(this.auth.activeSetYear, munCityId);
+    this.getSocialNA(this.auth.activeSetYear, munCityId);
+    this.getInfraNA(this.auth.activeSetYear, munCityId);
     this.showDashboardAndHeader = false;
     console.log('currentUrl: ', this.currentUrl);
     this.guest = localStorage.getItem('guest');
@@ -116,6 +680,177 @@ export class MainLayoutComponent implements OnInit {
           }
         };
       });
+  }
+
+  getNA(setYear: number, munCityId: string): void {
+    this.Service.getNA(setYear, munCityId, this.notApplicableModules).subscribe(
+      (response) => {
+        console.log('✅ Full response from getNA:', response);
+
+        // ✅ Safely get updatedModules from both TotalSocioEconomic and TotalSocialProfile
+        const socioModules = response?.TotalSocioEconomic?.updatedModules || [];
+        const socialModules =
+          response?.TotalSocialProfile?.updatedModules || [];
+        const infraModules =
+          response?.TotalInfrastructure?.updatedModules || [];
+
+        // ✅ Merge them into one array (removing duplicates just in case)
+        this.updatedModules = Array.from(
+          new Set([...socioModules, ...socialModules, ...infraModules])
+        );
+
+        console.log('✅ Combined updated modules:', this.updatedModules);
+      },
+      (error) => {
+        console.error('❌ Error fetching NA data:', error);
+      }
+    );
+  }
+
+  getMunCityId(): string {
+    // Try to get from service, fallback to localStorage, or return empty string
+    return this.service.munCityId || localStorage.getItem('munCityId') || '';
+  }
+  isModuleNA(key: string): boolean {
+    return this.notApplicableModules.includes(key);
+  }
+  promptMarkAsNA(module: any) {
+    this.confirmModule = module;
+  }
+  confirmNA(): void {
+    if (this.confirmModule) {
+      const key = this.confirmModule.key;
+      const munCityId = this.getMunCityId();
+
+      if (!this.notApplicableModules.includes(key)) {
+        this.notApplicableModules.push(key);
+        localStorage.setItem(
+          `notApplicableModules_${munCityId}`,
+          JSON.stringify(this.notApplicableModules)
+        );
+      }
+
+      this.confirmModule = null;
+    }
+  }
+
+  cancelNA() {
+    this.confirmModule = null;
+  }
+  enableModule(key: string) {
+    this.notApplicableModules = this.notApplicableModules.filter(
+      (k) => k !== key
+    );
+
+    const munCityId = this.getMunCityId();
+    localStorage.setItem(
+      `notApplicableModules_${munCityId}`,
+      JSON.stringify(this.notApplicableModules)
+    );
+
+    this.getNA(this.auth.activeSetYear, munCityId);
+  }
+  goToFirstUpdatedModule(modules: any[]): void {
+    const firstKey = this.updatedModules[0];
+    const module = modules.find((m) => m.key === firstKey);
+    if (module) {
+      this.router.navigate([module.route], {
+        queryParams: { updated: 'true' }, // 👈 mark it as updated
+      });
+    }
+  }
+
+  isModuleUpdated(key: string): boolean {
+    return this.updatedModules?.includes(key);
+  }
+  getUpdatedSocioModuleNames(): string[] {
+    const allModules = [
+      ...this.TradeIndustryModules,
+      ...this.tourismModules,
+      ...this.agricultureModules,
+      ...this.facilitiesModules,
+      ...this.privateModules,
+      ...this.publicModules,
+      ...this.TertiaryModules,
+      ...this.techvocModules,
+      ...this.othersModules,
+      ...this.governanceModules,
+      ...this.environmentModules,
+      ...this.healthModules,
+      ...this.publicorderModules,
+      ...this.housingModules,
+      ...this.infraModules, // ✅ make sure this is defined and has { key, name }
+      ...this.associationModules,
+      ...this.utilityModules,
+    ];
+
+    const updatedKeys = [
+      ...this.socioUpdatedModules,
+      ...this.socialUpdatedModules,
+      ...this.InfraUpdatedModules,
+    ];
+
+    return allModules
+      .filter((m) => updatedKeys.includes(m.key))
+      .map((m) => m.name);
+  }
+
+  getSocioNA(setYear: number, munCityId: string): void {
+    this.Service.getSocioEconomicNA(
+      setYear,
+      munCityId,
+      this.notApplicableModules
+    ).subscribe(
+      (response) => {
+        console.log('✅ Full response from getSocioNA:', response);
+        this.socioUpdatedModules =
+          response?.TotalSocioEconomic?.updatedModules || [];
+        this.Service.setUpdatedModules(this.socioUpdatedModules);
+        this.cdRef.detectChanges();
+        console.log('✅ Socio updated modules:', this.socioUpdatedModules);
+      },
+      (error) => {
+        console.error('❌ Error fetching Socio-Economic data:', error);
+      }
+    );
+  }
+  getSocialNA(setYear: number, munCityId: string): void {
+    this.Service.getSocialProfNA(
+      setYear,
+      munCityId,
+      this.notApplicableModules
+    ).subscribe(
+      (response) => {
+        console.log('✅ Full response from getSocialNA:', response);
+        this.socialUpdatedModules =
+          response?.TotalSocialProfile?.updatedModules || [];
+        this.Service.setUpdatedModules(this.socialUpdatedModules);
+        this.cdRef.detectChanges();
+        console.log('✅ Social updated modules:', this.socialUpdatedModules);
+      },
+      (error) => {
+        console.error('❌ Error fetching Socio-Economic data:', error);
+      }
+    );
+  }
+  getInfraNA(setYear: number, munCityId: string): void {
+    this.Service.getInfraNA(
+      setYear,
+      munCityId,
+      this.notApplicableModules
+    ).subscribe(
+      (response) => {
+        console.log('✅ Full response from getInfraNA:', response);
+        this.InfraUpdatedModules =
+          response?.TotalInfrastructure?.updatedModules || [];
+        this.Service.setUpdatedModules(this.InfraUpdatedModules);
+        this.cdRef.detectChanges();
+        console.log('✅ Infra updated modules:', this.InfraUpdatedModules);
+      },
+      (error) => {
+        console.error('❌ Error fetching Infra data:', error);
+      }
+    );
   }
 
   isMatchURL: boolean = false;

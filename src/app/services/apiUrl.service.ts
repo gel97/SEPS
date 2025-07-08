@@ -34,6 +34,18 @@ export class ApiUrl {
   post_update_agegroup = () => `/AgeGroup/Update`;
   post_import_agegroup = () => `/AgeGroup/Import`;
 
+  //Get Percentage
+  get_percentage_Gov = (munCityId: any, setYear: any) =>
+    `/Menu/sector-percentage-Governance?setYear=${setYear}&munCityId=${munCityId}`;
+  get_allPercentage = (
+    munCityId: any,
+    setYear: any,
+    naModules: string[] = []
+  ) =>
+    `/Menu/municipality-percentage?setYear=${setYear}&munCityId=${munCityId}&notApplicableModules=${encodeURIComponent(
+      JSON.stringify(naModules)
+    )}`;
+
   //Ip People
   post_get_PopIp = (munCityId: any, setYear: any) =>
     `/Benificiaries${munCityId}&setYear=${setYear}`;

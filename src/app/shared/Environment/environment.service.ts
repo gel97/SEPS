@@ -1,13 +1,24 @@
 import { Injectable } from '@angular/core';
 import { BaseUrl } from 'src/app/services/baseUrl.service';
 import { ApiUrl } from 'src/app/services/apiUrl.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EnvironmentService {
+  notApplicableModules: string[] = [];
+  private readonly moduleKeyToSector: { [key: string]: string } = {
+    ENV_Menu1: 'environment',
+    ENV_Menu2: 'environment',
+    activities: 'environment',
+    urban: 'environment',
+    hazards: 'environment',
+    social: 'socialProfile',
+    disaster: 'infrastructure',
+  };
+  updatedModules: string[] = [];
   constructor(
     private http: HttpClient,
     private ApiUrl: ApiUrl,
@@ -49,5 +60,102 @@ export class EnvironmentService {
       this.Base.url + this.ApiUrl.post_import_Environment(menuId),
       { responseType: 'json' }
     );
+  }
+  getNA(
+    setYear: number,
+    munCityId: string,
+    notApplicableModules: string[]
+  ): Observable<any> {
+    let params = new HttpParams()
+      .set('setYear', setYear)
+      .set('munCityId', munCityId);
+
+    notApplicableModules.forEach((module) => {
+      params = params.append('notApplicableModules', module);
+    });
+
+    return this.http.get<any>(
+      'https://localhost:7118/api/Menu/sector-percentage-Environment',
+      { params }
+    );
+  }
+  getSocioEconomicNA(
+    setYear: number,
+    munCityId: string,
+    notApplicableModules: string[]
+  ): Observable<any> {
+    let params = new HttpParams()
+      .set('setYear', setYear)
+      .set('munCityId', munCityId);
+
+    notApplicableModules.forEach((module) => {
+      params = params.append('notApplicableModules', module);
+    });
+
+    return this.http.get<any>(
+      'https://localhost:7118/api/Menu/sector-percentage-Socio_Economic_Activity',
+      { params }
+    );
+  }
+  getSocialProfNA(
+    setYear: number,
+    munCityId: string,
+    notApplicableModules: string[]
+  ): Observable<any> {
+    let params = new HttpParams()
+      .set('setYear', setYear)
+      .set('munCityId', munCityId);
+
+    notApplicableModules.forEach((module) => {
+      params = params.append('notApplicableModules', module);
+    });
+
+    return this.http.get<any>(
+      'https://localhost:7118/api/Menu/sector-percentage-Social_Profile',
+      { params }
+    );
+  }
+  getInfraNA(
+    setYear: number,
+    munCityId: string,
+    notApplicableModules: string[]
+  ): Observable<any> {
+    let params = new HttpParams()
+      .set('setYear', setYear)
+      .set('munCityId', munCityId);
+
+    notApplicableModules.forEach((module) => {
+      params = params.append('notApplicableModules', module);
+    });
+
+    return this.http.get<any>(
+      'https://localhost:7118/api/Menu/sector-percentage-Infrastructure_and_Utilities',
+      { params }
+    );
+  }
+  setNotApplicableModules(modules: string[]) {
+    this.notApplicableModules = modules;
+  }
+  getNotApplicableModules(): string[] {
+    return this.notApplicableModules;
+  }
+  getExcludedSectors(): string[] {
+    const sectors = new Set<string>();
+    this.notApplicableModules.forEach((key) => {
+      const sector = this.moduleKeyToSector[key];
+      if (sector) sectors.add(sector);
+    });
+    return Array.from(sectors);
+  }
+  setUpdatedModules(modules: string[]): void {
+    this.updatedModules = modules;
+  }
+
+  getUpdatedModules(): string[] {
+    return this.updatedModules;
+  }
+
+  isModuleUpdated(key: string): boolean {
+    return this.updatedModules.includes(key);
   }
 }

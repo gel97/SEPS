@@ -1,4 +1,10 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+  AfterViewInit,
+} from '@angular/core';
 import { BaseUrl } from 'src/app/services/baseUrl.service';
 import {
   Dimensions,
@@ -13,10 +19,13 @@ import { map } from 'rxjs/internal/operators/map';
 import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/services/auth.service';
 import { Observable } from 'rxjs/internal/Observable';
-import { of } from 'rxjs/internal/observable/of';
+import { forkJoin, of } from 'rxjs';
 import { NewsService } from 'src/app/shared/Tools/news.service';
 import { Router } from '@angular/router';
 import { ProvOfficialService } from 'src/app/shared/Governance/prov-official.service';
+import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
+import { EnvironmentService } from 'src/app/shared/Environment/environment.service';
+import { Chart, ChartType, ChartConfiguration, registerables } from 'chart.js';
 
 @Component({
   selector: 'app-dashboard',
@@ -26,6 +35,8 @@ import { ProvOfficialService } from 'src/app/shared/Governance/prov-official.ser
 export class DashboardComponent implements OnInit {
   @ViewChild('closeModal')
   closeModal!: ElementRef;
+  @ViewChild('barCanvas') barCanvas!: ElementRef<HTMLCanvasElement>;
+  barChart: Chart | undefined;
 
   imageChangedEvent: any = '';
   img: any = '';
@@ -35,65 +46,154 @@ export class DashboardComponent implements OnInit {
   progressvalue = 0;
   totalGovernanceData: any; // Variable to store the governance data total
   totalSocioEcAct: any;
+  municipalityWithGovData: any[] = [];
+  governancePercentage: number = 0;
+  overallPercentage: number = 0;
+  munCityName: string = this.auth.munCityName;
+  selectedMunicipality: any = null;
+  showModal = false;
+  selectedYear: number = this.auth.activeSetYear;
+  //isGuest: boolean = false;
+  showOverallModal = false;
+
   cityData: any;
+  mun: any;
+  overallPrevYear: any;
+  EnvironmentService: any;
+
   constructor(
     private router: Router,
     private newsService: NewsService,
     private auth: AuthService,
     private baseUrl: BaseUrl,
     private imagesService: ImagesService,
-    private service: ProvOfficialService
+    private service: ProvOfficialService,
+    private modifyService: ModifyCityMunService,
+    private Service: EnvironmentService
   ) {}
+  modifyCityMun(cityMunName: string) {
+    return this.modifyService.ModifyText(cityMunName);
+  }
 
   isGuest: any;
   Prov: any = {};
   ProOfficial: any = [];
 
   ngOnInit(): void {
+    const guestFlag = localStorage.getItem('guest');
+    this.isGuest = guestFlag === 'true';
+    console.log('Guest mode:', this.isGuest); // ✅ DEBUG LINE
+
     this.GetGovernanceData();
     this.GetSocioEcAct();
-    this.isGuest = localStorage.getItem('guest');
+    this.GetAllMunicipalitiesWithGovernance();
+    this.loadImage();
+    this.GetNews();
+    Chart.register(...registerables);
+  }
+  //CHARTS
+  renderBarChart(): void {
+  if (!this.municipalityWithGovData || this.municipalityWithGovData.length === 0) {
+    console.warn('No data to render chart');
+    return;
+  }
 
-    // if(this.auth.munCityId === null){
-    //   this.router.navigate(['dashboard/ddn']);
-    // }
-    this.cityData = [
-      { name: 'Asuncion', percent: 100 },
-      { name: 'Braulio E. Dujali', percent: 100 },
-      { name: 'Carmen', percent: 100 },
-      { name: 'City Of Panabo', percent: 100 },
-      { name: 'City Of Tagum', percent: 99.51 },
-      { name: 'Island Garden City Of Samal', percent: 100 },
-      { name: 'Kapalong', percent: 100 },
-      { name: 'New Corella', percent: 100 },
-      { name: 'San Isidro', percent: 100 },
-      { name: 'Santo Tomas', percent: 100 },
-      { name: 'Talaingod', percent: 100 },
-    ];
+  const sortedData = [...this.municipalityWithGovData].sort((a, b) => b.overall - a.overall);
 
+  const labels = sortedData.map((item) => item.munCityName);
+  const values = sortedData.map((item) => item.overall);
+
+  const context = this.barCanvas?.nativeElement?.getContext('2d');
+  if (!context) {
+    console.error('Canvas context not found');
+    return;
+  }
+
+  if (this.barChart) {
+    this.barChart.destroy(); // destroy old chart if exists
+  }
+
+  this.barChart = new Chart(context, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Overall Rating (%)',
+          data: values,
+          backgroundColor: '#28a745',
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      indexAxis: 'y',
+      scales: {
+        x: {
+          beginAtZero: true,
+          max: 100,
+          title: {
+            display: true,
+            text: 'Percentage',
+          },
+        },
+        y: {
+          ticks: {
+            autoSkip: false,
+          },
+        },
+      },
+      plugins: {
+        legend: {
+          display: true,
+        },
+        tooltip: {
+          callbacks: {
+            label: (context) => `${context.parsed.x.toFixed(2)}%`,
+          },
+        },
+      },
+    },
+  });
+}
+
+
+  private loadImage() {
+    const id =
+      this.auth.munCityId === 'null' && this.isGuest
+        ? 'ddn'
+        : this.auth.munCityId;
     this.imagesService
-      .GetImage(
-        this.auth.munCityId === 'null' && this.isGuest
-          ? 'ddn'
-          : this.auth.munCityId
-      )
+      .GetImage(id)
       .pipe(
-        catchError((error: any, caught: Observable<any>): Observable<any> => {
-          console.error('There was an error!', error);
-          return of();
+        catchError((error) => {
+          console.error('Error loading image:', error);
+          return of(null);
         })
       )
       .subscribe((response) => {
+        if (!response) return;
         const reader = new FileReader();
         reader.readAsDataURL(response);
         reader.onload = () => {
-          if (reader.result) {
-            this.croppedImage = reader.result.toString();
-          }
+          if (reader.result) this.croppedImage = reader.result.toString();
         };
       });
-
-    this.GetNews();
+  }
+  openOverallModal(mun: any) {
+    this.selectedMunicipality = mun;
+    this.showOverallModal = true;
+  }
+  closeOverallModal() {
+    this.showOverallModal = false;
+  }
+  openDetails(mun: any) {
+    this.selectedMunicipality = mun;
+    this.showModal = true;
+  }
+  closeDetails() {
+    this.showModal = false;
+    this.selectedMunicipality = null;
   }
   GetGovernanceData() {
     this.service.GetGovernance().subscribe({
@@ -109,6 +209,182 @@ export class DashboardComponent implements OnInit {
       },
     });
   }
+
+  GetAllMunicipalitiesWithGovernance() {
+    const excludedSectors = this.Service.getExcludedSectors();
+    const setYear = this.auth.activeSetYear;
+
+    this.service.ListOfMunicipality().subscribe({
+      next: (municipalities) => {
+        const requests = municipalities.map((mun: any) => {
+          const naModules = JSON.parse(
+            localStorage.getItem(`notApplicableModules_${mun.munCityId}`) ||
+              '[]'
+          );
+
+          return this.service
+            .GetAllPercentage(setYear, mun.munCityId, naModules)
+            .pipe(
+              map((govData) => {
+                const data = {
+                  governance: govData?.Governance?.currentYearPercentage ?? 0,
+                  governancePrevYear:
+                    govData?.Governance?.previousYearPercentage ?? 0,
+                  socio:
+                    govData?.TotalSocioEconomic?.currentYearPercentage ?? 0,
+                  socioPrevYear:
+                    govData?.TotalSocioEconomic?.previousYearPercentage ?? 0,
+                  socialProfile:
+                    govData?.TotalSocialProfile?.currentYearPercentage ?? 0,
+                  socialProfilePrevYear:
+                    govData?.TotalSocialProfile?.previousYearPercentage ?? 0,
+                  environment: govData?.TotalEnv?.currentYearPercentage ?? 0,
+                  environmentPrevYear:
+                    govData?.TotalEnv?.previousYearPercentage ?? 0,
+                  infrastructure:
+                    govData?.TotalInfrastructure?.currentYearPercentage ?? 0,
+                  infrastructurePrevYear:
+                    govData?.TotalInfrastructure?.previousYearPercentage ?? 0,
+                };
+
+                // Filter current year values
+                const filteredCurrent = Object.entries(data)
+                  .filter(
+                    ([key]) =>
+                      !excludedSectors.includes(key.replace('PrevYear', ''))
+                  )
+                  .filter(([key]) => !key.includes('PrevYear'))
+                  .map(([, value]) => Number(value));
+
+                // Filter previous year values
+                const filteredPrev = Object.entries(data)
+                  .filter(([key]) => key.includes('PrevYear'))
+                  .filter(
+                    ([key]) =>
+                      !excludedSectors.includes(key.replace('PrevYear', ''))
+                  )
+                  .map(([, value]) => Number(value));
+
+                const overall = filteredCurrent.length
+                  ? filteredCurrent.reduce((sum, val) => sum + val, 0) /
+                    filteredCurrent.length
+                  : 0;
+
+                const overallPrevYear = filteredPrev.length
+                  ? filteredPrev.reduce((sum, val) => sum + val, 0) /
+                    filteredPrev.length
+                  : 0;
+
+                return {
+                  ...mun,
+                  ...data,
+                  overall,
+                  overallPrevYear,
+                };
+              }),
+              catchError((err) => {
+                console.error(
+                  `Error loading governance for ${mun.munCityId}`,
+                  err
+                );
+                return of({
+                  ...mun,
+                  governance: 0,
+                  socio: 0,
+                  socialProfile: 0,
+                  environment: 0,
+                  infrastructure: 0,
+                  overall: 0,
+                });
+              })
+            );
+        });
+
+        forkJoin(requests).subscribe((result) => {
+          this.municipalityWithGovData = result;
+
+          // Governance average
+          const totalGov = result.reduce(
+            (sum, item) => sum + Number(item.governance || 0),
+            0
+          );
+          this.governancePercentage = result.length
+            ? totalGov / result.length
+            : 0;
+
+          // Overall average
+          const totalOverall = result.reduce(
+            (sum, item) => sum + Number(item.overall || 0),
+            0
+          );
+          this.overallPercentage = result.length
+            ? totalOverall / result.length
+            : 0;
+
+          const totalOverallPrevYear = result.reduce(
+            (sum, item) => sum + Number(item.overallPrevYear || 0),
+            0
+          );
+          this.overallPrevYear = result.length
+            ? totalOverallPrevYear / result.length
+            : 0;
+
+          this.renderBarChart();
+        });
+      },
+      error: (err) => {
+        console.error('Error loading municipalities:', err);
+      },
+    });
+  }
+
+  get filteredMunicipalityWithGovData() {
+    // Show all if DDN or guest from DDN
+    if (
+      (this.auth.munCityId === 'null' && this.isGuest) ||
+      this.auth.munCityId === 'DDN'
+    ) {
+      return this.municipalityWithGovData;
+    }
+
+    // Otherwise, show only the matching municipality
+    return this.municipalityWithGovData.filter(
+      (m) => m.munCityId === this.auth.munCityId
+    );
+  }
+
+  overallSectorPercentage(mun: any): number {
+    const excludedSectors = this.Service.getExcludedSectors();
+
+    const sectors = [
+      { key: 'governance', value: Number(mun.governance ?? 0) },
+      { key: 'socio', value: Number(mun.socio ?? 0) },
+      { key: 'socialProfile', value: Number(mun.socialProfile ?? 0) },
+      { key: 'environment', value: Number(mun.environment ?? 0) },
+      { key: 'infrastructure', value: Number(mun.infrastructure ?? 0) },
+    ];
+
+    const filtered = sectors.filter((s) => !excludedSectors.includes(s.key));
+    const total = filtered.reduce((sum, s) => sum + s.value, 0);
+    return filtered.length ? total / filtered.length : 0;
+  }
+
+  overallPrevYearPercentage(mun: any): number {
+    const excludedSectors = this.Service.getExcludedSectors();
+
+    const sectors = [
+      { key: 'governance', value: Number(mun.governancePrevYear ?? 0) },
+      { key: 'socio', value: Number(mun.socioPrevYear ?? 0) },
+      { key: 'socialProfile', value: Number(mun.socialProfilePrevYear ?? 0) },
+      { key: 'environment', value: Number(mun.environmentPrevYear ?? 0) },
+      { key: 'infrastructure', value: Number(mun.infrastructurePrevYear ?? 0) },
+    ];
+
+    const filtered = sectors.filter((s) => !excludedSectors.includes(s.key));
+    const total = filtered.reduce((sum, s) => sum + s.value, 0);
+    return filtered.length ? total / filtered.length : 0;
+  }
+
   GetSocioEcAct() {
     this.service.GetSocioEcAct().subscribe({
       next: (response) => {

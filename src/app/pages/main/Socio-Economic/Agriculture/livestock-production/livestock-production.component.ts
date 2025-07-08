@@ -9,6 +9,7 @@ import { AgricultureLivestockService } from 'src/app/shared/Socio-Economic/Agric
 import { PdfComponent } from 'src/app/components/pdf/pdf.component';
 import { PdfService } from 'src/app/services/pdf.service';
 import { ReportsService } from 'src/app/shared/Tools/reports.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-livestock-production',
@@ -27,7 +28,8 @@ export class LivestockProductionComponent implements OnInit {
     private reportService: ReportsService,
     private auth: AuthService,
     private service: AgricultureLivestockService,
-    private modifyService: ModifyCityMunService
+    private modifyService: ModifyCityMunService,
+    private route: ActivatedRoute
   ) {}
 
   modifyCityMun(cityMunName: string) {
@@ -40,7 +42,11 @@ export class LivestockProductionComponent implements OnInit {
   isAdd: boolean = false;
   listData: any = [];
   data: any = {};
+  isUpdated = false;
   ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      this.isUpdated = params['updated'] === 'true';
+    });
     this.Init();
   }
 
@@ -271,7 +277,7 @@ export class LivestockProductionComponent implements OnInit {
         },
         complete: () => {
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait, "");
+          this.pdfService.GeneratePdf(data, isPortrait, '');
           console.log(data);
         },
       });

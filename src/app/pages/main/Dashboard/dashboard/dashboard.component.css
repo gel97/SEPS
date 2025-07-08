@@ -27,3 +27,75 @@
 .circle-clickable {
   cursor: pointer;
 }
+/* Ring Base */
+.progress-ring {
+  width: 100px;
+  height: 100px;
+}
+
+.bg-ring {
+  stroke: #eaeaea;
+  stroke-width: 6;
+  fill: none;
+}
+
+.progress,
+.progress-muni {
+  stroke-width: 6;
+  fill: none;
+  stroke-linecap: round;
+  pathlength: 100;
+}
+
+.progress {
+  stroke: #0d6efd !important;
+}
+
+.progress-muni {
+  stroke: #28a745 !important;
+}
+
+.ring-text {
+  fill: currentColor;
+  font-size: 14px;
+  font-weight: bold;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  color: inherit;
+}
+
+/* Container styles */
+.overall-ring .label {
+  font-weight: 600;
+  color: #214463;
+}
+
+.municipality-card {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease-in-out;
+  height: 100%;
+}
+.municipality-card:hover {
+  background-color: #e7f1ff; /* Light blue */
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.15); /* Slightly bluer shadow */
+}
+
+.municipality-name {
+  font-weight: 500;
+  color: #343a40;
+  margin-top: 0.25rem;
+}
+.chart-scroll-wrapper {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+canvas {
+  width: 100% !important;
+  height: auto !important;
+}
+
