@@ -134,100 +134,374 @@
     <div [innerHTML]="item.bodyContent"></div>
   </div>
 </div>
-<div class="card border-0 shadow-sm mt-4">
+<!-- <div *ngIf="isGuest" class="alert alert-warning mt-4">
+  🚫 You are viewing as a <strong>Guest</strong>. Municipal data is hidden.
+</div> -->
+
+<!-- Only visible to non-guests -->
+<div class="card border-0 shadow-sm mt-4" *ngIf="!isGuest">
   <div class="card-body">
     <h5 class="card-title text-primary fw-bold mb-4">
       📍 CITIES AND MUNICIPALITIES FROM DAVAO DEL NORTE
     </h5>
+    <button class="btn btn-success btn-sm" (click)="openOverallModal(mun)">
+      View Overall
+    </button>
 
+    <!-- ✅ OVERALL PERCENTAGE RING -->
+    <div class="text-center mb-4">
+      <h6 class="fw-bold text-secondary mb-2">OVERALL AVERAGE</h6>
+      <svg viewBox="0 0 100 100" style="width: 100px; height: 100px">
+        <circle
+          stroke="#EAEAEA"
+          stroke-width="6"
+          cx="50"
+          cy="50"
+          r="40"
+          fill="none"
+        />
+        <circle
+          [attr.stroke-dasharray]="100"
+          [attr.stroke-dashoffset]="100 - overallPercentage"
+          stroke="#0d6efd"
+          stroke-width="6"
+          cx="50"
+          cy="50"
+          r="40"
+          fill="none"
+          stroke-linecap="round"
+          pathLength="100"
+        />
+        <text
+          x="50"
+          y="54"
+          text-anchor="middle"
+          dominant-baseline="middle"
+          fill="#0d6efd"
+          font-size="14"
+          font-weight="bold"
+        >
+          {{ overallPercentage | number : "1.0-0" }}%
+        </text>
+      </svg>
+    </div>
+
+    <!-- 👇 MUNICIPALITY CARDS BELOW -->
     <div class="row text-center">
-      <!-- Tagum City -->
-      <div class="col-6 col-md-4 col-lg-3 mb-4">
-        <div class="p-3 border rounded shadow-sm h-100">
-          <!-- Overall % -->
+      <div
+        class="col-6 col-md-4 col-lg-3 mb-4"
+        *ngFor="let mun of filteredMunicipalityWithGovData"
+        (click)="openDetails(mun)"
+      >
+        <div class="municipality-card">
           <div
-            class="rounded-circle d-flex align-items-center justify-content-center mx-auto mb-2"
-            style="
-              width: 70px;
-              height: 70px;
-              border: 4px solid #ffc107;
-              color: #ffc107;
-              font-weight: bold;
-              font-size: 18px;
-            "
+            class="d-flex justify-content-center align-items-center mb-2"
+            [ngStyle]="{ height: '120px' }"
           >
-            82%
+            <svg viewBox="0 0 100 100" style="width: 100px; height: 100px">
+              <circle
+                stroke="#EAEAEA"
+                stroke-width="6"
+                cx="50"
+                cy="50"
+                r="40"
+                fill="none"
+              />
+              <circle
+                [attr.stroke-dasharray]="100"
+                [attr.stroke-dashoffset]="100 - (mun.overall || 0)"
+                stroke="#28a745"
+                stroke-width="6"
+                cx="50"
+                cy="50"
+                r="40"
+                fill="none"
+                stroke-linecap="round"
+                pathLength="100"
+              />
+              <text
+                x="50"
+                y="54"
+                text-anchor="middle"
+                dominant-baseline="middle"
+                fill="#28a745"
+                font-size="14"
+                font-weight="bold"
+              >
+                {{ mun.overall | number : "1.0-0" }}%
+              </text>
+            </svg>
           </div>
-          <div>Tagum City</div>
+          <div class="fw-bold mb-2">{{ mun.munCityName }}</div>
 
-          <!-- Sector Breakdown -->
-          <div class="mt-2 text-start small">
-            <div><strong>Governance:</strong> 100%</div>
-            <div><strong>Socio-Economic Activity:</strong> 80%</div>
-            <div><strong>Social Profile:</strong> 90%</div>
-            <div><strong>Environment:</strong> 75%</div>
-            <div><strong>Infrastructure:</strong> 60%</div>
-            <div><strong>Utilities:</strong> 85%</div>
+          <ul class="list-unstyled small text-start ms-2 me-2">
+            <li>Governance: {{ mun.governance }}%</li>
+            <li>SocioEconomic: {{ mun.socio }}</li>
+            <li>Social Profile: {{ mun.socialProfile }}</li>
+            <li>Environment: {{ mun.environment }}</li>
+            <li>Infrastructure: {{ mun.infrastructure }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 📊 HIGHEST VS LOWEST OVERALL CHART -->
+<app-ddn>
+  <div class="mt-5">
+    <h6 class="fw-bold text-secondary mb-3">
+      📊 Highest vs Lowest Municipality
+    </h6>
+    <div class="chart-scroll-wrapper">
+      <canvas #barCanvas></canvas>
+    </div>
+  </div>
+</app-ddn>
+
+<!-- Modal -->
+<div
+  class="modal fade show d-block"
+  tabindex="-1"
+  role="dialog"
+  *ngIf="showModal"
+  style="background-color: rgba(0, 0, 0, 0.5)"
+>
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content shadow-lg border-0 rounded-3">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">
+          {{ selectedMunicipality?.munCityName }} - Details
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          (click)="closeDetails()"
+        ></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="row g-4">
+          <!-- Governance -->
+          <div class="col-md-6">
+            <h6 class="fw-bold text-primary">Governance</h6>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                {{ selectedYear }}:
+                {{ selectedMunicipality?.governance | number : "1.2-2" }}%
+              </li>
+              <li class="list-group-item">
+                {{ selectedYear - 1 }}:
+                {{
+                  selectedMunicipality?.governancePrevYear | number : "1.2-2"
+                }}%
+              </li>
+            </ul>
+          </div>
+
+          <!-- SocioEconomic -->
+          <div class="col-md-6">
+            <h6 class="fw-bold text-primary">SocioEconomic</h6>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                {{ selectedYear }}:
+                {{ selectedMunicipality?.socio | number : "1.2-2" }}%
+              </li>
+              <li class="list-group-item">
+                {{ selectedYear - 1 }}:
+                {{ selectedMunicipality?.socioPrevYear | number : "1.2-2" }}%
+              </li>
+            </ul>
+          </div>
+
+          <!-- Social Profile -->
+          <div class="col-md-6">
+            <h6 class="fw-bold text-primary">Social Profile</h6>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                {{ selectedYear }}:
+                {{ selectedMunicipality?.socialProfile | number : "1.2-2" }}%
+              </li>
+              <li class="list-group-item">
+                {{ selectedYear - 1 }}:
+                {{
+                  selectedMunicipality?.socialProfilePrevYear
+                    | number : "1.2-2"
+                }}%
+              </li>
+            </ul>
+          </div>
+
+          <!-- Environment -->
+          <div class="col-md-6">
+            <h6 class="fw-bold text-primary">Environment</h6>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                {{ selectedYear }}:
+                {{ selectedMunicipality?.environment | number : "1.2-2" }}%
+              </li>
+              <li class="list-group-item">
+                {{ selectedYear - 1 }}:
+                {{
+                  selectedMunicipality?.environmentPrevYear | number : "1.2-2"
+                }}%
+              </li>
+            </ul>
+          </div>
+
+          <!-- Infrastructure -->
+          <div class="col-md-6">
+            <h6 class="fw-bold text-primary">Infrastructure</h6>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                {{ selectedYear }}:
+                {{ selectedMunicipality?.infrastructure | number : "1.2-2" }}%
+              </li>
+              <li class="list-group-item">
+                {{ selectedYear - 1 }}:
+                {{
+                  selectedMunicipality?.infrastructurePrevYear
+                    | number : "1.2-2"
+                }}%
+              </li>
+            </ul>
+          </div>
+
+          <!-- Overall -->
+          <div class="col-md-6">
+            <h6 class="fw-bold text-success">Overall</h6>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                {{ selectedYear }}:
+                {{ selectedMunicipality?.overall | number : "1.2-2" }}%
+              </li>
+              <li class="list-group-item">
+                {{ selectedYear - 1 }}:
+                {{ selectedMunicipality?.overallPrevYear | number : "1.2-2" }}%
+              </li>
+            </ul>
           </div>
         </div>
       </div>
 
-      <!-- Panabo City -->
-      <div class="col-6 col-md-4 col-lg-3 mb-4">
-        <div class="p-3 border rounded shadow-sm h-100">
-          <div
-            class="rounded-circle d-flex align-items-center justify-content-center mx-auto mb-2"
-            style="
-              width: 70px;
-              height: 70px;
-              border: 4px solid #28a745;
-              color: #28a745;
-              font-weight: bold;
-              font-size: 18px;
-            "
-          >
-            100%
-          </div>
-          <div class="text-success">Panabo City</div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          (click)="closeDetails()"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
-          <div class="mt-2 text-start small">
-            <div><strong>Governance:</strong> 100%</div>
-            <div><strong>Socio-Economic Activity:</strong> 100%</div>
-            <div><strong>Social Profile:</strong> 100%</div>
-            <div><strong>Environment:</strong> 100%</div>
-            <div><strong>Infrastructure:</strong> 100%</div>
-            <div><strong>Utilities:</strong> 100%</div>
-          </div>
-        </div>
+<!-- Overall Average Modal -->
+<div
+  class="modal fade show d-block"
+  tabindex="-1"
+  role="dialog"
+  *ngIf="showOverallModal"
+  style="background-color: rgba(0, 0, 0, 0.5)"
+>
+  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+    <div class="modal-content shadow-lg border-0 rounded-3">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title">
+          Overall Average - {{ selectedMunicipality?.munCityName }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          (click)="closeOverallModal()"
+        ></button>
       </div>
 
-      <!-- Carmen -->
-      <div class="col-6 col-md-4 col-lg-3 mb-4">
-        <div class="p-3 border rounded shadow-sm h-100">
-          <div
-            class="rounded-circle d-flex align-items-center justify-content-center mx-auto mb-2"
-            style="
-              width: 70px;
-              height: 70px;
-              border: 4px solid #ffc107;
-              color: #ffc107;
-              font-weight: bold;
-              font-size: 18px;
-            "
-          >
-            66%
-          </div>
-          <div>Carmen</div>
-
-          <div class="mt-2 text-start small">
-            <div><strong>Governance:</strong> 70%</div>
-            <div><strong>Socio-Economic Activity:</strong> 60%</div>
-            <div><strong>Social Profile:</strong> 80%</div>
-            <div><strong>Environment:</strong> 65%</div>
-            <div><strong>Infrastructure:</strong> 50%</div>
-            <div><strong>Utilities:</strong> 70%</div>
-          </div>
+      <div class="modal-body text-center">
+        <h6 class="fw-bold text-secondary mb-2">CURRENT YEAR</h6>
+        <div class="mb-3">
+          <svg viewBox="0 0 100 100" style="width: 100px; height: 100px">
+            <circle
+              stroke="#EAEAEA"
+              stroke-width="6"
+              cx="50"
+              cy="50"
+              r="40"
+              fill="none"
+            />
+            <circle
+              [attr.stroke-dasharray]="100"
+              [attr.stroke-dashoffset]="100 - (overallPercentage || 0)"
+              stroke="#198754"
+              stroke-width="6"
+              cx="50"
+              cy="50"
+              r="40"
+              fill="none"
+              stroke-linecap="round"
+              pathLength="100"
+            />
+            <text
+              x="50"
+              y="54"
+              text-anchor="middle"
+              dominant-baseline="middle"
+              fill="#198754"
+              font-size="14"
+              font-weight="bold"
+            >
+              {{ overallPercentage | number : "1.0-0" }}%
+            </text>
+          </svg>
         </div>
+
+        <h6 class="fw-bold text-secondary mb-2">PREVIOUS YEAR</h6>
+        <div>
+          <svg viewBox="0 0 100 100" style="width: 100px; height: 100px">
+            <circle
+              stroke="#EAEAEA"
+              stroke-width="6"
+              cx="50"
+              cy="50"
+              r="40"
+              fill="none"
+            />
+            <circle
+              [attr.stroke-dasharray]="100"
+              [attr.stroke-dashoffset]="100 - (overallPrevYear || 0)"
+              stroke="#198754"
+              stroke-width="6"
+              cx="50"
+              cy="50"
+              r="40"
+              fill="none"
+              stroke-linecap="round"
+              pathLength="100"
+            />
+            <text
+              x="50"
+              y="54"
+              text-anchor="middle"
+              dominant-baseline="middle"
+              fill="#6c757d"
+              font-size="14"
+              font-weight="bold"
+            >
+              {{ overallPrevYear | number : "1.0-0" }}%
+            </text>
+          </svg>
+        </div>
+      </div>
+      <!-- <pre>current{{ overallPercentage | json }}</pre>
+      <pre>prev{{ overallPrevYear | json }}</pre> -->
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          (click)="closeOverallModal()"
+        >
+          Close
+        </button>
       </div>
     </div>
   </div>

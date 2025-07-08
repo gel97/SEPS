@@ -85,6 +85,42 @@
           class="nav-link collapsed"
           href="#"
           data-toggle="collapse"
+          data-target="#collapseUpdated"
+          aria-expanded="true"
+          aria-controls="collapseUpdated"
+        >
+          <i class="fas fa-fw fa-globe"></i>
+          <span>Marked as Updated</span>
+        </a>
+
+        <div
+          id="collapseUpdated"
+          class="collapse"
+          aria-labelledby="headingPages"
+          data-parent="#accordionSidebar"
+        >
+          <div class="bg-lightblue py-2 collapse-inner rounded">
+            <!-- ✅ ALERT GOES HERE -->
+            <div
+              *ngIf="getUpdatedSocioModuleNames().length > 0"
+              class="alert alert-warning mx-3"
+            >
+              ⚠️ These modules are marked as <strong>UPDATED</strong>:
+              <ul class="mb-0 mt-1">
+                <li *ngFor="let name of getUpdatedSocioModuleNames()">
+                  {{ name }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <li class="nav-item" routerLinkActive="active">
+        <a
+          class="nav-link collapsed"
+          href="#"
+          data-toggle="collapse"
           data-target="#collapseGovernance"
           aria-expanded="true"
           aria-controls="collapseTwo"
@@ -92,7 +128,142 @@
           <i class="fas fa-fw fa-users"></i>
           <span>Governance</span>
         </a>
+        <app-menu>
+          <div
+            id="collapseGovernance"
+            class="collapse"
+            aria-labelledby="headingPages"
+            data-parent="#accordionSidebar"
+          >
+            <div class="bg-lightblue py-2 collapse-inner rounded">
+              <div
+                *ngFor="let module of governanceModules"
+                class="d-flex align-items-center justify-content-between px-3"
+              >
+                <!-- Link Text -->
+                <a
+                  class="collapse-item"
+                  [routerLink]="module.route"
+                  [ngClass]="{
+                    'text-muted pointer-none': isModuleNA(module.key)
+                  }"
+                >
+                  {{ module.name }}
+                </a>
+
+                <!-- If not NA, show checkbox -->
+                <app-admin>
+                  <div *ngIf="!isModuleNA(module.key)">
+                    <input type="checkbox" (change)="promptMarkAsNA(module)" />
+                  </div>
+
+                  <!-- If NA, show enable button -->
+                  <div *ngIf="isModuleNA(module.key)">
+                    <button
+                      class="btn btn-sm btn-outline-primary"
+                      (click)="enableModule(module.key)"
+                    >
+                      Enable
+                    </button>
+                  </div>
+                </app-admin>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal -->
+          <div
+            class="modal fade show d-block"
+            tabindex="-1"
+            role="dialog"
+            *ngIf="confirmModule"
+            style="background: rgba(0, 0, 0, 0.3)"
+          >
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Confirm N/A</h5>
+                  <button type="button" class="close" (click)="cancelNA()">
+                    <span>&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  Are you sure you want to mark
+                  <strong>{{ confirmModule.name }}</strong> as not applicable?
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-secondary" (click)="cancelNA()">
+                    Cancel
+                  </button>
+                  <button class="btn btn-danger" (click)="confirmNA()">
+                    Confirm
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </app-menu>
+
         <div
+          id="collapseGovernance"
+          class="collapse"
+          aria-labelledby="headingTwo"
+          data-parent="#accordionSidebar"
+        >
+          <div class="bg-lightblue collapse-inner rounded">
+            <app-ddn>
+              <a
+                class="collapse-item"
+                routerLinkActive="active"
+                routerLink="Governance/provincial-officials"
+                >Provincial Officials</a
+              >
+              <a
+                class="collapse-item"
+                routerLinkActive="active"
+                routerLink="Governance/pgdept-heads"
+                >PG Department Heads</a
+              >
+              <a
+                class="collapse-item"
+                routerLinkActive="active"
+                routerLink="Governance/fiscal-report"
+                >Provincial Fiscal Report</a
+              >
+              <a
+                class="collapse-item"
+                routerLinkActive="active"
+                routerLink="socio-economic/Agriculture/provincial-crops-production"
+                >Provincial Crops Production</a
+              >
+              <a
+                class="collapse-item"
+                routerLinkActive="active"
+                routerLink="socio-economic/Agriculture/provincial-crops-harvested"
+                >Provincial Crops Area Harvested</a
+              >
+              <a
+                class="collapse-item"
+                routerLinkActive="active"
+                routerLink="socio-economic/Agriculture/provincial-crops-total-production"
+                >Provincial Crops Total Production</a
+              >
+              <a
+                class="collapse-item"
+                routerLinkActive="active"
+                routerLink="Governance/city-location"
+                >Municipal/City Locations</a
+              >
+              <a
+                class="collapse-item"
+                routerLinkActive="active"
+                routerLink="Governance/flood-affected"
+                >Flood_Affected</a
+              >
+            </app-ddn>
+          </div>
+        </div>
+        <!-- <div
           id="collapseGovernance"
           class="collapse"
           aria-labelledby="headingTwo"
@@ -219,7 +390,7 @@
               >
             </app-ddn>
           </div>
-        </div>
+        </div> -->
       </li>
       <app-ddn>
         <li class="nav-item" routerLinkActive="active">
@@ -313,7 +484,93 @@
                   <i class="fas fa-exchange-alt"></i>
                   <span>Trade and Ind.</span>
                 </a>
+                <!-- Trade & Industry Section -->
                 <div
+                  id="collapseTradeIndustry"
+                  class="collapse"
+                  aria-labelledby="headingPages"
+                  data-parent="#collapseSocio-Economic"
+                >
+                  <div class="bg-lightblue py-2 collapse-inner rounded">
+                    <!-- ✅ Updated Modules Alert (place here!) -->
+
+                    <!-- ✅ Trade Industry Modules -->
+                    <div
+                      *ngFor="let module of TradeIndustryModules"
+                      class="d-flex align-items-center justify-content-between px-3"
+                    >
+                      <!-- Link Text -->
+                      <a
+                        class="collapse-item"
+                        [routerLink]="module.route"
+                        [ngClass]="{
+                          'text-muted pointer-none': isModuleNA(module.key)
+                        }"
+                      >
+                        {{ module.name }}
+                      </a>
+
+                      <!-- If not NA, show checkbox -->
+                      <app-admin>
+                        <div *ngIf="!isModuleNA(module.key)">
+                          <input
+                            type="checkbox"
+                            (change)="promptMarkAsNA(module)"
+                          />
+                        </div>
+
+                        <!-- If NA, show enable button -->
+                        <div *ngIf="isModuleNA(module.key)">
+                          <button
+                            class="btn btn-sm btn-outline-primary"
+                            (click)="enableModule(module.key)"
+                          >
+                            Enable
+                          </button>
+                        </div>
+                      </app-admin>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- N/A Confirmation Modal -->
+                <div
+                  class="modal fade show d-block"
+                  tabindex="-1"
+                  role="dialog"
+                  *ngIf="confirmModule"
+                  style="background: rgba(0, 0, 0, 0.3)"
+                >
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Confirm N/A</h5>
+                        <button
+                          type="button"
+                          class="close"
+                          (click)="cancelNA()"
+                        >
+                          <span>&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        Are you sure you want to mark
+                        <strong>{{ confirmModule.name }}</strong> as not
+                        applicable?
+                      </div>
+                      <div class="modal-footer">
+                        <button class="btn btn-secondary" (click)="cancelNA()">
+                          Cancel
+                        </button>
+                        <button class="btn btn-danger" (click)="confirmNA()">
+                          Confirm
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- <div
                   id="collapseTradeIndustry"
                   class="collapse"
                   aria-labelledby="headingUtilities"
@@ -357,7 +614,7 @@
                       >Financial Institutions</a
                     >
                   </div>
-                </div>
+                </div> -->
               </li>
 
               <!-- ==================== -->
@@ -374,6 +631,88 @@
                   <span>Tourism</span>
                 </a>
                 <div
+                  id="collapseTourism"
+                  class="collapse"
+                  aria-labelledby="headingPages"
+                  data-parent="#collapseSocio-Economic"
+                >
+                  <div class="bg-lightblue py-2 collapse-inner rounded">
+                    <div
+                      *ngFor="let module of tourismModules"
+                      class="d-flex align-items-center justify-content-between px-3"
+                    >
+                      <!-- Link Text -->
+                      <a
+                        class="collapse-item"
+                        [routerLink]="module.route"
+                        [ngClass]="{
+                          'text-muted pointer-none': isModuleNA(module.key)
+                        }"
+                      >
+                        {{ module.name }}
+                      </a>
+
+                      <!-- If not NA, show checkbox -->
+                      <app-admin>
+                        <div *ngIf="!isModuleNA(module.key)">
+                          <input
+                            type="checkbox"
+                            (change)="promptMarkAsNA(module)"
+                          />
+                        </div>
+
+                        <!-- If NA, show enable button -->
+                        <div *ngIf="isModuleNA(module.key)">
+                          <button
+                            class="btn btn-sm btn-outline-primary"
+                            (click)="enableModule(module.key)"
+                          >
+                            Enable
+                          </button>
+                        </div>
+                      </app-admin>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Modal -->
+                <div
+                  class="modal fade show d-block"
+                  tabindex="-1"
+                  role="dialog"
+                  *ngIf="confirmModule"
+                  style="background: rgba(0, 0, 0, 0.3)"
+                >
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Confirm N/A</h5>
+                        <button
+                          type="button"
+                          class="close"
+                          (click)="cancelNA()"
+                        >
+                          <span>&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        Are you sure you want to mark
+                        <strong>{{ confirmModule.name }}</strong> as not
+                        applicable?
+                      </div>
+                      <div class="modal-footer">
+                        <button class="btn btn-secondary" (click)="cancelNA()">
+                          Cancel
+                        </button>
+                        <button class="btn btn-danger" (click)="confirmNA()">
+                          Confirm
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- <div
                   id="collapseTourism"
                   class="collapse"
                   aria-labelledby="headingUtilities"
@@ -424,7 +763,7 @@
                       >Fiestas and Festivals</a
                     >
                   </div>
-                </div>
+                </div> -->
               </li>
 
               <!-- ==================== -->
@@ -441,6 +780,87 @@
                   <span>Agriculture</span>
                 </a>
                 <div
+                  id="collapseAgriculture"
+                  class="collapse"
+                  aria-labelledby="headingPages"
+                  data-parent="#collapseSocio-Economic"
+                >
+                  <div class="bg-lightblue py-2 collapse-inner rounded">
+                    <div
+                      *ngFor="let module of agricultureModules"
+                      class="d-flex align-items-center justify-content-between px-3"
+                    >
+                      <!-- Link Text -->
+                      <a
+                        class="collapse-item"
+                        [routerLink]="module.route"
+                        [ngClass]="{
+                          'text-muted pointer-none': isModuleNA(module.key)
+                        }"
+                      >
+                        {{ module.name }}
+                      </a>
+
+                      <!-- If not NA, show checkbox -->
+                      <app-admin>
+                        <div *ngIf="!isModuleNA(module.key)">
+                          <input
+                            type="checkbox"
+                            (change)="promptMarkAsNA(module)"
+                          />
+                        </div>
+
+                        <!-- If NA, show enable button -->
+                        <div *ngIf="isModuleNA(module.key)">
+                          <button
+                            class="btn btn-sm btn-outline-primary"
+                            (click)="enableModule(module.key)"
+                          >
+                            Enable
+                          </button>
+                        </div>
+                      </app-admin>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Modal -->
+                <div
+                  class="modal fade show d-block"
+                  tabindex="-1"
+                  role="dialog"
+                  *ngIf="confirmModule"
+                  style="background: rgba(0, 0, 0, 0.3)"
+                >
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Confirm N/A</h5>
+                        <button
+                          type="button"
+                          class="close"
+                          (click)="cancelNA()"
+                        >
+                          <span>&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        Are you sure you want to mark
+                        <strong>{{ confirmModule.name }}</strong> as not
+                        applicable?
+                      </div>
+                      <div class="modal-footer">
+                        <button class="btn btn-secondary" (click)="cancelNA()">
+                          Cancel
+                        </button>
+                        <button class="btn btn-danger" (click)="confirmNA()">
+                          Confirm
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div
                   id="collapseAgriculture"
                   class="collapse"
                   aria-labelledby="headingUtilities"
@@ -490,7 +910,7 @@
                       >Slaughterhouses</a
                     >
                   </div>
-                </div>
+                </div> -->
               </li>
             </div>
           </div>
@@ -556,6 +976,95 @@
                         data-parent="#collapseEducation"
                       >
                         <div class="bg-lightblue py-2 collapse-inner rounded">
+                          <div
+                            *ngFor="let module of facilitiesModules"
+                            class="d-flex align-items-center justify-content-between px-3"
+                          >
+                            <!-- Link Text -->
+                            <a
+                              class="collapse-item"
+                              [routerLink]="module.route"
+                              [ngClass]="{
+                                'text-muted pointer-none': isModuleNA(
+                                  module.key
+                                )
+                              }"
+                            >
+                              {{ module.name }}
+                            </a>
+
+                            <!-- If not NA, show checkbox -->
+                            <app-admin>
+                              <div *ngIf="!isModuleNA(module.key)">
+                                <input
+                                  type="checkbox"
+                                  (change)="promptMarkAsNA(module)"
+                                />
+                              </div>
+
+                              <!-- If NA, show enable button -->
+                              <div *ngIf="isModuleNA(module.key)">
+                                <button
+                                  class="btn btn-sm btn-outline-primary"
+                                  (click)="enableModule(module.key)"
+                                >
+                                  Enable
+                                </button>
+                              </div>
+                            </app-admin>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Modal -->
+                      <div
+                        class="modal fade show d-block"
+                        tabindex="-1"
+                        role="dialog"
+                        *ngIf="confirmModule"
+                        style="background: rgba(0, 0, 0, 0.3)"
+                      >
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title">Confirm N/A</h5>
+                              <button
+                                type="button"
+                                class="close"
+                                (click)="cancelNA()"
+                              >
+                                <span>&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              Are you sure you want to mark
+                              <strong>{{ confirmModule.name }}</strong> as not
+                              applicable?
+                            </div>
+                            <div class="modal-footer">
+                              <button
+                                class="btn btn-secondary"
+                                (click)="cancelNA()"
+                              >
+                                Cancel
+                              </button>
+                              <button
+                                class="btn btn-danger"
+                                (click)="confirmNA()"
+                              >
+                                Confirm
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- <div
+                        id="collapseFacIns"
+                        class="collapse"
+                        aria-labelledby="headingUtilities"
+                        data-parent="#collapseEducation"
+                      >
+                        <div class="bg-lightblue py-2 collapse-inner rounded">
                           <a
                             class="collapse-item"
                             routerLinkActive="active"
@@ -578,7 +1087,7 @@
                             Technical Vocational Ins.
                           </a>
                         </div>
-                      </div>
+                      </div> -->
                     </li>
                     <!-- ========== PRIVATE SCHOOLS ========== -->
                     <li class="nav-item" routerLinkActive="active">
@@ -600,6 +1109,95 @@
                         data-parent="#collapseEducation"
                       >
                         <div class="bg-lightblue py-2 collapse-inner rounded">
+                          <div
+                            *ngFor="let module of privateModules"
+                            class="d-flex align-items-center justify-content-between px-3"
+                          >
+                            <!-- Link Text -->
+                            <a
+                              class="collapse-item"
+                              [routerLink]="module.route"
+                              [ngClass]="{
+                                'text-muted pointer-none': isModuleNA(
+                                  module.key
+                                )
+                              }"
+                            >
+                              {{ module.name }}
+                            </a>
+
+                            <!-- If not NA, show checkbox -->
+                            <app-admin>
+                              <div *ngIf="!isModuleNA(module.key)">
+                                <input
+                                  type="checkbox"
+                                  (change)="promptMarkAsNA(module)"
+                                />
+                              </div>
+
+                              <!-- If NA, show enable button -->
+                              <div *ngIf="isModuleNA(module.key)">
+                                <button
+                                  class="btn btn-sm btn-outline-primary"
+                                  (click)="enableModule(module.key)"
+                                >
+                                  Enable
+                                </button>
+                              </div>
+                            </app-admin>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Modal -->
+                      <div
+                        class="modal fade show d-block"
+                        tabindex="-1"
+                        role="dialog"
+                        *ngIf="confirmModule"
+                        style="background: rgba(0, 0, 0, 0.3)"
+                      >
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title">Confirm N/A</h5>
+                              <button
+                                type="button"
+                                class="close"
+                                (click)="cancelNA()"
+                              >
+                                <span>&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              Are you sure you want to mark
+                              <strong>{{ confirmModule.name }}</strong> as not
+                              applicable?
+                            </div>
+                            <div class="modal-footer">
+                              <button
+                                class="btn btn-secondary"
+                                (click)="cancelNA()"
+                              >
+                                Cancel
+                              </button>
+                              <button
+                                class="btn btn-danger"
+                                (click)="confirmNA()"
+                              >
+                                Confirm
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- <div
+                        id="collapsePriSchools"
+                        class="collapse"
+                        aria-labelledby="headingUtilities"
+                        data-parent="#collapseEducation"
+                      >
+                        <div class="bg-lightblue py-2 collapse-inner rounded">
                           <a
                             class="collapse-item"
                             routerLinkActive="active"
@@ -613,7 +1211,7 @@
                             >Secondary</a
                           >
                         </div>
-                      </div>
+                      </div> -->
                     </li>
                     <!-- ========= PUBLIC SCHOOLS =========== -->
                     <li class="nav-item" routerLinkActive="active">
@@ -629,6 +1227,95 @@
                         <span>Public Schools</span>
                       </a>
                       <div
+                        id="collapsePubSchools"
+                        class="collapse"
+                        aria-labelledby="headingUtilities"
+                        data-parent="#collapseEducation"
+                      >
+                        <div class="bg-lightblue py-2 collapse-inner rounded">
+                          <div
+                            *ngFor="let module of publicModules"
+                            class="d-flex align-items-center justify-content-between px-3"
+                          >
+                            <!-- Link Text -->
+                            <a
+                              class="collapse-item"
+                              [routerLink]="module.route"
+                              [ngClass]="{
+                                'text-muted pointer-none': isModuleNA(
+                                  module.key
+                                )
+                              }"
+                            >
+                              {{ module.name }}
+                            </a>
+
+                            <!-- If not NA, show checkbox -->
+                            <app-admin>
+                              <div *ngIf="!isModuleNA(module.key)">
+                                <input
+                                  type="checkbox"
+                                  (change)="promptMarkAsNA(module)"
+                                />
+                              </div>
+
+                              <!-- If NA, show enable button -->
+                              <div *ngIf="isModuleNA(module.key)">
+                                <button
+                                  class="btn btn-sm btn-outline-primary"
+                                  (click)="enableModule(module.key)"
+                                >
+                                  Enable
+                                </button>
+                              </div>
+                            </app-admin>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Modal -->
+                      <div
+                        class="modal fade show d-block"
+                        tabindex="-1"
+                        role="dialog"
+                        *ngIf="confirmModule"
+                        style="background: rgba(0, 0, 0, 0.3)"
+                      >
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title">Confirm N/A</h5>
+                              <button
+                                type="button"
+                                class="close"
+                                (click)="cancelNA()"
+                              >
+                                <span>&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              Are you sure you want to mark
+                              <strong>{{ confirmModule.name }}</strong> as not
+                              applicable?
+                            </div>
+                            <div class="modal-footer">
+                              <button
+                                class="btn btn-secondary"
+                                (click)="cancelNA()"
+                              >
+                                Cancel
+                              </button>
+                              <button
+                                class="btn btn-danger"
+                                (click)="confirmNA()"
+                              >
+                                Confirm
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- <div
                         id="collapsePubSchools"
                         class="collapse"
                         aria-labelledby="headingUtilities"
@@ -654,7 +1341,7 @@
                             >Secondary</a
                           >
                         </div>
-                      </div>
+                      </div> -->
                     </li>
                     <!-- ========= Tertiary SCHOOLS =========== -->
                     <li class="nav-item" routerLinkActive="active">
@@ -676,6 +1363,95 @@
                         data-parent="#collapseEducation"
                       >
                         <div class="bg-lightblue py-2 collapse-inner rounded">
+                          <div
+                            *ngFor="let module of TertiaryModules"
+                            class="d-flex align-items-center justify-content-between px-3"
+                          >
+                            <!-- Link Text -->
+                            <a
+                              class="collapse-item"
+                              [routerLink]="module.route"
+                              [ngClass]="{
+                                'text-muted pointer-none': isModuleNA(
+                                  module.key
+                                )
+                              }"
+                            >
+                              {{ module.name }}
+                            </a>
+
+                            <!-- If not NA, show checkbox -->
+                            <app-admin>
+                              <div *ngIf="!isModuleNA(module.key)">
+                                <input
+                                  type="checkbox"
+                                  (change)="promptMarkAsNA(module)"
+                                />
+                              </div>
+
+                              <!-- If NA, show enable button -->
+                              <div *ngIf="isModuleNA(module.key)">
+                                <button
+                                  class="btn btn-sm btn-outline-primary"
+                                  (click)="enableModule(module.key)"
+                                >
+                                  Enable
+                                </button>
+                              </div>
+                            </app-admin>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Modal -->
+                      <div
+                        class="modal fade show d-block"
+                        tabindex="-1"
+                        role="dialog"
+                        *ngIf="confirmModule"
+                        style="background: rgba(0, 0, 0, 0.3)"
+                      >
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title">Confirm N/A</h5>
+                              <button
+                                type="button"
+                                class="close"
+                                (click)="cancelNA()"
+                              >
+                                <span>&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              Are you sure you want to mark
+                              <strong>{{ confirmModule.name }}</strong> as not
+                              applicable?
+                            </div>
+                            <div class="modal-footer">
+                              <button
+                                class="btn btn-secondary"
+                                (click)="cancelNA()"
+                              >
+                                Cancel
+                              </button>
+                              <button
+                                class="btn btn-danger"
+                                (click)="confirmNA()"
+                              >
+                                Confirm
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- <div
+                        id="collapseTertiary"
+                        class="collapse"
+                        aria-labelledby="headingUtilities"
+                        data-parent="#collapseEducation"
+                      >
+                        <div class="bg-lightblue py-2 collapse-inner rounded">
                           <a
                             class="collapse-item"
                             routerLinkActive="active"
@@ -691,7 +1467,7 @@
                             Graduates
                           </a>
                         </div>
-                      </div>
+                      </div> -->
                     </li>
                     <!-- ========= Techvoc SCHOOLS =========== -->
                     <li class="nav-item" routerLinkActive="active">
@@ -713,6 +1489,95 @@
                         data-parent="#collapseEducation"
                       >
                         <div class="bg-lightblue py-2 collapse-inner rounded">
+                          <div
+                            *ngFor="let module of techvocModules"
+                            class="d-flex align-items-center justify-content-between px-3"
+                          >
+                            <!-- Link Text -->
+                            <a
+                              class="collapse-item"
+                              [routerLink]="module.route"
+                              [ngClass]="{
+                                'text-muted pointer-none': isModuleNA(
+                                  module.key
+                                )
+                              }"
+                            >
+                              {{ module.name }}
+                            </a>
+
+                            <!-- If not NA, show checkbox -->
+                            <app-admin>
+                              <div *ngIf="!isModuleNA(module.key)">
+                                <input
+                                  type="checkbox"
+                                  (change)="promptMarkAsNA(module)"
+                                />
+                              </div>
+
+                              <!-- If NA, show enable button -->
+                              <div *ngIf="isModuleNA(module.key)">
+                                <button
+                                  class="btn btn-sm btn-outline-primary"
+                                  (click)="enableModule(module.key)"
+                                >
+                                  Enable
+                                </button>
+                              </div>
+                            </app-admin>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Modal -->
+                      <div
+                        class="modal fade show d-block"
+                        tabindex="-1"
+                        role="dialog"
+                        *ngIf="confirmModule"
+                        style="background: rgba(0, 0, 0, 0.3)"
+                      >
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title">Confirm N/A</h5>
+                              <button
+                                type="button"
+                                class="close"
+                                (click)="cancelNA()"
+                              >
+                                <span>&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              Are you sure you want to mark
+                              <strong>{{ confirmModule.name }}</strong> as not
+                              applicable?
+                            </div>
+                            <div class="modal-footer">
+                              <button
+                                class="btn btn-secondary"
+                                (click)="cancelNA()"
+                              >
+                                Cancel
+                              </button>
+                              <button
+                                class="btn btn-danger"
+                                (click)="confirmNA()"
+                              >
+                                Confirm
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- <div
+                        id="collapseTechvoc"
+                        class="collapse"
+                        aria-labelledby="headingUtilities"
+                        data-parent="#collapseEducation"
+                      >
+                        <div class="bg-lightblue py-2 collapse-inner rounded">
                           <a
                             class="collapse-item"
                             routerLinkActive="active"
@@ -728,13 +1593,94 @@
                             Enrolment & Graduates
                           </a>
                         </div>
-                      </div>
+                      </div> -->
                     </li>
                     <!-- <a class="collapse-item" routerLinkActive="active"
     routerLink="socialProfile/education/public/tech-voc">Technical/Vocational Schools</a>
 <a class="collapse-item" routerLinkActive="active" routerLink="socialProfile/education/public/tertiary">Tertiary
     Schools</a> -->
-                    <a
+
+                    <div class="bg-lightblue py-2 collapse-inner rounded">
+                      <div
+                        *ngFor="let module of othersModules"
+                        class="d-flex align-items-center justify-content-between px-3"
+                      >
+                        <!-- Link Text -->
+                        <a
+                          class="collapse-item"
+                          [routerLink]="module.route"
+                          [ngClass]="{
+                            'text-muted pointer-none': isModuleNA(module.key)
+                          }"
+                        >
+                          {{ module.name }}
+                        </a>
+
+                        <!-- If not NA, show checkbox -->
+                        <app-admin>
+                          <div *ngIf="!isModuleNA(module.key)">
+                            <input
+                              type="checkbox"
+                              (change)="promptMarkAsNA(module)"
+                            />
+                          </div>
+
+                          <!-- If NA, show enable button -->
+                          <div *ngIf="isModuleNA(module.key)">
+                            <button
+                              class="btn btn-sm btn-outline-primary"
+                              (click)="enableModule(module.key)"
+                            >
+                              Enable
+                            </button>
+                          </div>
+                        </app-admin>
+                      </div>
+                    </div>
+
+                    <!-- Modal -->
+                    <div
+                      class="modal fade show d-block"
+                      tabindex="-1"
+                      role="dialog"
+                      *ngIf="confirmModule"
+                      style="background: rgba(0, 0, 0, 0.3)"
+                    >
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title">Confirm N/A</h5>
+                            <button
+                              type="button"
+                              class="close"
+                              (click)="cancelNA()"
+                            >
+                              <span>&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            Are you sure you want to mark
+                            <strong>{{ confirmModule.name }}</strong> as not
+                            applicable?
+                          </div>
+                          <div class="modal-footer">
+                            <button
+                              class="btn btn-secondary"
+                              (click)="cancelNA()"
+                            >
+                              Cancel
+                            </button>
+                            <button
+                              class="btn btn-danger"
+                              (click)="confirmNA()"
+                            >
+                              Confirm
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- <a
                       class="collapse-item"
                       routerLinkActive="active"
                       routerLink="socialProfile/education/public/training-center"
@@ -751,7 +1697,7 @@
                       routerLinkActive="active"
                       routerLink="socialProfile/education/public/oschool-youth"
                       >Out of School Youth</a
-                    >
+                    > -->
                   </div>
                 </div>
               </li>
@@ -769,6 +1715,87 @@
                   <span>Health</span>
                 </a>
                 <div
+                  id="collapseHealth"
+                  class="collapse"
+                  aria-labelledby="headingUtilities"
+                  data-parent="#collapseSocialProfile"
+                >
+                  <div class="bg-lightblue py-2 collapse-inner rounded">
+                    <div
+                      *ngFor="let module of healthModules"
+                      class="d-flex align-items-center justify-content-between px-3"
+                    >
+                      <!-- Link Text -->
+                      <a
+                        class="collapse-item"
+                        [routerLink]="module.route"
+                        [ngClass]="{
+                          'text-muted pointer-none': isModuleNA(module.key)
+                        }"
+                      >
+                        {{ module.name }}
+                      </a>
+
+                      <!-- If not NA, show checkbox -->
+                      <app-admin>
+                        <div *ngIf="!isModuleNA(module.key)">
+                          <input
+                            type="checkbox"
+                            (change)="promptMarkAsNA(module)"
+                          />
+                        </div>
+
+                        <!-- If NA, show enable button -->
+                        <div *ngIf="isModuleNA(module.key)">
+                          <button
+                            class="btn btn-sm btn-outline-primary"
+                            (click)="enableModule(module.key)"
+                          >
+                            Enable
+                          </button>
+                        </div>
+                      </app-admin>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Modal -->
+                <div
+                  class="modal fade show d-block"
+                  tabindex="-1"
+                  role="dialog"
+                  *ngIf="confirmModule"
+                  style="background: rgba(0, 0, 0, 0.3)"
+                >
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Confirm N/A</h5>
+                        <button
+                          type="button"
+                          class="close"
+                          (click)="cancelNA()"
+                        >
+                          <span>&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        Are you sure you want to mark
+                        <strong>{{ confirmModule.name }}</strong> as not
+                        applicable?
+                      </div>
+                      <div class="modal-footer">
+                        <button class="btn btn-secondary" (click)="cancelNA()">
+                          Cancel
+                        </button>
+                        <button class="btn btn-danger" (click)="confirmNA()">
+                          Confirm
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div
                   id="collapseHealth"
                   class="collapse"
                   aria-labelledby="headingUtilities"
@@ -842,7 +1869,7 @@
                       >Provincial Health Profile</a
                     >
                   </div>
-                </div>
+                </div> -->
               </li>
               <!-- ========= Public order and Safety =========== -->
               <li class="nav-item" routerLinkActive="active">
@@ -858,6 +1885,87 @@
                   <span>Public Order and Safety</span>
                 </a>
                 <div
+                  id="collapsePubSafety"
+                  class="collapse"
+                  aria-labelledby="headingUtilities"
+                  data-parent="#collapseSocialProfile"
+                >
+                  <div class="bg-lightblue py-2 collapse-inner rounded">
+                    <div
+                      *ngFor="let module of publicorderModules"
+                      class="d-flex align-items-center justify-content-between px-3"
+                    >
+                      <!-- Link Text -->
+                      <a
+                        class="collapse-item"
+                        [routerLink]="module.route"
+                        [ngClass]="{
+                          'text-muted pointer-none': isModuleNA(module.key)
+                        }"
+                      >
+                        {{ module.name }}
+                      </a>
+
+                      <!-- If not NA, show checkbox -->
+                      <app-admin>
+                        <div *ngIf="!isModuleNA(module.key)">
+                          <input
+                            type="checkbox"
+                            (change)="promptMarkAsNA(module)"
+                          />
+                        </div>
+
+                        <!-- If NA, show enable button -->
+                        <div *ngIf="isModuleNA(module.key)">
+                          <button
+                            class="btn btn-sm btn-outline-primary"
+                            (click)="enableModule(module.key)"
+                          >
+                            Enable
+                          </button>
+                        </div>
+                      </app-admin>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Modal -->
+                <div
+                  class="modal fade show d-block"
+                  tabindex="-1"
+                  role="dialog"
+                  *ngIf="confirmModule"
+                  style="background: rgba(0, 0, 0, 0.3)"
+                >
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Confirm N/A</h5>
+                        <button
+                          type="button"
+                          class="close"
+                          (click)="cancelNA()"
+                        >
+                          <span>&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        Are you sure you want to mark
+                        <strong>{{ confirmModule.name }}</strong> as not
+                        applicable?
+                      </div>
+                      <div class="modal-footer">
+                        <button class="btn btn-secondary" (click)="cancelNA()">
+                          Cancel
+                        </button>
+                        <button class="btn btn-danger" (click)="confirmNA()">
+                          Confirm
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div
                   id="collapsePubSafety"
                   class="collapse"
                   aria-labelledby="headingUtilities"
@@ -895,7 +2003,7 @@
                       >No. of Index Crime
                     </a>
                   </div>
-                </div>
+                </div> -->
               </li>
               <!-- ========= Housing =========== -->
               <li class="nav-item" routerLinkActive="active">
@@ -911,6 +2019,87 @@
                   <span>Housing</span>
                 </a>
                 <div
+                  id="collapseHousing"
+                  class="collapse"
+                  aria-labelledby="headingUtilities"
+                  data-parent="#collapseSocialProfile"
+                >
+                  <div class="bg-lightblue py-2 collapse-inner rounded">
+                    <div
+                      *ngFor="let module of housingModules"
+                      class="d-flex align-items-center justify-content-between px-3"
+                    >
+                      <!-- Link Text -->
+                      <a
+                        class="collapse-item"
+                        [routerLink]="module.route"
+                        [ngClass]="{
+                          'text-muted pointer-none': isModuleNA(module.key)
+                        }"
+                      >
+                        {{ module.name }}
+                      </a>
+
+                      <!-- If not NA, show checkbox -->
+                      <app-admin>
+                        <div *ngIf="!isModuleNA(module.key)">
+                          <input
+                            type="checkbox"
+                            (change)="promptMarkAsNA(module)"
+                          />
+                        </div>
+
+                        <!-- If NA, show enable button -->
+                        <div *ngIf="isModuleNA(module.key)">
+                          <button
+                            class="btn btn-sm btn-outline-primary"
+                            (click)="enableModule(module.key)"
+                          >
+                            Enable
+                          </button>
+                        </div>
+                      </app-admin>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Modal -->
+                <div
+                  class="modal fade show d-block"
+                  tabindex="-1"
+                  role="dialog"
+                  *ngIf="confirmModule"
+                  style="background: rgba(0, 0, 0, 0.3)"
+                >
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Confirm N/A</h5>
+                        <button
+                          type="button"
+                          class="close"
+                          (click)="cancelNA()"
+                        >
+                          <span>&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        Are you sure you want to mark
+                        <strong>{{ confirmModule.name }}</strong> as not
+                        applicable?
+                      </div>
+                      <div class="modal-footer">
+                        <button class="btn btn-secondary" (click)="cancelNA()">
+                          Cancel
+                        </button>
+                        <button class="btn btn-danger" (click)="confirmNA()">
+                          Confirm
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div
                   id="collapseHousing"
                   class="collapse"
                   aria-labelledby="headingUtilities"
@@ -936,7 +2125,7 @@
                       >Subdivisions</a
                     >
                   </div>
-                </div>
+                </div> -->
               </li>
 
               <!-- ========= Associations/ Accredited NGOs =========== -->
@@ -953,6 +2142,87 @@
                   <span>Association/ Accredited NGO</span>
                 </a>
                 <div
+                  id="collapseAssociations"
+                  class="collapse"
+                  aria-labelledby="headingUtilities"
+                  data-parent="#collapseSocialProfile"
+                >
+                  <div class="bg-lightblue py-2 collapse-inner rounded">
+                    <div
+                      *ngFor="let module of associationModules"
+                      class="d-flex align-items-center justify-content-between px-3"
+                    >
+                      <!-- Link Text -->
+                      <a
+                        class="collapse-item"
+                        [routerLink]="module.route"
+                        [ngClass]="{
+                          'text-muted pointer-none': isModuleNA(module.key)
+                        }"
+                      >
+                        {{ module.name }}
+                      </a>
+
+                      <!-- If not NA, show checkbox -->
+                      <app-admin>
+                        <div *ngIf="!isModuleNA(module.key)">
+                          <input
+                            type="checkbox"
+                            (change)="promptMarkAsNA(module)"
+                          />
+                        </div>
+
+                        <!-- If NA, show enable button -->
+                        <div *ngIf="isModuleNA(module.key)">
+                          <button
+                            class="btn btn-sm btn-outline-primary"
+                            (click)="enableModule(module.key)"
+                          >
+                            Enable
+                          </button>
+                        </div>
+                      </app-admin>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Modal -->
+                <div
+                  class="modal fade show d-block"
+                  tabindex="-1"
+                  role="dialog"
+                  *ngIf="confirmModule"
+                  style="background: rgba(0, 0, 0, 0.3)"
+                >
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Confirm N/A</h5>
+                        <button
+                          type="button"
+                          class="close"
+                          (click)="cancelNA()"
+                        >
+                          <span>&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        Are you sure you want to mark
+                        <strong>{{ confirmModule.name }}</strong> as not
+                        applicable?
+                      </div>
+                      <div class="modal-footer">
+                        <button class="btn btn-secondary" (click)="cancelNA()">
+                          Cancel
+                        </button>
+                        <button class="btn btn-danger" (click)="confirmNA()">
+                          Confirm
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div
                   id="collapseAssociations"
                   class="collapse"
                   aria-labelledby="headingUtilities"
@@ -1002,7 +2272,7 @@
                       >Sectoral</a
                     >
                   </div>
-                </div>
+                </div> -->
               </li>
             </div>
           </div>
@@ -1022,6 +2292,47 @@
             <span>Environment</span>
           </a>
           <div
+            id="collapseEnvironment"
+            class="collapse"
+            aria-labelledby="headingPages"
+            data-parent="#accordionSidebar"
+          >
+            <div class="bg-lightblue py-2 collapse-inner rounded">
+              <div
+                *ngFor="let module of environmentModules"
+                class="d-flex align-items-center justify-content-between px-3"
+              >
+                <!-- Link Text -->
+                <a
+                  class="collapse-item"
+                  [routerLink]="module.route"
+                  [ngClass]="{
+                    'text-muted pointer-none': isModuleNA(module.key)
+                  }"
+                >
+                  {{ module.name }}
+                </a>
+
+                <!-- If not NA, show checkbox -->
+                <app-admin>
+                  <div *ngIf="!isModuleNA(module.key)">
+                    <input type="checkbox" (change)="promptMarkAsNA(module)" />
+                  </div>
+
+                  <!-- If NA, show enable button -->
+                  <div *ngIf="isModuleNA(module.key)">
+                    <button
+                      class="btn btn-sm btn-outline-primary"
+                      (click)="enableModule(module.key)"
+                    >
+                      Enable
+                    </button>
+                  </div>
+                </app-admin>
+              </div>
+            </div>
+          </div>
+          <!-- <div
             id="collapseEnvironment"
             class="collapse"
             aria-labelledby="headingPages"
@@ -1071,9 +2382,39 @@
                 >Historical Disaster Profile</a
               >
             </div>
-          </div>
+          </div> -->
         </li>
-
+        <!-- Modal -->
+        <div
+          class="modal fade show d-block"
+          tabindex="-1"
+          role="dialog"
+          *ngIf="confirmModule"
+          style="background: rgba(0, 0, 0, 0.3)"
+        >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Confirm N/A</h5>
+                <button type="button" class="close" (click)="cancelNA()">
+                  <span>&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                Are you sure you want to mark
+                <strong>{{ confirmModule.name }}</strong> as not applicable?
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-secondary" (click)="cancelNA()">
+                  Cancel
+                </button>
+                <button class="btn btn-danger" (click)="confirmNA()">
+                  Confirm
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- Nav Item - Infrastructure and Utilities -->
         <li class="nav-item">
           <a
@@ -1109,6 +2450,87 @@
                   <span>Communications Services</span>
                 </a>
                 <div
+                  id="collapseCommunications"
+                  class="collapse"
+                  aria-labelledby="headingPages"
+                  data-parent="#collapseInfrastructure"
+                >
+                  <div class="bg-lightblue py-2 collapse-inner rounded">
+                    <div
+                      *ngFor="let module of infraModules"
+                      class="d-flex align-items-center justify-content-between px-3"
+                    >
+                      <!-- Link Text -->
+                      <a
+                        class="collapse-item"
+                        [routerLink]="module.route"
+                        [ngClass]="{
+                          'text-muted pointer-none': isModuleNA(module.key)
+                        }"
+                      >
+                        {{ module.name }}
+                      </a>
+
+                      <!-- If not NA, show checkbox -->
+                      <app-admin>
+                        <div *ngIf="!isModuleNA(module.key)">
+                          <input
+                            type="checkbox"
+                            (change)="promptMarkAsNA(module)"
+                          />
+                        </div>
+
+                        <!-- If NA, show enable button -->
+                        <div *ngIf="isModuleNA(module.key)">
+                          <button
+                            class="btn btn-sm btn-outline-primary"
+                            (click)="enableModule(module.key)"
+                          >
+                            Enable
+                          </button>
+                        </div>
+                      </app-admin>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Modal -->
+                <div
+                  class="modal fade show d-block"
+                  tabindex="-1"
+                  role="dialog"
+                  *ngIf="confirmModule"
+                  style="background: rgba(0, 0, 0, 0.3)"
+                >
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Confirm N/A</h5>
+                        <button
+                          type="button"
+                          class="close"
+                          (click)="cancelNA()"
+                        >
+                          <span>&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        Are you sure you want to mark
+                        <strong>{{ confirmModule.name }}</strong> as not
+                        applicable?
+                      </div>
+                      <div class="modal-footer">
+                        <button class="btn btn-secondary" (click)="cancelNA()">
+                          Cancel
+                        </button>
+                        <button class="btn btn-danger" (click)="confirmNA()">
+                          Confirm
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div
                   id="collapseCommunications"
                   class="collapse"
                   aria-labelledby="headingPages"
@@ -1152,7 +2574,7 @@
                       >Internet Service Providers</a
                     >
                   </div>
-                </div>
+                </div> -->
               </li>
               <li class="nav-item" routerLinkActive="active">
                 <a
@@ -1167,6 +2589,87 @@
                   <span>Transportation</span>
                 </a>
                 <div
+                  id="collapseTransportation"
+                  class="collapse"
+                  aria-labelledby="headingPages"
+                  data-parent="#collapseInfrastructure"
+                >
+                  <div class="bg-lightblue py-2 collapse-inner rounded">
+                    <div
+                      *ngFor="let module of transportModules"
+                      class="d-flex align-items-center justify-content-between px-3"
+                    >
+                      <!-- Link Text -->
+                      <a
+                        class="collapse-item"
+                        [routerLink]="module.route"
+                        [ngClass]="{
+                          'text-muted pointer-none': isModuleNA(module.key)
+                        }"
+                      >
+                        {{ module.name }}
+                      </a>
+
+                      <!-- If not NA, show checkbox -->
+                      <app-admin>
+                        <div *ngIf="!isModuleNA(module.key)">
+                          <input
+                            type="checkbox"
+                            (change)="promptMarkAsNA(module)"
+                          />
+                        </div>
+
+                        <!-- If NA, show enable button -->
+                        <div *ngIf="isModuleNA(module.key)">
+                          <button
+                            class="btn btn-sm btn-outline-primary"
+                            (click)="enableModule(module.key)"
+                          >
+                            Enable
+                          </button>
+                        </div>
+                      </app-admin>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Modal -->
+                <div
+                  class="modal fade show d-block"
+                  tabindex="-1"
+                  role="dialog"
+                  *ngIf="confirmModule"
+                  style="background: rgba(0, 0, 0, 0.3)"
+                >
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Confirm N/A</h5>
+                        <button
+                          type="button"
+                          class="close"
+                          (click)="cancelNA()"
+                        >
+                          <span>&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        Are you sure you want to mark
+                        <strong>{{ confirmModule.name }}</strong> as not
+                        applicable?
+                      </div>
+                      <div class="modal-footer">
+                        <button class="btn btn-secondary" (click)="cancelNA()">
+                          Cancel
+                        </button>
+                        <button class="btn btn-danger" (click)="confirmNA()">
+                          Confirm
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div
                   id="collapseTransportation"
                   class="collapse"
                   aria-labelledby="headingPages"
@@ -1198,7 +2701,7 @@
                       >Ports</a
                     >
                   </div>
-                </div>
+                </div> -->
               </li>
               <li class="nav-item" routerLinkActive="active">
                 <a
@@ -1213,6 +2716,87 @@
                   <span> Utility Services/ Structures</span>
                 </a>
                 <div
+                  id="collapseUtility"
+                  class="collapse"
+                  aria-labelledby="headingPages"
+                  data-parent="#collapseInfrastructure"
+                >
+                  <div class="bg-lightblue py-2 collapse-inner rounded">
+                    <div
+                      *ngFor="let module of utilityModules"
+                      class="d-flex align-items-center justify-content-between px-3"
+                    >
+                      <!-- Link Text -->
+                      <a
+                        class="collapse-item"
+                        [routerLink]="module.route"
+                        [ngClass]="{
+                          'text-muted pointer-none': isModuleNA(module.key)
+                        }"
+                      >
+                        {{ module.name }}
+                      </a>
+
+                      <!-- If not NA, show checkbox -->
+                      <app-admin>
+                        <div *ngIf="!isModuleNA(module.key)">
+                          <input
+                            type="checkbox"
+                            (change)="promptMarkAsNA(module)"
+                          />
+                        </div>
+
+                        <!-- If NA, show enable button -->
+                        <div *ngIf="isModuleNA(module.key)">
+                          <button
+                            class="btn btn-sm btn-outline-primary"
+                            (click)="enableModule(module.key)"
+                          >
+                            Enable
+                          </button>
+                        </div>
+                      </app-admin>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Modal -->
+                <div
+                  class="modal fade show d-block"
+                  tabindex="-1"
+                  role="dialog"
+                  *ngIf="confirmModule"
+                  style="background: rgba(0, 0, 0, 0.3)"
+                >
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Confirm N/A</h5>
+                        <button
+                          type="button"
+                          class="close"
+                          (click)="cancelNA()"
+                        >
+                          <span>&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        Are you sure you want to mark
+                        <strong>{{ confirmModule.name }}</strong> as not
+                        applicable?
+                      </div>
+                      <div class="modal-footer">
+                        <button class="btn btn-secondary" (click)="cancelNA()">
+                          Cancel
+                        </button>
+                        <button class="btn btn-danger" (click)="confirmNA()">
+                          Confirm
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div
                   id="collapseUtility"
                   class="collapse"
                   aria-labelledby="headingPages"
@@ -1292,7 +2876,7 @@
                       >Other Structures</a
                     >
                   </div>
-                </div>
+                </div> -->
               </li>
             </div>
           </div>

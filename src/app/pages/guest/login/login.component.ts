@@ -98,19 +98,37 @@ export class LoginComponent implements OnInit {
     }
 
     this.isLogin = true;
+    console.log('🔐 Attempting login with:', this.user);
 
     this.service.signin(this.user).subscribe({
       next: (response) => {
+        console.log('✅ Login Response:', response);
+
         if (response.token != null) {
+          // Save the token
+          localStorage.setItem('token', response.token);
+          console.log('📥 Token saved to localStorage');
+
+          // Guest detection (adjust based on actual response structure)
+          if (response.role?.toLowerCase() === 'guest') {
+            localStorage.setItem('guest', 'true');
+            console.log('👤 Guest mode enabled from backend role');
+          } else {
+            localStorage.setItem('guest', 'false');
+            console.log('👤 Logged in as Regular User');
+          }
+
           this.router.navigate(['/']);
         } else {
-          this.isLogin = false; // Just in case response doesn't include token
+          console.warn('⚠️ Login succeeded but no token returned.');
+          this.isLogin = false;
         }
       },
       error: (error) => {
-        this.isLogin = false; // <<== this is key to stop the loading spinner
-
+        this.isLogin = false;
         this.errorLogin = error.error;
+
+        console.error('❌ Login Error:', error);
 
         Swal.fire({
           icon: 'error',

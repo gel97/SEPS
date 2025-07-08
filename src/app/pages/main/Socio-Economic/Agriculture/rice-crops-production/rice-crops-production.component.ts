@@ -83,6 +83,11 @@ export class RiceCropsProductionComponent implements OnInit {
     { id: `39`, type: `Lanzones` },
     { id: `40`, type: `Pepper` },
     { id: `41`, type: `Other Vegetables` },
+    { id: `42`, type: `Banana - binangay` },
+    { id: `43`, type: `Coconut - Aromatic` },
+    { id: `44`, type: `Guava` },
+    { id: `45`, type: `Watermelon` },
+    { id: `46`, type: `Sweet Corn` },
   ];
 
   listofWater: any = [
