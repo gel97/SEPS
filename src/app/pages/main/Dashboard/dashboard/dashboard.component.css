@@ -85,7 +85,7 @@
 }
 
 .municipality-name {
-  font-weight: 500;
+  font-weight: 400;
   color: #343a40;
   margin-top: 0.25rem;
 }
@@ -98,4 +98,3 @@ canvas {
   width: 100% !important;
   height: auto !important;
 }
-

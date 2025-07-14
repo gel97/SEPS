@@ -454,7 +454,7 @@ export class MainLayoutComponent implements OnInit {
     },
     {
       name: 'Religious',
-      route: 'socialProfile/Associations/civic-org',
+      route: 'socialProfile/Associations/religious',
       key: 'Association_Menu2',
     },
     {
@@ -682,31 +682,6 @@ export class MainLayoutComponent implements OnInit {
       });
   }
 
-  getNA(setYear: number, munCityId: string): void {
-    this.Service.getNA(setYear, munCityId, this.notApplicableModules).subscribe(
-      (response) => {
-        console.log('✅ Full response from getNA:', response);
-
-        // ✅ Safely get updatedModules from both TotalSocioEconomic and TotalSocialProfile
-        const socioModules = response?.TotalSocioEconomic?.updatedModules || [];
-        const socialModules =
-          response?.TotalSocialProfile?.updatedModules || [];
-        const infraModules =
-          response?.TotalInfrastructure?.updatedModules || [];
-
-        // ✅ Merge them into one array (removing duplicates just in case)
-        this.updatedModules = Array.from(
-          new Set([...socioModules, ...socialModules, ...infraModules])
-        );
-
-        console.log('✅ Combined updated modules:', this.updatedModules);
-      },
-      (error) => {
-        console.error('❌ Error fetching NA data:', error);
-      }
-    );
-  }
-
   getMunCityId(): string {
     // Try to get from service, fallback to localStorage, or return empty string
     return this.service.munCityId || localStorage.getItem('munCityId') || '';
@@ -779,20 +754,47 @@ export class MainLayoutComponent implements OnInit {
       ...this.healthModules,
       ...this.publicorderModules,
       ...this.housingModules,
-      ...this.infraModules, // ✅ make sure this is defined and has { key, name }
+      ...this.infraModules,
       ...this.associationModules,
       ...this.utilityModules,
     ];
 
-    const updatedKeys = [
+    const updatedKeys = new Set([
       ...this.socioUpdatedModules,
       ...this.socialUpdatedModules,
       ...this.InfraUpdatedModules,
-    ];
+    ]);
 
     return allModules
-      .filter((m) => updatedKeys.includes(m.key))
+      .filter((m) => m && m.key && updatedKeys.has(m.key)) // ensure safety
       .map((m) => m.name);
+  }
+
+  getNA(setYear: number, munCityId: string): void {
+    this.Service.getNA(setYear, munCityId, this.notApplicableModules).subscribe(
+      (response) => {
+        console.log('[getNA] ✅ Full response:', response);
+
+        const socioModules = response?.TotalSocioEconomic?.updatedModules || [];
+        const socialModules =
+          response?.TotalSocialProfile?.updatedModules || [];
+        const infraModules =
+          response?.TotalInfrastructure?.updatedModules || [];
+
+        this.updatedModules = Array.from(
+          new Set([...socioModules, ...socialModules, ...infraModules])
+        );
+
+        console.log(
+          '[getNA] ✅ Combined updated modules:',
+          this.updatedModules
+        );
+      },
+      (error) => {
+        console.error('[getNA] ❌ Error fetching NA data:', error);
+        // this.notificationService.error('Failed to fetch NA data'); // Optional
+      }
+    );
   }
 
   getSocioNA(setYear: number, munCityId: string): void {
@@ -801,56 +803,79 @@ export class MainLayoutComponent implements OnInit {
       munCityId,
       this.notApplicableModules
     ).subscribe(
-      (response) => {
-        console.log('✅ Full response from getSocioNA:', response);
-        this.socioUpdatedModules =
-          response?.TotalSocioEconomic?.updatedModules || [];
-        this.Service.setUpdatedModules(this.socioUpdatedModules);
-        this.cdRef.detectChanges();
-        console.log('✅ Socio updated modules:', this.socioUpdatedModules);
-      },
+      (response) =>
+        this.handleNAResponse(
+          response,
+          'TotalSocioEconomic',
+          'socioUpdatedModules'
+        ),
       (error) => {
-        console.error('❌ Error fetching Socio-Economic data:', error);
+        console.error(
+          '[getSocioNA] ❌ Error fetching Socio-Economic data:',
+          error
+        );
+        // this.notificationService.error('Failed to fetch Socio-Economic data');
       }
     );
   }
+
   getSocialNA(setYear: number, munCityId: string): void {
     this.Service.getSocialProfNA(
       setYear,
       munCityId,
       this.notApplicableModules
     ).subscribe(
-      (response) => {
-        console.log('✅ Full response from getSocialNA:', response);
-        this.socialUpdatedModules =
-          response?.TotalSocialProfile?.updatedModules || [];
-        this.Service.setUpdatedModules(this.socialUpdatedModules);
-        this.cdRef.detectChanges();
-        console.log('✅ Social updated modules:', this.socialUpdatedModules);
-      },
+      (response) =>
+        this.handleNAResponse(
+          response,
+          'TotalSocialProfile',
+          'socialUpdatedModules'
+        ),
       (error) => {
-        console.error('❌ Error fetching Socio-Economic data:', error);
+        console.error(
+          '[getSocialNA] ❌ Error fetching Social Profile data:',
+          error
+        );
+        // this.notificationService.error('Failed to fetch Social Profile data');
       }
     );
   }
+
   getInfraNA(setYear: number, munCityId: string): void {
     this.Service.getInfraNA(
       setYear,
       munCityId,
       this.notApplicableModules
     ).subscribe(
-      (response) => {
-        console.log('✅ Full response from getInfraNA:', response);
-        this.InfraUpdatedModules =
-          response?.TotalInfrastructure?.updatedModules || [];
-        this.Service.setUpdatedModules(this.InfraUpdatedModules);
-        this.cdRef.detectChanges();
-        console.log('✅ Infra updated modules:', this.InfraUpdatedModules);
-      },
+      (response) =>
+        this.handleNAResponse(
+          response,
+          'TotalInfrastructure',
+          'InfraUpdatedModules'
+        ),
       (error) => {
-        console.error('❌ Error fetching Infra data:', error);
+        console.error(
+          '[getInfraNA] ❌ Error fetching Infrastructure data:',
+          error
+        );
+        // this.notificationService.error('Failed to fetch Infrastructure data');
       }
     );
+  }
+
+  // Generic response handler
+  private handleNAResponse(
+    response: any,
+    key: 'TotalSocioEconomic' | 'TotalSocialProfile' | 'TotalInfrastructure',
+    stateKey:
+      | 'socioUpdatedModules'
+      | 'socialUpdatedModules'
+      | 'InfraUpdatedModules'
+  ): void {
+    this[stateKey] = response?.[key]?.updatedModules || [];
+    this.Service.setUpdatedModules(this[stateKey]);
+    this.cdRef.detectChanges();
+    console.log(`[${key}] ✅ Updated modules:`, this[stateKey]);
   }
 
   isMatchURL: boolean = false;

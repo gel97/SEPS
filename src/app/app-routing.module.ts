@@ -124,7 +124,7 @@ import { SummaryReportComponent } from './pages/main/Tools/summary-report/summar
 import { MessageListComponent } from './pages/main/Tools/message-list/message-list.component';
 import { DdnDashboardComponent } from './pages/main/Dashboard/ddn-dashboard/ddn-dashboard.component';
 import { PrevRateComponent } from './pages/main/SocialProfile/Health/prev-rate/prev-rate.component';
-import { LunchingComponent } from './lunching/lunching.component';
+//import { LunchingComponent } from './lunching/lunching.component';
 import { AgeGroupComponent } from './pages/main/Governance/age-group/age-group.component';
 import { FloodaffectedComponent } from './pages/main/Environment/floodaffected/floodaffected.component';
 import { PopulationOfIndigenousPeopleComponent } from './pages/main/Governance/population-of-indigenous-people/population-of-indigenous-people.component';
@@ -188,10 +188,10 @@ const routes: Routes = [
     path: 'home',
     component: GuestHomeComponent,
   },
-  {
-    path: 'lunching',
-    component: LunchingComponent,
-  },
+  // {
+  //   path: 'lunching',
+  //   component: LunchingComponent,
+  // },
   {
     path: 'register',
     component: RegisterComponent,

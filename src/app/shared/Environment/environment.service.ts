@@ -61,6 +61,7 @@ export class EnvironmentService {
       { responseType: 'json' }
     );
   }
+
   getNA(
     setYear: number,
     munCityId: string,
@@ -75,10 +76,11 @@ export class EnvironmentService {
     });
 
     return this.http.get<any>(
-      'https://localhost:7118/api/Menu/sector-percentage-Environment',
+      this.Base.url + '/Menu/sector-percentage-Environment',
       { params }
     );
   }
+
   getSocioEconomicNA(
     setYear: number,
     munCityId: string,
@@ -93,10 +95,11 @@ export class EnvironmentService {
     });
 
     return this.http.get<any>(
-      'https://localhost:7118/api/Menu/sector-percentage-Socio_Economic_Activity',
+      this.Base.url + '/Menu/sector-percentage-Socio_Economic_Activity',
       { params }
     );
   }
+
   getSocialProfNA(
     setYear: number,
     munCityId: string,
@@ -111,10 +114,11 @@ export class EnvironmentService {
     });
 
     return this.http.get<any>(
-      'https://localhost:7118/api/Menu/sector-percentage-Social_Profile',
+      this.Base.url + '/Menu/sector-percentage-Social_Profile',
       { params }
     );
   }
+
   getInfraNA(
     setYear: number,
     munCityId: string,
@@ -129,10 +133,11 @@ export class EnvironmentService {
     });
 
     return this.http.get<any>(
-      'https://localhost:7118/api/Menu/sector-percentage-Infrastructure_and_Utilities',
+      this.Base.url + '/Menu/sector-percentage-Infrastructure_and_Utilities',
       { params }
     );
   }
+
   setNotApplicableModules(modules: string[]) {
     this.notApplicableModules = modules;
   }

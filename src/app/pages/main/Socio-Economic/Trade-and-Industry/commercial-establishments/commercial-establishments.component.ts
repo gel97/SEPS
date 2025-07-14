@@ -149,8 +149,18 @@ export class CommercialEstablishmentsComponent implements OnInit {
   }
 
   filterTypes(catId: any) {
-    this.listFilterType = this.list_of_Business.filter(
+    const filtered = this.list_of_Business.filter(
       (item: any) => item.catId == catId
+    );
+
+    // Remove duplicates by lineBusinessName
+    this.listFilterType = Array.from(
+      new Map(
+        filtered.map((item: { lineBusinessName: any }) => [
+          item.lineBusinessName,
+          item,
+        ])
+      ).values()
     );
   }
 
@@ -766,8 +776,16 @@ export class CommercialEstablishmentsComponent implements OnInit {
   }
 
   GetListComEstabCategory() {
-    this.service.Get_Com_Estab_Cat().subscribe((data: any) => {
-      this.list_of_category = data;
+    this.service.Get_Com_Estab_Cat().subscribe((data: any[]) => {
+      // Remove duplicates by catName
+      const uniqueMap = new Map();
+      data.forEach((item) => {
+        if (!uniqueMap.has(item.catName)) {
+          uniqueMap.set(item.catName, item);
+        }
+      });
+
+      this.list_of_category = Array.from(uniqueMap.values());
     });
   }
 

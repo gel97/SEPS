@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-
+var url = window.location.host;
 @Injectable({
   providedIn: 'root',
 })
@@ -9,6 +9,7 @@ export class BaseUrl {
   // readonly url = "https://localhost:44396/api"; //IIS
   //readonly url = "https://localhost:7292/api";
   readonly url = 'https://localhost:7118/api';
+  //readonly url = `http://${url}/sepsAPI/api`; for IIS
 
   //readonly url = "https://davaodelnorte.ph/sep/apidata/api"
 
