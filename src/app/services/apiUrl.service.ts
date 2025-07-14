@@ -781,6 +781,10 @@ export class ApiUrl {
   delete_environment = (transId: any) => `/Environment/${transId}`;
   post_report_environment = () => `/Environment/Reports`;
   post_import_Environment = (menuId: any) => `/Environment/Import/${menuId}`;
+
+  get_socio_economic_na = (setYear: number, munCityId: string) =>
+    `/api/Menu/sector-percentage-Socio_Economic_Activity?setYear=${setYear}&munCityId=${munCityId}`;
+
   //Environment Act
   get_list_environment_activities = (setYear: any, munCityId: any) =>
     `/EnvironmentAct/${setYear}/${munCityId}`;

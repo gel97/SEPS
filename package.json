@@ -27,6 +27,7 @@
     "@types/pdfmake": "^0.2.2",
     "angularx-social-login": "^4.1.0",
     "chart.js": "^4.5.0",
+    "chartjs-plugin-datalabels": "^2.2.0",
     "file-saver": "^2.0.5",
     "file-server": "^2.2.1",
     "jquery": "^3.6.4",

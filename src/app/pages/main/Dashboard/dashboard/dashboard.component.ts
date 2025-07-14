@@ -26,6 +26,8 @@ import { ProvOfficialService } from 'src/app/shared/Governance/prov-official.ser
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 import { EnvironmentService } from 'src/app/shared/Environment/environment.service';
 import { Chart, ChartType, ChartConfiguration, registerables } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-dashboard',
@@ -37,6 +39,8 @@ export class DashboardComponent implements OnInit {
   closeModal!: ElementRef;
   @ViewChild('barCanvas') barCanvas!: ElementRef<HTMLCanvasElement>;
   barChart: Chart | undefined;
+  //@ViewChild('barCanvas') barCanvas!: ElementRef;
+  @ViewChild('modalBarCanvas') modalBarCanvas!: ElementRef;
 
   imageChangedEvent: any = '';
   img: any = '';
@@ -78,6 +82,7 @@ export class DashboardComponent implements OnInit {
   isGuest: any;
   Prov: any = {};
   ProOfficial: any = [];
+  chart: any;
 
   ngOnInit(): void {
     const guestFlag = localStorage.getItem('guest');
@@ -89,74 +94,124 @@ export class DashboardComponent implements OnInit {
     this.GetAllMunicipalitiesWithGovernance();
     this.loadImage();
     this.GetNews();
-    Chart.register(...registerables);
+    Chart.register(...registerables, ChartDataLabels);
   }
   //CHARTS
-  renderBarChart(): void {
-  if (!this.municipalityWithGovData || this.municipalityWithGovData.length === 0) {
-    console.warn('No data to render chart');
-    return;
+  openChartModal() {
+    const modal = new bootstrap.Modal(document.getElementById('chartModal'));
+    modal.show();
+
+    // Re-render the chart in the modal if needed
+    setTimeout(() => {
+      this.createChart(this.modalBarCanvas.nativeElement);
+    }, 300); // wait for modal to be visible
   }
 
-  const sortedData = [...this.municipalityWithGovData].sort((a, b) => b.overall - a.overall);
+  createChart(canvas: HTMLCanvasElement) {
+    if (this.chart) {
+      this.chart.destroy();
+    }
 
-  const labels = sortedData.map((item) => item.munCityName);
-  const values = sortedData.map((item) => item.overall);
-
-  const context = this.barCanvas?.nativeElement?.getContext('2d');
-  if (!context) {
-    console.error('Canvas context not found');
-    return;
+    this.chart = new Chart(canvas, {
+      type: 'bar',
+      data: {
+        labels: ['High', 'Low'],
+        datasets: [
+          {
+            label: 'Municipality Scores',
+            data: [80, 20],
+            backgroundColor: ['green', 'red'],
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+      },
+    });
   }
+  renderBarChart(
+    canvasElement: HTMLCanvasElement = this.barCanvas?.nativeElement
+  ): void {
+    if (
+      !this.municipalityWithGovData ||
+      this.municipalityWithGovData.length === 0
+    ) {
+      console.warn('No data to render chart');
+      return;
+    }
 
-  if (this.barChart) {
-    this.barChart.destroy(); // destroy old chart if exists
-  }
+    const sortedData = [...this.municipalityWithGovData].sort(
+      (a, b) => b.overall - a.overall
+    );
 
-  this.barChart = new Chart(context, {
-    type: 'bar',
-    data: {
-      labels,
-      datasets: [
-        {
-          label: 'Overall Rating (%)',
-          data: values,
-          backgroundColor: '#28a745',
+    const labels = sortedData.map((item) => item.munCityName);
+    const values = sortedData.map((item) => item.overall);
+
+    const context = canvasElement?.getContext('2d');
+    if (!context) {
+      console.error('Canvas context not found');
+      return;
+    }
+
+    if (this.barChart) {
+      this.barChart.destroy();
+    }
+
+    this.barChart = new Chart(context, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'Overall Rating (%)',
+            data: values,
+            backgroundColor: '#28a745',
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        indexAxis: 'y',
+        scales: {
+          x: {
+            beginAtZero: true,
+            max: 100,
+            title: {
+              display: true,
+              text: 'Percentage',
+            },
+          },
+          y: {
+            ticks: {
+              autoSkip: false,
+            },
+          },
         },
-      ],
-    },
-    options: {
-      responsive: true,
-      indexAxis: 'y',
-      scales: {
-        x: {
-          beginAtZero: true,
-          max: 100,
-          title: {
+        plugins: {
+          legend: {
             display: true,
-            text: 'Percentage',
           },
-        },
-        y: {
-          ticks: {
-            autoSkip: false,
+          tooltip: {
+            callbacks: {
+              label: (context) => `${context.parsed.x.toFixed(2)}%`,
+            },
+          },
+          datalabels: {
+            anchor: 'end',
+            align: 'right',
+            color: '#000',
+            formatter: (value: number) => `${value.toFixed(2)}%`,
+            font: {
+              weight: 'bold',
+            },
           },
         },
       },
-      plugins: {
-        legend: {
-          display: true,
-        },
-        tooltip: {
-          callbacks: {
-            label: (context) => `${context.parsed.x.toFixed(2)}%`,
-          },
-        },
-      },
-    },
-  });
-}
-
+      plugins: [ChartDataLabels],
+    });
+  }
 
   private loadImage() {
     const id =
