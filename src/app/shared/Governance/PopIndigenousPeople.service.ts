@@ -53,4 +53,41 @@ export class PopulationOfIndigenousPeopleService {
       responseType: 'json',
     });
   }
+  //prkIP
+  GetBarangayPrk(): Observable<any[]> {
+    return this.Http.post<any[]>(
+      this.Base.url +
+        this.ApiUrl.post_get_prkBrgyIp(this.Auth.munCityId, this.Auth.setYear),
+      { responseType: 'json' }
+    );
+  }
+  AddPrkIP(ViewPrkChair: any = {}) {
+    return this.Http.post(
+      this.Base.url + this.ApiUrl.post_save_purokIp(),
+      ViewPrkChair,
+      { responseType: 'json' }
+    );
+  }
+  EditPrk(editPrk: any = {}) {
+    console.log(editPrk);
+    return this.Http.post(
+      this.Base.url + this.ApiUrl.post_update_purokIp(),
+      editPrk,
+      { responseType: 'json' }
+    );
+  }
+  DeletePrk(transId: any) {
+    return this.Http.delete(
+      this.Base.url + this.ApiUrl.delete_purokIp(transId),
+      {
+        responseType: 'text',
+      }
+    );
+  }
+  ListPrkBrgy() {
+    return this.Http.post<any[]>(
+      this.Base.url + this.ApiUrl.post_list_PrkBarangayIP(this.Auth.munCityId),
+      { responseType: 'json' }
+    );
+  }
 }

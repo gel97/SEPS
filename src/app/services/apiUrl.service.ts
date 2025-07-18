@@ -80,6 +80,27 @@ export class ApiUrl {
   delete_Prk = (transId: any) => `/PurokChair/${transId}`;
   post_import_purok = () => `/PurokChair/Import`;
 
+  //sitio
+  post_save_purokIp = () => `/PurokIp/SavePuroIP`;
+  post_update_purokIp = () => `/PurokIp/Update`;
+  delete_purokIp = (transId: any) => `/PurokIp/${transId}`;
+  get_list_purokIp = (munCityId: any, setYear: any) =>
+    `/PurokIp/${setYear}/${munCityId}`;
+  post_get_prkBrgyIp = (munCityId: any, setYear: any) =>
+    `/PurokIp/GetPurokIPBarangays?munCityId=${munCityId}&setYear=${setYear}`;
+  post_list_PrkBarangayIP = (munCityId: any) =>
+    `/PurokIp/ListBarangays?munCityId=${munCityId}`;
+
+  // for N/A
+  get_notApplicableModules = (
+    munCityId: string,
+    setYear: number,
+    userId: string
+  ) =>
+    `/Menu/api/na-modules?munCityId=${munCityId}&setYear=${setYear}&userId=${userId}`;
+
+  post_save_notApplicableModules = () => `/Menu/api/na-modules`;
+
   //Physical Geographic Profile
   get_get_geo = (munCityId: any, setYear: any) =>
     `/PhyGeoProf/${setYear}/${munCityId}`;

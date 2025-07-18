@@ -57,6 +57,8 @@ export class DashboardComponent implements OnInit {
   selectedMunicipality: any = null;
   showModal = false;
   selectedYear: number = this.auth.activeSetYear;
+  selectedChartType: string = 'bar';
+
   //isGuest: boolean = false;
   showOverallModal = false;
 
@@ -144,7 +146,6 @@ export class DashboardComponent implements OnInit {
     const sortedData = [...this.municipalityWithGovData].sort(
       (a, b) => b.overall - a.overall
     );
-
     const labels = sortedData.map((item) => item.munCityName);
     const values = sortedData.map((item) => item.overall);
 
@@ -158,22 +159,48 @@ export class DashboardComponent implements OnInit {
       this.barChart.destroy();
     }
 
+    let chartType: ChartType =
+      this.selectedChartType === 'horizontalBar'
+        ? 'bar'
+        : (this.selectedChartType as ChartType);
+
     this.barChart = new Chart(context, {
-      type: 'bar',
+      type: chartType,
       data: {
         labels,
         datasets: [
           {
             label: 'Overall Rating (%)',
             data: values,
-            backgroundColor: '#28a745',
+            backgroundColor: [
+              '#4caf50', // green
+              '#f44336', // red
+              '#2196f3', // blue
+              '#ffeb3b', // yellow
+              '#9c27b0', // purple
+              '#ff9800', // orange
+              '#009688', // teal
+              '#e91e63', // pink
+              '#607d8b', // blue-grey
+              '#795548', // brown
+            ],
+            borderWidth: 1,
+            clip: false, // Prevents cutting off
           },
         ],
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        indexAxis: 'y',
+        indexAxis: this.selectedChartType === 'horizontalBar' ? 'y' : 'x',
+        layout: {
+          padding: {
+            left: 10,
+            right: 40, // 🔧 Prevent clipping of 100.00%
+            top: 10,
+            bottom: 10,
+          },
+        },
         scales: {
           x: {
             beginAtZero: true,
@@ -195,12 +222,13 @@ export class DashboardComponent implements OnInit {
           },
           tooltip: {
             callbacks: {
-              label: (context) => `${context.parsed.x.toFixed(2)}%`,
+              label: (context) => `${context.parsed.toFixed(2)}%`,
             },
           },
           datalabels: {
             anchor: 'end',
-            align: 'right',
+            align:
+              this.selectedChartType === 'horizontalBar' ? 'start' : 'right',
             color: '#000',
             formatter: (value: number) => `${value.toFixed(2)}%`,
             font: {
@@ -211,6 +239,9 @@ export class DashboardComponent implements OnInit {
       },
       plugins: [ChartDataLabels],
     });
+  }
+  onChartTypeChange() {
+    this.renderBarChart(); // Re-render the chart with new type
   }
 
   private loadImage() {

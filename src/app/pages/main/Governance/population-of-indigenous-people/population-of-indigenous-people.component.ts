@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { PopulationOfIndigenousPeopleService } from 'src/app/shared/Governance/PopIndigenousPeople.service';
 import { AuthService } from 'src/app/services/auth.service';
 import Swal from 'sweetalert2';
@@ -6,6 +6,7 @@ import { ImportComponent } from 'src/app/components/import/import.component';
 import { PdfComponent } from 'src/app/components/pdf/pdf.component';
 import { PdfService } from 'src/app/services/pdf.service';
 import { ReportsService } from 'src/app/shared/Tools/reports.service';
+import { isEmptyObject } from 'jquery';
 
 @Component({
   selector: 'app-population-of-indigenous-people',
@@ -13,11 +14,13 @@ import { ReportsService } from 'src/app/shared/Tools/reports.service';
   styleUrls: ['./population-of-indigenous-people.component.css'],
 })
 export class PopulationOfIndigenousPeopleComponent implements OnInit {
+  listData: any;
   constructor(
     private pdfService: PdfService,
     private reportService: ReportsService,
     private service: PopulationOfIndigenousPeopleService,
-    private auth: AuthService
+    private auth: AuthService,
+    private cdr: ChangeDetectorRef
   ) {}
   message = 'Population of Indigenous People';
 
@@ -53,6 +56,12 @@ export class PopulationOfIndigenousPeopleComponent implements OnInit {
   isAdd: boolean = false;
   dummy_addData: any = {};
   dummyData: any = {};
+  isBarangay: boolean = true;
+  listPrkBrgy: any[] = [];
+  barangay: any = { sitio: [] };
+  isAccordionOpen: boolean[] = [];
+  isEditMode: boolean = false;
+  editPrk: any = {};
   @ViewChild(ImportComponent)
   private importComponent!: ImportComponent;
   @ViewChild('closebutton')
@@ -64,16 +73,33 @@ export class PopulationOfIndigenousPeopleComponent implements OnInit {
   Init() {
     this.GetBarangayList();
     this.getIp();
+    this.GetBarangayPrk();
   }
 
   ngOnInit(): void {
+    this.Init();
     this.GetBarangayList();
     this.getIp();
+    this.isAccordionOpen = this.listPrkBrgy.map(() => false);
   }
+  toggleAccordion(index: number) {
+    this.isAccordionOpen[index] = !this.isAccordionOpen[index];
+  }
+  GetBarangayPrk() {
+    this.service.GetBarangayPrk().subscribe((data) => {
+      console.log('Data from service:', data);
+      this.listPrkBrgy = data;
+      this.isAccordionOpen = new Array(data.length).fill(false); // Sync open state
+    });
+  }
+
   import() {
     let importData = 'Population of Indigenous People';
     // this.view = this.importComponent.viewData;
     this.importComponent.import(importData);
+  }
+  handleOnTabChange(isBarangay: boolean) {
+    this.isBarangay = isBarangay;
   }
   public showOverlay = false;
   importMethod() {
@@ -377,6 +403,121 @@ export class PopulationOfIndigenousPeopleComponent implements OnInit {
         console.error('Error fetching IP List:', error);
       }
     );
+  }
+  //prkIP
+  saveDataIP() {
+    if (!isEmptyObject(this.data)) {
+      this.data.munCityId = this.auth.munCityId;
+      this.data.setYear = this.auth.activeSetYear;
+
+      if (!this.data.brgyId) {
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: 'Barangay ID is required',
+          showConfirmButton: true,
+        });
+        return;
+      }
+
+      this.service.AddPrkIP(this.data).subscribe({
+        next: () => {
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Purok Chair has been added successfully!',
+            showConfirmButton: false,
+            timer: 1000,
+          });
+
+          this.GetBarangayPrk(); // Refresh UI with updated data
+          this.data = {};
+          (document.activeElement as HTMLElement)?.blur(); // Fix aria-hidden warning
+          this.closebutton.nativeElement.click(); // Close modal
+        },
+        error: (err) => {
+          console.error('Error adding Purok Chair: ', err);
+          Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'Error adding Purok Chair',
+            showConfirmButton: true,
+          });
+        },
+      });
+    } else {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Please fill out the required fields',
+        showConfirmButton: true,
+      });
+    }
+  }
+  EditPrk() {
+    if (this.data.brgyId) {
+      // Make sure we have a valid brgyId (indicating an update)
+      this.data.munCityId = this.auth.munCityId;
+      this.data.setYear = this.auth.activeSetYear;
+
+      // Call the EditPrk service to update the data
+      this.service.EditPrk(this.data).subscribe({
+        next: (response) => {
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Purok Chair has been updated successfully!',
+            showConfirmButton: false,
+            timer: 1000,
+          });
+
+          this.GetBarangayPrk(); // Refresh the UI with updated data
+          this.data = {}; // Reset data after successful update
+          (document.activeElement as HTMLElement)?.blur(); // Fix aria-hidden warning
+          this.closebutton.nativeElement.click(); // Close modal
+        },
+        error: (err) => {
+          console.error('Error updating Purok Chair: ', err);
+          Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'Error updating Purok Chair',
+            showConfirmButton: true,
+          });
+        },
+      });
+    } else {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Barangay ID is required for updating',
+        showConfirmButton: true,
+      });
+    }
+  }
+  DeleteData(transId: any, index: any, data: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.service.DeletePrk(transId).subscribe({
+          next: (_data) => {},
+          error: (err) => {
+            Swal.fire('Oops!', 'Something went wrong.', 'error');
+          },
+          complete: () => {
+            this.Init();
+            Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+          },
+        });
+      }
+    });
   }
 
   clearData() {

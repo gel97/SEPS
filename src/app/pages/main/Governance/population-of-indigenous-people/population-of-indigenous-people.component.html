@@ -33,7 +33,7 @@
                 Population of Indigenous People
               </h1>
             </div>
-            <div class="x-space-between">
+            <div class="x-space-between" *ngIf="isBarangay">
               <div class="x-space-between">
                 <app-export-excel
                   apiControllerName="Benificiaries"
@@ -43,7 +43,7 @@
                 ></app-import-excel>
               </div>
             </div>
-            <div class="form-inline float-right">
+            <div class="form-inline float-right" *ngIf="isBarangay">
               <app-admin>
                 <button
                   type="button"
@@ -65,8 +65,24 @@
                 <p>List of Population of Indigenous People:</p>
               </div>
             </div>
-
-            <div class="form-group">
+            <ul class="nav nav-tabs pb-2">
+              <li class="nav-item" (click)="handleOnTabChange(true)">
+                <a
+                  class="nav-link x-cursor"
+                  [ngClass]="isBarangay ? 'active fw-bold' : ''"
+                  aria-current="page"
+                  >Barangay
+                </a>
+              </li>
+              <li class="nav-item" (click)="handleOnTabChange(false)">
+                <a
+                  class="nav-link x-cursor"
+                  [ngClass]="!isBarangay ? 'active fw-bold' : ''"
+                  >Purok / Sitio</a
+                >
+              </li>
+            </ul>
+            <div class="form-group" *ngIf="isBarangay">
               <div class="row">
                 <div class="row"></div>
                 <div class="table-responsive">
@@ -84,7 +100,7 @@
                           IP Population
                         </th>
                         <th scope="col" colspan="2" class="text-center">
-                          Total Population
+                          No. of Population OverAll
                         </th>
                         <th scope="col" rowspan="2"></th>
                       </tr>
@@ -93,8 +109,8 @@
                         <th class="text-center">Female</th>
                         <th class="text-center">Male</th>
                         <th class="text-center">Female</th>
-                        <th class="text-center">Male</th>
-                        <th class="text-center">Female</th>
+                        <th class="text-center">Non-IP Population</th>
+                        <th class="text-center">IP Population</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -117,8 +133,8 @@
                         <td class="text-center">{{ a.non_Ip_Female }}</td>
                         <td class="text-center">{{ a.ip_Male }}</td>
                         <td class="text-center">{{ a.ip_Female }}</td>
-                        <td class="text-center">{{ a.tot_pop_male }}</td>
-                        <td class="text-center">{{ a.tot_pop_female }}</td>
+                        <td class="text-center">{{ a.overall_nonIp }}</td>
+                        <td class="text-center">{{ a.overAll_ip }}</td>
                         <td>
                           <div class="d-inline-flex">
                             <app-admin>
@@ -172,16 +188,179 @@
                 </div>
               </div>
             </div>
+            <!--purok-->
+            <div class="table-responsive" *ngIf="!isBarangay">
+              <div class="container py-3">
+                <div class="accordion" id="faq">
+                  <div
+                    class="card mb-2"
+                    *ngFor="let barangay of listPrkBrgy; index as i"
+                  >
+                    <!-- Accordion Header -->
+                    <div
+                      class="card-header d-flex justify-content-between align-items-center cursor-pointer"
+                      [id]="'faqhead' + i"
+                      (click)="toggleAccordion(i)"
+                      [attr.aria-expanded]="isAccordionOpen[i]"
+                      [attr.aria-controls]="'faq' + i"
+                    >
+                      <h5 class="mb-0 font-weight-bold">
+                        {{ barangay.brgyName }}
+                      </h5>
+                      <i
+                        class="fa"
+                        [ngClass]="{
+                          'fa-chevron-down': !isAccordionOpen[i],
+                          'fa-chevron-up': isAccordionOpen[i]
+                        }"
+                      ></i>
+                    </div>
+
+                    <!-- Accordion Body -->
+                    <div
+                      [id]="'faq' + i"
+                      class="collapse"
+                      [class.show]="isAccordionOpen[i]"
+                      [attr.aria-labelledby]="'faqhead' + i"
+                      data-parent="#faq"
+                    >
+                      <div class="card-body">
+                        <!-- Add Button -->
+                        <div
+                          class="d-flex justify-content-between align-items-center mb-3"
+                        >
+                          <button
+                            type="button"
+                            class="btn btn-sm btn-primary rounded-circle"
+                            data-toggle="modal"
+                            (click)="clearData()"
+                            data-target="#ModalAdd2"
+                            (click)="data.brgyId = barangay.brgyId"
+                            title="Add Purok"
+                          >
+                            <i class="fa fa-plus"></i>
+                          </button>
+                          <!-- Placeholder for future tools like export/PDF -->
+                          <!-- <app-export-excel apiControllerName="PurokChair"></app-export-excel> -->
+                        </div>
+
+                        <!-- Purok Table -->
+
+                        <div class="table-responsive">
+                          <table class="table table-hover table-striped">
+                            <thead class="table-dark">
+                              <!-- First header row -->
+                              <tr>
+                                <th scope="col" rowspan="2" class="text-center">
+                                  #
+                                </th>
+                                <th scope="col" rowspan="2" class="text-center">
+                                  Purok / Sitio
+                                </th>
+                                <th scope="col" colspan="2" class="text-center">
+                                  Non-IP Population
+                                </th>
+                                <th scope="col" colspan="2" class="text-center">
+                                  IP Population
+                                </th>
+                                <th scope="col" colspan="2" class="text-center">
+                                  No. of Population Overall
+                                </th>
+                                <th scope="col" rowspan="2" class="text-center">
+                                  Actions
+                                </th>
+                              </tr>
+                              <!-- Second header row -->
+                              <tr>
+                                <th class="text-center">Male</th>
+                                <th class="text-center">Female</th>
+                                <th class="text-center">Male</th>
+                                <th class="text-center">Female</th>
+                                <th class="text-center">Non-IP</th>
+                                <th class="text-center">IP</th>
+                              </tr>
+                            </thead>
+
+                            <tbody>
+                              <tr
+                                *ngFor="
+                                  let purok of barangay.purokChairman;
+                                  let i = index
+                                "
+                              >
+                                <td class="text-center">{{ i + 1 }}</td>
+                                <td class="text-center">
+                                  {{ purok.purokName }}
+                                </td>
+
+                                <!-- Non-IP -->
+                                <td class="text-center">
+                                  {{ purok.prk_male_non }}
+                                </td>
+                                <td class="text-center">
+                                  {{ purok.prk_female_non }}
+                                </td>
+
+                                <!-- IP -->
+                                <td class="text-center">
+                                  {{ purok.purok_MaleIP }}
+                                </td>
+                                <td class="text-center">
+                                  {{ purok.purok_FemaleIP }}
+                                </td>
+
+                                <!-- Totals -->
+                                <td class="text-center">
+                                  {{ purok.prk_non_ip_overall }}
+                                </td>
+                                <td class="text-center">
+                                  {{ purok.prk_ip_overall }}
+                                </td>
+
+                                <!-- Actions -->
+                                <td class="text-center">
+                                  <div class="btn-group" role="group">
+                                    <button
+                                      class="btn btn-sm btn-info"
+                                      (click)="data = purok; editToggle()"
+                                      data-toggle="modal"
+                                      data-target="#ModalAdd2"
+                                      title="Edit"
+                                    >
+                                      <i class="fa fa-pen"></i>
+                                    </button>
+                                    <button
+                                      class="btn btn-sm btn-warning"
+                                      (click)="
+                                        DeleteData(purok.transId, i, purok)
+                                      "
+                                      title="Delete"
+                                    >
+                                      <i class="fa fa-trash"></i>
+                                    </button>
+                                  </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<!-- Add (Modal) -->
+<!--prkip-->
+<!-- ModalAdd2 -->
 <div
   class="modal fade bd-example-modal-lg"
-  id="ModalAdd"
+  id="ModalAdd2"
   tabindex="-1"
   role="dialog"
   aria-labelledby="exampleModalLabel"
@@ -190,15 +369,181 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">
-          Population of Indigenous People
-        </h5>
+        <h5 class="modal-title" id="exampleModalLabel">Purok / Sitio</h5>
         <button
           #closebutton
           type="button"
           class="close"
           data-dismiss="modal"
           data-target="#exampleModal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="row">
+          <!-- Name of Purok / Sitio -->
+          <div class="col-lg-12">
+            <label>Name of Purok / Sitio:</label>
+            <input
+              type="text"
+              class="form-control mb-2"
+              [(ngModel)]="data.purokName"
+            />
+          </div>
+
+          <!-- Category Tabs -->
+          <div class="col-lg-12 mt-3">
+            <ul class="nav nav-tabs" id="categoryTabs2">
+              <li class="nav-item">
+                <a
+                  class="nav-link active"
+                  id="ip-tab2"
+                  data-toggle="tab"
+                  href="#ip2"
+                  >Indigenous People (IP)</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  id="non-ip-tab2"
+                  data-toggle="tab"
+                  href="#non-ip2"
+                  >Non-Indigenous People (Non-IP)</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Tab Content -->
+          <div class="tab-content col-lg-12 mt-2">
+            <!-- IP Section -->
+            <div class="tab-pane fade show active" id="ip2">
+              <label for="ip-male">IP Male:</label>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="data.purok_MaleIP"
+                (input)="autoAssignCategory()"
+                (input)="calculateTotals()"
+              />
+              <label for="ip-female">IP Female:</label>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="data.purok_FemaleIP"
+                (input)="autoAssignCategory()"
+                (input)="calculateTotals()"
+              />
+
+              <label for="ip-total">IP Overall Total:</label>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="data.prk_ip_overall"
+              />
+            </div>
+
+            <!-- Non-IP Section -->
+            <div class="tab-pane fade" id="non-ip2">
+              <label for="non-ip-male">Non-IP Male:</label>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="data.prk_male_non"
+                (input)="autoAssignCategory()"
+                (input)="calculateTotals()"
+              />
+              <label for="non-ip-female">Non-IP Female:</label>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="data.prk_female_non"
+                (input)="autoAssignCategory()"
+                (input)="calculateTotals()"
+              />
+
+              <label for="non-ip-total">Non-IP Overall Total:</label>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="data.prk_non_ip_overall"
+              />
+            </div>
+          </div>
+
+          <!-- Modal Footer -->
+          <div class="col-lg-12">
+            <div class="modal-footer">
+              <!-- Add Mode Buttons -->
+              <ng-container *ngIf="!isEditMode">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  (click)="saveDataIP()"
+                  id="closeModal"
+                >
+                  <i class="fa fa-check"></i> Save
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  <i class="fa fa-times"></i> Close
+                </button>
+              </ng-container>
+
+              <!-- Edit Mode Buttons -->
+              <ng-container *ngIf="isEditMode">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  (click)="EditPrk()"
+                  aria-hidden="true"
+                >
+                  <i class="fas fa-edit"></i> Save Changes
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                  aria-hidden="true"
+                >
+                  <i class="fas fa-times"></i> Cancel
+                </button>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add (Modal)barangay -->
+<!-- ModalAdd -->
+<div
+  class="modal fade bd-example-modal-lg"
+  id="ModalAdd"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          Population of Indigenous People
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
           aria-label="Close"
         >
           <span aria-hidden="true">&times;</span>
@@ -219,22 +564,14 @@
 
           <!-- Category Tabs -->
           <div class="col-lg-12 mt-3">
-            <ul class="nav nav-tabs" id="categoryTabs">
+            <ul class="nav nav-tabs" id="categoryTabs1">
               <li class="nav-item">
-                <a
-                  class="nav-link active"
-                  id="ip-tab"
-                  data-toggle="tab"
-                  href="#ip"
+                <a class="nav-link active" data-toggle="tab" href="#ipTab"
                   >Indigenous People (IP)</a
                 >
               </li>
               <li class="nav-item">
-                <a
-                  class="nav-link"
-                  id="non-ip-tab"
-                  data-toggle="tab"
-                  href="#non-ip"
+                <a class="nav-link" data-toggle="tab" href="#nonIpTab"
                   >Non-Indigenous People (Non-IP)</a
                 >
               </li>
@@ -244,87 +581,96 @@
           <!-- Tab Content -->
           <div class="tab-content col-lg-12 mt-2">
             <!-- IP Section -->
-            <div class="tab-pane fade show active" id="ip">
+            <div class="tab-pane fade show active" id="ipTab">
               <label for="ip-male">IP Male:</label>
               <input
                 type="number"
                 class="form-control"
                 [(ngModel)]="data.ip_Male"
-                [(ngModel)]="dummy_addData.ip_Male"
                 (input)="autoAssignCategory()"
-                (input)="calculateTotals()"
               />
+
               <label for="ip-female">IP Female:</label>
               <input
                 type="number"
                 class="form-control"
                 [(ngModel)]="data.ip_Female"
                 (input)="autoAssignCategory()"
-                (input)="calculateTotals()"
+              />
+
+              <label for="ip-total">IP Overall Total:</label>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="data.overAll_ip"
               />
             </div>
 
             <!-- Non-IP Section -->
-            <div class="tab-pane fade" id="non-ip">
+            <div class="tab-pane fade" id="nonIpTab">
               <label for="non-ip-male">Non-IP Male:</label>
               <input
                 type="number"
                 class="form-control"
                 [(ngModel)]="data.non_Ip_Male"
                 (input)="autoAssignCategory()"
-                (input)="calculateTotals()"
               />
+
               <label for="non-ip-female">Non-IP Female:</label>
               <input
                 type="number"
                 class="form-control"
                 [(ngModel)]="data.non_Ip_Female"
                 (input)="autoAssignCategory()"
-                (input)="calculateTotals()"
+              />
+
+              <label for="non-ip-total">Non-IP Overall Total:</label>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="data.overall_nonIp"
               />
             </div>
           </div>
 
           <!-- Modal Footer -->
-          <div class="col-lg-12">
+          <div class="col-lg-12 mt-4">
             <div class="modal-footer">
-              <button
-                type="button"
-                *ngIf="visible"
-                class="btn btn-primary"
-                (click)="saveData()"
-                id="closeModal"
-              >
-                <i class="fa fa-check"></i> Save
-              </button>
-              <button
-                type="button"
-                *ngIf="visible"
-                class="btn btn-secondary"
-                data-dismiss="modal"
-                data-target="#exampleModal"
-              >
-                <i class="fa fa-times"></i> Close
-              </button>
-              <button
-                type="button"
-                *ngIf="not_visible"
-                (click)="EditIp()"
-                aria-hidden="true"
-                class="btn btn-primary"
-              >
-                <i class="fas fa-edit"></i>Save Changes</button
-              >&nbsp;
-              <button
-                type="button"
-                *ngIf="not_visible"
-                class="btn btn-secondary"
-                data-dismiss="modal"
-                data-target="#exampleModal"
-                aria-hidden="true"
-              >
-                <i class="fas fa-times"></i>Cancel
-              </button>
+              <!-- Add Mode Buttons -->
+              <ng-container *ngIf="!isEditMode">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  (click)="saveData()"
+                >
+                  <i class="fa fa-check"></i> Save
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  <i class="fa fa-times"></i> Close
+                </button>
+              </ng-container>
+
+              <!-- Edit Mode Buttons -->
+              <ng-container *ngIf="isEditMode">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  (click)="EditIp()"
+                >
+                  <i class="fas fa-edit"></i> Save Changes
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  <i class="fas fa-times"></i> Cancel
+                </button>
+              </ng-container>
             </div>
           </div>
         </div>

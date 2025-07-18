@@ -163,4 +163,29 @@ export class EnvironmentService {
   isModuleUpdated(key: string): boolean {
     return this.updatedModules.includes(key);
   }
+  getNotApplicableModulesFromServer(
+    setYear: number,
+    munCityId: string,
+    userId: string
+  ): Observable<string[]> {
+    const url =
+      this.Base.url +
+      this.ApiUrl.get_notApplicableModules(munCityId, setYear, userId);
+    return this.http.get<string[]>(url);
+  }
+  saveNotApplicableModulesToServer(
+    userId: string,
+    munCityId: string,
+    setYear: number,
+    moduleKeys: string[]
+  ): Observable<any> {
+    const url = this.Base.url + this.ApiUrl.post_save_notApplicableModules();
+    const body = {
+      userId,
+      munCityId,
+      setYear,
+      moduleKeys,
+    };
+    return this.http.post(url, body);
+  }
 }

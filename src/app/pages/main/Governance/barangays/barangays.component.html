@@ -29,7 +29,7 @@
                 ></label
               ><br />
             </div>
-            <div class="x-space-between">
+            <div class="x-space-between" *ngIf="isBarangay">
               <div class="x-space-between">
                 <app-export-excel
                   apiControllerName="Barangay"
