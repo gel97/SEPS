@@ -252,6 +252,23 @@
     <h6 class="fw-bold text-secondary mb-3">
       📊 Highest vs Lowest Municipality
     </h6>
+
+    <!-- 🔽 Chart Type Selector -->
+    <div class="mb-3 d-flex align-items-center gap-2">
+      <label class="fw-bold text-secondary mb-0 me-2">Select Chart Type:</label>
+      <select
+        [(ngModel)]="selectedChartType"
+        class="form-control w-auto"
+        (change)="onChartTypeChange()"
+      >
+        <option value="bar">Bar</option>
+        <option value="horizontalBar">Horizontal Bar</option>
+        <option value="pie">Pie</option>
+        <option value="doughnut">Doughnut</option>
+      </select>
+    </div>
+
+    <!-- 🔽 Chart Container -->
     <div class="chart-scroll-wrapper">
       <canvas #barCanvas></canvas>
     </div>
