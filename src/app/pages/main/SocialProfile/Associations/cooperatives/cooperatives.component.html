@@ -6,7 +6,10 @@
   <div *ngIf="showOverlay">
     <app-import-loading></app-import-loading>
   </div>
-  <div *ngIf="dataList.length>0; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
+  <div
+    *ngIf="dataList.length > 0; else isEmpty"
+    class="card o-hidden border-2 shadow-sm my-5"
+  >
     <div class="card-body p-0">
       <!-- Nested Row within Card Body -->
       <div class="row">
@@ -14,18 +17,27 @@
           <div class="p-5">
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-4">Cooperative</h1>
-              <label><strong>Associations - {{modifyCityMun(munCityName)}} </strong></label><br>
+              <label
+                ><strong
+                  >Associations - {{ modifyCityMun(munCityName) }}
+                </strong></label
+              ><br />
             </div>
             <form class="user collapse show" id="collapseExample">
-              <div class="form-inline float-right ">
+              <div class="form-inline float-right">
                 <app-admin>
-                  <button type="button" (click)="addData = {}; updateForm = false" class="btn btn-labeled btn-primary"
-                    data-toggle="modal" data-target="#ModalAdd">
+                  <button
+                    type="button"
+                    (click)="addData = {}; updateForm = false"
+                    class="btn btn-labeled btn-primary"
+                    data-toggle="modal"
+                    data-target="#ModalAdd"
+                  >
                     <i class="fa fa-plus"></i> Cooperative
                   </button>
                 </app-admin>
                 &nbsp;
-              <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
+                <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
               </div>
             </form>
             <br />
@@ -39,47 +51,69 @@
               <table class="table table-striped">
                 <thead class="table-dark">
                   <tr>
-                    <th scope="col" style="text-align: center;">#</th>
-                    <th scope="col" style="text-align: center;">Name</th>
-                    <th scope="col" style="text-align: center;">Members</th>
-                    <th scope="col" style="text-align: center;">Total Assets</th>
-                    <th scope="col" style="text-align: center;">Contact Person/ Designation</th>
-                    <th scope="col" style="text-align: center;">Contact Numbers</th>
-                    <th scope="col" style="text-align: center;">Location</th>
-                    <th scope="col" style="text-align: center;">Barangay</th>
+                    <th scope="col" style="text-align: center">#</th>
+                    <th scope="col" style="text-align: center">Name</th>
+                    <th scope="col" style="text-align: center">Members</th>
+                    <th scope="col" style="text-align: center">Total Assets</th>
+                    <th scope="col" style="text-align: center">
+                      Contact Person/ Designation
+                    </th>
+                    <th scope="col" style="text-align: center">
+                      Contact Numbers
+                    </th>
+                    <th scope="col" style="text-align: center">Location</th>
+                    <th scope="col" style="text-align: center">Barangay</th>
                     <!-- <th scope="col" style="text-align: center;">Geo-Coord.(Long,Lat)</th> -->
                     <th width="11.4%"></th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let dataItem of dataList; let i = index">
-                    <td style="text-align: center;">{{ i + 1 }}</td>
-                    <td style="text-align: center;">{{ dataItem.name }}</td>
-                    <td style="text-align: center;">{{ dataItem.membersNo }}</td>
-                    <td style="text-align: center;">{{ dataItem.totalAssets }}</td>
-                    <td style="text-align: center;">{{ dataItem.contactPerson }}</td>
-                    <td style="text-align: center;">{{ dataItem.contactNo }}</td>
-                    <td style="text-align: center;">{{ dataItem.location }}</td>
-                    <td style="text-align: center;">{{ dataItem.brgyName }}</td>
+                    <td style="text-align: center">{{ i + 1 }}</td>
+                    <td style="text-align: center">{{ dataItem.name }}</td>
+                    <td style="text-align: center">{{ dataItem.membersNo }}</td>
+                    <td style="text-align: center">
+                      {{ dataItem.totalAssets }}
+                    </td>
+                    <td style="text-align: center">
+                      {{ dataItem.contactPerson }}
+                    </td>
+                    <td style="text-align: center">{{ dataItem.contactNo }}</td>
+                    <td style="text-align: center">{{ dataItem.location }}</td>
+                    <td style="text-align: center">{{ dataItem.brgyName }}</td>
                     <!-- <td style="text-align: center;">{{ dataItem.longtitude }}, <br>{{ dataItem.latitude }}</td> -->
-                    <td style="text-align: center; padding: 12px 15px; ">
+                    <td style="text-align: center; padding: 12px 15px">
                       <app-admin>
                         <div class="flex-container">
                           <div class="flex-button">
-                            <button (click)="addData = dataItem; updateForm = true" data-toggle="modal"
-                              (click)="editToggle()" data-target="#ModalAdd" class="btn btn-info btn-circle"
-                              style="display: inline-block; margin-right: 10px; ">
-                              <i class="fas fa-pen"></i></button>
+                            <button
+                              (click)="addData = dataItem; updateForm = true"
+                              data-toggle="modal"
+                              (click)="editToggle()"
+                              data-target="#ModalAdd"
+                              class="btn btn-info btn-circle"
+                              style="display: inline-block; margin-right: 10px"
+                            >
+                              <i class="fas fa-pen"></i>
+                            </button>
                           </div>
                           <div class="flex-button">
-                            <button (click)="SetMarker(dataItem); addData = dataItem" data-toggle="modal"
-                              data-target="#gmapModal" class="btn btn-success btn-circle"
-                              style="display: inline-block; margin-right: 10px; ">
-                              <i class="fas fa-globe"></i></button>
+                            <button
+                              (click)="SetMarker(dataItem); addData = dataItem"
+                              data-toggle="modal"
+                              data-target="#gmapModal"
+                              class="btn btn-success btn-circle"
+                              style="display: inline-block; margin-right: 10px"
+                            >
+                              <i class="fas fa-globe"></i>
+                            </button>
                           </div>
                           <div class="flex-button">
-                            <button class="btn btn-warning btn-circle" style="display: inline-block;"
-                              (click)="DeleteAssociation(dataItem)">
+                            <button
+                              class="btn btn-warning btn-circle"
+                              style="display: inline-block"
+                              (click)="DeleteAssociation(dataItem)"
+                            >
                               <i class="fas fa-trash"></i>
                             </button>
                           </div>
@@ -89,6 +123,91 @@
                   </tr>
                 </tbody>
               </table>
+              <!--Sources-->
+              <!-- ✅ Add Source Form -->
+              <app-admin>
+                <div *ngIf="showAddForm" class="card mt-4">
+                  <div class="card-header bg-dark text-white">Add Source</div>
+                  <div class="card-body">
+                    <form (ngSubmit)="addSource()" #sourceForm="ngForm">
+                      <div class="form-group">
+                        <label for="sourceName">Source Name</label>
+                        <input
+                          type="text"
+                          id="sourceName"
+                          class="form-control"
+                          name="sourceName"
+                          [(ngModel)]="newSource.name"
+                          placeholder="Enter source name"
+                          required
+                        />
+                      </div>
+                      <button
+                        class="btn btn-primary mt-2"
+                        [disabled]="!sourceForm.valid"
+                      >
+                        <i class="fas fa-plus"></i> Add
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </app-admin>
+
+              <!-- ✅ Display Each Source -->
+              <div class="card mt-3" *ngFor="let source of sources">
+                <div class="card-body text-start">
+                  <h5 class="card-title mb-2">Source: {{ source.name }}</h5>
+
+                  <!-- ✏️ Edit Mode -->
+                  <div *ngIf="selectedSourceId === source.id; else viewMode">
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="newSource.name"
+                      placeholder="Edit source name"
+                    />
+                    <div class="mt-2">
+                      <app-admin>
+                        <button
+                          class="btn btn-success btn-sm me-1"
+                          (click)="updateSource()"
+                          title="Save"
+                        >
+                          <i class="fas fa-check"></i>
+                        </button>
+                        <button
+                          class="btn btn-secondary btn-sm"
+                          (click)="selectedSourceId = null"
+                          title="Cancel"
+                        >
+                          <i class="fas fa-times"></i>
+                        </button>
+                      </app-admin>
+                    </div>
+                  </div>
+
+                  <!-- 👁️ View Mode -->
+
+                  <ng-template #viewMode>
+                    <app-admin>
+                      <button
+                        class="btn btn-outline-dark btn-sm me-2"
+                        (click)="editSource(source)"
+                        title="Edit"
+                      >
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button
+                        class="btn btn-outline-danger btn-sm"
+                        (click)="deleteSource(source.id)"
+                        title="Delete"
+                      >
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </app-admin>
+                  </ng-template>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -99,64 +218,130 @@
 
 <!-- Modal -->
 
-<div class="modal fade" id="ModalAdd" tabindex="-1" role="dialog" aria-labelledby="ModalAddLabel"
-  aria-hidden="true">
+<div
+  class="modal fade"
+  id="ModalAdd"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="ModalAddLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title text-dark" id="ModalAddLabel">Cooperative</h5>
-        <button type="button" #closebutton class="btn-close" data-toggle="modal" data-target="#ModalAdd"
-          aria-hidden="true" aria-label="Close"></button>
+        <button
+          type="button"
+          #closebutton
+          class="btn-close"
+          data-toggle="modal"
+          data-target="#ModalAdd"
+          aria-hidden="true"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
         <div class="row">
           <div class="col-lg-6">
             <label for="type">Barangay :</label>
-            <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.brgyId"
-              [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false">
-              <option *ngFor="let item  of barangayList" value={{item.brgyId}}>{{item.brgyName}}</option>
+            <select
+              class="form-select"
+              aria-label="Default select example"
+              [(ngModel)]="addData.brgyId"
+              [ngClass]="toValidate.brgyId ? 'is-invalid' : ''"
+              (ngModelChange)="toValidate.brgyId = false"
+            >
+              <option
+                *ngFor="let item of barangayList"
+                value="{{ item.brgyId }}"
+              >
+                {{ item.brgyName }}
+              </option>
             </select>
           </div>
-        </div><br>
+        </div>
+        <br />
         <div class="form-group">
           <div class="">
             <div class="">
-
               <label>Name :</label>
-              <span *ngIf="required" style="color:#ff0000" for="category">Required</span>
-              <input type="text" class="form-control " id="" placeholder="" [(ngModel)]="addData.name"
-                [(ngModel)]="dummy_addData.name" [ngClass]="toValidate.name?'is-invalid':''"
-                (keyup)="toValidate.name=false" />
+              <span *ngIf="required" style="color: #ff0000" for="category"
+                >Required</span
+              >
+              <input
+                type="text"
+                class="form-control"
+                id=""
+                placeholder=""
+                [(ngModel)]="addData.name"
+                [(ngModel)]="dummy_addData.name"
+                [ngClass]="toValidate.name ? 'is-invalid' : ''"
+                (keyup)="toValidate.name = false"
+              />
             </div>
             <br />
             <div class="">
               <label for="exampleFormControlInput1">Members:</label>
-              <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="addData.membersNo"
-                [(ngModel)]="dummy_addData.membersNo" />
+              <input
+                type="number"
+                class="form-control"
+                id=""
+                placeholder=""
+                [(ngModel)]="addData.membersNo"
+                [(ngModel)]="dummy_addData.membersNo"
+              />
             </div>
             <br />
             <div class="">
               <label for="exampleFormControlInput1">Total Assets :</label>
-              <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="addData.totalAssets"
-                [(ngModel)]="dummy_addData.totalAssets" />
+              <input
+                type="number"
+                class="form-control"
+                id=""
+                placeholder=""
+                [(ngModel)]="addData.totalAssets"
+                [(ngModel)]="dummy_addData.totalAssets"
+              />
             </div>
             <br />
             <div class="">
-              <label for="exampleFormControlInput1">Contact Person/ Designation:</label>
-              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.contactPerson"
-                [(ngModel)]="dummy_addData.contactPerson" />
+              <label for="exampleFormControlInput1"
+                >Contact Person/ Designation:</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id=""
+                placeholder=""
+                [(ngModel)]="addData.contactPerson"
+                [(ngModel)]="dummy_addData.contactPerson"
+              />
             </div>
             <br />
             <div class="">
               <label for="exampleFormControlInput1">Contact Numbers</label>
-              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.contactNo"
-                [(ngModel)]="dummy_addData.contactNo" />
+              <input
+                type="text"
+                class="form-control"
+                id=""
+                placeholder=""
+                [(ngModel)]="addData.contactNo"
+                [(ngModel)]="dummy_addData.contactNo"
+              />
             </div>
             <br />
             <div class="">
-              <label for="exampleFormControlInput1">Location (#/Bldg/St./Purok):</label>
-              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.location"
-                [(ngModel)]="dummy_addData.location" />
+              <label for="exampleFormControlInput1"
+                >Location (#/Bldg/St./Purok):</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id=""
+                placeholder=""
+                [(ngModel)]="addData.location"
+                [(ngModel)]="dummy_addData.location"
+              />
             </div>
             <br />
           </div>
@@ -166,23 +351,46 @@
       <div class="modal-footer">
         <div class="left-absolute" *ngIf="visible">
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-              (ngModelChange)="onChange(isCheck)" [(ngModel)]="isCheck">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="flexCheckDefault"
+              (ngModelChange)="onChange(isCheck)"
+              [(ngModel)]="isCheck"
+            />
             <label class="form-check-label" for="flexCheckDefault">
               Several data
             </label>
           </div>
         </div>
-        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#ModalAdd"
-          aria-hidden="true">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-toggle="modal"
+          data-target="#ModalAdd"
+          aria-hidden="true"
+        >
           <i class="fas fa-times">&nbsp;</i>Close
         </button>
-        <button type="submit" *ngIf="updateForm==false" (click)="AddAssociation()" id="closeModal"
-          class="btn btn-primary">
+        <button
+          type="submit"
+          *ngIf="updateForm == false"
+          (click)="AddAssociation()"
+          id="closeModal"
+          class="btn btn-primary"
+        >
           Save changes
         </button>
-        <button type="button" *ngIf="updateForm==true" (click)="EditAssociation(); " data-toggle="modal"
-          data-target="#ModalAdd" aria-hidden="true" class="btn btn-primary">
+        <button
+          type="button"
+          *ngIf="updateForm == true"
+          (click)="EditAssociation()"
+          data-toggle="modal"
+          data-target="#ModalAdd"
+          aria-hidden="true"
+          class="btn btn-primary"
+        >
           <i class="fas fa-edit">&nbsp;</i>UPDATE
         </button>
       </div>
@@ -191,13 +399,24 @@
 </div>
 
 <!-- modal area GEO -->
-<div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="ModalAddLabel"
-  aria-hidden="true">
+<div
+  class="modal fade"
+  id="gmapModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="ModalAddLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="ModalAddLabel">SEPS GEOLOCATION TAGGING</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -205,9 +424,17 @@
         <app-gmap></app-gmap>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
         <app-admin>
-          <button type="button" class="btn btn-primary" (click)="EditAssociation()">Save changes</button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="EditAssociation()"
+          >
+            Save changes
+          </button>
         </app-admin>
       </div>
     </div>

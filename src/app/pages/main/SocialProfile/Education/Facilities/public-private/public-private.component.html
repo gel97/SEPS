@@ -3,79 +3,190 @@
     <app-no-data></app-no-data>
     <app-admin>
       <div class="text-center">
-        <button *ngIf="!hasData" (click)="isAdd = true;" class="btn btn-primary" data-toggle="modal"
-        data-target="#openModal">
-        <i class="fa fa-plus"></i>
-        Public and Private
-      </button>
+        <button
+          *ngIf="!hasData"
+          (click)="isAdd = true"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#openModal"
+        >
+          <i class="fa fa-plus"></i>
+          Public and Private
+        </button>
       </div>
     </app-admin>
   </ng-template>
-    <div *ngIf="hasData; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
-      <div class="card-body p-0">
-        <!-- Nested Row within Card Body -->
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="p-5">
-              <div class="text-center">
-                <h1 class="h4 text-gray-900 mb-4">Public and Private</h1>
-                <label><strong>Education/Facilities - {{modifyCityMun(munCityName)}}</strong></label>
+  <div
+    *ngIf="hasData; else isEmpty"
+    class="card o-hidden border-2 shadow-sm my-5"
+  >
+    <div class="card-body p-0">
+      <!-- Nested Row within Card Body -->
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="p-5">
+            <div class="text-center">
+              <h1 class="h4 text-gray-900 mb-4">Public and Private</h1>
+              <label
+                ><strong
+                  >Education/Facilities -
+                  {{ modifyCityMun(munCityName) }}</strong
+                ></label
+              >
+            </div>
+            <div class="form-inline float-right mb-2">
+              <app-admin>
+                <button
+                  *ngIf="!hasData"
+                  (click)="isAdd = true"
+                  class="btn btn-primary"
+                  data-toggle="modal"
+                  data-target="#openModal"
+                >
+                  <i class="fa fa-plus"></i>
+                  Public and Private
+                </button>
+              </app-admin>
+              &nbsp;
+              <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
+            </div>
+            <br />
+            <div class="table-responsive">
+              <table class="table table-light table-striped">
+                <thead class="table-dark">
+                  <tr>
+                    <th width="120">SY</th>
+                    <th scope="col">Purely ES</th>
+                    <th scope="col">Purely JHS</th>
+                    <th scope="col">JHS and SHS</th>
+                    <th scope="col">Purely SHS</th>
+                    <th scope="col">Integrated ES and JHS</th>
+                    <th scope="col">Integrated ES, JHS, SHS</th>
+                    <th scope="col">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{ data.schoolYear }}</td>
+                    <td>{{ data.es }}</td>
+                    <td>{{ data.jhs }}</td>
+                    <td>{{ data.jhsShs }}</td>
+                    <td>{{ data.shs }}</td>
+                    <td>{{ data.esJhs }}</td>
+                    <td>{{ data.esJhsShs }}</td>
+                    <td>{{ data.total }}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <!--Sources-->
+              <!-- ✅ Add Source Form -->
+              <app-admin>
+                <div *ngIf="showAddForm" class="card mt-4">
+                  <div class="card-header bg-dark text-white">Add Source</div>
+                  <div class="card-body">
+                    <form (ngSubmit)="addSource()" #sourceForm="ngForm">
+                      <div class="form-group">
+                        <label for="sourceName">Source Name</label>
+                        <input
+                          type="text"
+                          id="sourceName"
+                          class="form-control"
+                          name="sourceName"
+                          [(ngModel)]="newSource.name"
+                          placeholder="Enter source name"
+                          required
+                        />
+                      </div>
+                      <button
+                        class="btn btn-primary mt-2"
+                        [disabled]="!sourceForm.valid"
+                      >
+                        <i class="fas fa-plus"></i> Add
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </app-admin>
+
+              <!-- ✅ Display Each Source -->
+              <div class="card mt-3" *ngFor="let source of sources">
+                <div class="card-body text-start">
+                  <h5 class="card-title mb-2">Source: {{ source.name }}</h5>
+
+                  <!-- ✏️ Edit Mode -->
+                  <div *ngIf="selectedSourceId === source.id; else viewMode">
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="newSource.name"
+                      placeholder="Edit source name"
+                    />
+                    <div class="mt-2">
+                      <app-admin>
+                        <button
+                          class="btn btn-success btn-sm me-1"
+                          (click)="updateSource()"
+                          title="Save"
+                        >
+                          <i class="fas fa-check"></i>
+                        </button>
+                        <button
+                          class="btn btn-secondary btn-sm"
+                          (click)="selectedSourceId = null"
+                          title="Cancel"
+                        >
+                          <i class="fas fa-times"></i>
+                        </button>
+                      </app-admin>
+                    </div>
+                  </div>
+
+                  <!-- 👁️ View Mode -->
+
+                  <ng-template #viewMode>
+                    <app-admin>
+                      <button
+                        class="btn btn-outline-dark btn-sm me-2"
+                        (click)="editSource(source)"
+                        title="Edit"
+                      >
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button
+                        class="btn btn-outline-danger btn-sm"
+                        (click)="deleteSource(source.id)"
+                        title="Delete"
+                      >
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </app-admin>
+                  </ng-template>
+                </div>
               </div>
-              <div  class="form-inline float-right mb-2">
+            </div>
+            <div *ngIf="hasData" class="form-inline float-right">
+              <div class="d-inline-flex">
                 <app-admin>
-                  <button *ngIf="!hasData" (click)="isAdd = true;" class="btn btn-primary " data-toggle="modal"
-                    data-target="#openModal">
-                    <i class="fa fa-plus"></i>
-                    Public and Private
+                  <button
+                    (click)="isAdd = false"
+                    class="btn btn-info btn-circle"
+                    data-toggle="modal"
+                    data-target="#openModal"
+                  >
+                    <i class="fa fa-pen"></i>
+                  </button>
+                  &nbsp;
+                </app-admin>
+                <app-admin>
+                  <button
+                    type="button"
+                    title="Delete"
+                    class="btn btn-warning btn-circle"
+                    (click)="DeleteData(data.transId)"
+                  >
+                    <i class="fa fa-trash"></i>
                   </button>
                 </app-admin>
-                &nbsp;
-                <app-pdf (myEvent)="GeneratePDF()"></app-pdf>  
-              </div>
-              <br>
-              <div class="table-responsive">
-                <table class="table table-light table-striped">
-                    <thead class="table-dark">
-                        <tr>
-                      <th width="120">SY </th>
-                      <th scope="col">Purely ES</th>
-                      <th scope="col">Purely JHS</th>
-                      <th scope="col">JHS and SHS</th>
-                      <th scope="col">Purely SHS</th>
-                      <th scope="col">Integrated ES and JHS</th>
-                      <th scope="col">Integrated ES, JHS, SHS</th>
-                      <th scope="col">Total</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>{{data.schoolYear}}</td>
-                      <td>{{data.es}}</td>
-                      <td>{{data.jhs}}</td>
-                      <td>{{data.jhsShs}}</td>
-                      <td>{{data.shs}}</td>
-                      <td>{{data.esJhs}}</td>
-                      <td>{{data.esJhsShs}}</td>
-                      <td>{{data.total}}</td>
-                    </tr>
-                   
-                  </tbody>
-                </table>
-              </div>
-              <div *ngIf="hasData" class="form-inline float-right ">
-                <div class="d-inline-flex">
-                  <app-admin>
-                    <button (click)="isAdd = false" class="btn btn-info btn-circle" data-toggle="modal"
-                      data-target="#openModal"><i class="fa fa-pen"></i>
-                    </button>
-                    &nbsp;
-                  </app-admin>
-                  <app-admin>
-                    <button type="button" title="Delete" class="btn btn-warning btn-circle"
-                      (click)="DeleteData(data.transId)"><i class="fa fa-trash"></i>
-                    </button>
-                  </app-admin>
-                </div>
               </div>
             </div>
           </div>
@@ -83,78 +194,143 @@
       </div>
     </div>
   </div>
-  
-  <div class="modal fade" id="openModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title text-dark" id="exampleModalLabel">Public and Private</h5>
-          <button type="button" #closebutton class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-lg-6">
-              <label> School Year</label>
-              <input type="text" class="form-control mb-2" [(ngModel)]="data.schoolYear">      
+</div>
+
+<div
+  class="modal fade"
+  id="openModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-dark" id="exampleModalLabel">
+          Public and Private
+        </h5>
+        <button
+          type="button"
+          #closebutton
+          class="btn-close"
+          data-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-lg-6">
+            <label> School Year</label>
+            <input
+              type="text"
+              class="form-control mb-2"
+              [(ngModel)]="data.schoolYear"
+            />
           </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-4 mb-2">
+            <label> Purely ES</label>
+            <input
+              type="number"
+              class="form-control mb-2"
+              [(ngModel)]="data.es"
+            />
           </div>
-          
-            <div class="row">
-                  
-                <div class="col-lg-4 mb-2">
-                    <label> Purely ES</label>
-                    <input type="number" class="form-control mb-2" [(ngModel)]="data.es">      
-                </div>
-                <div class="col-lg-4 mb-2">
-                    <label> Purely JHS</label>
-                    <input type="number" class="form-control mb-2" [(ngModel)]="data.jhs">      
-                </div>
-                <div class="col-lg-4 mb-2">
-                    <label> JHS and SHS</label>
-                    <input type="number" class="form-control mb-2" [(ngModel)]="data.jhsShs">      
-                </div>
-                <div class="col-lg-4 mb-2">
-                    <label> Purely SHS</label>
-                    <input type="number" class="form-control mb-2" [(ngModel)]="data.shs">      
-                </div>
-                <div class="col-lg-4 mb-2">
-                    <label> Integrated ES and JHS</label>
-                    <input type="number" class="form-control mb-2" [(ngModel)]="data.esJhs">      
-                </div>
-                <div class="col-lg-4 mb-2">
-                    <label> Integrated ES, JHS, SHS</label>
-                    <input type="number" class="form-control mb-2" [(ngModel)]="data.esJhsShs">      
-                </div>
-            </div>
-         
+          <div class="col-lg-4 mb-2">
+            <label> Purely JHS</label>
+            <input
+              type="number"
+              class="form-control mb-2"
+              [(ngModel)]="data.jhs"
+            />
+          </div>
+          <div class="col-lg-4 mb-2">
+            <label> JHS and SHS</label>
+            <input
+              type="number"
+              class="form-control mb-2"
+              [(ngModel)]="data.jhsShs"
+            />
+          </div>
+          <div class="col-lg-4 mb-2">
+            <label> Purely SHS</label>
+            <input
+              type="number"
+              class="form-control mb-2"
+              [(ngModel)]="data.shs"
+            />
+          </div>
+          <div class="col-lg-4 mb-2">
+            <label> Integrated ES and JHS</label>
+            <input
+              type="number"
+              class="form-control mb-2"
+              [(ngModel)]="data.esJhs"
+            />
+          </div>
+          <div class="col-lg-4 mb-2">
+            <label> Integrated ES, JHS, SHS</label>
+            <input
+              type="number"
+              class="form-control mb-2"
+              [(ngModel)]="data.esJhsShs"
+            />
+          </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-school" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" (click)="isAdd? AddData(): EditData()">Save
-            changes</button>
-        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-school" data-dismiss="modal">
+          Close
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="isAdd ? AddData() : EditData()"
+        >
+          Save changes
+        </button>
       </div>
     </div>
   </div>
-  
-  <!-- modal area -->
-  <div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">SEPS GEOLOCATION TAGGING</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <app-gmap></app-gmap>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" (click)="EditData()">Save changes</button>
-        </div>
+</div>
+
+<!-- modal area -->
+<div
+  class="modal fade"
+  id="gmapModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          SEPS GEOLOCATION TAGGING
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-gmap></app-gmap>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-primary" (click)="EditData()">
+          Save changes
+        </button>
       </div>
     </div>
   </div>
+</div>

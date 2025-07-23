@@ -117,7 +117,7 @@
                   >
                     <td>{{ i + 1 }}</td>
                     <td>{{ dataItem.name }}</td>
-                    <td>{{ dataItem.typeName}}</td>
+                    <td>{{ dataItem.typeName }}</td>
                     <td>{{ dataItem.description }}</td>
                     <td>{{ dataItem.contactPerson }}</td>
                     <td>{{ dataItem.contactNo }}</td>
@@ -160,6 +160,91 @@
                   </tr>
                 </tbody>
               </table>
+              <!--Sources-->
+              <!-- ✅ Add Source Form -->
+              <app-admin>
+                <div *ngIf="showAddForm" class="card mt-4">
+                  <div class="card-header bg-dark text-white">Add Source</div>
+                  <div class="card-body">
+                    <form (ngSubmit)="addSource()" #sourceForm="ngForm">
+                      <div class="form-group">
+                        <label for="sourceName">Source Name</label>
+                        <input
+                          type="text"
+                          id="sourceName"
+                          class="form-control"
+                          name="sourceName"
+                          [(ngModel)]="newSource.name"
+                          placeholder="Enter source name"
+                          required
+                        />
+                      </div>
+                      <button
+                        class="btn btn-primary mt-2"
+                        [disabled]="!sourceForm.valid"
+                      >
+                        <i class="fas fa-plus"></i> Add
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </app-admin>
+
+              <!-- ✅ Display Each Source -->
+              <div class="card mt-3" *ngFor="let source of sources">
+                <div class="card-body text-start">
+                  <h5 class="card-title mb-2">Source: {{ source.name }}</h5>
+
+                  <!-- ✏️ Edit Mode -->
+                  <div *ngIf="selectedSourceId === source.id; else viewMode">
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="newSource.name"
+                      placeholder="Edit source name"
+                    />
+                    <div class="mt-2">
+                      <app-admin>
+                        <button
+                          class="btn btn-success btn-sm me-1"
+                          (click)="updateSource()"
+                          title="Save"
+                        >
+                          <i class="fas fa-check"></i>
+                        </button>
+                        <button
+                          class="btn btn-secondary btn-sm"
+                          (click)="selectedSourceId = null"
+                          title="Cancel"
+                        >
+                          <i class="fas fa-times"></i>
+                        </button>
+                      </app-admin>
+                    </div>
+                  </div>
+
+                  <!-- 👁️ View Mode -->
+
+                  <ng-template #viewMode>
+                    <app-admin>
+                      <button
+                        class="btn btn-outline-dark btn-sm me-2"
+                        (click)="editSource(source)"
+                        title="Edit"
+                      >
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button
+                        class="btn btn-outline-danger btn-sm"
+                        (click)="deleteSource(source.id)"
+                        title="Delete"
+                      >
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </app-admin>
+                  </ng-template>
+                </div>
+              </div>
             </div>
           </div>
         </div>

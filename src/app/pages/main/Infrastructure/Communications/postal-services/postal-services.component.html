@@ -1,186 +1,396 @@
 <div class="">
-    <ng-template #isEmpty>
-        <app-import [data]="message" (testEvent)="parentMethod()" (importData)="importMethod()"></app-import>
-    </ng-template>
+  <ng-template #isEmpty>
+    <app-import
+      [data]="message"
+      (testEvent)="parentMethod()"
+      (importData)="importMethod()"
+    ></app-import>
+  </ng-template>
 
-    <div *ngIf="showOverlay">
-        <app-import-loading></app-import-loading>
-    </div>
-    <div *ngIf="viewData ; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
-        <div class="card-body p-0">
-            <!-- Nested Row within Card Body -->
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="p-5">
-                        <div class="text-center">
-                            <h1 class="h4 text-gray-900 mb-4">Postal Service Facilities</h1>
-                        </div>
-                        <div class="form-inline float-right ">
-                            <app-admin>
-                                <button  *ngIf="!hasData" (click)="isAdd = true;" class="btn btn-primary mb-2" data-bs-toggle="modal"
-                                    data-bs-target="#ModalAdd">
-                                    <i class="fa fa-plus"></i>
-                                    Postal Service Facility
-                                </button>
-                            </app-admin>
-                            &nbsp;
-                            <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
-                        </div>
-                        <br>
-                        <div class="table-responsive">
-                            <table class="table table-light table-striped">
-                                <thead class="table-dark">
-                                    <tr>
-                                        <th scope="col">Item: </th>
-                                        <th scope="col">Description/ Value</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Municipality/ City : </td>
-                                        <td><b>{{modifyCityMun(munCityName)}}</b></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Post Office/ Location : </td>
-                                        <td>{{data.location}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>No. of Post Masters :</td>
-                                        <td>{{data.postMastersNo}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>No. of Mail Sorters :</td>
-                                        <td>{{data.mailSortersNo}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>No. of Postal Clerks : </td>
-                                        <td>{{data.postalClerkNo}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>No. of Postal Carriers :</td>
-                                        <td>{{data.postalCarriersNo}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Mail Truck/ Van :</td>
-                                        <td>{{data.mailTruck}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Motorcycle :</td>
-                                        <td>{{data.motorcycle}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Bicycle :</td>
-                                        <td>{{data.bicycle}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Postal Stations :</td>
-                                        <td>{{data.postalStations}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div *ngIf="hasData" class="form-inline float-right ">
-                            <div class="d-inline-flex">
-                                <app-admin>
-                                    <button (click)="isAdd = false" class="btn btn-info btn-circle" data-toggle="modal"
-                                        data-target="#ModalAdd"><i class="fa fa-pen"></i>
-                                    </button>
-                                    &nbsp;
-                                </app-admin>
-                                <app-admin>
-                                    <button type="button" title="Delete" class="btn btn-warning btn-circle"
-                                        (click)="DeleteData(data.transId)"><i class="fa fa-trash"></i>
-                                    </button>
-                                </app-admin>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  <div *ngIf="showOverlay">
+    <app-import-loading></app-import-loading>
+  </div>
+  <div
+    *ngIf="viewData; else isEmpty"
+    class="card o-hidden border-2 shadow-sm my-5"
+  >
+    <div class="card-body p-0">
+      <!-- Nested Row within Card Body -->
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="p-5">
+            <div class="text-center">
+              <h1 class="h4 text-gray-900 mb-4">Postal Service Facilities</h1>
             </div>
+            <div class="form-inline float-right">
+              <app-admin>
+                <button
+                  *ngIf="!hasData"
+                  (click)="isAdd = true"
+                  class="btn btn-primary mb-2"
+                  data-bs-toggle="modal"
+                  data-bs-target="#ModalAdd"
+                >
+                  <i class="fa fa-plus"></i>
+                  Postal Service Facility
+                </button>
+              </app-admin>
+              &nbsp;
+              <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
+            </div>
+            <br />
+            <div class="table-responsive">
+              <table class="table table-light table-striped">
+                <thead class="table-dark">
+                  <tr>
+                    <th scope="col">Item:</th>
+                    <th scope="col">Description/ Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Municipality/ City :</td>
+                    <td>
+                      <b>{{ modifyCityMun(munCityName) }}</b>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Post Office/ Location :</td>
+                    <td>{{ data.location }}</td>
+                  </tr>
+                  <tr>
+                    <td>No. of Post Masters :</td>
+                    <td>{{ data.postMastersNo }}</td>
+                  </tr>
+                  <tr>
+                    <td>No. of Mail Sorters :</td>
+                    <td>{{ data.mailSortersNo }}</td>
+                  </tr>
+                  <tr>
+                    <td>No. of Postal Clerks :</td>
+                    <td>{{ data.postalClerkNo }}</td>
+                  </tr>
+                  <tr>
+                    <td>No. of Postal Carriers :</td>
+                    <td>{{ data.postalCarriersNo }}</td>
+                  </tr>
+                  <tr>
+                    <td>Mail Truck/ Van :</td>
+                    <td>{{ data.mailTruck }}</td>
+                  </tr>
+                  <tr>
+                    <td>Motorcycle :</td>
+                    <td>{{ data.motorcycle }}</td>
+                  </tr>
+                  <tr>
+                    <td>Bicycle :</td>
+                    <td>{{ data.bicycle }}</td>
+                  </tr>
+                  <tr>
+                    <td>Postal Stations :</td>
+                    <td>{{ data.postalStations }}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <!--Sources-->
+              <!-- ✅ Add Source Form -->
+              <app-admin>
+                <div *ngIf="showAddForm" class="card mt-4">
+                  <div class="card-header bg-dark text-white">Add Source</div>
+                  <div class="card-body">
+                    <form (ngSubmit)="addSource()" #sourceForm="ngForm">
+                      <div class="form-group">
+                        <label for="sourceName">Source Name</label>
+                        <input
+                          type="text"
+                          id="sourceName"
+                          class="form-control"
+                          name="sourceName"
+                          [(ngModel)]="newSource.name"
+                          placeholder="Enter source name"
+                          required
+                        />
+                      </div>
+                      <button
+                        class="btn btn-primary mt-2"
+                        [disabled]="!sourceForm.valid"
+                      >
+                        <i class="fas fa-plus"></i> Add
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </app-admin>
+
+              <!-- ✅ Display Each Source -->
+              <div class="card mt-3" *ngFor="let source of sources">
+                <div class="card-body text-start">
+                  <h5 class="card-title mb-2">Source: {{ source.name }}</h5>
+
+                  <!-- ✏️ Edit Mode -->
+                  <div *ngIf="selectedSourceId === source.id; else viewMode">
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="newSource.name"
+                      placeholder="Edit source name"
+                    />
+                    <div class="mt-2">
+                      <app-admin>
+                        <button
+                          class="btn btn-success btn-sm me-1"
+                          (click)="updateSource()"
+                          title="Save"
+                        >
+                          <i class="fas fa-check"></i>
+                        </button>
+                        <button
+                          class="btn btn-secondary btn-sm"
+                          (click)="selectedSourceId = null"
+                          title="Cancel"
+                        >
+                          <i class="fas fa-times"></i>
+                        </button>
+                      </app-admin>
+                    </div>
+                  </div>
+
+                  <!-- 👁️ View Mode -->
+
+                  <ng-template #viewMode>
+                    <app-admin>
+                      <button
+                        class="btn btn-outline-dark btn-sm me-2"
+                        (click)="editSource(source)"
+                        title="Edit"
+                      >
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button
+                        class="btn btn-outline-danger btn-sm"
+                        (click)="deleteSource(source.id)"
+                        title="Delete"
+                      >
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </app-admin>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="hasData" class="form-inline float-right">
+              <div class="d-inline-flex">
+                <app-admin>
+                  <button
+                    (click)="isAdd = false"
+                    class="btn btn-info btn-circle"
+                    data-toggle="modal"
+                    data-target="#ModalAdd"
+                  >
+                    <i class="fa fa-pen"></i>
+                  </button>
+                  &nbsp;
+                </app-admin>
+                <app-admin>
+                  <button
+                    type="button"
+                    title="Delete"
+                    class="btn btn-warning btn-circle"
+                    (click)="DeleteData(data.transId)"
+                  >
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </app-admin>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 
-<div class="modal fade" id="ModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title text-dark" id="exampleModalLabel">Postal Service Facility</h5>
-                <button type="button" #closebutton class="btn-close" data-bs-dismiss="modal" data-dismiss="modal"
-                    aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-lg-12"><br>
-                        <label>Postal Stations :</label>
-                        <input type="text" class="form-control" id="" placeholder=""
-                            [(ngModel)]="data.postalStations">
-                    </div>
-                    <div class="col-lg-12"><br>
-                        <label>Post Office/ Location :</label>
-                        <textarea class="form-control" rows="4" [(ngModel)]="data.location"></textarea>
-                    </div>
-                    <div class="col-lg-3"><br>
-                        <label>No. of Post Masters :</label>
-                        <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.postMastersNo">
-                    </div>
-                    <div class="col-lg-3"><br>
-                        <label>No. of Mail Sorters :</label>
-                        <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.mailSortersNo">
-                    </div>
-                    <div class="col-lg-3"><br>
-                        <label>No. of Postal Clerks :</label>
-                        <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.postalClerkNo">
-                    </div>
-                    <div class="col-lg-3"><br>
-                        <label>No. of Mail Carriers :</label>
-                        <input type="number" class="form-control" id="" placeholder=""
-                            [(ngModel)]="data.postalCarriersNo">
-                    </div>
-                    <div class="col-lg-3"><br>
-                        <label>Mail Truck/ Van :</label>
-                        <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.mailTruck">
-                    </div>
-                    <div class="col-lg-3"><br>
-                        <label>Motorcycle : </label>
-                        <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.motorcycle">
-                    </div>
-                    <div class="col-lg-3"><br>
-                        <label>Bicycle</label>
-                        <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="data.bicycle">
-                    </div>
-                    
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-school" data-bs-dismiss="modal" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" (click)="isAdd? AddData(): EditData()">Save
-                    changes</button>
-            </div>
+<div
+  class="modal fade"
+  id="ModalAdd"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-dark" id="exampleModalLabel">
+          Postal Service Facility
+        </h5>
+        <button
+          type="button"
+          #closebutton
+          class="btn-close"
+          data-bs-dismiss="modal"
+          data-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-lg-12">
+            <br />
+            <label>Postal Stations :</label>
+            <input
+              type="text"
+              class="form-control"
+              id=""
+              placeholder=""
+              [(ngModel)]="data.postalStations"
+            />
+          </div>
+          <div class="col-lg-12">
+            <br />
+            <label>Post Office/ Location :</label>
+            <textarea
+              class="form-control"
+              rows="4"
+              [(ngModel)]="data.location"
+            ></textarea>
+          </div>
+          <div class="col-lg-3">
+            <br />
+            <label>No. of Post Masters :</label>
+            <input
+              type="number"
+              class="form-control"
+              id=""
+              placeholder=""
+              [(ngModel)]="data.postMastersNo"
+            />
+          </div>
+          <div class="col-lg-3">
+            <br />
+            <label>No. of Mail Sorters :</label>
+            <input
+              type="number"
+              class="form-control"
+              id=""
+              placeholder=""
+              [(ngModel)]="data.mailSortersNo"
+            />
+          </div>
+          <div class="col-lg-3">
+            <br />
+            <label>No. of Postal Clerks :</label>
+            <input
+              type="number"
+              class="form-control"
+              id=""
+              placeholder=""
+              [(ngModel)]="data.postalClerkNo"
+            />
+          </div>
+          <div class="col-lg-3">
+            <br />
+            <label>No. of Mail Carriers :</label>
+            <input
+              type="number"
+              class="form-control"
+              id=""
+              placeholder=""
+              [(ngModel)]="data.postalCarriersNo"
+            />
+          </div>
+          <div class="col-lg-3">
+            <br />
+            <label>Mail Truck/ Van :</label>
+            <input
+              type="number"
+              class="form-control"
+              id=""
+              placeholder=""
+              [(ngModel)]="data.mailTruck"
+            />
+          </div>
+          <div class="col-lg-3">
+            <br />
+            <label>Motorcycle : </label>
+            <input
+              type="number"
+              class="form-control"
+              id=""
+              placeholder=""
+              [(ngModel)]="data.motorcycle"
+            />
+          </div>
+          <div class="col-lg-3">
+            <br />
+            <label>Bicycle</label>
+            <input
+              type="number"
+              class="form-control"
+              id=""
+              placeholder=""
+              [(ngModel)]="data.bicycle"
+            />
+          </div>
         </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-school"
+          data-bs-dismiss="modal"
+          data-dismiss="modal"
+        >
+          Close
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="isAdd ? AddData() : EditData()"
+        >
+          Save changes
+        </button>
+      </div>
     </div>
+  </div>
 </div>
 
 <!-- modal area -->
-<div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">SEPS GEOLOCATION TAGGING</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <app-gmap></app-gmap>
-            </div>
-            <div class="modal-footer">
-                <app-admin>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" (click)="EditData()">Save changes</button>
-                </app-admin>
-            </div>
-        </div>
+<div
+  class="modal fade"
+  id="gmapModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          SEPS GEOLOCATION TAGGING
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-gmap></app-gmap>
+      </div>
+      <div class="modal-footer">
+        <app-admin>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <button type="button" class="btn btn-primary" (click)="EditData()">
+            Save changes
+          </button>
+        </app-admin>
+      </div>
     </div>
+  </div>
 </div>

@@ -1,12 +1,19 @@
 <div class="">
   <ng-template #isEmpty>
-    <app-import [data]="message" (testEvent)="parentMethod()" (importData)="importMethod()"></app-import>
+    <app-import
+      [data]="message"
+      (testEvent)="parentMethod()"
+      (importData)="importMethod()"
+    ></app-import>
   </ng-template>
 
   <div *ngIf="showOverlay">
     <app-import-loading></app-import-loading>
   </div>
-  <div *ngIf="Telco123.length>0; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
+  <div
+    *ngIf="Telco123.length > 0; else isEmpty"
+    class="card o-hidden border-2 shadow-sm my-5"
+  >
     <div class="card-body p-0">
       <!-- Nested Row within Card Body -->
       <div class="row">
@@ -14,12 +21,21 @@
           <div class="p-5">
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-4">Telecommunication Systems</h1>
-              <label><strong>Communications Services - {{modifyCityMun(munCityName)}}</strong></label>
+              <label
+                ><strong
+                  >Communications Services -
+                  {{ modifyCityMun(munCityName) }}</strong
+                ></label
+              >
             </div>
-            <div class="form-inline float-right ">
+            <div class="form-inline float-right">
               <app-admin>
-                <button class="btn btn-primary" (click)="Add_tel = true" data-bs-toggle="modal"
-                  data-bs-target="#ModalAdd">
+                <button
+                  class="btn btn-primary"
+                  (click)="Add_tel = true"
+                  data-bs-toggle="modal"
+                  data-bs-target="#ModalAdd"
+                >
                   <i class="fa fa-plus"></i>
                   Telecommunication
                 </button>
@@ -27,27 +43,23 @@
               &nbsp;
               <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
             </div>
-            <br>
-            <br>
+            <br />
+            <br />
 
             <div class="row">
               <div class="col-lg-6">
-                <p>List of Telecommunication Systems
-                </p>
+                <p>List of Telecommunication Systems</p>
               </div>
-              <div class="col-lg-6 ">
-
-              </div>
+              <div class="col-lg-6"></div>
             </div>
             <div class="table-responsive">
               <table class="table table-light table-striped">
-                <thead class=table-dark>
+                <thead class="table-dark">
                   <tr>
-
                     <th scope="col"></th>
                     <th scope="col">Telecommunications Company</th>
                     <th scope="col">Type of Exchange/ Facilities</th>
-                    <th scope="col">Installed Lines </th>
+                    <th scope="col">Installed Lines</th>
                     <th scope="col">Total Subscribed Line</th>
                     <th scope="col">Contact Person/ Designation</th>
                     <th scope="col">Contact Details</th>
@@ -56,50 +68,153 @@
                     <!-- <th scope="col">Geo-Coord. (Long, Lat)
                     </th> -->
                     <th width="10%"></th>
-
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let text of Telco123; let i = index">
-                    <td>{{i +1}}</td>
-                    <td>{{text.telco}}</td>
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ text.telco }}</td>
                     <td class="text-justify" width="10%">
                       <div *ngFor="let item of list_of_type">
-                        <span *ngIf="text.type == item.id">{{item.name}}
-
+                        <span *ngIf="text.type == item.id"
+                          >{{ item.name }}
                         </span>
                       </div>
                     </td>
-                    <td>{{text.installed}}</td>
-                    <td>{{text.subscribed}}</td>
-                    <td>{{text.contactPerson}}</td>
-                    <td>{{text.contactNo}}</td>
-                    <td>{{text.location}}</td>
-                    <td>{{text.brgyName}}</td>
+                    <td>{{ text.installed }}</td>
+                    <td>{{ text.subscribed }}</td>
+                    <td>{{ text.contactPerson }}</td>
+                    <td>{{ text.contactNo }}</td>
+                    <td>{{ text.location }}</td>
+                    <td>{{ text.brgyName }}</td>
                     <!-- <td>{{text.longtitude}},<br> {{text.latitude}}</td> -->
 
                     <td>
                       <div class="d-inline-flex">
                         <app-admin>
-                          <button type="button" title="Edit" (click)="telco = text; Add_tel=false"
-                            class="btn btn-info btn-circle" data-toggle="modal" data-target="#ModalAdd"><i
-                              class="fa fa-pen"></i> </button>&nbsp;
-                        </app-admin>&nbsp;
-                        <button (click)="SetMarker(text);telco=text" class="btn btn-success btn-circle" role="button"
-                          data-toggle="modal" data-target="#gmapModal">
-                          <i class="fa fa-globe"></i></button> &nbsp;
+                          <button
+                            type="button"
+                            title="Edit"
+                            (click)="telco = text; Add_tel = false"
+                            class="btn btn-info btn-circle"
+                            data-toggle="modal"
+                            data-target="#ModalAdd"
+                          >
+                            <i class="fa fa-pen"></i></button
+                          >&nbsp; </app-admin
+                        >&nbsp;
+                        <button
+                          (click)="SetMarker(text); telco = text"
+                          class="btn btn-success btn-circle"
+                          role="button"
+                          data-toggle="modal"
+                          data-target="#gmapModal"
+                        >
+                          <i class="fa fa-globe"></i>
+                        </button>
+                        &nbsp;
                         <app-admin>
-                          <button type="button" title="Delete" (click)="Delete_Tel(text.transId)"
-                            class="btn btn-warning btn-circle"><i class="fa fa-trash"></i> </button>
+                          <button
+                            type="button"
+                            title="Delete"
+                            (click)="Delete_Tel(text.transId)"
+                            class="btn btn-warning btn-circle"
+                          >
+                            <i class="fa fa-trash"></i>
+                          </button>
                         </app-admin>
                       </div>
                     </td>
-
                   </tr>
                 </tbody>
               </table>
+              <!--Sources-->
+              <!-- ✅ Add Source Form -->
+              <app-admin>
+                <div *ngIf="showAddForm" class="card mt-4">
+                  <div class="card-header bg-dark text-white">Add Source</div>
+                  <div class="card-body">
+                    <form (ngSubmit)="addSource()" #sourceForm="ngForm">
+                      <div class="form-group">
+                        <label for="sourceName">Source Name</label>
+                        <input
+                          type="text"
+                          id="sourceName"
+                          class="form-control"
+                          name="sourceName"
+                          [(ngModel)]="newSource.name"
+                          placeholder="Enter source name"
+                          required
+                        />
+                      </div>
+                      <button
+                        class="btn btn-primary mt-2"
+                        [disabled]="!sourceForm.valid"
+                      >
+                        <i class="fas fa-plus"></i> Add
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </app-admin>
+
+              <!-- ✅ Display Each Source -->
+              <div class="card mt-3" *ngFor="let source of sources">
+                <div class="card-body text-start">
+                  <h5 class="card-title mb-2">Source: {{ source.name }}</h5>
+
+                  <!-- ✏️ Edit Mode -->
+                  <div *ngIf="selectedSourceId === source.id; else viewMode">
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="newSource.name"
+                      placeholder="Edit source name"
+                    />
+                    <div class="mt-2">
+                      <app-admin>
+                        <button
+                          class="btn btn-success btn-sm me-1"
+                          (click)="updateSource()"
+                          title="Save"
+                        >
+                          <i class="fas fa-check"></i>
+                        </button>
+                        <button
+                          class="btn btn-secondary btn-sm"
+                          (click)="selectedSourceId = null"
+                          title="Cancel"
+                        >
+                          <i class="fas fa-times"></i>
+                        </button>
+                      </app-admin>
+                    </div>
+                  </div>
+
+                  <!-- 👁️ View Mode -->
+
+                  <ng-template #viewMode>
+                    <app-admin>
+                      <button
+                        class="btn btn-outline-dark btn-sm me-2"
+                        (click)="editSource(source)"
+                        title="Edit"
+                      >
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button
+                        class="btn btn-outline-danger btn-sm"
+                        (click)="deleteSource(source.id)"
+                        title="Delete"
+                      >
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </app-admin>
+                  </ng-template>
+                </div>
+              </div>
             </div>
-            <br>
+            <br />
           </div>
         </div>
       </div>
@@ -107,57 +222,135 @@
   </div>
 </div>
 
-<div class="modal fade" id="ModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="ModalAdd"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title text-dark" id="exampleModalLabel"> Telecommunication Systems</h5>
-        <button type="close" #closebutton class="btn-close" data-bs-dismiss="modal" data-dismiss="modal"
-          aria-label="Close"></button>
+        <h5 class="modal-title text-dark" id="exampleModalLabel">
+          Telecommunication Systems
+        </h5>
+        <button
+          type="close"
+          #closebutton
+          class="btn-close"
+          data-bs-dismiss="modal"
+          data-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
         <div class="form-group">
+          <div class="row"></div>
           <div class="row">
-          </div>
-          <div class="row">
-            <div class="col-lg-12"><br>
-              <label for="exampleFormControlTextarea1">Telecomms Company :</label>
-              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="telco.telco"
-                [ngClass]="toValidate.telco?'is-invalid':''" (keyup)="toValidate.telco=false">
+            <div class="col-lg-12">
+              <br />
+              <label for="exampleFormControlTextarea1"
+                >Telecomms Company :</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id=""
+                placeholder=""
+                [(ngModel)]="telco.telco"
+                [ngClass]="toValidate.telco ? 'is-invalid' : ''"
+                (keyup)="toValidate.telco = false"
+              />
             </div>
-            <div class="col-lg-12"><br>
-              <label for="exampleFormControlTextarea1">Type of Exchange/ Facilities :</label>
+            <div class="col-lg-12">
+              <br />
+              <label for="exampleFormControlTextarea1"
+                >Type of Exchange/ Facilities :</label
+              >
               <!-- <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="telco.type"   [ngClass]="toValidate.type?'is-invalid':''" (keyup)="toValidate.type=false"> -->
 
-              <select class="form-select" aria-label="Default select example" name="list_of_type"
-                [(ngModel)]="telco.type" [ngClass]="toValidate.type?'is-invalid':''"
-                (ngModelChange)="toValidate.type=false">
-                <option *ngFor="let list of list_of_type" value={{list.id}}>{{list.name}}</option>
+              <select
+                class="form-select"
+                aria-label="Default select example"
+                name="list_of_type"
+                [(ngModel)]="telco.type"
+                [ngClass]="toValidate.type ? 'is-invalid' : ''"
+                (ngModelChange)="toValidate.type = false"
+              >
+                <option *ngFor="let list of list_of_type" value="{{ list.id }}">
+                  {{ list.name }}
+                </option>
               </select>
             </div>
             <div class="row">
-              <div class="col-lg-6"><br>
-                <label for="exampleFormControlTextarea1"> Total Installed Lines :</label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="telco.installed"
-                  [ngClass]="toValidate.installed?'is-invalid':''" (keyup)="toValidate.installed=false">
+              <div class="col-lg-6">
+                <br />
+                <label for="exampleFormControlTextarea1">
+                  Total Installed Lines :</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id=""
+                  placeholder=""
+                  [(ngModel)]="telco.installed"
+                  [ngClass]="toValidate.installed ? 'is-invalid' : ''"
+                  (keyup)="toValidate.installed = false"
+                />
               </div>
-              <div class="col-lg-6"><br>
-                <label for="exampleFormControlTextarea1">Total Subscribed Lines :</label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="telco.subscribed"
-                  [ngClass]="toValidate.subscribed?'is-invalid':''" (keyup)="toValidate.subscribed=false">
+              <div class="col-lg-6">
+                <br />
+                <label for="exampleFormControlTextarea1"
+                  >Total Subscribed Lines :</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id=""
+                  placeholder=""
+                  [(ngModel)]="telco.subscribed"
+                  [ngClass]="toValidate.subscribed ? 'is-invalid' : ''"
+                  (keyup)="toValidate.subscribed = false"
+                />
               </div>
             </div>
-            <div class="col-lg-6"><br>
-              <label for="exampleFormControlTextarea1">Contact Person/ Designation :</label>
-              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="telco.contactPerson">
+            <div class="col-lg-6">
+              <br />
+              <label for="exampleFormControlTextarea1"
+                >Contact Person/ Designation :</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id=""
+                placeholder=""
+                [(ngModel)]="telco.contactPerson"
+              />
             </div>
-            <div class="col-lg-6"><br>
+            <div class="col-lg-6">
+              <br />
               <label for="exampleFormControlTextarea1">Contact Details :</label>
-              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="telco.contactNo">
+              <input
+                type="text"
+                class="form-control"
+                id=""
+                placeholder=""
+                [(ngModel)]="telco.contactNo"
+              />
             </div>
-            <div class="col-lg-6"><br>
-              <label for="exampleFormControlTextarea1">Location (Sitio/Purok) :</label>
-              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="telco.location">
+            <div class="col-lg-6">
+              <br />
+              <label for="exampleFormControlTextarea1"
+                >Location (Sitio/Purok) :</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id=""
+                placeholder=""
+                [(ngModel)]="telco.location"
+              />
             </div>
             <!-- <div class="col-lg-4"><br>
               <label for="exampleFormControlTextarea1">Geo Coordinates - Longitude:</label>
@@ -168,13 +361,24 @@
               <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="telco.latitude">
             </div> -->
 
-            <div class="col-lg-6"><br>
+            <div class="col-lg-6">
+              <br />
               <label for="category">Barangay :</label>
-              <select class="form-select" aria-label="Default select example" [(ngModel)]="telco.brgyId"
-                [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false">
-                <option *ngFor="let item  of barangays" value={{item.brgyId}}>{{item.brgyName}}</option>
+              <select
+                class="form-select"
+                aria-label="Default select example"
+                [(ngModel)]="telco.brgyId"
+                [ngClass]="toValidate.brgyId ? 'is-invalid' : ''"
+                (ngModelChange)="toValidate.brgyId = false"
+              >
+                <option
+                  *ngFor="let item of barangays"
+                  value="{{ item.brgyId }}"
+                >
+                  {{ item.brgyName }}
+                </option>
               </select>
-              <br>
+              <br />
               <!-- <form class="form-inline float-center">
                       <div class="form-group">
                       <input type="checkbox" class="form-check-input filled-in" id="" checked>
@@ -184,34 +388,66 @@
             </div>
           </div>
         </div>
-        <br>
+        <br />
       </div>
       <div class="modal-footer">
         <div class="left-absolute">
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-              (ngModelChange)="onChange(isCheck)" [(ngModel)]="isCheck">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="flexCheckDefault"
+              (ngModelChange)="onChange(isCheck)"
+              [(ngModel)]="isCheck"
+            />
             <label class="form-check-label" for="flexCheckDefault">
               Several data
             </label>
           </div>
         </div>
 
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="Add_tel?   Add_Tel(): Update_Tel()">Save changes</button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+          data-dismiss="modal"
+        >
+          Close
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="Add_tel ? Add_Tel() : Update_Tel()"
+        >
+          Save changes
+        </button>
       </div>
     </div>
   </div>
 </div>
 
 <!-- modal area -->
-<div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
+<div
+  class="modal fade"
+  id="gmapModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">SEPS GEOLOCATION TAGGING</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h5 class="modal-title" id="exampleModalLabel">
+          SEPS GEOLOCATION TAGGING
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -220,8 +456,12 @@
       </div>
       <div class="modal-footer">
         <app-admin>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" (click)="Update_Tel()">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <button type="button" class="btn btn-primary" (click)="Update_Tel()">
+            Save changes
+          </button>
         </app-admin>
       </div>
     </div>

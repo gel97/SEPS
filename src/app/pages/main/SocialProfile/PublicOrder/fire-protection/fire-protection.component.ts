@@ -7,6 +7,7 @@ import { SafetyFireService } from 'src/app/shared/SocialProfile/PublicOrder/safe
 import { PdfComponent } from 'src/app/components/pdf/pdf.component';
 import { PdfService } from 'src/app/services/pdf.service';
 import { ReportsService } from 'src/app/shared/Tools/reports.service';
+import { SourceService } from 'src/app/shared/Source/Source.Service';
 
 @Component({
   selector: 'app-fire-protection',
@@ -16,7 +17,7 @@ import { ReportsService } from 'src/app/shared/Tools/reports.service';
 export class FireProtectionComponent implements OnInit {
   @ViewChild(GmapComponent)
   private gmapComponent!: GmapComponent;
-  
+
   @ViewChild(PdfComponent)
   private pdfComponent!: PdfComponent;
 
@@ -26,15 +27,16 @@ export class FireProtectionComponent implements OnInit {
     private reportService: ReportsService,
     private service: SafetyFireService,
     private auth: AuthService,
-    private modifyService: ModifyCityMunService
+    private modifyService: ModifyCityMunService,
+    private SourceService: SourceService
   ) {}
 
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
   }
-  
+
   toValidate: any = {};
- 
+
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
   isCheck: boolean = false;
@@ -42,10 +44,115 @@ export class FireProtectionComponent implements OnInit {
     this.isCheck = isCheck;
   }
 
- 
-
   ngOnInit(): void {
     this.Init();
+    this.getSources();
+  }
+  getSources(): void {
+    const setYear = this.auth.activeSetYear;
+    const munCityId = this.auth.munCityId;
+    const sourceFor = 'fireProtection'; // 👈 assign your module name
+
+    this.SourceService.getSources(setYear, munCityId, sourceFor).subscribe({
+      next: (data) => {
+        this.sources = data;
+        this.showAddForm = data.length === 0;
+      },
+      error: (error) => {
+        console.error('Failed to fetch sources:', error);
+      },
+    });
+  }
+
+  addSource(): void {
+    if (!this.newSource?.name) {
+      Swal.fire('Warning', 'Please enter a source name.', 'warning');
+      return;
+    }
+
+    const sourceFor = 'fireProtection'; // 👈 assign your module name
+
+    // ✅ Add metadata
+    this.newSource.munCityId = this.auth.munCityId;
+    this.newSource.setYear = this.auth.activeSetYear;
+    this.newSource.sourceFor = sourceFor;
+
+    this.SourceService.createSource(this.newSource).subscribe({
+      next: () => {
+        this.newSource = {};
+        Swal.fire('Success', 'Source added successfully.', 'success');
+        this.getSources(); // ✅ Re-fetch source list
+      },
+      error: (error) => {
+        Swal.fire('Error', `Failed to create source.\n${error}`, 'error');
+      },
+    });
+  }
+
+  updateSource(): void {
+    if (this.selectedSourceId === null || !this.newSource?.name) {
+      Swal.fire('Warning', 'No source selected or missing name.', 'warning');
+      return;
+    }
+
+    this.SourceService.updateSource(
+      this.selectedSourceId,
+      this.newSource
+    ).subscribe({
+      next: () => {
+        this.getSources();
+        this.selectedSourceId = null;
+        this.newSource = {};
+        Swal.fire('Success', 'Source updated successfully!', 'success');
+      },
+      error: (error) => {
+        Swal.fire('Error', `Failed to update source.\n${error}`, 'error');
+      },
+    });
+  }
+  deleteSource(id: number): void {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This action will delete the source.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Show loading dialog
+        Swal.fire({
+          title: 'Deleting...',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          showConfirmButton: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        // Perform delete operation
+        this.SourceService.deleteSource(id).subscribe({
+          next: () => {
+            this.getSources(); // Refresh list
+            Swal.fire('Deleted!', 'Source has been deleted.', 'success');
+          },
+          error: (error) => {
+            Swal.fire(
+              'Error',
+              `Failed to delete source.\n${error.message || error}`,
+              'error'
+            );
+          },
+        });
+      }
+    });
+  }
+
+  editSource(source: any): void {
+    this.selectedSourceId = source.id;
+    this.newSource = { ...source };
   }
   munCityId: string = this.auth.munCityId;
   setYear: string = this.auth.setYear;
@@ -54,6 +161,10 @@ export class FireProtectionComponent implements OnInit {
   list: any = [];
   data: any = {};
   listBarangay: any = [];
+  sources: any = [];
+  newSource: any = {};
+  selectedSourceId: number | null = null;
+  showAddForm: boolean = true;
 
   Init() {
     this.GetListBarangay();
@@ -67,7 +178,7 @@ export class FireProtectionComponent implements OnInit {
     this.service.Import().subscribe({
       next: (data) => {
         this.ngOnInit();
-        if(data.length === 0){
+        if (data.length === 0) {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -80,14 +191,12 @@ export class FireProtectionComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'info',
             title: 'No data from previous year',
           });
-        }
-        else
-        {
+        } else {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -100,7 +209,7 @@ export class FireProtectionComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'success',
             title: 'Imported Successfully',
@@ -138,40 +247,39 @@ export class FireProtectionComponent implements OnInit {
 
     const tableData: any = [];
 
-    this.reportService
-      .GetSafetyFireReport(this.pdfComponent.data)
-      .subscribe({
-        next: (response: any = {}) => {
-          reports = response.data;
-          grandTotal = response.grandTotal;
+    this.reportService.GetSafetyFireReport(this.pdfComponent.data).subscribe({
+      next: (response: any = {}) => {
+        reports = response.data;
+        grandTotal = response.grandTotal;
 
-          console.log('result: ', response);
+        console.log('result: ', response);
 
-          data.push({
-            margin: [0, 40, 0, 0],
-            columns: [
-              {
-                text: `Fire Protection Services by Municipality/City`,
-                fontSize: 14,
-                bold: true,
-              },
-              {
-                text: `Year: ${response.year}`,
-                fontSize: 14,
-                bold: true,
-                alignment: 'right',
-              },
-            ],
-          });
+        data.push({
+          margin: [0, 40, 0, 0],
+          columns: [
+            {
+              text: `Fire Protection Services by Municipality/City`,
+              fontSize: 14,
+              bold: true,
+            },
+            {
+              text: `Year: ${response.year}`,
+              fontSize: 14,
+              bold: true,
+              alignment: 'right',
+            },
+          ],
+        });
 
-          tableData.push([
+        tableData.push(
+          [
             {
               text: '#',
               fillColor: 'black',
               color: 'white',
               bold: true,
               alignment: 'center',
-              rowSpan: 2
+              rowSpan: 2,
             },
             {
               text: 'Municipality/ City',
@@ -179,7 +287,7 @@ export class FireProtectionComponent implements OnInit {
               color: 'white',
               bold: true,
               alignment: 'center',
-              rowSpan: 2
+              rowSpan: 2,
             },
             {
               text: 'Fire Station	',
@@ -187,7 +295,7 @@ export class FireProtectionComponent implements OnInit {
               color: 'white',
               bold: true,
               alignment: 'center',
-              rowSpan: 2
+              rowSpan: 2,
             },
             {
               text: 'Current Force',
@@ -195,233 +303,240 @@ export class FireProtectionComponent implements OnInit {
               color: 'white',
               bold: true,
               alignment: 'center',
-              colSpan: 3
-            },{},{},
+              colSpan: 3,
+            },
+            {},
+            {},
             {
               text: 'No. of Firetrucks',
               fillColor: 'black',
               color: 'white',
               bold: true,
               alignment: 'center',
-              rowSpan: 2
-            }
-          ],[{},{},{},
+              rowSpan: 2,
+            },
+          ],
+          [
+            {},
+            {},
+            {},
             {
               text: 'Male',
               fillColor: 'black',
               color: 'white',
               bold: true,
               alignment: 'center',
-            }, {
+            },
+            {
               text: 'Female',
               fillColor: 'black',
               color: 'white',
               bold: true,
               alignment: 'center',
-            }, {
+            },
+            {
               text: 'Total',
               fillColor: 'black',
               color: 'white',
               bold: true,
               alignment: 'center',
-            },{}
-          ]);
-
-          reports.forEach((a: any) => {
-            if (a.district === 1) {
-              let columnWidth: number = 0;
-              a.data.forEach((b: any, index: any) => {
-                let dist: any = [];
-                for (let key in b) {
-                  let textValue: any;
-                  if (index === 0) {
-                    columnWidth++;
-                  }
-                 if (
-                    key === 'ratio') {
-                    textValue = b[key].toFixed(2);
-                  } else {
-                    textValue = b[key];
-                  }
-                  dist.push({
-                    text:
-                      key === 'munCityId' ? (b[key] = index + 1) : textValue,
-                    fillColor: '#ffffff',
-                    alignment: key === 'munCityName' ? 'left' : 'center',
-                  });
-                }
-
-                if (index === 0) {
-                  tableData.push([
-                    {
-                      text: `1st Congressional District `,
-                      colSpan: columnWidth,
-                      alignment: 'left',
-                      fillColor: '#526D82',
-                      marginLeft: 5,
-                    },
-                  ]);
-
-                  columnLenght = columnWidth - 1;
-                }
-
-                tableData.push(dist);
-              });
-
-              let sub: any = []; // SUBTOTAL D1
-              for (let key in a.subTotal) {
-                if (key === 'subTotal') {
-                  sub.push(
-                    {
-                      text: a.subTotal[key],
-                      fillColor: '#9DB2BF',
-                      alignment: 'left',
-                      colSpan: 2,
-                      marginLeft: 5,
-                    },
-                    {}
-                  );
-                } else {
-                  let textValue: any;
-                 if (key === 'ratio') {
-                    textValue = a.subTotal[key].toFixed(2);
-                  } else {
-                    textValue = a.subTotal[key];
-                  }
-                  sub.push({
-                    text: textValue,
-                    fillColor: '#9DB2BF',
-                    alignment: 'center',
-                  });
-                }
-              }
-              tableData.push(sub);
-            } else {
-              let columnWidth: number = 0;
-              a.data.forEach((b: any, index: any) => {
-                let dist: any = [];
-                for (let key in b) {
-                  let textValue: any;
-                  if (index === 0) {
-                    columnWidth++;
-                  }
-                 if (key === 'ratio') {
-                    textValue = b[key].toFixed(2);
-                  } else {
-                    textValue = b[key];
-                  }
-                  dist.push({
-                    text:
-                      key === 'munCityId' ? (b[key] = index + 1) : textValue,
-                    fillColor: '#ffffff',
-                    alignment: key === 'munCityName' ? 'left' : 'center',
-                  });
-                }
-
-                if (index === 0) {
-                  tableData.push([
-                    {
-                      text: `2nd Congressional District `,
-                      colSpan: columnWidth,
-                      alignment: 'left',
-                      fillColor: '#526D82',
-                      marginLeft: 5,
-                    },
-                  ]);
-                }
-
-                tableData.push(dist);
-              });
-
-              let sub: any = []; // SUBTOTAL D2
-              for (let key in a.subTotal) {
-                if (key === 'subTotal') {
-                  sub.push(
-                    {
-                      text: a.subTotal[key],
-                      fillColor: '#9DB2BF',
-                      alignment: 'left',
-                      colSpan: 2,
-                      marginLeft: 5,
-                    },
-                    {}
-                  );
-                } else {
-                  let textValue: any;
-                 if (key === 'ratio') {
-                    textValue = a.subTotal[key].toFixed(2);
-                  } else {
-                    textValue = a.subTotal[key];
-                  }
-                  sub.push({
-                    text: textValue,
-                    fillColor: '#9DB2BF',
-                    alignment: 'center',
-                  });
-                }
-              }
-              tableData.push(sub);
-            }
-          });
-
-          let grand: any = []; // GRAND TOTAL
-          for (let key in grandTotal) {
-            if (key == 'grandTotal') {
-              grand.push(
-                {
-                  text: grandTotal[key],
-                  fillColor: '#F1C93B',
-                  alignment: 'left',
-                  colSpan: 2,
-                  marginLeft: 5,
-                },
-                {}
-              );
-            } else {
-              let textValue: any;
-             if (key === 'ratio') {
-                textValue = grandTotal[key].toFixed(2);
-              } else {
-                textValue = grandTotal[key];
-              }
-              grand.push({
-                text: textValue,
-                fillColor: '#F1C93B',
-                alignment: 'center',
-              });
-            }
-          }
-
-          tableData.push(grand);
-
-          let widths: any = []; // COLUMN WIDTH
-          for (let index = 0; index < columnLenght; index++) {
-            if (index === 0) {
-              widths.push(20);
-            }
-            widths.push('*');
-          }
-
-          const table = {
-            margin: [0, 10, 0, 0],
-            table: {
-              widths: widths,
-              body: tableData,
             },
-            layout: 'lightHorizontalLines',
-          };
+            {},
+          ]
+        );
 
-          data.push(table);
-        },
-        error: (error: any) => {
-          console.log(error);
-        },
-        complete: () => {
-          let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait, "");
-          console.log(data);
-        },
-      });
+        reports.forEach((a: any) => {
+          if (a.district === 1) {
+            let columnWidth: number = 0;
+            a.data.forEach((b: any, index: any) => {
+              let dist: any = [];
+              for (let key in b) {
+                let textValue: any;
+                if (index === 0) {
+                  columnWidth++;
+                }
+                if (key === 'ratio') {
+                  textValue = b[key].toFixed(2);
+                } else {
+                  textValue = b[key];
+                }
+                dist.push({
+                  text: key === 'munCityId' ? (b[key] = index + 1) : textValue,
+                  fillColor: '#ffffff',
+                  alignment: key === 'munCityName' ? 'left' : 'center',
+                });
+              }
+
+              if (index === 0) {
+                tableData.push([
+                  {
+                    text: `1st Congressional District `,
+                    colSpan: columnWidth,
+                    alignment: 'left',
+                    fillColor: '#526D82',
+                    marginLeft: 5,
+                  },
+                ]);
+
+                columnLenght = columnWidth - 1;
+              }
+
+              tableData.push(dist);
+            });
+
+            let sub: any = []; // SUBTOTAL D1
+            for (let key in a.subTotal) {
+              if (key === 'subTotal') {
+                sub.push(
+                  {
+                    text: a.subTotal[key],
+                    fillColor: '#9DB2BF',
+                    alignment: 'left',
+                    colSpan: 2,
+                    marginLeft: 5,
+                  },
+                  {}
+                );
+              } else {
+                let textValue: any;
+                if (key === 'ratio') {
+                  textValue = a.subTotal[key].toFixed(2);
+                } else {
+                  textValue = a.subTotal[key];
+                }
+                sub.push({
+                  text: textValue,
+                  fillColor: '#9DB2BF',
+                  alignment: 'center',
+                });
+              }
+            }
+            tableData.push(sub);
+          } else {
+            let columnWidth: number = 0;
+            a.data.forEach((b: any, index: any) => {
+              let dist: any = [];
+              for (let key in b) {
+                let textValue: any;
+                if (index === 0) {
+                  columnWidth++;
+                }
+                if (key === 'ratio') {
+                  textValue = b[key].toFixed(2);
+                } else {
+                  textValue = b[key];
+                }
+                dist.push({
+                  text: key === 'munCityId' ? (b[key] = index + 1) : textValue,
+                  fillColor: '#ffffff',
+                  alignment: key === 'munCityName' ? 'left' : 'center',
+                });
+              }
+
+              if (index === 0) {
+                tableData.push([
+                  {
+                    text: `2nd Congressional District `,
+                    colSpan: columnWidth,
+                    alignment: 'left',
+                    fillColor: '#526D82',
+                    marginLeft: 5,
+                  },
+                ]);
+              }
+
+              tableData.push(dist);
+            });
+
+            let sub: any = []; // SUBTOTAL D2
+            for (let key in a.subTotal) {
+              if (key === 'subTotal') {
+                sub.push(
+                  {
+                    text: a.subTotal[key],
+                    fillColor: '#9DB2BF',
+                    alignment: 'left',
+                    colSpan: 2,
+                    marginLeft: 5,
+                  },
+                  {}
+                );
+              } else {
+                let textValue: any;
+                if (key === 'ratio') {
+                  textValue = a.subTotal[key].toFixed(2);
+                } else {
+                  textValue = a.subTotal[key];
+                }
+                sub.push({
+                  text: textValue,
+                  fillColor: '#9DB2BF',
+                  alignment: 'center',
+                });
+              }
+            }
+            tableData.push(sub);
+          }
+        });
+
+        let grand: any = []; // GRAND TOTAL
+        for (let key in grandTotal) {
+          if (key == 'grandTotal') {
+            grand.push(
+              {
+                text: grandTotal[key],
+                fillColor: '#F1C93B',
+                alignment: 'left',
+                colSpan: 2,
+                marginLeft: 5,
+              },
+              {}
+            );
+          } else {
+            let textValue: any;
+            if (key === 'ratio') {
+              textValue = grandTotal[key].toFixed(2);
+            } else {
+              textValue = grandTotal[key];
+            }
+            grand.push({
+              text: textValue,
+              fillColor: '#F1C93B',
+              alignment: 'center',
+            });
+          }
+        }
+
+        tableData.push(grand);
+
+        let widths: any = []; // COLUMN WIDTH
+        for (let index = 0; index < columnLenght; index++) {
+          if (index === 0) {
+            widths.push(20);
+          }
+          widths.push('*');
+        }
+
+        const table = {
+          margin: [0, 10, 0, 0],
+          table: {
+            widths: widths,
+            body: tableData,
+          },
+          layout: 'lightHorizontalLines',
+        };
+
+        data.push(table);
+      },
+      error: (error: any) => {
+        console.log(error);
+      },
+      complete: () => {
+        let isPortrait = false;
+        this.pdfService.GeneratePdf(data, isPortrait, '');
+        console.log(data);
+      },
+    });
   }
 
   markerObj: any = {};
@@ -449,24 +564,24 @@ export class FireProtectionComponent implements OnInit {
   }
 
   GetListData() {
-    this.service
-      .GetListSafetyFire( this.setYear, this.munCityId)
-      .subscribe({
-        next: (response) => {
-          this.list = <any>response;
-          console.log(this.list );
-        },
-        error: (error) => {
-          Swal.fire('Oops!', 'Something went wrong.', 'error');
-        },
-        complete: () => {},
-      });
+    this.service.GetListSafetyFire(this.setYear, this.munCityId).subscribe({
+      next: (response) => {
+        this.list = <any>response;
+        console.log(this.list);
+      },
+      error: (error) => {
+        Swal.fire('Oops!', 'Something went wrong.', 'error');
+      },
+      complete: () => {},
+    });
   }
 
   AddData() {
     this.toValidate.fireStation =
-      this.data.fireStation == '' || this.data.fireStation == null ? true : false;
-   
+      this.data.fireStation == '' || this.data.fireStation == null
+        ? true
+        : false;
+
     this.data.setYear = this.setYear;
     this.data.munCityId = this.munCityId;
 

@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { PdfComponent } from 'src/app/components/pdf/pdf.component';
 import { PdfService } from 'src/app/services/pdf.service';
 import { ReportsService } from 'src/app/shared/Tools/reports.service';
+import { SourceService } from 'src/app/shared/Source/Source.Service';
 @Component({
   selector: 'app-agricultural-profile',
   templateUrl: './agricultural-profile.component.html',
@@ -24,7 +25,8 @@ export class AgriculturalProfileComponent implements OnInit {
     private reportService: ReportsService,
     private Auth: AuthService,
     private Service: AgricultureProfileService,
-    private modifyService: ModifyCityMunService
+    private modifyService: ModifyCityMunService,
+    private SourceService: SourceService
   ) {}
 
   modifyCityMun(cityMunName: string) {
@@ -52,10 +54,121 @@ export class AgriculturalProfileComponent implements OnInit {
   deleteData: any = {};
   visible: boolean = true;
   not_visible: boolean = true;
+  sources: any = [];
+  newSource: any = {};
+  selectedSourceId: number | null = null;
+  showAddForm: boolean = true;
   //button_edit: boolean = true;
 
   ngOnInit(): void {
     this.GetListAgricultureProfile();
+    this.getSources();
+  }
+  getSources(): void {
+    const setYear = this.Auth.activeSetYear;
+    const munCityId = this.Auth.munCityId;
+    const sourceFor = 'agriculture';
+
+    this.SourceService.getSources(setYear, munCityId, sourceFor).subscribe({
+      next: (data) => {
+        this.sources = data;
+        this.showAddForm = data.length === 0;
+      },
+      error: (error) => {
+        console.error('Failed to fetch sources:', error);
+      },
+    });
+  }
+
+  addSource(): void {
+    if (!this.newSource?.name) {
+      Swal.fire('Warning', 'Please enter a source name.', 'warning');
+      return;
+    }
+
+    const sourceFor = 'agriculture'; // 👈 assign your module name
+
+    // ✅ Add metadata
+    this.newSource.munCityId = this.Auth.munCityId;
+    this.newSource.setYear = this.Auth.activeSetYear;
+    this.newSource.sourceFor = sourceFor;
+
+    this.SourceService.createSource(this.newSource).subscribe({
+      next: () => {
+        this.newSource = {};
+        Swal.fire('Success', 'Source added successfully.', 'success');
+        this.getSources(); // ✅ Re-fetch source list
+      },
+      error: (error) => {
+        Swal.fire('Error', `Failed to create source.\n${error}`, 'error');
+      },
+    });
+  }
+
+  updateSource(): void {
+    if (this.selectedSourceId === null || !this.newSource?.name) {
+      Swal.fire('Warning', 'No source selected or missing name.', 'warning');
+      return;
+    }
+
+    this.SourceService.updateSource(
+      this.selectedSourceId,
+      this.newSource
+    ).subscribe({
+      next: () => {
+        this.getSources();
+        this.selectedSourceId = null;
+        this.newSource = {};
+        Swal.fire('Success', 'Source updated successfully!', 'success');
+      },
+      error: (error) => {
+        Swal.fire('Error', `Failed to update source.\n${error}`, 'error');
+      },
+    });
+  }
+  deleteSource(id: number): void {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This action will delete the source.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Show loading dialog
+        Swal.fire({
+          title: 'Deleting...',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          showConfirmButton: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        // Perform delete operation
+        this.SourceService.deleteSource(id).subscribe({
+          next: () => {
+            this.getSources(); // Refresh list
+            Swal.fire('Deleted!', 'Source has been deleted.', 'success');
+          },
+          error: (error) => {
+            Swal.fire(
+              'Error',
+              `Failed to delete source.\n${error.message || error}`,
+              'error'
+            );
+          },
+        });
+      }
+    });
+  }
+
+  editSource(source: any): void {
+    this.selectedSourceId = source.id;
+    this.newSource = { ...source };
   }
 
   public showOverlay = false;
@@ -132,7 +245,7 @@ export class AgriculturalProfileComponent implements OnInit {
     const tableData: any = [];
     const dist1: any = [];
     const dist2: any = [];
-    let contentData:any = [];
+    let contentData: any = [];
 
     const columnNames: any = [
       'Commodities',
@@ -265,7 +378,6 @@ export class AgriculturalProfileComponent implements OnInit {
             {
               text: 'Banana - Cavendish',
               fillColor: '#FFFFFF',
-              
             },
             {
               text: summary.bananaCavArea,
@@ -298,7 +410,6 @@ export class AgriculturalProfileComponent implements OnInit {
             {
               text: 'Banana -Other Banana',
               fillColor: '#FFFFFF',
-              
             },
             {
               text: summary.bananaOtherArea,
@@ -448,7 +559,6 @@ export class AgriculturalProfileComponent implements OnInit {
               text: summary.veggieArea,
               fillColor: '#9DB2BF',
               alignment: 'center',
-
             },
             {
               text: summary.veggieArea,
@@ -484,18 +594,20 @@ export class AgriculturalProfileComponent implements OnInit {
         //     },
         //   ],
         // }]);
-        contentData.push([{
-          margin: [0, 10, 0, 0],
-          table: {
-            widths: columnsWidth,
-            body: tableData,
+        contentData.push([
+          {
+            margin: [0, 10, 0, 0],
+            table: {
+              widths: columnsWidth,
+              body: tableData,
+            },
+            layout: 'lightHorizontalLines',
+            pageBreak: 'after',
           },
-          layout: 'lightHorizontalLines',
-          pageBreak: 'after'
-        }]);
+        ]);
 
         dist1.forEach((a: any) => {
-          let newColumn:any = [];
+          let newColumn: any = [];
           const newtableData: any = [];
 
           columnNames.forEach((name: any) => {
@@ -509,17 +621,17 @@ export class AgriculturalProfileComponent implements OnInit {
           });
 
           contentData.push({
-          margin: [0, 20, 0, 0],
-          columns: [
-            {
-              text: a.munCityName,
-              fontSize: 12,
-              bold: true,
-            },
-          ],
-        });
-        newtableData.push(newColumn);
-        newtableData.push(
+            margin: [0, 20, 0, 0],
+            columns: [
+              {
+                text: a.munCityName,
+                fontSize: 12,
+                bold: true,
+              },
+            ],
+          });
+          newtableData.push(newColumn);
+          newtableData.push(
             [
               {
                 text: 'Paddy Rice - Irrigated',
@@ -588,7 +700,6 @@ export class AgriculturalProfileComponent implements OnInit {
               {
                 text: 'Banana - Cavendish',
                 fillColor: '#FFFFFF',
-                
               },
               {
                 text: a.bananaCavArea,
@@ -621,7 +732,6 @@ export class AgriculturalProfileComponent implements OnInit {
               {
                 text: 'Banana -Other Banana',
                 fillColor: '#FFFFFF',
-                
               },
               {
                 text: a.bananaOtherArea,
@@ -771,7 +881,6 @@ export class AgriculturalProfileComponent implements OnInit {
                 text: a.veggieArea,
                 fillColor: '#9DB2BF',
                 alignment: 'center',
-
               },
               {
                 text: a.veggieArea,
@@ -797,18 +906,20 @@ export class AgriculturalProfileComponent implements OnInit {
             ]
           );
 
-          contentData.push([{
-            margin: [0, 10, 0, 0],
-            table: {
-              widths: columnsWidth,
-              body: newtableData,
+          contentData.push([
+            {
+              margin: [0, 10, 0, 0],
+              table: {
+                widths: columnsWidth,
+                body: newtableData,
+              },
+              layout: 'lightHorizontalLines',
             },
-            layout: 'lightHorizontalLines',
-          }]);
+          ]);
         });
 
         dist2.forEach((a: any) => {
-          let newColumn:any = [];
+          let newColumn: any = [];
           const newtableData: any = [];
 
           columnNames.forEach((name: any) => {
@@ -822,306 +933,304 @@ export class AgriculturalProfileComponent implements OnInit {
           });
 
           contentData.push({
-          margin: [0, 20, 0, 0],
-          columns: [
+            margin: [0, 20, 0, 0],
+            columns: [
+              {
+                text: a.munCityName,
+                fontSize: 12,
+                bold: true,
+              },
+            ],
+          });
+          newtableData.push(newColumn);
+          newtableData.push(
+            [
+              {
+                text: 'Paddy Rice - Irrigated',
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: a.riceIrrigArea,
+                fillColor: '#FFFFFF',
+                alignment: 'center',
+              },
+              {
+                text: a.riceIrrigFarmersNo,
+                fillColor: '#FFFFFF',
+                alignment: 'center',
+              },
+            ],
+            [
+              {
+                text: 'Paddy Rice - Rain Fed',
+                fillColor: '#9DB2BF',
+              },
+              {
+                text: a.riceRainArea,
+                fillColor: '#9DB2BF',
+                alignment: 'center',
+              },
+              {
+                text: a.riceRainFarmersNo,
+                fillColor: '#9DB2BF',
+                alignment: 'center',
+              },
+            ],
+            [
+              {
+                text: 'Corn - White',
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: a.cornWhiteArea,
+                fillColor: '#FFFFFF',
+                alignment: 'center',
+              },
+              {
+                text: a.cornWhiteFarmersNo,
+                fillColor: '#FFFFFF',
+                alignment: 'center',
+              },
+            ],
+            [
+              {
+                text: 'Corn - Yellow',
+                fillColor: '#9DB2BF',
+              },
+              {
+                text: a.cornYellowArea,
+                fillColor: '#9DB2BF',
+                alignment: 'center',
+              },
+              {
+                text: a.cornYellowFarmersNo,
+                fillColor: '#9DB2BF',
+                alignment: 'center',
+              },
+            ],
+            [
+              {
+                text: 'Banana - Cavendish',
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: a.bananaCavArea,
+                fillColor: '#FFFFFF',
+                alignment: 'center',
+              },
+              {
+                text: a.bananaCavFarmersNo,
+                fillColor: '#FFFFFF',
+                alignment: 'center',
+              },
+            ],
+            [
+              {
+                text: 'Banana -Saba Banana',
+                fillColor: '#9DB2BF',
+              },
+              {
+                text: a.bananaSabaArea,
+                fillColor: '#9DB2BF',
+                alignment: 'center',
+              },
+              {
+                text: a.bananaSabaFarmersNo,
+                fillColor: '#9DB2BF',
+                alignment: 'center',
+              },
+            ],
+            [
+              {
+                text: 'Banana -Other Banana',
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: a.bananaOtherArea,
+                fillColor: '#FFFFFF',
+                alignment: 'center',
+              },
+              {
+                text: a.bananaFarmersNo,
+                fillColor: '#FFFFFF',
+                alignment: 'center',
+              },
+            ],
+            [
+              {
+                text: 'Mango',
+                fillColor: '#9DB2BF',
+              },
+              {
+                text: a.mangoArea,
+                fillColor: '#9DB2BF',
+                alignment: 'center',
+              },
+              {
+                text: a.mangoFarmersNo,
+                fillColor: '#9DB2BF',
+                alignment: 'center',
+              },
+            ],
+            [
+              {
+                text: 'Durian',
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: a.durianArea,
+                fillColor: '#FFFFFF',
+                alignment: 'center',
+              },
+              {
+                text: a.durianFarmersNo,
+                fillColor: '#FFFFFF',
+                alignment: 'center',
+              },
+            ],
+            [
+              {
+                text: 'Coffee',
+                fillColor: '#9DB2BF',
+              },
+              {
+                text: a.coffeeArea,
+                fillColor: '#9DB2BF',
+                alignment: 'center',
+              },
+              {
+                text: a.coffeeFarmersNo,
+                fillColor: '#9DB2BF',
+                alignment: 'center',
+              },
+            ],
+            [
+              {
+                text: 'Cacao',
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: a.cacaoArea,
+                fillColor: '#FFFFFF',
+                alignment: 'center',
+              },
+              {
+                text: a.cacaoFarmersNo,
+                fillColor: '#FFFFFF',
+                alignment: 'center',
+              },
+            ],
+            [
+              {
+                text: 'Abaca',
+                fillColor: '#9DB2BF',
+              },
+              {
+                text: a.abacaArea,
+                fillColor: '#9DB2BF',
+                alignment: 'center',
+              },
+              {
+                text: a.abacaFarmersNo,
+                fillColor: '#9DB2BF',
+                alignment: 'center',
+              },
+            ],
+            [
+              {
+                text: 'Rubber',
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: a.rubberArea,
+                fillColor: '#FFFFFF',
+                alignment: 'center',
+              },
+              {
+                text: a.rubberFarmerNo,
+                fillColor: '#FFFFFF',
+                alignment: 'center',
+              },
+            ],
+            [
+              {
+                text: 'Oil Palm',
+                fillColor: '#9DB2BF',
+              },
+              {
+                text: a.oilpalmArea,
+                fillColor: '#9DB2BF',
+                alignment: 'center',
+              },
+              {
+                text: a.oilpalmArea,
+                fillColor: '#9DB2BF',
+                alignment: 'center',
+              },
+            ],
+            [
+              {
+                text: 'Coconut',
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: a.coconutArea,
+                fillColor: '#FFFFFF',
+                alignment: 'center',
+              },
+              {
+                text: a.coconutNo,
+                fillColor: '#FFFFFF',
+                alignment: 'center',
+              },
+            ],
+            [
+              {
+                text: 'Vegetables and Spices',
+                fillColor: '#9DB2BF',
+              },
+              {
+                text: a.veggieArea,
+                fillColor: '#9DB2BF',
+                alignment: 'center',
+              },
+              {
+                text: a.veggieArea,
+                fillColor: '#9DB2BF',
+                alignment: 'center',
+              },
+            ],
+            [
+              {
+                text: 'Other Crops',
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: a.otherCropsArea,
+                fillColor: '#FFFFFF',
+                alignment: 'center',
+              },
+              {
+                text: a.otherCropsNo,
+                fillColor: '#FFFFFF',
+                alignment: 'center',
+              },
+            ]
+          );
+
+          contentData.push([
             {
-              text: a.munCityName,
-              fontSize: 12,
-              bold: true,
+              margin: [0, 10, 0, 0],
+              table: {
+                widths: columnsWidth,
+                body: newtableData,
+              },
+              layout: 'lightHorizontalLines',
+              pageBreak: 'after',
             },
-          ],
+          ]);
         });
-        newtableData.push(newColumn);
-        newtableData.push(
-          [
-            {
-              text: 'Paddy Rice - Irrigated',
-              fillColor: '#FFFFFF',
-            },
-            {
-              text: a.riceIrrigArea,
-              fillColor: '#FFFFFF',
-              alignment: 'center',
-            },
-            {
-              text: a.riceIrrigFarmersNo,
-              fillColor: '#FFFFFF',
-              alignment: 'center',
-            },
-          ],
-          [
-            {
-              text: 'Paddy Rice - Rain Fed',
-              fillColor: '#9DB2BF',
-            },
-            {
-              text: a.riceRainArea,
-              fillColor: '#9DB2BF',
-              alignment: 'center',
-            },
-            {
-              text: a.riceRainFarmersNo,
-              fillColor: '#9DB2BF',
-              alignment: 'center',
-            },
-          ],
-          [
-            {
-              text: 'Corn - White',
-              fillColor: '#FFFFFF',
-            },
-            {
-              text: a.cornWhiteArea,
-              fillColor: '#FFFFFF',
-              alignment: 'center',
-            },
-            {
-              text: a.cornWhiteFarmersNo,
-              fillColor: '#FFFFFF',
-              alignment: 'center',
-            },
-          ],
-          [
-            {
-              text: 'Corn - Yellow',
-              fillColor: '#9DB2BF',
-            },
-            {
-              text: a.cornYellowArea,
-              fillColor: '#9DB2BF',
-              alignment: 'center',
-            },
-            {
-              text: a.cornYellowFarmersNo,
-              fillColor: '#9DB2BF',
-              alignment: 'center',
-            },
-          ],
-          [
-            {
-              text: 'Banana - Cavendish',
-              fillColor: '#FFFFFF',
-              
-            },
-            {
-              text: a.bananaCavArea,
-              fillColor: '#FFFFFF',
-              alignment: 'center',
-            },
-            {
-              text: a.bananaCavFarmersNo,
-              fillColor: '#FFFFFF',
-              alignment: 'center',
-            },
-          ],
-          [
-            {
-              text: 'Banana -Saba Banana',
-              fillColor: '#9DB2BF',
-            },
-            {
-              text: a.bananaSabaArea,
-              fillColor: '#9DB2BF',
-              alignment: 'center',
-            },
-            {
-              text: a.bananaSabaFarmersNo,
-              fillColor: '#9DB2BF',
-              alignment: 'center',
-            },
-          ],
-          [
-            {
-              text: 'Banana -Other Banana',
-              fillColor: '#FFFFFF',
-              
-            },
-            {
-              text: a.bananaOtherArea,
-              fillColor: '#FFFFFF',
-              alignment: 'center',
-            },
-            {
-              text: a.bananaFarmersNo,
-              fillColor: '#FFFFFF',
-              alignment: 'center',
-            },
-          ],
-          [
-            {
-              text: 'Mango',
-              fillColor: '#9DB2BF',
-            },
-            {
-              text: a.mangoArea,
-              fillColor: '#9DB2BF',
-              alignment: 'center',
-            },
-            {
-              text: a.mangoFarmersNo,
-              fillColor: '#9DB2BF',
-              alignment: 'center',
-            },
-          ],
-          [
-            {
-              text: 'Durian',
-              fillColor: '#FFFFFF',
-            },
-            {
-              text: a.durianArea,
-              fillColor: '#FFFFFF',
-              alignment: 'center',
-            },
-            {
-              text: a.durianFarmersNo,
-              fillColor: '#FFFFFF',
-              alignment: 'center',
-            },
-          ],
-          [
-            {
-              text: 'Coffee',
-              fillColor: '#9DB2BF',
-            },
-            {
-              text: a.coffeeArea,
-              fillColor: '#9DB2BF',
-              alignment: 'center',
-            },
-            {
-              text: a.coffeeFarmersNo,
-              fillColor: '#9DB2BF',
-              alignment: 'center',
-            },
-          ],
-          [
-            {
-              text: 'Cacao',
-              fillColor: '#FFFFFF',
-            },
-            {
-              text: a.cacaoArea,
-              fillColor: '#FFFFFF',
-              alignment: 'center',
-            },
-            {
-              text: a.cacaoFarmersNo,
-              fillColor: '#FFFFFF',
-              alignment: 'center',
-            },
-          ],
-          [
-            {
-              text: 'Abaca',
-              fillColor: '#9DB2BF',
-            },
-            {
-              text: a.abacaArea,
-              fillColor: '#9DB2BF',
-              alignment: 'center',
-            },
-            {
-              text: a.abacaFarmersNo,
-              fillColor: '#9DB2BF',
-              alignment: 'center',
-            },
-          ],
-          [
-            {
-              text: 'Rubber',
-              fillColor: '#FFFFFF',
-            },
-            {
-              text: a.rubberArea,
-              fillColor: '#FFFFFF',
-              alignment: 'center',
-            },
-            {
-              text: a.rubberFarmerNo,
-              fillColor: '#FFFFFF',
-              alignment: 'center',
-            },
-          ],
-          [
-            {
-              text: 'Oil Palm',
-              fillColor: '#9DB2BF',
-            },
-            {
-              text: a.oilpalmArea,
-              fillColor: '#9DB2BF',
-              alignment: 'center',
-            },
-            {
-              text: a.oilpalmArea,
-              fillColor: '#9DB2BF',
-              alignment: 'center',
-            },
-          ],
-          [
-            {
-              text: 'Coconut',
-              fillColor: '#FFFFFF',
-            },
-            {
-              text: a.coconutArea,
-              fillColor: '#FFFFFF',
-              alignment: 'center',
-            },
-            {
-              text: a.coconutNo,
-              fillColor: '#FFFFFF',
-              alignment: 'center',
-            },
-          ],
-          [
-            {
-              text: 'Vegetables and Spices',
-              fillColor: '#9DB2BF',
-            },
-            {
-              text: a.veggieArea,
-              fillColor: '#9DB2BF',
-              alignment: 'center',
 
-            },
-            {
-              text: a.veggieArea,
-              fillColor: '#9DB2BF',
-              alignment: 'center',
-            },
-          ],
-          [
-            {
-              text: 'Other Crops',
-              fillColor: '#FFFFFF',
-            },
-            {
-              text: a.otherCropsArea,
-              fillColor: '#FFFFFF',
-              alignment: 'center',
-            },
-            {
-              text: a.otherCropsNo,
-              fillColor: '#FFFFFF',
-              alignment: 'center',
-            },
-          ]
-        );
-
-          contentData.push([{
-            margin: [0, 10, 0, 0],
-            table: {
-              widths: columnsWidth,
-              body: newtableData,
-            },
-            layout: 'lightHorizontalLines',
-            pageBreak: 'after'
-          }]);
-        });
-
-      
         // const table = {
         //   margin: [0, 10, 0, 0],
         //   table: {
@@ -1130,8 +1239,8 @@ export class AgriculturalProfileComponent implements OnInit {
         //   },
         //   layout: 'lightHorizontalLines',
         // };
-      
-        console.log("contentData: ", contentData);
+
+        console.log('contentData: ', contentData);
         data.push(contentData);
       },
       error: (error: any) => {
@@ -1139,7 +1248,7 @@ export class AgriculturalProfileComponent implements OnInit {
       },
       complete: () => {
         let isPortrait = false;
-        this.pdfService.GeneratePdf(data, isPortrait, "");
+        this.pdfService.GeneratePdf(data, isPortrait, '');
         console.log(data);
       },
     });

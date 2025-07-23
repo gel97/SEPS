@@ -8,6 +8,7 @@ import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 import { PdfComponent } from 'src/app/components/pdf/pdf.component';
 import { PdfService } from 'src/app/services/pdf.service';
 import { ReportsService } from 'src/app/shared/Tools/reports.service';
+import { SourceService } from 'src/app/shared/Source/Source.Service';
 @Component({
   selector: 'app-person-disability',
   templateUrl: './person-disability.component.html',
@@ -25,14 +26,15 @@ export class PersonDisabilityComponent implements OnInit {
     private reportService: ReportsService,
     private auth: AuthService,
     private service: HealthHandicapService,
-    private modifyService: ModifyCityMunService
+    private modifyService: ModifyCityMunService,
+    private SourceService: SourceService
   ) {}
 
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
   }
 
-  list_of_type:any = [];
+  list_of_type: any = [];
 
   munCityName: string = this.auth.munCityName;
   listHandi: any = [];
@@ -42,6 +44,10 @@ export class PersonDisabilityComponent implements OnInit {
   data: any = {};
   isCheck: boolean = false;
   toValidate: any = {};
+  sources: any = [];
+  newSource: any = {};
+  selectedSourceId: number | null = null;
+  showAddForm: boolean = true;
 
   onChange(isCheck: boolean) {
     this.isCheck = isCheck;
@@ -51,6 +57,113 @@ export class PersonDisabilityComponent implements OnInit {
   ngOnInit(): void {
     this.GetListType();
     this.Init();
+    this.getSources();
+  }
+  getSources(): void {
+    const setYear = this.auth.activeSetYear;
+    const munCityId = this.auth.munCityId;
+    const sourceFor = 'personDisability'; // 👈 assign your module name
+
+    this.SourceService.getSources(setYear, munCityId, sourceFor).subscribe({
+      next: (data) => {
+        this.sources = data;
+        this.showAddForm = data.length === 0;
+      },
+      error: (error) => {
+        console.error('Failed to fetch sources:', error);
+      },
+    });
+  }
+
+  addSource(): void {
+    if (!this.newSource?.name) {
+      Swal.fire('Warning', 'Please enter a source name.', 'warning');
+      return;
+    }
+
+    const sourceFor = 'personDisability'; // 👈 assign your module name
+
+    // ✅ Add metadata
+    this.newSource.munCityId = this.auth.munCityId;
+    this.newSource.setYear = this.auth.activeSetYear;
+    this.newSource.sourceFor = sourceFor;
+
+    this.SourceService.createSource(this.newSource).subscribe({
+      next: () => {
+        this.newSource = {};
+        Swal.fire('Success', 'Source added successfully.', 'success');
+        this.getSources(); // ✅ Re-fetch source list
+      },
+      error: (error) => {
+        Swal.fire('Error', `Failed to create source.\n${error}`, 'error');
+      },
+    });
+  }
+
+  updateSource(): void {
+    if (this.selectedSourceId === null || !this.newSource?.name) {
+      Swal.fire('Warning', 'No source selected or missing name.', 'warning');
+      return;
+    }
+
+    this.SourceService.updateSource(
+      this.selectedSourceId,
+      this.newSource
+    ).subscribe({
+      next: () => {
+        this.getSources();
+        this.selectedSourceId = null;
+        this.newSource = {};
+        Swal.fire('Success', 'Source updated successfully!', 'success');
+      },
+      error: (error) => {
+        Swal.fire('Error', `Failed to update source.\n${error}`, 'error');
+      },
+    });
+  }
+  deleteSource(id: number): void {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This action will delete the source.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Show loading dialog
+        Swal.fire({
+          title: 'Deleting...',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          showConfirmButton: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        // Perform delete operation
+        this.SourceService.deleteSource(id).subscribe({
+          next: () => {
+            this.getSources(); // Refresh list
+            Swal.fire('Deleted!', 'Source has been deleted.', 'success');
+          },
+          error: (error) => {
+            Swal.fire(
+              'Error',
+              `Failed to delete source.\n${error.message || error}`,
+              'error'
+            );
+          },
+        });
+      }
+    });
+  }
+
+  editSource(source: any): void {
+    this.selectedSourceId = source.id;
+    this.newSource = { ...source };
   }
 
   Init() {
@@ -67,7 +180,7 @@ export class PersonDisabilityComponent implements OnInit {
     let columnWidth: any = [];
     let columnsData: any = [];
     let grandTotal: any = [];
-    let _grandTotal:any = [];
+    let _grandTotal: any = [];
 
     this.reportService.GetHealthHandiReport(this.pdfComponent.data).subscribe({
       next: (response: any = {}) => {
@@ -220,7 +333,7 @@ export class PersonDisabilityComponent implements OnInit {
             _grandTotal.push({
               text: 'GRANDTOTAL',
               fontSize: 8,
-              fillColor: '#F1C93B'
+              fillColor: '#F1C93B',
             });
           }
           grandTotal.forEach((d: any) => {
@@ -249,7 +362,7 @@ export class PersonDisabilityComponent implements OnInit {
       },
       complete: () => {
         let isPortrait = false;
-        this.pdfService.GeneratePdf(data, isPortrait, "");
+        this.pdfService.GeneratePdf(data, isPortrait, '');
         console.log(data);
       },
     });
@@ -286,9 +399,7 @@ export class PersonDisabilityComponent implements OnInit {
         this.list_of_type = <any>response;
       },
       error: (error) => {},
-      complete: () => {
-     
-      },
+      complete: () => {},
     });
   }
 
@@ -424,7 +535,9 @@ export class PersonDisabilityComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.service.DeleteHealthHandicap(transId).subscribe({
-          next: (_data) => {this.GetHealthHandicap();},
+          next: (_data) => {
+            this.GetHealthHandicap();
+          },
           error: (err) => {
             Swal.fire('Oops!', 'Something went wrong.', 'error');
           },

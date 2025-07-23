@@ -1,12 +1,19 @@
 <div class="">
   <ng-template #isEmpty>
-    <app-import [data]="message" (testEvent)="parentMethod()" (importData)="importMethod()"></app-import>
+    <app-import
+      [data]="message"
+      (testEvent)="parentMethod()"
+      (importData)="importMethod()"
+    ></app-import>
   </ng-template>
 
   <div *ngIf="showOverlay">
     <app-import-loading></app-import-loading>
   </div>
-  <div *ngIf="viewData  ; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
+  <div
+    *ngIf="viewData; else isEmpty"
+    class="card o-hidden border-2 shadow-sm my-5"
+  >
     <div class="card-body p-0">
       <!-- Nested Row within Card Body -->
       <div class="row">
@@ -14,12 +21,22 @@
           <div class="p-5">
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-4">Irrigation Systems</h1>
-              <label><strong>Utility Services/Structures - {{modifyCityMun(munCityName)}}</strong></label>
+              <label
+                ><strong
+                  >Utility Services/Structures -
+                  {{ modifyCityMun(munCityName) }}</strong
+                ></label
+              >
             </div>
-            <div class="form-inline float-right ">
+            <div class="form-inline float-right">
               <app-admin>
-                <button *ngIf="!hasData" (click)="isAdd = true;" class="btn btn-primary mb-2" data-bs-toggle="modal"
-                  data-bs-target="#ModalAdd">
+                <button
+                  *ngIf="!hasData"
+                  (click)="isAdd = true"
+                  class="btn btn-primary mb-2"
+                  data-bs-toggle="modal"
+                  data-bs-target="#ModalAdd"
+                >
                   <i class="fa fa-plus"></i>
                   Irrigation System
                 </button>
@@ -27,50 +44,145 @@
               &nbsp;
               <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
             </div>
-            <br>
+            <br />
             <div class="table-responsive">
               <table class="table table-light table-striped">
                 <thead>
                   <tr>
-                    <th scope="col">Service Area: </th>
+                    <th scope="col">Service Area:</th>
                     <th scope="col">National Irrigation System</th>
                     <th scope="col">Communal/ Pump Irrigation System</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>Irrigable Area (Has) : </td>
-                    <td>{{irrigation.irrigableNtl}}</td>
-                    <td>{{irrigation.irrigableCom}}</td>
+                    <td>Irrigable Area (Has) :</td>
+                    <td>{{ irrigation.irrigableNtl }}</td>
+                    <td>{{ irrigation.irrigableCom }}</td>
                   </tr>
                   <tr>
-                    <td>Irrigated Area (Has) : </td>
-                    <td>{{irrigation.irrigatedNtl}}</td>
-                    <td>{{irrigation.irrigatedCom}}</td>
+                    <td>Irrigated Area (Has) :</td>
+                    <td>{{ irrigation.irrigatedNtl }}</td>
+                    <td>{{ irrigation.irrigatedCom }}</td>
                   </tr>
                   <tr>
-                    <td>No. of Farmer Beneficiaries : </td>
-                    <td>{{irrigation.farmerNtl}}</td>
-                    <td>{{irrigation.farmerCom}}</td>
+                    <td>No. of Farmer Beneficiaries :</td>
+                    <td>{{ irrigation.farmerNtl }}</td>
+                    <td>{{ irrigation.farmerCom }}</td>
                   </tr>
                   <tr>
                     <td>Remarks :</td>
-                    <td colspan="2">{{irrigation.remarks}}</td>
+                    <td colspan="2">{{ irrigation.remarks }}</td>
                   </tr>
                 </tbody>
               </table>
+              <!--Sources-->
+              <!-- ✅ Add Source Form -->
+              <app-admin>
+                <div *ngIf="showAddForm" class="card mt-4">
+                  <div class="card-header bg-dark text-white">Add Source</div>
+                  <div class="card-body">
+                    <form (ngSubmit)="addSource()" #sourceForm="ngForm">
+                      <div class="form-group">
+                        <label for="sourceName">Source Name</label>
+                        <input
+                          type="text"
+                          id="sourceName"
+                          class="form-control"
+                          name="sourceName"
+                          [(ngModel)]="newSource.name"
+                          placeholder="Enter source name"
+                          required
+                        />
+                      </div>
+                      <button
+                        class="btn btn-primary mt-2"
+                        [disabled]="!sourceForm.valid"
+                      >
+                        <i class="fas fa-plus"></i> Add
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </app-admin>
+
+              <!-- ✅ Display Each Source -->
+              <div class="card mt-3" *ngFor="let source of sources">
+                <div class="card-body text-start">
+                  <h5 class="card-title mb-2">Source: {{ source.name }}</h5>
+
+                  <!-- ✏️ Edit Mode -->
+                  <div *ngIf="selectedSourceId === source.id; else viewMode">
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="newSource.name"
+                      placeholder="Edit source name"
+                    />
+                    <div class="mt-2">
+                      <app-admin>
+                        <button
+                          class="btn btn-success btn-sm me-1"
+                          (click)="updateSource()"
+                          title="Save"
+                        >
+                          <i class="fas fa-check"></i>
+                        </button>
+                        <button
+                          class="btn btn-secondary btn-sm"
+                          (click)="selectedSourceId = null"
+                          title="Cancel"
+                        >
+                          <i class="fas fa-times"></i>
+                        </button>
+                      </app-admin>
+                    </div>
+                  </div>
+
+                  <!-- 👁️ View Mode -->
+
+                  <ng-template #viewMode>
+                    <app-admin>
+                      <button
+                        class="btn btn-outline-dark btn-sm me-2"
+                        (click)="editSource(source)"
+                        title="Edit"
+                      >
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button
+                        class="btn btn-outline-danger btn-sm"
+                        (click)="deleteSource(source.id)"
+                        title="Delete"
+                      >
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </app-admin>
+                  </ng-template>
+                </div>
+              </div>
             </div>
-            <div *ngIf="hasData" class="form-inline float-right ">
+            <div *ngIf="hasData" class="form-inline float-right">
               <div class="d-inline-flex">
                 <app-admin>
-                  <button (click)="isAdd = false" class="btn btn-info btn-circle" data-toggle="modal"
-                    data-target="#ModalAdd"><i class="fa fa-pen"></i>
+                  <button
+                    (click)="isAdd = false"
+                    class="btn btn-info btn-circle"
+                    data-toggle="modal"
+                    data-target="#ModalAdd"
+                  >
+                    <i class="fa fa-pen"></i>
                   </button>
                   &nbsp;
                 </app-admin>
                 <app-admin>
-                  <button type="button" title="Delete" class="btn btn-warning btn-circle"
-                    (click)="DeleteIrrigation(irrigation.transId)"><i class="fa fa-trash"></i>
+                  <button
+                    type="button"
+                    title="Delete"
+                    class="btn btn-warning btn-circle"
+                    (click)="DeleteIrrigation(irrigation.transId)"
+                  >
+                    <i class="fa fa-trash"></i>
                   </button>
                 </app-admin>
               </div>
@@ -82,71 +194,153 @@
   </div>
 </div>
 
-<div class="modal fade" id="ModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="ModalAdd"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title text-dark" id="exampleModalLabel">Irrigation System</h5>
-        <button type="button" #closebutton class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title text-dark" id="exampleModalLabel">
+          Irrigation System
+        </h5>
+        <button
+          type="button"
+          #closebutton
+          class="btn-close"
+          data-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
         <div class="table-responsive">
           <table class="table table-light table-striped">
             <thead>
               <tr>
-                <th scope="col">Service Area: </th>
+                <th scope="col">Service Area:</th>
                 <th scope="col">National Irrigation System</th>
                 <th scope="col">Communal/ Pump Irrigation System</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>Irrigable Area (Has) : </td>
-                <td><input type="number" class="form-control" id="" placeholder=""
-                    [(ngModel)]="irrigation.irrigableNtl"></td>
-                <td><input type="number" class="form-control" id="" placeholder=""
-                    [(ngModel)]="irrigation.irrigableCom"></td>
-              </tr>
-              <tr>
-                <td>Irrigated Area (Has) : </td>
-                <td><input type="number" class="form-control" id="" placeholder=""
-                    [(ngModel)]="irrigation.irrigatedNtl"></td>
-                <td><input type="number" class="form-control" id="" placeholder=""
-                    [(ngModel)]="irrigation.irrigatedCom"></td>
-              </tr>
-              <tr>
-                <td>No. of Farmer Beneficiaries : </td>
-                <td><input type="number" class="form-control" id="" placeholder="" [(ngModel)]="irrigation.farmerNtl">
+                <td>Irrigable Area (Has) :</td>
+                <td>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id=""
+                    placeholder=""
+                    [(ngModel)]="irrigation.irrigableNtl"
+                  />
                 </td>
-                <td><input type="number" class="form-control" id="" placeholder="" [(ngModel)]="irrigation.farmerCom">
+                <td>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id=""
+                    placeholder=""
+                    [(ngModel)]="irrigation.irrigableCom"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>Irrigated Area (Has) :</td>
+                <td>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id=""
+                    placeholder=""
+                    [(ngModel)]="irrigation.irrigatedNtl"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id=""
+                    placeholder=""
+                    [(ngModel)]="irrigation.irrigatedCom"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>No. of Farmer Beneficiaries :</td>
+                <td>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id=""
+                    placeholder=""
+                    [(ngModel)]="irrigation.farmerNtl"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id=""
+                    placeholder=""
+                    [(ngModel)]="irrigation.farmerCom"
+                  />
                 </td>
               </tr>
               <tr>
                 <td>Remarks :</td>
-                <td colspan="2"><textarea class="form-control" id="exampleFormControlTextarea1" rows="4"
-                    [(ngModel)]="irrigation.remarks"></textarea></td>
+                <td colspan="2">
+                  <textarea
+                    class="form-control"
+                    id="exampleFormControlTextarea1"
+                    rows="4"
+                    [(ngModel)]="irrigation.remarks"
+                  ></textarea>
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-school" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="isAdd? AddIrrigation(): EditIrrigation()">Save
-          changes</button>
+        <button type="button" class="btn btn-school" data-dismiss="modal">
+          Close
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="isAdd ? AddIrrigation() : EditIrrigation()"
+        >
+          Save changes
+        </button>
       </div>
     </div>
   </div>
 </div>
 
 <!-- modal area -->
-<div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
+<div
+  class="modal fade"
+  id="gmapModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">SEPS GEOLOCATION TAGGING</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h5 class="modal-title" id="exampleModalLabel">
+          SEPS GEOLOCATION TAGGING
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -154,8 +348,16 @@
         <app-gmap></app-gmap>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="EditIrrigation()">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="EditIrrigation()"
+        >
+          Save changes
+        </button>
       </div>
     </div>
   </div>

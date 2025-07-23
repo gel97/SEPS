@@ -7,11 +7,12 @@ import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 import { PdfComponent } from 'src/app/components/pdf/pdf.component';
 import { PdfService } from 'src/app/services/pdf.service';
 import { ReportsService } from 'src/app/shared/Tools/reports.service';
+import { SourceService } from 'src/app/shared/Source/Source.Service';
 
 @Component({
   selector: 'app-civic-org',
   templateUrl: './civic-org.component.html',
-  styleUrls: ['./civic-org.component.css']
+  styleUrls: ['./civic-org.component.css'],
 })
 export class CivicOrgComponent implements OnInit {
   @ViewChild(GmapComponent)
@@ -25,7 +26,8 @@ export class CivicOrgComponent implements OnInit {
     private reportService: ReportsService,
     private Auth: AuthService,
     private service: AssociationService,
-    private modifyService: ModifyCityMunService
+    private modifyService: ModifyCityMunService,
+    private SourceService: SourceService
   ) {}
 
   modifyCityMun(cityMunName: string) {
@@ -48,11 +50,122 @@ export class CivicOrgComponent implements OnInit {
   toValidate: any = {};
   latitude: any;
   longtitude: any;
+  sources: any = [];
+  newSource: any = {};
+  selectedSourceId: number | null = null;
+  showAddForm: boolean = true;
 
   ngOnInit(): void {
     this.resetForm();
     this.getListOfBarangay();
     this.GetAssociation();
+    this.getSources();
+  }
+  getSources(): void {
+    const setYear = this.Auth.activeSetYear;
+    const munCityId = this.Auth.munCityId;
+    const sourceFor = 'civic-org'; // 👈 assign your module name
+
+    this.SourceService.getSources(setYear, munCityId, sourceFor).subscribe({
+      next: (data) => {
+        this.sources = data;
+        this.showAddForm = data.length === 0;
+      },
+      error: (error) => {
+        console.error('Failed to fetch sources:', error);
+      },
+    });
+  }
+
+  addSource(): void {
+    if (!this.newSource?.name) {
+      Swal.fire('Warning', 'Please enter a source name.', 'warning');
+      return;
+    }
+
+    const sourceFor = 'civic-org'; // 👈 assign your module name
+
+    // ✅ Add metadata
+    this.newSource.munCityId = this.Auth.munCityId;
+    this.newSource.setYear = this.Auth.activeSetYear;
+    this.newSource.sourceFor = sourceFor;
+
+    this.SourceService.createSource(this.newSource).subscribe({
+      next: () => {
+        this.newSource = {};
+        Swal.fire('Success', 'Source added successfully.', 'success');
+        this.getSources(); // ✅ Re-fetch source list
+      },
+      error: (error) => {
+        Swal.fire('Error', `Failed to create source.\n${error}`, 'error');
+      },
+    });
+  }
+
+  updateSource(): void {
+    if (this.selectedSourceId === null || !this.newSource?.name) {
+      Swal.fire('Warning', 'No source selected or missing name.', 'warning');
+      return;
+    }
+
+    this.SourceService.updateSource(
+      this.selectedSourceId,
+      this.newSource
+    ).subscribe({
+      next: () => {
+        this.getSources();
+        this.selectedSourceId = null;
+        this.newSource = {};
+        Swal.fire('Success', 'Source updated successfully!', 'success');
+      },
+      error: (error) => {
+        Swal.fire('Error', `Failed to update source.\n${error}`, 'error');
+      },
+    });
+  }
+  deleteSource(id: number): void {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This action will delete the source.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Show loading dialog
+        Swal.fire({
+          title: 'Deleting...',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          showConfirmButton: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        // Perform delete operation
+        this.SourceService.deleteSource(id).subscribe({
+          next: () => {
+            this.getSources(); // Refresh list
+            Swal.fire('Deleted!', 'Source has been deleted.', 'success');
+          },
+          error: (error) => {
+            Swal.fire(
+              'Error',
+              `Failed to delete source.\n${error.message || error}`,
+              'error'
+            );
+          },
+        });
+      }
+    });
+  }
+
+  editSource(source: any): void {
+    this.selectedSourceId = source.id;
+    this.newSource = { ...source };
   }
 
   public showOverlay = false;
@@ -62,7 +175,7 @@ export class CivicOrgComponent implements OnInit {
     this.service.Import(this.menuId).subscribe({
       next: (data) => {
         this.ngOnInit();
-        if(data.length === 0){
+        if (data.length === 0) {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -75,14 +188,12 @@ export class CivicOrgComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'info',
             title: 'No data from previous year',
           });
-        }
-        else
-        {
+        } else {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -95,7 +206,7 @@ export class CivicOrgComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'success',
             title: 'Imported Successfully',
@@ -244,7 +355,7 @@ export class CivicOrgComponent implements OnInit {
             color: 'white',
             bold: true,
             alignment: 'center',
-          }
+          },
         ]);
 
         tableData.push([
@@ -271,7 +382,7 @@ export class CivicOrgComponent implements OnInit {
             },
           ]);
 
-          group1.forEach((item: any, index: any) => {    
+          group1.forEach((item: any, index: any) => {
             tableData.push([
               {
                 text: index + 1,
@@ -285,12 +396,12 @@ export class CivicOrgComponent implements OnInit {
               {
                 text: item.membersNo,
                 fillColor: '#FFFFFF',
-                alignment: 'center'
+                alignment: 'center',
               },
               {
                 text: item.totalAssets,
                 fillColor: '#FFFFFF',
-                alignment: 'center'
+                alignment: 'center',
               },
               {
                 text: item.remarks,
@@ -299,7 +410,7 @@ export class CivicOrgComponent implements OnInit {
               {
                 text: item.contactNo,
                 fillColor: '#FFFFFF',
-                alignment: 'center'
+                alignment: 'center',
               },
               {
                 text: item.location,
@@ -308,7 +419,7 @@ export class CivicOrgComponent implements OnInit {
               {
                 text: item.brgyName,
                 fillColor: '#FFFFFF',
-              }
+              },
             ]);
           });
         }
@@ -351,12 +462,12 @@ export class CivicOrgComponent implements OnInit {
               {
                 text: item.membersNo,
                 fillColor: '#FFFFFF',
-                alignment: 'center'
+                alignment: 'center',
               },
               {
                 text: item.totalAssets,
                 fillColor: '#FFFFFF',
-                alignment: 'center'
+                alignment: 'center',
               },
               {
                 text: item.remarks,
@@ -365,7 +476,7 @@ export class CivicOrgComponent implements OnInit {
               {
                 text: item.contactNo,
                 fillColor: '#FFFFFF',
-                alignment: 'center'
+                alignment: 'center',
               },
               {
                 text: item.location,
@@ -374,7 +485,7 @@ export class CivicOrgComponent implements OnInit {
               {
                 text: item.brgyName,
                 fillColor: '#FFFFFF',
-              }
+              },
             ]);
           });
         }
@@ -395,7 +506,7 @@ export class CivicOrgComponent implements OnInit {
       },
       complete: () => {
         let isPortrait = false;
-        this.pdfService.GeneratePdf(data, isPortrait, "");
+        this.pdfService.GeneratePdf(data, isPortrait, '');
         console.log(data);
       },
     });
@@ -638,4 +749,3 @@ export class CivicOrgComponent implements OnInit {
     });
   }
 }
-

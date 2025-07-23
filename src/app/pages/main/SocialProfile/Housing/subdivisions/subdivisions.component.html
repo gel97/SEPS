@@ -6,7 +6,10 @@
   <div *ngIf="showOverlay">
     <app-import-loading></app-import-loading>
   </div>
-  <div *ngIf="dataList.length>0; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
+  <div
+    *ngIf="dataList.length > 0; else isEmpty"
+    class="card o-hidden border-2 shadow-sm my-5"
+  >
     <div class="card-body p-0">
       <!-- Nested Row within Card Body -->
       <div class="row">
@@ -14,15 +17,22 @@
           <div class="p-5">
             <div class=""></div>
             <div class="text-center">
-              <h1 class="h4 text-gray-900">
-                Subdivision
-              </h1>
-              <label><strong>Housing - {{modifyCityMun(munCityName)}} </strong></label>
+              <h1 class="h4 text-gray-900">Subdivision</h1>
+              <label
+                ><strong
+                  >Housing - {{ modifyCityMun(munCityName) }}
+                </strong></label
+              >
             </div>
-            <div class="form-inline float-right ">
+            <div class="form-inline float-right">
               <app-admin>
-                <button type="button" (click)="clearData(); isAdd = true" class="btn btn-labeled btn-primary" data-toggle="modal"
-                  data-target="#ModalAdd">
+                <button
+                  type="button"
+                  (click)="clearData(); isAdd = true"
+                  class="btn btn-labeled btn-primary"
+                  data-toggle="modal"
+                  data-target="#ModalAdd"
+                >
                   <i class="fa fa-plus"></i> Subdivision
                 </button>
               </app-admin>
@@ -39,10 +49,10 @@
                     <th scope="col" style="text-align: center">
                       Name of Subdivision
                     </th>
+                    <th scope="col" style="text-align: center">Location</th>
                     <th scope="col" style="text-align: center">
-                      Location
+                      Owner/ Developer
                     </th>
-                    <th scope="col" style="text-align: center">Owner/ Developer</th>
                     <th scope="col" style="text-align: center">Area(Sq. m.)</th>
                     <th scope="col" style="text-align: center">
                       No. of Housing Units/ Lots
@@ -70,22 +80,34 @@
                     <td style="text-align: center">{{ dataItem.remarks }}</td>
                     <td style="text-align: center">{{ dataItem.brgyName }}</td>
                     <!-- <td style="text-align: center">{{ dataItem.longtitude }}, {{ dataItem.latitude }}</td> -->
-                    <td style="text-align: center;">
+                    <td style="text-align: center">
                       <div class="d-inline-flex">
                         <app-admin>
-                          <button (click)="addData = dataItem; isAdd = false" data-toggle="modal" (click)="editToggle()"
-                            data-target="#ModalAdd" class="btn btn-info btn-circle">
+                          <button
+                            (click)="addData = dataItem; isAdd = false"
+                            data-toggle="modal"
+                            (click)="editToggle()"
+                            data-target="#ModalAdd"
+                            class="btn btn-info btn-circle"
+                          >
                             <i class="fas fa-pen"></i>
                           </button>
                         </app-admin>
                         &nbsp;
-                        <button (click)="SetMarker(dataItem); addData = dataItem" data-toggle="modal"
-                          data-target="#gmapModal" class="btn btn-success btn-circle">
+                        <button
+                          (click)="SetMarker(dataItem); addData = dataItem"
+                          data-toggle="modal"
+                          data-target="#gmapModal"
+                          class="btn btn-success btn-circle"
+                        >
                           <i class="fas fa-globe"></i>
                         </button>
                         &nbsp;
                         <app-admin>
-                          <button class="btn btn-warning btn-circle" (click)="DeleteSubdivision(dataItem)">
+                          <button
+                            class="btn btn-warning btn-circle"
+                            (click)="DeleteSubdivision(dataItem)"
+                          >
                             <i class="fas fa-trash"></i>
                           </button>
                         </app-admin>
@@ -94,6 +116,91 @@
                   </tr>
                 </tbody>
               </table>
+              <!--Sources-->
+              <!-- ✅ Add Source Form -->
+              <app-admin>
+                <div *ngIf="showAddForm" class="card mt-4">
+                  <div class="card-header bg-dark text-white">Add Source</div>
+                  <div class="card-body">
+                    <form (ngSubmit)="addSource()" #sourceForm="ngForm">
+                      <div class="form-group">
+                        <label for="sourceName">Source Name</label>
+                        <input
+                          type="text"
+                          id="sourceName"
+                          class="form-control"
+                          name="sourceName"
+                          [(ngModel)]="newSource.name"
+                          placeholder="Enter source name"
+                          required
+                        />
+                      </div>
+                      <button
+                        class="btn btn-primary mt-2"
+                        [disabled]="!sourceForm.valid"
+                      >
+                        <i class="fas fa-plus"></i> Add
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </app-admin>
+
+              <!-- ✅ Display Each Source -->
+              <div class="card mt-3" *ngFor="let source of sources">
+                <div class="card-body text-start">
+                  <h5 class="card-title mb-2">Source: {{ source.name }}</h5>
+
+                  <!-- ✏️ Edit Mode -->
+                  <div *ngIf="selectedSourceId === source.id; else viewMode">
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="newSource.name"
+                      placeholder="Edit source name"
+                    />
+                    <div class="mt-2">
+                      <app-admin>
+                        <button
+                          class="btn btn-success btn-sm me-1"
+                          (click)="updateSource()"
+                          title="Save"
+                        >
+                          <i class="fas fa-check"></i>
+                        </button>
+                        <button
+                          class="btn btn-secondary btn-sm"
+                          (click)="selectedSourceId = null"
+                          title="Cancel"
+                        >
+                          <i class="fas fa-times"></i>
+                        </button>
+                      </app-admin>
+                    </div>
+                  </div>
+
+                  <!-- 👁️ View Mode -->
+
+                  <ng-template #viewMode>
+                    <app-admin>
+                      <button
+                        class="btn btn-outline-dark btn-sm me-2"
+                        (click)="editSource(source)"
+                        title="Edit"
+                      >
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button
+                        class="btn btn-outline-danger btn-sm"
+                        (click)="deleteSource(source.id)"
+                        title="Delete"
+                      >
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </app-admin>
+                  </ng-template>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -104,24 +211,46 @@
 
 <!-- Modal -->
 
-<div class="modal fade" id="ModalAdd" tabindex="-1" role="dialog" aria-labelledby="ModalAddLabel"
-  aria-hidden="true">
+<div
+  class="modal fade"
+  id="ModalAdd"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="ModalAddLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title text-dark" id="ModalAddLabel">
-          Subdivision
-        </h5>
-        <button type="button" #closebutton class="btn-close" data-toggle="modal" data-target="#ModalAdd"
-          aria-hidden="true" aria-label="Close"></button>
+        <h5 class="modal-title text-dark" id="ModalAddLabel">Subdivision</h5>
+        <button
+          type="button"
+          #closebutton
+          class="btn-close"
+          data-toggle="modal"
+          data-target="#ModalAdd"
+          aria-hidden="true"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
         <div class="row">
-          <div class="col-lg-6"> <br>
+          <div class="col-lg-6">
+            <br />
             <label for="type">Barangay :</label>
-            <select class="form-select" aria-label="Default select example" [(ngModel)]="addData.brgyId"
-              [ngClass]="toValidate.brgyId?'is-invalid':''" (ngModelChange)="toValidate.brgyId=false">
-              <option *ngFor="let item  of barangayList" value={{item.brgyId}}>{{item.brgyName}}</option>
+            <select
+              class="form-select"
+              aria-label="Default select example"
+              [(ngModel)]="addData.brgyId"
+              [ngClass]="toValidate.brgyId ? 'is-invalid' : ''"
+              (ngModelChange)="toValidate.brgyId = false"
+            >
+              <option
+                *ngFor="let item of barangayList"
+                value="{{ item.brgyId }}"
+              >
+                {{ item.brgyName }}
+              </option>
             </select>
           </div>
         </div>
@@ -129,42 +258,89 @@
         <div class="form-group">
           <div class="">
             <div class="">
-              <label for="exampleFormControlInput1">Name of Subdivision :</label>
-              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.name"
-                [(ngModel)]="dummy_addData.name" [ngClass]="toValidate.name?'is-invalid':''"
-                (keyup)="toValidate.name=false" />
+              <label for="exampleFormControlInput1"
+                >Name of Subdivision :</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id=""
+                placeholder=""
+                [(ngModel)]="addData.name"
+                [(ngModel)]="dummy_addData.name"
+                [ngClass]="toValidate.name ? 'is-invalid' : ''"
+                (keyup)="toValidate.name = false"
+              />
             </div>
             <br />
             <div class="">
               <label for="exampleFormControlTextarea1">Location :</label>
-              <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"
-                [(ngModel)]="addData.location"></textarea>
+              <textarea
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                rows="4"
+                [(ngModel)]="addData.location"
+              ></textarea>
             </div>
             <br />
             <div class="row">
               <div class="col-lg-6">
                 <label for="exampleFormControlInput1">Owner /Developer :</label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.owner" />
+                <input
+                  type="text"
+                  class="form-control"
+                  id=""
+                  placeholder=""
+                  [(ngModel)]="addData.owner"
+                />
               </div>
               <div class="col-lg-6">
                 <label for="exampleFormControlInput1"> Area (Sq. m.):</label>
-                <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.area" />
+                <input
+                  type="text"
+                  class="form-control"
+                  id=""
+                  placeholder=""
+                  [(ngModel)]="addData.area"
+                />
               </div>
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-lg-4">
-            <label for="exampleFormControlInput1">No. of Housing Units/Lots :</label>
-            <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="addData.housingNo" />
+            <label for="exampleFormControlInput1"
+              >No. of Housing Units/Lots :</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              id=""
+              placeholder=""
+              [(ngModel)]="addData.housingNo"
+            />
           </div>
           <div class="col-lg-4">
-            <label for="exampleFormControlInput1">No. of Units/Lots Sold :</label>
-            <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="addData.lotSoldNo" />
+            <label for="exampleFormControlInput1"
+              >No. of Units/Lots Sold :</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              id=""
+              placeholder=""
+              [(ngModel)]="addData.lotSoldNo"
+            />
           </div>
           <div class="col-lg-4">
             <label>Remarks:</label>
-            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="addData.remarks" />
+            <input
+              type="text"
+              class="form-control"
+              id=""
+              placeholder=""
+              [(ngModel)]="addData.remarks"
+            />
           </div>
         </div>
         <br />
@@ -172,43 +348,76 @@
       <div class="modal-footer">
         <div class="left-absolute" *ngIf="visible">
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-              (ngModelChange)="onChange(isCheck)" [(ngModel)]="isCheck" />
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="flexCheckDefault"
+              (ngModelChange)="onChange(isCheck)"
+              [(ngModel)]="isCheck"
+            />
             <label class="form-check-label" for="flexCheckDefault">
               Several data
             </label>
           </div>
         </div>
-        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#ModalAdd"
-          aria-hidden="true">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-toggle="modal"
+          data-target="#ModalAdd"
+          aria-hidden="true"
+        >
           <i class="fas fa-times">&nbsp;</i>Close
         </button>
         <div *ngIf="isAdd; else Edit">
-          <button type="button" *ngIf="visible" (click)="AddSubdivision()" id="closeModal" class="btn btn-primary">
+          <button
+            type="button"
+            *ngIf="visible"
+            (click)="AddSubdivision()"
+            id="closeModal"
+            class="btn btn-primary"
+          >
             <i class="fas fa-check">&nbsp;</i>Submit
           </button>
         </div>
         <ng-template #Edit>
-          <button type="button" *ngIf="not_visible" (click)="EditSubdivision()" data-toggle="modal"
-          data-target="#ModalAdd" aria-hidden="true" class="btn btn-primary">
-          <i class="fas fa-pen">&nbsp;</i>Save changes
-        </button>
-        </ng-template>  
+          <button
+            type="button"
+            *ngIf="not_visible"
+            (click)="EditSubdivision()"
+            data-toggle="modal"
+            data-target="#ModalAdd"
+            aria-hidden="true"
+            class="btn btn-primary"
+          >
+            <i class="fas fa-pen">&nbsp;</i>Save changes
+          </button>
+        </ng-template>
       </div>
     </div>
   </div>
 </div>
 
 <!-- modal area GEO -->
-<div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="ModalAddLabel"
-  aria-hidden="true">
+<div
+  class="modal fade"
+  id="gmapModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="ModalAddLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="ModalAddLabel">
-          SEPS GEOLOCATION TAGGING
-        </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h5 class="modal-title" id="ModalAddLabel">SEPS GEOLOCATION TAGGING</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -220,7 +429,11 @@
           Close
         </button>
         <app-admin>
-          <button type="button" class="btn btn-primary" (click)="EditSubdivision()">
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="EditSubdivision()"
+          >
             Save changes
           </button>
         </app-admin>

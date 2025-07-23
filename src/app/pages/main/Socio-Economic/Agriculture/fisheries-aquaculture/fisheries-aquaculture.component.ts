@@ -7,6 +7,7 @@ import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 import { PdfComponent } from 'src/app/components/pdf/pdf.component';
 import { PdfService } from 'src/app/services/pdf.service';
 import { ReportsService } from 'src/app/shared/Tools/reports.service';
+import { SourceService } from 'src/app/shared/Source/Source.Service';
 @Component({
   selector: 'app-fisheries-aquaculture',
   templateUrl: './fisheries-aquaculture.component.html',
@@ -18,7 +19,8 @@ export class FisheriesAquacultureComponent implements OnInit {
     private reportService: ReportsService,
     private Auth: AuthService,
     private Service: AgricultureService,
-    private modifyService: ModifyCityMunService
+    private modifyService: ModifyCityMunService,
+    private SourceService: SourceService
   ) {}
 
   modifyCityMun(cityMunName: string) {
@@ -59,6 +61,10 @@ export class FisheriesAquacultureComponent implements OnInit {
   required: boolean = true;
   latitude: any;
   longtitude: any;
+  sources: any = [];
+  newSource: any = {};
+  selectedSourceId: number | null = null;
+  showAddForm: boolean = true;
 
   message = 'Fisheries/ Aquaculture Production';
 
@@ -159,64 +165,168 @@ export class FisheriesAquacultureComponent implements OnInit {
   ngOnInit(): void {
     this.GetListAgriculture();
     this.GetBarangayList();
+    this.getSources();
+  }
+  getSources(): void {
+    const setYear = this.Auth.activeSetYear;
+    const munCityId = this.Auth.munCityId;
+    const sourceFor = 'Fisheries/ Aquaculture Production';
+
+    this.SourceService.getSources(setYear, munCityId, sourceFor).subscribe({
+      next: (data) => {
+        this.sources = data;
+        this.showAddForm = data.length === 0;
+      },
+      error: (error) => {
+        console.error('Failed to fetch sources:', error);
+      },
+    });
+  }
+
+  addSource(): void {
+    if (!this.newSource?.name) {
+      Swal.fire('Warning', 'Please enter a source name.', 'warning');
+      return;
+    }
+
+    const sourceFor = 'Fisheries/ Aquaculture Production'; // 👈 assign your module name
+
+    // ✅ Add metadata
+    this.newSource.munCityId = this.Auth.munCityId;
+    this.newSource.setYear = this.Auth.activeSetYear;
+    this.newSource.sourceFor = sourceFor;
+
+    this.SourceService.createSource(this.newSource).subscribe({
+      next: () => {
+        this.newSource = {};
+        Swal.fire('Success', 'Source added successfully.', 'success');
+        this.getSources(); // ✅ Re-fetch source list
+      },
+      error: (error) => {
+        Swal.fire('Error', `Failed to create source.\n${error}`, 'error');
+      },
+    });
+  }
+
+  updateSource(): void {
+    if (this.selectedSourceId === null || !this.newSource?.name) {
+      Swal.fire('Warning', 'No source selected or missing name.', 'warning');
+      return;
+    }
+
+    this.SourceService.updateSource(
+      this.selectedSourceId,
+      this.newSource
+    ).subscribe({
+      next: () => {
+        this.getSources();
+        this.selectedSourceId = null;
+        this.newSource = {};
+        Swal.fire('Success', 'Source updated successfully!', 'success');
+      },
+      error: (error) => {
+        Swal.fire('Error', `Failed to update source.\n${error}`, 'error');
+      },
+    });
+  }
+  deleteSource(id: number): void {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This action will delete the source.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Show loading dialog
+        Swal.fire({
+          title: 'Deleting...',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          showConfirmButton: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        // Perform delete operation
+        this.SourceService.deleteSource(id).subscribe({
+          next: () => {
+            this.getSources(); // Refresh list
+            Swal.fire('Deleted!', 'Source has been deleted.', 'success');
+          },
+          error: (error) => {
+            Swal.fire(
+              'Error',
+              `Failed to delete source.\n${error.message || error}`,
+              'error'
+            );
+          },
+        });
+      }
+    });
+  }
+  editSource(source: any): void {
+    this.selectedSourceId = source.id;
+    this.newSource = { ...source };
   }
 
   ImportExcel(e: any) {
     Swal.fire({
       title: 'Are you sure?',
-      text: "",
+      text: '',
       icon: 'info',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, submit it!'
+      confirmButtonText: 'Yes, submit it!',
     }).then((result) => {
-      console.log(result)
+      console.log(result);
       if (result.isConfirmed) {
         this.reportService
-        .PostImportWithMenuId(
-          e.target.files[0],
-          this.Auth.setYear,
-          this.Auth.munCityId,
-          'Agriculture',
-          "3"
-        )
-        .subscribe((success) => {
-          Swal.fire({
-            title: 'Importing Data',
-            html: 'Please wait for a moment.',
-            timerProgressBar: true,
-            allowOutsideClick: false,
-            didOpen: () => {
-              Swal.showLoading();
-              setTimeout(() => {
-                if (success) {
-                  this.GetListAgriculture();
-                  Swal.close();
-                  Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'File imported successfully',
-                    showConfirmButton: true,
-                  });
-                } else {
-                  Swal.close();
-                  Swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: 'Something went wrong. possible invalid file',
-                    showConfirmButton: true,
-                  });
-                }
-              }, 5000);
-            },
+          .PostImportWithMenuId(
+            e.target.files[0],
+            this.Auth.setYear,
+            this.Auth.munCityId,
+            'Agriculture',
+            '3'
+          )
+          .subscribe((success) => {
+            Swal.fire({
+              title: 'Importing Data',
+              html: 'Please wait for a moment.',
+              timerProgressBar: true,
+              allowOutsideClick: false,
+              didOpen: () => {
+                Swal.showLoading();
+                setTimeout(() => {
+                  if (success) {
+                    this.GetListAgriculture();
+                    Swal.close();
+                    Swal.fire({
+                      position: 'center',
+                      icon: 'success',
+                      title: 'File imported successfully',
+                      showConfirmButton: true,
+                    });
+                  } else {
+                    Swal.close();
+                    Swal.fire({
+                      position: 'center',
+                      icon: 'error',
+                      title: 'Something went wrong. possible invalid file',
+                      showConfirmButton: true,
+                    });
+                  }
+                }, 5000);
+              },
+            });
           });
-        });
+      } else {
       }
-      else{
-      }
-    })
-
+    });
   }
 
   GeneratePDF() {
@@ -461,8 +571,14 @@ export class FisheriesAquacultureComponent implements OnInit {
 
         reports.forEach((a: any) => {
           if (a.district == 1) {
-            tableData.push([{ text: `1st Congressional District `, colSpan: 16, alignment: 'left',
-            fillColor: '#526D82'}]);
+            tableData.push([
+              {
+                text: `1st Congressional District `,
+                colSpan: 16,
+                alignment: 'left',
+                fillColor: '#526D82',
+              },
+            ]);
 
             let sub: any = [];
             sub = [
@@ -516,8 +632,14 @@ export class FisheriesAquacultureComponent implements OnInit {
             tableData.push(sub);
           }
           if (a.district == 2) {
-            tableData.push([{ text: `2nd Congressional District `, colSpan: 16, alignment: 'left',
-            fillColor: '#526D82'}]);
+            tableData.push([
+              {
+                text: `2nd Congressional District `,
+                colSpan: 16,
+                alignment: 'left',
+                fillColor: '#526D82',
+              },
+            ]);
 
             let sub: any = [];
             sub = [
@@ -574,40 +696,39 @@ export class FisheriesAquacultureComponent implements OnInit {
 
         let grand: any = [];
         grand = [
-              {
-                text: 'GRANDTOTAL',
-                fillColor: '#F1C93B',
-                colSpan: 2,
-                marginLeft: 2,
-              },
-              {},
-            ];
-        columnTypes.forEach((a:any) => {
-          let prod:any = "-";
-          let area:any = "-";
-          grandTotal.forEach((b:any) => {
-          
-          if(a.recNo == b.type){
-            prod = b.totalProd;
-            area = b.area;
-          }
+          {
+            text: 'GRANDTOTAL',
+            fillColor: '#F1C93B',
+            colSpan: 2,
+            marginLeft: 2,
+          },
+          {},
+        ];
+        columnTypes.forEach((a: any) => {
+          let prod: any = '-';
+          let area: any = '-';
+          grandTotal.forEach((b: any) => {
+            if (a.recNo == b.type) {
+              prod = b.totalProd;
+              area = b.area;
+            }
           });
-                     
-          grand.push({
-            text: prod,
-            fillColor: '#F1C93B',
-            alignment: 'center'
-          },{
-            text: area,
-            fillColor: '#F1C93B',
-            alignment: 'center'
-          },);  
-          
-        });  
-        
-        tableData.push(grand);
 
-    
+          grand.push(
+            {
+              text: prod,
+              fillColor: '#F1C93B',
+              alignment: 'center',
+            },
+            {
+              text: area,
+              fillColor: '#F1C93B',
+              alignment: 'center',
+            }
+          );
+        });
+
+        tableData.push(grand);
 
         const table = {
           margin: [0, 10, 0, 0],
@@ -642,7 +763,7 @@ export class FisheriesAquacultureComponent implements OnInit {
       },
       complete: () => {
         let isPortrait = false;
-        this.pdfService.GeneratePdf(data, isPortrait, "");
+        this.pdfService.GeneratePdf(data, isPortrait, '');
         console.log(data);
       },
     });
@@ -655,7 +776,7 @@ export class FisheriesAquacultureComponent implements OnInit {
       this.munCityId
     ).subscribe((response) => {
       this.dataList = <any>response;
-      this.GetListHarvestTypes()
+      this.GetListHarvestTypes();
     });
   }
 
