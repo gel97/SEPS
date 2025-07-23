@@ -8,11 +8,12 @@ import { PdfService } from 'src/app/services/pdf.service';
 import { ReportsService } from 'src/app/shared/Tools/reports.service';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 import { EducationTertiaryGradService } from 'src/app/shared/SocialProfile/Education/educationTertiaryGrad.service';
+import { SourceService } from 'src/app/shared/Source/Source.Service';
 
 @Component({
   selector: 'app-tertiary-grad',
   templateUrl: './tertiary-grad.component.html',
-  styleUrls: ['./tertiary-grad.component.css']
+  styleUrls: ['./tertiary-grad.component.css'],
 })
 export class TertiaryGradComponent implements OnInit {
   @ViewChild(GmapComponent)
@@ -21,21 +22,21 @@ export class TertiaryGradComponent implements OnInit {
   private pdfComponent!: PdfComponent;
 
   @ViewChild('closebutton')
-  closebutton!: { nativeElement: { click: () => void; }; };
+  closebutton!: { nativeElement: { click: () => void } };
 
   constructor(
-    private pdfService: PdfService, 
+    private pdfService: PdfService,
     private reportService: ReportsService,
     private service: EducationTertiaryGradService,
     private auth: AuthService,
-    private modifyService: ModifyCityMunService
+    private modifyService: ModifyCityMunService,
+    private SourceService: SourceService
   ) {}
 
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
   }
 
-  
   munCityName: string = this.auth.munCityName;
   toValidate: any = {};
   isAdd: boolean = false;
@@ -44,14 +45,122 @@ export class TertiaryGradComponent implements OnInit {
   listData: any = [];
   listCourse: any = [];
 
-
   data: any = {};
-  reports:any = [];
-
-
+  reports: any = [];
+  sources: any = [];
+  newSource: any = {};
+  selectedSourceId: number | null = null;
+  showAddForm: boolean = true;
 
   ngOnInit(): void {
     this.Init();
+    this.getSources();
+  }
+  getSources(): void {
+    const setYear = this.auth.activeSetYear;
+    const munCityId = this.auth.munCityId;
+    const sourceFor = 'tertiary-grad';
+
+    this.SourceService.getSources(setYear, munCityId, sourceFor).subscribe({
+      next: (data) => {
+        this.sources = data;
+        this.showAddForm = data.length === 0;
+      },
+      error: (error) => {
+        console.error('Failed to fetch sources:', error);
+      },
+    });
+  }
+
+  addSource(): void {
+    if (!this.newSource?.name) {
+      Swal.fire('Warning', 'Please enter a source name.', 'warning');
+      return;
+    }
+
+    const sourceFor = 'tertiary-grad'; // 👈 assign your module name
+
+    // ✅ Add metadata
+    this.newSource.munCityId = this.auth.munCityId;
+    this.newSource.setYear = this.auth.activeSetYear;
+    this.newSource.sourceFor = sourceFor;
+
+    this.SourceService.createSource(this.newSource).subscribe({
+      next: () => {
+        this.newSource = {};
+        Swal.fire('Success', 'Source added successfully.', 'success');
+        this.getSources(); // ✅ Re-fetch source list
+      },
+      error: (error) => {
+        Swal.fire('Error', `Failed to create source.\n${error}`, 'error');
+      },
+    });
+  }
+
+  updateSource(): void {
+    if (this.selectedSourceId === null || !this.newSource?.name) {
+      Swal.fire('Warning', 'No source selected or missing name.', 'warning');
+      return;
+    }
+
+    this.SourceService.updateSource(
+      this.selectedSourceId,
+      this.newSource
+    ).subscribe({
+      next: () => {
+        this.getSources();
+        this.selectedSourceId = null;
+        this.newSource = {};
+        Swal.fire('Success', 'Source updated successfully!', 'success');
+      },
+      error: (error) => {
+        Swal.fire('Error', `Failed to update source.\n${error}`, 'error');
+      },
+    });
+  }
+  deleteSource(id: number): void {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This action will delete the source.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Show loading dialog
+        Swal.fire({
+          title: 'Deleting...',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          showConfirmButton: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        // Perform delete operation
+        this.SourceService.deleteSource(id).subscribe({
+          next: () => {
+            this.getSources(); // Refresh list
+            Swal.fire('Deleted!', 'Source has been deleted.', 'success');
+          },
+          error: (error) => {
+            Swal.fire(
+              'Error',
+              `Failed to delete source.\n${error.message || error}`,
+              'error'
+            );
+          },
+        });
+      }
+    });
+  }
+
+  editSource(source: any): void {
+    this.selectedSourceId = source.id;
+    this.newSource = { ...source };
   }
 
   Init() {
@@ -68,8 +177,8 @@ export class TertiaryGradComponent implements OnInit {
 
     const tableData: any = [];
 
-    let summary:any = [];
-    let contentData:any = [];
+    let summary: any = [];
+    let contentData: any = [];
 
     this.reportService
       .GetEducationTertiaryGradReport(this.pdfComponent.data)
@@ -123,7 +232,7 @@ export class TertiaryGradComponent implements OnInit {
               color: 'white',
               bold: true,
               alignment: 'center',
-            },    
+            },
             {
               text: 'Male',
               fillColor: 'black',
@@ -147,45 +256,50 @@ export class TertiaryGradComponent implements OnInit {
             },
           ]);
 
-          summary.forEach((a: any, index:any) => {
-            tableData.push([{
-              text: index + 1,
-              marginLeft:2,
-              fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
-            },{
-              text: a.program,
-              fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
-              
-            },{
-              text: a.male,
-              alignment: 'center',
-              fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
-              
-            },{
-              text: a.female,
-              alignment: 'center',
-              fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
-            },{
-              text: a.total,
-              alignment: 'center',
-              fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
-            },])
-           
+          summary.forEach((a: any, index: any) => {
+            tableData.push([
+              {
+                text: index + 1,
+                marginLeft: 2,
+                fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+              },
+              {
+                text: a.program,
+                fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+              },
+              {
+                text: a.male,
+                alignment: 'center',
+                fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+              },
+              {
+                text: a.female,
+                alignment: 'center',
+                fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+              },
+              {
+                text: a.total,
+                alignment: 'center',
+                fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+              },
+            ]);
           });
 
-          contentData.push([{
-            margin: [0, 10, 0, 0],
-            table: {
-              widths: [25, '*', '*', '*', '*'],
-              body: tableData,
+          contentData.push([
+            {
+              margin: [0, 10, 0, 0],
+              table: {
+                widths: [25, '*', '*', '*', '*'],
+                body: tableData,
+              },
+              layout: 'lightHorizontalLines',
+              pageBreak: 'after',
             },
-            layout: 'lightHorizontalLines',
-            pageBreak: 'after'
-          }]);
+          ]);
 
-          reports.forEach((a:any, index:any) => {
-            let newTableData:any = [];
-            contentData.push([{text: a.munCityName, bold: true }]);
+          reports.forEach((a: any, index: any) => {
+            let newTableData: any = [];
+            contentData.push([{ text: a.munCityName, bold: true }]);
             newTableData.push([
               {
                 text: '#',
@@ -200,7 +314,7 @@ export class TertiaryGradComponent implements OnInit {
                 color: 'white',
                 bold: true,
                 alignment: 'center',
-              },    
+              },
               {
                 text: 'Male',
                 fillColor: 'black',
@@ -224,42 +338,46 @@ export class TertiaryGradComponent implements OnInit {
               },
             ]);
 
-            a.data.forEach((b: any, i:any) => {
-              newTableData.push([{
-                text: i + 1,
-                marginLeft:2,
-                fillColor: i % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
-              },{
-                text: b.program,
-                fillColor: i % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
-                
-              },{
-                text: b.male,
-                alignment: 'center',
-                fillColor: i % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
-                
-              },{
-                text: b.female,
-                alignment: 'center',
-                fillColor: i % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
-              },{
-                text: b.total,
-                alignment: 'center',
-                fillColor: i % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
-              },])
-             
+            a.data.forEach((b: any, i: any) => {
+              newTableData.push([
+                {
+                  text: i + 1,
+                  marginLeft: 2,
+                  fillColor: i % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+                },
+                {
+                  text: b.program,
+                  fillColor: i % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+                },
+                {
+                  text: b.male,
+                  alignment: 'center',
+                  fillColor: i % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+                },
+                {
+                  text: b.female,
+                  alignment: 'center',
+                  fillColor: i % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+                },
+                {
+                  text: b.total,
+                  alignment: 'center',
+                  fillColor: i % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+                },
+              ]);
             });
 
-            contentData.push([{
-              margin: [0, 10, 0, 0],
-              table: {
-                widths: [25, '*', '*', '*', '*'],
-                body: newTableData,
+            contentData.push([
+              {
+                margin: [0, 10, 0, 0],
+                table: {
+                  widths: [25, '*', '*', '*', '*'],
+                  body: newTableData,
+                },
+                layout: 'lightHorizontalLines',
+                pageBreak: 'after',
               },
-              layout: 'lightHorizontalLines',
-              pageBreak: 'after'
-            }]);
-
+            ]);
           });
 
           // const table = {
@@ -278,43 +396,41 @@ export class TertiaryGradComponent implements OnInit {
         },
         complete: () => {
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait, "");
+          this.pdfService.GeneratePdf(data, isPortrait, '');
           console.log(data);
         },
       });
   }
 
   GetData() {
-    this.service.GetListEducationTertiaryGrad(this.auth.setYear, this.auth.munCityId).subscribe({
-      next: (response) => {
-        this.listEductaion = (<any>response);
-        console.log("Education:" , this.listEductaion);
-      },
-      error: (error) => {
-      },
-      complete: () => {
-        this.GetListCourse();
-      }
-    });
+    this.service
+      .GetListEducationTertiaryGrad(this.auth.setYear, this.auth.munCityId)
+      .subscribe({
+        next: (response) => {
+          this.listEductaion = <any>response;
+          console.log('Education:', this.listEductaion);
+        },
+        error: (error) => {},
+        complete: () => {
+          this.GetListCourse();
+        },
+      });
   }
 
   GetListCourse() {
     this.service.GetListCourse().subscribe({
       next: (response) => {
-        this.listCourse = (<any>response);
-        console.log("Course:" ,this.listCourse);
-
+        this.listCourse = <any>response;
+        console.log('Course:', this.listCourse);
       },
-      error: (error) => {
-      },
+      error: (error) => {},
       complete: () => {
         this.FilterList();
-      }
+      },
     });
   }
 
-
-   FilterList() {
+  FilterList() {
     let isExist;
     this.listData = [];
 
@@ -331,64 +447,61 @@ export class TertiaryGradComponent implements OnInit {
       isExist = this.listData.filter((x: any) => x.course == a.recNo);
       if (isExist.length === 0) {
         this.listData.push({
-          'course': a.recNo,
-          'program': a.program,
+          course: a.recNo,
+          program: a.program,
         });
       }
     });
-    console.log("mergeList: ", this.listData);
-
+    console.log('mergeList: ', this.listData);
   }
 
   AddData() {
-      this.data.setYear = this.auth.activeSetYear;
-      this.data.munCityId = this.auth.o_munCityId;
-      console.log(this.data);
-      this.service.AddEducationTertiaryGrad(this.data).subscribe({
-        next: (request) => {
-          let index = this.listData.findIndex((obj: any) => obj.course === this.data.course);
-          this.listData[index] = request;
-          console.log(request)
-        },
-        complete: () => {
-          this.data = {};
-          this.closebutton.nativeElement.click();
+    this.data.setYear = this.auth.activeSetYear;
+    this.data.munCityId = this.auth.o_munCityId;
+    console.log(this.data);
+    this.service.AddEducationTertiaryGrad(this.data).subscribe({
+      next: (request) => {
+        let index = this.listData.findIndex(
+          (obj: any) => obj.course === this.data.course
+        );
+        this.listData[index] = request;
+        console.log(request);
+      },
+      complete: () => {
+        this.data = {};
+        this.closebutton.nativeElement.click();
 
-          Swal.fire({
-            position: 'center',
-            icon: 'success',
-            title: 'Your work has been saved',
-            showConfirmButton: false,
-            timer: 1000
-          });
-        }
-      });
-    
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Your work has been saved',
+          showConfirmButton: false,
+          timer: 1000,
+        });
+      },
+    });
   }
 
   EditData() {
-
-
-      this.data.setYear = this.auth.activeSetYear;
-      this.service.EditEducationTertiaryGrad(this.data).subscribe({
-        next: (request) => {
-          this.closebutton.nativeElement.click();
-          this.data = {};
-        },
-        complete: () => {
-          Swal.fire({
-            position: 'center',
-            icon: 'success',
-            title: 'Your work has been updated',
-            showConfirmButton: false,
-            timer: 1000
-          });
-        }
-      });
-    
+    this.data.setYear = this.auth.activeSetYear;
+    this.service.EditEducationTertiaryGrad(this.data).subscribe({
+      next: (request) => {
+        this.closebutton.nativeElement.click();
+        this.data = {};
+      },
+      complete: () => {
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Your work has been updated',
+          showConfirmButton: false,
+          timer: 1000,
+        });
+      },
+    });
   }
 
-  DeleteData(transId: any, index: any, data:any) {
+  DeleteData(transId: any, index: any, data: any) {
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -396,34 +509,23 @@ export class TertiaryGradComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
         this.service.DeleteEducationTertiaryGrad(transId).subscribe({
-          next: (_data) => {
-          },
+          next: (_data) => {},
           error: (err) => {
-            Swal.fire(
-              'Oops!',
-              'Something went wrong.',
-              'error'
-            )
+            Swal.fire('Oops!', 'Something went wrong.', 'error');
           },
           complete: () => {
             this.listData[index] = {};
             this.listData[index].course = data.course;
             this.listData[index].program = data.program;
-            Swal.fire(
-              'Deleted!',
-              'Your file has been deleted.',
-              'success'
-            )
-          }
-
+            Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+          },
         });
-
       }
-    })
+    });
   }
 
   markerObj: any = {};
@@ -434,7 +536,7 @@ export class TertiaryGradComponent implements OnInit {
       label: data.brgyName.charAt(0),
       brgyName: data.brgyName,
       munCityName: this.munCityName,
-      draggable: true
+      draggable: true,
     };
     this.gmapComponent.setMarker(this.markerObj);
   }
@@ -442,8 +544,8 @@ export class TertiaryGradComponent implements OnInit {
 
   async loadPdfMaker() {
     if (!this.pdfMake) {
-      const pdfMakeModule = await import("pdfmake/build/pdfmake");
-      const pdfFontsModule = await import("pdfmake/build/vfs_fonts");
+      const pdfMakeModule = await import('pdfmake/build/pdfmake');
+      const pdfFontsModule = await import('pdfmake/build/vfs_fonts');
       this.pdfMake = pdfMakeModule;
       this.pdfMake.vfs = pdfFontsModule.pdfMake.vfs;
     }
@@ -451,14 +553,10 @@ export class TertiaryGradComponent implements OnInit {
 
   async GeneratePdf() {
     await this.loadPdfMaker();
-       
+
     const def = {
-    	content: [
-        'hello',
-        'hi'
-      ],
-    
+      content: ['hello', 'hi'],
     };
-   this.pdfMake.createPdf(def).open();
+    this.pdfMake.createPdf(def).open();
   }
 }

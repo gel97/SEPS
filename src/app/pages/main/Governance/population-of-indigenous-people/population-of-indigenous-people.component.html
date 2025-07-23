@@ -46,9 +46,8 @@
             <div class="form-inline float-right" *ngIf="isBarangay">
               <app-admin>
                 <button
-                  type="button"
-                  (click)="clearData()"
-                  class="btn btn-primary"
+                  class="btn btn-success mb-3"
+                  (click)="addToggle()"
                   data-toggle="modal"
                   data-target="#ModalAdd"
                 >
@@ -139,8 +138,7 @@
                           <div class="d-inline-flex">
                             <app-admin>
                               <button
-                                (click)="data = a"
-                                (click)="editToggle()"
+                                (click)="editToggle(a)"
                                 data-toggle="modal"
                                 data-target="#ModalAdd"
                                 class="btn btn-info btn-circle"
@@ -163,6 +161,95 @@
                       </tr>
                     </tbody>
                   </table>
+                  <!--Sources-->
+                  <!-- ✅ Add Source Form -->
+                  <app-admin>
+                    <div *ngIf="showAddForm" class="card mt-4">
+                      <div class="card-header bg-dark text-white">
+                        Add Source
+                      </div>
+                      <div class="card-body">
+                        <form (ngSubmit)="addSource()" #sourceForm="ngForm">
+                          <div class="form-group">
+                            <label for="sourceName">Source Name</label>
+                            <input
+                              type="text"
+                              id="sourceName"
+                              class="form-control"
+                              name="sourceName"
+                              [(ngModel)]="newSource.name"
+                              placeholder="Enter source name"
+                              required
+                            />
+                          </div>
+                          <button
+                            class="btn btn-primary mt-2"
+                            [disabled]="!sourceForm.valid"
+                          >
+                            <i class="fas fa-plus"></i> Add
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                  </app-admin>
+
+                  <!-- ✅ Display Each Source -->
+                  <div class="card mt-3" *ngFor="let source of sources">
+                    <div class="card-body text-start">
+                      <h5 class="card-title mb-2">Source: {{ source.name }}</h5>
+
+                      <!-- ✏️ Edit Mode -->
+                      <div
+                        *ngIf="selectedSourceId === source.id; else viewMode"
+                      >
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="newSource.name"
+                          placeholder="Edit source name"
+                        />
+                        <div class="mt-2">
+                          <app-admin>
+                            <button
+                              class="btn btn-success btn-sm me-1"
+                              (click)="updateSource()"
+                              title="Save"
+                            >
+                              <i class="fas fa-check"></i>
+                            </button>
+                            <button
+                              class="btn btn-secondary btn-sm"
+                              (click)="selectedSourceId = null"
+                              title="Cancel"
+                            >
+                              <i class="fas fa-times"></i>
+                            </button>
+                          </app-admin>
+                        </div>
+                      </div>
+
+                      <!-- 👁️ View Mode -->
+
+                      <ng-template #viewMode>
+                        <app-admin>
+                          <button
+                            class="btn btn-outline-dark btn-sm me-2"
+                            (click)="editSource(source)"
+                            title="Edit"
+                          >
+                            <i class="fas fa-edit"></i>
+                          </button>
+                          <button
+                            class="btn btn-outline-danger btn-sm"
+                            (click)="deleteSource(source.id)"
+                            title="Delete"
+                          >
+                            <i class="fas fa-trash-alt"></i>
+                          </button>
+                        </app-admin>
+                      </ng-template>
+                    </div>
+                  </div>
                 </div>
                 <!-- Pagination Control -->
                 <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
@@ -233,7 +320,7 @@
                             type="button"
                             class="btn btn-sm btn-primary rounded-circle"
                             data-toggle="modal"
-                            (click)="clearData()"
+                            (click)="addToggle()"
                             data-target="#ModalAdd2"
                             (click)="data.brgyId = barangay.brgyId"
                             title="Add Purok"
@@ -295,7 +382,7 @@
 
                                 <!-- Non-IP -->
                                 <td class="text-center">
-                                  {{ purok.prk_male_non }}
+                                  {{ purok.prk_male_non | number }}
                                 </td>
                                 <td class="text-center">
                                   {{ purok.prk_female_non }}
@@ -322,7 +409,7 @@
                                   <div class="btn-group" role="group">
                                     <button
                                       class="btn btn-sm btn-info"
-                                      (click)="data = purok; editToggle()"
+                                      (click)="editToggle(purok)"
                                       data-toggle="modal"
                                       data-target="#ModalAdd2"
                                       title="Edit"
@@ -424,7 +511,7 @@
             <div class="tab-pane fade show active" id="ip2">
               <label for="ip-male">IP Male:</label>
               <input
-                type="number"
+                type="text"
                 class="form-control"
                 [(ngModel)]="data.purok_MaleIP"
                 (input)="autoAssignCategory()"
@@ -432,7 +519,7 @@
               />
               <label for="ip-female">IP Female:</label>
               <input
-                type="number"
+                type="text"
                 class="form-control"
                 [(ngModel)]="data.purok_FemaleIP"
                 (input)="autoAssignCategory()"

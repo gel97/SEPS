@@ -1,141 +1,290 @@
 <div class="">
-    <div class="card o-hidden border-2 shadow-sm my-5">
-        <div class="card-body p-0">
-            <!-- Nested Row within Card Body -->
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="p-5">
-                        <div class="text-center">
-                            <h1 class="h4 text-gray-900 mb-4"> Technical/ Vocational Enrolment & Graduates</h1>
-                            <label><strong>Education - {{modifyCityMun(munCityName)}} </strong></label><br>
-
-                        </div>
-                        <div class="form-inline float-right ">
-                          <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
-                        </div>
-                        <br>
-                        <label>List of Tecnical/ Vocational Enrolment & Graduates</label>
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead class="table-dark">
-                                    <tr>
-                                        <th rowspan="2" scope="col">#</th>
-                                        <th rowspan="2" scope="col">SY</th>
-                                        <th rowspan="2" scope="col">Technical Vocational Insitutions</th>
-                                        <th rowspan="2" scope="col">Courses Offered</th>
-                                        <th colspan="3">Enrolment</th>
-                                        <th colspan="3">Graduates</th>
-                                        <th rowspan="2"></th>
-                                    </tr>
-                                    <tr>
-                                        <th>Male</th>
-                                        <th>Female</th>
-                                        <th>Total</th>
-                                        <th>Male</th>
-                                        <th>Female</th>
-                                        <th>Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <ng-container *ngFor="let item1 of listFilter;let a=index ">
-                                        <tr [ngStyle]="{ 'background-color': a % 2 === 0 ? '#DDE6ED' : '#F1F6F9'}"
-                                            (click)="FilterPrograms(item1); school = item1">
-                                            <td [attr.rowspan]="item1.count + 1">{{ a+1 }}</td>
-                                            <td [attr.rowspan]="item1.count + 1">{{ item1.items[0].schoolYear }}</td>
-                                            <td [attr.rowspan]="item1.count + 1">{{ item1.items[0].name }}</td>
-                                        </tr>
-                                        <tr *ngFor="let item2 of item1.items;let b=index"
-                                            [ngStyle]="{ 'background-color': a % 2 === 0 ? '#DDE6ED' : '#F1F6F9 '}">
-                                            <td>{{ item2.program }}</td>
-                                            <td>{{ item2.maleEnrolly }}</td>
-                                            <td>{{ item2.femaleEnrolly}}</td>
-                                            <td>{{ item2.totalEnrolly }}</td>
-                                            <td>{{ item2.maleGrad }}</td>
-                                            <td>{{ item2.femaleGrad }}</td>
-                                            <td>{{ item2.totalGrad }}</td>
-                                            <td>
-                                                <div *ngIf="!item2.isEmpty" class="d-inline-flex">
-                                                    <app-admin>
-                                                        <button (click)="school = item2" class="btn btn-info btn-circle"
-                                                            data-toggle="modal" data-target="#mEducation"><i
-                                                                class="fa fa-pen"></i>
-                                                        </button>
-                                                    </app-admin>
-                                                    &nbsp;
-                                                    <app-admin>
-                                                        <button type="button" title="Delete"
-                                                            class="btn btn-warning btn-circle"
-                                                            (click)="DeleteSchool(item2.transId)"><i
-                                                                class="fa fa-trash"></i>
-                                                        </button>&nbsp;
-                                                    </app-admin>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </ng-container>
-
-                                </tbody>
-                            </table>
-                            <p>*** Data are based on Department of Education ***</p>
-                        </div>
-                    </div>
-                </div>
+  <div class="card o-hidden border-2 shadow-sm my-5">
+    <div class="card-body p-0">
+      <!-- Nested Row within Card Body -->
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="p-5">
+            <div class="text-center">
+              <h1 class="h4 text-gray-900 mb-4">
+                Technical/ Vocational Enrolment & Graduates
+              </h1>
+              <label
+                ><strong
+                  >Education - {{ modifyCityMun(munCityName) }}
+                </strong></label
+              ><br />
             </div>
+            <div class="form-inline float-right">
+              <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
+            </div>
+            <br />
+            <label>List of Tecnical/ Vocational Enrolment & Graduates</label>
+            <div class="table-responsive">
+              <table class="table">
+                <thead class="table-dark">
+                  <tr>
+                    <th rowspan="2" scope="col">#</th>
+                    <th rowspan="2" scope="col">SY</th>
+                    <th rowspan="2" scope="col">
+                      Technical Vocational Insitutions
+                    </th>
+                    <th rowspan="2" scope="col">Courses Offered</th>
+                    <th colspan="3">Enrolment</th>
+                    <th colspan="3">Graduates</th>
+                    <th rowspan="2"></th>
+                  </tr>
+                  <tr>
+                    <th>Male</th>
+                    <th>Female</th>
+                    <th>Total</th>
+                    <th>Male</th>
+                    <th>Female</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let item1 of listFilter; let a = index">
+                    <tr
+                      [ngStyle]="{
+                        'background-color': a % 2 === 0 ? '#DDE6ED' : '#F1F6F9'
+                      }"
+                      (click)="FilterPrograms(item1); school = item1"
+                    >
+                      <td [attr.rowspan]="item1.count + 1">{{ a + 1 }}</td>
+                      <td [attr.rowspan]="item1.count + 1">
+                        {{ item1.items[0].schoolYear }}
+                      </td>
+                      <td [attr.rowspan]="item1.count + 1">
+                        {{ item1.items[0].name }}
+                      </td>
+                    </tr>
+                    <tr
+                      *ngFor="let item2 of item1.items; let b = index"
+                      [ngStyle]="{
+                        'background-color': a % 2 === 0 ? '#DDE6ED' : '#F1F6F9 '
+                      }"
+                    >
+                      <td>{{ item2.program }}</td>
+                      <td>{{ item2.maleEnrolly }}</td>
+                      <td>{{ item2.femaleEnrolly }}</td>
+                      <td>{{ item2.totalEnrolly }}</td>
+                      <td>{{ item2.maleGrad }}</td>
+                      <td>{{ item2.femaleGrad }}</td>
+                      <td>{{ item2.totalGrad }}</td>
+                      <td>
+                        <div *ngIf="!item2.isEmpty" class="d-inline-flex">
+                          <app-admin>
+                            <button
+                              (click)="school = item2"
+                              class="btn btn-info btn-circle"
+                              data-toggle="modal"
+                              data-target="#mEducation"
+                            >
+                              <i class="fa fa-pen"></i>
+                            </button>
+                          </app-admin>
+                          &nbsp;
+                          <app-admin>
+                            <button
+                              type="button"
+                              title="Delete"
+                              class="btn btn-warning btn-circle"
+                              (click)="DeleteSchool(item2.transId)"
+                            >
+                              <i class="fa fa-trash"></i></button
+                            >&nbsp;
+                          </app-admin>
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+              <!--Sources-->
+              <!-- ✅ Add Source Form -->
+              <app-admin>
+                <div *ngIf="showAddForm" class="card mt-4">
+                  <div class="card-header bg-dark text-white">Add Source</div>
+                  <div class="card-body">
+                    <form (ngSubmit)="addSource()" #sourceForm="ngForm">
+                      <div class="form-group">
+                        <label for="sourceName">Source Name</label>
+                        <input
+                          type="text"
+                          id="sourceName"
+                          class="form-control"
+                          name="sourceName"
+                          [(ngModel)]="newSource.name"
+                          placeholder="Enter source name"
+                          required
+                        />
+                      </div>
+                      <button
+                        class="btn btn-primary mt-2"
+                        [disabled]="!sourceForm.valid"
+                      >
+                        <i class="fas fa-plus"></i> Add
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </app-admin>
+
+              <!-- ✅ Display Each Source -->
+              <div class="card mt-3" *ngFor="let source of sources">
+                <div class="card-body text-start">
+                  <h5 class="card-title mb-2">Source: {{ source.name }}</h5>
+
+                  <!-- ✏️ Edit Mode -->
+                  <div *ngIf="selectedSourceId === source.id; else viewMode">
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="newSource.name"
+                      placeholder="Edit source name"
+                    />
+                    <div class="mt-2">
+                      <app-admin>
+                        <button
+                          class="btn btn-success btn-sm me-1"
+                          (click)="updateSource()"
+                          title="Save"
+                        >
+                          <i class="fas fa-check"></i>
+                        </button>
+                        <button
+                          class="btn btn-secondary btn-sm"
+                          (click)="selectedSourceId = null"
+                          title="Cancel"
+                        >
+                          <i class="fas fa-times"></i>
+                        </button>
+                      </app-admin>
+                    </div>
+                  </div>
+
+                  <!-- 👁️ View Mode -->
+
+                  <ng-template #viewMode>
+                    <app-admin>
+                      <button
+                        class="btn btn-outline-dark btn-sm me-2"
+                        (click)="editSource(source)"
+                        title="Edit"
+                      >
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button
+                        class="btn btn-outline-danger btn-sm"
+                        (click)="deleteSource(source.id)"
+                        title="Delete"
+                      >
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </app-admin>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 
-<div class="modal fade" id="mEducation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title text-dark" id="exampleModalLabel">UPDATE</h5>
-                <button type="button" #closebutton class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row mb-4">
-                    <div class="col-lg-12 mb-2">
-                        <label>School Name</label>
-                        <input type="text" class="form-control" [(ngModel)]="school.name" readonly />
-                    </div>
-                    <div class="col-lg-12">
-                        <label>Program</label>
-                        <input type="text" class="form-control" [(ngModel)]="school.program" readonly />
-                    </div>
-                </div>
-                <div class="row mb-4">
-                    <div class="col-lg-12">
-                        <Label><b>ENROLMENT</b></Label>
-                    </div>
-                    <div class="col-lg-6">
-                        <label>Male</label>
-                        <input type="number" class="form-control" [(ngModel)]="school.maleEnrolly" />
-                    </div>
-                    <div class="col-lg-6">
-                        <label>Female</label>
-                        <input type="number" class="form-control" [(ngModel)]="school.femaleEnrolly" />
-                    </div>
-                </div>
-                <div class="row mb-2">
-                    <div class="col-lg-12">
-                        <Label><b>GRADUATES</b></Label>
-                    </div>
-                    <div class="col-lg-6">
-                        <label>Male</label>
-                        <input type="number" class="form-control" [(ngModel)]="school.maleGrad" />
-                    </div>
-                    <div class="col-lg-6">
-                        <label>Female</label>
-                        <input type="number" class="form-control" [(ngModel)]="school.femaleGrad" />
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal"><i
-                        class="fa fa-times"></i>Close</button>&nbsp;
-                <button type="button" class="btn btn-primary" (click)="EditSchool()"><i class="fa fa-check"></i>Save
-                    changes</button>
-            </div>
+<div
+  class="modal fade"
+  id="mEducation"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-dark" id="exampleModalLabel">UPDATE</h5>
+        <button
+          type="button"
+          #closebutton
+          class="btn-close"
+          data-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="row mb-4">
+          <div class="col-lg-12 mb-2">
+            <label>School Name</label>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="school.name"
+              readonly
+            />
+          </div>
+          <div class="col-lg-12">
+            <label>Program</label>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="school.program"
+              readonly
+            />
+          </div>
         </div>
+        <div class="row mb-4">
+          <div class="col-lg-12">
+            <Label><b>ENROLMENT</b></Label>
+          </div>
+          <div class="col-lg-6">
+            <label>Male</label>
+            <input
+              type="number"
+              class="form-control"
+              [(ngModel)]="school.maleEnrolly"
+            />
+          </div>
+          <div class="col-lg-6">
+            <label>Female</label>
+            <input
+              type="number"
+              class="form-control"
+              [(ngModel)]="school.femaleEnrolly"
+            />
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-lg-12">
+            <Label><b>GRADUATES</b></Label>
+          </div>
+          <div class="col-lg-6">
+            <label>Male</label>
+            <input
+              type="number"
+              class="form-control"
+              [(ngModel)]="school.maleGrad"
+            />
+          </div>
+          <div class="col-lg-6">
+            <label>Female</label>
+            <input
+              type="number"
+              class="form-control"
+              [(ngModel)]="school.femaleGrad"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          <i class="fa fa-times"></i>Close</button
+        >&nbsp;
+        <button type="button" class="btn btn-primary" (click)="EditSchool()">
+          <i class="fa fa-check"></i>Save changes
+        </button>
+      </div>
     </div>
+  </div>
 </div>

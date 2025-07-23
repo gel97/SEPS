@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class GeoProfileService {
+  sources$: any;
   UpdateMunCity(editmodal: any) {
     throw new Error('Method not implemented.');
   }

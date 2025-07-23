@@ -8,6 +8,7 @@ import { PdfService } from 'src/app/services/pdf.service';
 import { ReportsService } from 'src/app/shared/Tools/reports.service';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 import { SafetyStatisticsService } from 'src/app/shared/SocialProfile/PublicOrder/safety-statistics.service';
+import { SourceService } from 'src/app/shared/Source/Source.Service';
 @Component({
   selector: 'app-crime-stat',
   templateUrl: './crime-stat.component.html',
@@ -20,14 +21,15 @@ export class CrimeStatComponent implements OnInit {
   private pdfComponent!: PdfComponent;
 
   @ViewChild('closebutton')
-  closebutton!: { nativeElement: { click: () => void; }; };
+  closebutton!: { nativeElement: { click: () => void } };
 
   constructor(
-    private pdfService: PdfService, 
+    private pdfService: PdfService,
     private reportService: ReportsService,
     private service: SafetyStatisticsService,
     private auth: AuthService,
-    private modifyService: ModifyCityMunService
+    private modifyService: ModifyCityMunService,
+    private SourceService: SourceService
   ) {}
 
   modifyCityMun(cityMunName: string) {
@@ -43,10 +45,121 @@ export class CrimeStatComponent implements OnInit {
   listCrimeTypes: any = [];
 
   data: any = {};
-  reports:any = [];
+  reports: any = [];
+  sources: any = [];
+  newSource: any = {};
+  selectedSourceId: number | null = null;
+  showAddForm: boolean = true;
 
   ngOnInit(): void {
     this.Init();
+    this.getSources();
+  }
+  getSources(): void {
+    const setYear = this.auth.activeSetYear;
+    const munCityId = this.auth.munCityId;
+    const sourceFor = 'crime-stat'; // 👈 assign your module name
+
+    this.SourceService.getSources(setYear, munCityId, sourceFor).subscribe({
+      next: (data) => {
+        this.sources = data;
+        this.showAddForm = data.length === 0;
+      },
+      error: (error) => {
+        console.error('Failed to fetch sources:', error);
+      },
+    });
+  }
+
+  addSource(): void {
+    if (!this.newSource?.name) {
+      Swal.fire('Warning', 'Please enter a source name.', 'warning');
+      return;
+    }
+
+    const sourceFor = 'crime-stat'; // 👈 assign your module name
+
+    // ✅ Add metadata
+    this.newSource.munCityId = this.auth.munCityId;
+    this.newSource.setYear = this.auth.activeSetYear;
+    this.newSource.sourceFor = sourceFor;
+
+    this.SourceService.createSource(this.newSource).subscribe({
+      next: () => {
+        this.newSource = {};
+        Swal.fire('Success', 'Source added successfully.', 'success');
+        this.getSources(); // ✅ Re-fetch source list
+      },
+      error: (error) => {
+        Swal.fire('Error', `Failed to create source.\n${error}`, 'error');
+      },
+    });
+  }
+
+  updateSource(): void {
+    if (this.selectedSourceId === null || !this.newSource?.name) {
+      Swal.fire('Warning', 'No source selected or missing name.', 'warning');
+      return;
+    }
+
+    this.SourceService.updateSource(
+      this.selectedSourceId,
+      this.newSource
+    ).subscribe({
+      next: () => {
+        this.getSources();
+        this.selectedSourceId = null;
+        this.newSource = {};
+        Swal.fire('Success', 'Source updated successfully!', 'success');
+      },
+      error: (error) => {
+        Swal.fire('Error', `Failed to update source.\n${error}`, 'error');
+      },
+    });
+  }
+  deleteSource(id: number): void {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This action will delete the source.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Show loading dialog
+        Swal.fire({
+          title: 'Deleting...',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          showConfirmButton: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        // Perform delete operation
+        this.SourceService.deleteSource(id).subscribe({
+          next: () => {
+            this.getSources(); // Refresh list
+            Swal.fire('Deleted!', 'Source has been deleted.', 'success');
+          },
+          error: (error) => {
+            Swal.fire(
+              'Error',
+              `Failed to delete source.\n${error.message || error}`,
+              'error'
+            );
+          },
+        });
+      }
+    });
+  }
+
+  editSource(source: any): void {
+    this.selectedSourceId = source.id;
+    this.newSource = { ...source };
   }
 
   Init() {
@@ -54,38 +167,35 @@ export class CrimeStatComponent implements OnInit {
     this.GetCrimeTypes();
   }
 
-
   GetData() {
-    this.service.GetSafetyStatistics(this.auth.setYear, this.auth.munCityId).subscribe({
-      next: (response) => {
-        this.listStatistics = (<any>response);
-        console.log("listStatistics:" , this.listStatistics);
-      },
-      error: (error) => {
-      },
-      complete: () => {
-        this.GetCrimeTypes();
-      }
-    });
+    this.service
+      .GetSafetyStatistics(this.auth.setYear, this.auth.munCityId)
+      .subscribe({
+        next: (response) => {
+          this.listStatistics = <any>response;
+          console.log('listStatistics:', this.listStatistics);
+        },
+        error: (error) => {},
+        complete: () => {
+          this.GetCrimeTypes();
+        },
+      });
   }
 
   GetCrimeTypes() {
     this.service.GetListCrimeTypes().subscribe({
       next: (response) => {
-        this.listCrimeTypes = (<any>response);
-        console.log("Course:" ,this.listCrimeTypes);
-
+        this.listCrimeTypes = <any>response;
+        console.log('Course:', this.listCrimeTypes);
       },
-      error: (error) => {
-      },
+      error: (error) => {},
       complete: () => {
         this.FilterList();
-      }
+      },
     });
   }
 
-
-   FilterList() {
+  FilterList() {
     let isExist;
     this.listData = [];
 
@@ -102,62 +212,61 @@ export class CrimeStatComponent implements OnInit {
       isExist = this.listData.filter((x: any) => x.type == a.recNo);
       if (isExist.length === 0) {
         this.listData.push({
-          'type': a.recNo,
-          'crime': a.crime,
+          type: a.recNo,
+          crime: a.crime,
         });
       }
     });
-    console.log("mergeList: ", this.listData);
-
+    console.log('mergeList: ', this.listData);
   }
 
   AddData() {
-      this.data.setYear = this.auth.activeSetYear;
-      this.data.munCityId = this.auth.o_munCityId;
-      console.log(this.data);
-      this.service.AddSafetyStatistics(this.data).subscribe({
-        next: (request) => {
-          let index = this.listData.findIndex((obj: any) => obj.type === this.data.type);
-          this.listData[index] = request;
-          console.log(request)
-        },
-        complete: () => {
-          this.data = {};
-          this.closebutton.nativeElement.click();
+    this.data.setYear = this.auth.activeSetYear;
+    this.data.munCityId = this.auth.o_munCityId;
+    console.log(this.data);
+    this.service.AddSafetyStatistics(this.data).subscribe({
+      next: (request) => {
+        let index = this.listData.findIndex(
+          (obj: any) => obj.type === this.data.type
+        );
+        this.listData[index] = request;
+        console.log(request);
+      },
+      complete: () => {
+        this.data = {};
+        this.closebutton.nativeElement.click();
 
-          Swal.fire({
-            position: 'center',
-            icon: 'success',
-            title: 'Your work has been saved',
-            showConfirmButton: false,
-            timer: 1000
-          });
-        }
-      });
-    
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Your work has been saved',
+          showConfirmButton: false,
+          timer: 1000,
+        });
+      },
+    });
   }
 
   EditData() {
-      this.data.setYear = this.auth.activeSetYear;
-      this.service.EditSafetyStatistics(this.data).subscribe({
-        next: (request) => {
-          this.closebutton.nativeElement.click();
-          this.data = {};
-        },
-        complete: () => {
-          Swal.fire({
-            position: 'center',
-            icon: 'success',
-            title: 'Your work has been updated',
-            showConfirmButton: false,
-            timer: 1000
-          });
-        }
-      });
-    
+    this.data.setYear = this.auth.activeSetYear;
+    this.service.EditSafetyStatistics(this.data).subscribe({
+      next: (request) => {
+        this.closebutton.nativeElement.click();
+        this.data = {};
+      },
+      complete: () => {
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Your work has been updated',
+          showConfirmButton: false,
+          timer: 1000,
+        });
+      },
+    });
   }
 
-  DeleteData(transId: any, index: any, data:any) {
+  DeleteData(transId: any, index: any, data: any) {
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -165,34 +274,23 @@ export class CrimeStatComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
         this.service.DeleteSafetyStatistics(transId).subscribe({
-          next: (_data) => {
-          },
+          next: (_data) => {},
           error: (err) => {
-            Swal.fire(
-              'Oops!',
-              'Something went wrong.',
-              'error'
-            )
+            Swal.fire('Oops!', 'Something went wrong.', 'error');
           },
           complete: () => {
             this.listData[index] = {};
             this.listData[index].type = data.type;
             this.listData[index].crime = data.crime;
-            Swal.fire(
-              'Deleted!',
-              'Your file has been deleted.',
-              'success'
-            )
-          }
-
+            Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+          },
         });
-
       }
-    })
+    });
   }
 
   markerObj: any = {};
@@ -203,7 +301,7 @@ export class CrimeStatComponent implements OnInit {
       label: data.brgyName.charAt(0),
       brgyName: data.brgyName,
       munCityName: this.munCityName,
-      draggable: true
+      draggable: true,
     };
     this.gmapComponent.setMarker(this.markerObj);
   }
@@ -211,12 +309,10 @@ export class CrimeStatComponent implements OnInit {
 
   async loadPdfMaker() {
     if (!this.pdfMake) {
-      const pdfMakeModule = await import("pdfmake/build/pdfmake");
-      const pdfFontsModule = await import("pdfmake/build/vfs_fonts");
+      const pdfMakeModule = await import('pdfmake/build/pdfmake');
+      const pdfFontsModule = await import('pdfmake/build/vfs_fonts');
       this.pdfMake = pdfMakeModule;
       this.pdfMake.vfs = pdfFontsModule.pdfMake.vfs;
     }
   }
-
-  
 }

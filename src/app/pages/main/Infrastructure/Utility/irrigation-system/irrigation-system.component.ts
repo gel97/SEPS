@@ -8,7 +8,7 @@ import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 import { PdfComponent } from 'src/app/components/pdf/pdf.component';
 import { PdfService } from 'src/app/services/pdf.service';
 import { ReportsService } from 'src/app/shared/Tools/reports.service';
-
+import { SourceService } from 'src/app/shared/Source/Source.Service';
 @Component({
   selector: 'app-irrigation-system',
   templateUrl: './irrigation-system.component.html',
@@ -21,7 +21,8 @@ export class IrrigationSystemComponent implements OnInit {
     private reportService: ReportsService,
     private service: ServiceIrrigationService,
     private auth: AuthService,
-    private modifyService: ModifyCityMunService
+    private modifyService: ModifyCityMunService,
+    private SourceService: SourceService
   ) {}
 
   @ViewChild(PdfComponent)
@@ -30,6 +31,10 @@ export class IrrigationSystemComponent implements OnInit {
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
   }
+  sources: any = [];
+  newSource: any = {};
+  selectedSourceId: number | null = null;
+  showAddForm: boolean = true;
 
   message = 'Irrigation Systems';
 
@@ -50,6 +55,113 @@ export class IrrigationSystemComponent implements OnInit {
 
   ngOnInit(): void {
     this.Init();
+    this.getSources();
+  }
+  getSources(): void {
+    const setYear = this.auth.activeSetYear;
+    const munCityId = this.auth.munCityId;
+    const sourceFor = 'irrigation';
+
+    this.SourceService.getSources(setYear, munCityId, sourceFor).subscribe({
+      next: (data) => {
+        this.sources = data;
+        this.showAddForm = data.length === 0;
+      },
+      error: (error) => {
+        console.error('Failed to fetch sources:', error);
+      },
+    });
+  }
+
+  addSource(): void {
+    if (!this.newSource?.name) {
+      Swal.fire('Warning', 'Please enter a source name.', 'warning');
+      return;
+    }
+
+    const sourceFor = 'irrigation'; // 👈 assign your module name
+
+    // ✅ Add metadata
+    this.newSource.munCityId = this.auth.munCityId;
+    this.newSource.setYear = this.auth.activeSetYear;
+    this.newSource.sourceFor = sourceFor;
+
+    this.SourceService.createSource(this.newSource).subscribe({
+      next: () => {
+        this.newSource = {};
+        Swal.fire('Success', 'Source added successfully.', 'success');
+        this.getSources(); // ✅ Re-fetch source list
+      },
+      error: (error) => {
+        Swal.fire('Error', `Failed to create source.\n${error}`, 'error');
+      },
+    });
+  }
+
+  updateSource(): void {
+    if (this.selectedSourceId === null || !this.newSource?.name) {
+      Swal.fire('Warning', 'No source selected or missing name.', 'warning');
+      return;
+    }
+
+    this.SourceService.updateSource(
+      this.selectedSourceId,
+      this.newSource
+    ).subscribe({
+      next: () => {
+        this.getSources();
+        this.selectedSourceId = null;
+        this.newSource = {};
+        Swal.fire('Success', 'Source updated successfully!', 'success');
+      },
+      error: (error) => {
+        Swal.fire('Error', `Failed to update source.\n${error}`, 'error');
+      },
+    });
+  }
+  deleteSource(id: number): void {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This action will delete the source.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Show loading dialog
+        Swal.fire({
+          title: 'Deleting...',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          showConfirmButton: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        // Perform delete operation
+        this.SourceService.deleteSource(id).subscribe({
+          next: () => {
+            this.getSources(); // Refresh list
+            Swal.fire('Deleted!', 'Source has been deleted.', 'success');
+          },
+          error: (error) => {
+            Swal.fire(
+              'Error',
+              `Failed to delete source.\n${error.message || error}`,
+              'error'
+            );
+          },
+        });
+      }
+    });
+  }
+
+  editSource(source: any): void {
+    this.selectedSourceId = source.id;
+    this.newSource = { ...source };
   }
 
   GeneratePDF() {
@@ -150,15 +262,13 @@ export class IrrigationSystemComponent implements OnInit {
               color: 'white',
               bold: true,
               alignment: 'center',
-            }
-            
+            },
           ]);
 
           reports.forEach((a: any) => {
             if (a.district === 1) {
               let columnWidth: number = 0;
               a.data.forEach((b: any, index: any) => {
-        
                 if (index === 0) {
                   tableData.push([
                     {
@@ -174,47 +284,47 @@ export class IrrigationSystemComponent implements OnInit {
                 }
                 tableData.push([
                   {
-                    text:index + 1,
+                    text: index + 1,
                     fillColor: '#ffffff',
                     alignment: 'center',
                   },
                   {
-                    text:b.munCityName,
+                    text: b.munCityName,
                     fillColor: '#ffffff',
                     alignment: 'center',
                   },
                   {
-                    text:b.munData.irrigableNtl,
+                    text: b.munData.irrigableNtl,
                     fillColor: '#ffffff',
                     alignment: 'center',
                   },
                   {
-                    text:b.munData.irrigatedNtl,
+                    text: b.munData.irrigatedNtl,
                     fillColor: '#ffffff',
                     alignment: 'center',
                   },
                   {
-                    text:b.munData.farmerNtl,
+                    text: b.munData.farmerNtl,
                     fillColor: '#ffffff',
                     alignment: 'center',
                   },
                   {
-                    text:b.munData.irrigableCom,
+                    text: b.munData.irrigableCom,
                     fillColor: '#ffffff',
                     alignment: 'center',
                   },
                   {
-                    text:b.munData.irrigatedCom,
+                    text: b.munData.irrigatedCom,
                     fillColor: '#ffffff',
                     alignment: 'center',
                   },
                   {
-                    text:b.munData.farmerCom,
+                    text: b.munData.farmerCom,
                     fillColor: '#ffffff',
                     alignment: 'center',
                   },
                   {
-                    text:b.munData.remarks,
+                    text: b.munData.remarks,
                     fillColor: '#ffffff',
                     alignment: 'center',
                   },
@@ -247,7 +357,6 @@ export class IrrigationSystemComponent implements OnInit {
             } else {
               let columnWidth: number = 0;
               a.data.forEach((b: any, index: any) => {
-               
                 if (index === 0) {
                   tableData.push([
                     {
@@ -261,52 +370,51 @@ export class IrrigationSystemComponent implements OnInit {
                 }
                 tableData.push([
                   {
-                    text:index + 1,
+                    text: index + 1,
                     fillColor: '#ffffff',
                     alignment: 'center',
                   },
                   {
-                    text:b.munCityName,
+                    text: b.munCityName,
                     fillColor: '#ffffff',
                     alignment: 'center',
                   },
                   {
-                    text:b.munData.irrigableNtl,
+                    text: b.munData.irrigableNtl,
                     fillColor: '#ffffff',
                     alignment: 'center',
                   },
                   {
-                    text:b.munData.irrigatedNtl,
+                    text: b.munData.irrigatedNtl,
                     fillColor: '#ffffff',
                     alignment: 'center',
                   },
                   {
-                    text:b.munData.farmerNtl,
+                    text: b.munData.farmerNtl,
                     fillColor: '#ffffff',
                     alignment: 'center',
                   },
                   {
-                    text:b.munData.irrigableCom,
+                    text: b.munData.irrigableCom,
                     fillColor: '#ffffff',
                     alignment: 'center',
                   },
                   {
-                    text:b.munData.irrigatedCom,
+                    text: b.munData.irrigatedCom,
                     fillColor: '#ffffff',
                     alignment: 'center',
                   },
                   {
-                    text:b.munData.farmerCom,
+                    text: b.munData.farmerCom,
                     fillColor: '#ffffff',
                     alignment: 'center',
                   },
                   {
-                    text:b.munData.remarks,
+                    text: b.munData.remarks,
                     fillColor: '#ffffff',
                     alignment: 'center',
                   },
                 ]);
-
               });
 
               let sub: any = []; // SUBTOTAL D2
@@ -323,8 +431,8 @@ export class IrrigationSystemComponent implements OnInit {
                     {}
                   );
                 } else {
-                  let textValue: any= a.subTotal[key];
-                
+                  let textValue: any = a.subTotal[key];
+
                   sub.push({
                     text: textValue,
                     fillColor: '#9DB2BF',
@@ -350,7 +458,7 @@ export class IrrigationSystemComponent implements OnInit {
                 {}
               );
             } else {
-              let textValue: any = grandTotal[key];         
+              let textValue: any = grandTotal[key];
               grand.push({
                 text: textValue,
                 fillColor: '#F1C93B',
@@ -372,7 +480,7 @@ export class IrrigationSystemComponent implements OnInit {
           const table = {
             margin: [0, 10, 0, 0],
             table: {
-              widths: [25,'*','*','*','*','*','*','*','*'],
+              widths: [25, '*', '*', '*', '*', '*', '*', '*', '*'],
               body: tableData,
             },
             layout: 'lightHorizontalLines',
@@ -385,7 +493,7 @@ export class IrrigationSystemComponent implements OnInit {
         },
         complete: () => {
           let isPortrait = false;
-          this.pdfService.GeneratePdf(data, isPortrait, "");
+          this.pdfService.GeneratePdf(data, isPortrait, '');
           console.log(data);
         },
       });
@@ -397,7 +505,7 @@ export class IrrigationSystemComponent implements OnInit {
     this.service.Import().subscribe({
       next: (data) => {
         this.ngOnInit();
-        if(data === null){
+        if (data === null) {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -410,14 +518,12 @@ export class IrrigationSystemComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'info',
             title: 'No data from previous year',
           });
-        }
-        else
-        {
+        } else {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -430,7 +536,7 @@ export class IrrigationSystemComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'success',
             title: 'Imported Successfully',

@@ -7,6 +7,7 @@ import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 import { PdfComponent } from 'src/app/components/pdf/pdf.component';
 import { PdfService } from 'src/app/services/pdf.service';
 import { ReportsService } from 'src/app/shared/Tools/reports.service';
+import { SourceService } from 'src/app/shared/Source/Source.Service';
 
 @Component({
   selector: 'app-market-supermarkets',
@@ -21,7 +22,8 @@ export class MarketSupermarketsComponent implements OnInit {
     private reportService: ReportsService,
     private service: ServiceFacilitiesService,
     private auth: AuthService,
-    private modifyService: ModifyCityMunService
+    private modifyService: ModifyCityMunService,
+    private SourceService: SourceService
   ) {}
 
   modifyCityMun(cityMunName: string) {
@@ -41,6 +43,10 @@ export class MarketSupermarketsComponent implements OnInit {
   }
 
   markerObj: any = {};
+  sources: any = [];
+  newSource: any = {};
+  selectedSourceId: number | null = null;
+  showAddForm: boolean = true;
 
   message = 'Market / Supermarkets';
 
@@ -59,6 +65,113 @@ export class MarketSupermarketsComponent implements OnInit {
 
   ngOnInit(): void {
     this.Init();
+    this.getSources();
+  }
+  getSources(): void {
+    const setYear = this.auth.activeSetYear;
+    const munCityId = this.auth.munCityId;
+    const sourceFor = 'market_super';
+
+    this.SourceService.getSources(setYear, munCityId, sourceFor).subscribe({
+      next: (data) => {
+        this.sources = data;
+        this.showAddForm = data.length === 0;
+      },
+      error: (error) => {
+        console.error('Failed to fetch sources:', error);
+      },
+    });
+  }
+
+  addSource(): void {
+    if (!this.newSource?.name) {
+      Swal.fire('Warning', 'Please enter a source name.', 'warning');
+      return;
+    }
+
+    const sourceFor = 'market_super'; // 👈 assign your module name
+
+    // ✅ Add metadata
+    this.newSource.munCityId = this.auth.munCityId;
+    this.newSource.setYear = this.auth.activeSetYear;
+    this.newSource.sourceFor = sourceFor;
+
+    this.SourceService.createSource(this.newSource).subscribe({
+      next: () => {
+        this.newSource = {};
+        Swal.fire('Success', 'Source added successfully.', 'success');
+        this.getSources(); // ✅ Re-fetch source list
+      },
+      error: (error) => {
+        Swal.fire('Error', `Failed to create source.\n${error}`, 'error');
+      },
+    });
+  }
+
+  updateSource(): void {
+    if (this.selectedSourceId === null || !this.newSource?.name) {
+      Swal.fire('Warning', 'No source selected or missing name.', 'warning');
+      return;
+    }
+
+    this.SourceService.updateSource(
+      this.selectedSourceId,
+      this.newSource
+    ).subscribe({
+      next: () => {
+        this.getSources();
+        this.selectedSourceId = null;
+        this.newSource = {};
+        Swal.fire('Success', 'Source updated successfully!', 'success');
+      },
+      error: (error) => {
+        Swal.fire('Error', `Failed to update source.\n${error}`, 'error');
+      },
+    });
+  }
+  deleteSource(id: number): void {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This action will delete the source.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Show loading dialog
+        Swal.fire({
+          title: 'Deleting...',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          showConfirmButton: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        // Perform delete operation
+        this.SourceService.deleteSource(id).subscribe({
+          next: () => {
+            this.getSources(); // Refresh list
+            Swal.fire('Deleted!', 'Source has been deleted.', 'success');
+          },
+          error: (error) => {
+            Swal.fire(
+              'Error',
+              `Failed to delete source.\n${error.message || error}`,
+              'error'
+            );
+          },
+        });
+      }
+    });
+  }
+
+  editSource(source: any): void {
+    this.selectedSourceId = source.id;
+    this.newSource = { ...source };
   }
 
   GeneratePDF() {
@@ -71,254 +184,255 @@ export class MarketSupermarketsComponent implements OnInit {
 
     this.pdfComponent.data.menuId = this.menuId;
 
-    this.reportService.GetServiceFacilityReport(this.pdfComponent.data).subscribe({
-      next: (response: any = {}) => {
-        reports = response;
-        console.log('result: ', response);
+    this.reportService
+      .GetServiceFacilityReport(this.pdfComponent.data)
+      .subscribe({
+        next: (response: any = {}) => {
+          reports = response;
+          console.log('result: ', response);
 
-        reports.forEach((a: any) => {
-          if (a.district === 1) {
-            dist1.push(a);
-          } else {
-            dist2.push(a);
-          }
-        });
+          reports.forEach((a: any) => {
+            if (a.district === 1) {
+              dist1.push(a);
+            } else {
+              dist2.push(a);
+            }
+          });
 
-        data.push({
-          margin: [0, 20, 0, 0],
-          columns: [
-            {
-              text: `List of Market / Supermarkets by Municipality/ City`,
-              fontSize: 14,
-              bold: true,
-            },
-            {
-              text: `Year: ${response[0].setYear}`,
-              fontSize: 14,
-              bold: true,
-              alignment: 'right',
-            },
-          ],
-        });
+          data.push({
+            margin: [0, 20, 0, 0],
+            columns: [
+              {
+                text: `List of Market / Supermarkets by Municipality/ City`,
+                fontSize: 14,
+                bold: true,
+              },
+              {
+                text: `Year: ${response[0].setYear}`,
+                fontSize: 14,
+                bold: true,
+                alignment: 'right',
+              },
+            ],
+          });
 
-        const dist1Group = dist1.reduce((groups: any, item: any) => {
-          const { munCityName } = item;
-          const groupKey = `${munCityName}`;
-          if (!groups[groupKey]) {
-            groups[groupKey] = [];
-          }
-          groups[groupKey].push(item);
-          return groups;
-        }, {});
+          const dist1Group = dist1.reduce((groups: any, item: any) => {
+            const { munCityName } = item;
+            const groupKey = `${munCityName}`;
+            if (!groups[groupKey]) {
+              groups[groupKey] = [];
+            }
+            groups[groupKey].push(item);
+            return groups;
+          }, {});
 
-        console.log('dist1Group ', dist1Group);
+          console.log('dist1Group ', dist1Group);
 
-        const dist2Group = dist2.reduce((groups: any, item: any) => {
-          const { munCityName } = item;
-          const groupKey = `${munCityName}`;
-          if (!groups[groupKey]) {
-            groups[groupKey] = [];
-          }
-          groups[groupKey].push(item);
-          return groups;
-        }, {});
+          const dist2Group = dist2.reduce((groups: any, item: any) => {
+            const { munCityName } = item;
+            const groupKey = `${munCityName}`;
+            if (!groups[groupKey]) {
+              groups[groupKey] = [];
+            }
+            groups[groupKey].push(item);
+            return groups;
+          }, {});
 
-        console.log('dist2Group ', dist2);
+          console.log('dist2Group ', dist2);
 
-        tableData.push([
-          {
-            text: '#',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-          },
-          {
-            text: 'Name',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-          },
-          {
-            text: 'No. of Stalls/ Floor Area',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-          },
-          {
-            text: 'Remarks',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-          },
-          {
-            text: 'Contact Details',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-          },
-          {
-            text: 'Location',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-          },
-          {
-            text: 'Barangay',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-          }
-        ]);
-
-        tableData.push([
-          {
-            text: `1st Congressional District `,
-            colSpan: 7,
-            alignment: 'left',
-            fillColor: '#526D82',
-            marginLeft: 5,
-          },
-        ]);
-
-        for (const groupKey1 in dist1Group) {
-          // Iterate district I data
-          const group1 = dist1Group[groupKey1];
-          const [cityName1] = groupKey1.split('-');
           tableData.push([
             {
-              text: cityName1,
+              text: '#',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Name',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'No. of Stalls/ Floor Area',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Remarks',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Contact Details',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Location',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+            {
+              text: 'Barangay',
+              fillColor: 'black',
+              color: 'white',
+              bold: true,
+              alignment: 'center',
+            },
+          ]);
+
+          tableData.push([
+            {
+              text: `1st Congressional District `,
               colSpan: 7,
               alignment: 'left',
-              fillColor: '#9DB2BF',
+              fillColor: '#526D82',
               marginLeft: 5,
             },
           ]);
 
-          group1.forEach((item: any, index: any) => {    
+          for (const groupKey1 in dist1Group) {
+            // Iterate district I data
+            const group1 = dist1Group[groupKey1];
+            const [cityName1] = groupKey1.split('-');
             tableData.push([
               {
-                text: index + 1,
-                fillColor: '#FFFFFF',
+                text: cityName1,
+                colSpan: 7,
+                alignment: 'left',
+                fillColor: '#9DB2BF',
                 marginLeft: 5,
-                alignment: 'center'
               },
-              {
-                text: item.name,
-                fillColor: '#FFFFFF',
-              },
-              {
-                text: item.area,
-                fillColor: '#FFFFFF',
-                alignment: 'center'
-              },    
-              {
-                text: item.remarks,
-              },
-              {
-                text: item.contactNo,
-                fillColor: '#FFFFFF',
-              },
-              {
-                text: item.location,
-                fillColor: '#FFFFFF',
-              },
-              {
-                text: item.brgyName,
-                fillColor: '#FFFFFF',
-              }
             ]);
-          });
-        }
 
-        tableData.push([
-          {
-            text: `2nd Congressional District `,
-            colSpan: 7,
-            alignment: 'left',
-            fillColor: '#526D82',
-            marginLeft: 5,
-          },
-        ]);
+            group1.forEach((item: any, index: any) => {
+              tableData.push([
+                {
+                  text: index + 1,
+                  fillColor: '#FFFFFF',
+                  marginLeft: 5,
+                  alignment: 'center',
+                },
+                {
+                  text: item.name,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.area,
+                  fillColor: '#FFFFFF',
+                  alignment: 'center',
+                },
+                {
+                  text: item.remarks,
+                },
+                {
+                  text: item.contactNo,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.location,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.brgyName,
+                  fillColor: '#FFFFFF',
+                },
+              ]);
+            });
+          }
 
-        for (const groupKey2 in dist2Group) {
-          // Iterate district II data
-          const group2 = dist2Group[groupKey2];
-          const [cityName2] = groupKey2.split('-');
           tableData.push([
             {
-              text: cityName2,
+              text: `2nd Congressional District `,
               colSpan: 7,
               alignment: 'left',
-              fillColor: '#9DB2BF',
+              fillColor: '#526D82',
               marginLeft: 5,
             },
           ]);
 
-          group2.forEach((item: any, index: any) => {
+          for (const groupKey2 in dist2Group) {
+            // Iterate district II data
+            const group2 = dist2Group[groupKey2];
+            const [cityName2] = groupKey2.split('-');
             tableData.push([
               {
-                text: index + 1,
-                fillColor: '#FFFFFF',
+                text: cityName2,
+                colSpan: 7,
+                alignment: 'left',
+                fillColor: '#9DB2BF',
                 marginLeft: 5,
-                alignment: 'center'
               },
-              {
-                text: item.name,
-                fillColor: '#FFFFFF',
-              },
-              {
-                text: item.area,
-                fillColor: '#FFFFFF',
-                alignment: 'center'
-              },
-              {
-                text: item.remarks,
-              },
-              {
-                text: item.contactNo,
-                fillColor: '#FFFFFF',
-              },
-              {
-                text: item.location,
-                fillColor: '#FFFFFF',
-              },
-              {
-                text: item.brgyName,
-                fillColor: '#FFFFFF',
-              }
             ]);
-          });
-        }
 
-        const table = {
-          margin: [0, 20, 0, 0],
-          table: {
-            widths: [25, '*', '*', '*', '*', '*', '*'],
-            body: tableData,
-          },
-          layout: 'lightHorizontalLines',
-        };
+            group2.forEach((item: any, index: any) => {
+              tableData.push([
+                {
+                  text: index + 1,
+                  fillColor: '#FFFFFF',
+                  marginLeft: 5,
+                  alignment: 'center',
+                },
+                {
+                  text: item.name,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.area,
+                  fillColor: '#FFFFFF',
+                  alignment: 'center',
+                },
+                {
+                  text: item.remarks,
+                },
+                {
+                  text: item.contactNo,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.location,
+                  fillColor: '#FFFFFF',
+                },
+                {
+                  text: item.brgyName,
+                  fillColor: '#FFFFFF',
+                },
+              ]);
+            });
+          }
 
-        data.push(table);
-      },
-      error: (error: any) => {
-        console.log(error);
-      },
-      complete: () => {
-        let isPortrait = false;
-        this.pdfService.GeneratePdf(data, isPortrait, "");
-        console.log(data);
-      },
-    });
+          const table = {
+            margin: [0, 20, 0, 0],
+            table: {
+              widths: [25, '*', '*', '*', '*', '*', '*'],
+              body: tableData,
+            },
+            layout: 'lightHorizontalLines',
+          };
+
+          data.push(table);
+        },
+        error: (error: any) => {
+          console.log(error);
+        },
+        complete: () => {
+          let isPortrait = false;
+          this.pdfService.GeneratePdf(data, isPortrait, '');
+          console.log(data);
+        },
+      });
   }
-
 
   public showOverlay = false;
   importMethod() {
@@ -326,7 +440,7 @@ export class MarketSupermarketsComponent implements OnInit {
     this.service.Import(this.menuId).subscribe({
       next: (data) => {
         this.ngOnInit();
-        if(data.length === 0){
+        if (data.length === 0) {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -339,14 +453,12 @@ export class MarketSupermarketsComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'info',
             title: 'No data from previous year',
           });
-        }
-        else
-        {
+        } else {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -359,7 +471,7 @@ export class MarketSupermarketsComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'success',
             title: 'Imported Successfully',

@@ -7,7 +7,7 @@ import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 import { PdfComponent } from 'src/app/components/pdf/pdf.component';
 import { PdfService } from 'src/app/services/pdf.service';
 import { ReportsService } from 'src/app/shared/Tools/reports.service';
-
+import { SourceService } from 'src/app/shared/Source/Source.Service';
 @Component({
   selector: 'app-postal-services',
   templateUrl: './postal-services.component.html',
@@ -20,7 +20,8 @@ export class PostalServicesComponent implements OnInit {
     private reportService: ReportsService,
     private service: PostalServicesService,
     private auth: AuthService,
-    private modifyService: ModifyCityMunService
+    private modifyService: ModifyCityMunService,
+    private SourceService: SourceService
   ) {}
 
   modifyCityMun(cityMunName: string) {
@@ -35,6 +36,10 @@ export class PostalServicesComponent implements OnInit {
   private pdfComponent!: PdfComponent;
 
   isCheck: boolean = false;
+  sources: any = [];
+  newSource: any = {};
+  selectedSourceId: number | null = null;
+  showAddForm: boolean = true;
 
   onChange(isCheck: boolean) {
     this.isCheck = isCheck;
@@ -42,6 +47,113 @@ export class PostalServicesComponent implements OnInit {
 
   ngOnInit(): void {
     this.Init();
+    this.getSources();
+  }
+  getSources(): void {
+    const setYear = this.auth.activeSetYear;
+    const munCityId = this.auth.munCityId;
+    const sourceFor = 'postal';
+
+    this.SourceService.getSources(setYear, munCityId, sourceFor).subscribe({
+      next: (data) => {
+        this.sources = data;
+        this.showAddForm = data.length === 0;
+      },
+      error: (error) => {
+        console.error('Failed to fetch sources:', error);
+      },
+    });
+  }
+
+  addSource(): void {
+    if (!this.newSource?.name) {
+      Swal.fire('Warning', 'Please enter a source name.', 'warning');
+      return;
+    }
+
+    const sourceFor = 'postal'; // 👈 assign your module name
+
+    // ✅ Add metadata
+    this.newSource.munCityId = this.auth.munCityId;
+    this.newSource.setYear = this.auth.activeSetYear;
+    this.newSource.sourceFor = sourceFor;
+
+    this.SourceService.createSource(this.newSource).subscribe({
+      next: () => {
+        this.newSource = {};
+        Swal.fire('Success', 'Source added successfully.', 'success');
+        this.getSources(); // ✅ Re-fetch source list
+      },
+      error: (error) => {
+        Swal.fire('Error', `Failed to create source.\n${error}`, 'error');
+      },
+    });
+  }
+
+  updateSource(): void {
+    if (this.selectedSourceId === null || !this.newSource?.name) {
+      Swal.fire('Warning', 'No source selected or missing name.', 'warning');
+      return;
+    }
+
+    this.SourceService.updateSource(
+      this.selectedSourceId,
+      this.newSource
+    ).subscribe({
+      next: () => {
+        this.getSources();
+        this.selectedSourceId = null;
+        this.newSource = {};
+        Swal.fire('Success', 'Source updated successfully!', 'success');
+      },
+      error: (error) => {
+        Swal.fire('Error', `Failed to update source.\n${error}`, 'error');
+      },
+    });
+  }
+  deleteSource(id: number): void {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This action will delete the source.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Show loading dialog
+        Swal.fire({
+          title: 'Deleting...',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          showConfirmButton: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        // Perform delete operation
+        this.SourceService.deleteSource(id).subscribe({
+          next: () => {
+            this.getSources(); // Refresh list
+            Swal.fire('Deleted!', 'Source has been deleted.', 'success');
+          },
+          error: (error) => {
+            Swal.fire(
+              'Error',
+              `Failed to delete source.\n${error.message || error}`,
+              'error'
+            );
+          },
+        });
+      }
+    });
+  }
+
+  editSource(source: any): void {
+    this.selectedSourceId = source.id;
+    this.newSource = { ...source };
   }
 
   GeneratePDF() {
@@ -84,7 +196,7 @@ export class PostalServicesComponent implements OnInit {
             color: 'white',
             bold: true,
             alignment: 'center',
-            fontSize: 9
+            fontSize: 9,
           },
           {
             text: 'Municipality/ City',
@@ -92,7 +204,7 @@ export class PostalServicesComponent implements OnInit {
             color: 'white',
             bold: true,
             alignment: 'center',
-            fontSize: 9
+            fontSize: 9,
           },
           {
             text: 'Post Office/ Location',
@@ -100,7 +212,7 @@ export class PostalServicesComponent implements OnInit {
             color: 'white',
             bold: true,
             alignment: 'center',
-            fontSize: 9
+            fontSize: 9,
           },
           {
             text: 'No. of Post Masters',
@@ -108,7 +220,7 @@ export class PostalServicesComponent implements OnInit {
             color: 'white',
             bold: true,
             alignment: 'center',
-            fontSize: 9
+            fontSize: 9,
           },
           {
             text: 'Mail Sorters',
@@ -116,7 +228,7 @@ export class PostalServicesComponent implements OnInit {
             color: 'white',
             bold: true,
             alignment: 'center',
-            fontSize: 9
+            fontSize: 9,
           },
           {
             text: 'Postal Clerks',
@@ -124,7 +236,7 @@ export class PostalServicesComponent implements OnInit {
             color: 'white',
             bold: true,
             alignment: 'center',
-            fontSize: 9
+            fontSize: 9,
           },
           {
             text: 'Mail Carriers',
@@ -132,7 +244,7 @@ export class PostalServicesComponent implements OnInit {
             color: 'white',
             bold: true,
             alignment: 'center',
-            fontSize: 9
+            fontSize: 9,
           },
           {
             text: 'Mail Truck/ Van',
@@ -140,7 +252,7 @@ export class PostalServicesComponent implements OnInit {
             color: 'white',
             bold: true,
             alignment: 'center',
-            fontSize: 9
+            fontSize: 9,
           },
           {
             text: 'Motorcycle',
@@ -148,7 +260,7 @@ export class PostalServicesComponent implements OnInit {
             color: 'white',
             bold: true,
             alignment: 'center',
-            fontSize: 9
+            fontSize: 9,
           },
           {
             text: 'Bicycle',
@@ -156,7 +268,7 @@ export class PostalServicesComponent implements OnInit {
             color: 'white',
             bold: true,
             alignment: 'center',
-            fontSize: 9
+            fontSize: 9,
           },
           {
             text: 'Postal Stations',
@@ -164,14 +276,14 @@ export class PostalServicesComponent implements OnInit {
             color: 'white',
             bold: true,
             alignment: 'center',
-            fontSize: 9
+            fontSize: 9,
           },
         ]);
 
         reports.forEach((a: any) => {
-          let _district:string = "1st";
-          if(a.district === 2){
-            _district = "2nd"
+          let _district: string = '1st';
+          if (a.district === 2) {
+            _district = '2nd';
           }
           tableData.push([
             {
@@ -180,7 +292,7 @@ export class PostalServicesComponent implements OnInit {
               alignment: 'left',
               fillColor: '#526D82',
               marginLeft: 5,
-              fontSize: 9
+              fontSize: 9,
             },
           ]);
           a.data.forEach((b: any, index2: any) => {
@@ -189,64 +301,64 @@ export class PostalServicesComponent implements OnInit {
                 text: index2 + 1,
                 fillColor: '#FFFFFF',
                 alignment: 'center',
-                fontSize: 9
+                fontSize: 9,
               },
               {
                 text: b.munCityName,
                 fillColor: '#FFFFFF',
-                fontSize: 9
+                fontSize: 9,
               },
               {
                 text: b.munData.location,
                 fillColor: '#FFFFFF',
-                fontSize: 9
+                fontSize: 9,
               },
               {
                 text: b.munData.postMastersNo,
                 fillColor: '#FFFFFF',
                 alignment: 'center',
-                fontSize: 9
+                fontSize: 9,
               },
               {
                 text: b.munData.mailSortersNo,
                 fillColor: '#FFFFFF',
                 alignment: 'center',
-                fontSize: 9
+                fontSize: 9,
               },
               {
                 text: b.munData.postalClerkNo,
                 fillColor: '#FFFFFF',
                 alignment: 'center',
-                fontSize: 9
+                fontSize: 9,
               },
               {
                 text: b.munData.postalCarriersNo,
                 fillColor: '#FFFFFF',
                 alignment: 'center',
-                fontSize: 9
+                fontSize: 9,
               },
               {
                 text: b.munData.mailTruck,
                 fillColor: '#FFFFFF',
                 alignment: 'center',
-                fontSize: 9
+                fontSize: 9,
               },
               {
                 text: b.munData.motorcycle,
                 fillColor: '#FFFFFF',
                 alignment: 'center',
-                fontSize: 9
+                fontSize: 9,
               },
               {
                 text: b.munData.bicycle,
                 fillColor: '#FFFFFF',
                 alignment: 'center',
-                fontSize: 9
+                fontSize: 9,
               },
               {
                 text: b.munData.postalStations,
                 fillColor: '#FFFFFF',
-                fontSize: 9
+                fontSize: 9,
               },
             ]);
           });
@@ -257,7 +369,7 @@ export class PostalServicesComponent implements OnInit {
               fillColor: '#9DB2BF',
               colSpan: 3,
               marginLeft: 5,
-              fontSize: 9
+              fontSize: 9,
             },
             {},
             {},
@@ -265,93 +377,100 @@ export class PostalServicesComponent implements OnInit {
               text: a.subtotal.postMastersNo,
               fillColor: '#9DB2BF',
               alignment: 'center',
-              fontSize: 9
+              fontSize: 9,
             },
             {
               text: a.subtotal.mailSortersNo,
               fillColor: '#9DB2BF',
               alignment: 'center',
-              fontSize: 9
+              fontSize: 9,
             },
             {
               text: a.subtotal.postalClerkNo,
               fillColor: '#9DB2BF',
               alignment: 'center',
-              fontSize: 9
+              fontSize: 9,
             },
             {
               text: a.subtotal.postalCarriersNo,
               fillColor: '#9DB2BF',
               alignment: 'center',
-              fontSize: 9
+              fontSize: 9,
             },
             {
               text: a.subtotal.mailTruck,
               fillColor: '#9DB2BF',
               alignment: 'center',
-              fontSize: 9
+              fontSize: 9,
             },
             {
               text: a.subtotal.motorcycle,
               fillColor: '#9DB2BF',
               alignment: 'center',
-              fontSize: 9
+              fontSize: 9,
             },
             {
               text: a.subtotal.bicycle,
               fillColor: '#9DB2BF',
               alignment: 'center',
-              fontSize: 9
+              fontSize: 9,
             },
-            {text: '',
-              fillColor: '#9DB2BF'},
+            { text: '', fillColor: '#9DB2BF' },
           ]);
         });
 
         tableData.push([
           {
             text: 'GRANDTOTAL',
-            fillColor:'#F1C93B',
+            fillColor: '#F1C93B',
             colSpan: 3,
             marginLeft: 5,
-            fontSize: 9
-          },{},{},
-         {
+            fontSize: 9,
+          },
+          {},
+          {},
+          {
             text: grandTotal.postMastersNo,
-            fillColor:'#F1C93B',
+            fillColor: '#F1C93B',
             alignment: 'center',
-          }, {
+          },
+          {
             text: grandTotal.mailSortersNo,
-            fillColor:'#F1C93B',
+            fillColor: '#F1C93B',
             alignment: 'center',
-            fontSize: 9
-          }, {
+            fontSize: 9,
+          },
+          {
             text: grandTotal.postalClerkNo,
-            fillColor:'#F1C93B',
+            fillColor: '#F1C93B',
             alignment: 'center',
-            fontSize: 9
-          }, {
+            fontSize: 9,
+          },
+          {
             text: grandTotal.postalCarriersNo,
-            fillColor:'#F1C93B',
+            fillColor: '#F1C93B',
             alignment: 'center',
-            fontSize: 9
-          }, {
+            fontSize: 9,
+          },
+          {
             text: grandTotal.mailTruck,
-            fillColor:'#F1C93B',
+            fillColor: '#F1C93B',
             alignment: 'center',
-            fontSize: 9
-          }, {
+            fontSize: 9,
+          },
+          {
             text: grandTotal.motorcycle,
-            fillColor:'#F1C93B',
+            fillColor: '#F1C93B',
             alignment: 'center',
-            fontSize: 9
-          }, {
+            fontSize: 9,
+          },
+          {
             text: grandTotal.bicycle,
-            fillColor:'#F1C93B',
+            fillColor: '#F1C93B',
             alignment: 'center',
-            fontSize: 9
-          },{text: '',
-            fillColor:'#F1C93B',}
+            fontSize: 9,
+          },
+          { text: '', fillColor: '#F1C93B' },
         ]);
 
         const table = {
@@ -370,7 +489,7 @@ export class PostalServicesComponent implements OnInit {
       },
       complete: () => {
         let isPortrait = false;
-        this.pdfService.GeneratePdf(data, isPortrait, "");
+        this.pdfService.GeneratePdf(data, isPortrait, '');
         console.log(data);
       },
     });

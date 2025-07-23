@@ -6,7 +6,10 @@
   <div *ngIf="showOverlay">
     <app-import-loading></app-import-loading>
   </div>
-  <div *ngIf="listElems.length>0; else isEmpty" class="card o-hidden border-2 shadow-sm my-5">
+  <div
+    *ngIf="listElems.length > 0; else isEmpty"
+    class="card o-hidden border-2 shadow-sm my-5"
+  >
     <div class="card-body p-0">
       <!-- Nested Row within Card Body -->
       <div class="row">
@@ -14,12 +17,20 @@
           <div class="p-5">
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-4">Private Secondary Schools</h1>
-              <label><strong>Education - {{modifyCityMun(munCityName)}} </strong></label><br>
+              <label
+                ><strong
+                  >Education - {{ modifyCityMun(munCityName) }}
+                </strong></label
+              ><br />
             </div>
-            <div class="form-inline float-right ">
+            <div class="form-inline float-right">
               <app-admin>
-                <button (click)="isAdd = true; secondary = {}" class="btn btn-primary" data-toggle="modal"
-                  data-target="#ModalAdd">
+                <button
+                  (click)="isAdd = true; secondary = {}"
+                  class="btn btn-primary"
+                  data-toggle="modal"
+                  data-target="#ModalAdd"
+                >
                   <i class="fa fa-plus"></i>
                   Schools
                 </button>
@@ -27,7 +38,7 @@
               &nbsp;
               <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
             </div>
-            <br>
+            <br />
             <label>List of Private Secondary Schools </label>
             <div class="table-responsive">
               <table class="table table-light table-striped">
@@ -38,57 +49,155 @@
                     <th rowspan="2">School ID#</th>
                     <th rowspan="2">Name of School</th>
                     <th colspan="3">Enrolment</th>
-                    <th rowspan="2"> Location</th>
+                    <th rowspan="2">Location</th>
                     <th rowspan="2"></th>
                   </tr>
                   <tr>
-                    <th>
-                      M
-                    </th>
-                    <th>
-                      F
-                    </th>
-                    <th>
-                      Total
-                    </th>
+                    <th>M</th>
+                    <th>F</th>
+                    <th>Total</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let data of listElems; let i = index;">
-                    <td>{{i+1}}</td>
-                    <td>{{data.schoolYear}}</td>
-                    <td>{{data.schoolId}}</td>
-                    <td>{{data.name}}</td>
-                    <td>{{data.male}}</td>
-                    <td>{{data.female}}</td>
-                    <td>{{data.male + data.female > 0 ? data.male + data.female:null }}</td>
-                    <td>{{data.location}} {{data.brgyName}}</td>
+                  <tr *ngFor="let data of listElems; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ data.schoolYear }}</td>
+                    <td>{{ data.schoolId }}</td>
+                    <td>{{ data.name }}</td>
+                    <td>{{ data.male }}</td>
+                    <td>{{ data.female }}</td>
+                    <td>
+                      {{
+                        data.male + data.female > 0
+                          ? data.male + data.female
+                          : null
+                      }}
+                    </td>
+                    <td>{{ data.location }} {{ data.brgyName }}</td>
                     <td>
                       <div class="d-inline-flex">
                         <app-admin>
-                          <button (click)="isAdd = false; secondary = data" class="btn btn-info btn-circle"
-                            data-toggle="modal" data-target="#ModalAdd"><i class="fa fa-pen"></i>
+                          <button
+                            (click)="isAdd = false; secondary = data"
+                            class="btn btn-info btn-circle"
+                            data-toggle="modal"
+                            data-target="#ModalAdd"
+                          >
+                            <i class="fa fa-pen"></i>
                           </button>
                         </app-admin>
                         &nbsp;
 
-                        <button (click)="SetMarker(data); secondary=data" class="btn btn-success btn-circle"
-                          role="button" data-toggle="modal" data-target="#gmapModal">
-                          <i class="fa fa-globe">
-                          </i>
+                        <button
+                          (click)="SetMarker(data); secondary = data"
+                          class="btn btn-success btn-circle"
+                          role="button"
+                          data-toggle="modal"
+                          data-target="#gmapModal"
+                        >
+                          <i class="fa fa-globe"> </i>
                         </button>
                         &nbsp;
                         <app-admin>
-                          <button type="button" title="Delete" class="btn btn-warning btn-circle"
-                            (click)="DeletePrivateSecSchool(data.transId)"><i class="fa fa-trash"></i>
-                          </button>&nbsp;
+                          <button
+                            type="button"
+                            title="Delete"
+                            class="btn btn-warning btn-circle"
+                            (click)="DeletePrivateSecSchool(data.transId)"
+                          >
+                            <i class="fa fa-trash"></i></button
+                          >&nbsp;
                         </app-admin>
                       </div>
                     </td>
                   </tr>
                 </tbody>
               </table>
-              <p>*** Data are based on Department of Education ***</p>
+              <!--Sources-->
+              <!-- ✅ Add Source Form -->
+              <app-admin>
+                <div *ngIf="showAddForm" class="card mt-4">
+                  <div class="card-header bg-dark text-white">Add Source</div>
+                  <div class="card-body">
+                    <form (ngSubmit)="addSource()" #sourceForm="ngForm">
+                      <div class="form-group">
+                        <label for="sourceName">Source Name</label>
+                        <input
+                          type="text"
+                          id="sourceName"
+                          class="form-control"
+                          name="sourceName"
+                          [(ngModel)]="newSource.name"
+                          placeholder="Enter source name"
+                          required
+                        />
+                      </div>
+                      <button
+                        class="btn btn-primary mt-2"
+                        [disabled]="!sourceForm.valid"
+                      >
+                        <i class="fas fa-plus"></i> Add
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </app-admin>
+
+              <!-- ✅ Display Each Source -->
+              <div class="card mt-3" *ngFor="let source of sources">
+                <div class="card-body text-start">
+                  <h5 class="card-title mb-2">Source: {{ source.name }}</h5>
+
+                  <!-- ✏️ Edit Mode -->
+                  <div *ngIf="selectedSourceId === source.id; else viewMode">
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="newSource.name"
+                      placeholder="Edit source name"
+                    />
+                    <div class="mt-2">
+                      <app-admin>
+                        <button
+                          class="btn btn-success btn-sm me-1"
+                          (click)="updateSource()"
+                          title="Save"
+                        >
+                          <i class="fas fa-check"></i>
+                        </button>
+                        <button
+                          class="btn btn-secondary btn-sm"
+                          (click)="selectedSourceId = null"
+                          title="Cancel"
+                        >
+                          <i class="fas fa-times"></i>
+                        </button>
+                      </app-admin>
+                    </div>
+                  </div>
+
+                  <!-- 👁️ View Mode -->
+
+                  <ng-template #viewMode>
+                    <app-admin>
+                      <button
+                        class="btn btn-outline-dark btn-sm me-2"
+                        (click)="editSource(source)"
+                        title="Edit"
+                      >
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button
+                        class="btn btn-outline-danger btn-sm"
+                        (click)="deleteSource(source.id)"
+                        title="Delete"
+                      >
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </app-admin>
+                  </ng-template>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -97,90 +206,169 @@
   </div>
 </div>
 
-<div class="modal fade" id="ModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="ModalAdd"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title text-dark" id="exampleModalLabel">School</h5>
-        <button type="button" #closebutton class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          #closebutton
+          class="btn-close"
+          data-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
-          <div class="row">
-            <div class="col-lg-12 mb-2">
-              <label for="exampleFormControlInput1">School Name : </label>
-              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="secondary.name"
-                [ngClass]="toValidate.name?'is-invalid':''" (keyup)="toValidate.name=false">
-            </div>
-            <div class="col-lg-6">
-              <label> School Year</label>
-              <input type="text" class="form-control mb-2" [(ngModel)]="secondary.schoolYear">
-            </div>
-            <div class="col-lg-6">
-              <label for="exampleFormControlInput1">School ID#: </label>
-              <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="secondary.schoolId"
-                [ngClass]="toValidate.schoolId?'is-invalid':''" (keyup)="toValidate.schoolId=false">
-            </div>
+        <div class="row">
+          <div class="col-lg-12 mb-2">
+            <label for="exampleFormControlInput1">School Name : </label>
+            <input
+              type="text"
+              class="form-control"
+              id=""
+              placeholder=""
+              [(ngModel)]="secondary.name"
+              [ngClass]="toValidate.name ? 'is-invalid' : ''"
+              (keyup)="toValidate.name = false"
+            />
           </div>
+          <div class="col-lg-6">
+            <label> School Year</label>
+            <input
+              type="text"
+              class="form-control mb-2"
+              [(ngModel)]="secondary.schoolYear"
+            />
+          </div>
+          <div class="col-lg-6">
+            <label for="exampleFormControlInput1">School ID#: </label>
+            <input
+              type="text"
+              class="form-control"
+              id=""
+              placeholder=""
+              [(ngModel)]="secondary.schoolId"
+              [ngClass]="toValidate.schoolId ? 'is-invalid' : ''"
+              (keyup)="toValidate.schoolId = false"
+            />
+          </div>
+        </div>
         <div class="row mb-2">
           <div class="col-lg-12">
             <label><b>Enrolment</b></label>
           </div>
           <div class="col-lg-6">
             <label for="exampleFormControlInput1">Male:</label>
-            <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="secondary.male"
-             >
+            <input
+              type="number"
+              class="form-control"
+              id=""
+              placeholder=""
+              [(ngModel)]="secondary.male"
+            />
           </div>
           <div class="col-lg-6">
             <label for="exampleFormControlInput1">Female :</label>
-            <input type="number" class="form-control" id="" placeholder="" [(ngModel)]="secondary.female"
-            >
+            <input
+              type="number"
+              class="form-control"
+              id=""
+              placeholder=""
+              [(ngModel)]="secondary.female"
+            />
           </div>
         </div>
-        <div class="row"> 
+        <div class="row">
           <div class="col-lg-6">
-            <label for="exampleFormControlInput1">Location (#/Bldg/St./Purok) : </label>
-            <input type="text" class="form-control" id="" placeholder="" [(ngModel)]="secondary.location">
+            <label for="exampleFormControlInput1"
+              >Location (#/Bldg/St./Purok) :
+            </label>
+            <input
+              type="text"
+              class="form-control"
+              id=""
+              placeholder=""
+              [(ngModel)]="secondary.location"
+            />
           </div>
           <div class="col-lg-6">
             <label for="category">Barangay :</label>
-            <select class="form-select" name="brgyId" id="brgyId" aria-label="Default select example"
-              [(ngModel)]="secondary.brgyId" [ngClass]="toValidate.brgyId?'is-invalid':''"
-              (ngModelChange)="toValidate.brgyId=false">
+            <select
+              class="form-select"
+              name="brgyId"
+              id="brgyId"
+              aria-label="Default select example"
+              [(ngModel)]="secondary.brgyId"
+              [ngClass]="toValidate.brgyId ? 'is-invalid' : ''"
+              (ngModelChange)="toValidate.brgyId = false"
+            >
               <option *ngFor="let item of listBarangay" [value]="item.brgyId">
                 {{ item.brgyName }}
               </option>
             </select>
-            <br>
+            <br />
           </div>
         </div>
       </div>
       <div class="modal-footer">
         <div class="left-absolute">
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
-              (ngModelChange)="onChange(isCheck)" [(ngModel)]="isCheck">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="flexCheckDefault"
+              (ngModelChange)="onChange(isCheck)"
+              [(ngModel)]="isCheck"
+            />
             <label class="form-check-label" for="flexCheckDefault">
               Several data
             </label>
           </div>
         </div>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i
-            class="fa fa-times"></i>Close</button>&nbsp;
-        <button type="button" class="btn btn-primary" (click)="isAdd? AddPrivateSecSchool(): EditPrivateSecSchool()"> <i
-            class="fa fa-check"></i>Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          <i class="fa fa-times"></i>Close</button
+        >&nbsp;
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="isAdd ? AddPrivateSecSchool() : EditPrivateSecSchool()"
+        >
+          <i class="fa fa-check"></i>Save changes
+        </button>
       </div>
     </div>
   </div>
 </div>
 
 <!-- modal area -->
-<div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
+<div
+  class="modal fade"
+  id="gmapModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">SEPS GEOLOCATION TAGGING</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h5 class="modal-title" id="exampleModalLabel">
+          SEPS GEOLOCATION TAGGING
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -189,8 +377,16 @@
       </div>
       <div class="modal-footer">
         <app-admin>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>&nbsp;
-          <button type="button" class="btn btn-primary" (click)="EditPrivateSecSchool()">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close</button
+          >&nbsp;
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="EditPrivateSecSchool()"
+          >
+            Save changes
+          </button>
         </app-admin>
       </div>
     </div>

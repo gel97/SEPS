@@ -7,6 +7,7 @@ import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 import { PdfComponent } from 'src/app/components/pdf/pdf.component';
 import { PdfService } from 'src/app/services/pdf.service';
 import { ReportsService } from 'src/app/shared/Tools/reports.service';
+import { SourceService } from 'src/app/shared/Source/Source.Service';
 
 @Component({
   selector: 'app-training-center',
@@ -21,7 +22,8 @@ export class TrainingCenterComponent implements OnInit {
     private reportService: ReportsService,
     private service: EducationService,
     private auth: AuthService,
-    private modifyService: ModifyCityMunService
+    private modifyService: ModifyCityMunService,
+    private SourceService: SourceService
   ) {}
 
   modifyCityMun(cityMunName: string) {
@@ -42,6 +44,10 @@ export class TrainingCenterComponent implements OnInit {
   }
 
   markerObj: any = {};
+  sources: any = [];
+  newSource: any = {};
+  selectedSourceId: number | null = null;
+  showAddForm: boolean = true;
 
   SetMarker(data: any = {}) {
     this.markerObj = {
@@ -58,6 +64,113 @@ export class TrainingCenterComponent implements OnInit {
 
   ngOnInit(): void {
     this.Init();
+    this.getSources();
+  }
+  getSources(): void {
+    const setYear = this.auth.activeSetYear;
+    const munCityId = this.auth.munCityId;
+    const sourceFor = 'trainingCenter';
+
+    this.SourceService.getSources(setYear, munCityId, sourceFor).subscribe({
+      next: (data) => {
+        this.sources = data;
+        this.showAddForm = data.length === 0;
+      },
+      error: (error) => {
+        console.error('Failed to fetch sources:', error);
+      },
+    });
+  }
+
+  addSource(): void {
+    if (!this.newSource?.name) {
+      Swal.fire('Warning', 'Please enter a source name.', 'warning');
+      return;
+    }
+
+    const sourceFor = 'trainingCenter'; // 👈 assign your module name
+
+    // ✅ Add metadata
+    this.newSource.munCityId = this.auth.munCityId;
+    this.newSource.setYear = this.auth.activeSetYear;
+    this.newSource.sourceFor = sourceFor;
+
+    this.SourceService.createSource(this.newSource).subscribe({
+      next: () => {
+        this.newSource = {};
+        Swal.fire('Success', 'Source added successfully.', 'success');
+        this.getSources(); // ✅ Re-fetch source list
+      },
+      error: (error) => {
+        Swal.fire('Error', `Failed to create source.\n${error}`, 'error');
+      },
+    });
+  }
+
+  updateSource(): void {
+    if (this.selectedSourceId === null || !this.newSource?.name) {
+      Swal.fire('Warning', 'No source selected or missing name.', 'warning');
+      return;
+    }
+
+    this.SourceService.updateSource(
+      this.selectedSourceId,
+      this.newSource
+    ).subscribe({
+      next: () => {
+        this.getSources();
+        this.selectedSourceId = null;
+        this.newSource = {};
+        Swal.fire('Success', 'Source updated successfully!', 'success');
+      },
+      error: (error) => {
+        Swal.fire('Error', `Failed to update source.\n${error}`, 'error');
+      },
+    });
+  }
+  deleteSource(id: number): void {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This action will delete the source.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Show loading dialog
+        Swal.fire({
+          title: 'Deleting...',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          showConfirmButton: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        // Perform delete operation
+        this.SourceService.deleteSource(id).subscribe({
+          next: () => {
+            this.getSources(); // Refresh list
+            Swal.fire('Deleted!', 'Source has been deleted.', 'success');
+          },
+          error: (error) => {
+            Swal.fire(
+              'Error',
+              `Failed to delete source.\n${error.message || error}`,
+              'error'
+            );
+          },
+        });
+      }
+    });
+  }
+
+  editSource(source: any): void {
+    this.selectedSourceId = source.id;
+    this.newSource = { ...source };
   }
 
   public showOverlay = false;
@@ -67,7 +180,7 @@ export class TrainingCenterComponent implements OnInit {
     this.service.Import(this.menuId).subscribe({
       next: (data) => {
         this.ngOnInit();
-        if(data.length === 0){
+        if (data.length === 0) {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -80,14 +193,12 @@ export class TrainingCenterComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'info',
             title: 'No data from previous year',
           });
-        }
-        else
-        {
+        } else {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -100,7 +211,7 @@ export class TrainingCenterComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'success',
             title: 'Imported Successfully',
@@ -156,7 +267,7 @@ export class TrainingCenterComponent implements OnInit {
         console.log('result: ', response);
 
         reports.forEach((a: any) => {
-          if (a.district === 1) {  
+          if (a.district === 1) {
             dist1.push(a);
           } else {
             dist2.push(a);
@@ -190,7 +301,7 @@ export class TrainingCenterComponent implements OnInit {
           return groups;
         }, {});
 
-        console.log("dist1Group ", dist1Group);
+        console.log('dist1Group ', dist1Group);
 
         const dist2Group = dist2.reduce((groups: any, item: any) => {
           const { munCityName } = item;
@@ -202,7 +313,7 @@ export class TrainingCenterComponent implements OnInit {
           return groups;
         }, {});
 
-        console.log("dist2Group ", dist2);
+        console.log('dist2Group ', dist2);
 
         tableData.push([
           {
@@ -240,8 +351,8 @@ export class TrainingCenterComponent implements OnInit {
             bold: true,
             alignment: 'center',
           },
-           
-           {
+
+          {
             text: 'Courses Offered/ Remarks',
             fillColor: 'black',
             color: 'white',
@@ -259,7 +370,8 @@ export class TrainingCenterComponent implements OnInit {
           },
         ]);
 
-        for (const groupKey1 in dist1Group) { // Iterate district I data
+        for (const groupKey1 in dist1Group) {
+          // Iterate district I data
           const group1 = dist1Group[groupKey1];
           const [cityName1] = groupKey1.split('-');
           tableData.push([
@@ -272,62 +384,9 @@ export class TrainingCenterComponent implements OnInit {
           ]);
 
           group1.forEach((item: any, index: any) => {
-               tableData.push([
-            {
-              text: index+1,
-              fillColor: '#FFFFFF',
-            },
-            {
-              text: item.name,
-              fillColor: '#FFFFFF',
-            },
-            {
-              text: item.brgyName,
-              fillColor: '#FFFFFF',
-            },
-            {
-              text: item.contactPerson,
-              fillColor: '#FFFFFF',
-            },
-            {
-              text: item.contactNo,
-              fillColor: '#FFFFFF',
-            },     
-            {
-             text: item.remarks,
-             fillColor: '#FFFFFF',
-           }
-             
-          ]);
-
-          });
-        }
-
-        tableData.push([
-          {
-            text: `2nd Congressional District `,
-            colSpan: 6,
-            alignment: 'left',
-            fillColor: '#526D82',
-          },
-        ]);
-
-        for (const groupKey2 in dist2Group) { // Iterate district II data
-          const group2 = dist2Group[groupKey2];
-          const [cityName2] = groupKey2.split('-');
-          tableData.push([
-            {
-              text: cityName2,
-              colSpan: 6,
-              alignment: 'left',
-              fillColor: '#9DB2BF',
-            },
-          ]);
-
-          group2.forEach((item: any, index: any) => {
             tableData.push([
               {
-                text: index+1,
+                text: index + 1,
                 fillColor: '#FFFFFF',
               },
               {
@@ -345,21 +404,71 @@ export class TrainingCenterComponent implements OnInit {
               {
                 text: item.contactNo,
                 fillColor: '#FFFFFF',
-              },     
+              },
               {
-               text: item.remarks,
-               fillColor: '#FFFFFF',
-             }
-               
+                text: item.remarks,
+                fillColor: '#FFFFFF',
+              },
             ]);
+          });
+        }
 
+        tableData.push([
+          {
+            text: `2nd Congressional District `,
+            colSpan: 6,
+            alignment: 'left',
+            fillColor: '#526D82',
+          },
+        ]);
+
+        for (const groupKey2 in dist2Group) {
+          // Iterate district II data
+          const group2 = dist2Group[groupKey2];
+          const [cityName2] = groupKey2.split('-');
+          tableData.push([
+            {
+              text: cityName2,
+              colSpan: 6,
+              alignment: 'left',
+              fillColor: '#9DB2BF',
+            },
+          ]);
+
+          group2.forEach((item: any, index: any) => {
+            tableData.push([
+              {
+                text: index + 1,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.name,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.brgyName,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.contactPerson,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.contactNo,
+                fillColor: '#FFFFFF',
+              },
+              {
+                text: item.remarks,
+                fillColor: '#FFFFFF',
+              },
+            ]);
           });
         }
 
         const table = {
           margin: [0, 20, 0, 0],
           table: {
-            widths: [25, '*', '*','*', '*', '*'],
+            widths: [25, '*', '*', '*', '*', '*'],
             body: tableData,
           },
           layout: 'lightHorizontalLines',
@@ -372,7 +481,7 @@ export class TrainingCenterComponent implements OnInit {
       },
       complete: () => {
         let isPortrait = false;
-        this.pdfService.GeneratePdf(data, isPortrait, "");
+        this.pdfService.GeneratePdf(data, isPortrait, '');
         console.log(data);
       },
     });
@@ -409,10 +518,7 @@ export class TrainingCenterComponent implements OnInit {
     this.school.setYear = this.setYear;
     this.school.munCityId = this.munCityId;
 
-    if (
-      !this.toValidate.name &&
-      !this.toValidate.brgyId 
-    ) {
+    if (!this.toValidate.name && !this.toValidate.brgyId) {
       this.service.AddEducation(this.school).subscribe({
         next: (request) => {
           this.GetListSchool();
