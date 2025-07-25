@@ -41,6 +41,8 @@ export class DashboardComponent implements OnInit {
   barChart: Chart | undefined;
   //@ViewChild('barCanvas') barCanvas!: ElementRef;
   @ViewChild('modalBarCanvas') modalBarCanvas!: ElementRef;
+  @ViewChild('printSection') printSection!: ElementRef;
+  @ViewChild('chartImage') chartImage!: ElementRef<HTMLImageElement>;
 
   imageChangedEvent: any = '';
   img: any = '';
@@ -97,6 +99,43 @@ export class DashboardComponent implements OnInit {
     this.loadImage();
     this.GetNews();
     Chart.register(...registerables, ChartDataLabels);
+  }
+  printMunicipalitySection() {
+    const canvas = this.barCanvas.nativeElement;
+    const img = this.chartImage.nativeElement;
+    const printContent = this.printSection.nativeElement.innerHTML;
+
+    // Convert canvas to image
+    const chartImageData = canvas.toDataURL('image/png');
+    img.src = chartImageData;
+    img.style.display = 'block'; // make sure it shows for print
+
+    // Wait a tick to ensure image is ready
+    setTimeout(() => {
+      const WindowPrt = window.open('', '', 'width=900,height=650');
+      WindowPrt?.document.write(`
+      <html>
+        <head>
+          <title>Print Municipality Report</title>
+          <style>
+            body { font-family: Arial, sans-serif; padding: 20px; }
+            .municipality-card-container { page-break-inside: avoid; break-inside: avoid; margin-bottom: 20px; }
+            .municipality-card { border: 1px solid #ccc; padding: 16px; }
+            img { max-width: 100%; margin-bottom: 20px; }
+            svg { display: block; margin: auto; }
+          </style>
+        </head>
+        <body>
+          <img src="${chartImageData}" />
+          ${printContent}
+        </body>
+      </html>
+    `);
+      WindowPrt?.document.close();
+      WindowPrt?.focus();
+      WindowPrt?.print();
+      WindowPrt?.close();
+    }, 500);
   }
   //CHARTS
   openChartModal() {
