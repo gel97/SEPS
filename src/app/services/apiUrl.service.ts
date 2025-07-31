@@ -99,7 +99,7 @@ export class ApiUrl {
   ) =>
     `/Menu/api/na-modules?munCityId=${munCityId}&setYear=${setYear}&userId=${userId}`;
 
-  post_save_notApplicableModules = () => `/Menu/api/na-modules`;
+  post_save_notApplicableModules = () => `/notApplicableModules/api/na-modules`;
 
   //Physical Geographic Profile
   get_get_geo = (munCityId: any, setYear: any) =>

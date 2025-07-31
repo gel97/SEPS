@@ -62,6 +62,22 @@ export class EnvironmentService {
     );
   }
 
+  getGovernanceData(
+    setYear: number,
+    munCityId: string,
+    naModules: string[]
+  ): Observable<any> {
+    let params = new HttpParams()
+      .set('setYear', setYear)
+      .set('munCityId', munCityId);
+
+    naModules.forEach((module) => {
+      params = params.append('notApplicableModules', module);
+    });
+
+    return this.http.get('/api/Menu/sector-percentage-Governance', { params });
+  }
+
   getNA(
     setYear: number,
     munCityId: string,

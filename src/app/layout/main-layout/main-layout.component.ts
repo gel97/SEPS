@@ -631,16 +631,50 @@ export class MainLayoutComponent implements OnInit {
 
   ngOnInit(): void {
     const munCityId = this.getMunCityId();
+    const userId = this.auth.userId;
 
-    const saved = localStorage.getItem(`notApplicableModules_${munCityId}`);
-    if (saved) {
-      this.notApplicableModules = JSON.parse(saved);
-      this.Service.setNotApplicableModules(this.notApplicableModules);
-    }
-    this.getNA(this.auth.activeSetYear, munCityId);
-    this.getSocioNA(this.auth.activeSetYear, munCityId);
-    this.getSocialNA(this.auth.activeSetYear, munCityId);
-    this.getInfraNA(this.auth.activeSetYear, munCityId);
+    // 1. Load from server
+    this.Service.getNotApplicableModulesFromServer(
+      this.auth.activeSetYear,
+      munCityId,
+      userId
+    ).subscribe({
+      next: (serverModules) => {
+        this.notApplicableModules = serverModules || [];
+
+        // Optional: sync to localStorage too
+        localStorage.setItem(
+          `notApplicableModules_${munCityId}`,
+          JSON.stringify(this.notApplicableModules)
+        );
+
+        this.Service.setNotApplicableModules(this.notApplicableModules);
+
+        // Load charts using correct modules
+        this.getNA(this.auth.activeSetYear, munCityId);
+        this.getSocioNA(this.auth.activeSetYear, munCityId);
+        this.getSocialNA(this.auth.activeSetYear, munCityId);
+        this.getInfraNA(this.auth.activeSetYear, munCityId);
+        this.loadGovernanceData(); // ← don't forget governance if needed
+      },
+      error: (err) => {
+        console.warn('[ngOnInit] ⚠️ Server NA load failed, fallback to local');
+
+        // 2. Fallback: load from localStorage
+        const saved = localStorage.getItem(`notApplicableModules_${munCityId}`);
+        if (saved) {
+          this.notApplicableModules = JSON.parse(saved);
+          this.Service.setNotApplicableModules(this.notApplicableModules);
+        }
+
+        // Proceed anyway
+        this.getNA(this.auth.activeSetYear, munCityId);
+        this.getSocioNA(this.auth.activeSetYear, munCityId);
+        this.getSocialNA(this.auth.activeSetYear, munCityId);
+        this.getInfraNA(this.auth.activeSetYear, munCityId);
+        this.loadGovernanceData();
+      },
+    });
     this.showDashboardAndHeader = false;
     console.log('currentUrl: ', this.currentUrl);
     this.guest = localStorage.getItem('guest');
@@ -681,6 +715,9 @@ export class MainLayoutComponent implements OnInit {
         };
       });
   }
+  loadGovernanceData() {
+    throw new Error('Method not implemented.');
+  }
 
   getMunCityId(): string {
     // Try to get from service, fallback to localStorage, or return empty string
@@ -696,13 +733,30 @@ export class MainLayoutComponent implements OnInit {
     if (this.confirmModule) {
       const key = this.confirmModule.key;
       const munCityId = this.getMunCityId();
+      const userId = this.auth.userId; // <- Make sure `auth.userId` exists
 
       if (!this.notApplicableModules.includes(key)) {
         this.notApplicableModules.push(key);
+
+        // Save to localStorage for fast local use
         localStorage.setItem(
           `notApplicableModules_${munCityId}`,
           JSON.stringify(this.notApplicableModules)
         );
+
+        // Save to server for persistence across devices
+        this.Service.saveNotApplicableModulesToServer(
+          userId,
+          munCityId,
+          this.auth.activeSetYear,
+          this.notApplicableModules
+        ).subscribe({
+          next: () => console.log('[confirmNA] ✅ Saved to server'),
+          error: (err) =>
+            console.error('[confirmNA] ❌ Server save failed:', err),
+        });
+
+        this.Service.setNotApplicableModules(this.notApplicableModules); // Optional: sync service
       }
 
       this.confirmModule = null;
