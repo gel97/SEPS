@@ -24,10 +24,19 @@ export class DataRequestService {
       responseType: 'json',
     });
   }
-  GetListRequest(dataRequestId?: any) {
-    return this.http.get<any>(
-      this.Base.url + this.ApiUrl.get_requets(dataRequestId),
-      { responseType: 'json' }
+  GetRequestsByMunicipality(munCityId: string, year?: number) {
+    let url = this.Base.url + `/DataRequests/byMunicipality/${munCityId}`;
+    if (year) {
+      url += `/${year}`;
+    }
+    return this.http.get<any[]>(url, { responseType: 'json' });
+  }
+  CoreElements() {
+    return this.http.get<any[]>(
+      this.Base.url + this.ApiUrl.get_Core_Elements(),
+      {
+        responseType: 'json',
+      }
     );
   }
 
@@ -47,5 +56,12 @@ export class DataRequestService {
     return this.http.get<any[]>(this.Base.url + this.ApiUrl.get_templates(), {
       responseType: 'json',
     });
+  }
+  SaveRequest(data: any) {
+    return this.http.post<any>(
+      this.Base.url + this.ApiUrl.post_save_request(),
+      data,
+      { responseType: 'json' }
+    );
   }
 }

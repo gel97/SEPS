@@ -36,6 +36,7 @@ export class UtilityComponent implements OnInit {
     tag: 1,
     isActive: false,
   };
+  isEditmode: boolean = false;
 
   ngOnInit(): void {
     this.CoreElements();
@@ -73,17 +74,21 @@ export class UtilityComponent implements OnInit {
     });
   }
 
+  selectedFile: File | null = null;
+
+  onFileSelected(event: any): void {
+    this.selectedFile = event.target.files[0] || null;
+  }
+
   saveTemplate(): void {
-    console.log('Saving Template:', this.newTemplate);
     this.newTemplate.coreElemId = Number(this.newTemplate.coreElemId);
+    this.newTemplate.tag = 1;
+
     this.Service.saveTemplate(this.newTemplate).subscribe({
       next: (response) => {
         console.log('Template saved successfully:', response);
-
-        // Reload core elements and templates after save
         this.loadCoreElementsAndTemplates();
 
-        // Reset form
         this.newTemplate = {
           coreElemId: null,
           name: '',
@@ -91,6 +96,7 @@ export class UtilityComponent implements OnInit {
           sequence: null,
           tag: 1,
           isActive: false,
+          several: false,
         };
 
         Swal.fire({
@@ -108,7 +114,6 @@ export class UtilityComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error saving template:', err);
-
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
@@ -116,6 +121,119 @@ export class UtilityComponent implements OnInit {
           confirmButtonColor: '#d33',
         });
       },
+    });
+  }
+
+  editTemplate(template: any): void {
+    this.isEditmode = true;
+    this.newTemplate = { ...template }; // clone to avoid mutating original
+
+    // Show the modal manually using Bootstrap's JS
+    setTimeout(() => {
+      ($('#ModalAdd') as any).modal('show');
+    }, 0);
+  }
+  resetForm(): void {
+    this.newTemplate = {
+      coreElemId: null,
+      name: '',
+      link: '',
+      sequence: null,
+      tag: 1,
+      isActive: false,
+      several: false,
+    };
+    this.isEditmode = false;
+  }
+
+  updateTemplate(): void {
+    this.newTemplate.coreElemId = Number(this.newTemplate.coreElemId);
+    this.newTemplate.tag = 1;
+
+    this.Service.updateTemplate(this.newTemplate).subscribe({
+      next: (response) => {
+        console.log('Template updated successfully:', response);
+        this.loadCoreElementsAndTemplates(); // Refresh list
+
+        this.newTemplate = {
+          coreElemId: null,
+          name: '',
+          link: '',
+          sequence: null,
+          tag: 1,
+          isActive: false,
+          several: false,
+        };
+        this.isEditmode = false;
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Updated!',
+          text: 'Template has been updated.',
+          confirmButtonColor: '#3085d6',
+          timer: 1500,
+          showConfirmButton: false,
+        });
+
+        // Close modal
+        const closeBtn: HTMLElement | null =
+          document.getElementById('closeModal');
+        if (closeBtn) closeBtn.click();
+      },
+      error: (err) => {
+        console.error('Error updating template:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong while updating!',
+          confirmButtonColor: '#d33',
+        });
+      },
+    });
+  }
+
+  deleteTemplate(templateId: number) {
+    if (!templateId) {
+      console.error('templateId is undefined!');
+      return;
+    }
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you really want to delete this template?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log('Deleting template with ID:', templateId);
+
+        this.Service.deleteTemplate(templateId).subscribe({
+          next: (response) => {
+            this.loadCoreElementsAndTemplates();
+            Swal.fire({
+              icon: 'success',
+              title: 'Deleted!',
+              text: 'Template has been deleted.',
+              confirmButtonColor: '#3085d6',
+              timer: 1500,
+              showConfirmButton: false,
+            });
+          },
+          error: (err) => {
+            console.error('Error deleting template:', err);
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Something went wrong while deleting!',
+              confirmButtonColor: '#d33',
+            });
+          },
+        });
+      }
     });
   }
 

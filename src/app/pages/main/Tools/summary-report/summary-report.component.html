@@ -1,68 +1,173 @@
 <div class="table-responsive">
-  <table
-    *ngFor="let a of data"
-    class="table table-framed table-hover table-striped"
+  <app-ddn>
+    <div class="mb-3 text-right">
+      <button
+        class="btn btn-success"
+        data-toggle="modal"
+        data-target="#pdfModal"
+        (click)="viewCountsPdf()"
+      >
+        <i class="fa fa-file-pdf"></i> View Data Count
+      </button>
+    </div>
+  </app-ddn>
+
+  <div class="accordion mt-3" id="summaryAccordion">
+    <div class="card" *ngFor="let a of data; let i = index">
+      <div class="card-header" id="heading{{ i }}">
+        <h2 class="mb-0">
+          <button
+            class="btn btn-link btn-block text-left"
+            type="button"
+            data-toggle="collapse"
+            [attr.data-target]="'#collapse' + i"
+            [attr.aria-controls]="'collapse' + i"
+          >
+            {{ a.sectorName }}
+            <span class="badge badge-primary float-right">
+              {{ a.subMenu.length }} reports
+            </span>
+          </button>
+        </h2>
+      </div>
+
+      <div
+        id="collapse{{ i }}"
+        class="collapse"
+        [attr.aria-labelledby]="'heading' + i"
+        data-parent="#summaryAccordion"
+      >
+        <div class="card-body">
+          <table class="table table-sm table-bordered">
+            <thead class="thead-light">
+              <tr>
+                <th>Report Name</th>
+                <th>Remarks</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let b of a.subMenu">
+                <td (click)="showReport(b.reportName, b?.details?.remarks)">
+                  {{ b.reportName }}
+                  <span class="badge badge-primary float-right">
+                    {{ b.totalRecords }} records
+                  </span>
+                </td>
+                <td (click)="showReport(b.reportName, b?.details?.remarks)">
+                  {{ b?.details?.remarks || "No remarks" }}
+                </td>
+                <td>
+                  <app-ddn>
+                    <button
+                      *ngIf="b.details === null; else ShowEditBtn"
+                      type="button"
+                      (click)="
+                        isAdd = true;
+                        fields.remarks = null;
+                        fields.reportId = b.reportId
+                      "
+                      class="btn btn-primary btn-circle"
+                      data-toggle="modal"
+                      data-target="#openModal"
+                    >
+                      <i class="fa fa-plus"></i>
+                    </button>
+                    <ng-template #ShowEditBtn>
+                      <button
+                        type="button"
+                        title="Edit"
+                        (click)="
+                          isAdd = false;
+                          fields.reportId = b.reportId;
+                          setData(b?.details)
+                        "
+                        class="btn btn-info btn-circle"
+                        data-toggle="modal"
+                        data-target="#openModal"
+                      >
+                        <i class="fa fa-pen"></i>
+                      </button>
+                      <button
+                        (click)="DeleteReportValidation(b?.details?.transId)"
+                        class="btn btn-warning btn-circle"
+                      >
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </ng-template>
+                  </app-ddn>
+                  <!-- <button
+                    class="btn btn-sm btn-primary mt-1"
+                    data-toggle="modal"
+                    data-target="#countsModal"
+                    (click)="viewCounts()"
+                  >
+                    View Counts
+                  </button> -->
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- View Counts Modal -->
+  <!-- <div
+    *ngIf="showCountsModal"
+    class="modal fade show"
+    id="countsModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="countsModalLabel"
+    style="display: block; background: rgba(0, 0, 0, 0.5)"
   >
-    <thead class="table-dark">
-      <tr>
-        <th>{{ a.sectorName }}</th>
-        <th>Remarks</th>
-        <th>
-          <app-ddn> Action </app-ddn>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let b of a.subMenu">
-        <td (click)="showReport(b.reportName, b?.details?.remarks)">
-          {{ b.reportName }}
-        </td>
-        <td (click)="showReport(b.reportName, b?.details?.remarks)">
-          {{ b?.details?.remarks }}
-        </td>
-        <td>
-          <app-ddn>
-            <button
-              *ngIf="b.details === null; else ShowEditBtn"
-              type="button"
-              (click)="
-                isAdd = true;
-                fields.remarks = null;
-                fields.reportId = b.reportId
-              "
-              class="btn btn-primary btn-circle"
-              data-toggle="modal"
-              data-target="#openModal "
-            >
-              <i class="fa fa-plus"></i>
-            </button>
-            <ng-template #ShowEditBtn>
-              <button
-                type="button"
-                title="Edit"
-                (click)="
-                  isAdd = false;
-                  fields.reportId = b.reportId;
-                  setData(b?.details)
-                "
-                class="btn btn-info btn-circle"
-                data-toggle="modal"
-                data-target="#openModal"
-              >
-                <i class="fa fa-pen"></i>
-              </button>
-              <button
-                (click)="DeleteReportValidation(b?.details?.transId)"
-                class="btn btn-warning btn-circle"
-              >
-                <i class="fas fa-trash"></i>
-              </button>
-            </ng-template>
-          </app-ddn>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="countsModalLabel">
+            Commercial Establishments Summary
+          </h5>
+          <button type="button" class="close" (click)="closeModal()">
+            <span>&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Municipality</th>
+                <th>Total</th>
+                <th>With Coordinates</th>
+                <th>Without Coordinates</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of countsData">
+                <td>{{ item.municipalityName }}</td>
+                <td>{{ item.totalEstablishments }}</td>
+                <td>{{ item.withCoordinates }}</td>
+                <td>{{ item.withoutCoordinates }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="closeModal()"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+  <!-- /tab-content -->
+
   <!-- Modal -->
   <div
     class="modal fade bd-example-modal-lg"
@@ -75,9 +180,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalScrollableTitle">
-            Data validation
-          </h5>
+          <h5 class="modal-title">Data validation</h5>
           <button
             type="button"
             #closebutton
@@ -89,22 +192,14 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class="row">
-            <div class="col-lg-12">
-              <label>Remarks:</label>
-              <textarea
-                class="form-control"
-                [(ngModel)]="fields.remarks"
-                [ngClass]="toValidate.remarks ? 'is-invalid' : ''"
-                (keyup)="toValidate.remarks = false"
-              >
-              </textarea>
-              <p *ngIf="toValidate.remarks" class="text-danger">
-                Required field.
-              </p>
-            </div>
-          </div>
-          <br /><br />
+          <label>Remarks:</label>
+          <textarea
+            class="form-control"
+            [(ngModel)]="fields.remarks"
+            [ngClass]="toValidate.remarks ? 'is-invalid' : ''"
+            (keyup)="toValidate.remarks = false"
+          ></textarea>
+          <p *ngIf="toValidate.remarks" class="text-danger">Required field.</p>
         </div>
         <div class="modal-footer">
           <button
@@ -115,13 +210,56 @@
             <i class="fa fa-check"></i> Save Changes
           </button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">
-            <i class="fa fa-time"></i>Close
+            Close
           </button>
         </div>
       </div>
     </div>
   </div>
-  <!-- <table class="table table-framed table-hover table-striped">
+</div>
+
+<div
+  class="modal fade"
+  id="pdfModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="pdfModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="pdfModalLabel">Data Count Report</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body position-relative" style="height: 80vh">
+        <!-- Loader -->
+        <div *ngIf="loadingPdf" class="loader-container">
+          <div class="loader">
+            <div class="central-circle">
+              <span class="percent">{{ pdfPercent }}%</span>
+            </div>
+            <div class="orbiting-circle"></div>
+            <div class="pulse-ring"></div>
+          </div>
+        </div>
+
+        <!-- PDF -->
+        <iframe
+          *ngIf="pdfSrc && !loadingPdf"
+          [src]="pdfSrc"
+          width="100%"
+          height="100%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <table class="table table-framed table-hover table-striped">
       <thead class="table-dark">
         <tr>
           <th>GOVERNANCE</th>
@@ -481,4 +619,3 @@
         </tr>
       </tbody>
     </table> -->
-</div>

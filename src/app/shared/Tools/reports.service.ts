@@ -147,6 +147,19 @@ export class ReportsService {
       { responseType: 'json' }
     );
   }
+  GetComEstabTotalPerMun(setYear: number) {
+    return this.http.get<any[]>(
+      this.Base.url + this.ApiUrl.get_com_estab_total_per_mun(setYear),
+      { responseType: 'json' }
+    );
+  }
+  GetComEstabpdf(setYear: number) {
+    return this.http.get(
+      this.Base.url + this.ApiUrl.get_com_estab_pdf(setYear),
+      { responseType: 'blob' } // PDF comes as a Blob
+    );
+  }
+
   GetIndustrialReport(data: any) {
     return this.http.post<any[]>(
       this.Base.url + this.ApiUrl.post_report_Industrial(),

@@ -383,6 +383,7 @@ import { UseUrbanComponent } from './pages/main/Province/use-urban/use-urban.com
     CDRAComponent,
     ExposureDBComponent,
     UseUrbanComponent,
+    LoadingComponent,
   ],
   imports: [
     MdbCollapseModule,

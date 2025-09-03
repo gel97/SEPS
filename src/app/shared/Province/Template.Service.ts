@@ -48,16 +48,16 @@ export class TemplateService {
 
   // PUT or POST: Update an existing template
   updateTemplate(data: any) {
-    return this.http.post(
-      this.Base.url + this.ApiUrl.post_update_template(),
+    return this.http.put(
+      this.Base.url + this.ApiUrl.put_update_template(data.templateId),
       data
     );
   }
 
   // DELETE: Delete a template
-  deleteTemplate(transId: any) {
+  deleteTemplate(templateId: any) {
     return this.http.delete(
-      this.Base.url + this.ApiUrl.delete_template(transId)
+      this.Base.url + this.ApiUrl.delete_template(templateId)
     );
   }
 }
