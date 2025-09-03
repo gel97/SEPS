@@ -1,11 +1,35 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { DataRequestService } from 'src/app/shared/Province/DataRequest.Service';
 import Swal from 'sweetalert2';
-import { Observable } from 'rxjs';
-import { isEmptyObject } from 'jquery';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
-import { response } from 'express';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import { NgForm } from '@angular/forms';
+
+interface Request {
+  dataRequestId: number;
+  title: string;
+  details: string;
+  setYear: number;
+  templates?: { name: string };
+  munCityId: string;
+  [key: string]: any;
+}
+
+interface Template {
+  templateId: number;
+  coreElemId: number;
+  coreElementName: string;
+  name: string;
+  link: string;
+}
+
+interface YearGroup {
+  coreElement: any;
+  setYear: number;
+  requests: Request[];
+}
 
 @Component({
   selector: 'app-data-request',
@@ -13,49 +37,137 @@ import { response } from 'express';
   styleUrls: ['./data-request.component.css'],
 })
 export class DataRequestComponent implements OnInit {
+  group: any;
+  coreElements: any[] = [];
+  yearGroup: any;
+  template: any;
   constructor(
     private auth: AuthService,
-    private Service: DataRequestService,
+    private service: DataRequestService,
     private modifyService: ModifyCityMunService
   ) {
     this.o_munCityId = this.auth.o_munCityId;
   }
 
-  DataRequestId: any;
-  o_munCityId: any = this.auth.o_munCityId;
+  @ViewChild('templateForm') templateForm!: NgForm;
+  @ViewChild('closebutton') closebutton!: ElementRef;
+
+  // ---------------------- STATE -----------------------
+  o_munCityId = this.auth.o_munCityId;
   munCityName: string = this.auth.munCityName;
 
   listMunCity: any[] = [];
   listData: any[] = [];
-  listrequest: any[] = [];
-  list_sep_year: any[] = [];
-  list_templates: any[] = [];
+  listRequests: Request[] = [];
+  list_sep_year: YearGroup[] = [];
+  list_templates: Template[] = [];
 
-  selectedMunCityId: any = null;
+  selectedMunCityId: string | null = null;
   selectedMunCityName: string = '';
-  selectedRequests: any[] = [];
+  selectedRequests: Request[] = [];
 
-  set_year: any = this.auth.setYear;
-  selectedTemplate: any = { name: '', details: '' };
+  set_year: number | null = this.auth.setYear;
   templateSearchText: string = '';
+  filteredTemplatesByGroup: { [key: string]: Template[] } = {};
 
+  private templateSearchSubject = new Subject<string>();
+
+  // ✅ Default newRequest
+  newRequest: Partial<Request> = {
+    coreElemId: null,
+    templateId: null,
+    setYear: this.auth.setYear,
+    title: '',
+    details: '',
+    munCityId: '',
+    recievedBy: 0,
+    tag: 0,
+  };
+
+  // ---------------------- INIT -----------------------
   ngOnInit(): void {
     this.loadMunicipalities();
     this.loadSepYears();
     this.loadTemplates();
-    this.loadRequests(); // <- Must provide DataRequestId if needed
+    this.Init();
+
+    this.templateSearchSubject
+      .pipe(debounceTime(300))
+      .subscribe((search) => this.filterTemplates(search.toLowerCase()));
+  }
+  Init() {
+    this.CoreElements();
+  }
+  CoreElements() {
+    this.service.CoreElements().subscribe((response) => {
+      const allCoreElements = (response as any[]).filter(
+        (item) => item.createdAt !== null
+      );
+
+      // Map coreElements into yearGroups
+      this.list_sep_year = this.list_sep_year.map((yearGroup) => {
+        return {
+          ...yearGroup,
+          coreElements: allCoreElements.filter((ce) =>
+            yearGroup.requests.some((req) => req['coreElementId'] === ce.id)
+          ),
+        };
+      });
+
+      console.log('Filter List Core Elements:', this.coreElements);
+    });
   }
 
-  loadMunicipalities() {
-    this.Service.ListOfMunicipality().subscribe({
+  // ---------------------- LOADERS -----------------------
+  private groupByYear(requests: Request[]): YearGroup[] {
+    const groups = Object.values(
+      requests.reduce((acc: any, req: Request) => {
+        const year = req.setYear ?? 'Unknown';
+        const coreElement = req['coreElements']?.name || 'Unknown';
+        const key = `${year}_${coreElement}`;
+
+        if (!acc[key]) {
+          acc[key] = {
+            setYear: year,
+            coreElement: req['coreElements'],
+            requests: [],
+          };
+        }
+
+        acc[key].requests.push(req);
+        return acc;
+      }, {})
+    ) as YearGroup[];
+
+    // Sort by year (descending)
+    return groups.sort((a, b) => b.setYear - a.setYear);
+  }
+
+  loadRequestsByMunicipality(munCityId: string): void {
+    this.selectedMunCityId = munCityId;
+    this.service.GetRequestsByMunicipality(munCityId).subscribe({
+      next: (res: Request[]) => {
+        this.selectedRequests = res || [];
+        this.list_sep_year = this.groupByYear(this.selectedRequests);
+      },
+      error: (err) => {
+        console.error('Error loading requests:', err);
+        this.selectedRequests = [];
+        this.list_sep_year = [];
+      },
+    });
+  }
+
+  loadMunicipalities(): void {
+    this.service.ListOfMunicipality().subscribe({
       next: (response) => (this.listData = response || []),
       error: (err) => console.error('Error loading municipalities', err),
     });
   }
 
-  loadSepYears() {
-    this.Service.GetSepYears().subscribe({
-      next: (res) => {
+  loadSepYears(): void {
+    this.service.GetSepYears().subscribe({
+      next: (res: any[]) => {
         this.list_sep_year = res || [];
         if (this.list_sep_year.length > 0) {
           this.set_year = this.list_sep_year[0].setYear;
@@ -65,53 +177,106 @@ export class DataRequestComponent implements OnInit {
     });
   }
 
-  loadTemplates() {
-    this.Service.GetAllTemplates().subscribe({
-      next: (res) => (this.list_templates = res || []),
+  loadTemplates(): void {
+    this.service.GetAllTemplates().subscribe({
+      next: (res: Template[]) => {
+        this.list_templates = res || [];
+        this.filterTemplates(this.templateSearchText.toLowerCase());
+      },
       error: (err) => console.error('Error loading templates', err),
     });
   }
 
-  loadRequests() {
-    if (!this.DataRequestId) return;
-    this.Service.GetListRequest(this.DataRequestId).subscribe({
-      next: (res) => (this.listrequest = res || []),
-      error: (err) => console.error('Error loading requests', err),
+  // ---------------------- ACTIONS -----------------------
+  selectMunicipality(item: any): void {
+    this.selectedMunCityId = item.munCityId;
+    this.selectedMunCityName = item.munCityName;
+    this.newRequest.munCityId = item.munCityId;
+
+    this.loadRequestsByMunicipality(item.munCityId);
+  }
+
+  selectTemplate(template: Template): void {
+    this.templateSearchText = template.name;
+    this.newRequest = {
+      ...this.newRequest,
+      templateId: template.templateId,
+      coreElemId: template.coreElemId,
+      coreElementName: template.coreElementName,
+      setYear: this.auth.setYear,
+      title: template.name,
+      details: template.link,
+      userId: this.auth.userId,
+    };
+
+    console.log('Selected template:', this.newRequest);
+  }
+
+  saveDataRequest(): void {
+    if (!this.newRequest['coreElemId'] || !this.newRequest['templateId']) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Missing Data',
+        text: 'Please select a Core Element and Template before saving.',
+      });
+      return;
+    }
+
+    if (!this.newRequest.munCityId) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Missing Municipality',
+        text: 'Please select a Municipality/City before saving.',
+      });
+      return;
+    }
+
+    const payload = {
+      ...this.newRequest,
+      dataRequestId: 0,
+      setYear: this.auth.setYear,
+      userId: this.auth.userId,
+    };
+
+    console.log('Sending payload to API:', payload);
+
+    this.service.SaveRequest(payload).subscribe({
+      next: (response) => {
+        console.log('Saved successfully:', response);
+        Swal.fire({
+          icon: 'success',
+          title: 'Saved!',
+          text: 'Data request has been saved successfully.',
+          timer: 1500,
+          showConfirmButton: false,
+        });
+
+        this.templateForm.resetForm();
+        this.newRequest = { setYear: this.auth.setYear, recievedBy: 0, tag: 0 };
+        this.templateSearchText = '';
+
+        this.closebutton.nativeElement.click();
+      },
+      error: (err) => {
+        console.error('Error saving data request:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong while saving!',
+        });
+      },
     });
   }
 
-  selectMunicipality(item: any) {
-    this.selectedMunCityId = item.munCityId;
-    this.selectedMunCityName = item.munCityName;
+  // ---------------------- TEMPLATE SEARCH -----------------------
+  onTemplateSearchChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.templateSearchText = input?.value || '';
+    this.templateSearchSubject.next(this.templateSearchText);
   }
 
-  selectedTemplateName: string = '';
-  selectedTemplateId: string = '';
-
-  selectTemplate(template: any) {
-    this.selectedTemplateName = template.name;
-    this.templateSearchText = template.name; // Auto-fills the input with the template name
-    console.log('Selected template:', template);
-    console.log('templateSearchText:', this.templateSearchText);
-  }
-
-  get filteredRequests() {
-    return this.listrequest.filter(
-      (req) =>
-        req.munCityId === this.selectedMunCityId &&
-        (!this.templateSearchText ||
-          req.template?.templateName
-            ?.toLowerCase()
-            .includes(this.templateSearchText.toLowerCase()))
-    );
-  }
-
-  get filteredTemplatesGroupedByCoreElement() {
-    const grouped: { [key: string]: any[] } = {};
-    const search = this.templateSearchText.toLowerCase();
-
-    console.log('Filtering templates using search text:', search);
-
+  private filterTemplates(search: string): void {
+    const grouped: { [key: string]: Template[] } = {};
     for (const template of this.list_templates) {
       const nameMatch = template.name?.toLowerCase().includes(search);
       const coreMatch = template.coreElementName
@@ -120,15 +285,10 @@ export class DataRequestComponent implements OnInit {
 
       if (nameMatch || coreMatch) {
         const key = template.coreElementName || 'Others';
-        if (!grouped[key]) {
-          grouped[key] = [];
-        }
+        if (!grouped[key]) grouped[key] = [];
         grouped[key].push(template);
       }
     }
-
-    console.log('Grouped templates:', grouped);
-
-    return grouped;
+    this.filteredTemplatesByGroup = grouped;
   }
 }

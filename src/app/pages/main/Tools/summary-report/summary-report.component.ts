@@ -4,6 +4,7 @@ import { ReportsService } from 'src/app/shared/Tools/reports.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { PdfService } from 'src/app/services/pdf.service';
 import Swal from 'sweetalert2';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-summary-report',
@@ -11,13 +12,17 @@ import Swal from 'sweetalert2';
   styleUrls: ['./summary-report.component.css'],
 })
 export class SummaryReportComponent implements OnInit {
+  pdfSrc: SafeResourceUrl | null = null;
   @ViewChild(BarangaysComponent)
   private brgy!: BarangaysComponent;
+  setYear: any;
+  b: any;
 
   constructor(
     private service: AuthService,
     private reportService: ReportsService,
-    private pdfService: PdfService
+    private pdfService: PdfService,
+    private sanitizer: DomSanitizer
   ) {
     this.params.year = this.service.setYear;
     this.params.allMunCity = 1;
@@ -31,9 +36,52 @@ export class SummaryReportComponent implements OnInit {
   data: any = [];
   toValidate: any = {};
   isAdd: boolean = true;
+  countsData: any[] = [];
+  showCountsModal = false;
+  loadingPdf = false;
+  pdfPercent = 0;
 
   ngOnInit(): void {
     this.getReportSummarized();
+  }
+  // viewCounts() {
+  //   const year = this.service.setYear;
+  //   this.reportService.GetComEstabTotalPerMun(year).subscribe((res) => {
+  //     console.log('API Response:', res);
+  //     this.countsData = res;
+  //     this.showCountsModal = true;
+  //   });
+  // }
+  viewCountsPdf() {
+    this.loadingPdf = true;
+    this.pdfPercent = 0;
+    const year = this.service.setYear;
+
+    // Simulate percentage progress
+    const interval = setInterval(() => {
+      if (this.pdfPercent < 95) {
+        this.pdfPercent += 5;
+      }
+    }, 100);
+
+    this.reportService.GetComEstabpdf(year).subscribe({
+      next: (pdfBlob) => {
+        const pdfUrl = URL.createObjectURL(pdfBlob);
+        this.pdfSrc = this.sanitizer.bypassSecurityTrustResourceUrl(pdfUrl);
+        this.pdfPercent = 100;
+        clearInterval(interval);
+        setTimeout(() => (this.loadingPdf = false), 500);
+      },
+      error: (err) => {
+        console.error('Error loading PDF', err);
+        clearInterval(interval);
+        this.loadingPdf = false;
+      },
+    });
+  }
+
+  closeModal() {
+    this.showCountsModal = false;
   }
 
   AddReportValidation() {

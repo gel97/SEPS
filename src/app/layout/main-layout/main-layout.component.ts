@@ -633,7 +633,7 @@ export class MainLayoutComponent implements OnInit {
     const munCityId = this.getMunCityId();
     const userId = this.auth.userId;
 
-    // 1. Load from server
+    // 🔑 Always load from server first
     this.Service.getNotApplicableModulesFromServer(
       this.auth.activeSetYear,
       munCityId,
@@ -642,7 +642,7 @@ export class MainLayoutComponent implements OnInit {
       next: (serverModules) => {
         this.notApplicableModules = serverModules || [];
 
-        // Optional: sync to localStorage too
+        // Save to localStorage (cache for offline use)
         localStorage.setItem(
           `notApplicableModules_${munCityId}`,
           JSON.stringify(this.notApplicableModules)
@@ -650,24 +650,24 @@ export class MainLayoutComponent implements OnInit {
 
         this.Service.setNotApplicableModules(this.notApplicableModules);
 
-        // Load charts using correct modules
+        // Load charts
         this.getNA(this.auth.activeSetYear, munCityId);
         this.getSocioNA(this.auth.activeSetYear, munCityId);
         this.getSocialNA(this.auth.activeSetYear, munCityId);
         this.getInfraNA(this.auth.activeSetYear, munCityId);
-        this.loadGovernanceData(); // ← don't forget governance if needed
+        this.loadGovernanceData();
       },
       error: (err) => {
-        console.warn('[ngOnInit] ⚠️ Server NA load failed, fallback to local');
+        console.warn('[ngOnInit] ⚠️ Server load failed, fallback to local');
 
-        // 2. Fallback: load from localStorage
+        // Fallback: load from localStorage
         const saved = localStorage.getItem(`notApplicableModules_${munCityId}`);
         if (saved) {
           this.notApplicableModules = JSON.parse(saved);
           this.Service.setNotApplicableModules(this.notApplicableModules);
         }
 
-        // Proceed anyway
+        // Load charts anyway
         this.getNA(this.auth.activeSetYear, munCityId);
         this.getSocioNA(this.auth.activeSetYear, munCityId);
         this.getSocialNA(this.auth.activeSetYear, munCityId);
@@ -730,37 +730,45 @@ export class MainLayoutComponent implements OnInit {
     this.confirmModule = module;
   }
   confirmNA(): void {
-    if (this.confirmModule) {
-      const key = this.confirmModule.key;
-      const munCityId = this.getMunCityId();
-      const userId = this.auth.userId; // <- Make sure `auth.userId` exists
+    if (!this.confirmModule) return;
 
-      if (!this.notApplicableModules.includes(key)) {
-        this.notApplicableModules.push(key);
+    const key = this.confirmModule.key;
+    const munCityId = this.getMunCityId();
+    const userId = this.auth.userId;
 
-        // Save to localStorage for fast local use
-        localStorage.setItem(
-          `notApplicableModules_${munCityId}`,
-          JSON.stringify(this.notApplicableModules)
-        );
+    if (!this.notApplicableModules.includes(key)) {
+      this.notApplicableModules.push(key);
 
-        // Save to server for persistence across devices
-        this.Service.saveNotApplicableModulesToServer(
-          userId,
-          munCityId,
-          this.auth.activeSetYear,
-          this.notApplicableModules
-        ).subscribe({
-          next: () => console.log('[confirmNA] ✅ Saved to server'),
-          error: (err) =>
-            console.error('[confirmNA] ❌ Server save failed:', err),
-        });
+      this.Service.saveNotApplicableModulesToServer(
+        userId,
+        munCityId,
+        this.auth.activeSetYear,
+        this.notApplicableModules
+      ).subscribe({
+        next: () => {
+          console.log('[confirmNA] ✅ Saved to server');
 
-        this.Service.setNotApplicableModules(this.notApplicableModules); // Optional: sync service
-      }
+          // Only update localStorage AFTER server saves
+          localStorage.setItem(
+            `notApplicableModules_${munCityId}`,
+            JSON.stringify(this.notApplicableModules)
+          );
 
-      this.confirmModule = null;
+          this.Service.setNotApplicableModules(this.notApplicableModules);
+        },
+        error: (err) => {
+          console.error('[confirmNA] ❌ Failed to save to server', err);
+          alert('Could not confirm module. Try again later.');
+
+          // Rollback local change
+          this.notApplicableModules = this.notApplicableModules.filter(
+            (k) => k !== key
+          );
+        },
+      });
     }
+
+    this.confirmModule = null;
   }
 
   cancelNA() {

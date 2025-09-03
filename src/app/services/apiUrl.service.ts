@@ -94,10 +94,12 @@ export class ApiUrl {
   // for N/A
   get_notApplicableModules = (
     munCityId: string,
-    setYear: number,
+    setYear: number | string,
     userId: string
-  ) =>
-    `/Menu/api/na-modules?munCityId=${munCityId}&setYear=${setYear}&userId=${userId}`;
+  ): string =>
+    `/Menu/api/na-modules?munCityId=${encodeURIComponent(
+      munCityId
+    )}&setYear=${setYear}&userId=${encodeURIComponent(userId)}`;
 
   post_save_notApplicableModules = () => `/notApplicableModules/api/na-modules`;
 
@@ -188,8 +190,8 @@ export class ApiUrl {
   post_save_template = () => `/Templates/Templates`;
   get_template = (transId: any) => `/Templates/${transId}`;
   get_templates = () => `/Templates`;
-  post_update_template = () => `/Templates`;
-  delete_template = (transId: any) => `/Templates/${transId}`;
+  put_update_template = (templateId: number) => `/Templates/${templateId}`;
+  delete_template = (templateId: any) => `/Templates/${templateId}`;
 
   // Mun Loc Building
   get_all_building = () => `/MunCityBuilding/List`;
@@ -264,6 +266,10 @@ export class ApiUrl {
     `/ComEstab/${setYear}/${munCityId}`;
   get_com_estab_summary = (munCityId: any, setYear: any) =>
     `/ComEstab/comestab_summary/${setYear}/${munCityId}`;
+  get_com_estab_total_per_mun = (setYear: any) =>
+    `/ComEstab/total-per-municipality-accurate?setYear=${setYear}`;
+  get_com_estab_pdf = (setYear: any) =>
+    `/ComEstab/total-per-municipality-pdf?setYear=${setYear}`;
 
   post_save_com_estab = () => `/ComEstab`;
   put_update_com_estab = () => `/ComEstab`;
