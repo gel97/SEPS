@@ -7,12 +7,8 @@
           <h5 class="text-primary">Municipality/City</h5>
 
           <ul class="list-group" style="max-height: 70vh; overflow-y: auto">
-            <li
-              class="list-group-item"
-              *ngFor="let item of listData"
-              [class.active]="selectedMunCityId === item.munCityId"
-              (click)="selectMunicipality(item)"
-            >
+            <li class="list-group-item" *ngFor="let item of listData"
+              [class.active]="selectedMunCityId === item.munCityId" (click)="selectMunicipality(item)">
               {{ item.munCityName }}
             </li>
           </ul>
@@ -26,12 +22,7 @@
 
           <!-- Add Request Button -->
           <div *ngIf="selectedMunCityId" class="mb-3">
-            <button
-              type="button"
-              class="btn btn-primary"
-              data-toggle="modal"
-              data-target="#ModalAdd"
-            >
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd">
               ➕ Request Data
             </button>
           </div>
@@ -40,18 +31,12 @@
 
           <div *ngFor="let yearGroup of list_sep_year" class="mb-4">
             <!-- Year + Core Element Header -->
-            <div
-              class="bg-primary text-white px-3 py-2 rounded-top fw-bold shadow-sm"
-              *ngIf="selectedMunCityName"
-            >
+            <div class="bg-primary text-white px-3 py-2 rounded-top fw-bold shadow-sm" *ngIf="selectedMunCityName">
               📅 {{ yearGroup.setYear }} — {{ yearGroup.coreElement?.name }}
             </div>
 
             <!-- Requests Table -->
-            <div
-              class="table-responsive shadow-sm rounded-bottom"
-              *ngIf="selectedMunCityName"
-            >
+            <div class="table-responsive shadow-sm rounded-bottom" *ngIf="selectedMunCityName">
               <table class="table table-hover table-striped align-middle mb-0">
                 <thead class="table-light">
                   <tr>
@@ -62,31 +47,35 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let req of yearGroup.requests">
-                    <td class="fw-semibold">{{ req.details }}</td>
+                    <!-- File name (downloadable) -->
+                    <td class="fw-semibold">
+                      <a [href]="req.downloadUrl" download class="text-decoration-none" title="Download File">
+                        {{ req.details }}
+                      </a>
+                    </td>
+
+
+                    <!-- Template name (or fallback) -->
                     <td>
                       <em>{{ req.templates?.name || "—" }}</em>
                     </td>
+
+                    <!-- Actions (delete, etc.) -->
                     <td class="text-center">
-                      <button
-                        class="btn btn-sm btn-outline-danger me-1"
-                        title="Delete"
-                      >
+                      <button class="btn btn-sm btn-outline-danger me-1" title="Delete">
                         🗑
-                      </button>
-                      <button
-                        class="btn btn-sm btn-outline-primary"
-                        title="Open Link"
-                      >
-                        🔗
                       </button>
                     </td>
                   </tr>
+
+                  <!-- Empty state -->
                   <tr *ngIf="yearGroup.requests.length === 0">
                     <td colspan="3" class="text-center text-muted py-3">
                       No requests available for this group.
                     </td>
                   </tr>
                 </tbody>
+
               </table>
             </div>
           </div>
@@ -101,26 +90,14 @@
 </div>
 
 <!-- MODAL -->
-<div
-  class="modal fade bd-example-modal-lg"
-  id="ModalAdd"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
+<div class="modal fade bd-example-modal-lg" id="ModalAdd" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <form #templateForm="ngForm">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Request</h5>
-          <button
-            type="button"
-            #closebutton
-            class="close"
-            data-dismiss="modal"
-            aria-label="Close"
-          >
+          <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -130,16 +107,8 @@
             <!-- Year Dropdown -->
             <div class="col-lg-12">
               <label for="setYear">Year:</label>
-              <select
-                class="form-control"
-                required
-                [(ngModel)]="set_year"
-                name="setYear"
-              >
-                <option
-                  *ngFor="let item of list_sep_year"
-                  [value]="item.setYear"
-                >
+              <select class="form-control" required [(ngModel)]="set_year" name="setYear">
+                <option *ngFor="let item of list_sep_year" [value]="item.setYear">
                   {{ item.setYear }}
                 </option>
               </select>
@@ -148,65 +117,35 @@
             <!-- Title -->
             <div class="col-lg-12">
               <label for="title">Title:</label>
-              <input
-                type="text"
-                class="form-control"
-                required
-                [(ngModel)]="newRequest.title"
-                name="title"
-              />
+              <input type="text" class="form-control" required [(ngModel)]="newRequest.title" name="title" />
             </div>
 
             <!-- Details -->
             <div class="col-lg-12">
               <label for="details">Details:</label>
-              <input
-                type="text"
-                class="form-control"
-                required
-                [(ngModel)]="newRequest.details"
-                name="details"
-              />
+              <input type="text" class="form-control" required [(ngModel)]="newRequest.details" name="details" />
             </div>
 
             <!-- Search Templates -->
             <div class="col-lg-12">
               <label for="templateSearch">Search Template:</label>
-              <input
-                type="text"
-                class="form-control"
-                [value]="templateSearchText"
-                [(ngModel)]="templateSearchText"
-                (input)="onTemplateSearchChange($event)"
-                placeholder="Search by template or core element"
-                name="templateSearch"
-              />
+              <input type="text" class="form-control" [value]="templateSearchText" [(ngModel)]="templateSearchText"
+                (input)="onTemplateSearchChange($event)" placeholder="Search by template or core element"
+                name="templateSearch" />
 
               <div *ngIf="templateSearchText">
-                <ng-container
-                  *ngIf="
+                <ng-container *ngIf="
                     filteredTemplatesByGroup &&
                       (filteredTemplatesByGroup | keyvalue).length > 0;
                     else noMatchFound
-                  "
-                >
-                  <div
-                    *ngFor="let group of filteredTemplatesByGroup | keyvalue"
-                    class="mt-3"
-                  >
+                  ">
+                  <div *ngFor="let group of filteredTemplatesByGroup | keyvalue" class="mt-3">
                     <h5 class="text-primary">{{ group.key }}</h5>
                     <ul class="list-group">
-                      <li
-                        class="list-group-item"
-                        *ngFor="let template of group.value"
-                        (click)="selectTemplate(template)"
-                        style="cursor: pointer"
-                      >
-                        <strong>{{ template.name }}</strong
-                        ><br />
-                        <small
-                          >Core Element: {{ template.coreElementName }}</small
-                        >
+                      <li class="list-group-item" *ngFor="let template of group.value"
+                        (click)="selectTemplate(template)" style="cursor: pointer">
+                        <strong>{{ template.name }}</strong><br />
+                        <small>Core Element: {{ template.coreElementName }}</small>
                       </li>
                     </ul>
                   </div>
@@ -224,11 +163,7 @@
 
         <!-- Footer -->
         <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-primary"
-            (click)="saveDataRequest()"
-          >
+          <button type="button" class="btn btn-primary" (click)="saveDataRequest()">
             <i class="fa fa-check"></i> Add
           </button>
         </div>

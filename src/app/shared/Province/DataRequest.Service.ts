@@ -10,6 +10,7 @@ import { ApiUrl } from '../../services/apiUrl.service';
 })
 export class DataRequestService {
   api: any;
+  BaseUrl: any;
   constructor(
     private http: HttpClient,
     private Auth: AuthService,
