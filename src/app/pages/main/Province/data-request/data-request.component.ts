@@ -10,12 +10,15 @@ import { NgForm } from '@angular/forms';
 interface Request {
   dataRequestId: number;
   title: string;
-  details: string;
+  details: string;        // 📌 File name to show in the table
+  downloadUrl?: string;   // 📌 Actual download link
   setYear: number;
   templates?: { name: string };
   munCityId: string;
   [key: string]: any;
 }
+
+
 
 interface Template {
   templateId: number;
@@ -23,6 +26,7 @@ interface Template {
   coreElementName: string;
   name: string;
   link: string;
+  downloadUrl: string;
 }
 
 interface YearGroup {
@@ -145,10 +149,39 @@ export class DataRequestComponent implements OnInit {
 
   loadRequestsByMunicipality(munCityId: string): void {
     this.selectedMunCityId = munCityId;
+
+    // 🟢 First, load all requests
     this.service.GetRequestsByMunicipality(munCityId).subscribe({
       next: (res: Request[]) => {
-        this.selectedRequests = res || [];
-        this.list_sep_year = this.groupByYear(this.selectedRequests);
+        const requests = res || [];
+
+        // 🟢 Then also load templates so we can attach downloadUrl
+        this.service.GetAllTemplates().subscribe({
+          next: (templates: Template[]) => {
+            const templateMap = new Map(
+              templates.map(t => [t.templateId, t])
+            );
+
+            // 🛠 Enrich requests with template data
+            this.selectedRequests = requests.map(req => {
+              const template = templateMap.get(req['templateId']);
+
+              return {
+                ...req,
+                // If details is missing, use template’s URL
+                details: req.details || template?.downloadUrl || '',
+                templates: template ? { name: template.name } : req.templates,
+                downloadUrl: template?.downloadUrl // optional convenience field
+              };
+            });
+
+            // 🟢 Group them into yearGroup
+            this.list_sep_year = this.groupByYear(this.selectedRequests);
+
+            console.log('Requests with downloadUrl:', this.selectedRequests);
+          },
+          error: (err) => console.error('Error loading templates', err),
+        });
       },
       error: (err) => {
         console.error('Error loading requests:', err);
@@ -157,6 +190,7 @@ export class DataRequestComponent implements OnInit {
       },
     });
   }
+
 
   loadMunicipalities(): void {
     this.service.ListOfMunicipality().subscribe({
@@ -180,6 +214,7 @@ export class DataRequestComponent implements OnInit {
   loadTemplates(): void {
     this.service.GetAllTemplates().subscribe({
       next: (res: Template[]) => {
+        console.log('Example template from API:', res[0]);
         this.list_templates = res || [];
         this.filterTemplates(this.templateSearchText.toLowerCase());
       },
@@ -205,12 +240,16 @@ export class DataRequestComponent implements OnInit {
       coreElementName: template.coreElementName,
       setYear: this.auth.setYear,
       title: template.name,
-      details: template.link,
+      details: template.link,           // ✅ Human-readable name
+      downloadUrl: template.downloadUrl, // ✅ Actual file URL
       userId: this.auth.userId,
     };
 
     console.log('Selected template:', this.newRequest);
   }
+
+
+
 
   saveDataRequest(): void {
     if (!this.newRequest['coreElemId'] || !this.newRequest['templateId']) {
