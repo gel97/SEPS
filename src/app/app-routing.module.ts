@@ -153,6 +153,7 @@ import { UtilityComponent } from './pages/main/Province/utility/utility.componen
 import { CDRAComponent } from './pages/main/Province/cdra/cdra.component';
 import { ExposureDBComponent } from './pages/main/Province/exposure-db/exposure-db.component';
 import { UseUrbanComponent } from './pages/main/Province/use-urban/use-urban.component';
+import { GeotaggerComponent } from './pages/geotagger/geotagger.component';
 
 const socioEconomic_TradeIndustry: string =
   'socio-economic/trade-and-industry/';
@@ -208,6 +209,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent },
+      { path: 'geotagger', component: GeotaggerComponent },
       { path: 'dashboard/ddn', component: DdnDashboardComponent },
       { path: 'gov_cityOfficials', component: CityOfficialsComponent },
       { path: 'gov_Barangays', component: BarangaysComponent },

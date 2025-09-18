@@ -107,10 +107,31 @@ export class UserService {
       responseType: 'json',
     });
   }
+  getUser(userId: any) {
+    return this.Http.get<any[]>(
+      this.Base.url + this.ApiUrl.get_approval_list(userId),
+      { responseType: 'json' }
+    );
+  }
+  getUsergeotag() {
+    return this.Http.get<any[]>(this.Base.url + this.ApiUrl.get_list_user(), {
+      responseType: 'json',
+    });
+  }
   GetUser() {
     return this.Http.get<any[]>(
       this.Base.url + this.ApiUrl.get_user_account(),
       { responseType: 'json' }
+    );
+  }
+  PostUserApproval(userId: any, munCityId: string) {
+    return this.Http.post<any>(
+      this.Base.url + this.ApiUrl.post_get_approval(userId),
+      JSON.stringify(munCityId), // 👈 wrap as raw string
+      {
+        headers: { 'Content-Type': 'application/json' },
+        responseType: 'json',
+      }
     );
   }
 }
