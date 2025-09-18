@@ -1,1 +1,117 @@
-<p>approval works!</p>
+<div class="container">
+  <div class="user-card-container">
+    <div class="card" *ngFor="let user of goetag">
+      <div class="user-info-header">
+        <div class="user-details">
+          <h3>{{ user.fullName }}</h3>
+
+          <p *ngIf="!user.userType">Role: Not yet assigned</p>
+          <p *ngIf="user.userType === 'Guest'">Role: Guest</p>
+          <p
+            *ngIf="
+              user.userType?.startsWith('Geotagger') && user.municipalityName
+            "
+          >
+            Role: Geotagger of {{ user.municipalityName }}
+          </p>
+        </div>
+
+        <div
+          class="status-badge approved"
+          [ngClass]="{
+            approved: user.isConfirmed === true,
+            rejected: user.status === 'Rejected',
+            pending: user.status === 'Pending'
+          }"
+        ></div>
+      </div>
+
+      <!-- Actions -->
+      <div class="actions" *ngIf="!user.assignMode">
+        <button class="btn primary" (click)="user.assignMode = true">
+          Assign Municipality
+        </button>
+
+        <!-- ✅ New Assign Guest button -->
+        <button
+          class="btn outline"
+          (click)="assignGuest(user)"
+          *ngIf="user.userType !== 'Guest'"
+        >
+          Assign as Guest
+        </button>
+      </div>
+
+      <br />
+
+      <!-- Assign mode -->
+      <div class="assign-mode" *ngIf="user.assignMode">
+        <select
+          class="form-select mb-1"
+          [style.width.px]="250"
+          [(ngModel)]="user.munCityId"
+          (ngModelChange)="CheckIfnotempty($event)"
+        >
+          <option *ngFor="let item of list_muncity" [value]="item.munCityId">
+            {{ item.munCityName }}
+          </option>
+        </select>
+
+        <!-- Confirm now saves -->
+        <button
+          class="btn primary"
+          [disabled]="!user.munCityId"
+          (click)="assignOrUpdate(user)"
+        >
+          Confirm
+        </button>
+
+        <button class="btn outline" (click)="cancelAssign(user)">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="table-container">
+    <h2>Assigned Users</h2>
+    <div class="overflow-x-auto">
+      <table class="user-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Username</th>
+            <th>Role</th>
+            <th>Municipality</th>
+            <!-- <th style="text-align: center">Actions</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="user in vm.assigned" *ngFor="let user of goetag">
+            <td>{{ user.fullName }}</td>
+            <td>{{ user.username }}</td>
+            <td>
+              <span *ngIf="!user.userType">Not yet assigned</span>
+              <span *ngIf="user.userType === 'Guest'">Guest</span>
+              <span *ngIf="user.userType?.startsWith('Geotagger')"
+                >Geotagger</span
+              >
+              <span *ngIf="user.userType === 'Admin'">Admin</span>
+            </td>
+            <td>
+              <span *ngIf="user.munCityId === 'Guest'">Guest</span>
+              <span *ngIf="user.munCityId !== 'Guest'">{{
+                user.municipalityName || "Not assigned"
+              }}</span>
+            </td>
+            <!-- <td class="table-actions">
+              <button class="btn sm danger" ng-click="vm.delete(user)">
+                Delete
+              </button>
+            </td> -->
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

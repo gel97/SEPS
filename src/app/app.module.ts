@@ -198,6 +198,7 @@ import { ForGuestOnlyComponent } from './Admin/for-guest-only/for-guest-only.com
 import { CDRAComponent } from './pages/main/Province/cdra/cdra.component';
 import { ExposureDBComponent } from './pages/main/Province/exposure-db/exposure-db.component';
 import { UseUrbanComponent } from './pages/main/Province/use-urban/use-urban.component';
+import { GeotaggerComponent } from './pages/geotagger/geotagger.component';
 
 @NgModule({
   declarations: [
@@ -384,6 +385,7 @@ import { UseUrbanComponent } from './pages/main/Province/use-urban/use-urban.com
     ExposureDBComponent,
     UseUrbanComponent,
     LoadingComponent,
+    GeotaggerComponent,
   ],
   imports: [
     MdbCollapseModule,

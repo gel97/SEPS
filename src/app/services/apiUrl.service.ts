@@ -7,6 +7,7 @@ export class ApiUrl {
   verify_token() {
     throw new Error('Method not implemented.');
   }
+
   //  GOVERNANCE
   // Municipality/City Officials
   post_get_officials = (munCityId: any, setYear: any) =>
@@ -1007,6 +1008,11 @@ export class ApiUrl {
   post_user_username_check = (username: any) =>
     `/User/UsernameCheck/${username}`;
   get_user_account = () => `/User`;
+  //approval
+  post_get_approval = (userId: any) => `/User/assign-user/${userId}`;
+  get_approval_list = (userId: any) => `/User/get-user/${userId}`;
+  get_list_user = () => `/User/get-all-guest-users`;
+  delete_list_user = (userId: any) => `/User/${userId}`;
 
   get_report_summarized = (year: number) => `/ReportSummarized/${year}`;
   post_report_validation = () => `/ReportValidation`;
