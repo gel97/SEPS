@@ -169,6 +169,12 @@ export class ApiUrl {
   post_cdra_maps = () => `/Image/UploadCDRA_Maps`;
   get_cdra_maps = (munCityId: any) => `/Image/GetImageCDRA/${munCityId}`;
 
+  //LguMaps
+  post_lgumaps = (munCityId: any, setYear: any) =>
+    `/LguCdraMaps/${munCityId}/${setYear}`;
+  get_lgumaps = (munCityId: any, setYear: any) =>
+    `/LguCdraMaps/${munCityId}/${setYear}`;
+
   // GIS Token
   post_gis_token = () => `/GisToken`;
   //new pdf

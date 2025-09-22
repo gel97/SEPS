@@ -28,4 +28,23 @@ export class CDRAService {
       responseType: 'json',
     });
   }
+  //forLguMaps
+  GetLguMaps(munCityId: any, setYear: any) {
+    return this.Http.get<any[]>(
+      this.Base.url + this.ApiUrl.get_lgumaps(munCityId, setYear),
+      {
+        responseType: 'json',
+      }
+    );
+  }
+  uploadLguMaps(data: FormData) {
+    const munCityId = data.get('MunCityId');
+    const setYear = data.get('SetYear');
+
+    return this.Http.post(
+      this.Base.url + this.ApiUrl.post_lgumaps(munCityId, setYear), // correct order
+      data,
+      { responseType: 'json' }
+    );
+  }
 }

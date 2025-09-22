@@ -59,6 +59,9 @@ export class ExposureDBComponent implements OnInit {
   visible: boolean = true;
   not_visible: boolean = true;
   searchText = '';
+  selectedBarangay: string = '';
+  barangayList: string[] = []; // unique list of barangays
+  LifeLineExposed: any[] = []; // filtered result
   ngOnInit(): void {
     this.lifeline = [];
     this.GetLifeLineFloods();
@@ -67,12 +70,24 @@ export class ExposureDBComponent implements OnInit {
     this.service.GetLifeLineFloods().subscribe({
       next: (response) => {
         this.lifeline = response; // Assign API response to totalGovernanceData
+        this.barangayList = Array.from(
+          new Set(this.lifeline.map((item: any) => item.barangay as string))
+        );
         console.log('LifeLine Data:', this.lifeline.TotalData); // Check if the value is correct
       },
       error: (error) => {
         console.error('Error fetching governance data:', error);
       },
     });
+  }
+  filterBarangay() {
+    if (this.selectedBarangay) {
+      this.LifeLineExposed = this.lifeline.filter(
+        (item: any) => item.barangay === this.selectedBarangay
+      );
+    } else {
+      this.LifeLineExposed = [...this.lifeline]; // show all if no filter
+    }
   }
   ExportExcel() {
     this.reportService.GetExcelExport(

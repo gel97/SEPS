@@ -66,6 +66,9 @@ export class FloodaffectedComponent implements OnInit {
   visible: boolean = true;
   not_visible: boolean = true;
   searchText = '';
+  selectedBarangay: string = '';
+  barangayList: string[] = []; // unique list of barangays
+  filteredAffected: any[] = []; // filtered result
 
   ngOnInit(): void {
     this.affected = [];
@@ -74,14 +77,31 @@ export class FloodaffectedComponent implements OnInit {
   getaffected() {
     this.service.GetAffectedFlood().subscribe({
       next: (response) => {
-        this.affected = response; // Assign API response to totalGovernanceData
-        console.log('Total Governance Data:', this.affected.TotalData); // Check if the value is correct
+        this.affected = response;
+
+        // Extract unique barangays
+        this.barangayList = Array.from(
+          new Set(this.affected.map((item: any) => item.barangay as string))
+        );
+
+        // Set initial filtered list
+        this.filteredAffected = [...this.affected];
       },
       error: (error) => {
         console.error('Error fetching governance data:', error);
       },
     });
   }
+  filterBarangay() {
+    if (this.selectedBarangay) {
+      this.filteredAffected = this.affected.filter(
+        (item: any) => item.barangay === this.selectedBarangay
+      );
+    } else {
+      this.filteredAffected = [...this.affected]; // show all if no filter
+    }
+  }
+
   ExportExcel() {
     this.reportService.GetExcelExport(
       this.auth.setYear,
