@@ -23,7 +23,7 @@
                               </button> -->
             </div>
             <div class="text-center">
-              <h1 class="h4 text-gray-900 mb-4">Affected Flood</h1>
+              <h1 class="h4 text-gray-900 mb-4">Population</h1>
             </div>
 
             <div class="x-space-between">
@@ -46,9 +46,9 @@
             </div>
             <div class="x-space-between">
               <app-admin>
-                <button class="btn btn-primary" (click)="GeneratePDF()">
+                <!-- <button class="btn btn-primary" (click)="GeneratePDF()">
                   Generate PDF
-                </button>
+                </button> -->
                 <!-- <app-pdf (click)="GeneratePDF()"></app-pdf> -->
               </app-admin>
             </div>
@@ -77,6 +77,29 @@
                 [(ngModel)]="searchText"
               />
             </div>
+            <br />
+            <div class="mb-3 d-flex align-items-center">
+              <!-- Search bar -->
+              <!-- <input
+                type="text"
+                class="form-control w-25 me-2"
+                placeholder="Search..."
+                [(ngModel)]="searchText"
+              /> -->
+
+              <!-- Barangay filter -->
+              <select
+                class="form-select w-25"
+                [(ngModel)]="selectedBarangay"
+                (change)="filterBarangay()"
+              >
+                <option value="">All Barangays</option>
+                <option *ngFor="let b of barangayList" [value]="b">
+                  {{ b }}
+                </option>
+              </select>
+            </div>
+
             <div class="row">
               <div class="col-lg-8">
                 <br />
@@ -107,7 +130,9 @@
                       <tr></tr>
                       <tr
                         *ngFor="
-                          let text of affected | search : searchText;
+                          let text of affected
+                            | search : searchText
+                            | search : selectedBarangay;
                           let i = index
                         "
                       >
