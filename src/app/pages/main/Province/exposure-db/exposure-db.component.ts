@@ -32,17 +32,25 @@ export class ExposureDBComponent implements OnInit {
     private auth: AuthService
   ) {}
   SetMarker(data: any = {}) {
-    console.log('lnglat: ', data.longtitude + ' , ' + data.latitude);
+   if (!data.longitude || !data.latitude){
+      data.longitude = this.longitude;
+      data.latitude = this.latitude;
+   }
+   this.markerObj = {
+    lat: data.latitude,
+    lng: data.longitude,
+    label: data.brgyName ? data.brgyName.charAt(0): '',
+    brgyName: data.brgyName,
+    munCityName: this.munCityName,
+    draggable: true, 
+   };
 
-    this.markerObj = {
-      lat: data.latitude,
-      lng: data.longtitude,
-      label: data.brgyName.charAt(0),
-      brgyName: data.brgyName,
-      munCityName: this.munCityName,
-      draggable: true,
-    };
+   if (this.gmapComponent) {
     this.gmapComponent.setMarker(this.markerObj);
+   }
+   if (!data.brgyName && this.gmapComponent) {
+    this.gmapComponent.getAddress(data.latitude, data.longitude);
+   }
   }
   latitude: any;
   longitude: any;
@@ -162,32 +170,80 @@ export class ExposureDBComponent implements OnInit {
     this.GetLifeLineFloods();
   }
   editaffected(editlifeline: any = {}) {
-    this.editmodal = editlifeline;
-    this.GetLifeLineFloods();
+    this.editmodal = { ...editlifeline };
+
+    this.SetMarker({
+      latitude: this.editmodal.latitude,
+      longitude: this.editmodal.longitude,
+      brgyName: this.editmodal.brgyName
+    });
+
+    if (!this.editmodal.brgyName && this.editmodal.latitude && this.editmodal.longitude) {
+      this.gmapComponent.getAddress(this.editmodal.latitude, this.editmodal.longitude);
+    }
+    this.not_visible = true;
+    this.visible = false;
+    
   }
   update() {
-    // Call the service to update the affected flood data
-    this.editmodal.longtitude = this.gmapComponent.markers.lng;
+    this.editmodal.longitude = this.gmapComponent.markers.lng;
     this.editmodal.latitude = this.gmapComponent.markers.lat;
-    this.service.UpdateLifeLineFloods(this.editmodal).subscribe({
-      next: (_data) => {
-        this.GetLifeLineFloods(); // Refresh the affected flood data
-        this.editmodal = {}; // Clear the edit modal data
-      },
-    });
-
-    // Show success message
-    Swal.fire({
-      position: 'center',
-      icon: 'success',
-      title: 'Your work has been updated',
-      showConfirmButton: false,
-      timer: 1000,
-    });
-
-    // Close the modal
-    document.getElementById('exampleModalLong')?.click();
-    this.editmodal = {};
+  
+    this.gmapComponent.geocoder.geocode(
+      { location: { lat: this.editmodal.latitude, lng: this.editmodal.longitude } },
+      (results: any, status: any) => {
+        if (status === 'OK' && results[0]) {
+          let brgy = '';
+          let city = '';
+          let province = '';
+  
+          results[0].address_components.forEach((component: any) => {
+            if (component.types.includes('sublocality') || component.types.includes('sublocality_level_1')) {
+              brgy = component.long_name;
+            }
+            if (component.types.includes('locality')) {
+              city = component.long_name;
+            }
+            if (component.types.includes('administrative_area_level_2')) {
+              province = component.long_name;
+            }
+          });
+  
+          this.editmodal.brgyName =
+            [brgy, city, province].filter(Boolean).join(', ') ||
+            results[0].formatted_address;
+        } else {
+          this.editmodal.brgyName = 'Unknown Location';
+        }
+  
+        // save
+        this.service.UpdateLifeLineFloods(this.editmodal).subscribe({
+          next: () => {
+            this.GetLifeLineFloods();
+  
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Your work has been updated',
+              showConfirmButton: false,
+              timer: 1000,
+            });
+  
+            // 🔹 keep modal data, don’t reset editModal here
+            // this.editModal = {};
+          },
+          error: (err) => {
+            Swal.fire({
+              position: 'center',
+              icon: 'error',
+              title: 'Update failed',
+              text: err.message,
+              showConfirmButton: true,
+            });
+          },
+        });
+      }
+    );
   }
   DeleteAffectedFlood(dataItem: any) {
     Swal.fire({

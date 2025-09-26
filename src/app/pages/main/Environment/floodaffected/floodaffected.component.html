@@ -169,16 +169,17 @@
                               </button>
                             </app-admin>
                             &nbsp;
-                            <!-- <app-admin>
+                            <app-admin>
                               <button
-                                (click)="SetMarker(text); editModal = text"
+                                (click)="SetMarker(text)"
                                 data-toggle="modal"
                                 data-target="#gmapModal"
                                 class="btn btn-success btn-circle"
+                                (click)="editModal = text"
                               >
                                 <i class="fas fa-globe"></i>
                               </button>
-                            </app-admin> -->
+                            </app-admin>
                             &nbsp;
                             <app-admin>
                               <button
