@@ -77,6 +77,20 @@
                 [(ngModel)]="searchText"
               />
             </div>
+            <br />
+            <div class="mb-3 d-flex align-items-center">
+  <select
+    class="form-select w-25 me-2"
+    [(ngModel)]="selectedMunCity"
+    (change)="filterMunCity()"
+  >
+    <option value="">All Municipalities</option>
+    <option *ngFor="let m of munCityList" [value]="m">
+      {{ m }}
+    </option>
+  </select>
+</div>
+
             <div class="row">
               <div class="col-lg-8">
                 <br />
@@ -104,10 +118,7 @@
                     <tbody>
                       <tr></tr>
                       <tr
-                        *ngFor="
-                          let text of urban | search : searchText;
-                          let i = index
-                        "
+                       *ngFor="let text of UrbanExposed  | search: searchText; let i = index"
                       >
                         <th scope="row">{{ i + 1 }}</th>
                         <td class="text-center">
@@ -135,16 +146,17 @@
                               </button> -->
                             </app-admin>
                             &nbsp;
-                            <!-- <app-admin>
+                            <app-admin>
                               <button
-                                (click)="SetMarker(text); editModal = text"
+                                (click)="SetMarker(text)"
                                 data-toggle="modal"
                                 data-target="#gmapModal"
                                 class="btn btn-success btn-circle"
+                                (click)="editModal = text"
                               >
                                 <i class="fas fa-globe"></i>
                               </button>
-                            </app-admin> -->
+                            </app-admin>
                             &nbsp;
                             <app-admin>
                               <!-- <button

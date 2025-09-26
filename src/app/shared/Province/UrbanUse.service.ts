@@ -37,12 +37,13 @@ export class UseUrbanService {
   }
 
   UpdateUseUrban(editurban: any = {}) {
-    return this.Http.post(
-      this.Base.url + this.ApiUrl.post_update_Urban(),
-      editurban,
-      { responseType: 'json' }
-    );
-  }
+  return this.Http.put(
+    this.Base.url + this.ApiUrl.post_update_Urban(),
+    editurban,
+    { responseType: 'text' }  
+  );
+}
+
   DeleteUseUrban(transId: any) {
     return this.Http.delete(this.Base.url + this.ApiUrl.delete_Urban(transId), {
       responseType: 'text',

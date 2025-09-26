@@ -39,10 +39,10 @@ export class LifeLineFloodsService {
   }
 
   UpdateLifeLineFloods(editlifeline: any = {}) {
-    return this.Http.post(
+    return this.Http.put(
       this.Base.url + this.ApiUrl.post_update_LifeLine(),
       editlifeline,
-      { responseType: 'json' }
+      { responseType: 'text' }
     );
   }
   DeleteLifeLineFloods(transId: any) {

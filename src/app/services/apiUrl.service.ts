@@ -858,6 +858,11 @@ export class ApiUrl {
   post_save_CDRA = () => `/CDRA/upload`;
   get_CDRA = (setYear: any) => `/CDRA/setYear/${setYear}`;
 
+  //ShapeFile
+  post_save_shapefile = () => `/ShapeFile/upload`;
+  get_shapefile = (recNo: any) => `/ShapeFile/download/${recNo}`;
+  get_list_shapefile = () => `/ShapeFile/list`;
+
   //INFRASTRUCTURE & UTILITIES
 
   // Utility - SERVICES

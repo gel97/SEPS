@@ -32,21 +32,30 @@ export class UseUrbanComponent implements OnInit {
     private auth: AuthService
   ) {}
   SetMarker(data: any = {}) {
-    console.log('lnglat', data.longitude + ' , ' + data.latitude);
-
-    if (data.longitude == undefined && data.latitude == undefined) {
-      data.longitude = this.longitude;
-      data.latitude = this.latitude;
-    }
-    this.markerObj = {
-      lat: data.latitude,
-      lng: data.longtitude,
-      label: data.brgyName.charAt(0),
-      brgyName: data.brgyName,
-      munCityName: this.munCityName,
-      draggable: true,
-    };
+  if (!data.longitude || !data.latitude) {
+    data.longitude = this.longitude;
+    data.latitude = this.latitude;
   }
+
+  this.markerObj = {
+    lat: data.latitude,
+    lng: data.longitude,
+    label: data.brgyName ? data.brgyName.charAt(0) : '',
+    brgyName: data.brgyName,
+    munCityName: this.munCityName,
+    draggable: true,
+  };
+
+  if (this.gmapComponent) {
+    this.gmapComponent.setMarker(this.markerObj);
+  }
+
+  if (!data.brgyName && this.gmapComponent) {
+    this.gmapComponent.getAddress(data.latitude, data.longitude);
+  }
+}
+
+
   latitude: any;
   longitude: any;
   markerObj: any = {};
@@ -62,20 +71,26 @@ export class UseUrbanComponent implements OnInit {
   visible: boolean = true;
   not_visible: boolean = true;
   searchText = '';
+  barangayList: string[] = []; 
+  munCityList: string[] = []; 
+  selectedMunCity: string = ''; 
+  UrbanExposed: any[] = []; 
+
   ngOnInit(): void {
     this.urban = [];
     this.GetUseUrban();
   }
   GetUseUrban() {
     this.service.GetUseUrban().subscribe({
-      next: (response) => {
-        this.urban = response; // Assign API response to totalGovernanceData
-        console.log('Urban Data:', this.urban.TotalData); // Check if the value is correct
-      },
-      error: (error) => {
-        console.error('Error fetching governance data:', error);
-      },
-    });
+    next: (response) => {
+      this.urban = response; 
+      this.munCityList = Array.from(
+        new Set(this.urban.map((item: any) => item.muncity as string))
+      );
+      this.UrbanExposed = [...this.urban]; // default to show all
+    },
+    error: (err) => console.error(err)
+  });
   }
   ExportExcel() {
     this.reportService.GetExcelExport(
@@ -84,6 +99,15 @@ export class UseUrbanComponent implements OnInit {
       'UrbanUse'
     );
   }
+  filterMunCity() {
+  if (this.selectedMunCity) {
+    this.UrbanExposed = this.urban.filter(
+      (item: any) => item.muncity === this.selectedMunCity
+    );
+  } else {
+    this.UrbanExposed = [...this.urban]; // show all if no filter
+  }
+}
   message = 'UrbanUse';
   ImportExcel(e: any) {
     Swal.fire({
@@ -150,31 +174,88 @@ export class UseUrbanComponent implements OnInit {
     this.GetUseUrban();
   }
   editurban(editurban: any = {}) {
-    this.editModal = editurban;
-    this.GetUseUrban();
+  this.editModal = { ...editurban }; // clone to avoid binding overwrite
+
+  // push saved marker back to map
+  this.SetMarker({
+    latitude: this.editModal.latitude,
+    longitude: this.editModal.longitude,
+    brgyName: this.editModal.brgyName
+  });
+
+  // if brgyName not available, resolve via geocoder
+  if (!this.editModal.brgyName && this.editModal.latitude && this.editModal.longitude) {
+    this.gmapComponent.getAddress(this.editModal.latitude, this.editModal.longitude);
   }
+
+  this.not_visible = true;
+  this.visible = false;
+}
+
   update() {
-    // Call the service to update the affected flood data
-    this.service.UpdateUseUrban(this.editModal).subscribe({
-      next: (_data) => {
-        this.GetUseUrban(); // Refresh the affected flood data
-        this.editModal = {}; // Clear the edit modal data
-      },
-    });
+  this.editModal.longitude = this.gmapComponent.markers.lng;
+  this.editModal.latitude = this.gmapComponent.markers.lat;
 
-    // Show success message
-    Swal.fire({
-      position: 'center',
-      icon: 'success',
-      title: 'Your work has been updated',
-      showConfirmButton: false,
-      timer: 1000,
-    });
+  this.gmapComponent.geocoder.geocode(
+    { location: { lat: this.editModal.latitude, lng: this.editModal.longitude } },
+    (results: any, status: any) => {
+      if (status === 'OK' && results[0]) {
+        let brgy = '';
+        let city = '';
+        let province = '';
 
-    // Close the modal
-    document.getElementById('exampleModalLong')?.click();
-    this.editModal = {};
-  }
+        results[0].address_components.forEach((component: any) => {
+          if (component.types.includes('sublocality') || component.types.includes('sublocality_level_1')) {
+            brgy = component.long_name;
+          }
+          if (component.types.includes('locality')) {
+            city = component.long_name;
+          }
+          if (component.types.includes('administrative_area_level_2')) {
+            province = component.long_name;
+          }
+        });
+
+        this.editModal.brgyName =
+          [brgy, city, province].filter(Boolean).join(', ') ||
+          results[0].formatted_address;
+      } else {
+        this.editModal.brgyName = 'Unknown Location';
+      }
+
+      // save
+      this.service.UpdateUseUrban(this.editModal).subscribe({
+        next: () => {
+          this.GetUseUrban();
+
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Your work has been updated',
+            showConfirmButton: false,
+            timer: 1000,
+          });
+
+          // 🔹 keep modal data, don’t reset editModal here
+          // this.editModal = {};
+        },
+        error: (err) => {
+          Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'Update failed',
+            text: err.message,
+            showConfirmButton: true,
+          });
+        },
+      });
+    }
+  );
+}
+
+
+
+
   DeleteAffectedFlood(dataItem: any) {
     Swal.fire({
       title: 'Are you sure?',

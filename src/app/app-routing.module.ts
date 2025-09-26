@@ -155,6 +155,7 @@ import { ExposureDBComponent } from './pages/main/Province/exposure-db/exposure-
 import { UseUrbanComponent } from './pages/main/Province/use-urban/use-urban.component';
 import { GeotaggerComponent } from './pages/geotagger/geotagger.component';
 import { LgurMapsComponent } from './pages/main/Province/lgur-maps/lgur-maps.component';
+import { CriticalFacilitiesComponent } from './pages/main/Province/critical-facilities/critical-facilities.component';
 
 const socioEconomic_TradeIndustry: string =
   'socio-economic/trade-and-industry/';
@@ -717,6 +718,10 @@ const routes: Routes = [
       {
         path: Province + '/lgur-maps',
         component: LgurMapsComponent,
+      },
+      {
+        path: Province + '/critical-facilities',
+        component: CriticalFacilitiesComponent,
       },
 
       { path: Governance + '/pgdept-heads', component: PGDeptHeadsComponent },

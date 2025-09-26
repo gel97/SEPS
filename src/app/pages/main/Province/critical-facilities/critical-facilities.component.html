@@ -1,0 +1,53 @@
+<div class="upload-container">
+  <h3>Upload Shapefile</h3>
+
+  <!-- Drag & Drop -->
+  <div class="drag-drop"
+     (dragover)="onDragOver($event)"
+     (dragleave)="onDragLeave($event)"
+     (drop)="onDrop($event)">
+  <i class="fas fa-cloud-upload-alt upload-icon"></i>
+  <p>Drag & Drop your file(s) here</p>
+  <p>or</p>
+  <input #fileInput type="file" (change)="onFileSelected($event)" accept=".zip" />
+  <!-- <p *ngIf="selectedFile">{{ selectedFile.name }}</p> -->
+</div>
+
+
+
+  <!-- Inputs + Upload button -->
+  <div>
+    <input type="text" [(ngModel)]="data.name" placeholder="Enter shapefile name" />
+    <input type="number" [(ngModel)]="data.setYear" placeholder="Enter year" />
+    <button class="upload" (click)="onUpload()">Submit</button>
+  </div>
+</div>
+
+<!-- Uploaded list -->
+<div class="uploaded-files">
+  <h3>Uploaded Shapefiles</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Uploaded Date</th>
+        <th>File Name</th>
+        <th>Year</th>
+        <th>Status</th>
+        <th>Uploaded By</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let file of shapefiles">
+        <td>{{ file.createdAt | date:'dd MMM, yyyy | hh:mm a' }}</td>
+        <td>{{ file.originalFileName }}</td>
+        <td>{{ file.setYear }}</td>
+        <td><span class="status completed">✔ Completed</span></td>
+        <td></td>
+        <td>
+          <button class="download" (click)="onDownload(file.recNo, file.originalFileName)">Download</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

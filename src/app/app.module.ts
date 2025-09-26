@@ -200,6 +200,7 @@ import { ExposureDBComponent } from './pages/main/Province/exposure-db/exposure-
 import { UseUrbanComponent } from './pages/main/Province/use-urban/use-urban.component';
 import { GeotaggerComponent } from './pages/geotagger/geotagger.component';
 import { LgurMapsComponent } from './pages/main/Province/lgur-maps/lgur-maps.component';
+import { CriticalFacilitiesComponent } from './pages/main/Province/critical-facilities/critical-facilities.component';
 
 @NgModule({
   declarations: [
@@ -388,6 +389,7 @@ import { LgurMapsComponent } from './pages/main/Province/lgur-maps/lgur-maps.com
     LoadingComponent,
     GeotaggerComponent,
     LgurMapsComponent,
+    CriticalFacilitiesComponent,
   ],
   imports: [
     MdbCollapseModule,

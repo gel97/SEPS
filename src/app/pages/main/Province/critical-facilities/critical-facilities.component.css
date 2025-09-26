@@ -1,0 +1,126 @@
+/* Container styling */
+.upload-container,
+.uploaded-files {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+/* Titles */
+.upload-container h3,
+.uploaded-files h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+/* Drag & drop area */
+.drag-drop {
+  border: 2px dashed #ccc;
+  border-radius: 6px;
+  padding: 30px;
+  text-align: center;
+  color: #888;
+  margin-bottom: 15px;
+  transition: border-color 0.3s;
+}
+
+.drag-drop:hover {
+  border-color: #4f46e5; /* Indigo */
+  color: #4f46e5;
+}
+
+.upload-icon {
+  font-size: 40px;
+  color: #4f46e5;
+  margin-bottom: 10px;
+}
+
+
+/* Inputs */
+.upload-container input[type="text"],
+.upload-container input[type="number"] {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin-right: 10px;
+  font-size: 14px;
+  width: 200px;
+}
+
+/* Buttons */
+button {
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s;
+}
+button:hover {
+  opacity: 0.9;
+}
+
+button.upload {
+  background: #4f46e5;
+  color: #fff;
+}
+
+button.download {
+  background: #10b981; /* green */
+  color: #fff;
+}
+
+button:disabled {
+  background: #ddd;
+  cursor: not-allowed;
+}
+
+/* Table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+thead {
+  background: #f9fafb;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+}
+
+tr:nth-child(even) {
+  background: #fdfdfd;
+}
+
+th {
+  font-weight: 600;
+  color: #555;
+}
+
+td {
+  color: #444;
+}
+
+/* Status badges */
+.status {
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.status.completed {
+  color: #10b981;
+}
+.status.failed {
+  color: #ef4444;
+}
+.status.progress {
+  color: #f59e0b;
+}
