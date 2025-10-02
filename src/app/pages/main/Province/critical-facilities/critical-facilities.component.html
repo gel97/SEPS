@@ -1,37 +1,56 @@
-<div class="upload-container">
+<div class="upload-container" *ngIf="data.munCityId !== 'DDN'">
   <h3>Upload Shapefile</h3>
 
-  <!-- Drag & Drop -->
-  <div class="drag-drop"
-     (dragover)="onDragOver($event)"
-     (dragleave)="onDragLeave($event)"
-     (drop)="onDrop($event)">
-  <i class="fas fa-cloud-upload-alt upload-icon"></i>
-  <p>Drag & Drop your file(s) here</p>
-  <p>or</p>
-  <input #fileInput type="file" (change)="onFileSelected($event)" accept=".zip" />
-  <!-- <p *ngIf="selectedFile">{{ selectedFile.name }}</p> -->
+  <!-- ✅ Only show upload form for Admin -->
+  <app-admin>
+    <!-- Drag & Drop -->
+    <div class="drag-drop"
+         (dragover)="onDragOver($event)"
+         (dragleave)="onDragLeave($event)"
+         (drop)="onDrop($event)">
+      <i class="fas fa-cloud-upload-alt upload-icon"></i>
+      <p>Drag & Drop your file(s) here</p>
+      <p>or</p>
+      <input #fileInput type="file" (change)="onFileSelected($event)" accept=".zip" />
+    </div>
+
+    <!-- Inputs + Upload button -->
+    <div class="d-flex flex-wrap mt-3 gap-2">
+      <input type="text" [(ngModel)]="data.name" placeholder="Enter shapefile name" class="form-control w-auto" />
+      <input type="number" [(ngModel)]="data.setYear" placeholder="Enter year" class="form-control w-auto" />
+      <button class="btn btn-primary" (click)="onUpload()">Submit</button>
+    </div>
+  </app-admin>
+</div>
+
+<!-- ✅ Municipality filter (Admin only) -->
+<!-- ✅ Municipality Filter - Only for Admin -->
+<div *ngIf="data.munCityId === 'DDN'" class="mb-3">
+  <label for="municipalitySelect">Select Municipality:</label>
+  <select id="municipalitySelect"
+          [(ngModel)]="selectedMunicipality"
+          (change)="loadShapefiles()"
+          class="form-select w-auto">
+    <option value="">All Municipalities</option>
+    <option *ngFor="let m of municipalities" [value]="m.munCityId">
+      {{ m.munCityName }}
+    </option>
+  </select>
 </div>
 
 
 
-  <!-- Inputs + Upload button -->
-  <div>
-    <input type="text" [(ngModel)]="data.name" placeholder="Enter shapefile name" />
-    <input type="number" [(ngModel)]="data.setYear" placeholder="Enter year" />
-    <button class="upload" (click)="onUpload()">Submit</button>
-  </div>
-</div>
 
-<!-- Uploaded list -->
-<div class="uploaded-files">
+<!-- ✅ Uploaded shapefiles list -->
+<div class="uploaded-files mt-4">
   <h3>Uploaded Shapefiles</h3>
-  <table>
-    <thead>
+  <table class="table table-striped table-hover">
+    <thead class="table-light">
       <tr>
         <th>Uploaded Date</th>
         <th>File Name</th>
         <th>Year</th>
+        <th>Municipality</th>
         <th>Status</th>
         <th>Uploaded By</th>
         <th>Action</th>
@@ -42,12 +61,108 @@
         <td>{{ file.createdAt | date:'dd MMM, yyyy | hh:mm a' }}</td>
         <td>{{ file.originalFileName }}</td>
         <td>{{ file.setYear }}</td>
-        <td><span class="status completed">✔ Completed</span></td>
-        <td></td>
+        <td>{{ file.munCityName }}</td>
+        <td><span class="badge bg-success">✔ Completed</span></td>
+        <td>{{ file.userId }}</td>
         <td>
-          <button class="download" (click)="onDownload(file.recNo, file.originalFileName)">Download</button>
+          <app-admin>
+            <div class="d-flex gap-2">
+              <button (click)="onDownload(file.recNo, file.originalFileName)" class="btn btn-warning btn-sm">Download</button>
+              <button (click)="onViewArchive(file.recNo)" class="btn btn-warning btn-sm">View Archive</button>
+              <button (click)="onViewDatasets(file.recNo)" class="btn btn-success btn-sm">View Datasets</button>
+            </div>
+          </app-admin>
         </td>
       </tr>
     </tbody>
   </table>
+</div>
+
+<!-- ✅ Attributes Modal -->
+<div class="modal" tabindex="-1" [ngClass]="{ 'show d-block': showAttributesModal }">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Attributes - {{ selectedDatasetName }}</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered" *ngIf="attributes.length">
+          <thead>
+            <tr>
+              <th *ngFor="let key of attributeKeys">{{ key }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of attributes">
+              <td *ngFor="let key of attributeKeys">{{ row[key] }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p *ngIf="!attributes.length">No attributes available.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ Archive Modal -->
+<div class="modal" tabindex="-1" [ngClass]="{ 'show d-block': showArchiveModal }">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Archive Files</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered">
+          <thead><tr><th>File Name</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let file of archiveFiles">
+              <td>{{ file }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ Datasets Modal -->
+<div class="modal" tabindex="-1" [ngClass]="{ 'show d-block': showDatasetsModal }">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Datasets</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngFor="let dataset of objectKeys(datasets)" class="mb-3">
+          <h6>
+            {{ dataset }}
+            <!-- <button class="btn btn-sm btn-info ms-2"
+                    (click)="onViewDatasetAttributes(currentRecNo!, dataset)">
+              View Attributes
+            </button> -->
+          </h6>
+          <table class="table table-bordered">
+            <thead><tr><th>File</th></tr></thead>
+            <tbody>
+              <tr *ngFor="let file of datasets[dataset]">
+                <td>{{ file }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
 </div>

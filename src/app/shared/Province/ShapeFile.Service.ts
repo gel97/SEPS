@@ -16,19 +16,24 @@ export class ShapeFileService {
     private Base: BaseUrl,
     private ApiUrl: ApiUrl
   ) {}
-    uploadShapefile(file: File, setYear: number, name: string): Observable<any> {
-    const formData = new FormData();
-    formData.append('File', file);       // matches DTO property name
-    formData.append('SetYear', setYear.toString());
-    formData.append('Name', name);
+  uploadShapefile(file: File, setYear: number, name: string, munCityId: string): Observable<any> {
+  const formData = new FormData();
+  formData.append('File', file);
+  formData.append('SetYear', setYear.toString());
+  formData.append('Name', name);
+  formData.append('MunCityId', munCityId); // ✅ directly as string
 
-    return this.Http.post(
-      this.Base.url + this.ApiUrl.post_save_shapefile(),
-      formData
-    );
+  return this.Http.post(
+    this.Base.url + this.ApiUrl.post_save_shapefile(),
+    formData
+  );
+}
+  getAllShapefiles(munCityId?: string): Observable<any[]> {
+  let url = this.Base.url + '/ShapeFile/list';
+  if (munCityId) {
+    url += `/${munCityId}`; // ✅ string in URL
   }
-  getAllShapefiles(): Observable<any[]> {
-  return this.Http.get<any[]>(this.Base.url + '/ShapeFile/list');
+  return this.Http.get<any[]>(url);
 }
 
   // Download shapefile
@@ -37,4 +42,27 @@ export class ShapeFileService {
       responseType: 'blob'
     });
   }
+
+  getAttributes(recNo: number, datasetName?: string): Observable<any[]> {
+  let url = this.Base.url + `/ShapeFile/attributes/${recNo}`;
+  if (datasetName) {
+    url += `?datasetName=${datasetName}`;
+  }
+  return this.Http.get<any[]>(url);
+}
+
+
+  getArchiveFiles(recNo: number): Observable<{files: string[] }> {
+    return this.Http.get<{files: string[] }>(
+      this.Base.url + `/ShapeFile/archive-files/${recNo}`
+    );
+  }
+   getDatasets(recNo: number): Observable<Record<string, string[]>> {
+    return this.Http.get<Record<string, string[]>>(
+      this.Base.url + `/ShapeFile/datasets/${recNo}`
+    );
+  }
+  ListMunCity() {
+        return this.Http.get<any[]>(this.Base.url + this.ApiUrl.get_all_muncity(), { responseType: 'json' });
+    }
 }

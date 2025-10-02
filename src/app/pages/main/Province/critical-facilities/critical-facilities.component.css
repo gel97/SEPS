@@ -124,3 +124,13 @@ td {
 .status.progress {
   color: #f59e0b;
 }
+.modal-body {
+  max-height: 70vh; /* 70% of viewport height */
+  overflow-y: auto; /* vertical scroll */
+}
+.button-group button {
+  margin-right: 10px; /* adjust spacing */
+}
+.button-group button:last-child {
+  margin-right: 0;
+}
