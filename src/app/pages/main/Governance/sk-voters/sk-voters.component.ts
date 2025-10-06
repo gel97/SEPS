@@ -139,6 +139,8 @@ export class SkVotersComponent implements OnInit {
           clusterNo: any;
           votingCntrNo: any;
           regSkVoterNo: any;
+          male: any;
+          female: any;
         },
         text: {
           purokNo: any;
@@ -146,6 +148,8 @@ export class SkVotersComponent implements OnInit {
           clusterNo: any;
           votingCntrNo: any;
           regSkVoterNo: any;
+          male: any;
+          female: any;
         }
       ) => {
         acc.purokNo += text.purokNo || 0;
@@ -153,9 +157,19 @@ export class SkVotersComponent implements OnInit {
         acc.clusterNo += text.clusterNo || 0;
         acc.votingCntrNo += text.votingCntrNo || 0;
         acc.regSkVoterNo += text.regSkVoterNo || 0;
+        acc.male += text.male || 0;
+        acc.female += text.female || 0;
         return acc;
       },
-      { purokNo: 0, estabNo: 0, clusterNo: 0, votingCntrNo: 0, regSkVoterNo: 0 }
+      {
+        purokNo: 0,
+        estabNo: 0,
+        clusterNo: 0,
+        votingCntrNo: 0,
+        regSkVoterNo: 0,
+        male: 0,
+        female: 0,
+      }
     );
   }
 

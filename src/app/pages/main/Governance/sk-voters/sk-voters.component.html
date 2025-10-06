@@ -85,6 +85,8 @@
                       <th scope="col" class="text-center">
                         No. of Registered Voters
                       </th>
+                      <th scope="col" class="text-center">No. of Male</th>
+                      <th scope="col" class="text-center">No. of Female</th>
                       <th widh="8%"></th>
                     </tr>
                     <!-- Totals Row -->
@@ -104,6 +106,8 @@
                       <td class="text-center">{{ text.clusterNo }}</td>
                       <td class="text-center">{{ text.votingCntrNo }}</td>
                       <td class="text-center">{{ text.regSkVoterNo }}</td>
+                      <td class="text-center">{{ text.male }}</td>
+                      <td class="text-center">{{ text.female }}</td>
                       <td>
                         <div class="d-inline-flex">
                           <app-admin>
@@ -149,6 +153,12 @@
                       </td>
                       <td class="text-center">
                         <strong>{{ totals.regSkVoterNo }}</strong>
+                      </td>
+                      <td class="text-center">
+                        <strong>{{ totals.male }}</strong>
+                      </td>
+                      <td class="text-center">
+                        <strong>{{ totals.female }}</strong>
                       </td>
                       <td></td>
                     </tr>
@@ -348,6 +358,30 @@
             </div>
             <div class="col-lg-12">
               <br />
+              <label for="exampleFormControlTextarea1">No. of Male:</label>
+              <input
+                type="number"
+                class="form-control"
+                name=""
+                id=""
+                [(ngModel)]="voter.male"
+                placeholder=""
+              />
+              <div class="col-lg-12">
+                <br />
+                <label for="exampleFormControlTextarea1">No. of Female:</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  name=""
+                  id=""
+                  [(ngModel)]="voter.female"
+                  placeholder=""
+                />
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <br />
               <label for="exampleFormControlTextarea1"
                 >No. of Registered Voters:</label
               >
@@ -504,6 +538,30 @@
                 placeholder=""
                 [ngClass]="toValidate.votingCntrNo ? 'is-invalid' : ''"
                 (keyup)="toValidate.votingCntrNo = false"
+              />
+            </div>
+            <div class="col-lg-12">
+              <br />
+              <label for="exampleFormControlTextarea1">No. of Male:</label>
+              <input
+                type="text"
+                class="form-control"
+                name=""
+                id=""
+                [(ngModel)]="editmodal.male"
+                placeholder=""
+              />
+            </div>
+            <div class="col-lg-12">
+              <br />
+              <label for="exampleFormControlTextarea1">No. of Female:</label>
+              <input
+                type="text"
+                class="form-control"
+                name=""
+                id=""
+                [(ngModel)]="editmodal.female"
+                placeholder=""
               />
             </div>
             <div class="col-lg-12">

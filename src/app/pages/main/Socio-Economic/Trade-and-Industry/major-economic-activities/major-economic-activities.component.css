@@ -1,0 +1,29 @@
+.text-content {
+  text-align: justify;
+  white-space: pre-line; /* keeps line breaks from the text */
+}
+
+.text-content::before {
+  text-align: justify;
+}
+
+/* Optional: Improve spacing between bullet points */
+.text-content {
+  line-height: 1.6;
+}
+.text-content {
+  text-align: justify;
+  line-height: 1.6;
+  white-space: normal; /* let HTML <ul> format correctly */
+}
+
+.text-content ul {
+  margin: 0.5em 0 0.5em 1.5em; /* indent list */
+  padding: 0;
+  list-style-type: disc;
+  text-align: justify;
+}
+
+.text-content li {
+  margin-bottom: 0.4em; /* space between bullets */
+}

@@ -80,7 +80,7 @@
               totalItems:count} | filterall: searchText , let i = index ">
                         <td>{{ i + 1 }}</td>
                         <td>{{text.mjrActivity}}</td>
-                        <td class="text-center" align="justify" width="60%">{{text.description}}</td>
+                       <td class="text-content" [innerHTML]="formatDescription(text.description)"></td>
                         <td class="text-center">
                           <div class="d-inline-flex" class="form-inline float-right">
                             <app-admin>

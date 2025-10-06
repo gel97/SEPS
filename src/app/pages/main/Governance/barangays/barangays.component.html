@@ -110,7 +110,8 @@
                         <!-- <td>{{item.purokNo}}</td> -->
                         <td>
                           <span *ngIf="item.longitude || item.latitude">
-                            {{item.longitude}},<br> {{item.latitude}}
+                            {{ item.longitude }},<br />
+                            {{ item.latitude }}
                           </span>
                         </td>
                         <td *ngIf="item.transId; else isADD">
@@ -225,6 +226,8 @@
                               <tr>
                                 <!-- <th class="text-center">Barangay1</th> -->
                                 <th class="text-center">Name of Purok</th>
+                                <th class="text-center">Male</th>
+                                <th class="text-center">Female</th>
                                 <th class="text-center">Population</th>
                                 <th class="text-center"># of Households</th>
                                 <th class="text-center">
@@ -243,6 +246,12 @@
                               </td> -->
                                 <td class="text-center">
                                   {{ purok.nameOfPurok }}
+                                </td>
+                                <td class="text-center">
+                                  {{ purok.male }}
+                                </td>
+                                <td class="text-center">
+                                  {{ purok.female }}
                                 </td>
                                 <td class="text-center">
                                   {{ purok.population }}
@@ -413,9 +422,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalScrollableTitle">
-            Purok Chairman
-          </h5>
+          <h5 class="modal-title" id="exampleModalScrollableTitle">Purok</h5>
           <button
             type="button"
             #closebutton
@@ -443,6 +450,22 @@
                   type="text"
                   class="form-control mb-2"
                   [(ngModel)]="editPrk.population"
+                />
+              </div>
+              <div class="col-lg-12">
+                <label>Male:</label>
+                <input
+                  type="number"
+                  class="form-control mb-2"
+                  [(ngModel)]="editPrk.male"
+                />
+              </div>
+              <div class="col-lg-12">
+                <label>female:</label>
+                <input
+                  type="number"
+                  class="form-control mb-2"
+                  [(ngModel)]="editPrk.female"
                 />
               </div>
               <div class="col-lg-12">
@@ -515,9 +538,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalScrollableTitle">
-            Purok Chairman
-          </h5>
+          <h5 class="modal-title" id="exampleModalScrollableTitle">Purok</h5>
           <button
             type="button"
             #closebutton
@@ -545,6 +566,22 @@
                   type="text"
                   class="form-control mb-2"
                   [(ngModel)]="data.population"
+                />
+              </div>
+              <div class="col-lg-12">
+                <label>Male:</label>
+                <input
+                  type="number"
+                  class="form-control mb-2"
+                  [(ngModel)]="data.male"
+                />
+              </div>
+              <div class="col-lg-12">
+                <label>female:</label>
+                <input
+                  type="number"
+                  class="form-control mb-2"
+                  [(ngModel)]="data.female"
                 />
               </div>
               <div class="col-lg-12">
