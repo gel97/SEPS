@@ -46,9 +46,7 @@
                   <button
                     type="button"
                     class="btn btn-primary"
-                    data-toggle="modal"
-                    data-target="#ModalAdd "
-                    (click)="category = 1"
+                    (click)="openModal(1)"
                   >
                     <i class="fa fa-plus"></i>
                     Elective Officials
@@ -93,7 +91,7 @@
                           <th scope="col">Name</th>
                           <th scope="col">Position</th>
                           <th scope="col">Contact Details</th>
-                          <th scope="col">Term of Office</th>
+                          <!-- <th scope="col">Term of Office</th> -->
                           <th width="8%"></th>
                         </tr>
                       </thead>
@@ -118,7 +116,7 @@
                           <td>{{ text.name }}</td>
                           <td>{{ text.position }}</td>
                           <td>{{ text.contact }}</td>
-                          <td>{{ text.term }}</td>
+                          <!-- <td>{{ text.term }}</td> -->
                           <td>
                             <div class="d-inline-flex">
                               <app-admin>
@@ -177,9 +175,7 @@
                       <button
                         type="button"
                         class="btn btn-primary"
-                        data-toggle="modal"
-                        data-target="#ModalAdd "
-                        (click)="category = 2"
+                        (click)="openModal(2)"
                       >
                         <i class="fa fa-plus"></i>
                         Appointed Officials
@@ -352,23 +348,22 @@
 
             </select>
           </div> -->
-                  <div class="col-lg-12">
+                  <!-- Show only for Elective Officials -->
+                  <div class="col-lg-12" *ngIf="category === 2">
                     <br />
                     <label for="exampleFormControlTextarea1"
                       >Term of Office :</label
                     >
-
                     <input
                       type="text"
                       class="form-control"
                       name="Term"
                       [(ngModel)]="city.term"
                       id="Term"
-                      [ngClass]="toValidate.term ? 'is-invalid' : ''"
-                      (keyup)="toValidate.term = false"
                       placeholder=""
                     />
                   </div>
+
                   <div class="col-lg-12">
                     <br />
                     <label for="exampleFormControlTextarea1">Position :</label>
@@ -510,7 +505,7 @@
                       />
                     </div>
 
-                    <div class="col-lg-12">
+                    <div class="col-lg-12" *ngIf="category === 2">
                       <br />
                       <label for="exampleFormControlTextarea1"
                         >Term of Office :</label

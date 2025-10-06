@@ -22,7 +22,7 @@ import {
   NavigationCancel,
   NavigationError,
 } from '@angular/router';
-
+declare var $: any;
 @Component({
   selector: 'app-city-officials',
   templateUrl: './city-officials.component.html',
@@ -56,9 +56,9 @@ export class CityOfficialsComponent implements OnInit {
     });
   } // private service: + name of service that you've created
   toValidate: any = {};
-  Official: any =[];
-  appointed: any =[];
-  elected: any =[];
+  Official: any = [];
+  appointed: any = [];
+  elected: any = [];
   city: any = {};
   city2: any = {};
   Edit: any = {};
@@ -67,7 +67,7 @@ export class CityOfficialsComponent implements OnInit {
   AddModal: any = {};
   positions: any = [];
   munCityName: string = this.auth.munCityName;
-  searchText= '';
+  searchText = '';
   pageSize = 25;
   p: string | number | undefined;
   count: number = 0;
@@ -80,7 +80,7 @@ export class CityOfficialsComponent implements OnInit {
     this.service.Import().subscribe({
       next: (data) => {
         this.Init();
-        if(data.length === 0){
+        if (data.length === 0) {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -93,14 +93,12 @@ export class CityOfficialsComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'info',
             title: 'No data from previous year',
           });
-        }
-        else
-        {
+        } else {
           this.showOverlay = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -113,7 +111,7 @@ export class CityOfficialsComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'success',
             title: 'Imported Successfully',
@@ -141,123 +139,145 @@ export class CityOfficialsComponent implements OnInit {
       complete: () => {},
     });
   }
+  setCategory(type: number) {
+    this.category = type;
+    this.city = {};
+  }
+  openModal(type: number) {
+    this.category = type;
+    this.city = {}; // reset form
+
+    // Ensure Angular re-renders
+    setTimeout(() => {
+      $('#ModalAdd').modal('show'); // open Bootstrap modal
+    });
+  }
+
+  closeModal() {
+    $('#ModalAdd').modal('hide');
+  }
 
   reports: any = [];
   GeneratePDF() {
     let data: any = [];
 
-    this.reportService.GetCityOfficialsReport(this.pdfComponent.data).subscribe({
-      next: (response) => {
-        this.reports = <any>response;
-        console.log(this.reports)
-        
-        data.push({text:'List of Local Government Officials by Municipality/ City', bold: true, alignment:'center'});
+    this.reportService
+      .GetCityOfficialsReport(this.pdfComponent.data)
+      .subscribe({
+        next: (response) => {
+          this.reports = <any>response;
+          console.log(this.reports);
 
-        const groupedData = this.reports.reduce((groups: any, item: any) => {
-          const { munCityName, setYear } = item;
-          const groupKey = `${munCityName}-${setYear}`;
-          if (!groups[groupKey]) {
-            groups[groupKey] = [];
-          }
-          groups[groupKey].push(item);
-          return groups;
-        }, {});
-
-        // Iterate over each group and add it to the PDF
-        for (const groupKey in groupedData) {
-          const group = groupedData[groupKey];
-          const [cityName, year] = groupKey.split('-');
           data.push({
-            margin: [0, 50, 0, 0],
-            columns: [
-              {
-                text: cityName,
-                fontSize: 14,
-                bold: true,
-              },
-              {
-                text: `Year: ${year}`,
-                fontSize: 14,
-                bold: true,
-                alignment: 'right',
-              },
-            ],
+            text: 'List of Local Government Officials by Municipality/ City',
+            bold: true,
+            alignment: 'center',
           });
 
-          // Create the table
-          const tableData: any = [];
-          tableData.push([
-            {
-              text: 'Position',
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
-            },
-            {
-              text: 'Name',
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
-            },
-            {
-              text: 'Term',
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
-            },
-            {
-              text: 'Contact #',
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
+          const groupedData = this.reports.reduce((groups: any, item: any) => {
+            const { munCityName, setYear } = item;
+            const groupKey = `${munCityName}-${setYear}`;
+            if (!groups[groupKey]) {
+              groups[groupKey] = [];
             }
-          ]);
-          group.forEach((item: any, index: any) => {
+            groups[groupKey].push(item);
+            return groups;
+          }, {});
+
+          // Iterate over each group and add it to the PDF
+          for (const groupKey in groupedData) {
+            const group = groupedData[groupKey];
+            const [cityName, year] = groupKey.split('-');
+            data.push({
+              margin: [0, 50, 0, 0],
+              columns: [
+                {
+                  text: cityName,
+                  fontSize: 14,
+                  bold: true,
+                },
+                {
+                  text: `Year: ${year}`,
+                  fontSize: 14,
+                  bold: true,
+                  alignment: 'right',
+                },
+              ],
+            });
+
+            // Create the table
+            const tableData: any = [];
             tableData.push([
               {
-                text: item.position,
-                fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+                text: 'Position',
+                fillColor: 'black',
+                color: 'white',
+                bold: true,
+                alignment: 'center',
               },
               {
-                text: item.name,
-                fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+                text: 'Name',
+                fillColor: 'black',
+                color: 'white',
+                bold: true,
+                alignment: 'center',
               },
               {
-                text: item.term,
-                fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+                text: 'Term',
+                fillColor: 'black',
+                color: 'white',
+                bold: true,
+                alignment: 'center',
               },
               {
-                text: item.contact,
-                fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+                text: 'Contact #',
+                fillColor: 'black',
+                color: 'white',
+                bold: true,
+                alignment: 'center',
               },
-             
             ]);
-          });
-          const table = {
-            margin: [0, 10, 0, 0],
-            table: {
-              widths: ['*', '*', '*', '*'],
-              body: tableData,
-            },
-            layout: 'lightHorizontalLines',
-          };
+            group.forEach((item: any, index: any) => {
+              tableData.push([
+                {
+                  text: item.position,
+                  fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+                },
+                {
+                  text: item.name,
+                  fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+                },
+                {
+                  text: item.term,
+                  fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+                },
+                {
+                  text: item.contact,
+                  fillColor: index % 2 === 0 ? '#FFFFFF' : '#9DB2BF',
+                },
+              ]);
+            });
+            const table = {
+              margin: [0, 10, 0, 0],
+              table: {
+                widths: ['*', '*', '*', '*'],
+                body: tableData,
+              },
+              layout: 'lightHorizontalLines',
+            };
 
-          data.push(table);
-        }
-      },
-      error: (error) => {
-        console.log(error);
-      },
-      complete: () => {
-        let isPortrait = true;
-        this.pdfService.GeneratePdf(data, isPortrait, "");
-        console.log(data);
-      },
-    });
+            data.push(table);
+          }
+        },
+        error: (error) => {
+          console.log(error);
+        },
+        complete: () => {
+          let isPortrait = true;
+          this.pdfService.GeneratePdf(data, isPortrait, '');
+          console.log(data);
+        },
+      });
   }
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
@@ -282,14 +302,14 @@ export class CityOfficialsComponent implements OnInit {
   getOfficials() {
     // this.elected = [];
     // this.appointed = [];
-    this.service.GetOfficial().subscribe((data:any) => {
+    this.service.GetOfficial().subscribe((data: any) => {
       this.Official = <any>data;
       this.elected = [];
       this.appointed = [];
-      data.forEach((element:any) => {
+      data.forEach((element: any) => {
         if (element.category == 1) {
-          this.elected.push(element); 
-        }else{
+          this.elected.push(element);
+        } else {
           this.appointed.push(element);
         }
       });
@@ -298,7 +318,6 @@ export class CityOfficialsComponent implements OnInit {
     console.log(this.elected);
     console.log(this.appointed);
   }
-
 
   message = 'City Officials';
 
@@ -313,14 +332,14 @@ export class CityOfficialsComponent implements OnInit {
       this.positions = <any>data;
     });
   }
-  category:number= 0;
+  category: number = 0;
   addOfficial() {
     this.toValidate.name =
       this.city.name == '' || this.city.name == null ? true : false;
     // this.toValidate.seqNo =
     //   this.city.seqNo == '' || this.city.seqNo == undefined ? true : false;
-    this.toValidate.term =
-      this.city.term == '' || this.city.term == null ? true : false;
+    // this.toValidate.term =
+    //   this.city.term == '' || this.city.term == null ? true : false;
     this.toValidate.contact =
       this.city.contact == '' || this.city.contact == undefined ? true : false;
     if (
@@ -341,7 +360,7 @@ export class CityOfficialsComponent implements OnInit {
       this.city.transId = this.date.transform(Date.now(), 'YYMM');
       this.city.tag = 1;
       this.city.setYear = this.auth.activeSetYear;
-       //this.city.position = '';
+      //this.city.position = '';
       this.service.AddOfficial(this.city).subscribe(
         (_data) => {
           if (!this.isCheck) {
@@ -369,8 +388,8 @@ export class CityOfficialsComponent implements OnInit {
     //   this.editModal.seqNo == '' || this.editModal.seqNo == undefined
     //     ? true
     //     : false;
-    this.toValidate.term =
-      this.editModal.term == '' || this.editModal.term == null ? true : false;
+    // this.toValidate.term =
+    //   this.editModal.term == '' || this.editModal.term == null ? true : false;
     this.toValidate.contact =
       this.editModal.contact == '' || this.editModal.contact == undefined
         ? true
@@ -416,7 +435,7 @@ export class CityOfficialsComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         official2.tag = -1;
-        this.service.UpdateOfficial(official2).subscribe((_data) => {
+        this.service.Delete_Officials(official2).subscribe((_data) => {
           Swal.fire('Deleted!', 'Your file has been removed.', 'success');
           this.Init();
           this.city = {};

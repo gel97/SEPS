@@ -64,6 +64,23 @@ export class MajorEconomicActivitiesComponent implements OnInit {
     this.visible = true;
     // this.required = false;
   }
+  formatDescription(desc: string): string {
+    if (!desc) return '';
+
+    const parts = desc.split('•');
+    let formatted = parts.shift()?.trim() ?? '';
+
+    if (parts.length > 0) {
+      formatted += '<ul>';
+      parts.forEach((p) => {
+        const trimmed = p.trim();
+        if (trimmed) formatted += `<li>${trimmed}</li>`;
+      });
+      formatted += '</ul>';
+    }
+
+    return formatted.replace(/\n/g, '<br>');
+  }
 
   public showOverlay = false;
   importMethod() {
