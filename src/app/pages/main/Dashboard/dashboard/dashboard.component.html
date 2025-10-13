@@ -30,6 +30,58 @@
   />
 </div>
 <br />
+<!-- Example structure where you display your requests in the dashboard -->
+<!-- <div *ngIf="isLoading" class="text-center mt-5">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+  <p>Loading data requests...</p>
+</div> -->
+
+<!-- <div *ngIf="errorMsg" class="alert alert-danger mt-3">{{ errorMsg }}</div> -->
+
+<!-- <div *ngIf="!isLoading && groupedRequests.length === 0 && !errorMsg" class="alert alert-info mt-3">
+  No data requests found for this municipality.
+</div> -->
+
+<!-- <div *ngIf="!isLoading && groupedRequests.length > 0">
+ 
+  <div *ngFor="let folder of groupedRequests" class="card mb-3">
+    <div class="card-header d-flex justify-content-between align-items-center" (click)="toggleFolder(folder)" style="cursor: pointer;">
+      <h5 class="mb-0">{{ folder.coreElement }} ({{ folder.requests.length }})</h5>
+      <i class="fas" [ngClass]="{'fa-chevron-down': isFolderOpen(folder), 'fa-chevron-right': !isFolderOpen(folder)}"></i>
+    </div>
+    <div *ngIf="isFolderOpen(folder)" @toggleAnimation class="card-body">
+      <table class="table table-hover table-striped">
+        <thead>
+          <tr>
+            <th>File Name</th>
+            <th>Template Name</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let req of folder.requests">
+            <td>
+              
+              <a [href]="req.downloadUrl" download class="text-decoration-none" title="Download File" target="_blank">
+                {{ req.details }}
+              </a>
+            </td>
+            <td>
+              <em>{{ req.templates?.name || "—" }}</em>
+            </td>
+           
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div> -->
+
+<!-- Keep the rest of your dashboard HTML -->
+<!-- [href]="getDownloadUrl(file)" -->
+
 
 <!-- <div class="row w-row">
   <div *ngIf="totalGovernanceData" class="col w-col w-col-6">

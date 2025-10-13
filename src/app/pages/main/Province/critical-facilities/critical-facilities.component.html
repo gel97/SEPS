@@ -51,7 +51,7 @@
         <th>File Name</th>
         <th>Year</th>
         <th>Municipality</th>
-        <th>Status</th>
+        <!-- <th>Status</th> -->
         <th>Uploaded By</th>
         <th>Action</th>
       </tr>
@@ -62,14 +62,14 @@
         <td>{{ file.originalFileName }}</td>
         <td>{{ file.setYear }}</td>
         <td>{{ file.munCityName }}</td>
-        <td><span class="badge bg-success">✔ Completed</span></td>
+        <!-- <td><span class="badge bg-success">✔ Completed</span></td> -->
         <td>{{ file.userId }}</td>
         <td>
           <app-admin>
             <div class="d-flex gap-2">
-              <button (click)="onDownload(file.recNo, file.originalFileName)" class="btn btn-warning btn-sm">Download</button>
-              <button (click)="onViewArchive(file.recNo)" class="btn btn-warning btn-sm">View Archive</button>
-              <button (click)="onViewDatasets(file.recNo)" class="btn btn-success btn-sm">View Datasets</button>
+              <button (click)="onDownload(file.recNo, file.originalFileName)" class="btn-dark">Download</button>
+              <button (click)="onViewArchive(file.recNo)" class="btn btn-dark btn-sm">View Archive</button>
+              <button (click)="onViewDatasets(file.recNo)" class="btn btn-dark btn-sm">View Datasets</button>
             </div>
           </app-admin>
         </td>

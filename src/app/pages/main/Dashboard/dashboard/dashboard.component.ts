@@ -27,12 +27,49 @@ import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 import { EnvironmentService } from 'src/app/shared/Environment/environment.service';
 import { Chart, ChartType, ChartConfiguration, registerables } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { DashboardService } from 'src/app/shared/Province/dashboard.service';
+import { trigger, transition, style, animate } from '@angular/animations';
+import { DataRequestService } from 'src/app/shared/Province/DataRequest.Service';
 declare var bootstrap: any;
+
+interface Request {
+  dataRequestId: number;
+  title: string;
+  details: string; // The display name for the file
+  downloadUrl?: string; // The actual download link
+  setYear: number;
+  templates?: { name: string };
+  munCityId: string;
+  templateId: number; // Ensure templateId is always part of Request if used for mapping
+  coreElementId?: number;
+  coreElement?: string; // This property is usually populated from backend, or derived
+  [key: string]: any;
+}
+
+interface Template {
+  templateId: number;
+  coreElemId: number;
+  coreElementName: string;
+  name: string;
+  link: string;
+  downloadUrl: string; // The direct link to the template file
+}
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
+  animations: [
+    trigger('toggleAnimation', [
+      transition(':enter', [
+        style({ opacity: 0, height: 0 }),
+        animate('200ms ease-out', style({ opacity: 1, height: '*' })),
+      ]),
+      transition(':leave', [
+        animate('200ms ease-in', style({ opacity: 0, height: 0 })),
+      ]),
+    ]),
+  ],
 })
 export class DashboardComponent implements OnInit {
   @ViewChild('closeModal')
@@ -56,10 +93,16 @@ export class DashboardComponent implements OnInit {
   governancePercentage: number = 0;
   overallPercentage: number = 0;
   munCityName: string = this.auth.munCityName;
+  dataRequests: any[] = [];
+  loading = true;
+  errorMsg = '';
+  isLoading = true;
   selectedMunicipality: any = null;
   showModal = false;
   selectedYear: number = this.auth.activeSetYear;
   selectedChartType: string = 'bar';
+  selectedFolder: any = null;
+  groupedRequests: { coreElement: string; requests: Request[] }[] = [];
 
   //isGuest: boolean = false;
   showOverallModal = false;
@@ -68,6 +111,9 @@ export class DashboardComponent implements OnInit {
   mun: any;
   overallPrevYear: any;
   EnvironmentService: any;
+  requests: any[] | undefined;
+  openFolders: Set<string> = new Set<string>();
+  folders: any[] | undefined;
 
   constructor(
     private router: Router,
@@ -77,7 +123,9 @@ export class DashboardComponent implements OnInit {
     private imagesService: ImagesService,
     private service: ProvOfficialService,
     private modifyService: ModifyCityMunService,
-    private Service: EnvironmentService
+    private Service: EnvironmentService,
+    private dashboardService: DashboardService,
+    private DataRequestService: DataRequestService,
   ) {}
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
@@ -99,6 +147,174 @@ export class DashboardComponent implements OnInit {
     this.loadImage();
     this.GetNews();
     Chart.register(...registerables, ChartDataLabels);
+    this.loadMunicipalityData();
+    this.loadRequests();
+    // this.loadDashboardDataRequests();
+  }
+//   loadDashboardDataRequests(): void {
+//   this.isLoading = true;
+//   this.errorMsg = '';
+
+//   const munCityId = this.auth.munCityId;
+
+//   forkJoin({
+//     requests: this.dashboardService.getDataRequestsByMunicipality(munCityId),
+//     templates: this.DataRequestService.GetAllTemplates()
+//   }).subscribe({
+//     next: ({ requests, templates }) => {
+//       const templateMap = new Map<number, Template>(templates.map(t => [t.templateId, t]));
+
+//       const enrichedRequests = requests.map((req: { templateId: any; template: { templateId: any; }; details: any; templates: any; }) => {
+//         // Adjust this according to the actual key
+//         const templateId = req.templateId ?? req.template?.templateId;
+//         const template = templateMap.get(templateId);
+
+//         return {
+//           ...req,
+//           details: req.details || template?.name || 'No file name',
+//           templates: template ? { name: template.name } : req.templates,
+//           downloadUrl: template?.downloadUrl || ''
+//         };
+//       });
+
+//       this.groupedRequests = this.groupByCoreElement(enrichedRequests);
+
+//       // Select first folder to show in UI
+//       if (this.groupedRequests.length > 0) {
+//         this.selectedFolder = this.groupedRequests[0];
+//       }
+
+//       this.isLoading = false;
+//     },
+//     error: (err) => {
+//       console.error('Error loading dashboard requests:', err);
+//       this.errorMsg = 'Failed to load data requests.';
+//       this.isLoading = false;
+//     }
+//   });
+// }
+loadRequests(): void {
+    const munCityId = this.auth.munCityId;
+
+    this.dashboardService.getDataRequestsByMunicipality(munCityId).subscribe({
+      next: (requestsRes: Request[]) => {
+        // Fetch all templates to get download URLs
+        this.DataRequestService.GetAllTemplates().subscribe({
+          next: (templatesRes: Template[]) => {
+            const templateMap = new Map(templatesRes.map(t => [t.templateId, t]));
+
+            // Enrich requests with template data
+            const enrichedRequests = requestsRes.map(req => {
+              const template = templateMap.get(req['templateId']);
+
+              return {
+                ...req,
+                // Prioritize req.details if it exists, otherwise use template.downloadUrl for display name
+                details: req.details || template?.name || 'No file name',
+                templates: template ? { name: template.name } : req.templates,
+                downloadUrl: template?.downloadUrl || '' // This is the crucial part for the download link
+              };
+            });
+
+            this.groupedRequests = this.groupByCoreElement(enrichedRequests);
+            this.isLoading = false;
+            console.log('Enriched and Grouped Requests:', this.groupedRequests);
+          },
+          error: (err) => {
+            console.error('Error loading templates:', err);
+            this.errorMsg = 'Failed to load templates.';
+            this.isLoading = false;
+          }
+        });
+      },
+      error: (err: any) => {
+        console.error('Error loading data requests:', err);
+        this.errorMsg = 'Failed to load data requests.';
+        this.isLoading = false;
+      }
+    });
+  }
+  groupByCoreElement(requests: Request[]): { coreElement: string; requests: Request[] }[] {
+    const grouped: { [key: string]: Request[] } = {};
+    for (const req of requests) {
+      // Use coreElement from the request, or a generic 'Others' if not available
+      const key = req.coreElement || req['coreElementName'] || 'Others'; // Added req.coreElementName fallback
+      if (!grouped[key]) {
+        grouped[key] = [];
+      }
+      grouped[key].push(req);
+    }
+    return Object.entries(grouped).map(([coreElement, requests]) => ({ coreElement, requests }));
+  }
+  toggleFolder(folder: { coreElement: string; requests: Request[] }): void {
+    if (this.openFolders.has(folder.coreElement)) {
+      this.openFolders.delete(folder.coreElement);
+    } else {
+      this.openFolders.add(folder.coreElement);
+    }
+  }
+  isFolderOpen(folder: { coreElement: string; requests: Request[] }): boolean {
+    return this.openFolders.has(folder.coreElement);
+  }
+  selectFolder(folder: any) {
+    this.selectedFolder = folder;
+  }
+  loadMunicipalityData() {
+    // This method now primarily populates `dataRequests` if needed directly.
+    // The `groupedRequests` logic is handled by `loadRequests()`.
+    this.dashboardService.getDataRequestsByMunicipality(this.auth.munCityId)
+      .subscribe({
+        next: (res: Request[]) => {
+          this.dataRequests = res;
+          // Note: groupedRequests is handled by the main loadRequests() now
+          this.isLoading = false;
+        },
+        error: (err: any) => {
+          console.error('Error loading data:', err);
+          this.isLoading = false;
+        }
+      });
+  }
+  loadMunicipalityTemplates(munCityId: string): void {
+    this.dashboardService.getDataRequestsByMunicipality(munCityId).subscribe({
+      next: (res: Request[]) => {
+        this.requests = res; // Populate requests array
+        console.log('Loaded municipality templates:', res);
+        // You'd still need to enrich these with template download URLs here if `requests` is used for display.
+      },
+      error: (err: any) => {
+        console.error('Error fetching templates:', err);
+        this.errorMsg = 'Failed to load data requests.';
+      },
+    });
+  }
+  getDataRequestsByMunicipality(munCityId: string) {
+    this.dashboardService.getDataRequestsByMunicipality(munCityId).subscribe({
+      next: (requests: Request[]) => {
+        this.DataRequestService.GetAllTemplates().subscribe({
+          next: (templates: Template[]) => {
+            const templateMap = new Map(
+              templates.map(t => [t.templateId, t])
+            );
+
+            this.folders = requests.map(req => {
+              const template = templateMap.get(req['templateId']);
+
+              return {
+                ...req,
+                details: req.details || template?.name || 'No file name', // Display template name if req.details is empty
+                templates: template ? { name: template.name } : req.templates,
+                downloadUrl: template?.downloadUrl || ''
+              };
+            });
+
+            console.log('✅ folders with correct downloadUrl (from getDataRequestsByMunicipality):', this.folders);
+          },
+          error: err => console.error('Error loading templates', err)
+        });
+      },
+      error: (err: any) => console.error('Error fetching data requests', err),
+    });
   }
   printMunicipalitySection() {
     const canvas = this.barCanvas.nativeElement;
