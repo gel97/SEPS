@@ -426,26 +426,35 @@ export class CityOfficialsComponent implements OnInit {
   }
 
   delete(official2: any = {}) {
-    Swal.fire({
-      text: 'Do you want to remove this file?',
-      icon: 'warning',
-      showConfirmButton: true,
-      showCancelButton: true,
-      confirmButtonText: 'Yes, remove it!',
-    }).then((result) => {
-      if (result.value) {
-        official2.tag = -1;
-        this.service.Delete_Officials(official2).subscribe((_data) => {
-          Swal.fire('Deleted!', 'Your file has been removed.', 'success');
-          this.Init();
-          this.city = {};
-        });
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-      }
-      this.Init();
-      this.city = {};
-    });
-  }
+  Swal.fire({
+    text: 'Do you want to remove this file?',
+    icon: 'warning',
+    showConfirmButton: true,
+    showCancelButton: true,
+    confirmButtonText: 'Yes, remove it!',
+  }).then((result) => {
+    if (result.value) {
+      this.service.Delete_Officials(official2.transId).subscribe({
+        next: (_data) => {
+          Swal.fire({
+            title: 'Deleted!',
+            text: 'Your file has been removed.',
+            icon: 'success',
+            timer: 1500,
+            showConfirmButton: false,
+          }).then(() => {
+            this.Init(); // refresh after Swal closes
+            this.city = {};
+          });
+        },
+        error: (err) => {
+          Swal.fire('Error', 'Something went wrong while deleting.', 'error');
+          console.error(err);
+        },
+      });
+    }
+  });
+}
 
   onTableDataChange(page: any) {
     //paginate

@@ -201,6 +201,7 @@ import { UseUrbanComponent } from './pages/main/Province/use-urban/use-urban.com
 import { GeotaggerComponent } from './pages/geotagger/geotagger.component';
 import { LgurMapsComponent } from './pages/main/Province/lgur-maps/lgur-maps.component';
 import { CriticalFacilitiesComponent } from './pages/main/Province/critical-facilities/critical-facilities.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -402,10 +403,12 @@ import { CriticalFacilitiesComponent } from './pages/main/Province/critical-faci
     NgxPaginationModule,
     ImageCropperModule,
     GoogleMapsModule,
+    BrowserAnimationsModule,
     AgmCoreModule.forRoot({
       // please get your own API key here:
       // https://developers.google.com/maps/documentation/javascript/get-api-key?hl=en
       apiKey: 'AIzaSyBfQJlyD65DekS6HrSDe2z-6-KvoO4aeRk',
+      libraries: ['drawing','places']
     }),
     CKEditorModule,
     SocialLoginModule,

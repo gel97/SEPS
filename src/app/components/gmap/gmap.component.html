@@ -28,6 +28,7 @@
   [zoomControl]="false"
   (mapClick)="mapClicked($event)"
   [mapTypeId]="'roadmap'"
+  (mapReady)="onMapReady($event)" 
   #map
 >
   <agm-marker
@@ -42,6 +43,15 @@
       <strong>{{brgyName}}</strong>
     </agm-info-window>
   </agm-marker>
+  <!-- ✅ Barangay boundary polygon -->
+  <!-- <agm-polygon
+  *ngIf="selectedBarangayBoundary?.length"
+  [paths]="selectedBarangayBoundary"
+  [strokeColor]="'#007bff'"
+  [strokeWeight]="2"
+  [fillColor]="'#007bff'"
+  [fillOpacity]="0.15">
+</agm-polygon> -->
 </agm-map>
 
 <ng-template #hybrid>
@@ -69,6 +79,14 @@
       <strong>{{brgyName}}</strong>
     </agm-info-window>
   </agm-marker>
+  <!-- <agm-polygon
+  *ngIf="selectedBarangayBoundary?.length"
+  [paths]="selectedBarangayBoundary"
+  [strokeColor]="'#007bff'"
+  [strokeWeight]="2"
+  [fillColor]="'#007bff'"
+  [fillOpacity]="0.15">
+</agm-polygon> -->
 </agm-map>
 </ng-template>
 <br/>

@@ -664,14 +664,16 @@ export class BarangaysComponent implements OnInit {
   markerObj: any = {};
   SetMarker(data: any = {}) {
     this.markerObj = {
-      lat: data.latitude,
-      lng: data.longitude,
-      label: data.brgyName.charAt(0),
-      brgyName: data.brgyName,
-      munCityName: this.munCityName,
-      draggable: true,
-    };
-    this.gmapComponent.setMarker(this.markerObj);
+    lat: data.latitude,
+    lng: data.longitude,
+    label: data.brgyName?.charAt(0) || 'B',
+    brgyName: data.brgyName,
+    munCityName: this.munCityName,
+    coordinates: data.coordinates || [],  // ✅ polygon data from DB
+    draggable: true,
+  };
+
+  this.gmapComponent.setMarker(this.markerObj);
   }
   pdfMake: any;
 
