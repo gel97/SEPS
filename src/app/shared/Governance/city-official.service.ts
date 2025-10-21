@@ -21,7 +21,7 @@ export class CityOfficialService {
   }
 
   UpdateOfficial(Official: any = {}) {
-    return this.Http.post(this.Base.url + this.ApiUrl.post_update_official(), Official, { responseType: 'json' });
+    return this.Http.put(this.Base.url + this.ApiUrl.post_update_official(), Official, { responseType: 'json' });
   }
   Delete_Officials(transId:any) {
     return this.Http.delete(this.Base.url + this.ApiUrl.delete_officials(transId), { responseType: 'json' });
@@ -38,6 +38,17 @@ export class CityOfficialService {
   Import():Observable<any[]> {
       return this.Http.post<any[]>(this.Base.url + this.ApiUrl.post_import_officials(), { responseType: 'json' });
   }
+  //yearterm
+  AddYearTerm(yearterm: any = {}) {
+    return this.Http.post(this.Base.url + this.ApiUrl.post_save_TearnYear(), yearterm, { responseType: 'json' });
+  }
+  UpdateTerm(yearterm: any = {}) {
+    return this.Http.put(this.Base.url + this.ApiUrl.put_update_termYear(), yearterm, { responseType: 'json' });
+  }
+  Term():Observable<any[]> {
+    return this.Http.get<any[]>(this.Base.url + this.ApiUrl.get_termYear(this.Auth.munCityId, this.Auth.setYear), { responseType: 'json' });
+  }
+
   
 }
 

@@ -40,6 +40,7 @@ export class CityOfficialsComponent implements OnInit {
   navigationInterceptor: any;
   @ViewChild(PdfComponent)
   private pdfComponent!: PdfComponent;
+  latestTerm: any;
 
   constructor(
     private pdfService: PdfService,
@@ -73,6 +74,19 @@ export class CityOfficialsComponent implements OnInit {
   count: number = 0;
   tableSize: number = 5;
   tableSizes: any = [5, 10, 15, 25, 50, 100];
+  data: any = {};
+
+  selectedYear: number = new Date().getFullYear();
+  years: number[] = [];
+  termYear: number | null = null;
+  isEditingYear = false;
+  newYear: { termYear: string | null } = {
+  termYear: null,
+};
+  termYears: any[] = [];
+
+  
+
 
   public showOverlay = false;
   importMethod() {
@@ -144,14 +158,13 @@ export class CityOfficialsComponent implements OnInit {
     this.city = {};
   }
   openModal(type: number) {
-    this.category = type;
-    this.city = {}; // reset form
+  this.category = type;
+  this.city = {};
+  this.toValidate = { name: false, contact: false };
+  this.updateOfficial = true;
+  $('#ModalAdd').modal('show');
+}
 
-    // Ensure Angular re-renders
-    setTimeout(() => {
-      $('#ModalAdd').modal('show'); // open Bootstrap modal
-    });
-  }
 
   closeModal() {
     $('#ModalAdd').modal('hide');
@@ -290,38 +303,89 @@ export class CityOfficialsComponent implements OnInit {
   date = new DatePipe('en-PH');
   ngOnInit(): void {
     this.Init();
+     // For Add modal
+  $('#ModalAdd').on('hidden.bs.modal', () => {
+    this.editModal = {};
+    this.city = {};
+    this.category = 0;
+    this.toValidate = { name: false, contact: false, term: false };
+  });
+
+  // For Edit modal
+  $('#exampleModalLong').on('hidden.bs.modal', () => {
+    this.editModal = {};
+    this.toValidate = { name: false, contact: false, term: false };
+    $('.modal-backdrop').remove();
+    $('body').removeClass('modal-open');
+  });
+    const current = new Date().getFullYear();
+    for (let i = current - 2; i <= current + 5; i++) {
+      this.years.push(i);
+    }
   }
+ closeEditModal() {
+  $('#exampleModalLong').modal('hide');
+  $('.modal-backdrop').remove();
+  $('body').removeClass('modal-open');
+  this.editModal = {};
+  this.toValidate = { name: false, contact: false, term: false };
+}
+
 
   Init() {
     this.getPositions();
     this.getOfficials();
+    this.getTermYears();
   }
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
   }
   getOfficials() {
-    // this.elected = [];
-    // this.appointed = [];
-    this.service.GetOfficial().subscribe((data: any) => {
-      this.Official = <any>data;
-      this.elected = [];
-      this.appointed = [];
-      data.forEach((element: any) => {
-        if (element.category == 1) {
-          this.elected.push(element);
-        } else {
-          this.appointed.push(element);
-        }
-      });
-      // this.import();
-    });
-    console.log(this.elected);
-    console.log(this.appointed);
-  }
+  this.service.GetOfficial().subscribe((data: any) => {
+    this.Official = data;
+    this.elected = data.filter((x: any) => x.category === 1);
+    this.appointed = data
+      .filter((x: any) => x.category === 2)
+      .map((x: any) => ({ ...x, term: x.term || '' })); // ensure term exists
+  });
+}
+getTermYears() {
+  this.service.Term().subscribe({
+    next: (data) => {
+      if (data && data.length > 0) {
+        const latest = data.sort(
+          (a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        )[0];
+
+        this.latestTerm = latest; // ✅ store the full object
+        this.termYear = latest.termYear;
+        this.newYear.termYear = latest.termYear;
+      } else {
+        this.termYear = null;
+        this.newYear.termYear = null;
+      }
+    },
+    error: (err) => {
+      console.error('Error fetching term years:', err);
+      Swal.fire('Error', 'Unable to load Term of Years.', 'error');
+    },
+  });
+}
+
+
+
+
 
   message = 'City Officials';
+  viewData: boolean = false;
+  parentMethod() {
+    this.data = {};
+    this.viewData = true;
+    this.not_visible = false;
+    this.visible = false;
+  }
 
-  // importData: string = 'City Official';
+   importData: string = 'City Official';
   import() {
     let importData = 'City Official';
     this.importComponent.import(importData);
@@ -334,96 +398,176 @@ export class CityOfficialsComponent implements OnInit {
   }
   category: number = 0;
   addOfficial() {
-    this.toValidate.name =
-      this.city.name == '' || this.city.name == null ? true : false;
-    // this.toValidate.seqNo =
-    //   this.city.seqNo == '' || this.city.seqNo == undefined ? true : false;
-    // this.toValidate.term =
-    //   this.city.term == '' || this.city.term == null ? true : false;
-    this.toValidate.contact =
-      this.city.contact == '' || this.city.contact == undefined ? true : false;
-    if (
-      this.toValidate.name == true ||
-      // this.toValidate.seqNo == true ||
-      this.toValidate.term == true ||
-      this.toValidate.contact == true
-    ) {
-      Swal.fire(
-        'Missing Data!',
-        'Please fill out the required fields',
-        'warning'
-      );
-    } else {
-      this.city.category = this.category;
-      this.city.munCityId = this.auth.munCityId;
-      this.city.setYear = this.auth.activeSetYear;
-      this.city.transId = this.date.transform(Date.now(), 'YYMM');
-      this.city.tag = 1;
-      this.city.setYear = this.auth.activeSetYear;
-      //this.city.position = '';
-      this.service.AddOfficial(this.city).subscribe(
-        (_data) => {
-          if (!this.isCheck) {
-            this.closebutton.nativeElement.click();
-          }
-          console.log(_data);
-          this.clearData();
-          this.getOfficials();
-          Swal.fire('Good job!', 'Data Added Successfully!', 'success');
-          this.getOfficials();
-          this.city = {};
-        },
-        (err) => {
-          Swal.fire('ERROR!', 'Data Already Exist', 'error');
-        }
-      );
-    }
+  this.toValidate.name = !this.city.name;
+  this.toValidate.contact = !this.city.contact;
+
+  if (this.toValidate.name || this.toValidate.contact) {
+    Swal.fire('Missing Data!', 'Please fill out the required fields', 'warning');
+    return;
   }
+
+  this.city.category = this.category;
+  this.city.munCityId = this.auth.munCityId;
+  this.city.setYear = this.auth.activeSetYear;
+  this.city.transId = this.date.transform(Date.now(), 'YYMM');
+  this.city.tag = 1;
+
+  // Only set term for appointed
+  if (this.city.category !== 2) {
+    this.city.term = null;
+  }
+
+  this.service.AddOfficial(this.city).subscribe({
+    next: (_data) => {
+      $('#ModalAdd').modal('hide'); // close modal
+      this.clearData();
+      this.getOfficials();
+      Swal.fire('Good job!', 'Data Added Successfully!', 'success');
+      this.city = {};
+    },
+    error: (err) => {
+      Swal.fire('ERROR!', 'Data Already Exist or Invalid Input', 'error');
+    },
+  });
+}
+
+addYear() {
+  if (!this.newYear.termYear) {
+    Swal.fire('Missing Data!', 'Please enter a year range (e.g. 2025–2028).', 'warning');
+    return;
+  }
+
+  const yearText = String(this.newYear.termYear).trim();
+
+  const payload = {
+    setYear: this.auth.activeSetYear, // or parseInt(yearText.split('-')[0], 10)
+    TermYear: yearText,
+    munCityId: this.auth.munCityId,
+  };
+
+  console.log('Sending payload:', payload);
+
+  this.service.AddYearTerm(payload).subscribe({
+    next: (res) => {
+      Swal.fire('Success!', 'New Term Year added successfully!', 'success');
+      $('#ModalAddYear').modal('hide');
+
+      // ✅ Auto-refresh the displayed term year
+      this.getTermYears();
+
+      // ✅ Reset input
+      this.newYear.termYear = null;
+    },
+    error: (err) => {
+      console.error('Error adding year:', err);
+      Swal.fire('Error!', 'Year already exists or invalid input.', 'error');
+    },
+  });
+}
+
+editTerm() {
+  if (!this.newYear.termYear) {
+    Swal.fire('Missing Data!', 'Please enter a valid year range (e.g. 2025–2028).', 'warning');
+    return;
+  }
+
+  // Build the payload your API expects
+  const payload = {
+    recNo: this.latestTerm?.recNo, // make sure `id` exists in your fetched data
+    transId: this.latestTerm?.transId,
+    userId: this.latestTerm?.userId,
+    createdAt: this.latestTerm?.createdAt,
+    tag: this.latestTerm?.tag,
+    termYear: this.newYear.termYear.trim(),
+    setYear: this.auth.activeSetYear,
+    munCityId: this.auth.munCityId,
+  };
+
+  console.log('Updating term year with payload:', payload);
+
+  this.service.UpdateTerm(payload).subscribe({
+    next: (res) => {
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Term Year updated successfully!',
+        showConfirmButton: false,
+        timer: 1200,
+      });
+      this.isEditingYear = false; // hide input after saving
+      this.getTermYears(); // refresh data
+    },
+    error: (err) => {
+      console.error('Update error:', err);
+      Swal.fire('Error', 'Unable to update term year. Please check your input.', 'error');
+    },
+  });
+}
+
+
+
+openEditModal(official: any) {
+  this.toValidate = { name: false, contact: false, term: false };
+  this.editModal = {
+    ...official,
+    category: official.category ?? this.category,
+  };
+  $('.modal-backdrop').remove();
+  $('body').removeClass('modal-open');
+  setTimeout(() => {
+    $('#exampleModalLong').modal('show');
+  }, 0);
+}
+
+
+
+
+
 
   //for modal
   update() {
-    this.toValidate.name =
-      this.editModal.name == '' || this.editModal.name == null ? true : false;
-    // this.toValidate.seqNo =
-    //   this.editModal.seqNo == '' || this.editModal.seqNo == undefined
-    //     ? true
-    //     : false;
-    // this.toValidate.term =
-    //   this.editModal.term == '' || this.editModal.term == null ? true : false;
-    this.toValidate.contact =
-      this.editModal.contact == '' || this.editModal.contact == undefined
-        ? true
-        : false;
-    if (
-      this.toValidate.name == true ||
-      // this.toValidate.seqNo == true ||
-      this.toValidate.term == true ||
-      this.toValidate.contact == true
-    ) {
-      Swal.fire(
-        'Missing Data!',
-        'Please fill out the required fields',
-        'warning'
-      );
-    } else {
-      this.service.UpdateOfficial(this.editModal).subscribe({
-        next: (_data) => {
-          this.getOfficials();
-          this.editModal = {};
-        },
-      });
+  this.toValidate.name = !this.editModal.name;
+  this.toValidate.contact = !this.editModal.contact;
+
+  // Ensure category is always correct
+  this.editModal.category = this.category || this.editModal.category;
+
+  // For appointed (category = 2)
+  if (this.editModal.category === 2) {
+    this.toValidate.term = !this.editModal.term;
+  } else {
+    this.toValidate.term = false;
+    this.editModal.term = null;
+  }
+
+  // Validation
+  if (this.toValidate.name || this.toValidate.contact || this.toValidate.term) {
+    Swal.fire('Missing Data!', 'Please fill out the required fields', 'warning');
+    return;
+  }
+
+  this.service.UpdateOfficial(this.editModal).subscribe({
+    next: (_data) => {
+      this.closeEditModal(); // ✅ use our helper cleanup
+      this.getOfficials();
 
       Swal.fire({
         position: 'center',
         icon: 'success',
-        title: 'Your work has been updated',
+        title: 'Official updated successfully!',
         showConfirmButton: false,
         timer: 1000,
       });
-      document.getElementById('exampleModalLong')?.click();
-      this.getOfficials();
-    }
-  }
+    },
+    error: (err) => {
+      console.error('Update error:', err);
+      Swal.fire('Error', 'Unable to update official.', 'error');
+    },
+  });
+}
+
+
+
 
   delete(official2: any = {}) {
   Swal.fire({
@@ -435,23 +579,22 @@ export class CityOfficialsComponent implements OnInit {
   }).then((result) => {
     if (result.value) {
       this.service.Delete_Officials(official2.transId).subscribe({
-        next: (_data) => {
-          Swal.fire({
-            title: 'Deleted!',
-            text: 'Your file has been removed.',
-            icon: 'success',
-            timer: 1500,
-            showConfirmButton: false,
-          }).then(() => {
-            this.Init(); // refresh after Swal closes
-            this.city = {};
-          });
-        },
-        error: (err) => {
-          Swal.fire('Error', 'Something went wrong while deleting.', 'error');
-          console.error(err);
-        },
-      });
+  next: (_data: any) => {
+    Swal.fire({
+      title: 'Deleted!',
+      text: 'The record has been removed.',
+      icon: 'success',
+      timer: 1500,
+      showConfirmButton: false,
+    });
+    this.Init(); // refresh after deletion
+    this.city = {};
+  },
+  error: (err) => {
+    Swal.fire('Error', 'Something went wrong while deleting.', 'error');
+    console.error(err);
+  },
+});
     }
   });
 }
