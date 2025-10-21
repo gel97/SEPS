@@ -62,7 +62,7 @@
               <li class="nav-item" (click)="handleOnTabChange(true)">
                 <a
                   class="nav-link x-cursor"
-                  [ngClass]="isBarangay ? 'active fw-bold' : ''"
+                  [ngClass]="isBarangay? 'active fw-bold' : ''"
                   aria-current="page"
                   >Barangay
                 </a>
@@ -70,7 +70,7 @@
               <li class="nav-item" (click)="handleOnTabChange(false)">
                 <a
                   class="nav-link x-cursor"
-                  [ngClass]="!isBarangay ? 'active fw-bold' : ''"
+                  [ngClass]="!isBarangay? 'active fw-bold' : ''"
                   >Purok Chairman</a
                 >
               </li>

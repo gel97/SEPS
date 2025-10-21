@@ -1,6 +1,6 @@
 <div class="">
   <ng-template #isEmpty>
-    <app-import [data]="message" (importData)="importMethod()"></app-import>
+    <app-import [data]="message" (importData)="importMethod()" (testEvent)="parentMethod()"></app-import>
     <app-export-excel apiControllerName="MunCityOfficial"></app-export-excel>
   </ng-template>
 
@@ -34,6 +34,114 @@
                   Officials</strong
                 ></label
               ><br />
+              <br />
+              <!-- <input
+    type="number"
+    [(ngModel)]="selectedYear"
+    class="form-control form-control-sm d-inline w-auto ml-2"
+    [disabled]="true"
+  /> -->
+<label>
+  <div class="mt-4">
+  <label class="font-weight-bold d-block mb-2">Term of Year:</label>
+
+  <div class="d-flex align-items-center flex-wrap gap-2">
+    <!-- Term Year Input -->
+    <input
+      type="text"
+      class="form-control form-control-sm"
+      style="width: 160px;"
+      [(ngModel)]="newYear.termYear"
+      [disabled]="!isEditingYear"
+    />
+
+    <!-- Admin Buttons -->
+    <app-admin class="ml-2">
+      <!-- Edit Button -->
+      <button
+        *ngIf="termYear && !isEditingYear"
+        class="btn btn-outline-primary btn-sm d-flex align-items-center"
+        (click)="isEditingYear = true"
+      >
+        <i class="fa fa-pen mr-1"></i> Edit
+      </button>
+
+      <!-- Save Button -->
+      <button
+        *ngIf="isEditingYear"
+        class="btn btn-primary btn-sm d-flex align-items-center"
+        (click)="editTerm()"
+      >
+        <i class="fa fa-save mr-1"></i> Save
+      </button>
+    </app-admin>
+
+    <!-- Add Button (Only when no term exists) -->
+    <app-admin *ngIf="!termYear" class="ml-2">
+      <button
+        type="button"
+        class="btn btn-success btn-sm d-flex align-items-center"
+        data-toggle="modal"
+        data-target="#ModalAddYear"
+      >
+        <i class="fa fa-plus mr-1"></i> Add Term Year
+      </button>
+    </app-admin>
+  </div>
+</div>
+
+<!-- Add Term Year Modal -->
+<div
+  class="modal fade"
+  id="ModalAddYear"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="ModalAddYearLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content border-0 shadow-sm">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">Add Term of Year</h5>
+        <button
+          type="button"
+          class="close text-white"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <label for="termOfYearInput" class="font-weight-semibold mb-2"
+          >Enter Term of Year:</label
+        >
+        <input
+          id="termOfYearInput"
+          type="text"
+          class="form-control"
+          [(ngModel)]="newYear.termYear"
+          
+        />
+      </div>
+
+      <div class="modal-footer d-flex justify-content-between">
+        <button type="button" class="btn btn-primary" (click)="addYear()">
+          <i class="fa fa-check mr-1"></i> Save
+        </button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          <i class="fa fa-times mr-1"></i> Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</label>
+
             </div>
             <div class="x-space-between">
               <div class="x-space-between">
@@ -238,16 +346,17 @@
                                 <td>
                                   <div class="d-inline-flex">
                                     <app-admin>
-                                      <button
-                                        type="button"
-                                        title="Edit"
-                                        (click)="editModal = text"
-                                        class="btn btn-info btn-circle"
-                                        data-toggle="modal"
-                                        data-target="#exampleModalLong"
-                                      >
-                                        <i class="fa fa-pen"></i>
-                                      </button> </app-admin
+                                     <button
+  type="button"
+  title="Edit"
+  (click)="openEditModal(text)"
+  class="btn btn-info btn-circle"
+  data-toggle="modal"
+  data-target="#exampleModalLong"
+>
+  <i class="fa fa-pen"></i>
+</button>
+ </app-admin
                                     >&nbsp;
                                     <app-admin>
                                       <button
@@ -348,21 +457,20 @@
 
             </select>
           </div> -->
-                  <!-- Show only for Elective Officials -->
-                  <div class="col-lg-12" *ngIf="category === 2">
-                    <br />
-                    <label for="exampleFormControlTextarea1"
-                      >Term of Office :</label
-                    >
-                    <input
-                      type="text"
-                      class="form-control"
-                      name="Term"
-                      [(ngModel)]="city.term"
-                      id="Term"
-                      placeholder=""
-                    />
-                  </div>
+                  <!-- Show Term input only for Appointed -->
+<div class="col-lg-12" *ngIf="category === 2">
+  <br />
+  <label for="exampleFormControlTextarea1">Term of Office :</label>
+  <input
+    type="text"
+    class="form-control"
+    name="Term"
+    [(ngModel)]="city.term"
+    id="Term"
+    placeholder=""
+  />
+</div>
+
 
                   <div class="col-lg-12">
                     <br />
@@ -505,7 +613,7 @@
                       />
                     </div>
 
-                    <div class="col-lg-12" *ngIf="category === 2">
+                    <div class="col-lg-12" *ngIf="editModal.category === 2">
                       <br />
                       <label for="exampleFormControlTextarea1"
                         >Term of Office :</label

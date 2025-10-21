@@ -13,6 +13,9 @@ export class ApiUrl {
   post_get_officials = (munCityId: any, setYear: any) =>
     `/MunCityOfficial/GetOfficials?munCityId=${munCityId}&setYear=${setYear}`;
   post_save_official = () => `/MunCityOfficial/SaveOfficial`;
+  post_save_TearnYear = () => `/OfficialsYearTerm/Saveterm`;
+  get_termYear = (munCityId: any, setYear: any) => `/OfficialsYearTerm/${setYear}/${munCityId}`;
+  put_update_termYear = () => `/OfficialsYearTerm/Update`;
   post_update_official = () => `/MunCityOfficial/Update`;
   get_mun_position = () => `/MunCityOfficial/ListMunPosition`;
   delete_officials = (transId: any) => `/MunCityOfficial/${transId}`;
