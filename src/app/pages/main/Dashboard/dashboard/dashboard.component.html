@@ -36,20 +36,34 @@
     <span class="visually-hidden">Loading...</span>
   </div>
   <p>Loading data requests...</p>
-</div> -->
+</div>
 
-<!-- <div *ngIf="errorMsg" class="alert alert-danger mt-3">{{ errorMsg }}</div> -->
+<div *ngIf="errorMsg" class="alert alert-danger mt-3">{{ errorMsg }}</div>
 
-<!-- <div *ngIf="!isLoading && groupedRequests.length === 0 && !errorMsg" class="alert alert-info mt-3">
+<div
+  *ngIf="!isLoading && groupedRequests.length === 0 && !errorMsg"
+  class="alert alert-info mt-3"
+>
   No data requests found for this municipality.
-</div> -->
+</div>
 
-<!-- <div *ngIf="!isLoading && groupedRequests.length > 0">
- 
+<div *ngIf="!isLoading && groupedRequests.length > 0">
   <div *ngFor="let folder of groupedRequests" class="card mb-3">
-    <div class="card-header d-flex justify-content-between align-items-center" (click)="toggleFolder(folder)" style="cursor: pointer;">
-      <h5 class="mb-0">{{ folder.coreElement }} ({{ folder.requests.length }})</h5>
-      <i class="fas" [ngClass]="{'fa-chevron-down': isFolderOpen(folder), 'fa-chevron-right': !isFolderOpen(folder)}"></i>
+    <div
+      class="card-header d-flex justify-content-between align-items-center"
+      (click)="toggleFolder(folder)"
+      style="cursor: pointer"
+    >
+      <h5 class="mb-0">
+        {{ folder.coreElement }} ({{ folder.requests.length }})
+      </h5>
+      <i
+        class="fas"
+        [ngClass]="{
+          'fa-chevron-down': isFolderOpen(folder),
+          'fa-chevron-right': !isFolderOpen(folder)
+        }"
+      ></i>
     </div>
     <div *ngIf="isFolderOpen(folder)" @toggleAnimation class="card-body">
       <table class="table table-hover table-striped">
@@ -57,21 +71,18 @@
           <tr>
             <th>File Name</th>
             <th>Template Name</th>
-            
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let req of folder.requests">
             <td>
-              
-              <a [href]="req.downloadUrl" download class="text-decoration-none" title="Download File" target="_blank">
-                {{ req.details }}
+              <a [href]="req.downloadUrl" download>
+                {{ req.template?.link || req.details }}
               </a>
             </td>
             <td>
-              <em>{{ req.templates?.name || "—" }}</em>
+              <em>{{ req.template?.name || "—" }}</em>
             </td>
-           
           </tr>
         </tbody>
       </table>
@@ -81,7 +92,6 @@
 
 <!-- Keep the rest of your dashboard HTML -->
 <!-- [href]="getDownloadUrl(file)" -->
-
 
 <!-- <div class="row w-row">
   <div *ngIf="totalGovernanceData" class="col w-col w-col-6">
@@ -109,8 +119,8 @@
   <div *ngIf="!totalSocioEcAct">
     <p>No SocioEcAct data available.</p>
   </div>
-</div>
-<div class="row w-row">
+</div> -->
+<!-- <div class="row w-row">
   <div *ngIf="totalSocioEcAct" class="col w-col w-col-6">
     <div class="number-card number-card-content3">
       <div class="number-card-dollars">Total Social Profile Data Count:</div>
@@ -161,17 +171,29 @@
 <br />
 <div *ngFor="let item of filterNews" class="card shadow-sm mb-3">
   <!-- Card Header - Dropdown -->
-  <!-- <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-    <h6 class="m-0 font-weight-bold text-primary">{{item.title}}</h6>
+  <div
+    class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+  >
+    <h6 class="m-0 font-weight-bold text-primary">{{ item.title }}</h6>
     <div class="dropdown no-arrow">
-      <i class='fa fa-history'></i>
+      <i class="fa fa-history"></i>
       {{ item.datePosted | hoursAgoOrDate }}
 
-      <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-        aria-haspopup="true" aria-expanded="false">
+      <a
+        class="dropdown-toggle"
+        href="#"
+        role="button"
+        id="dropdownMenuLink"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+      >
         <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
       </a>
-      <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+      <div
+        class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+        aria-labelledby="dropdownMenuLink"
+      >
         <div class="dropdown-header">Dropdown Header:</div>
         <a class="dropdown-item" href="#">Action</a>
         <a class="dropdown-item" href="#">Another action</a>
@@ -179,7 +201,7 @@
         <a class="dropdown-item" href="#">Something else here</a>
       </div>
     </div>
-  </div> -->
+  </div>
 
   <!-- Card Body -->
   <div class="card-body">
@@ -332,7 +354,7 @@
       <canvas #barCanvas></canvas>
     </div>
 
-     <img #chartImage style="display: none" />
+    <img #chartImage style="display: none" />
   </div>
 
   <!-- Chart Modal -->
