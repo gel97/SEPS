@@ -30,19 +30,26 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { DashboardService } from 'src/app/shared/Province/dashboard.service';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { DataRequestService } from 'src/app/shared/Province/DataRequest.Service';
+import { environment } from 'src/environments/environment';
 declare var bootstrap: any;
 
 interface Request {
   dataRequestId: number;
   title: string;
-  details: string; // The display name for the file
-  downloadUrl?: string; // The actual download link
+  details: string;
+  downloadUrl?: string;
   setYear: number;
-  templates?: { name: string };
+  template?: {
+    // <- singular, matches your data
+    templateId: number;
+    name: string;
+    link: string;
+    downloadUrl?: string;
+  };
   munCityId: string;
-  templateId: number; // Ensure templateId is always part of Request if used for mapping
+  templateId: number;
   coreElementId?: number;
-  coreElement?: string; // This property is usually populated from backend, or derived
+  coreElement?: string;
   [key: string]: any;
 }
 
@@ -125,7 +132,7 @@ export class DashboardComponent implements OnInit {
     private modifyService: ModifyCityMunService,
     private Service: EnvironmentService,
     private dashboardService: DashboardService,
-    private DataRequestService: DataRequestService,
+    private DataRequestService: DataRequestService
   ) {}
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
@@ -151,90 +158,116 @@ export class DashboardComponent implements OnInit {
     this.loadRequests();
     // this.loadDashboardDataRequests();
   }
-//   loadDashboardDataRequests(): void {
-//   this.isLoading = true;
-//   this.errorMsg = '';
+  //   loadDashboardDataRequests(): void {
+  //   this.isLoading = true;
+  //   this.errorMsg = '';
 
-//   const munCityId = this.auth.munCityId;
+  //   const munCityId = this.auth.munCityId;
 
-//   forkJoin({
-//     requests: this.dashboardService.getDataRequestsByMunicipality(munCityId),
-//     templates: this.DataRequestService.GetAllTemplates()
-//   }).subscribe({
-//     next: ({ requests, templates }) => {
-//       const templateMap = new Map<number, Template>(templates.map(t => [t.templateId, t]));
+  //   forkJoin({
+  //     requests: this.dashboardService.getDataRequestsByMunicipality(munCityId),
+  //     templates: this.DataRequestService.GetAllTemplates()
+  //   }).subscribe({
+  //     next: ({ requests, templates }) => {
+  //       const templateMap = new Map<number, Template>(templates.map(t => [t.templateId, t]));
 
-//       const enrichedRequests = requests.map((req: { templateId: any; template: { templateId: any; }; details: any; templates: any; }) => {
-//         // Adjust this according to the actual key
-//         const templateId = req.templateId ?? req.template?.templateId;
-//         const template = templateMap.get(templateId);
+  //       const enrichedRequests = requests.map((req: { templateId: any; template: { templateId: any; }; details: any; templates: any; }) => {
+  //         // Adjust this according to the actual key
+  //         const templateId = req.templateId ?? req.template?.templateId;
+  //         const template = templateMap.get(templateId);
 
-//         return {
-//           ...req,
-//           details: req.details || template?.name || 'No file name',
-//           templates: template ? { name: template.name } : req.templates,
-//           downloadUrl: template?.downloadUrl || ''
-//         };
-//       });
+  //         return {
+  //           ...req,
+  //           details: req.details || template?.name || 'No file name',
+  //           templates: template ? { name: template.name } : req.templates,
+  //           downloadUrl: template?.downloadUrl || ''
+  //         };
+  //       });
 
-//       this.groupedRequests = this.groupByCoreElement(enrichedRequests);
+  //       this.groupedRequests = this.groupByCoreElement(enrichedRequests);
 
-//       // Select first folder to show in UI
-//       if (this.groupedRequests.length > 0) {
-//         this.selectedFolder = this.groupedRequests[0];
-//       }
+  //       // Select first folder to show in UI
+  //       if (this.groupedRequests.length > 0) {
+  //         this.selectedFolder = this.groupedRequests[0];
+  //       }
 
-//       this.isLoading = false;
-//     },
-//     error: (err) => {
-//       console.error('Error loading dashboard requests:', err);
-//       this.errorMsg = 'Failed to load data requests.';
-//       this.isLoading = false;
-//     }
-//   });
-// }
-loadRequests(): void {
+  //       this.isLoading = false;
+  //     },
+  //     error: (err) => {
+  //       console.error('Error loading dashboard requests:', err);
+  //       this.errorMsg = 'Failed to load data requests.';
+  //       this.isLoading = false;
+  //     }
+  //   });
+  // }
+  loadRequests(): void {
     const munCityId = this.auth.munCityId;
 
     this.dashboardService.getDataRequestsByMunicipality(munCityId).subscribe({
       next: (requestsRes: Request[]) => {
-        // Fetch all templates to get download URLs
+        console.log('Requests from API:', requestsRes); // check templateId values
+
         this.DataRequestService.GetAllTemplates().subscribe({
           next: (templatesRes: Template[]) => {
-            const templateMap = new Map(templatesRes.map(t => [t.templateId, t]));
+            console.log('Templates from API:', templatesRes); // check template + downloadUrl values
 
-            // Enrich requests with template data
-            const enrichedRequests = requestsRes.map(req => {
-              const template = templateMap.get(req['templateId']);
+            const templateMap = new Map(
+              templatesRes.map((t) => [t.templateId, t])
+            );
 
-              return {
+            const enrichedRequests = requestsRes.map((req) => {
+              const template = templatesRes.find(
+                (t) => t.coreElementName === req.coreElement
+              );
+
+              console.log('Matched Template:', template);
+
+              const fullDownloadUrl = template?.downloadUrl
+                ? template.downloadUrl.startsWith('http')
+                  ? template.downloadUrl
+                  : `${environment.apiUrl}/${template.downloadUrl}`
+                : '';
+
+              const enriched = {
                 ...req,
-                // Prioritize req.details if it exists, otherwise use template.downloadUrl for display name
-                details: req.details || template?.name || 'No file name',
-                templates: template ? { name: template.name } : req.templates,
-                downloadUrl: template?.downloadUrl || '' // This is the crucial part for the download link
+                details: req.details || template?.link || 'No file name',
+                templates: template
+                  ? { name: template.name, link: template.link }
+                  : req.template,
+                downloadUrl: fullDownloadUrl,
               };
+
+              console.log('Enriched Request Object:', enriched);
+              return enriched;
             });
 
+            // Group & finalize
             this.groupedRequests = this.groupByCoreElement(enrichedRequests);
             this.isLoading = false;
-            console.log('Enriched and Grouped Requests:', this.groupedRequests);
+
+            console.log(
+              '✅ Enriched and Grouped Requests:',
+              this.groupedRequests
+            );
           },
           error: (err) => {
             console.error('Error loading templates:', err);
             this.errorMsg = 'Failed to load templates.';
             this.isLoading = false;
-          }
+          },
         });
       },
       error: (err: any) => {
         console.error('Error loading data requests:', err);
         this.errorMsg = 'Failed to load data requests.';
         this.isLoading = false;
-      }
+      },
     });
   }
-  groupByCoreElement(requests: Request[]): { coreElement: string; requests: Request[] }[] {
+
+  groupByCoreElement(
+    requests: Request[]
+  ): { coreElement: string; requests: Request[] }[] {
     const grouped: { [key: string]: Request[] } = {};
     for (const req of requests) {
       // Use coreElement from the request, or a generic 'Others' if not available
@@ -244,7 +277,10 @@ loadRequests(): void {
       }
       grouped[key].push(req);
     }
-    return Object.entries(grouped).map(([coreElement, requests]) => ({ coreElement, requests }));
+    return Object.entries(grouped).map(([coreElement, requests]) => ({
+      coreElement,
+      requests,
+    }));
   }
   toggleFolder(folder: { coreElement: string; requests: Request[] }): void {
     if (this.openFolders.has(folder.coreElement)) {
@@ -262,7 +298,8 @@ loadRequests(): void {
   loadMunicipalityData() {
     // This method now primarily populates `dataRequests` if needed directly.
     // The `groupedRequests` logic is handled by `loadRequests()`.
-    this.dashboardService.getDataRequestsByMunicipality(this.auth.munCityId)
+    this.dashboardService
+      .getDataRequestsByMunicipality(this.auth.munCityId)
       .subscribe({
         next: (res: Request[]) => {
           this.dataRequests = res;
@@ -272,7 +309,7 @@ loadRequests(): void {
         error: (err: any) => {
           console.error('Error loading data:', err);
           this.isLoading = false;
-        }
+        },
       });
   }
   loadMunicipalityTemplates(munCityId: string): void {
@@ -294,23 +331,28 @@ loadRequests(): void {
         this.DataRequestService.GetAllTemplates().subscribe({
           next: (templates: Template[]) => {
             const templateMap = new Map(
-              templates.map(t => [t.templateId, t])
+              templates.map((t) => [t.templateId, t])
             );
 
-            this.folders = requests.map(req => {
+            this.folders = requests.map((req) => {
               const template = templateMap.get(req['templateId']);
 
               return {
                 ...req,
                 details: req.details || template?.name || 'No file name', // Display template name if req.details is empty
-                templates: template ? { name: template.name } : req.templates,
-                downloadUrl: template?.downloadUrl || ''
+                templates: template
+                  ? { name: template.name }
+                  : req['templates'],
+                downloadUrl: template?.downloadUrl || '',
               };
             });
 
-            console.log('✅ folders with correct downloadUrl (from getDataRequestsByMunicipality):', this.folders);
+            console.log(
+              '✅ folders with correct downloadUrl (from getDataRequestsByMunicipality):',
+              this.folders
+            );
           },
-          error: err => console.error('Error loading templates', err)
+          error: (err) => console.error('Error loading templates', err),
         });
       },
       error: (err: any) => console.error('Error fetching data requests', err),

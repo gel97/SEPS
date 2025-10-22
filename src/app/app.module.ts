@@ -408,9 +408,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
       // please get your own API key here:
       // https://developers.google.com/maps/documentation/javascript/get-api-key?hl=en
       apiKey: 'AIzaSyBfQJlyD65DekS6HrSDe2z-6-KvoO4aeRk',
-      libraries: ['drawing','places']
+      libraries: ['drawing', 'places'],
     }),
     CKEditorModule,
+
     SocialLoginModule,
   ],
   providers: [
