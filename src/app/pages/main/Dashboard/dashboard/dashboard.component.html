@@ -31,7 +31,7 @@
 </div>
 <br />
 <!-- Example structure where you display your requests in the dashboard -->
-<!-- <div *ngIf="isLoading" class="text-center mt-5">
+<div *ngIf="isLoading" class="text-center mt-5">
   <div class="spinner-border text-primary" role="status">
     <span class="visually-hidden">Loading...</span>
   </div>
@@ -47,48 +47,68 @@
   No data requests found for this municipality.
 </div>
 
-<div *ngIf="!isLoading && groupedRequests.length > 0">
-  <div *ngFor="let folder of groupedRequests" class="card mb-3">
-    <div
-      class="card-header d-flex justify-content-between align-items-center"
-      (click)="toggleFolder(folder)"
-      style="cursor: pointer"
-    >
-      <h5 class="mb-0">
-        {{ folder.coreElement }} ({{ folder.requests.length }})
-      </h5>
-      <i
-        class="fas"
-        [ngClass]="{
-          'fa-chevron-down': isFolderOpen(folder),
-          'fa-chevron-right': !isFolderOpen(folder)
-        }"
-      ></i>
-    </div>
-    <div *ngIf="isFolderOpen(folder)" @toggleAnimation class="card-body">
-      <table class="table table-hover table-striped">
-        <thead>
-          <tr>
-            <th>File Name</th>
-            <th>Template Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let req of folder.requests">
-            <td>
-              <a [href]="req.downloadUrl" download>
-                {{ req.template?.link || req.details }}
-              </a>
-            </td>
-            <td>
-              <em>{{ req.template?.name || "—" }}</em>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+<div *ngIf="!isLoading && !selectedFolder" class="row g-3">
+  <div
+    *ngFor="let folder of groupedRequests"
+    class="col-6 col-md-3 col-lg-2"
+    (click)="openFolder(folder)"
+    style="cursor: pointer"
+  >
+    <div class="card border-0 shadow-sm h-100 text-center p-2 hover-shadow">
+      <div
+        class="d-flex justify-content-center align-items-center"
+        style="height: 100px"
+      >
+        <i class="fas fa-folder text-success" style="font-size: 60px"></i>
+      </div>
+      <div class="card-body p-2">
+        <h6 class="fw-bold mb-1">{{ folder.coreElement }}</h6>
+        <p class="text-muted mb-0" style="font-size: 0.85rem">
+          Folder • {{ folder.requests.length }} files
+        </p>
+      </div>
     </div>
   </div>
-</div> -->
+</div>
+
+<!-- Folder contents view -->
+<div *ngIf="selectedFolder">
+  <button class="btn btn-link mb-3" (click)="selectedFolder = null">
+    <i class="fas fa-arrow-left"></i> Back to Folders
+  </button>
+
+  <h4 class="mb-3">
+    <i class="fas fa-folder text-success"></i> {{ selectedFolder.coreElement }}
+  </h4>
+
+  <div class="row g-3">
+    <div
+      *ngFor="let req of selectedFolder.requests"
+      class="col-6 col-md-3 col-lg-2 text-center"
+    >
+      <div class="card border-0 shadow-sm h-100 p-3 hover-shadow">
+        <div
+          class="d-flex justify-content-center align-items-center"
+          style="height: 100px"
+        >
+          <i [ngClass]="getFileIcon(req.details)" style="font-size: 50px"></i>
+        </div>
+        <div class="card-body p-2">
+          <a
+            [href]="req.downloadUrl"
+            download
+            class="fw-medium text-decoration-none"
+          >
+            {{ req.template?.link || req.details }}
+          </a>
+          <p class="text-muted mb-0" style="font-size: 0.8rem">
+            {{ req.template?.name || "Unknown" }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Keep the rest of your dashboard HTML -->
 <!-- [href]="getDownloadUrl(file)" -->

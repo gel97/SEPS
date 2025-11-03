@@ -145,10 +145,15 @@ canvas {
 
 .folder-card:hover {
   transform: scale(1.03);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .folder-card.selected {
   background-color: #eaf1ff;
   border: 2px solid #3b82f6;
+}
+.hover-shadow:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-3px);
+  transition: 0.2s ease-in-out;
 }

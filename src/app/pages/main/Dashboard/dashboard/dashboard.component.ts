@@ -200,6 +200,36 @@ export class DashboardComponent implements OnInit {
   //     }
   //   });
   // }
+  openFolder(folder: any) {
+    this.selectedFolder = folder;
+  }
+  getFileIcon(fileName: string): string {
+    if (!fileName) return 'fas fa-file';
+
+    const ext = fileName.split('.').pop()?.toLowerCase();
+
+    switch (ext) {
+      case 'xlsx':
+      case 'xls':
+        return 'fas fa-file-excel text-success';
+      case 'docx':
+      case 'doc':
+        return 'fas fa-file-word text-primary';
+      case 'pdf':
+        return 'fas fa-file-pdf text-danger';
+      case 'ppt':
+      case 'pptx':
+        return 'fas fa-file-powerpoint text-warning';
+      case 'csv':
+        return 'fas fa-file-csv text-success';
+      case 'jpg':
+      case 'jpeg':
+      case 'png':
+        return 'fas fa-file-image text-info';
+      default:
+        return 'fas fa-file text-secondary';
+    }
+  }
   loadRequests(): void {
     const munCityId = this.auth.munCityId;
 
@@ -259,7 +289,7 @@ export class DashboardComponent implements OnInit {
       },
       error: (err: any) => {
         console.error('Error loading data requests:', err);
-        this.errorMsg = 'Failed to load data requests.';
+        this.errorMsg = 'No data requests.';
         this.isLoading = false;
       },
     });
