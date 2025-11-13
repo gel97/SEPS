@@ -92,6 +92,7 @@
             <th>Username</th>
             <th>Role</th>
             <th>Municipality</th>
+            <th>Offices / Agencies / School Name / Municipality</th>
             <th>Password</th>
           </tr>
         </thead>
@@ -106,6 +107,7 @@
               <span *ngIf="user.userType?.startsWith('Geotagger')">Geotagger</span>
               <span *ngIf="user.userType === 'Admin'">Admin</span>
             </td>
+            <td> {{ user.guestUserType}}</td>
             <td>
               <span *ngIf="user.munCityId === 'Guest'">Guest</span>
               <span *ngIf="user.munCityId !== 'Guest'">
