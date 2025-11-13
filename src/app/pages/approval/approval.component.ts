@@ -14,7 +14,9 @@ export class ApprovalComponent implements OnInit {
   list_muncity: any = {};
   toValidate: any = {};
   goetag: any = [];
-
+  selectedMunicipality: string = '';
+  filteredGoetag: any[] = [];
+  geotag: any[] = [];
   ngOnInit(): void {
     this.service.ListMunCity().subscribe((data) => {
       this.list_muncity = <any>data;
@@ -30,6 +32,7 @@ export class ApprovalComponent implements OnInit {
       console.log('Geotag user data received:', data);
       this.goetag = data;
     });
+    this.filteredGoetag = this.goetag;
   }
 
   CheckIfnotempty(value: string) {
@@ -39,37 +42,41 @@ export class ApprovalComponent implements OnInit {
   }
 
   assignOrUpdate(user: any) {
-    this.service.PostUserApproval(user.userId, user.munCityId).subscribe(
-      (res: any) => {
-        console.log('Assigned successfully:', res);
+  this.service.PostUserApproval(user.userId, user.munCityId).subscribe(
+    (res: any) => {
+      console.log('Assigned successfully:', res);
 
-        // update frontend state immediately
-        user.assignMode = false;
-        user.userType = res.userType;
-        user.municipalityName = res.munCityName;
+      user.assignMode = false;
+      user.userType = res.userType;
+      user.municipalityName = res.munCityName;
+      user.isConfirmed = true;
+      user.status = 'Approved';
 
-        // ✅ make badge reflect instantly
-        user.isConfirmed = true; // mark approved right away
-        user.status = 'Approved'; // optional if backend sends it
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: res.message,
+        timer: 2000,
+        showConfirmButton: false,
+      });
 
-        Swal.fire({
-          icon: 'success',
-          title: 'Success!',
-          text: res.message,
-          timer: 2000,
-          showConfirmButton: false,
-        });
-      },
-      (err) => {
-        console.error('Error assigning municipality:', err);
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Something went wrong while assigning!',
-        });
-      }
-    );
-  }
+      // ✅ Refresh filtered list after update
+      this.filterByMunicipality();
+    },
+    (err) => {
+      console.error('Error assigning municipality:', err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something went wrong while assigning!',
+      });
+    }
+  );
+}
+togglePassword(user: any){
+  user.showPassword = !user.showPassword
+}
+
 
   assignGuest(user: any) {
     const payload = 'Guest'; // <-- plain string
@@ -114,4 +121,22 @@ export class ApprovalComponent implements OnInit {
       showConfirmButton: false,
     });
   }
+
+
+  filterByMunicipality() {
+  if (!this.selectedMunicipality) {
+    // Show all users
+    this.filteredGoetag = this.goetag;
+  } else if (this.selectedMunicipality === 'Unassigned') {
+    // ✅ Show only users with no userType
+    this.filteredGoetag = this.goetag.filter((u: any) => !u.userType);
+  } else {
+    // Show users for the selected municipality
+    this.filteredGoetag = this.goetag.filter(
+      (u: { municipalityName: string }) =>
+        u.municipalityName === this.selectedMunicipality
+    );
+  }
+}
+
 }
