@@ -1,6 +1,23 @@
 <div class="container">
+  <!-- 🔍 Filter bar -->
+  <div class="filter-bar">
+    <label><strong>Filter by Municipality:</strong></label>
+    <select
+      class="form-select"
+      [(ngModel)]="selectedMunicipality"
+      (change)="filterByMunicipality()"
+    >
+      <option value="">All Users</option>
+      <option value="Unassigned">Not yet assigned</option>
+      <option *ngFor="let item of list_muncity" [value]="item.munCityName">
+        {{ item.munCityName }}
+      </option>
+    </select>
+  </div>
+
+  <!-- 🔹 Card list -->
   <div class="user-card-container">
-    <div class="card" *ngFor="let user of goetag">
+    <div class="card" *ngFor="let user of filteredGoetag">
       <div class="user-info-header">
         <div class="user-details">
           <h3>{{ user.fullName }}</h3>
@@ -31,8 +48,6 @@
         <button class="btn primary" (click)="user.assignMode = true">
           Assign Municipality
         </button>
-
-        <!-- ✅ New Assign Guest button -->
         <button
           class="btn outline"
           (click)="assignGuest(user)"
@@ -42,9 +57,6 @@
         </button>
       </div>
 
-      <br />
-
-      <!-- Assign mode -->
       <div class="assign-mode" *ngIf="user.assignMode">
         <select
           class="form-select mb-1"
@@ -56,8 +68,6 @@
             {{ item.munCityName }}
           </option>
         </select>
-
-        <!-- Confirm now saves -->
         <button
           class="btn primary"
           [disabled]="!user.munCityId"
@@ -65,7 +75,6 @@
         >
           Confirm
         </button>
-
         <button class="btn outline" (click)="cancelAssign(user)">Cancel</button>
       </div>
     </div>
@@ -83,35 +92,40 @@
             <th>Username</th>
             <th>Role</th>
             <th>Municipality</th>
-            <!-- <th style="text-align: center">Actions</th> -->
+            <th>Password</th>
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="user in vm.assigned" *ngFor="let user of goetag">
+          <!-- Use filteredGoetag instead of goetag -->
+          <tr *ngFor="let user of filteredGoetag">
             <td>{{ user.fullName }}</td>
             <td>{{ user.username }}</td>
             <td>
               <span *ngIf="!user.userType">Not yet assigned</span>
               <span *ngIf="user.userType === 'Guest'">Guest</span>
-              <span *ngIf="user.userType?.startsWith('Geotagger')"
-                >Geotagger</span
-              >
+              <span *ngIf="user.userType?.startsWith('Geotagger')">Geotagger</span>
               <span *ngIf="user.userType === 'Admin'">Admin</span>
             </td>
             <td>
               <span *ngIf="user.munCityId === 'Guest'">Guest</span>
-              <span *ngIf="user.munCityId !== 'Guest'">{{
-                user.municipalityName || "Not assigned"
-              }}</span>
+              <span *ngIf="user.munCityId !== 'Guest'">
+                {{ user.municipalityName || "Not assigned" }}
+              </span>
             </td>
-            <!-- <td class="table-actions">
-              <button class="btn sm danger" ng-click="vm.delete(user)">
-                Delete
+            <td>
+              <span *ngIf="!user.showPassword">********</span>
+              <span *ngIf="user.showPassword">{{ user.password}}</span>
+              <button (click)="togglePassword(user)" class="icon-btn" title="{{ user.Password ? 'Hide Password' : 'Show Password' }}">
+                <i
+      class="fa"
+      [ngClass]="user.showPassword ? 'fa-eye-slash' : 'fa-eye'"
+    ></i>
               </button>
-            </td> -->
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
 </div>
+

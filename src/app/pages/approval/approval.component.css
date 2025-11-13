@@ -268,3 +268,19 @@
 .overflow-x-auto {
   overflow-x: auto;
 }
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+.icon-btn{
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 8px;
+  color: #555;
+}
+.icon-btn:hover {
+  color: #000;
+}
