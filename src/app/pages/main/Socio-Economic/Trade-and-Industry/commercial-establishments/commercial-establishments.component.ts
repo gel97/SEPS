@@ -483,18 +483,31 @@ export class CommercialEstablishmentsComponent implements OnInit {
   markerObj: any = {};
 
   SetMarker(data: any = {}) {
-    console.log('lnglat: ', data.longtitude + ' , ' + data.latitude);
+  console.log('lnglat: ', data.tagging);
 
-    this.markerObj = {
-      lat: data.latitude,
-      lng: data.longtitude,
-      label: data.brgyName.charAt(0),
-      brgyName: data.brgyName,
-      munCityName: this.munCityName,
-      draggable: true,
-    };
-    this.gmapComponent.setMarker(this.markerObj);
+  
+  if (
+    !data.tagging ||
+    data.tagging.latitude == null || data.tagging.latitude === '' ||
+    data.tagging.longitude == null || data.tagging.longitude === ''
+  ) {
+    this.markerObj = null;
+    this.gmapComponent.clearMarker();  
+    return; 
   }
+
+  this.markerObj = {
+    lat: Number(data.tagging.latitude),
+    lng: Number(data.tagging.longitude),
+    label: data.brgyName?.charAt(0) ?? '',
+    brgyName: data.brgyName,
+    munCityName: this.munCityName,
+    draggable: true,
+  };
+
+  this.gmapComponent.setMarker(this.markerObj);
+}
+
   GetListCom() {
     {
       this.service.Get_Com_Estab().subscribe((data) => {

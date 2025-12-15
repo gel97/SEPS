@@ -18,18 +18,23 @@ export class pdfpService {
     this.api = this.Base.url;
   }
   Postpdfp(data: any = {}) {
-    console.log(data);
-    return this.http.post(this.Base.url + this.ApiUrl.post_save_pdfp(), data, {
-      responseType: 'json',
-    });
+    return this.http.post(
+      this.Base.url + this.ApiUrl.post_upload(),
+      data,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        responseType: 'json',
+      }
+    );
   }
   Postupload(data: any = {}) {
-    console.log(data);
+  console.log("Posting JSON:", data); // debug
+  return this.http.post(this.Base.url + this.ApiUrl.post_upload(), data, {
+    headers: { 'Content-Type': 'application/json' },
+    responseType: 'json'
+  });
+}
 
-    return this.http.post(this.Base.url + this.ApiUrl.post_upload(), data, {
-      responseType: 'json',
-    });
-  }
   ListOfMunicipality() {
     return this.http.get<any[]>(this.Base.url + this.ApiUrl.get_all_muncity(), {
       responseType: 'json',

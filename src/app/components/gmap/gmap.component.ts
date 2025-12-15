@@ -217,6 +217,10 @@ export class GmapComponent {
 
 
   clearMarker() {
-    this.markers = [];
-  }
+  this.markers = null;     // remove marker object
+  this.isEmptyGeo = true;  // ensure UI knows wala'y geo
+  this.selectedBarangayBoundary = []; // remove polygon if needed
+}
+
+
 }

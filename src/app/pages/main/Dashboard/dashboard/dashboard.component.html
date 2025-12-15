@@ -38,16 +38,16 @@
   <p>Loading data requests...</p>
 </div>
 
-<div *ngIf="errorMsg" class="alert alert-danger mt-3">{{ errorMsg }}</div>
+<div *ngIf="errorMsg" class="alert alert-danger mt-3">{{ errorMsg }}</div> -->
 
-<div
+<!-- <div
   *ngIf="!isLoading && groupedRequests.length === 0 && !errorMsg"
   class="alert alert-info mt-3"
 >
   No data requests found for this municipality.
-</div>
+</div> -->
 
-<div *ngIf="!isLoading && !selectedFolder" class="row g-3">
+<!-- <div *ngIf="!isLoading && !selectedFolder" class="row g-3">
   <div
     *ngFor="let folder of groupedRequests"
     class="col-6 col-md-3 col-lg-2"
@@ -71,8 +71,8 @@
   </div>
 </div> -->
 
-<!-- Folder contents view 
-<div *ngIf="selectedFolder">
+<!-- Folder contents view -->
+<!-- <div *ngIf="selectedFolder">
   <button class="btn btn-link mb-3" (click)="selectedFolder = null">
     <i class="fas fa-arrow-left"></i> Back to Folders
   </button>
@@ -108,7 +108,7 @@
       </div>
     </div>
   </div>
-</div>-->
+</div> -->
 
 <!-- Keep the rest of your dashboard HTML -->
 <!-- [href]="getDownloadUrl(file)" -->

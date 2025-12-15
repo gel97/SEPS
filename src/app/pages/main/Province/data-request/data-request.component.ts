@@ -150,19 +150,19 @@ export class DataRequestComponent implements OnInit {
   loadRequestsByMunicipality(munCityId: string): void {
     this.selectedMunCityId = munCityId;
 
-    // 🟢 First, load all requests
+   
     this.service.GetRequestsByMunicipality(munCityId).subscribe({
       next: (res: Request[]) => {
         const requests = res || [];
 
-        // 🟢 Then also load templates so we can attach downloadUrl
+     
         this.service.GetAllTemplates().subscribe({
           next: (templates: Template[]) => {
             const templateMap = new Map(
               templates.map(t => [t.templateId, t])
             );
 
-            // 🛠 Enrich requests with template data
+            // Enrich requests with template data
             this.selectedRequests = requests.map(req => {
               const template = templateMap.get(req['templateId']);
 
@@ -175,7 +175,7 @@ export class DataRequestComponent implements OnInit {
               };
             });
 
-            // 🟢 Group them into yearGroup
+            // Group them into yearGroup
             this.list_sep_year = this.groupByYear(this.selectedRequests);
 
             console.log('Requests with downloadUrl:', this.selectedRequests);
@@ -240,8 +240,8 @@ export class DataRequestComponent implements OnInit {
       coreElementName: template.coreElementName,
       setYear: this.auth.setYear,
       title: template.name,
-      details: template.link,           // ✅ Human-readable name
-      downloadUrl: template.downloadUrl, // ✅ Actual file URL
+      details: template.link,           // Human-readable name
+      downloadUrl: template.downloadUrl, // Actual file URL
       userId: this.auth.userId,
     };
 

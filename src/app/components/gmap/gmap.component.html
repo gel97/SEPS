@@ -32,13 +32,15 @@
   #map
 >
   <agm-marker
-    (markerClick)="infoWindow.open()"
-    [latitude]="markers.lat"
-    [longitude]="markers.lng"
-    [label]="markers.label"
-    [markerDraggable]="markers.draggable"
-    (dragEnd)="markerDragEnd(markers, $event)"
-  >
+  *ngIf="markers"
+  (markerClick)="infoWindow.open()"
+  [latitude]="markers.lat"
+  [longitude]="markers.lng"
+  [label]="markers.label"
+  [markerDraggable]="markers.draggable"
+  (dragEnd)="markerDragEnd(markers, $event)"
+>
+
     <agm-info-window>
       <strong>{{brgyName}}</strong>
     </agm-info-window>
@@ -67,14 +69,15 @@
   #map
 >
   <agm-marker
-    (markerClick)="infoWindow.open()"
-    [latitude]="markers.lat"
-    [longitude]="markers.lng"
-    [label]="markers.label"
-    [markerDraggable]="markers.draggable"
-    (dragEnd)="markerDragEnd(markers, $event)"
+  *ngIf="markers"
+  (markerClick)="infoWindow.open()"
+  [latitude]="markers.lat"
+  [longitude]="markers.lng"
+  [label]="markers.label"
+  [markerDraggable]="markers.draggable"
+  (dragEnd)="markerDragEnd(markers, $event)"
+>
 
-  >
     <agm-info-window>
       <strong>{{brgyName}}</strong>
     </agm-info-window>
