@@ -174,7 +174,12 @@
                       <td>{{ text.contactPerson }}</td>
                       <td>{{ text.contactNo }}</td>
                       <td>{{ text.location }}</td>
-                      <td>{{ text.latitude }}, {{ text.longtitude }}</td>
+                      <td>
+  <span *ngIf="text.tagging">
+    {{ text.tagging.latitude }}, {{ text.tagging.longitude }}
+  </span>
+</td>
+
                       <td>
                         <div class="d-inline-flex">
                           <app-admin>

@@ -46,320 +46,336 @@ export class UploadDataComponent implements OnInit {
   }
 
   fileUpload(event: any) {
-    this.jsonData = [];
-    // console.log(event.target.files);
-    const selectedFile = event.target.files[0];
-    const fileReader = new FileReader();
+  this.jsonData = [];
 
-    fileReader.readAsBinaryString(selectedFile);
-    fileReader.onload = (event) => {
-      // console.log(event);
-      let binaryData = event.target?.result;
-      let workbook = XLSX.read(binaryData, { type: 'binary' });
-      workbook.SheetNames.forEach((sheet) => {
-        console.log('----------');
-        const data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
+  const selectedFile = event.target.files[0];
+  if (!selectedFile) return;
 
-        console.log(data);
+  const fileReader = new FileReader();
 
-        this.convertedJson = JSON.stringify(data, undefined, 4);
-      });
+  fileReader.onload = (e: any) => {
+    try {
+      const arrayBuffer = e.target.result;
 
-      // console.log(workbook);
+      // Read Excel file
+      const workbook = XLSX.read(arrayBuffer, { type: 'array' });
 
-      var Jsondata = JSON.parse(this.convertedJson);
-      var databuilder = [];
-      console.log(this.convertedJson);
-      let dataindex = Jsondata.map(
-        (item: { template: any }) => item.template
-      ).indexOf('data');
-      let main = Jsondata.map(
-        (item: { template: any }) => item.template
-      ).indexOf('main');
-      let sub = Jsondata.map(
-        (item: { template: any }) => item.template
-      ).indexOf('sub');
-      let more = Jsondata.map(
-        (item: { template: any }) => item.template
-      ).indexOf('more');
-      console.log(dataindex);
-      console.log(main);
-      console.log(sub);
-      console.log(more);
-      const builder_keys = Object.keys(Jsondata[0]);
-      var temp_builder: {
-        DataBuilderId: number;
-        BranchId: any;
-        AgencyId: number;
-        Title: any;
-        Details: any;
-        UserId: number;
-        Year: number;
-      }[] = [];
+      // Convert first sheet to JSON
+      const sheetName = workbook.SheetNames[0];
+      const data = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+
+      console.log("Excel JSON:", data);
+
+      // Save JSON
+      this.convertedJson = JSON.stringify(data, null, 4);
+      const Jsondata = JSON.parse(this.convertedJson);
+
+      if (!Jsondata || Jsondata.length === 0) {
+        console.error("Excel file is empty or invalid format");
+        return;
+      }
+
+      // -------------------------
+      // FIND ROW INDEXES
+      // -------------------------
+      const getIndex = (key: string) =>
+        Jsondata.map((x: any) => x.template).indexOf(key);
+
+      const dataindex = getIndex("data");
+      const main = getIndex("main");
+      const sub = getIndex("sub");
+      const more = getIndex("more");
+
+      console.log("Indexes:", { dataindex, main, sub, more });
+
+      if (dataindex === -1 || main === -1 || sub === -1 || more === -1) {
+        //console.error("Missing required template rows in Excel");
+        return;
+      }
+
+      // -------------------------
+      // SAFELY READ BUILDER KEYS
+      // -------------------------
+      const builder_keys = Object.keys(Jsondata[0] || {});
+      if (builder_keys.length === 0) {
+        console.error("Jsondata[0] is empty");
+        return;
+      }
+
+      const databuilder: any[] = [];
+      const temp_builder: any[] = [];
+
       builder_keys.forEach((key, Builderindex) => {
-        // console.log(`${key}: ${Jsondata[i][key]}`);
-        var key_id = key.split('_')[3] == undefined ? '0' : key.split('_')[3];
-        var next_key_id = builder_keys[Builderindex + 1];
-        var next_key_id_temp =
-          next_key_id == undefined ? '100' : next_key_id.split('_')[3];
 
-        const main_keys = Object.keys(Jsondata[main]);
-        var temp_main: {
-          MainColumnId: number;
-          DataBuilderId: number;
-          Name: any;
-          Sort: number;
-        }[] = [];
+        const key_id =
+          key.split("_")[3] == null ? "0" : key.split("_")[3];
 
+        const next_key_id =
+          builder_keys[Builderindex + 1] || "100_0_0_100";
+        const next_key_id_temp = next_key_id.split("_")[3];
+
+        const main_keys = Object.keys(Jsondata[main] || {});
+        const temp_main: any[] = [];
+
+        // -------------------------
+        // PROCESS MAIN LEVEL
+        // -------------------------
         main_keys.forEach((key, MainIndex) => {
-          var main_key_id =
-            key.split('_')[3] == undefined ? '0' : key.split('_')[3];
-          // console.log(`${key}: ${Jsondata[main][key]}`);
-          // console.log(`${key}: main-- ${Jsondata[MainIndex][key]}`);
+          const main_key_id =
+            key.split("_")[3] == null ? "0" : key.split("_")[3];
 
-          if (Jsondata[main][key] != 'main') {
-            // var main_key_id = key.split('_')[3] == undefined? "0" : key.split('_')[3];
-            var main_next_key_id = main_keys[MainIndex + 1];
-            var main_next_key_id_temp =
-              main_next_key_id == undefined
-                ? '100'
-                : main_next_key_id.split('_')[3];
+          if (Jsondata[main][key] !== "main") {
 
+            const main_next_key_id =
+              main_keys[MainIndex + 1] || "100_0_0_100";
+            const main_next_key_id_temp =
+              main_next_key_id.split("_")[3];
+
+            // MAIN FILTER
             if (
               Number(main_key_id) < Number(next_key_id_temp) &&
               Number(main_key_id) >= Number(key_id)
             ) {
-              const sub_keys = Object.keys(Jsondata[sub]);
-              var temp_sub: {
-                SubColumnId: number;
-                MainColumnId: number;
-                Name: any;
-                Sort: number;
-              }[] = [];
-              sub_keys.forEach((key, SubIndex) => {
-                var sub_key_id =
-                  key.split('_')[3] == undefined ? '0' : key.split('_')[3];
-                if (Jsondata[sub][key] != 'sub') {
-                  var sub_next_key_id = sub_keys[SubIndex + 1];
-                  var sub_next_key_id_temp =
-                    sub_next_key_id == undefined
-                      ? '100'
-                      : sub_next_key_id.split('_')[3];
+              const sub_keys = Object.keys(Jsondata[sub] || {});
+              const temp_sub: any[] = [];
 
+              // -------------------------
+              // PROCESS SUB LEVEL
+              // -------------------------
+              sub_keys.forEach((key, SubIndex) => {
+                const sub_key_id =
+                  key.split("_")[3] == null ? "0" : key.split("_")[3];
+
+                if (Jsondata[sub][key] !== "sub") {
+                  const sub_next_key_id =
+                    sub_keys[SubIndex + 1] || "100_0_0_100";
+                  const sub_next_key_id_temp =
+                    sub_next_key_id.split("_")[3];
+
+                  // SUB FILTER
                   if (
                     Number(sub_key_id) < Number(main_next_key_id_temp) &&
                     Number(sub_key_id) >= Number(main_key_id)
                   ) {
-                    const more_sub_keys = Object.keys(Jsondata[more]);
-                    var temp_more_sub: {
-                      MoreSubColumnId: number;
-                      SubColumnId: number;
-                      Name: any;
-                      Sort: number;
-                    }[] = [];
-                    more_sub_keys.forEach((key, MoreSubIndex) => {
-                      var more_sub_key_id =
-                        key.split('_')[3] == undefined
-                          ? '0'
-                          : key.split('_')[3];
 
-                      if (Jsondata[more][key] != 'more') {
+                    const more_sub_keys = Object.keys(Jsondata[more] || {});
+                    const temp_more_sub: any[] = [];
+
+                    // -------------------------
+                    // MORE-SUB LEVEL
+                    // -------------------------
+                    more_sub_keys.forEach((key, MoreSubIndex) => {
+                      const more_sub_key_id =
+                        key.split("_")[3] == null
+                          ? "0"
+                          : key.split("_")[3];
+
+                      if (Jsondata[more][key] !== "more") {
+
                         if (
                           Number(more_sub_key_id) <
                             Number(sub_next_key_id_temp) &&
                           Number(more_sub_key_id) >= Number(sub_key_id)
                         ) {
-                          var more_sub_info: {
-                            InformationId: number;
-                            Name: any;
-                            SubColumnId: number;
-                          }[] = [];
-                          for (
-                            let index = dataindex;
-                            index < Jsondata.length;
-                            index++
-                          ) {
-                            const info_data = Object.keys(Jsondata[index]);
-                            info_data.forEach((key, infoIndex) => {
-                              var info_id =
-                                key.split('_')[3] == undefined
-                                  ? '0'
-                                  : key.split('_')[3];
 
-                              if (Jsondata[dataindex][key] != 'data') {
-                                if (
-                                  Number(info_id) == Number(more_sub_key_id)
-                                ) {
-                                  var info_obj = {
+                          const more_sub_info: any[] = [];
+
+                          for (let i = dataindex; i < Jsondata.length; i++) {
+                            const info_keys = Object.keys(Jsondata[i] || {});
+                            info_keys.forEach((key2, infoIndex) => {
+                              const info_id =
+                                key2.split("_")[3] == null
+                                  ? "0"
+                                  : key2.split("_")[3];
+
+                              if (Jsondata[dataindex][key2] !== "data") {
+                                if (Number(info_id) === Number(more_sub_key_id)) {
+                                  more_sub_info.push({
                                     InformationId: infoIndex,
-                                    Name: String(Jsondata[index][key]),
+                                    Name: String(Jsondata[i][key2]),
                                     SubColumnId: MainIndex,
-                                  };
-
-                                  more_sub_info.push(info_obj);
+                                  });
                                 }
                               }
                             });
                           }
 
-                          var joinData_temp_more_sub = more_sub_info
-                            .map((x) => x.Name)
-                            .join('||');
-                          var joined =
-                            more_sub_info.length == 0
+                          const joined =
+                            more_sub_info.length === 0
                               ? []
-                              : [{ Name: joinData_temp_more_sub }];
+                              : [
+                                  {
+                                    Name: more_sub_info
+                                      .map((x) => x.Name)
+                                      .join("||"),
+                                  },
+                                ];
 
-                          var more_sub_obj = {
+                          temp_more_sub.push({
                             MoreSubColumnId: MoreSubIndex,
                             SubColumnId: SubIndex,
                             Name: String(Jsondata[more][key]),
                             Sort: MoreSubIndex + 1,
-                            Informations: joined, // more_sub_info,
-                          };
-                          temp_more_sub.push(more_sub_obj);
+                            Informations: joined,
+                          });
                         }
                       }
                     });
 
-                    var main_info_sub: {
-                      InformationId: number;
-                      Name: any;
-                      SubColumnId: number;
-                    }[] = [];
+                    // -------------------------
+                    // SUB INFO
+                    // -------------------------
+                    const main_info_sub: any[] = [];
 
-                    for (
-                      let index = dataindex;
-                      index < Jsondata.length;
-                      index++
-                    ) {
-                      const info_data = Object.keys(Jsondata[index]);
-                      info_data.forEach((key, infoIndex) => {
-                        if (Jsondata[dataindex][key] != 'data') {
-                          var info_id =
-                            key.split('_')[3] == undefined
-                              ? '0'
-                              : key.split('_')[3];
-                          if (temp_more_sub.length == 0) {
-                            if (Number(info_id) == Number(sub_key_id)) {
-                              var info_obj = {
+                    for (let i = dataindex; i < Jsondata.length; i++) {
+                      const info_keys = Object.keys(Jsondata[i] || {});
+                      info_keys.forEach((key2, infoIndex) => {
+                        const info_id =
+                          key2.split("_")[3] == null ? "0" : key2.split("_")[3];
+
+                        if (Jsondata[dataindex][key2] !== "data") {
+                          if (temp_more_sub.length === 0) {
+                            if (Number(info_id) === Number(sub_key_id)) {
+                              main_info_sub.push({
                                 InformationId: infoIndex,
-                                Name: String(Jsondata[index][key]),
+                                Name: String(Jsondata[i][key2]),
                                 SubColumnId: MainIndex,
-                              };
-
-                              main_info_sub.push(info_obj);
+                              });
                             }
                           }
                         }
                       });
                     }
 
-                    var joinData_sub_obj = main_info_sub
-                      .map((x) => x.Name)
-                      .join('||');
-
-                    var joined =
-                      main_info_sub.length == 0
+                    const joined =
+                      main_info_sub.length === 0
                         ? []
-                        : [{ Name: joinData_sub_obj }];
-                    var sub_obj = {
+                        : [
+                            {
+                              Name: main_info_sub
+                                .map((x) => x.Name)
+                                .join("||"),
+                            },
+                          ];
+
+                    temp_sub.push({
                       SubColumnId: SubIndex,
                       MainColumnId: MainIndex,
                       Name: String(Jsondata[sub][key]),
                       Sort: SubIndex + 1,
                       MoreSubColumns: temp_more_sub,
-                      Informations: joined, //main_info_sub
-                    };
-                    temp_sub.push(sub_obj);
+                      Informations: joined,
+                    });
                   }
                 }
               });
 
-              //Add information
-              var main_info: {
-                InformationId: number;
-                Name: any;
-                MainColumnId: number;
-              }[] = [];
-              for (let index = dataindex; index < Jsondata.length; index++) {
-                const info_keys = Object.keys(Jsondata[index]);
-                info_keys.forEach((key, infoIndex) => {
-                  var info_key_id =
-                    key.split('_')[3] == undefined ? '0' : key.split('_')[3];
+              // -------------------------
+              // MAIN INFO
+              // -------------------------
+              const main_info: any[] = [];
 
-                  if (Jsondata[index][key] != 'data') {
-                    if (temp_sub.length == 0) {
-                      if (Number(info_key_id) == Number(main_key_id)) {
-                        var info_obj = {
+              for (let i = dataindex; i < Jsondata.length; i++) {
+                const info_keys = Object.keys(Jsondata[i] || {});
+                info_keys.forEach((key2, infoIndex) => {
+                  const info_key_id =
+                    key2.split("_")[3] == null ? "0" : key2.split("_")[3];
+
+                  if (Jsondata[i][key2] !== "data") {
+                    if (temp_sub.length === 0) {
+                      if (Number(info_key_id) === Number(main_key_id)) {
+                        main_info.push({
                           InformationId: infoIndex,
-                          Name: String(Jsondata[index][key]),
+                          Name: String(Jsondata[i][key2]),
                           MainColumnId: MainIndex,
-                        };
-                        main_info.push(info_obj);
+                        });
                       }
                     }
                   }
                 });
               }
 
-              var joinData_temp_main = main_info.map((x) => x.Name).join('||');
+              const joined =
+                main_info.length === 0
+                  ? []
+                  : [
+                      {
+                        Name: main_info.map((x) => x.Name).join("||"),
+                      },
+                    ];
 
-              var joined =
-                main_info.length == 0 ? [] : [{ Name: joinData_temp_main }];
-
-              var main_obj = {
+              temp_main.push({
                 MainColumnId: MainIndex,
                 DataBuilderId: Builderindex,
                 Name: String(Jsondata[main][key]),
                 Sort: MainIndex + 1,
                 SubColumns: temp_sub,
-                Informations: joined, //main_info,
-              };
-              temp_main.push(main_obj);
+                Informations: joined,
+              });
             }
           }
         });
 
-        var builder_obj = {
+        // -------------------------
+        // BUILDER OBJECT
+        // -------------------------
+        temp_builder.push({
           DataBuilderId: Builderindex,
           BranchId: null,
-
           Title: Jsondata[0][key],
-          Details: Jsondata[0][key] + '|' + this.remark, // remark holder for saving response
-          UserId: this.userId.toString() as unknown as number,
+          Details: Jsondata[0][key] + "|" + this.remark,
+          UserId: +this.userId,
           AgencyId: 0,
-          munCityId: '112317', // default: real value in server
+          munCityId: "112317",
           Year: 2023,
-          DataResponseId: 8, // just holding the value
+          DataResponseId: 8,
           MainColumns: temp_main,
-        };
-        temp_builder.push(builder_obj);
+        });
       });
 
       databuilder.push(temp_builder);
 
-      console.log(databuilder[0]);
       this.jsonData = databuilder[0];
-      this.convertedJson = JSON.stringify(databuilder[0], undefined, 4);
-    };
-  }
+      this.convertedJson = JSON.stringify(databuilder[0], null, 4);
+
+      console.log("Final Output:", this.jsonData);
+
+    } catch (err) {
+      console.error("Error reading file:", err);
+    }
+  };
+
+  fileReader.readAsArrayBuffer(selectedFile);
+}
+
 
   remark: any;
   saveData() {
-    console.log(this.jsonData);
-    // let dataindex = Jsondata.map((item: { temp1: any; }) => item.temp1).indexOf("data");
-    this.jsonData.map((item: { Details: string }) => {
-      item.Details = item.Details.split('|')[0] + '|' + this.remark;
-    });
-
-    this.pdfp
-      .Postupload(this.jsonData)
-
-      .pipe(delay(1000))
-      .subscribe((data) => {
-        console.log('--------------');
-        this.backClicked();
-      });
+  // Ensure we have a proper flat array
+  if (!this.jsonData || this.jsonData.length === 0) {
+    console.error("No data to upload");
+    return;
   }
+
+  // Update remarks
+  this.jsonData.forEach((item: any) => {
+    item.Details = item.Details.split('|')[0] + '|' + this.remark;
+  });
+
+  console.log("Final JSON to upload:", this.jsonData);
+
+  this.pdfp
+    .Postupload(this.jsonData)
+    .pipe(delay(1000))
+    .subscribe({
+      next: (data) => {
+        console.log('Upload successful', data);
+        this.backClicked();
+      },
+      error: (err) => {
+        console.error('Upload failed', err);
+      }
+    });
+}
+
 }

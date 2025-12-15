@@ -81,48 +81,39 @@ export class UtilityComponent implements OnInit {
   }
 
   saveTemplate(): void {
-    this.newTemplate.coreElemId = Number(this.newTemplate.coreElemId);
-    this.newTemplate.tag = 1;
+  this.newTemplate.coreElemId = Number(this.newTemplate.coreElemId);
+  this.newTemplate.tag = 1;
 
-    this.Service.saveTemplate(this.newTemplate).subscribe({
-      next: (response) => {
-        console.log('Template saved successfully:', response);
-        this.loadCoreElementsAndTemplates();
+  const formData = new FormData();
+  formData.append('Name', this.newTemplate.name);
+  formData.append('CoreElemId', this.newTemplate.coreElemId.toString());
+  formData.append('ParentId', this.newTemplate.parentId ?? 0);
+  formData.append('Sequence', this.newTemplate.sequence ?? 0);
+  formData.append('IsActive', this.newTemplate.isActive ? 'true' : 'false');
 
-        this.newTemplate = {
-          coreElemId: null,
-          name: '',
-          link: '',
-          sequence: null,
-          tag: 1,
-          isActive: false,
-          several: false,
-        };
+  // REQUIRED BY BACKEND
+  formData.append('Link', this.newTemplate.link ?? '');
 
-        Swal.fire({
-          icon: 'success',
-          title: 'Saved!',
-          text: 'Template has been saved successfully.',
-          confirmButtonColor: '#3085d6',
-          timer: 1500,
-          showConfirmButton: false,
-        });
-
-        const closeBtn: HTMLElement | null =
-          document.getElementById('closeModal');
-        if (closeBtn) closeBtn.click();
-      },
-      error: (err) => {
-        console.error('Error saving template:', err);
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Something went wrong while saving!',
-          confirmButtonColor: '#d33',
-        });
-      },
-    });
+  // REQUIRED BY BACKEND
+  if (this.selectedFile) {
+    formData.append('ExcelFile', this.selectedFile, this.selectedFile.name);
   }
+
+  this.Service.saveTemplate(formData).subscribe({
+    next: (response) => {
+      console.log("Saved:", response);
+      Swal.fire({ icon: 'success', title: 'Saved!' });
+      const closeBtn = document.getElementById("closeModal");
+      if (closeBtn) closeBtn.click();
+      this.loadCoreElementsAndTemplates();
+    },
+    error: (err) => {
+      console.error(err);
+      Swal.fire({ icon: 'error', title: 'Error saving template!' });
+    }
+  });
+}
+
 
   editTemplate(template: any): void {
     this.isEditmode = true;
