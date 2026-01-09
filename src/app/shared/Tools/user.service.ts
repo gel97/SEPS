@@ -134,4 +134,18 @@ export class UserService {
       }
     );
   }
+  Deactivate(userId: any): Observable<any> {
+  return this.Http.delete(
+    this.Base.url + this.ApiUrl.deactive_list_user(userId),
+    { responseType: 'text' as 'json' } // Mao ni ang adjustment
+  );
+}
+Activate(userId: any): Observable<any> {
+  return this.Http.put(
+    this.Base.url + this.ApiUrl.active_list_user(userId),
+    {},
+    { responseType: 'text' as 'json' } 
+  );
+}
+
 }

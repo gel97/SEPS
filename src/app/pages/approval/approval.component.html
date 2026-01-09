@@ -45,17 +45,38 @@
 
       <!-- Actions -->
       <div class="actions" *ngIf="!user.assignMode">
-        <button class="btn primary" (click)="user.assignMode = true">
-          Assign Municipality
-        </button>
-        <button
-          class="btn outline"
-          (click)="assignGuest(user)"
-          *ngIf="user.userType !== 'Guest'"
-        >
-          Assign as Guest
-        </button>
-      </div>
+  
+  <ng-container *ngIf="user.Status !== 'DEACTIVATED'">
+    <button class="btn primary" (click)="user.assignMode = true">
+      Assign Municipality
+    </button>
+    
+    <button
+      class="btn outline"
+      (click)="assignGuest(user)"
+      *ngIf="user.userType !== 'Guest'"
+    >
+      Assign as Guest
+    </button>
+  </ng-container>
+
+  <button
+    class="btn danger"
+    (click)="deactivateUser(user)"
+    *ngIf="user.Status !== 'DEACTIVATED'"
+  >
+    Deactivate User
+  </button>
+
+  <button
+    class="btn success" 
+    style="background-color: #28a745; color: white; border: none;"
+    (click)="activateUser(user)"
+    *ngIf="user.Status === 'DEACTIVATED'"
+  >
+    Activate User
+  </button>
+</div>
 
       <div class="assign-mode" *ngIf="user.assignMode">
         <select

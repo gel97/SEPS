@@ -75,7 +75,7 @@
                     <th scope="col">Contact Numbers </th>
                     <th scope="col" class="text-center">Location</th>
                     <th scope="col">Barangay</th>
-                    <!-- <th scope="col">Geo-Coord. (Long, Lat)</th> -->
+                    <th scope="col">Geo-Coord. (Long, Lat)</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -94,7 +94,11 @@
                     <td>{{text.contactNo}} </td>
                     <td class="text-center">{{text.location}}</td>
                     <td> {{text.brgyName}}</td>
-                    <!-- <td>{{text.longtitude}},<br>{{text.latitude}}</td> -->
+                    <td>
+  <span *ngIf="text.tagging">
+    {{ text.tagging.latitude }}, {{ text.tagging.longitude }}
+  </span>
+</td>
                     <td>
                       <div class="d-inline-flex">
                         <app-admin>
