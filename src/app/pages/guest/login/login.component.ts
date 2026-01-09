@@ -71,55 +71,83 @@ export class LoginComponent implements OnInit {
   }
 
   signIn() {
-    if (!this.user.username || !this.user.password) {
-      Swal.fire({
-        icon: 'warning',
-        title: 'Missing Credentials',
-        text: 'Please enter both username and password.',
-      });
-      return;
-    }
-
-    this.isLogin = true;
-    this.service.signin(this.user).subscribe({
-      next: (response) => {
-        if (response.token) {
-          localStorage.setItem('token', response.token);
-
-          if (response.role?.toLowerCase() === 'guest') {
-            localStorage.setItem('guest', 'true');
-          } else {
-            localStorage.setItem('guest', 'false');
-          }
-
-          this.router.navigate(['/']);
-        } else {
-          this.isLogin = false;
-          Swal.fire({
-            icon: 'error',
-            title: 'Login Failed',
-            text: 'Login succeeded but no token returned.',
-          });
-        }
-      },
-      error: (error) => {
-        Swal.fire({
-          icon: error.error?.includes('not been assigned')
-            ? 'warning'
-            : 'error',
-          title: error.error?.includes('not been assigned')
-            ? 'Pending Approval'
-            : 'Login Failed',
-          text: error.error?.includes('not been assigned')
-            ? 'Your account has not been assigned to a municipality yet. Please wait for admin approval.'
-            : 'Incorrect username and password or Your account has not been assigned to a municipality yet. Please wait for admin approval.',
-          confirmButtonText: 'OK',
-        }).then(() => {
-          this.isLogin = false;
-        });
-      },
+  if (!this.user.username || !this.user.password) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Missing Credentials',
+      text: 'Please enter both username and password.',
     });
+    return;
   }
+
+  this.isLogin = true;
+  this.service.signin(this.user).subscribe({
+    next: (response) => {
+      if (response.token) {
+        localStorage.setItem('token', response.token);
+
+        if (response.role?.toLowerCase() === 'guest') {
+          localStorage.setItem('guest', 'true');
+        } else {
+          localStorage.setItem('guest', 'false');
+        }
+
+        this.router.navigate(['/']);
+      } else {
+        this.isLogin = false;
+        Swal.fire({
+          icon: 'error',
+          title: 'Login Failed',
+          text: 'Login succeeded but no token returned.',
+        });
+      }
+    },
+    error: (error) => {
+  const message =
+    typeof error.error === 'string'
+      ? error.error
+      : error.error?.message || '';
+
+  // 🔴 DEACTIVATED ACCOUNT
+  if (message.toLowerCase().includes('deactivated')) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Account Deactivated',
+      text: message,
+      confirmButtonText: 'OK',
+    }).then(() => {
+      this.isLogin = false;
+    });
+    return;
+  }
+
+  // 🟡 PENDING APPROVAL
+  if (message.toLowerCase().includes('not been assigned')) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Pending Approval',
+      text: message,
+      confirmButtonText: 'OK',
+    }).then(() => {
+      this.isLogin = false;
+    });
+    return;
+  }
+
+  // 🔴 DEFAULT
+  Swal.fire({
+    icon: 'error',
+    title: 'Login Failed',
+    text: 'Incorrect username or password.',
+    confirmButtonText: 'OK',
+  }).then(() => {
+    this.isLogin = false;
+  });
+}
+,
+  });
+}
+
 
   // ✅ Facebook login
   loginWithFacebook(): void {

@@ -1027,6 +1027,8 @@ export class ApiUrl {
   get_approval_list = (userId: any) => `/User/get-user/${userId}`;
   get_list_user = () => `/User/get-all-guest-users`;
   delete_list_user = (userId: any) => `/User/${userId}`;
+  deactive_list_user = (userId: any) => `/User/deactivate/${userId}`;
+  active_list_user = (userId: any) => `/User/activate/${userId}`;
 
   get_report_summarized = (year: number) => `/ReportSummarized/${year}`;
   post_report_validation = () => `/ReportValidation`;

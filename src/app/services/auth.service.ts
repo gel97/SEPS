@@ -109,7 +109,7 @@ export class AuthService {
       }),
       catchError((error: HttpErrorResponse) => {
         console.error('Login error:', error);
-        return throwError(() => new Error('Login failed'));
+        return throwError(() => error);
       })
     );
   }
