@@ -202,6 +202,9 @@ import { GeotaggerComponent } from './pages/geotagger/geotagger.component';
 import { LgurMapsComponent } from './pages/main/Province/lgur-maps/lgur-maps.component';
 import { CriticalFacilitiesComponent } from './pages/main/Province/critical-facilities/critical-facilities.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SubmissionsComponent } from './pages/main/submissions/submissions.component';
+import { ValidatorComponent } from './Admin/validator/validator.component';
+import { VerifyComponent } from './pages/main/verify/verify.component';
 
 @NgModule({
   declarations: [
@@ -391,6 +394,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     GeotaggerComponent,
     LgurMapsComponent,
     CriticalFacilitiesComponent,
+    SubmissionsComponent,
+    ValidatorComponent,
+    VerifyComponent,
   ],
   imports: [
     MdbCollapseModule,

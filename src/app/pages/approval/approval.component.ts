@@ -17,28 +17,23 @@ export class ApprovalComponent implements OnInit {
   selectedMunicipality: string = '';
   filteredGoetag: any[] = [];
   geotag: any[] = [];
-  ngOnInit(): void {
+ ngOnInit(): void {
   this.service.ListMunCity().subscribe((data) => {
-    this.list_muncity = <any>data;
-  });
-
-  const userId = this.Service.userId;
-  this.service.getUser(userId).subscribe((data: any) => {
-    this.user = data;
+    this.list_muncity = data;
   });
 
   this.service.getUsergeotag().subscribe((data: any[]) => {
-  console.log('Geotag user data received:', data);
-  
-  this.goetag = data.map(u => ({
-    ...u,
-    // Gamita ang uppercase 'Status' para mag-match sa imong HTML template
-    Status: u.Status || u.status || (u.isActive === false ? 'DEACTIVATED' : 'ACTIVE')
-  }));
-
-  this.filteredGoetag = [...this.goetag];
-  this.filterByMunicipality();
-});
+    this.goetag = data.map(u => ({
+      ...u,
+      // Siguraduha nga bisag unsa nga case sa JSON (Upper/Lower), ma-map og sakto
+      userType: u.userType || u.UserType,
+      municipalityName: u.municipalityName || u.MunicipalityName || 'Not assigned',
+      Status: u.Status || u.status || 'ACTIVE',
+      showPassword: false
+    }));
+    this.filteredGoetag = [...this.goetag];
+    this.filterByMunicipality();
+  });
 }
 
   CheckIfnotempty(value: string) {
@@ -47,35 +42,36 @@ export class ApprovalComponent implements OnInit {
     }
   }
 
-  assignOrUpdate(user: any) {
-  this.service.PostUserApproval(user.userId, user.munCityId).subscribe(
+ assignOrUpdate(user: any) {
+  const roleType = user.isValidatorMode ? 'Validator' : 'Geotagger';
+  
+  // Siguraduhon nato nga limpyo ang ID (e.g., "Validator-112319")
+  let targetId = user.munCityId;
+  if (user.isValidatorMode && !targetId.toString().startsWith('Validator-')) {
+    targetId = `Validator-${user.munCityId}`;
+  }
+
+  this.service.PostUserApproval(user.userId, targetId, roleType).subscribe(
     (res: any) => {
-      console.log('Assigned successfully:', res);
+      // Pangitaa ang ngalan sa munisipyo para sa table display
+      const selectedCity = this.list_muncity.find((m: any) => m.munCityId == user.munCityId);
+      
+      const index = this.goetag.findIndex((u: any) => u.userId === user.userId);
+      if (index !== -1) {
+        this.goetag[index] = {
+          ...this.goetag[index],
+          userType: res.userType || targetId, // Kani ang naay ID
+          municipalityName: selectedCity ? selectedCity.munCityName : (res.munCityName || 'Assigned'),
+          isConfirmed: true,
+          status: 'Approved',
+          assignMode: false
+        };
+      }
 
-      user.assignMode = false;
-      user.userType = res.userType;
-      user.municipalityName = res.munCityName;
-      user.isConfirmed = true;
-      user.status = 'Approved';
+      Swal.fire({ icon: 'success', title: 'Success!', text: `Assigned as ${roleType} successfully.`, timer: 2000, showConfirmButton: false });
 
-      Swal.fire({
-        icon: 'success',
-        title: 'Success!',
-        text: res.message,
-        timer: 2000,
-        showConfirmButton: false,
-      });
-
-      // ✅ Refresh filtered list after update
+      // Refresh ang table
       this.filterByMunicipality();
-    },
-    (err) => {
-      console.error('Error assigning municipality:', err);
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Something went wrong while assigning!',
-      });
     }
   );
 }
@@ -85,9 +81,9 @@ togglePassword(user: any){
 
 
   assignGuest(user: any) {
-    const payload = 'Guest'; // <-- plain string
+    //const payload = 'Guest'; // <-- plain string
 
-    this.service.PostUserApproval(user.userId, payload).subscribe(
+    this.service.PostUserApproval(user.userId, 'Guest', 'Guest').subscribe(
       (res: any) => {
         console.log('Assigned as Guest:', res);
 
@@ -118,7 +114,7 @@ togglePassword(user: any){
 
   cancelAssign(user: any) {
     user.assignMode = false;
-
+    user.isValidatorMode = false;
     Swal.fire({
       icon: 'info',
       title: 'Cancelled',
@@ -129,18 +125,26 @@ togglePassword(user: any){
   }
 
 
-  filterByMunicipality() {
-  if (!this.selectedMunicipality) {
-    // Show all users
-    this.filteredGoetag = this.goetag;
-  } else if (this.selectedMunicipality === 'Unassigned') {
-    // ✅ Show only users with no userType
+filterByMunicipality() {
+  const selected = this.selectedMunicipality;
+  
+  if (!selected || selected === "") {
+    this.filteredGoetag = [...this.goetag];
+  } 
+  else if (selected === 'Validator') {
+    // Kinahanglan mogamit og .toLowerCase().includes('validator') 
+    // aron masakpan ang "Validator-112319"
+    this.filteredGoetag = this.goetag.filter((u: any) => 
+      u.userType?.toLowerCase().includes('validator')
+    );
+  } 
+  else if (selected === 'Unassigned') {
     this.filteredGoetag = this.goetag.filter((u: any) => !u.userType);
-  } else {
-    // Show users for the selected municipality
-    this.filteredGoetag = this.goetag.filter(
-      (u: { municipalityName: string }) =>
-        u.municipalityName === this.selectedMunicipality
+  } 
+  else {
+    // Filter base sa Municipality Name
+    this.filteredGoetag = this.goetag.filter((u: any) => 
+      u.municipalityName === selected
     );
   }
 }

@@ -13,6 +13,8 @@ import { BaseUrl } from './baseUrl.service';
 })
 export class AuthService {
   currentUserId: any;
+  userType: string = '';
+  files: any;
   menuId(setYear: any, munCityId: any, menuId: any, arg3: string, brgyId: any) {
     throw new Error('Method not implemented.');
   }
@@ -42,6 +44,28 @@ export class AuthService {
   userId: any = localStorage.getItem('userId');
   designation: any = localStorage.getItem('designation');
   activesetYear: any;
+
+  // public get userType(): string {
+  //   return localStorage.getItem('designation') || '';
+  // }
+  // auth.service.ts
+
+public get isValidatorUser(): boolean {
+  // Kuhaa ang pinaka-latest gikan sa localStorage
+  const cityId = localStorage.getItem('munCityId') || '';
+  
+  // Mo-return og true kung ang ID nagsugod sa "Validator-"
+  // Example: "Validator-112301" -> true
+  return cityId.startsWith('Validator');
+}
+public get realMunCityId(): string {
+  const cityId = localStorage.getItem('munCityId') || '';
+  if (cityId.startsWith('Validator-')) {
+    // I-split ang string ug kuhaa ang ikaduha nga parte (ang numeric ID)
+    return cityId.split('-')[1]; 
+  }
+  return cityId;
+}
 
   signin(user: any): Observable<any> {
     const loginTime = new Date().toLocaleString();
@@ -113,6 +137,18 @@ export class AuthService {
       })
     );
   }
+  // Sa imong Validator Component (.ts)
+loadExcelFiles() {
+  // Gamita ang helper function imbes nga ang raw string gikan sa storage
+  const cleanId = this.realMunCityId; 
+  
+  if (cleanId) {
+    // Karon, ang tawag mahimo nang: .../api/EncoderValidate/list/112301
+    this.http.get(`${this.apiurl}/lists/${cleanId}`).subscribe((data: any) => {
+      this.files = data;
+    });
+  }
+}
 
   getActivityLogsByMonth(params: any): Observable<any> {
     return this.http.get(this.apiDatefilter, { params }).pipe(

@@ -48,6 +48,13 @@
                     <th rowspan="2">SY</th>
                     <th rowspan="2">Name of School</th>
                     <th colspan="3">Enrolment</th>
+                    <th rowspan="2">Current Enrollment</th>
+                    <th rowspan="2">Number of Teachers</th>
+                    <th rowspan="2">Number of Calssrooms</th>
+                    <th rowspan="2">Number of Seats</th>
+                    <th rowspan="2">Teacher-Pupil Ratio</th>
+                    <th rowspan="2">Classroom-Pupil Ratio</th>
+                    <th rowspan="2">Seats-Pupil Ratio</th>
                     <th rowspan="2">Location</th>
                     <th rowspan="2"></th>
                   </tr>
@@ -71,6 +78,13 @@
                           : null
                       }}
                     </td>
+<td style="text-align: center;">{{ data.currEnrollment}}</td>
+                    <td style="text-align: center;">{{ data.numofTeachers}}</td>
+                    <td style="text-align: center;">{{ data.numberofClassroom}}</td>
+                    <td style="text-align: center;">{{ data.numofSeats}}</td>
+                    <td style="text-align: center;">{{ data.teacherPupRatio}}</td>
+                    <td style="text-align: center;">{{ data.classroomPupRatio}}</td>
+                    <td style="text-align: center;">{{ data.seatsPupRatio}}</td>
                     <td>{{ data.location }} {{ data.brgyName }}</td>
                     <td>
                       <div class="d-inline-flex">
@@ -271,6 +285,90 @@
               [(ngModel)]="daycare.female"
             />
           </div>
+          <div class="col-lg-6">
+              <label for="exampleFormControlInput1">Current Enrollment : </label>
+              <input
+                type="text"
+                class="form-control"
+                id=""
+                placeholder=""
+                [(ngModel)]="daycare.currEnrollment"
+                [ngClass]="toValidate.currEnrollment ? 'is-invalid' : ''"
+                (keyup)="toValidate.currEnrollment = false"
+              />
+            </div>
+            <div class="col-lg-6">
+              <label for="exampleFormControlInput1">Number of Teachers : </label>
+              <input
+                type="text"
+                class="form-control"
+                id=""
+                placeholder=""
+                [(ngModel)]="daycare.numofTeachers"
+                [ngClass]="toValidate.numofTeachers ? 'is-invalid' : ''"
+                (keyup)="toValidate.numofTeachers = false"
+              />
+            </div>
+            <div class="col-lg-6">
+              <label for="exampleFormControlInput1">Number of Classrooms: </label>
+              <input
+                type="text"
+                class="form-control"
+                id=""
+                placeholder=""
+                [(ngModel)]="daycare.numberofClassroom"
+                [ngClass]="toValidate.numberofClassroom ? 'is-invalid' : ''"
+                (keyup)="toValidate.numberofClassroom = false"
+              />
+            </div>
+            <div class="col-lg-6">
+              <label for="exampleFormControlInput1">Number of Seats: </label>
+              <input
+                type="text"
+                class="form-control"
+                id=""
+                placeholder=""
+                [(ngModel)]="daycare.numofSeats"
+                [ngClass]="toValidate.numofSeats ? 'is-invalid' : ''"
+                (keyup)="toValidate.numofSeats = false"
+              />
+            </div>
+            <div class="col-lg-6">
+              <label for="exampleFormControlInput1">Teacher Pupil Ratio: </label>
+              <input
+                type="text"
+                class="form-control"
+                id=""
+                placeholder=""
+                [(ngModel)]="daycare.teacherPupRatio"
+                [ngClass]="toValidate.teacherPupRatio ? 'is-invalid' : ''"
+                (keyup)="toValidate.teacherPupRatio = false"
+              />
+            </div>
+            <div class="col-lg-6">
+              <label for="exampleFormControlInput1">Classrooms Pupil Ratio: </label>
+              <input
+                type="text"
+                class="form-control"
+                id=""
+                placeholder=""
+                [(ngModel)]="daycare.classroomPupRatio"
+                [ngClass]="toValidate.classroomPupRatio ? 'is-invalid' : ''"
+                (keyup)="toValidate.classroomPupRatio = false"
+              />
+            </div>
+            <div class="col-lg-12 mb-2">
+              <label for="exampleFormControlInput1">Seats Pupil Ratio: </label>
+              <input
+                type="text"
+                class="form-control"
+                id=""
+                placeholder=""
+                [(ngModel)]="daycare.seatsPupRatio"
+                [ngClass]="toValidate.seatsPupRatio ? 'is-invalid' : ''"
+                (keyup)="toValidate.seatsPupRatio = false"
+              />
+            </div>
         </div>
         <div class="row mb-2">
           <div class="col-lg-6">

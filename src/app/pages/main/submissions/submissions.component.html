@@ -1,0 +1,234 @@
+<div class="upload-container" >
+  <h3>Data Submissions</h3>
+
+  <!-- ✅ Only show upload form for Admin -->
+  <app-admin>
+    <!-- Drag & Drop -->
+    <div class="drag-drop"
+        (dragover)="onDragOver($event)"
+         (dragleave)="onDragLeave($event)"
+         (drop)="onDrop($event)"
+         >
+      <i class="fas fa-cloud-upload-alt upload-icon"></i>
+      <p>Drag & Drop your file(s) here</p>
+      <p>or</p>
+      <input #fileInput type="file" (change)="onFileSelected($event)" />
+    </div>
+    <button class="btn btn-primary" (click)="onUpload()">Submit to CPDC</button>
+
+    <!-- Inputs + Upload button -->
+    <!-- <div class="d-flex flex-wrap mt-3 gap-2">
+      <input type="text"  placeholder="Enter shapefile name" class="form-control w-auto" />
+      <input type="number"  placeholder="Enter year" class="form-control w-auto" />
+      <button class="btn btn-primary" >Submit</button>
+    </div> -->
+  </app-admin>
+</div>
+
+<!-- ✅ Municipality filter (Admin only) -->
+<!-- ✅ Municipality Filter - Only for Admin -->
+<!-- <div class="mb-3">
+  <label for="municipalitySelect">Select Municipality:</label>
+  <select id="municipalitySelect"
+          
+          
+          class="form-select w-auto">
+    <option value="">All Municipalities</option>
+ 
+  </select>
+</div> -->
+
+
+
+
+<!-- ✅ Uploaded shapefiles list -->
+<div class="uploaded-files mt-4">
+  <h3 class="mb-4" style="color: #5D71D9; font-weight: 600;">Submission History & Status</h3>
+  <table class="table table-hover align-middle"> 
+    <thead style="background-color: #F8F9FE;">
+      <tr>
+        <th style="color: #5D71D9;">DATE SUBMITTED</th>
+        <th style="color: #5D71D9;">FILENAME</th>
+        <th class="text-center" style="color: #5D71D9;">STATUS</th> 
+        <th style="color: #5D71D9;">CPDC REMARKS</th>
+        <th class="text-center" style="color: #5D71D9;">ACTION</th>
+        <th></th> 
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let file of SubmitFiles">
+        <td class="text-secondary" style="font-size: 0.95rem;">
+ {{ file.createdAt | date:'MMM dd' }}, {{ file.setYear }}
+</td>
+        <td class="text-secondary">
+          {{ file.fileName }}
+        </td>
+        <td class="text-center">
+          <span [class]="'status-badge ' + (file.status?.toLowerCase().replace(' ', '-'))">
+            {{ file.status }}
+          </span>
+        </td>
+        <td class="fst-italic text-muted" style="font-size: 0.9rem;">
+          {{ file.remarks ? '"' + file.remarks + '"' : 'Waiting for CPDC validation...' }}
+        </td>
+        <td class="text-center">
+          <app-admin>
+  <div *ngIf="file.status === 'Pending'" class="d-flex flex-column align-items-center">
+    <div class="text-muted mb-2" style="font-size: 0.85rem;">
+      <i class="bi bi-hourglass-split me-1 text-warning"></i>
+      {{ file.action }}
+    </div>
+    <button (click)="onCancel(file.recNo)" 
+            class="btn btn-outline-danger btn-sm px-3" 
+            style="font-size: 0.75rem; border-radius: 20px;">
+      <i class="bi bi-x-circle me-1"></i> Cancel
+    </button>
+  </div>
+
+
+<div *ngIf="file.status === 'Approved'" class="text-center">
+
+  <div class="text-success mb-1" style="font-size:0.85rem;">
+    <i class="bi bi-check-circle-fill me-1"></i>
+    {{ file.action }}
+  </div>
+
+  <button class="upload-btn-modern"
+          (click)="toggleUpload(file.recNo)">
+    <i class="bi bi-cloud-upload me-1"></i> Upload
+  </button>
+
+  <!-- category picker -->
+  <div *ngIf="activeUpload === file.recNo"
+       class="upload-category-container">
+
+    <button class="upload-option"
+            (click)="uploadCategory('Population',file)">
+      👥 Population
+    </button>
+
+    <button class="upload-option"
+            (click)="uploadCategory('Economic Activity',file)">
+      💼 Economic Activity
+    </button>
+
+    <button class="upload-option"
+            (click)="uploadCategory('Physical Resources',file)">
+      🌿 Physical Resources
+    </button>
+
+    <button class="upload-option"
+            (click)="uploadCategory('Income Access',file)">
+      💰 Income / Access to Services
+    </button>
+
+  </div>
+
+</div>
+<div *ngIf="file.status?.toUpperCase() === 'REJECTED'">
+  <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none;" accept=".xlsx, .xls">
+    <a href="javascript:void(0)" 
+       (click)="onReupload(file)"
+       class="fw-bold text-decoration-none" 
+       style="color: #5D71D9;">
+       <i class="bi bi-arrow-clockwise me-1"></i>Re-upload
+    </a>
+  </div>
+  </app-admin>
+</td>
+
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ✅ Attributes Modal -->
+<div class="modal" tabindex="-1" >
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Attributes - </h5>
+        <button type="button" class="btn-close" ></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered" >
+          <thead>
+            <tr>
+              <th ></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr >
+              <td ></td>
+            </tr>
+          </tbody>
+        </table>
+        <p >No attributes available.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" >Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ Archive Modal -->
+<div class="modal" tabindex="-1" >
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Archive Files</h5>
+        <button type="button" class="btn-close" ></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered">
+          <thead><tr><th>File Name</th></tr></thead>
+          <tbody>
+            <tr >
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" >Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ Datasets Modal -->
+<div class="modal" tabindex="-1" >
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Datasets</h5>
+        <button type="button" class="btn-close" ></button>
+      </div>
+      <div class="modal-body">
+        <div >
+          <h6>
+           
+            <!-- <button class="btn btn-sm btn-info ms-2"
+                    (click)="onViewDatasetAttributes(currentRecNo!, dataset)">
+              View Attributes
+            </button> -->
+          </h6>
+          <table class="table table-bordered">
+            <thead><tr><th>File</th></tr></thead>
+            <tbody>
+              <tr>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" >Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -284,3 +284,124 @@
 .icon-btn:hover {
   color: #000;
 }
+/* I-define ang style para sa Validator badge */
+.validator-badge {
+    background-color: #6f42c1; /* Purple background */
+    color: #ffffff !important;  /* Puti nga text para klaro sa purple */
+    padding: 4px 10px;
+    border-radius: 50px;       /* Rounded look */
+    font-size: 12px;
+    font-weight: bold;
+    display: inline-block;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Gamay nga shadow para mo-lutaw */
+}
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.status-group {
+  margin-left: auto;
+}
+
+.btn {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  border: none;
+}
+
+.btn.primary {
+  background-color: #0d6efd;
+  color: white;
+}
+
+.btn.purple {
+  background-color: #6f42c1;
+  color: white;
+}
+
+.btn.success {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn.danger {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn.outline {
+  background-color: white;
+  border: 1px solid #ccc;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+.actions {
+  display: flex;
+  flex-direction: column;   /* <-- KEY CHANGE */
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.assign-section {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.status-section {
+  display: flex;
+  justify-content: flex-end;  /* Always right side */
+}
+
+.btn {
+  padding: 6px 14px;
+  font-size: 13px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.btn.primary {
+  background: #2563eb;
+  color: white;
+}
+
+.btn.purple {
+  background: #7c3aed;
+  color: white;
+}
+
+.btn.outline {
+  background: #f3f4f6;
+  border: 1px solid #ddd;
+}
+
+.btn.success {
+  background: #16a34a;
+  color: white;
+}
+
+.btn.danger {
+  background: #dc2626;
+  color: white;
+}
+
+.btn:hover {
+  opacity: 0.85;
+}

@@ -90,4 +90,10 @@ export class PopulationOfIndigenousPeopleService {
       { responseType: 'json' }
     );
   }
+  GetIpPdf(setYear: number, munCityId: string) {
+  return this.Http.get(
+    this.Base.url + this.ApiUrl.get_IP_pdf(setYear, munCityId),
+    { responseType: 'blob' }
+  );
+}
 }

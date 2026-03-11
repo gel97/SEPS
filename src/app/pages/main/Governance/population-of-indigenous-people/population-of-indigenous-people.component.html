@@ -87,31 +87,34 @@
                 <div class="table-responsive">
                   <table class="table table-light table-striped">
                     <thead class="table-dark">
-                      <tr>
-                        <th scope="col" rowspan="2">#</th>
-                        <th scope="col" rowspan="2" class="text-center">
-                          Barangay
-                        </th>
-                        <th scope="col" colspan="2" class="text-center">
-                          Non-IP Population
-                        </th>
-                        <th scope="col" colspan="2" class="text-center">
-                          IP Population
-                        </th>
-                        <th scope="col" colspan="2" class="text-center">
-                          No. of Population OverAll
-                        </th>
-                        <th scope="col" rowspan="2"></th>
-                      </tr>
-                      <tr>
-                        <th class="text-center">Male</th>
-                        <th class="text-center">Female</th>
-                        <th class="text-center">Male</th>
-                        <th class="text-center">Female</th>
-                        <th class="text-center">Non-IP Population</th>
-                        <th class="text-center">IP Population</th>
-                      </tr>
-                    </thead>
+  <tr>
+    <th rowspan="2">#</th>
+    <th rowspan="2" class="text-center">Barangay</th>
+
+    <th colspan="3" class="text-center">Non-IP Population</th>
+    <th colspan="3" class="text-center">IP Population</th>
+
+    <th colspan="2" class="text-center">No. of Population Overall</th>
+    <th rowspan="2"></th>
+  </tr>
+
+  <tr>
+    <!-- Non-IP -->
+    <th class="text-center">Name of Tribe</th>
+    <th class="text-center">Male</th>
+    <th class="text-center">Female</th>
+
+    <!-- IP -->
+    <th class="text-center">Name of Tribe</th>
+    <th class="text-center">Male</th>
+    <th class="text-center">Female</th>
+
+    <!-- Overall -->
+    <th class="text-center">Non-IP</th>
+    <th class="text-center">IP</th>
+  </tr>
+</thead>
+
                     <tbody>
                       <tr
                         *ngFor="
@@ -126,14 +129,22 @@
                           let i = index
                         "
                       >
-                        <td>{{ i + 1 }}</td>
-                        <td class="text-center">{{ a.brgyName }}</td>
-                        <td class="text-center">{{ a.non_Ip_Male }}</td>
-                        <td class="text-center">{{ a.non_Ip_Female }}</td>
-                        <td class="text-center">{{ a.ip_Male }}</td>
-                        <td class="text-center">{{ a.ip_Female }}</td>
-                        <td class="text-center">{{ a.overall_nonIp }}</td>
-                        <td class="text-center">{{ a.overAll_ip }}</td>
+                          <td>{{ i + 1 }}</td>
+      <td class="text-center">{{ a.brgyName }}</td>
+
+      <!-- ✅ Non-IP -->
+      <td class="text-center">{{ a.non_IP_NameOfTribe }}</td>
+      <td class="text-center">{{ a.non_Ip_Male }}</td>
+      <td class="text-center">{{ a.non_Ip_Female }}</td>
+
+      <!-- ✅ IP -->
+      <td class="text-center">{{ a.iP_NameOfTribe }}</td>
+      <td class="text-center">{{ a.ip_Male }}</td>
+      <td class="text-center">{{ a.ip_Female }}</td>
+
+      <!-- Overall -->
+      <td class="text-center">{{ a.overall_nonIp }}</td>
+      <td class="text-center">{{ a.overAll_ip }}</td>
                         <td>
                           <div class="d-inline-flex">
                             <app-admin>
@@ -279,6 +290,15 @@
             <div class="table-responsive" *ngIf="!isBarangay">
               <div class="container py-3">
                 <div class="accordion" id="faq">
+                                           <button
+        class="btn btn-success"
+        data-toggle="modal"
+        data-target="#pdfModal"
+        (click)="viewIpPdf()"
+      >
+        <i class="fa fa-file-pdf"></i> Generate PDF
+      </button>
+      <br><br>
                   <div
                     class="card mb-2"
                     *ngFor="let barangay of listPrkBrgy; index as i"
@@ -337,35 +357,32 @@
                           <table class="table table-hover table-striped">
                             <thead class="table-dark">
                               <!-- First header row -->
-                              <tr>
-                                <th scope="col" rowspan="2" class="text-center">
-                                  #
-                                </th>
-                                <th scope="col" rowspan="2" class="text-center">
-                                  Purok / Sitio
-                                </th>
-                                <th scope="col" colspan="2" class="text-center">
-                                  Non-IP Population
-                                </th>
-                                <th scope="col" colspan="2" class="text-center">
-                                  IP Population
-                                </th>
-                                <th scope="col" colspan="2" class="text-center">
-                                  No. of Population Overall
-                                </th>
-                                <th scope="col" rowspan="2" class="text-center">
-                                  Actions
-                                </th>
-                              </tr>
+                               <tr>
+      <th rowspan="2" class="text-center">#</th>
+      <th rowspan="2" class="text-center">Purok / Sitio</th>
+
+      <th colspan="3" class="text-center">Non-IP Population</th>
+      <th colspan="3" class="text-center">IP Population</th>
+
+      <th colspan="2" class="text-center">No. of Population Overall</th>
+      <th rowspan="2" class="text-center">Actions</th>
+    </tr>
                               <!-- Second header row -->
                               <tr>
-                                <th class="text-center">Male</th>
-                                <th class="text-center">Female</th>
-                                <th class="text-center">Male</th>
-                                <th class="text-center">Female</th>
-                                <th class="text-center">Non-IP</th>
-                                <th class="text-center">IP</th>
-                              </tr>
+      <!-- Non-IP -->
+      <th class="text-center">Name of Tribe</th>
+      <th class="text-center">Male</th>
+      <th class="text-center">Female</th>
+
+      <!-- IP -->
+      <th class="text-center">Name of Tribe</th>
+      <th class="text-center">Male</th>
+      <th class="text-center">Female</th>
+
+      <!-- Totals -->
+      <th class="text-center">Non-IP</th>
+      <th class="text-center">IP</th>
+    </tr>
                             </thead>
 
                             <tbody>
@@ -375,34 +392,38 @@
                                   let i = index
                                 "
                               >
-                                <td class="text-center">{{ i + 1 }}</td>
-                                <td class="text-center">
-                                  {{ purok.purokName }}
-                                </td>
+                               <td class="text-center">{{ i + 1 }}</td>
+    <td class="text-center">{{ purok.purokName }}</td>
 
-                                <!-- Non-IP -->
-                                <td class="text-center">
-                                  {{ purok.prk_male_non | number }}
-                                </td>
-                                <td class="text-center">
-                                  {{ purok.prk_female_non }}
-                                </td>
+    <!-- ✅ Non-IP -->
+    <td class="text-center">
+      {{ purok.non_IP_purok_NameOfTribe || '—' }}
+    </td>
+    <td class="text-center">
+      {{ purok.prk_male_non }}
+    </td>
+    <td class="text-center">
+      {{ purok.prk_female_non }}
+    </td>
 
-                                <!-- IP -->
-                                <td class="text-center">
-                                  {{ purok.purok_MaleIP }}
-                                </td>
-                                <td class="text-center">
-                                  {{ purok.purok_FemaleIP }}
-                                </td>
+    <!-- ✅ IP -->
+    <td class="text-center">
+      {{ purok.iP_purok_NameOfTribe || '—' }}
+    </td>
+    <td class="text-center">
+      {{ purok.purok_MaleIP }}
+    </td>
+    <td class="text-center">
+      {{ purok.purok_FemaleIP }}
+    </td>
 
-                                <!-- Totals -->
-                                <td class="text-center">
-                                  {{ purok.prk_non_ip_overall }}
-                                </td>
-                                <td class="text-center">
-                                  {{ purok.prk_ip_overall }}
-                                </td>
+    <!-- Totals -->
+    <td class="text-center">
+      {{ purok.prk_non_ip_overall }}
+    </td>
+    <td class="text-center">
+      {{ purok.prk_ip_overall }}
+    </td>
 
                                 <!-- Actions -->
                                 <td class="text-center">
@@ -450,28 +471,23 @@
   id="ModalAdd2"
   tabindex="-1"
   role="dialog"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
 >
   <div class="modal-dialog" role="document">
     <div class="modal-content">
+
+      <!-- HEADER -->
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Purok / Sitio</h5>
-        <button
-          #closebutton
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          data-target="#exampleModal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
+        <h5 class="modal-title">Purok / Sitio</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
         </button>
       </div>
 
+      <!-- BODY -->
       <div class="modal-body">
         <div class="row">
-          <!-- Name of Purok / Sitio -->
+
+          <!-- Purok Name -->
           <div class="col-lg-12">
             <label>Name of Purok / Sitio:</label>
             <input
@@ -481,135 +497,124 @@
             />
           </div>
 
-          <!-- Category Tabs -->
+          <!-- Tabs -->
           <div class="col-lg-12 mt-3">
-            <ul class="nav nav-tabs" id="categoryTabs2">
+            <ul class="nav nav-tabs">
               <li class="nav-item">
-                <a
-                  class="nav-link active"
-                  id="ip-tab2"
-                  data-toggle="tab"
-                  href="#ip2"
-                  >Indigenous People (IP)</a
-                >
+                <a class="nav-link active" data-toggle="tab" href="#ip2">
+                  Indigenous People (IP)
+                </a>
               </li>
               <li class="nav-item">
-                <a
-                  class="nav-link"
-                  id="non-ip-tab2"
-                  data-toggle="tab"
-                  href="#non-ip2"
-                  >Non-Indigenous People (Non-IP)</a
-                >
+                <a class="nav-link" data-toggle="tab" href="#non-ip2">
+                  Non-Indigenous People (Non-IP)
+                </a>
               </li>
             </ul>
           </div>
 
-          <!-- Tab Content -->
-          <div class="tab-content col-lg-12 mt-2">
-            <!-- IP Section -->
+          <!-- TAB CONTENT -->
+          <div class="tab-content col-lg-12 mt-3">
+
+            <!-- ================= IP TAB ================= -->
             <div class="tab-pane fade show active" id="ip2">
-              <label for="ip-male">IP Male:</label>
+
+              <label>Name of Tribe (IP):</label>
               <input
                 type="text"
                 class="form-control"
-                [(ngModel)]="data.purok_MaleIP"
-                (input)="autoAssignCategory()"
-                (input)="calculateTotals()"
-              />
-              <label for="ip-female">IP Female:</label>
-              <input
-                type="text"
-                class="form-control"
-                [(ngModel)]="data.purok_FemaleIP"
-                (input)="autoAssignCategory()"
-                (input)="calculateTotals()"
+                [(ngModel)]="data.iP_purok_NameOfTribe"
               />
 
-              <label for="ip-total">IP Overall Total:</label>
+              <label class="mt-2">IP Male:</label>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="data.purok_MaleIP"
+                (input)="computePurokIpTotal()"
+              />
+
+              <label>IP Female:</label>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="data.purok_FemaleIP"
+                (input)="computePurokIpTotal()"
+              />
+
+              <label>IP Overall Total:</label>
               <input
                 type="number"
                 class="form-control"
                 [(ngModel)]="data.prk_ip_overall"
+                readonly
               />
             </div>
 
-            <!-- Non-IP Section -->
+            <!-- ================= NON-IP TAB ================= -->
             <div class="tab-pane fade" id="non-ip2">
-              <label for="non-ip-male">Non-IP Male:</label>
+
+              <label>Name of Tribe (Non-IP):</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="data.non_IP_purok_NameOfTribe"
+              />
+
+              <label class="mt-2">Non-IP Male:</label>
               <input
                 type="number"
                 class="form-control"
                 [(ngModel)]="data.prk_male_non"
-                (input)="autoAssignCategory()"
-                (input)="calculateTotals()"
+                (input)="computePurokNonIpTotal()"
               />
-              <label for="non-ip-female">Non-IP Female:</label>
+
+              <label>Non-IP Female:</label>
               <input
                 type="number"
                 class="form-control"
                 [(ngModel)]="data.prk_female_non"
-                (input)="autoAssignCategory()"
-                (input)="calculateTotals()"
+                (input)="computePurokNonIpTotal()"
               />
 
-              <label for="non-ip-total">Non-IP Overall Total:</label>
+              <label>Non-IP Overall Total:</label>
               <input
                 type="number"
                 class="form-control"
                 [(ngModel)]="data.prk_non_ip_overall"
+                readonly
               />
             </div>
-          </div>
 
-          <!-- Modal Footer -->
-          <div class="col-lg-12">
-            <div class="modal-footer">
-              <!-- Add Mode Buttons -->
-              <ng-container *ngIf="!isEditMode">
-                <button
-                  type="button"
-                  class="btn btn-primary"
-                  (click)="saveDataIP()"
-                  id="closeModal"
-                >
-                  <i class="fa fa-check"></i> Save
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-dismiss="modal"
-                >
-                  <i class="fa fa-times"></i> Close
-                </button>
-              </ng-container>
-
-              <!-- Edit Mode Buttons -->
-              <ng-container *ngIf="isEditMode">
-                <button
-                  type="button"
-                  class="btn btn-primary"
-                  (click)="EditPrk()"
-                  aria-hidden="true"
-                >
-                  <i class="fas fa-edit"></i> Save Changes
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-dismiss="modal"
-                  aria-hidden="true"
-                >
-                  <i class="fas fa-times"></i> Cancel
-                </button>
-              </ng-container>
-            </div>
           </div>
         </div>
       </div>
+
+      <!-- FOOTER -->
+      <div class="modal-footer">
+        <ng-container *ngIf="!isEditMode">
+          <button class="btn btn-primary" (click)="saveDataIP()">
+            Save
+          </button>
+          <button class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+        </ng-container>
+
+        <ng-container *ngIf="isEditMode">
+          <button class="btn btn-primary" (click)="EditPrk()">
+            Save Changes
+          </button>
+          <button class="btn btn-secondary" data-dismiss="modal">
+            Cancel
+          </button>
+        </ng-container>
+      </div>
+
     </div>
   </div>
 </div>
+
 
 <!-- Add (Modal)barangay -->
 <!-- ModalAdd -->
@@ -618,30 +623,25 @@
   id="ModalAdd"
   tabindex="-1"
   role="dialog"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
 >
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
+
+      <!-- HEADER -->
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">
-          Population of Indigenous People
-        </h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
+        <h5 class="modal-title">Population of Indigenous People</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
         </button>
       </div>
 
+      <!-- BODY -->
       <div class="modal-body">
         <div class="row">
-          <!-- Barangay Selection -->
+
+          <!-- Barangay -->
           <div class="col-lg-12">
-            <label for="barangay">Barangay:</label>
+            <label>Barangay:</label>
             <select class="form-select" [(ngModel)]="data.brgyId">
               <option *ngFor="let item of barangayList" [value]="item.brgyId">
                 {{ item.brgyName }}
@@ -649,119 +649,155 @@
             </select>
           </div>
 
-          <!-- Category Tabs -->
+          <!-- Tabs -->
           <div class="col-lg-12 mt-3">
-            <ul class="nav nav-tabs" id="categoryTabs1">
+            <ul class="nav nav-tabs">
               <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#ipTab"
-                  >Indigenous People (IP)</a
-                >
+                <a class="nav-link active" data-toggle="tab" href="#ipTab">
+                  Indigenous People (IP)
+                </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#nonIpTab"
-                  >Non-Indigenous People (Non-IP)</a
-                >
+                <a class="nav-link" data-toggle="tab" href="#nonIpTab">
+                  Non-Indigenous People (Non-IP)
+                </a>
               </li>
             </ul>
           </div>
 
-          <!-- Tab Content -->
-          <div class="tab-content col-lg-12 mt-2">
-            <!-- IP Section -->
+          <!-- TAB CONTENT -->
+          <div class="tab-content col-lg-12 mt-3">
+
+            <!-- ================= IP TAB ================= -->
             <div class="tab-pane fade show active" id="ipTab">
-              <label for="ip-male">IP Male:</label>
+
+              <label>Name of Tribe (IP):</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="data.iP_NameOfTribe"
+              />
+
+              <label class="mt-2">IP Male:</label>
               <input
                 type="number"
                 class="form-control"
                 [(ngModel)]="data.ip_Male"
-                (input)="autoAssignCategory()"
+                (input)="computeIpTotal()"
               />
 
-              <label for="ip-female">IP Female:</label>
+              <label>IP Female:</label>
               <input
                 type="number"
                 class="form-control"
                 [(ngModel)]="data.ip_Female"
-                (input)="autoAssignCategory()"
+                (input)="computeIpTotal()"
               />
 
-              <label for="ip-total">IP Overall Total:</label>
+              <label>IP Overall Total:</label>
               <input
                 type="number"
                 class="form-control"
                 [(ngModel)]="data.overAll_ip"
+                readonly
               />
             </div>
 
-            <!-- Non-IP Section -->
+            <!-- ================= NON-IP TAB ================= -->
             <div class="tab-pane fade" id="nonIpTab">
-              <label for="non-ip-male">Non-IP Male:</label>
+
+              <label>Name of Tribe (Non-IP):</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="data.non_IP_NameOfTribe"
+              />
+
+              <label class="mt-2">Non-IP Male:</label>
               <input
                 type="number"
                 class="form-control"
                 [(ngModel)]="data.non_Ip_Male"
-                (input)="autoAssignCategory()"
+                (input)="computeNonIpTotal()"
               />
 
-              <label for="non-ip-female">Non-IP Female:</label>
+              <label>Non-IP Female:</label>
               <input
                 type="number"
                 class="form-control"
                 [(ngModel)]="data.non_Ip_Female"
-                (input)="autoAssignCategory()"
+                (input)="computeNonIpTotal()"
               />
 
-              <label for="non-ip-total">Non-IP Overall Total:</label>
+              <label>Non-IP Overall Total:</label>
               <input
                 type="number"
                 class="form-control"
                 [(ngModel)]="data.overall_nonIp"
+                readonly
               />
             </div>
+
           </div>
 
-          <!-- Modal Footer -->
-          <div class="col-lg-12 mt-4">
-            <div class="modal-footer">
-              <!-- Add Mode Buttons -->
-              <ng-container *ngIf="!isEditMode">
-                <button
-                  type="button"
-                  class="btn btn-primary"
-                  (click)="saveData()"
-                >
-                  <i class="fa fa-check"></i> Save
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-dismiss="modal"
-                >
-                  <i class="fa fa-times"></i> Close
-                </button>
-              </ng-container>
+        </div>
+      </div>
 
-              <!-- Edit Mode Buttons -->
-              <ng-container *ngIf="isEditMode">
-                <button
-                  type="button"
-                  class="btn btn-primary"
-                  (click)="EditIp()"
-                >
-                  <i class="fas fa-edit"></i> Save Changes
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-dismiss="modal"
-                >
-                  <i class="fas fa-times"></i> Cancel
-                </button>
-              </ng-container>
+      <!-- FOOTER -->
+      <div class="modal-footer">
+        <ng-container *ngIf="!isEditMode">
+          <button class="btn btn-primary" (click)="saveData()">Save</button>
+          <button class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </ng-container>
+
+        <ng-container *ngIf="isEditMode">
+          <button class="btn btn-primary" (click)="EditIp()">Save Changes</button>
+          <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        </ng-container>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div
+  class="modal fade"
+  id="pdfModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="pdfModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="pdfModalLabel">Purok</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body position-relative" style="height: 80vh">
+        <!-- Loader -->
+        <div *ngIf="loadingPdf" class="loader-container">
+          <div class="loader">
+            <div class="central-circle">
+              <span class="percent">{{ pdfPercent }}%</span>
             </div>
+            <div class="orbiting-circle"></div>
+            <div class="pulse-ring"></div>
           </div>
         </div>
+
+        <!-- PDF -->
+        <iframe
+          *ngIf="pdfSrc && !loadingPdf"
+          [src]="pdfSrc"
+          width="100%"
+          height="100%"
+          frameborder="0"
+        ></iframe>
       </div>
     </div>
   </div>
 </div>
+

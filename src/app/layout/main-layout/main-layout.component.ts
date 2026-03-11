@@ -604,7 +604,7 @@ export class MainLayoutComponent implements OnInit {
 
   constructor(
     private service: AuthService,
-    private auth: AuthService,
+    public auth: AuthService,
     private router: Router,
     private baseUrl: BaseUrl,
     private imagesService: ImagesService,
@@ -630,91 +630,139 @@ export class MainLayoutComponent implements OnInit {
   guest: any;
 
   ngOnInit(): void {
-    const munCityId = this.getMunCityId();
-    const userId = this.auth.userId;
+  const munCityId = this.getMunCityId();
+  const userId = this.auth.userId;
+ 
+const lguList: { [key: string]: string } = {
+    "112305": "Kapalong",
+    "112301": "Asuncion",
+    "112303": "Carmen",
+    "112314": "New Corella",
+    "112315": "Panabo City",
+    "112317": "Island Garden City of Samal",
+    "112318": "Sto. Tomas",
+    "112319": "Tagum City",
+    "112323": "Braulio E. Dujali",
+    "112324": "San Isidro",
+    "112322": "Talaingod"
+  };
 
-    // 🔑 Always load from server first
-    this.Service.getNotApplicableModulesFromServer(
-      this.auth.activeSetYear,
-      munCityId,
-      userId
-    ).subscribe({
-      next: (serverModules) => {
-        this.notApplicableModules = serverModules || [];
-
-        // Save to localStorage (cache for offline use)
-        localStorage.setItem(
-          `notApplicableModules_${munCityId}`,
-          JSON.stringify(this.notApplicableModules)
-        );
-
+  this.Service.getNotApplicableModulesFromServer(
+    this.auth.activeSetYear,
+    munCityId,
+    userId
+  ).subscribe({
+    next: (serverModules) => {
+      this.notApplicableModules = serverModules || [];
+      localStorage.setItem(`notApplicableModules_${munCityId}`, JSON.stringify(this.notApplicableModules));
+      this.Service.setNotApplicableModules(this.notApplicableModules);
+      
+      // I-load ang mga charts
+      this.getNA(this.auth.activeSetYear, munCityId);
+      this.getSocioNA(this.auth.activeSetYear, munCityId);
+      this.getSocialNA(this.auth.activeSetYear, munCityId);
+      this.getInfraNA(this.auth.activeSetYear, munCityId);
+      this.loadGovernanceData();
+    },
+    error: (err) => {
+      console.warn('[ngOnInit] Fallback to local storage');
+      const saved = localStorage.getItem(`notApplicableModules_${munCityId}`);
+      if (saved) {
+        this.notApplicableModules = JSON.parse(saved);
         this.Service.setNotApplicableModules(this.notApplicableModules);
+      }
+    }
+  });
 
-        // Load charts
-        this.getNA(this.auth.activeSetYear, munCityId);
-        this.getSocioNA(this.auth.activeSetYear, munCityId);
-        this.getSocialNA(this.auth.activeSetYear, munCityId);
-        this.getInfraNA(this.auth.activeSetYear, munCityId);
-        this.loadGovernanceData();
-      },
-      error: (err) => {
-        console.warn('[ngOnInit] ⚠️ Server load failed, fallback to local');
+  // 2. I-SET ANG MGA BASIC DATA
+  this.showDashboardAndHeader = false;
+  this.guest = localStorage.getItem('guest');
+  this.set_year = this.service.setYear;
+  this.active_set_year = this.service.activeSetYear;
 
-        // Fallback: load from localStorage
-        const saved = localStorage.getItem(`notApplicableModules_${munCityId}`);
-        if (saved) {
-          this.notApplicableModules = JSON.parse(saved);
-          this.Service.setNotApplicableModules(this.notApplicableModules);
-        }
+// 3. 👤 REVISED SIDEBAR NAME LOGIC
 
-        // Load charts anyway
-        this.getNA(this.auth.activeSetYear, munCityId);
-        this.getSocioNA(this.auth.activeSetYear, munCityId);
-        this.getSocialNA(this.auth.activeSetYear, munCityId);
-        this.getInfraNA(this.auth.activeSetYear, munCityId);
-        this.loadGovernanceData();
-      },
-    });
-    this.showDashboardAndHeader = false;
-    console.log('currentUrl: ', this.currentUrl);
-    this.guest = localStorage.getItem('guest');
+this._userData = this.service.getUserData();
 
-    this.set_year = this.service.setYear;
-    this.active_set_year = this.service.activeSetYear;
-    this._userData = this.service.getUserData();
-    this.munCityName =
-      this.guest && this.service.munCityId === 'null'
-        ? 'Province of Davao del Norte'
-        : this.service.munCityName;
+if (this._userData) {
     this.userInfo = JSON.parse(this._userData);
+    
 
-    this.imagesService
-      .GetLogo(
-        this.guest && this.service.munCityId === 'null'
-          ? 'ddn'
-          : this.service.munCityId
-      )
-      .pipe(
-        concatMap((item) => of(item).pipe(delay(2000))),
-        catchError((error: any, caught: Observable<any>): Observable<any> => {
-          console.error('There was an error!', error);
-          if (error) {
-            this.isLoading = false;
-          }
-          return of();
-        })
-      )
-      .subscribe((response) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(response);
-        reader.onload = () => {
-          if (reader.result) {
-            this.croppedImagee = reader.result.toString();
-            this.isLoading = false;
-          }
-        };
-      });
+    let rawCityInfo = this.userInfo?.munCityName || '';
+
+    if (this.isValidator()) {
+
+  const cleanId = this.auth.realMunCityId; // 👈 sakto gyud ni
+
+  const lguDisplayName =
+    lguList[cleanId] || 'Unknown';
+
+  this.munCityName =
+    'Validator of ' + this.modifyCityMun(lguDisplayName);
+} 
+    else {
+
+  const cleanId = this.auth.realMunCityId;
+
+  const lguName =
+    lguList[cleanId] || 'Unknown';
+
+  this.munCityName =
+    this.modifyCityMun(lguName);
+}
   }
+  this.imagesService.GetLogo(this.guest && this.service.munCityId === 'null' ? 'ddn' : this.service.munCityId)
+    .pipe(
+      concatMap((item) => of(item).pipe(delay(2000))),
+      catchError((error) => {
+        this.isLoading = false;
+        return of();
+      })
+    )
+    .subscribe((response) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(response);
+      reader.onload = () => {
+        if (reader.result) {
+          this.croppedImagee = reader.result.toString();
+          this.isLoading = false;
+        }
+      };
+    });
+}
+
+
+private loadAllDashboardCharts(munCityId: string) {
+  this.getNA(this.auth.activeSetYear, munCityId);
+  this.getSocioNA(this.auth.activeSetYear, munCityId);
+  this.getSocialNA(this.auth.activeSetYear, munCityId);
+  this.getInfraNA(this.auth.activeSetYear, munCityId);
+  this.loadGovernanceData();
+}
+
+private loadSidebarLogo(munCityId: string) {
+  const logoId = (this.guest && this.service.munCityId === 'null') ? 'ddn' : munCityId;
+
+  this.imagesService.GetLogo(logoId)
+    .pipe(
+      concatMap((item) => of(item).pipe(delay(2000))),
+      catchError((error) => {
+        console.error('Logo error:', error);
+        this.isLoading = false;
+        return of();
+      })
+    )
+    .subscribe((response) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(response);
+      reader.onload = () => {
+        if (reader.result) {
+          this.croppedImagee = reader.result.toString();
+          this.isLoading = false;
+        }
+      };
+    });
+}
   loadGovernanceData() {
     throw new Error('Method not implemented.');
   }
@@ -1084,4 +1132,10 @@ export class MainLayoutComponent implements OnInit {
     if ($('.sidebar').hasClass('toggled')) {
     }
   }
+ isValidator(): boolean {
+  // Siguradong boolean ang i-return gamit ang value gikan sa service
+  return !!this.auth.isValidatorUser;
 }
+}
+
+

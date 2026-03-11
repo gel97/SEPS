@@ -53,13 +53,10 @@
         routerLink=""
       >
         <div class="sidebar-brand-text mx-2">
-          <span
-            *ngIf="munCityName"
-            style="color: rgb(54, 127, 223); font-size: 12px"
-          >
-            {{ munCityName }}
-          </span>
-        </div>
+  <span *ngIf="munCityName" style="color: rgb(54, 127, 223); font-size: 12px; font-weight: bold;">
+    {{ munCityName | uppercase }}
+  </span>
+</div>
       </a>
     </div>
 
@@ -80,7 +77,7 @@
       <div class="sidebar-heading">Interface</div>
 
       <!-- Nav Item - Governance -->
-      <li class="nav-item" routerLinkActive="active">
+      <li class="nav-item" routerLinkActive="active" *ngIf="!isValidator()">
         <a
           class="nav-link collapsed"
           href="#"
@@ -121,7 +118,7 @@
         </div>
       </li>
 
-      <li class="nav-item" routerLinkActive="active">
+      <li class="nav-item" routerLinkActive="active" *ngIf="!isValidator()">
         <a
           class="nav-link collapsed"
           href="#"
@@ -451,7 +448,7 @@
       </app-ddn>
       <app-menu>
         <!-- Nav Item - Socio-Economic Activities -->
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="!isValidator()">
           <a
             class="nav-link collapsed"
             href="#"
@@ -916,7 +913,7 @@
         </li>
 
         <!-- Nav Item - Social Profile -->
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="!isValidator()">
           <a
             class="nav-link collapsed"
             href="#"
@@ -2278,7 +2275,7 @@
         </li>
 
         <!-- Nav Item - Environment -->
-        <li class="nav-item" routerLinkActive="active">
+        <li class="nav-item" routerLinkActive="active" *ngIf="!isValidator()">
           <a
             class="nav-link collapsed"
             href="#"
@@ -2415,7 +2412,7 @@
           </div>
         </div>
         <!-- Nav Item - Infrastructure and Utilities -->
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="!isValidator()">
           <a
             class="nav-link collapsed"
             href="#"
@@ -2880,7 +2877,7 @@
             </div>
           </div>
         </li>
-        <li class="nav-item" routerLinkActive="active">
+        <li class="nav-item" routerLinkActive="active" *ngIf="!isValidator()">
           <a
             class="nav-link collapsed"
             href="#"
@@ -2940,14 +2937,14 @@
           data-parent="#accordionSidebar"
         >
           <div class="bg-lightblue collapse-inner rounded">
-            <app-for-all-admin
+            <!-- <app-for-all-admin
               ><a
                 class="collapse-item"
                 routerLinkActive="active"
                 routerLink="Tools/news"
                 >News/ Announcements</a
               ></app-for-all-admin
-            >
+            > -->
             <a
               class="collapse-item"
               routerLinkActive="active"
@@ -2962,10 +2959,84 @@
                 >Summary Reports</a
               >
             </app-nga>
+            <app-ddn>
+             <a
+                class="collapse-item"
+                routerLinkActive="active"
+                routerLink="Tools/news"
+                >News/ Announcements</a
+              ></app-ddn>
           </div>
         </div>
       </li>
-
+      <!--fOR sUBMISSION-->
+      <app-menu>
+      <li class="nav-item" routerLinkActive="active" *ngIf="!isValidator()">
+        <a
+          class="nav-link collapsed"
+          href="#"
+          data-toggle="collapse"
+          data-target="#collapseSubmit"
+          aria-expanded="true"
+          aria-controls="collapseseventh"
+        >
+          <i class="fa fa-paper-plane"></i>
+          <span>My Submissions</span>
+        </a>
+       
+      <div
+          id="collapseSubmit"
+          class="collapse"
+          aria-labelledby="headingseventh"
+          data-parent="#accordionSidebar"
+        >
+          <div class="bg-lightblue collapse-inner rounded">
+      <a
+                class="collapse-item"
+                routerLinkActive="active"
+                routerLink="submissions/submissions"
+                >Submissions</a
+              >
+          </div>
+        </div>
+      </li>
+      </app-menu>
+      <app-validator>
+        <li class="nav-item" routerLinkActive="active">
+        <a
+          class="nav-link collapsed"
+          href="#"
+          data-toggle="collapse"
+          data-target="#collapseValidate"
+          aria-expanded="true"
+          aria-controls="collapseEith"
+        >
+          <i class="fa fa-paper-plane"></i>
+          <span>LGU Data</span>
+        </a>
+       
+      <div
+          id="collapseValidate"
+          class="collapse"
+          aria-labelledby="headingEith"
+          data-parent="#accordionSidebar"
+        >
+          <div class="bg-lightblue collapse-inner rounded">
+      <a
+                class="collapse-item"
+                routerLinkActive="active"
+                routerLink="verify/verify"
+                >Data Submissions</a
+              >
+          </div>
+        </div>
+      </li>
+  <!-- <li class="nav-item">
+    <a class="nav-link" routerLink="Validator/general-dashboard">
+      <i class="fa fa-dashboard"></i> <span>Validator Main</span>
+    </a>
+  </li> -->
+</app-validator>
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block" />
     </app-hidefromguestmenu>
@@ -3324,6 +3395,7 @@
         </div>
       </li>
     </app-ddn>
+    <!--For Guest-->
     <app-for-guest-only>
       <li class="nav-item" routerLinkActive="active">
         <a
@@ -3410,6 +3482,7 @@
         </div>
       </li>
     </app-for-guest-only>
+    
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">
       <button

@@ -531,6 +531,21 @@ export class ElementaryPreElementaryComponent implements OnInit {
       this.elementary.brgyId == '' || this.elementary.brgyId == null
         ? true
         : false;
+    this.toValidate.currEnrollment = 
+      this.elementary.currEnrollment == '' || this.elementary.currEnrollment == null ? true : false;
+    this.toValidate.numofTeachers = 
+      this.elementary.numofTeachers == '' || this.elementary.numofTeachers == null ? true : false;
+    this.toValidate.numberofClassroom = 
+      this.elementary.numberofClassroom == '' || this.elementary.numberofClassroom == null ? true : false;
+    this.toValidate.numofSeats = 
+      this.elementary.numofSeats == '' || this.elementary.numofSeats == null ? true : false;
+    this.toValidate.teacherPupRatio = 
+      this.elementary.teacherPupRatio == '' || this.elementary.teacherPupRatio == null ? true : false;
+    this.toValidate.classroomPupRatio = 
+      this.elementary.classroomPupRatio == '' || this.elementary.classroomPupRatio == null ? true : false;
+    this.toValidate.seatsPupRatio = 
+      this.elementary.seatsPupRatio == '' || this.elementary.seatsPupRatio == null ? true : false;
+
 
     this.elementary.menuId = this.menuId;
     this.elementary.setYear = this.setYear;
@@ -539,7 +554,14 @@ export class ElementaryPreElementaryComponent implements OnInit {
     if (
       !this.toValidate.name &&
       !this.toValidate.brgyId &&
-      !this.toValidate.schoolId
+      !this.toValidate.schoolId &&
+      !this.toValidate.currEnrollment &&
+      !this.toValidate.numofTeachers &&
+      !this.toValidate.numberofClassroom &&
+      !this.toValidate.numofSeats &&
+      !this.toValidate.teacherPupRatio &&
+      !this.toValidate.classroomPupRatio &&
+      !this.toValidate.seatsPupRatio
     ) {
       this.service.AddEducationSchool(this.elementary).subscribe({
         next: (request) => {

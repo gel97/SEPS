@@ -10,6 +10,7 @@ import { ReportsService } from 'src/app/shared/Tools/reports.service';
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 import { isEmptyObject } from 'jquery';
 import { request } from 'express';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 @Component({
   selector: 'app-barangays',
   templateUrl: './barangays.component.html',
@@ -23,13 +24,18 @@ export class BarangaysComponent implements OnInit {
 
   @ViewChild('closebutton') closebutton!: ElementRef;
   apiControllerName!: string;
+  loadingPdf = false;
+  pdfPercent = 0;
+  pdfSrc: any;
+
 
   constructor(
     private pdfService: PdfService,
     private reportService: ReportsService,
     private service: BarangayOfficialService,
     private auth: AuthService,
-    private modifyService: ModifyCityMunService
+    private modifyService: ModifyCityMunService,
+    private sanitizer: DomSanitizer
   ) {}
 
   modifyCityMun(cityMunName: string) {
@@ -157,7 +163,38 @@ export class BarangaysComponent implements OnInit {
       }
     });
   }
+viewPurokChairPdf() {
+  
+  const setYear = this.auth.activeSetYear; 
+  const munId = this.auth.munCityId;
 
+  // 2. Debugging: Tan-awa sa Console (F12) kung naay sulod na ba
+  console.log("PDF Parameters:", { setYear, munId });
+
+  if (!setYear || !munId) {
+    Swal.fire('Missing Data', 'Palihug siguroha nga naay active Year ug Municipality.', 'warning');
+    return;
+  }
+
+  this.loadingPdf = true;
+  this.pdfPercent = 0;
+
+  // 3. I-pass ang husto nga variables sa service call
+  this.service.GetPurokChair(setYear, munId).subscribe({
+    next: (pdfBlob: Blob) => {
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+      // Siguroha nga ang 'sanitizer' gi-inject sa constructor o gi-define sa taas
+      this.pdfSrc = this.sanitizer.bypassSecurityTrustResourceUrl(pdfUrl);
+      this.pdfPercent = 100;
+      setTimeout(() => (this.loadingPdf = false), 500);
+    },
+    error: (err) => {
+      console.error('Error loading PDF', err);
+      this.loadingPdf = false;
+      Swal.fire('Error', ' Please check the API.', 'error');
+    },
+  });
+}
   GeneratePDF() {
     let reports: any = [];
     let data: any = [];

@@ -39,17 +39,17 @@
         <!-- Only show after isGuestUser has a defined value -->
         <!-- Show this only if user is NOT a guest -->
         <!-- Only show this section if NOT a guest user -->
-        <div *ngIf="!isGuestUser">
-          <label class="text-dark">Municipality / City:</label>
-          <select
-            class="form-select form-select-lg mb-3"
-            [(ngModel)]="muncity_id"
-          >
-            <option *ngFor="let item of list_muncity" [value]="item.munCityId">
-              {{ item.munCityName }}
-            </option>
-          </select>
-        </div>
+       <div *ngIf="!isGuestUser && !isValidatorUser">
+  <label class="text-dark">Municipality / City:</label>
+  <select
+    class="form-select form-select-lg mb-3"
+    [(ngModel)]="muncity_id"
+  >
+    <option *ngFor="let item of list_muncity" [value]="item.munCityId">
+      {{ item.munCityName }}
+    </option>
+  </select>
+</div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">

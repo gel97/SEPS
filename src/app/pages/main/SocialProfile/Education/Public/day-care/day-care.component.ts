@@ -524,12 +524,35 @@ export class DayCareComponent implements OnInit {
 
     this.toValidate.brgyId =
       this.daycare.brgyId == '' || this.daycare.brgyId == null ? true : false;
+    this.toValidate.currEnrollment = 
+      this.daycare.currEnrollment == '' || this.daycare.currEnrollment == null ? true : false;
+    this.toValidate.numofTeachers = 
+      this.daycare.numofTeachers == '' || this.daycare.numofTeachers == null ? true : false;
+    this.toValidate.numberofClassroom = 
+      this.daycare.numberofClassroom == '' || this.daycare.numberofClassroom == null ? true : false;
+    this.toValidate.numofSeats = 
+      this.daycare.numofSeats == '' || this.daycare.numofSeats == null ? true : false;
+    this.toValidate.teacherPupRatio = 
+      this.daycare.teacherPupRatio == '' || this.daycare.teacherPupRatio == null ? true : false;
+    this.toValidate.classroomPupRatio = 
+      this.daycare.classroomPupRatio == '' || this.daycare.classroomPupRatio == null ? true : false;
+    this.toValidate.seatsPupRatio = 
+      this.daycare.seatsPupRatio == '' || this.daycare.seatsPupRatio == null ? true : false;
+
+
+    
 
     this.daycare.menuId = this.menuId;
     this.daycare.setYear = this.setYear;
     this.daycare.munCityId = this.munCityId;
 
-    if (!this.toValidate.name && !this.toValidate.brgyId) {
+    if (!this.toValidate.name && !this.toValidate.brgyId && !this.toValidate.currEnrollment &&
+      !this.toValidate.numofTeachers &&
+      !this.toValidate.numberofClassroom &&
+      !this.toValidate.numofSeats &&
+      !this.toValidate.teacherPupRatio &&
+      !this.toValidate.classroomPupRatio &&
+      !this.toValidate.seatsPupRatio) {
       this.service.AddEducationSchool(this.daycare).subscribe({
         next: (request) => {
           this.GetListDcarechool();
