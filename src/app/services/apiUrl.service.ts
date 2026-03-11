@@ -59,6 +59,7 @@ export class ApiUrl {
   post_update_IP = () => `/Benificiaries/update`;
   delete_IP = (transId: any) => `/Benificiaries/${transId}`;
   post_import_IP = () => `/Benificiaries/Import`;
+  
 
   // Barangay Officials
   post_get_barangay_officials = (munCityId: any, setYear: any) =>
@@ -83,6 +84,8 @@ export class ApiUrl {
     `/Barangay/ListBarangays?munCityId=${munCityId}`;
   delete_Prk = (transId: any) => `/PurokChair/${transId}`;
   post_import_purok = () => `/PurokChair/Import`;
+get_purokChair_pdf = (setYear: any, munCityId: any) => 
+    `/PurokChair/generate_pdf_purok_chair/${setYear}/${munCityId}`;
 
   //sitio
   post_save_purokIp = () => `/PurokIp/SavePuroIP`;
@@ -94,6 +97,8 @@ export class ApiUrl {
     `/PurokIp/GetPurokIPBarangays?munCityId=${munCityId}&setYear=${setYear}`;
   post_list_PrkBarangayIP = (munCityId: any) =>
     `/PurokIp/ListBarangays?munCityId=${munCityId}`;
+  get_IP_pdf = (setYear: any, munCityId: any) => 
+    `/PurokIp/generate_pdf/${setYear}/${munCityId}`;
 
   // for N/A
   get_notApplicableModules = (

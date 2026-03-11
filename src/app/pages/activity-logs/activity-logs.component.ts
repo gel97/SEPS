@@ -9,11 +9,11 @@ import { interval, Subscription } from 'rxjs';
   styleUrls: ['./activity-logs.component.css'],
 })
 export class ActivityLogsComponent implements OnInit, OnDestroy {
-  selectedMonth: number | undefined;
-  selectedYear: number | undefined;
-  activityLogs: any = [];
-  isAdmin: boolean = false;
-  refreshSub: Subscription | undefined;
+  selectedMonth?: number;
+  selectedYear?: number;
+  activityLogs: any[] = [];
+  isAdmin = false;
+  refreshSub?: Subscription;
 
   constructor(private authService: AuthService) {}
 
@@ -21,88 +21,77 @@ export class ActivityLogsComponent implements OnInit, OnDestroy {
     const role = localStorage.getItem('role');
     this.isAdmin = role === 'Admin';
 
-    if (this.isAdmin) {
-      this.loadAllLogsForAdmin();
+    this.loadLogs();
 
-      // Auto-refresh every 10 seconds
-      this.refreshSub = interval(10000).subscribe(() => {
-        this.loadAllLogsForAdmin();
-      });
-    } else {
-      this.loadActivityLogsFromLocalStorage();
-    }
+    // auto refresh every 10 seconds
+    this.refreshSub = interval(10000).subscribe(() => {
+      this.loadLogs();
+    });
   }
 
   ngOnDestroy(): void {
-    if (this.refreshSub) {
-      this.refreshSub.unsubscribe();
-    }
+    this.refreshSub?.unsubscribe();
   }
 
-  loadAllLogsForAdmin() {
-    const storedUserId = localStorage.getItem('userId');
-    const params = {
-      userId: storedUserId || '',
-      Take: 100, // or any number you want to take
+  loadLogs() {
+    const userId = localStorage.getItem('userId');
+
+    const params: any = {
+      Take: 100,
     };
 
+    // kung dili admin, own logs ra
+    if (!this.isAdmin && userId) {
+      params.userId = userId;
+    }
+
     this.authService.getAllLogs(params).subscribe(
-      (logs: any) => {
+      (logs: any[]) => {
         this.activityLogs = logs;
       },
       (error) => {
-        console.error('Error loading admin logs:', error);
+        console.error('Error loading logs:', error);
       }
     );
   }
 
-  loadActivityLogsFromLocalStorage() {
-    const logs = JSON.parse(localStorage.getItem('activityLogs') || '[]');
-    this.activityLogs = logs;
-  }
-
-  clearLogs() {
-    this.authService.clearActivityLogs();
-    this.activityLogs = [];
-    Swal.fire('Logs cleared successfully!', '', 'success');
-  }
-
   filterLogs() {
-    if (this.selectedMonth && this.selectedYear) {
-      const params: any = {
-        month: this.selectedMonth,
-        year: this.selectedYear,
-        Take: 100, // optional: default or custom
-      };
-
-      const storedUserId = localStorage.getItem('userId');
-      if (storedUserId) {
-        params.userId = storedUserId;
-      }
-
-      this.authService.getAllLogs(params).subscribe(
-        (logs) => {
-          if (!logs || logs.length === 0) {
-            Swal.fire({
-              icon: 'info',
-              title: 'No Activity Logs Found',
-              text: 'No activity logs found for the specified month and year.',
-            });
-          } else {
-            this.activityLogs = logs;
-            localStorage.setItem('activityLogs', JSON.stringify(logs));
-          }
-        },
-        (error) => {
-          console.error('Error fetching activity logs:', error);
-        }
-      );
-    } else {
-      Swal.fire({
-        icon: 'warning',
-        title: 'Incomplete Filter',
-        text: 'Please select both month and year before filtering logs.',
-      });
+    if (!this.selectedMonth || !this.selectedYear) {
+      Swal.fire('Please select both month and year', '', 'warning');
+      return;
     }
+
+    const userId = localStorage.getItem('userId');
+
+    const params: any = {
+      month: this.selectedMonth,
+      year: this.selectedYear,
+      Take: 100,
+    };
+
+    if (!this.isAdmin && userId) {
+      params.userId = userId;
+    }
+
+    this.authService.getAllLogs(params).subscribe(
+      (logs: any[]) => {
+        if (!logs.length) {
+          Swal.fire('No logs found', '', 'info');
+        }
+        this.activityLogs = logs;
+      },
+      (error) => {
+        console.error('Error filtering logs:', error);
+      }
+    );
   }
+
+  // clearLogs() {
+  //   const userId = localStorage.getItem('userId');
+
+  //   this.authService.clearActivityLogs(userId).subscribe(() => {
+  //     this.activityLogs = [];
+  //     Swal.fire('Logs cleared successfully!', '', 'success');
+  //   });
+  // }
 }

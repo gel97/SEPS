@@ -171,10 +171,22 @@
             </div>
 
             <!-----------------------Purok Chairmanskie---------------------------->
+             <div class="mb-3 text-right">
+     
+    </div>
             <div class="table-responsive" *ngIf="!isBarangay">
               <div id="main">
                 <div class="container">
                   <div class="accordion" id="faq">
+                                       <button
+        class="btn btn-success"
+        data-toggle="modal"
+        data-target="#pdfModal"
+        (click)="viewPurokChairPdf()"
+      >
+        <i class="fa fa-file-pdf"></i> Generate PDF
+      </button>
+      <br><br>
                     <div
                       class="card"
                       *ngFor="let barangay of listPrkBrgy; index as i"
@@ -219,8 +231,10 @@
                               <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
                             </app-admin>
                           </div> -->
+       
                           </div>
                           <br />
+                           
                           <table class="table table-hover table-striped">
                             <thead class="thead-dark">
                               <tr>
@@ -743,4 +757,45 @@
       color: #333; /* Darker text */
     }
   </style>
+</div>
+<div
+  class="modal fade"
+  id="pdfModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="pdfModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="pdfModalLabel">Purok</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body position-relative" style="height: 80vh">
+        <!-- Loader -->
+        <div *ngIf="loadingPdf" class="loader-container">
+          <div class="loader">
+            <div class="central-circle">
+              <span class="percent">{{ pdfPercent }}%</span>
+            </div>
+            <div class="orbiting-circle"></div>
+            <div class="pulse-ring"></div>
+          </div>
+        </div>
+
+        <!-- PDF -->
+        <iframe
+          *ngIf="pdfSrc && !loadingPdf"
+          [src]="pdfSrc"
+          width="100%"
+          height="100%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+  </div>
 </div>

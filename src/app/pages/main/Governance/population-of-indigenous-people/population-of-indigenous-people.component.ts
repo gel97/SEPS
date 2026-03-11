@@ -8,6 +8,7 @@ import { PdfService } from 'src/app/services/pdf.service';
 import { ReportsService } from 'src/app/shared/Tools/reports.service';
 import { isEmptyObject } from 'jquery';
 import { SourceService } from 'src/app/shared/Source/Source.Service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-population-of-indigenous-people',
@@ -22,7 +23,8 @@ export class PopulationOfIndigenousPeopleComponent implements OnInit {
     private service: PopulationOfIndigenousPeopleService,
     private auth: AuthService,
     private cdr: ChangeDetectorRef,
-    private SourceService: SourceService
+    private SourceService: SourceService,
+    private sanitizer: DomSanitizer
   ) {}
   message = 'Population of Indigenous People';
 
@@ -45,6 +47,8 @@ export class PopulationOfIndigenousPeopleComponent implements OnInit {
   nonIpMale: number = 0;
   nonIpFemale: number = 0;
   category: string = '';
+  nameOfTribe: string = '';
+  non_IP_NameOfTribe: string = '';
   IP: any = [];
   data: any = {};
   setYear = this.auth.setYear;
@@ -68,6 +72,9 @@ export class PopulationOfIndigenousPeopleComponent implements OnInit {
   newSource: any = {};
   selectedSourceId: number | null = null;
   showAddForm: boolean = true;
+  loadingPdf = false;
+  pdfPercent = 0;
+  pdfSrc: any;
   @ViewChild(ImportComponent)
   private importComponent!: ImportComponent;
   @ViewChild('closebutton')
@@ -101,6 +108,38 @@ export class PopulationOfIndigenousPeopleComponent implements OnInit {
       },
       error: (error) => {
         console.error('Failed to fetch sources:', error);
+      },
+    });
+  }
+  viewIpPdf() {
+    
+    const setYear = this.auth.activeSetYear; 
+    const munId = this.auth.munCityId;
+  
+    // 2. Debugging: Tan-awa sa Console (F12) kung naay sulod na ba
+    console.log("PDF Parameters:", { setYear, munId });
+  
+    if (!setYear || !munId) {
+      Swal.fire('Missing Data', 'Palihug siguroha nga naay active Year ug Municipality.', 'warning');
+      return;
+    }
+  
+    this.loadingPdf = true;
+    this.pdfPercent = 0;
+  
+    // 3. I-pass ang husto nga variables sa service call
+    this.service.GetIpPdf(setYear, munId).subscribe({
+      next: (pdfBlob: Blob) => {
+        const pdfUrl = URL.createObjectURL(pdfBlob);
+        // Siguroha nga ang 'sanitizer' gi-inject sa constructor o gi-define sa taas
+        this.pdfSrc = this.sanitizer.bypassSecurityTrustResourceUrl(pdfUrl);
+        this.pdfPercent = 100;
+        setTimeout(() => (this.loadingPdf = false), 500);
+      },
+      error: (err) => {
+        console.error('Error loading PDF', err);
+        this.loadingPdf = false;
+        Swal.fire('Error', ' Please check the API.', 'error');
       },
     });
   }
@@ -340,8 +379,31 @@ export class PopulationOfIndigenousPeopleComponent implements OnInit {
       this.category = 'Non-IP';
     } else {
       this.category = '';
+      this.data.nameOfTribe = '';
     }
   }
+  computeIpTotal() {
+  this.data.overAll_ip =
+    (this.data.ip_Male || 0) + (this.data.ip_Female || 0);
+}
+
+computeNonIpTotal() {
+  this.data.overall_nonIp =
+    (this.data.non_Ip_Male || 0) + (this.data.non_Ip_Female || 0);
+}
+computePurokIpTotal() {
+  this.data.prk_ip_overall =
+    (this.data.purok_MaleIP || 0) +
+    (this.data.purok_FemaleIP || 0);
+}
+
+computePurokNonIpTotal() {
+  this.data.prk_non_ip_overall =
+    (this.data.prk_male_non || 0) +
+    (this.data.prk_female_non || 0);
+}
+
+
 
   onTableDataChange(page: any) {
     //paginate

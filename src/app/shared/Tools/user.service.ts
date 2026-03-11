@@ -124,16 +124,23 @@ export class UserService {
       { responseType: 'json' }
     );
   }
-  PostUserApproval(userId: any, munCityId: string) {
-    return this.Http.post<any>(
-      this.Base.url + this.ApiUrl.post_get_approval(userId),
-      JSON.stringify(munCityId), // 👈 wrap as raw string
-      {
-        headers: { 'Content-Type': 'application/json' },
-        responseType: 'json',
-      }
-    );
-  }
+  // user.service.ts
+PostUserApproval(userId: any, munCityId: string, roleType: string) {
+  // Naghimo ta og payload object para ma-send ang duha ka data
+  const payload = {
+    munCityId: munCityId,
+    userType: roleType
+  };
+
+  return this.Http.post<any>(
+    this.Base.url + this.ApiUrl.post_get_approval(userId),
+    payload, // Dili na JSON.stringify(munCityId) lang, tibuok object na
+    {
+      headers: { 'Content-Type': 'application/json' },
+      responseType: 'json',
+    }
+  );
+}
   Deactivate(userId: any): Observable<any> {
   return this.Http.delete(
     this.Base.url + this.ApiUrl.deactive_list_user(userId),

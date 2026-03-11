@@ -10,6 +10,8 @@ import { response } from 'express';
   providedIn: 'root',
 })
 export class BarangayOfficialService {
+  setYear: any;
+  munCityId: any;
   constructor(
     private Http: HttpClient,
     private Auth: AuthService,
@@ -116,4 +118,11 @@ export class BarangayOfficialService {
       { responseType: 'json' }
     );
   }
+  GetPurokChair(setYear: number, munCityId: string) {
+  return this.Http.get(
+    this.Base.url + this.ApiUrl.get_purokChair_pdf(setYear, munCityId),
+    { responseType: 'blob' }
+  );
+}
+  
 }

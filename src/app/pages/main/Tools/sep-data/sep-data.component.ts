@@ -15,6 +15,7 @@ export class SepDataComponent implements OnInit {
   list_sep_year: any = [];
 
   isGuestUser: boolean = false;
+  isValidatorUser: boolean = false;
 
   constructor(private service: SepDataService, private auth: AuthService) {}
 
@@ -23,12 +24,13 @@ export class SepDataComponent implements OnInit {
     this.muncity_id = this.auth.munCityId;
 
     this.isGuestUser = this.muncity_id === 'Guest';
+    this.isValidatorUser = this.muncity_id?.startsWith('Validator');
 
-    if (!this.isGuestUser) {
-      this.service
-        .ListMunCity()
-        .subscribe((data) => (this.list_muncity = data));
-    }
+    if (!this.isGuestUser && !this.isValidatorUser) {
+    this.service
+      .ListMunCity()
+      .subscribe((data) => (this.list_muncity = data));
+  }
 
     this.service.ListSepYear().subscribe((data) => (this.list_sep_year = data));
   }

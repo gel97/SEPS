@@ -528,6 +528,20 @@ export class PubSecondaryComponent implements OnInit {
       this.secondary.brgyId == '' || this.secondary.brgyId == null
         ? true
         : false;
+        this.toValidate.currEnrollment = 
+      this.secondary.currEnrollment == '' || this.secondary.currEnrollment == null ? true : false;
+    this.toValidate.numofTeachers = 
+      this.secondary.numofTeachers == '' || this.secondary.numofTeachers == null ? true : false;
+    this.toValidate.numberofClassroom = 
+      this.secondary.numberofClassroom == '' || this.secondary.numberofClassroom == null ? true : false;
+    this.toValidate.numofSeats = 
+      this.secondary.numofSeats == '' || this.secondary.numofSeats == null ? true : false;
+    this.toValidate.teacherPupRatio = 
+      this.secondary.teacherPupRatio == '' || this.secondary.teacherPupRatio == null ? true : false;
+    this.toValidate.classroomPupRatio = 
+      this.secondary.classroomPupRatio == '' || this.secondary.classroomPupRatio == null ? true : false;
+    this.toValidate.seatsPupRatio = 
+      this.secondary.seatsPupRatio == '' || this.secondary.seatsPupRatio == null ? true : false;
 
     this.secondary.menuId = this.menuId;
     this.secondary.setYear = this.setYear;
