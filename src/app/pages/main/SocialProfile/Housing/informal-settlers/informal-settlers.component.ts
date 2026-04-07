@@ -413,61 +413,52 @@ export class InformalSettlersComponent implements OnInit {
   }
 
   FilterList() {
-    let isExist;
-    this.listData = [];
+  this.listData = [];
 
-    this.listBarangay.forEach((a: any) => {
-      this.listHousingSet.forEach((b: any) => {
-        if (a.brgyId == b.brgyId) {
-          isExist = this.listData.filter((x: any) => x.brgyId == a.brgyId);
-          if (isExist.length == 0) {
-            this.listData.push(b);
-          }
-        }
-      });
+  // 1. Iterate through all Barangays
+  this.listBarangay.forEach((brgy: any) => {
+    // 2. Get all settlements belonging to this Barangay
+    const settlements = this.listHousingSet.filter((h: any) => h.brgyId == brgy.brgyId);
 
-      isExist = this.listData.filter((x: any) => x.brgyId == a.brgyId);
-      if (isExist.length == 0) {
-        this.listData.push({
-          brgyId: a.brgyId,
-          brgyName: a.brgyName,
-        });
-      }
-    });
-  }
-
-  AddData() {
-    if (isEmptyObject(this.data)) {
-      Swal.fire(
-        'Missing Data!',
-        'Please fill out the required fields',
-        'warning'
-      );
-    } else {
-      this.data.munCityId = this.auth.munCityId;
-      this.data.setYear = this.auth.activeSetYear;
-      this.service.AddHousingSettlers(this.data).subscribe({
-        next: (request) => {
-          let index = this.listData.findIndex(
-            (obj: any) => obj.brgyId === this.data.brgyId
-          );
-          this.listData[index] = request;
-        },
-        complete: () => {
-          this.data = {};
-          this.closebutton.nativeElement.click();
-
-          Swal.fire({
-            position: 'center',
-            icon: 'success',
-            title: 'Your work has been saved',
-            showConfirmButton: false,
-            timer: 1000,
-          });
-        },
+    if (settlements.length > 0) {
+      // Add all existing records
+      settlements.forEach((s: any) => {
+        this.listData.push({ ...s, brgyName: brgy.brgyName });
       });
     }
+
+    // 3. Always add one "Empty" row for the (+) button functionality if no data exists
+    // OR keep this to ensure the Barangay always appears in the list
+    if (settlements.length === 0) {
+      this.listData.push({
+        brgyId: brgy.brgyId,
+        brgyName: brgy.brgyName,
+        isPlaceholder: true // flag to identify empty rows
+      });
+    }
+  });
+}
+
+AddData() {
+  if (isEmptyObject(this.data)) {
+    Swal.fire('Missing Data!', 'Please fill out the required fields', 'warning');
+  } else {
+    this.data.munCityId = this.auth.munCityId;
+    this.data.setYear = this.auth.activeSetYear;
+    this.service.AddHousingSettlers(this.data).subscribe({
+      next: (request) => {
+        // Instead of replacing the index, re-fetch or push to listHousingSet
+        this.listHousingSet.push(request);
+        this.FilterList(); // Refresh the grouped view
+      },
+      complete: () => {
+        this.data = {};
+        this.closebutton.nativeElement.click();
+        Swal.fire({ icon: 'success', title: 'Saved!', showConfirmButton: false, timer: 1000 });
+      },
+    });
   }
+}
 
   EditData() {
     this.data.setYear = this.auth.activeSetYear;
@@ -489,31 +480,40 @@ export class InformalSettlersComponent implements OnInit {
   }
 
   DeleteData(transId: any, index: any, data: any) {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.service.DeleteHousingSettlers(transId).subscribe({
-          next: (_data) => {},
-          error: (err) => {
-            Swal.fire('Oops!', 'Something went wrong.', 'error');
-          },
-          complete: () => {
-            this.listData[index] = {};
-            this.listData[index].brgyId = data.brgyId;
-            this.listData[index].brgyName = data.brgyName;
-            Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
-          },
-        });
-      }
-    });
-  }
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.service.DeleteHousingSettlers(transId).subscribe({
+        next: (_data) => {
+          // 1. Remove the item from the main data source locally
+          this.listHousingSet = this.listHousingSet.filter((item: any) => item.transId !== transId);
+          
+          // 2. Re-run the grouping logic to refresh the table UI
+          this.FilterList();
+          
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Deleted!',
+            text: 'The record has been removed.',
+            showConfirmButton: false,
+            timer: 1000,
+          });
+        },
+        error: (err) => {
+          Swal.fire('Oops!', 'Something went wrong.', 'error');
+        }
+      });
+    }
+  });
+}
 
   updateM() {
     this.editmodal.longtitude = this.gmapComponent.markers.lng;

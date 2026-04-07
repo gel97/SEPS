@@ -355,3 +355,110 @@ tbody tr:hover {
 .uploaded-files tbody tr:hover{
   background:#F8F9FE;
 }
+
+.modern-modal {
+  padding: 20px;
+}
+
+/* Section title */
+.sector-title {
+  font-weight: 600;
+  color: #4a5bdc;
+  margin-bottom: 15px;
+}
+
+/* Grid layout */
+.module-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+/* Button style */
+.module-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 12px 14px;
+  border: none;
+  border-radius: 12px;
+
+  background: #f8f9ff;
+  color: #333;
+  font-size: 0.9rem;
+  font-weight: 500;
+
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+/* Icon */
+.module-btn i {
+  font-size: 1.1rem;
+  color: #5d71d9;
+}
+
+/* Hover effect */
+.module-btn:hover {
+  background: linear-gradient(135deg, #5d71d9, #7c8df5);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(93, 113, 217, 0.3);
+}
+
+.module-btn:hover i {
+  color: #fff;
+}
+
+/* Highlight button (optional for important module) */
+.module-btn.highlight {
+  background: linear-gradient(135deg, #5d71d9, #7c8df5);
+  color: #fff;
+}
+
+.module-btn.highlight i {
+  color: #fff;
+}
+.sector-title {
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.module-btn.item-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 8px 0;
+  color: #777;
+  font-size: 0.95rem;
+  text-align: left;
+  transition: 0.3s;
+}
+
+.module-btn.item-btn:hover {
+  color: #007bff; /* Light blue touch */
+}
+
+.active-link {
+  color: #4a90e2 !important; /* Blue color matching your 'Facilities' screenshot */
+  font-weight: 500;
+}
+
+.checkbox-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.arrow {
+  color: #ccc;
+  font-size: 1.2rem;
+}

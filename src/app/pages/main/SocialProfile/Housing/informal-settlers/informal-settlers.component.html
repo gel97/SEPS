@@ -43,66 +43,47 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let item of listData; index as i">
-                        <td>
-                          <b>{{ item.brgyName }}</b>
-                        </td>
-                        <td style="text-align: center">{{ item.location }}</td>
-                        <td style="text-align: center">{{ item.unitsNo }}</td>
-                        <td style="text-align: center">
-                          {{ item.familiesNo }}
-                        </td>
-                        <td style="text-align: center">{{ item.remarks }}</td>
-                        <!-- <td style="text-align: center;">{{ item.longtitude }}, {{ item.latitude }}</td> -->
-                        <td *ngIf="item.transId; else isADD">
-                          <div class="d-inline-flex">
-                            <app-admin>
-                              <button
-                                (click)="data = item; isAdd = false"
-                                class="btn btn-info btn-circle"
-                                data-toggle="modal"
-                                data-target="#openModal"
-                              >
-                                <i class="fa fa-pen"></i>
-                              </button>
-                              &nbsp;
-                              <button
-                                type="button"
-                                title="Delete"
-                                class="btn btn-warning btn-circle"
-                                (click)="DeleteData(item.transId, i, item)"
-                              >
-                                <i class="fa fa-trash"></i></button
-                              >&nbsp;
-                              <button
-                                (click)="SetMarker(item); editmodal = item"
-                                class="btn btn-success btn-circle"
-                                role="button"
-                                data-toggle="modal"
-                                data-target="#gmapModal"
-                              >
-                                <i class="fa fa-globe"> </i>
-                              </button>
-                            </app-admin>
-                          </div>
-                        </td>
-                        <ng-template #isADD>
-                          <td>
-                            <app-admin>
-                              <button
-                                (click)="data = item; isAdd = true"
-                                type="button"
-                                class="btn btn-primary btn-circle"
-                                data-toggle="modal"
-                                data-target="#openModal "
-                              >
-                                <i class="fa fa-plus"></i>
-                              </button>
-                            </app-admin>
-                          </td>
-                        </ng-template>
-                      </tr>
-                    </tbody>
+  <tr *ngFor="let item of listData; index as i">
+    <td>
+      <b *ngIf="i === 0 || listData[i-1].brgyId !== item.brgyId">
+        {{ item.brgyName }}
+      </b>
+    </td>
+
+    <td style="text-align: center">{{ item.location || '-' }}</td>
+    <td style="text-align: center">{{ item.unitsNo || 0 }}</td>
+    <td style="text-align: center">{{ item.familiesNo || 0 }}</td>
+    <td style="text-align: center">{{ item.remarks || '-' }}</td>
+
+    <td class="text-center">
+      <div class="d-inline-flex">
+        <app-admin>
+          <ng-container *ngIf="item.transId">
+            <button (click)="data = item; isAdd = false" class="btn btn-info btn-circle btn-sm" data-toggle="modal" data-target="#openModal">
+              <i class="fa fa-pen"></i>
+            </button>
+            &nbsp;
+            <button (click)="DeleteData(item.transId, i, item)" class="btn btn-warning btn-circle btn-sm" title="Delete">
+              <i class="fa fa-trash"></i>
+            </button>
+            &nbsp;
+            <button (click)="SetMarker(item); editmodal = item" class="btn btn-success btn-circle btn-sm" data-toggle="modal" data-target="#gmapModal">
+              <i class="fa fa-globe"></i>
+            </button>
+          </ng-container>
+
+          <button *ngIf="i === 0 || listData[i-1].brgyId !== item.brgyId || item.transId"
+                  (click)="data = { brgyId: item.brgyId, brgyName: item.brgyName }; isAdd = true" 
+                  class="btn btn-primary btn-circle btn-sm ml-1" 
+                  data-toggle="modal" 
+                  data-target="#openModal">
+            <i class="fa fa-plus"></i>
+          </button>
+        </app-admin>
+      </div>
+    </td>
+  </tr>
+</tbody>
                   </table>
                   <!--Sources-->
                   <!-- ✅ Add Source Form -->
