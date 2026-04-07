@@ -644,7 +644,8 @@ const lguList: { [key: string]: string } = {
     "112319": "Tagum City",
     "112323": "Braulio E. Dujali",
     "112324": "San Isidro",
-    "112322": "Talaingod"
+    "112322": "Talaingod",
+    "DDN" : "PROVINCE OF DAVAO DEL NORTE"
   };
 
   this.Service.getNotApplicableModulesFromServer(
@@ -685,32 +686,24 @@ const lguList: { [key: string]: string } = {
 this._userData = this.service.getUserData();
 
 if (this._userData) {
-    this.userInfo = JSON.parse(this._userData);
-    
-
-    let rawCityInfo = this.userInfo?.munCityName || '';
-
-    if (this.isValidator()) {
-
-  const cleanId = this.auth.realMunCityId; // 👈 sakto gyud ni
-
-  const lguDisplayName =
-    lguList[cleanId] || 'Unknown';
-
-  this.munCityName =
-    'Validator of ' + this.modifyCityMun(lguDisplayName);
-} 
-    else {
-
+  this.userInfo = JSON.parse(this._userData);
+  
   const cleanId = this.auth.realMunCityId;
+  const lguDisplayName = lguList[cleanId] || 'Unknown';
 
-  const lguName =
-    lguList[cleanId] || 'Unknown';
-
-  this.munCityName =
-    this.modifyCityMun(lguName);
-}
+  // 1. Check if the ID is DDN
+  if (cleanId === "DDN") {
+    // Direct assignment to avoid adding "Municipality of" or "Validator of"
+    this.munCityName = lguDisplayName; 
+  } 
+  // 2. Otherwise, apply your usual logic
+  else if (this.isValidator()) {
+    this.munCityName = 'Validator of ' + this.modifyCityMun(lguDisplayName);
+  } 
+  else {
+    this.munCityName = this.modifyCityMun(lguDisplayName);
   }
+}
   this.imagesService.GetLogo(this.guest && this.service.munCityId === 'null' ? 'ddn' : this.service.munCityId)
     .pipe(
       concatMap((item) => of(item).pipe(delay(2000))),

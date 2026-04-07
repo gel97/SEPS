@@ -102,6 +102,17 @@ export class ReportsService {
       { responseType: 'json' }
     );
   }
+  downloadFile(recNo: number) {
+  return this.http.get(`api/download/${recNo}`, {
+    responseType: 'blob'
+  });
+}
+importApprovedFile(recNo: number, moduleCode: string) {
+  return this.http.post('api/import-approved', {
+    recNo,
+    moduleCode
+  });
+}
   GetProvOfficialReport(data: any) {
     return this.http.post<any[]>(
       this.Base.url + this.ApiUrl.post_report_prov_officials(),
