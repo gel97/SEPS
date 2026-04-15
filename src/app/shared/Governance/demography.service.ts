@@ -12,9 +12,6 @@ import { catchError, retry } from 'rxjs/operators';
 export class DemographyService {
   private apiUrl: string;
   sources$: any;
-  GetBarangay() {
-    throw new Error('Method not implemented.');
-  }
   readonly apiurl = 'https://davaodelnorte.ph/sep/apidata/api'; // API
 
   constructor(
@@ -99,6 +96,22 @@ export class DemographyService {
     );
   }
 
+  GetBarangay(): Observable<any[]> {
+    const url = this.Base.url + this.ApiUrl.post_get_prkBrgy(this.auth.munCityId, this.auth.setYear);
+    return this.Http.post<any[]>(url, {}).pipe(
+      catchError(this.handleError)
+    );
+  }
+  GetPurokDemo(munCityId: any, setYear: any) {
+  return this.Http.get(`${this.Base.url}/api/PrkDemography/${munCityId}/${setYear}`);
+}
+ListPurokDemo(): Observable<any[]> {
+    const url = this.Base.url + this.ApiUrl.post_get_prkDemoBrgy(this.auth.munCityId, this.auth.setYear);
+    return this.Http.post<any[]>(url, {}).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   ListBarangay() {
     return this.Http.post<any[]>(
       this.Base.url + this.ApiUrl.post_list_barangay(this.Auth.munCityId),
@@ -124,4 +137,30 @@ export class DemographyService {
       }
     );
   }
+  //purok
+  AddPrkDemo(PrkDemo: any = {}){
+    console.log(PrkDemo);
+    return this.Http.post(this.Base.url + '/PrkDemography/Save', PrkDemo, {
+      responseType: 'json',
+    });
+  }
+  DeletePrkDemo(transId: any){
+    return this.Http.delete(this.Base.url + this.ApiUrl.delete_PrkDemo(transId), {
+      responseType: 'text',
+    });
+  }
+  EditPrkDemo(editPrkDemo: any = {}) {
+    console.log(editPrkDemo);
+    return this.Http.post(
+      this.Base.url + this.ApiUrl.post_update_prkDemo(),
+      editPrkDemo,
+      { responseType: 'json' }
+    );
+  }
+   GetPurokDemoPdf(setYear: number, munCityId: string) {
+  return this.Http.get(
+    this.Base.url + this.ApiUrl.get_purokDemo_pdf(setYear, munCityId),
+    { responseType: 'blob' }
+  );
+}
 }

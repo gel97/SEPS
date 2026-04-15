@@ -14,20 +14,23 @@
               <h1 class="h4 text-gray-900 mb-4">Demography</h1>
               <label><strong>Governance - {{modifyCityMun(munCityName)}}</strong></label>
             </div>
-            <div class="form-inline float-right ">
-              <form class=>
+            <div class="x-space-between" *ngIf="isBarangay">
+              <div class="x-space-between">
                 <app-admin>
                   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdd "><i
                       class="fa fa-plus"></i>
                     Demography
                   </button>
                 </app-admin>
-              </form>
-              &nbsp;
-              <app-admin>
+                
+                <div class="x-space-between">
+                <app-admin>
               <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
             </app-admin>
-            </div><br><br>
+              </div>
+              </div>
+            </div>
+            <br><br>
             <!-- <app-admin>
               <app-export-excel  (myEvent)="ExportExcel()" apiControllerName="Demography"></app-export-excel>
             </app-admin> -->
@@ -36,12 +39,33 @@
                 <p>List of Demography:</p>
               </div>
             </div>
-            <div class="table-responsive">
-              <div class="table-responsive">
-                <div class="input-group col-sm-3">
+            <app-admin>
+             <div class="input-group col-sm-3" *ngIf="isBarangay">
                   <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
                       aria-label="Search" aria-describedby="basic-addon2" [(ngModel)]="searchText">
               </div>
+              </app-admin>
+                    <ul class="nav nav-tabs pb-2">
+              <li class="nav-item" (click)="handleOnTabChange(true)">
+                <a
+                  class="nav-link x-cursor"
+                  [ngClass]="isBarangay? 'active fw-bold' : ''"
+                  aria-current="page"
+                  >Barangay
+                </a>
+              </li>
+              <li class="nav-item" (click)="handleOnTabChange(false)">
+                <a
+                  class="nav-link x-cursor"
+                  [ngClass]="!isBarangay? 'active fw-bold' : ''"
+                  >Purok </a
+                >
+              </li>
+            </ul>
+            <!--Barangay-->
+            <div class="table-responsive" *ngIf="isBarangay">
+              <div class="table-responsive">
+              <br>
               <br>
               <table class="table table-light table-striped">
                 <thead class="table-dark">
@@ -213,6 +237,146 @@
                 </div>
             </div>
 
+            <!--Purok (click)="viewPurokChairPdf()"-->
+            <div class="table-responsive" *ngIf="!isBarangay">
+              <div id="main">
+                <div class="container">
+                  <div class="accordion" id="faq">
+                                       <button
+        class="btn btn-success"
+        data-toggle="modal"
+        data-target="#pdfModal"
+        (click)="viewPrkDemo()"
+      >
+        <i class="fa fa-file-pdf"></i> Generate PDF
+      </button>
+      <br><br>
+                    <div
+                      class="card"
+                      *ngFor="let barangay of listPrkBrgy; index as i"
+                    >
+                      <div class="card-header" [id]="'faqhead' + i">
+                        <a
+                          href="#"
+                          class="btn btn-header-link"
+                          (click)="toggleAccordion(i); $event.preventDefault()"
+                          [attr.aria-expanded]="isAccordionOpen[i]"
+                          [attr.aria-controls]="'faq' + i"
+                        >
+                          <b>{{ barangay.brgyName }}</b>
+                        </a>
+                      </div>
+
+                      <div
+                        [id]="'faq' + i"
+                        class="collapse"
+                        [class.show]="isAccordionOpen[i]"
+                        [attr.aria-labelledby]="'faqhead' + i"
+                        data-parent="#faq"
+                      >
+                        <div class="card-body">
+                          <button
+                            type="button"
+                            class="btn btn-primary btn-circle"
+                            data-toggle="modal"
+                            data-target="#ModalAdd2"
+                            (click)="data.brgyId = barangay.brgyId"
+                          >
+                            <i class="fa fa-plus"></i>
+                          </button>
+                          <div class="x-space-between">
+                            <div class="x-space-between">
+                              <!-- <app-export-excel
+                                apiControllerName="PurokChair"
+                              ></app-export-excel> -->
+                            </div>
+                            <!-- <div class="x-space-between">
+                            <app-admin>
+                              <app-pdf (myEvent)="GeneratePDF()"></app-pdf>
+                            </app-admin>
+                          </div> -->
+       
+                          </div>
+                          <br />
+                           
+                          <table class="table table-hover table-striped">
+                            <thead class="thead-dark">
+  <tr>
+    <!-- <th scope="col" rowspan="2">#</th> -->
+    <th scope="col" rowspan="2">Censal Year</th>
+    <th scope="col" rowspan="2" class="text-center">Name of Purok</th>
+    <th scope="col" colspan="2" class="text-center">Actual Population</th>
+    <th scope="col" rowspan="2" class="text-center">Household Population</th>
+    <th scope="col" rowspan="2" class="text-center">No. of Households</th>
+    <th scope="col" rowspan="2" class="text-center">Average Size</th>
+    <th scope="col" rowspan="2" class="text-center">Growth Rate</th>
+    <th scope="col" rowspan="2">Action</th>
+    <th></th>
+  </tr>
+  <tr>
+    <th class="text-center">Male</th>
+    <th class="text-center">Female</th>
+    <th></th>
+  </tr>
+</thead>
+                           <tbody>
+  <tr *ngFor="let purok of barangay.prkDemography">
+    <!-- <td>{{ i + 1 }}</td> -->
+    <td class="text-center">{{ purok.setYear }}</td>
+    <td class="text-center">
+      {{purok.purokName}}
+    </td>
+    <td class="text-center">
+      {{purok.prk_male}}
+    </td>
+    <td class="text-center">
+      {{purok.prk_female}}
+    </td>
+    <td class="text-center">
+      {{purok.prk_householdPop}}
+    </td>
+    <td class="text-center">
+      {{purok.prk_householdNo}}
+    </td>
+    <td class="text-center">
+      {{purok.prk_avgHouseholdSz}}
+    </td>
+    <td class="text-center">
+      {{purok.prk_popGrowthRate}}
+    </td>
+    <td class="text-center">
+       <button
+                                      class="btn btn-sm btn-info"
+                                      data-toggle="modal"
+                                      (click)="editPrkDemo = purok"
+                                      data-target="#ModalEdit2"
+                                      title="Edit"
+                                    >
+                                      <i class="fa fa-pen"></i>
+                                    </button>
+    </td>
+    <td class="text-center">
+     <button
+  class="btn btn-sm btn-warning"
+  title="Delete"
+  (click)="DeletePrkDemo(purok.transId, barangay)"
+>
+  <i class="fa fa-trash"></i>
+</button>
+    </td>
+  </tr>
+
+ 
+</tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -220,7 +384,9 @@
   </div>
 </div>
 
-
+<!-- (click)="editPrk = purok" (click)="
+                                        DeletePrk(purok.transId, i, purok)
+                                      "-->
 
 <!-- Add Fiscal (Modal) -->
 <div class="modal fade bd-example-modal-lg" id="ModalAdd" tabindex="-1" role="dialog"
@@ -368,6 +534,155 @@
 
 </div>
 
+<!--Add purok-->
+<div class="modal fade bd-example-modal-lg" id="ModalAdd2" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Purok</h5>
+        <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+       
+           <div class="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1">Purok Name :</label>
+            <input type="text" class="form-control" name="" id="" [(ngModel)]="data.purokName" placeholder=""
+              >
+          </div>
+
+          <div class="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1">Total Population:</label><br>
+          </div>
+          <div class="col-lg-12">
+            <label for="exampleFormControlTextarea1">Male :</label>
+            <input type="number" class="form-control" id="" name="" [(ngModel)]="data.prk_male" placeholder=""
+              [ngClass]="toValidate.male?'is-invalid':''" (keyup)="toValidate.male=false" placeholder="">
+          </div>
+
+          <div class="col-lg-12">
+            <label for="exampleFormControlTextarea1">Female:</label>
+            <input type="number" class="form-control" id="" name="" [(ngModel)]="data.prk_female" placeholder=""
+              placeholder="">
+          </div>
+          <div class="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1">Household Population :</label>
+            <input type="number" class="form-control" name="" id="" [(ngModel)]="data.prk_householdPop" placeholder=""
+             >
+          </div>
+          <div class="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1">No. of Households:</label>
+            <input type="number" class="form-control" name="" id="" [(ngModel)]="data.prk_householdNo" placeholder="">
+          </div>
+          <div class="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1">Average Households Size :</label>
+            <input type="text" class="form-control" name="" id="" [(ngModel)]="data.prk_avgHouseholdSz" placeholder="">
+          </div>
+
+          <div class="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1">Population Growth Rate:</label>
+            <input type="number" class="form-control" id="" name="" [(ngModel)]="data.prk_popGrowthRate" placeholder="">
+          </div>
+          <div class="modal-footer">
+
+            <div class="left-absolute" *ngIf="visible">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                  (ngModelChange)="onChange(isCheck)" [(ngModel)]="isCheck">
+                <label class="form-check-label" for="flexCheckDefault">
+                  Several data
+                </label>
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-primary" (click)="AddPrkDemo()"><i
+                class="fa fa-check"></i>Save</button>&nbsp;
+            <button type="button" class="btn btn-secondary" (click)="data={}"><i class="fa fa-times"></i>Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!--Edit Purok-->
+<div class="modal fade bd-example-modal-lg" id="ModalEdit2" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Purok</h5>
+        <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+       
+           <div class="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1">Purok Name :</label>
+            <input type="text" class="form-control" name="" id="" [(ngModel)]="editPrkDemo.purokName" placeholder=""
+              >
+          </div>
+
+          <div class="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1">Total Population:</label><br>
+          </div>
+          <div class="col-lg-12">
+            <label for="exampleFormControlTextarea1">Male :</label>
+            <input type="number" class="form-control" id="" name="" [(ngModel)]="editPrkDemo.prk_male" placeholder=""
+              [ngClass]="toValidate.male?'is-invalid':''" (keyup)="toValidate.male=false" placeholder="">
+          </div>
+
+          <div class="col-lg-12">
+            <label for="exampleFormControlTextarea1">Female:</label>
+            <input type="number" class="form-control" id="" name="" [(ngModel)]="editPrkDemo.prk_female" placeholder=""
+              placeholder="">
+          </div>
+          <div class="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1">Household Population :</label>
+            <input type="number" class="form-control" name="" id="" [(ngModel)]="editPrkDemo.prk_householdPop" placeholder=""
+             >
+          </div>
+          <div class="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1">No. of Households:</label>
+            <input type="number" class="form-control" name="" id="" [(ngModel)]="editPrkDemo.prk_householdNo" placeholder="">
+          </div>
+          <div class="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1">Average Households Size :</label>
+            <input type="text" class="form-control" name="" id="" [(ngModel)]="editPrkDemo.prk_avgHouseholdSz" placeholder="">
+          </div>
+
+          <div class="col-lg-12"><br>
+            <label for="exampleFormControlTextarea1">Population Growth Rate:</label>
+            <input type="number" class="form-control" id="" name="" [(ngModel)]="editPrkDemo.prk_popGrowthRate" placeholder="">
+          </div>
+          <div class="modal-footer">
+
+            <div class="left-absolute" *ngIf="visible">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                  (ngModelChange)="onChange(isCheck)" [(ngModel)]="isCheck">
+                <label class="form-check-label" for="flexCheckDefault">
+                  Several data
+                </label>
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-primary" (click)="EditPrkDemo()"><i
+                class="fa fa-check"></i>Save</button>&nbsp;
+            <button type="button" class="btn btn-secondary" (click)="editPrkDemo={}"><i class="fa fa-times"></i>Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
 <!-- modal area
        <div class="modal fade" id="gmapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
        aria-hidden="true">
@@ -391,10 +706,102 @@
          </div>
        </div>
      </div>
-
-
-
-
-
-
  -->
+     <style>
+    #main {
+      margin: 50px 0;
+    }
+
+    #main #faq .card {
+      margin-bottom: 30px;
+      border: 0;
+    }
+
+    #main #faq .card .card-header {
+      border: 0;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Reduced shadow */
+      border-radius: 2px;
+      padding: 0;
+      background: #f0f0f0; /* Light gray background for header */
+    }
+
+    #main #faq .card .card-header .btn-header-link {
+      color: #333; /* Darker text for better readability */
+      display: block;
+      text-align: left;
+      background: #e0e0e0; /* Slightly darker background */
+      padding: 15px; /* Reduced padding */
+    }
+
+    #main #faq .card .card-header .btn-header-link:after {
+      content: "\f107";
+      font-family: "Font Awesome 5 Free";
+      font-weight: 900;
+      float: right;
+    }
+
+    #main #faq .card .card-header .btn-header-link.collapsed {
+      background: #cccccc; /* Gray background for collapsed state */
+      color: #000; /* Dark text */
+    }
+
+    #main #faq .card .card-header .btn-header-link.collapsed:after {
+      content: "\f106";
+    }
+
+    #main #faq .card .collapsing {
+      background: #e0e0e0; /* Consistent background color */
+      line-height: 30px;
+    }
+
+    #main #faq .card .collapse {
+      border: 0;
+    }
+
+    #main #faq .card .collapse.show {
+      background: #f0f0f0; /* Light gray for open state */
+      line-height: 30px;
+      color: #333; /* Darker text */
+    }
+  </style>
+     <div
+  class="modal fade"
+  id="pdfModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="pdfModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="pdfModalLabel">Purok</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body position-relative" style="height: 80vh">
+        <!-- Loader -->
+        <div *ngIf="loadingPdf" class="loader-container">
+          <div class="loader">
+            <div class="central-circle">
+              <span class="percent">{{ pdfPercent }}%</span>
+            </div>
+            <div class="orbiting-circle"></div>
+            <div class="pulse-ring"></div>
+          </div>
+        </div>
+
+        <!-- PDF -->
+        <iframe
+          *ngIf="pdfSrc && !loadingPdf"
+          [src]="pdfSrc"
+          width="100%"
+          height="100%"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+</div>
