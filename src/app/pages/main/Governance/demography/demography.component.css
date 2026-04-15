@@ -1,0 +1,214 @@
+/* Butangan og space ang tibuok accordion container */
+.accordion {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+/* Butangan og space ang matag "Barangay" card */
+.card {
+  margin-bottom: 10px; /* Mao ni ang magbulag sa mga cards */
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+/* Nindot tan-awon ang button sa Barangay header */
+.btn-header-link {
+  width: 100%;
+  text-align: left;
+  color: #333;
+  padding: 15px 20px;
+  text-decoration: none;
+  display: block;
+}
+
+.btn-header-link:hover {
+  background-color: #f8f9fa;
+  text-decoration: none;
+}
+
+/* Space para sa "Generate PDF" button sa taas */
+.btn-success {
+  margin-bottom: 15px;
+}
+
+/* Padding para sa sulod sa card body (ang table area) */
+.card-body {
+  padding: 20px;
+  background-color: #fff;
+}
+
+/* Button circle (+) spacing */
+.btn-circle {
+  margin-bottom: 15px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Table spacing and borders */
+.table {
+  margin-top: 10px;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+/* Siguraduha nga naay padding ang table cells */
+.table td, .table th {
+  padding: 12px !important;
+  vertical-align: middle;
+}
+/* Card Container */
+.card {
+  margin-bottom: 12px; /* Spacing matag barangay */
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Header hitsura sa screenshot (Gray Background) */
+.card-header {
+  background-color: #e0e0e0 !important; /* Light gray background */
+  padding: 0 !important;
+  border: none;
+}
+
+/* Ang link sa sulod sa header */
+.btn-header-link {
+  display: flex;
+  justify-content: space-between; /* Gi-separate ang text ug ang arrow */
+  align-items: center;
+  width: 100%;
+  padding: 12px 20px;
+  color: #333;
+  font-weight: 500;
+  text-decoration: none;
+  text-align: left;
+}
+
+.btn-header-link:hover {
+  background-color: #d5d5d5;
+  text-decoration: none;
+  color: #000;
+}
+
+/* Para sa Chevron Icon (Arrow) */
+.btn-header-link::after {
+  content: "\f078"; /* FontAwesome chevron-down icon */
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  font-size: 12px;
+  transition: transform 0.3s ease;
+}
+
+/* Mu-rotate ang arrow kung gi-open */
+.btn-header-link[aria-expanded="true"]::after {
+  transform: rotate(180deg);
+}
+
+/* Generate PDF Button spacing */
+.btn-success {
+  background-color: #2ecc71;
+  border: none;
+  margin-bottom: 20px;
+  padding: 8px 15px;
+}
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+:root {
+  --primary: #6c5ce7;
+  --secondary: #a29bfe;
+}
+
+.loader-container {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.loader {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+.central-circle {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  background: var(--primary);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  box-shadow: 0 0 20px rgba(108, 92, 231, 0.4);
+  z-index: 2;
+}
+
+.orbiting-circle {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: var(--secondary);
+  border-radius: 50%;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: orbit 2s linear infinite;
+}
+
+.pulse-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 2px solid var(--primary);
+  border-radius: 50%;
+  opacity: 0;
+  animation: pulse 2s ease-out infinite;
+}
+
+@keyframes orbit {
+  0% {
+    transform: translateX(-50%) rotate(0deg) translateY(60px) rotate(0deg);
+  }
+  100% {
+    transform: translateX(-50%) rotate(360deg) translateY(60px) rotate(-360deg);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.7;
+  }
+  70% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.3);
+    opacity: 0;
+  }
+}

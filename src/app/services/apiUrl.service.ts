@@ -87,6 +87,14 @@ export class ApiUrl {
 get_purokChair_pdf = (setYear: any, munCityId: any) => 
     `/PurokChair/generate_pdf_purok_chair/${setYear}/${munCityId}`;
 
+//demograph purok
+post_get_prkDemoBrgy = (munCityId: any, setYear: any) =>
+    `/PrkDemography/GetPurokDemography?munCityId=${munCityId}&setYear=${setYear}`;
+delete_PrkDemo = (transId: any) => `/PrkDemography/${transId}`;
+post_update_prkDemo = () => `/PrkDemography/Update`;
+get_purokDemo_pdf = (setYear: any, munCityId: any) => 
+    `/PrkDemography/generate_pdf_purok_Demography/${setYear}/${munCityId}`;
+
   //sitio
   post_save_purokIp = () => `/PurokIp/SavePuroIP`;
   post_update_purokIp = () => `/PurokIp/Update`;

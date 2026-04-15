@@ -47,6 +47,7 @@ interface Request {
     downloadUrl?: string;
   };
   munCityId: string;
+  requesterName?: string;
   templateId: number;
   coreElementId?: number;
   coreElement?: string;
@@ -245,31 +246,27 @@ export class DashboardComponent implements OnInit {
               templatesRes.map((t) => [t.templateId, t])
             );
 
-            const enrichedRequests = requestsRes.map((req) => {
-              const template = templatesRes.find(
-                (t) => t.coreElementName === req.coreElement
-              );
+           const enrichedRequests = requestsRes.map((req) => {
+  const template = templatesRes.find(
+    (t) => t.coreElementName === req.coreElement
+  );
 
-              console.log('Matched Template:', template);
+  const fullDownloadUrl = template?.downloadUrl
+    ? template.downloadUrl.startsWith('http')
+      ? template.downloadUrl
+      : `${environment.apiUrl}/${template.downloadUrl}`
+    : '';
 
-              const fullDownloadUrl = template?.downloadUrl
-                ? template.downloadUrl.startsWith('http')
-                  ? template.downloadUrl
-                  : `${environment.apiUrl}/${template.downloadUrl}`
-                : '';
-
-              const enriched = {
-                ...req,
-                details: req.details || template?.link || 'No file name',
-                templates: template
-                  ? { name: template.name, link: template.link }
-                  : req.template,
-                downloadUrl: fullDownloadUrl,
-              };
-
-              console.log('Enriched Request Object:', enriched);
-              return enriched;
-            });
+  return {
+    ...req, // 👈 Kani ang magdala sa requesterName gikan sa API
+    details: req.details || template?.link || 'No file name',
+    templates: template
+      ? { name: template.name, link: template.link }
+      : req.template,
+    downloadUrl: fullDownloadUrl,
+    // requesterName is already inside ...req
+  };
+});
 
             // Group & finalize
             this.groupedRequests = this.groupByCoreElement(enrichedRequests);
@@ -294,6 +291,38 @@ export class DashboardComponent implements OnInit {
       },
     });
   }
+  downloadFile(url: string, fileName: string): void {
+  if (!url) {
+    alert("No download link available.");
+    return;
+  }
+
+  // Maghimo ta og "invisible" nga link para mo-trigger ang download
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = fileName; // I-set ang ngalan sa file
+  link.target = '_blank';    // Siguroha nga mo-open sa bag-ong tab kung dili mo-auto download
+  
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  console.log('Downloading:', fileName);
+}
+
+receiveRequest(req: any): void {
+  // 1. I-trigger ang download (gamit ang logic nato ganina)
+  if (req.downloadUrl) {
+    const link = document.createElement('a');
+    link.href = req.downloadUrl;
+    link.download = req.template?.link || req.details;
+    link.click();
+  }
+
+  // 2. I-set ang status para mausab ang UI
+  // Sa actual app, mas maayo kung i-update pud nimo ni sa database via API
+  req.isReceived = true; 
+}
 
   groupByCoreElement(
     requests: Request[]

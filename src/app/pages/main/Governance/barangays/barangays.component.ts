@@ -168,22 +168,20 @@ viewPurokChairPdf() {
   const setYear = this.auth.activeSetYear; 
   const munId = this.auth.munCityId;
 
-  // 2. Debugging: Tan-awa sa Console (F12) kung naay sulod na ba
+  
   console.log("PDF Parameters:", { setYear, munId });
 
   if (!setYear || !munId) {
-    Swal.fire('Missing Data', 'Palihug siguroha nga naay active Year ug Municipality.', 'warning');
+    Swal.fire('Missing Data', 'warning');
     return;
   }
 
   this.loadingPdf = true;
   this.pdfPercent = 0;
 
-  // 3. I-pass ang husto nga variables sa service call
   this.service.GetPurokChair(setYear, munId).subscribe({
     next: (pdfBlob: Blob) => {
       const pdfUrl = URL.createObjectURL(pdfBlob);
-      // Siguroha nga ang 'sanitizer' gi-inject sa constructor o gi-define sa taas
       this.pdfSrc = this.sanitizer.bypassSecurityTrustResourceUrl(pdfUrl);
       this.pdfPercent = 100;
       setTimeout(() => (this.loadingPdf = false), 500);
@@ -524,16 +522,12 @@ viewPurokChairPdf() {
   }
   EditPrk() {
     this.editPrk.setYear = this.auth.activeSetYear;
-
-    // Make the API call to update the Purok data
     this.service.EditPrk(this.editPrk).subscribe({
       next: (request) => {
-        // Close modal and reset data on success
         this.closebutton.nativeElement.click();
         this.editPrk = {};
       },
       complete: () => {
-        // Show success message once the process is completed
         Swal.fire({
           position: 'center',
           icon: 'success',

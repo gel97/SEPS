@@ -10,6 +10,9 @@ import { PdfComponent } from 'src/app/components/pdf/pdf.component';
 import { PdfService } from 'src/app/services/pdf.service';
 import { ReportsService } from 'src/app/shared/Tools/reports.service';
 import { SourceService } from 'src/app/shared/Source/Source.Service';
+import { isEmptyObject } from 'jquery';
+import { forkJoin } from 'rxjs';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-demography',
@@ -23,6 +26,7 @@ export class DemographyComponent implements OnInit {
   private pdfComponent!: PdfComponent;
 
   searchText: string = '';
+  listData: any;
 
   constructor(
     private pdfService: PdfService,
@@ -30,7 +34,8 @@ export class DemographyComponent implements OnInit {
     private service: DemographyService,
     private auth: AuthService,
     private modifyService: ModifyCityMunService,
-    private SourceService: SourceService
+    private SourceService: SourceService,
+    private sanitizer: DomSanitizer
   ) {}
   demo: any = {};
   Demo: any = ([] = []);
@@ -49,6 +54,15 @@ export class DemographyComponent implements OnInit {
   newSource: any = {};
   selectedSourceId: number | null = null;
   showAddForm: boolean = true;
+  isBarangay: boolean = true;
+  listPrkBrgy: any = [];
+  isAccordionOpen: boolean[] = [];
+  PrkDemo: any = {};
+  data: any = {};
+  editPrkDemo: any = {};
+  loadingPdf = false;
+  pdfPercent = 0;
+  pdfSrc: any;
 
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
@@ -117,13 +131,39 @@ export class DemographyComponent implements OnInit {
     };
     this.gmapComponent.setMarker(this.markerObj);
   }
+    handleOnTabChange(isBarangay: boolean) {
+    this.isBarangay = isBarangay;
+  }
 
   date = new DatePipe('en-PH');
   ngOnInit(): void {
     this.Init();
     this.list_of_barangay();
+    this.GetBarangayPrk();
     this.getSources();
+    this.isAccordionOpen = this.listPrkBrgy.map(() => false);
   }
+  GetBarangayPrk() {
+  this.service.ListPurokDemo().subscribe({
+    next: (res) => {
+      this.listPrkBrgy = res;
+      this.isAccordionOpen = this.listPrkBrgy.map(() => false);
+    },
+    error: (err) => console.error(err)
+  });
+}
+
+
+  
+  toggleAccordion(index: number) {
+  const isCurrentlyOpen = this.isAccordionOpen[index];
+  this.isAccordionOpen = this.isAccordionOpen.map(() => false);
+
+
+  if (!isCurrentlyOpen) {
+    this.isAccordionOpen[index] = true;
+  }
+}
   getSources(): void {
     const setYear = this.auth.activeSetYear;
     const munCityId = this.auth.munCityId;
@@ -145,9 +185,9 @@ export class DemographyComponent implements OnInit {
       return;
     }
 
-    const sourceFor = 'Demography'; // 👈 assign your module name
+    const sourceFor = 'Demography'; 
 
-    // ✅ Add metadata
+   
     this.newSource.munCityId = this.auth.munCityId;
     this.newSource.setYear = this.auth.activeSetYear;
     this.newSource.sourceFor = sourceFor;
@@ -156,7 +196,7 @@ export class DemographyComponent implements OnInit {
       next: () => {
         this.newSource = {};
         Swal.fire('Success', 'Source added successfully.', 'success');
-        this.getSources(); // ✅ Re-fetch source list
+        this.getSources(); 
       },
       error: (error) => {
         Swal.fire('Error', `Failed to create source.\n${error}`, 'error');
@@ -832,4 +872,133 @@ export class DemographyComponent implements OnInit {
       }
     });
   }
+  //Purok
+  AddPrkDemo() {
+      if (!isEmptyObject(this.data)) {
+        this.data.munCityId = this.auth.munCityId;
+        this.data.setYear = this.auth.activeSetYear;
+  
+        // Check if brgyId is present
+        if (!this.data.brgyId) {
+          Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'Barangay ID is required',
+            showConfirmButton: true,
+          });
+          return;
+        }
+  
+        this.service.AddPrkDemo(this.data).subscribe({
+          next: (request) => {
+            console.log('Purok Data:', request);
+            console.log('Update listPrkBrgy:', this.listPrkBrgy);
+            this.listPrkBrgy.push({ ...this.data });
+            this.GetBarangayPrk();
+            this.isAccordionOpen.push(false);
+          },
+          complete: () => {
+            this.data = {}; // Reset form data
+            this.closebutton.nativeElement.click(); // Close the modal
+  
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Purok Chair has been added successfully!',
+              showConfirmButton: false,
+              timer: 1000,
+            });
+            this.data = {};
+            this.closebutton.nativeElement.click();
+          },
+          error: (err) => {
+            console.error('Error adding Purok: ', err);
+            Swal.fire({
+              position: 'center',
+              icon: 'error',
+              title: 'Error adding Purok Chair',
+              showConfirmButton: true,
+            });
+          },
+        });
+      } else {
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: 'Please fill out the required fields',
+          showConfirmButton: true,
+        });
+      }
+    }
+ DeletePrkDemo(transId: any, barangay: any) {
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.service.DeletePrkDemo(transId).subscribe({
+        next: (res) => {
+          Swal.fire('Deleted!', 'Your record has been deleted.', 'success');
+          this.GetBarangayPrk(); 
+        },
+        error: (err) => {
+          console.error(err);
+          Swal.fire('Oops!', 'Something went wrong.', 'error');
+        }
+      });
+    }
+  });
+}
+EditPrkDemo(){
+  this.editPrkDemo.setYear = this.auth.activeSetYear;
+
+  this.service.EditPrkDemo(this.editPrkDemo).subscribe({
+    next: (request) => {
+      this.closebutton.nativeElement.click();
+      this.editPrkDemo = {};
+    },
+    complete: () => {
+      Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Your work has been updated',
+                showConfirmButton: false,
+                timer: 1000,
+              });
+    },
+  });
+}
+viewPrkDemo(){
+  const setYear = this.auth.activeSetYear;
+  const munId = this.auth.munCityId;
+
+  console.log("PDF Parameters:", { setYear, munId});
+
+  if (!setYear || !munId){
+    Swal.fire('Missing Data', 'warning');
+    return;
+  }
+  this.loadingPdf = true;
+  this.pdfPercent = 0;
+
+  this.service.GetPurokDemoPdf(setYear, munId).subscribe({
+    next: (pdfBlob: Blob) => {
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+      this.pdfSrc = this.sanitizer.bypassSecurityTrustResourceUrl(pdfUrl);
+      this.pdfPercent = 100;
+      setTimeout(() => (this.loadingPdf = false), 500);
+    },
+    error: (err) => {
+      console.error('Error loading PDF', err);
+      this.loadingPdf = false;
+      Swal.fire('Error', ' Please check the API.', 'error');
+    },
+  });
+}
+
 }

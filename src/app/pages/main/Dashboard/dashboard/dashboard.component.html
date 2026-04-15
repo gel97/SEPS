@@ -31,14 +31,14 @@
 </div>
 <br />
 <!-- Example structure where you display your requests in the dashboard -->
-<!-- <div *ngIf="isLoading" class="text-center mt-5">
+<div *ngIf="isLoading" class="text-center mt-5">
   <div class="spinner-border text-primary" role="status">
     <span class="visually-hidden">Loading...</span>
   </div>
   <p>Loading data requests...</p>
 </div>
 
-<div *ngIf="errorMsg" class="alert alert-danger mt-3">{{ errorMsg }}</div> -->
+<div *ngIf="errorMsg" class="alert alert-danger mt-3">{{ errorMsg }}</div>
 
 <!-- <div
   *ngIf="!isLoading && groupedRequests.length === 0 && !errorMsg"
@@ -47,7 +47,7 @@
   No data requests found for this municipality.
 </div> -->
 
-<!-- <div *ngIf="!isLoading && !selectedFolder" class="row g-3">
+<div *ngIf="!isLoading && !selectedFolder" class="row g-3">
   <div
     *ngFor="let folder of groupedRequests"
     class="col-6 col-md-3 col-lg-2"
@@ -69,46 +69,74 @@
       </div>
     </div>
   </div>
-</div> -->
+</div>
 
 <!-- Folder contents view -->
-<!-- <div *ngIf="selectedFolder">
-  <button class="btn btn-link mb-3" (click)="selectedFolder = null">
+<div *ngIf="selectedFolder">
+  <button class="btn btn-link mb-3 p-0 text-decoration-none" (click)="selectedFolder = null">
     <i class="fas fa-arrow-left"></i> Back to Folders
   </button>
 
-  <h4 class="mb-3">
-    <i class="fas fa-folder text-success"></i> {{ selectedFolder.coreElement }}
+  <h4 class="mb-4 d-flex align-items-center">
+    <i class="fas fa-folder text-success me-2"></i> {{ selectedFolder.coreElement }}
   </h4>
 
   <div class="row g-3">
-    <div
-      *ngFor="let req of selectedFolder.requests"
-      class="col-6 col-md-3 col-lg-2 text-center"
-    >
-      <div class="card border-0 shadow-sm h-100 p-3 hover-shadow">
-        <div
-          class="d-flex justify-content-center align-items-center"
-          style="height: 100px"
-        >
-          <i [ngClass]="getFileIcon(req.details)" style="font-size: 50px"></i>
-        </div>
-        <div class="card-body p-2">
-          <a
-            [href]="req.downloadUrl"
-            download
-            class="fw-medium text-decoration-none"
-          >
-            {{ req.template?.link || req.details }}
-          </a>
-          <p class="text-muted mb-0" style="font-size: 0.8rem">
-            {{ req.template?.name || "Unknown" }}
-          </p>
+    <div *ngFor="let req of selectedFolder.requests" class="col-12">
+      
+      <div class="card border-0 shadow-sm hover-shadow overflow-hidden">
+        <div class="d-flex flex-column flex-md-row">
+          
+          <div class="p-4 bg-light d-flex flex-column justify-content-center border-end" style="min-width: 250px; max-width: 300px;">
+            <div class="mb-3">
+              <i class="fas fa-briefcase text-primary" style="font-size: 24px;"></i>
+            </div>
+            <h6 class="fw-bold text-dark mb-2" style="line-height: 1.4;">
+              {{ req.template?.link || req.details }}
+            </h6>
+            <p class="text-muted small mb-0">
+              {{ req.template?.name || "Unknown" }}
+            </p>
+          </div>
+
+          <div class="p-4 flex-grow-1 d-flex flex-column justify-content-between">
+  <div class="d-flex justify-content-between align-items-start mb-3">
+    <div>
+      <div class="fw-bold text-primary mb-1">Requested by: {{ req.requesterName || 'Unknown Requester' }}</div>
+      <div class="text-muted small">{{ req.dateRequest | date:'medium' }}</div>
+    </div>
+    
+    <button 
+      (click)="receiveRequest(req)" 
+      [disabled]="req.isReceived"
+      [ngClass]="req.isReceived ? 'btn-success' : 'btn-primary'"
+      class="btn btn-sm px-3 d-flex align-items-center gap-2">
+      
+      <i class="fas" [ngClass]="req.isReceived ? 'fa-check-double' : 'fa-check-circle'"></i>
+      {{ req.isReceived ? 'Received' : 'Receive' }}
+    </button>
+  </div>
+
+  <hr class="my-3 opacity-10">
+
+  <div *ngIf="req.isReceived" class="d-flex align-items-center animate__animated animate__fadeIn">
+    <i [ngClass]="getFileIcon(req.details)" class="me-2 text-success" style="font-size: 20px;"></i>
+    <a [href]="req.downloadUrl" download class="text-secondary text-decoration-none small fw-medium">
+      {{ req.template?.link || req.details }}
+    </a>
+  </div>
+
+  <div *ngIf="!req.isReceived" class="text-muted small italic">
+    <i class="fas fa-lock me-1"></i> Click "Receive" to unlock the file link.
+  </div>
+</div>
+
         </div>
       </div>
+
     </div>
   </div>
-</div> -->
+</div>
 
 <!-- Keep the rest of your dashboard HTML -->
 <!-- [href]="getDownloadUrl(file)" -->
