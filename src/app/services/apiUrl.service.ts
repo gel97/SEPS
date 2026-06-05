@@ -434,6 +434,14 @@ get_purokDemo_pdf = (setYear: any, munCityId: any) =>
   post_report_agriculture_livestock = () => `/AgricultureLivestock/Reports`;
   post_import_agriculture_livestock = () => `/AgricultureLivestock/Import`;
 
+  // Agriculture Livestock Version2
+  post_agriculture_livestock2 = () => `/AgricultureLivestockVersion2`;
+  put_agriculture_livestock2 = () => `/AgricultureLivestockVersion2`;
+  get_list_agriculture_livestock2 = (setYear: any, munCityId: any) =>
+    `/AgricultureLivestockVersion2/${setYear}/${munCityId}`;
+  delete_agriculture_livestock2 = (transId: any) =>
+    `/AgricultureLivestockVersion2/${transId}`;
+
   //Provincial Profile on Crops Production and Area Harvested
   post_agriculture_prod = () => `/AgricultureProd`;
   put_agriculture_prod = () => `/AgricultureProd`;

@@ -7,6 +7,7 @@ import {
 import { Router } from '@angular/router';
 import { catchError, Observable, retry, tap, throwError } from 'rxjs';
 import { BaseUrl } from './baseUrl.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -75,8 +76,14 @@ public get realMunCityId(): string {
     console.log(formattedDate);
     console.log(user);
 
+    let httpUrl = environment.apiUrl + "/api/Auth/Login";
+
     return this.http.post(this.apiurl, user).pipe(
       tap((response: any) => {
+
+      const uData = response?.userData || response;
+      const token = uData?.token || response?.token;
+
         localStorage.setItem('token', response.token);
         localStorage.setItem('hash', response.hash);
         localStorage.setItem('userId', response.userId);
@@ -88,7 +95,8 @@ public get realMunCityId(): string {
         localStorage.setItem('setYear', response.activeSetYear);
         localStorage.setItem('userData', JSON.stringify(response));
         localStorage.setItem('expire', response.expire);
-        localStorage.setItem('designation', response.designation);
+        localStorage.setItem('designation', uData?.designation || response.designation);
+        localStorage.setItem('userType', uData?.userType || response.userType);
 
         this.token = localStorage.getItem('token');
         this.hash = localStorage.getItem('hash');
@@ -110,8 +118,8 @@ public get realMunCityId(): string {
           logoutTime: logoutTime, // You can update this later on logout
           ipAddress: response.ipAddress, // Fetch dynamically if available
           browserInfo: navigator.userAgent,
-          userId: response.userId,
-          role: response.role,
+          userId: uData?.userId || response.userId,
+        role: uData?.userType || response.role,
         };
 
         // Send the activity log to the backend API (replace with your actual API URL)

@@ -38,6 +38,7 @@
     "ng2-charts": "^8.0.0",
     "ngx-image-cropper": "^6.3.2",
     "ngx-pagination": "^6.0.3",
+    "ngx-ui-switch": "^14.0.0",
     "pdfmake": "^0.2.7",
     "rxjs": "~7.5.0",
     "sweetalert2": "^11.6.15",

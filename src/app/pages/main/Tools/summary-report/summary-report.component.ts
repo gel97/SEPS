@@ -5,7 +5,8 @@ import { AuthService } from 'src/app/services/auth.service';
 import { PdfService } from 'src/app/services/pdf.service';
 import Swal from 'sweetalert2';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-
+import { Chart, BarController, BarElement, CategoryScale, LinearScale, Legend, Title, Tooltip, DoughnutController, ArcElement } from 'chart.js';
+Chart.register(BarController, BarElement, CategoryScale, LinearScale, Legend, Title, Tooltip, DoughnutController, ArcElement);
 @Component({
   selector: 'app-summary-report',
   templateUrl: './summary-report.component.html',
@@ -21656,308 +21657,284 @@ export class SummaryReportComponent implements OnInit {
   }
 
   ManEstabGeneratePDF() {
-    let reports: any = [];
-    let data: any = [];
-    let dist1: any = [];
-    let dist2: any = [];
-    let contentData: any = [];
+  let reports: any = [];
+  let data: any = [];
+  let dist1: any = [];
+  let dist2: any = [];
+  let contentData: any = [];
 
-    this.reportService.GetManEstabReport(this.params).subscribe({
-      next: (response: any = {}) => {
-        reports = response.data;
-        dist1 = response.districtOne;
-        dist2 = response.districtTwo;
+  this.reportService.GetManEstabReport(this.params).subscribe({
+    next: (response: any = {}) => {
+      reports = response.data;
+      dist1 = response.districtOne;
+      dist2 = response.districtTwo;
 
-        console.log(response);
+      console.log(response);
 
-        if (reports.length > 0) {
-          // Add main title to the beginning of the document
-          data.push({
-            text: `Number of Manufacturing Industry by Municipality/City and related business Category for the year ${response.year}`,
-            fontSize: 14,
-            bold: true,
-            alignment: 'center',
-            margin: [0, 20],
+      if (reports.length > 0) {
+        // Pangunang Titulo sa sinugdanan sa PDF document
+        data.push({
+          text: `Number of Manufacturing Industry by Municipality/City and related business Category for the year ${response.year}`,
+          fontSize: 14,
+          bold: true,
+          alignment: 'center',
+          margin: [0, 0, 0, 20],
+        });
+
+        const chartPromises: Promise<string>[] = [];
+
+        // Standarized color palette para sa business types
+        const colorPalette = [
+          '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd',
+          '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf'
+        ];
+
+        // LOOP 1: Pag-render sa Chart.js instances ngadto sa Base64 Images gamit ang luwas nga typings
+        reports.forEach((a: any) => {
+          const allCities = [...dist1, ...dist2];
+          const chartLabels = allCities.map(c => c.munCityName);
+          const datasets: any[] = [];
+
+          a.columnTypes.forEach((typeObj: any, colorIdx: number) => {
+            const datasetData: number[] = [];
+
+            allCities.forEach((city: any) => {
+              let countValue = 0;
+
+              for (let dataDistrict of a.district) {
+                for (let t of dataDistrict.type) {
+                  if (typeObj.recNo == t.type) {
+                    for (let f of t.data) {
+                      if (city.munCityId == f.munCityId && typeObj.recNo == f.type) {
+                        countValue = f.countType !== '-' ? Number(f.countType) : 0;
+                        break;
+                      }
+                    }
+                  }
+                }
+              }
+              datasetData.push(countValue);
+            });
+
+            datasets.push({
+              label: typeObj.typeName,
+              data: datasetData,
+              backgroundColor: colorPalette[colorIdx % colorPalette.length],
+              borderWidth: 0.5
+            });
           });
 
-          // Process each report entry
-          reports.forEach((a: any, index: any) => {
-            let columns: any = [];
-            const tableData: any = [];
-            let grandTotal: any = [];
+          const chartPromise = new Promise<string>((resolve) => {
+            const canvas = document.createElement('canvas');
+            canvas.width = 800; 
+            canvas.height = 360;
+            const ctx = canvas.getContext('2d');
 
-            // Initialize subtotal rows for each district
-            let subtotal1: any = [];
-            subtotal1.push({
-              text: 'SUB TOTAL',
-              fillColor: '#9DB2BF',
-            });
+            if (!ctx) {
+              resolve('');
+              return;
+            }
 
-            let subtotal2: any = [];
-            subtotal2.push({
-              text: 'SUB TOTAL',
-              fillColor: '#9DB2BF',
-            });
-
-            // Build column headers based on column types
-            a.columnTypes.forEach((b: any, index: any) => {
-              if (index == 0) {
-                columns.push({
-                  text: 'Municipality/ City',
-                  fillColor: 'black',
-                  color: 'white',
-                  bold: true,
-                  alignment: 'center',
-                  fontSize: 10, // Adjust font size
-                });
+            // Naggamit og generic configurations para malikayan ang strict property strictness checks
+            const chartConfig: any = {
+              type: 'bar',
+              data: {
+                labels: chartLabels,
+                datasets: datasets
+              },
+              options: {
+                responsive: false,
+                animation: {
+                  onComplete: function () {
+                    resolve(canvas.toDataURL('image/png'));
+                  }
+                },
+                scales: {
+                  x: {
+                    stacked: true,
+                    ticks: { 
+                      font: { size: 9 }, 
+                      maxRotation: 45, 
+                      minRotation: 0 
+                    }
+                  },
+                  y: {
+                    stacked: true,
+                    beginAtZero: true,
+                    ticks: { font: { size: 9 } }
+                  }
+                },
+                plugins: {
+                  legend: {
+                    display: true,
+                    position: 'top',
+                    labels: { font: { size: 9, weight: 'bold' }, boxWidth: 12 }
+                  }
+                }
               }
-              columns.push({
-                text: b.typeName,
-                fillColor: 'black',
-                color: 'white',
-                bold: true,
-                alignment: 'center',
-                fontSize: 10, // Adjust font size
-              });
+            };
+
+            new Chart(ctx, chartConfig);
+          });
+
+          chartPromises.push(chartPromise);
+        });
+
+        // LOOP 2: Pagpundok sa pdfMake array layout structures
+        Promise.all(chartPromises).then((chartImages) => {
+
+          reports.forEach((a: any, index: any) => {
+            // GI-DECLARE AS explicit ANY ARRAY KINI ARON MAWALA ANG 'alignment' PROPERTY TS ERROR
+            let columns: any[] = [];
+            const tableData: any[] = [];
+
+            let subtotal1: any[] = [{ text: 'SUB TOTAL', fillColor: '#9DB2BF', bold: true, alignment: 'center' }];
+            let subtotal2: any[] = [{ text: 'SUB TOTAL', fillColor: '#9DB2BF', bold: true, alignment: 'center' }];
+
+            a.columnTypes.forEach((b: any, colIndex: any) => {
+              if (colIndex === 0) {
+                columns.push({ text: 'Municipality/ City', fillColor: 'black', color: 'white', bold: true, alignment: 'center', fontSize: 10 });
+              }
+              columns.push({ text: b.typeName, fillColor: 'black', color: 'white', bold: true, alignment: 'center', fontSize: 10 });
             });
 
-            // Add category title to the content data
             contentData.push({
               text: a.catName + ' category',
-              margin: [0, 20, 0, 8],
-              fillColor: 'black',
-              color: 'white',
+              margin: [0, 15, 0, 8],
+              fontSize: 13,
               bold: true,
               alignment: 'left',
-              pageBreak: index === 0 ? '' : 'before', // Add page break before each new category except the first
+              pageBreak: index === 0 ? '' : 'before',
             });
 
-            // Push column headers to table data
+            if (chartImages[index]) {
+              contentData.push({
+                image: chartImages[index],
+                width: 530, 
+                alignment: 'center',
+                margin: [0, 5, 0, 15]
+              });
+            }
+
             tableData.push(columns);
 
-            // Iterate through each district's data
             for (let dataDistrict of a.district) {
-              // Process District 1 data
               if (dataDistrict.district == 1) {
                 tableData.push([
-                  {
-                    text: `1st Congressional District`,
-                    colSpan: columns.length,
-                    alignment: 'left',
-                    fillColor: '#526D82',
-                    fontSize: 10, // Adjust font size
-                  },
+                  { text: `1st Congressional District`, colSpan: columns.length, alignment: 'left', fillColor: '#526D82', color: 'white', bold: true, fontSize: 10 },
+                  ...Array(columns.length - 1).fill('')
                 ]);
 
                 for (let d1 of dist1) {
-                  let data1 = [];
-                  data1.push(d1.munCityName);
-
-                  // Fill in counts for each header type
+                  // Explicitly defined as `any[]` array collection
+                  let data1: any[] = [{ text: d1.munCityName, fontSize: 9 }];
                   for (let header of a.columnTypes) {
                     let count = '-';
                     for (let t of dataDistrict.type) {
                       if (header.recNo == t.type) {
                         for (let f of t.data) {
-                          if (
-                            d1.munCityId == f.munCityId &&
-                            header.recNo == f.type
-                          ) {
+                          if (d1.munCityId == f.munCityId && header.recNo == f.type) {
                             count = f.countType;
                             break;
                           }
                         }
                       }
                     }
-                    data1.push(count);
+                    data1.push({ text: count.toString(), alignment: 'center', fontSize: 9 });
                   }
-                  tableData.push(data1); // Push District 1 data row
+                  tableData.push(data1);
                 }
 
-                // Calculate and push District 1 subtotal row
                 for (let header of a.columnTypes) {
                   let countSubtotal1 = '-';
                   for (let t of dataDistrict.type) {
-                    if (header.recNo == t.type) {
-                      countSubtotal1 = t.subtotalType;
-                      break;
-                    }
+                    if (header.recNo == t.type) { countSubtotal1 = t.subtotalType; break; }
                   }
-                  subtotal1.push({
-                    text: countSubtotal1,
-                    fillColor: '#9DB2BF',
-                    fontSize: 10, // Adjust font size
-                  });
+                  subtotal1.push({ text: countSubtotal1, fillColor: '#9DB2BF', alignment: 'center', bold: true, fontSize: 9 });
                 }
-                tableData.push(subtotal1); // Push District 1 subtotal row
+                tableData.push(subtotal1);
               }
 
-              // Process District 2 data
               if (dataDistrict.district == 2) {
                 tableData.push([
-                  {
-                    text: `2nd Congressional District`,
-                    colSpan: columns.length,
-                    alignment: 'left',
-                    fillColor: '#526D82',
-                    fontSize: 10, // Adjust font size
-                  },
+                  { text: `2nd Congressional District`, colSpan: columns.length, alignment: 'left', fillColor: '#526D82', color: 'white', bold: true, fontSize: 10 },
+                  ...Array(columns.length - 1).fill('')
                 ]);
 
                 for (let d2 of dist2) {
-                  let data2 = [];
-                  data2.push(d2.munCityName);
-
-                  // Fill in counts for each header type
+                  // Explicitly defined as `any[]` array collection
+                  let data2: any[] = [{ text: d2.munCityName, fontSize: 9 }];
                   for (let header of a.columnTypes) {
                     let count = '-';
                     for (let t of dataDistrict.type) {
                       if (header.recNo == t.type) {
                         for (let f of t.data) {
-                          if (
-                            d2.munCityId == f.munCityId &&
-                            header.recNo == f.type
-                          ) {
+                          if (d2.munCityId == f.munCityId && header.recNo == f.type) {
                             count = f.countType;
                             break;
                           }
                         }
                       }
                     }
-                    data2.push(count);
+                    data2.push({ text: count.toString(), alignment: 'center', fontSize: 9 });
                   }
-                  tableData.push(data2); // Push District 2 data row
+                  tableData.push(data2);
                 }
 
-                // Calculate and push District 2 subtotal row
                 for (let header of a.columnTypes) {
                   let countSubtotal2 = '-';
                   for (let t of dataDistrict.type) {
-                    if (header.recNo == t.type) {
-                      countSubtotal2 = t.subtotalType;
-                      break;
-                    }
+                    if (header.recNo == t.type) { countSubtotal2 = t.subtotalType; break; }
                   }
-                  subtotal2.push({
-                    text: countSubtotal2,
-                    fillColor: '#9DB2BF',
-                    fontSize: 10, // Adjust font size
-                  });
+                  subtotal2.push({ text: countSubtotal2, fillColor: '#9DB2BF', alignment: 'center', bold: true, fontSize: 9 });
                 }
-                tableData.push(subtotal2); // Push District 2 subtotal row
+                tableData.push(subtotal2);
               }
             }
 
-            // Calculate and push grand total row
-            let grandTotalRow: any = [];
-            grandTotalRow.push({
-              text: 'GRAND TOTAL',
-              colSpan: 1,
-              fillColor: '#F1C93B',
-              alignment: 'center',
-              bold: true,
-              fontSize: 10, // Adjust font size
-            });
-
+            let grandTotalRow: any[] = [{ text: 'GRAND TOTAL', fillColor: '#F1C93B', alignment: 'center', bold: true, fontSize: 10 }];
             for (let i = 1; i < columns.length; i++) {
-              let total = 0;
+              let val1 = (subtotal1.length > i && subtotal1[i].text !== '-') ? parseInt(subtotal1[i].text) : 0;
+              let val2 = (subtotal2.length > i && subtotal2[i].text !== '-') ? parseInt(subtotal2[i].text) : 0;
+              let total = (isNaN(val1) ? 0 : val1) + (isNaN(val2) ? 0 : val2);
 
-              if (
-                subtotal1.length > 1 &&
-                subtotal2.length == 1 &&
-                i < subtotal1.length &&
-                !isNaN(parseInt(subtotal1[i].text))
-              ) {
-                total += parseInt(subtotal1[i].text);
-              } else if (
-                subtotal2.length > 1 &&
-                subtotal1.length == 1 &&
-                i < subtotal2.length &&
-                !isNaN(parseInt(subtotal2[i].text))
-              ) {
-                total += parseInt(subtotal2[i].text);
-              } else if (
-                subtotal1.length > 1 &&
-                subtotal2.length > 1 &&
-                i < subtotal1.length &&
-                i < subtotal2.length &&
-                !isNaN(parseInt(subtotal1[i].text)) &&
-                !isNaN(parseInt(subtotal2[i].text))
-              ) {
-                let sub1 =
-                  subtotal1[i].text == '-' ? 0 : parseInt(subtotal1[i].text);
-                let sub2 =
-                  subtotal2[i].text == '-' ? 0 : parseInt(subtotal2[i].text);
-                total = sub1 + sub2;
-              }
-
-              grandTotalRow.push({
-                text: total.toString(),
-                fillColor: '#F1C93B',
-                alignment: 'center',
-                fontSize: 10, // Adjust font size
-              });
+              grandTotalRow.push({ text: total.toString(), fillColor: '#F1C93B', alignment: 'center', bold: true, fontSize: 10 });
             }
-            tableData.push(grandTotalRow); // Push grand total row
+            tableData.push(grandTotalRow);
 
-            // Push table into content data with page break before each table
             contentData.push({
-              margin: [0, 10, 0, 0],
+              margin: [0, 5, 0, 15],
               table: {
-                widths: Array(columns.length).fill('auto'), // Adjust widths to auto
+                widths: Array(columns.length).fill('auto'),
                 body: tableData,
-                dontBreakRows: true, // Prevent row breaks
+                dontBreakRows: true,
               },
               layout: {
-                hLineWidth: function (i: any, node: any) {
-                  return i === 0 || i === node.table.body.length ? 1 : 0.5;
-                },
-                vLineWidth: function (i: any, node: any) {
-                  return i === 0 || i === node.table.widths.length ? 1 : 0.5;
-                },
-                hLineColor: function (i: any, node: any) {
-                  return i === 0 || i === node.table.body.length
-                    ? 'black'
-                    : 'gray';
-                },
-                vLineColor: function (i: any, node: any) {
-                  return i === 0 || i === node.table.widths.length
-                    ? 'black'
-                    : 'gray';
-                },
-                paddingLeft: function (i: any, node: any) {
-                  return 4;
-                },
-                paddingRight: function (i: any, node: any) {
-                  return 4;
-                },
-                paddingTop: function (i: any, node: any) {
-                  return 2;
-                },
-                paddingBottom: function (i: any, node: any) {
-                  return 2;
-                },
-              },
-              pageBreak: 'auto', // Add automatic page breaks
+                hLineWidth: (i: any, node: any) => (i === 0 || i === node.table.body.length ? 1 : 0.5),
+                vLineWidth: (i: any, node: any) => (i === 0 || i === node.table.widths.length ? 1 : 0.5),
+                hLineColor: (i: any, node: any) => (i === 0 || i === node.table.body.length ? 'black' : '#CCCCCC'),
+                vLineColor: (i: any, node: any) => (i === 0 || i === node.table.widths.length ? 'black' : '#CCCCCC'),
+                paddingLeft: () => 5, paddingRight: () => 5, paddingTop: () => 3, paddingBottom: () => 3,
+              }
             });
           });
 
-          data.push(...contentData); // Push all content data into main data array
+          data.push(...contentData);
 
-          // Generate PDF with the assembled data
-          let landscape = false; // Adjust as needed (true for portrait, false for landscape)
+          let landscape = false; 
           this.pdfService.GeneratePdf(data, landscape, this.remarks);
-          console.log(data); // Optional: Log the generated data
-        } else {
-          this.Error(); // Handle case where no reports are returned
-        }
-      },
-      error: (error: any) => {
-        console.log(error); // Log any errors that occur during data retrieval
-      },
-    });
-  }
+        });
 
+      } else {
+        this.Error();
+      }
+    },
+    error: (error: any) => {
+      console.log(error);
+      this.Error();
+    },
+  });
+}
   MjrEcoGeneratePDF() {
     let reports: any = [];
     let data: any = [];
@@ -22318,7 +22295,7 @@ export class SummaryReportComponent implements OnInit {
     const dist2: any = [];
 
     this.reportService.GetRegSkvoterReport(this.params).subscribe({
-      next: (response: any = {}) => {
+      next: async (response: any = {}) => { // Gi-dugangan og async alang sa chart promise
         reports = response.data;
         subtotal1 = response.subtotalData[0];
         subtotal2 = response.subtotalData[1];
@@ -22351,126 +22328,76 @@ export class SummaryReportComponent implements OnInit {
           ],
         });
 
+        // --- TABLE HEADERS ---
         tableData.push([
-          {
-            text: 'Municipality/ City',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-          },
-          {
-            text: 'No. of Puroks',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-          },
-          {
-            text: 'No. of Established Precincts',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-          },
-          {
-            text: 'No. of Clustered Precincts',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-          },
-          {
-            text: 'No. of Voting Centers',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-          },
-          {
-            text: 'No. of Registered SK Voters',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-          },
+          { text: 'Municipality/ City', fillColor: 'black', color: 'white', bold: true, alignment: 'center' },
+          { text: 'No. of Puroks', fillColor: 'black', color: 'white', bold: true, alignment: 'center' },
+          { text: 'No. of Established Precincts', fillColor: 'black', color: 'white', bold: true, alignment: 'center' },
+          { text: 'No. of Clustered Precincts', fillColor: 'black', color: 'white', bold: true, alignment: 'center' },
+          { text: 'No. of Voting Centers', fillColor: 'black', color: 'white', bold: true, alignment: 'center' },
+          { text: 'No. of Registered SK Voters', fillColor: 'black', color: 'white', bold: true, alignment: 'center' },
         ]);
 
+        // --- DISTRICT 1 ---
         tableData.push([
-          {
-            text: `1st Congressional District `,
-            colSpan: 6,
-            alignment: 'left',
-            fillColor: '#526D82',
-          },
-          {},
-          {},
-          {},
-          {},
-          {},
+          { text: `1st Congressional District `, colSpan: 6, alignment: 'left', fillColor: '#526D82' },
+          {}, {}, {}, {}, {},
         ]);
 
         dist1.forEach((item: any) => {
           tableData.push([
             { text: item.munCityName, fillColor: '#FFFFFF' },
-            { text: item.totalPurokNo, fillColor: '#FFFFFF' },
-            { text: item.totalEstabNo, fillColor: '#FFFFFF' },
-            { text: item.totalClusterNo, fillColor: '#FFFFFF' },
-            { text: item.totalVotingCntrNo, fillColor: '#FFFFFF' },
-            { text: item.totalRegSkVoterNo, fillColor: '#FFFFFF' },
+            { text: item.totalPurokNo, fillColor: '#FFFFFF', alignment: 'center' },
+            { text: item.totalEstabNo, fillColor: '#FFFFFF', alignment: 'center' },
+            { text: item.totalClusterNo, fillColor: '#FFFFFF', alignment: 'center' },
+            { text: item.totalVotingCntrNo, fillColor: '#FFFFFF', alignment: 'center' },
+            { text: item.totalRegSkVoterNo, fillColor: '#FFFFFF', alignment: 'center' },
           ]);
         });
 
         tableData.push([
           { text: 'SUBTOTAL', fillColor: '#9DB2BF' },
-          { text: subtotal1.purokNo, fillColor: '#9DB2BF' },
-          { text: subtotal1.estabNo, fillColor: '#9DB2BF' },
-          { text: subtotal1.clusterNo, fillColor: '#9DB2BF' },
-          { text: subtotal1.votingCntrNo, fillColor: '#9DB2BF' },
-          { text: subtotal1.regSkVoterNo, fillColor: '#9DB2BF' },
+          { text: subtotal1.purokNo, fillColor: '#9DB2BF', alignment: 'center' },
+          { text: subtotal1.estabNo, fillColor: '#9DB2BF', alignment: 'center' },
+          { text: subtotal1.clusterNo, fillColor: '#9DB2BF', alignment: 'center' },
+          { text: subtotal1.votingCntrNo, fillColor: '#9DB2BF', alignment: 'center' },
+          { text: subtotal1.regSkVoterNo, fillColor: '#9DB2BF', alignment: 'center' },
         ]);
 
+        // --- DISTRICT 2 ---
         tableData.push([
-          {
-            text: `2nd Congressional District `,
-            colSpan: 6,
-            alignment: 'left',
-            fillColor: '#526D82',
-          },
-          {},
-          {},
-          {},
-          {},
-          {},
+          { text: `2nd Congressional District `, colSpan: 6, alignment: 'left', fillColor: '#526D82' },
+          {}, {}, {}, {}, {},
         ]);
 
         dist2.forEach((item: any) => {
           tableData.push([
             { text: item.munCityName, fillColor: '#FFFFFF' },
-            { text: item.totalPurokNo, fillColor: '#FFFFFF' },
-            { text: item.totalEstabNo, fillColor: '#FFFFFF' },
-            { text: item.totalClusterNo, fillColor: '#FFFFFF' },
-            { text: item.totalVotingCntrNo, fillColor: '#FFFFFF' },
-            { text: item.totalRegSkVoterNo, fillColor: '#FFFFFF' },
+            { text: item.totalPurokNo, fillColor: '#FFFFFF', alignment: 'center' },
+            { text: item.totalEstabNo, fillColor: '#FFFFFF', alignment: 'center' },
+            { text: item.totalClusterNo, fillColor: '#FFFFFF', alignment: 'center' },
+            { text: item.totalVotingCntrNo, fillColor: '#FFFFFF', alignment: 'center' },
+            { text: item.totalRegSkVoterNo, fillColor: '#FFFFFF', alignment: 'center' },
           ]);
         });
 
         tableData.push([
           { text: 'SUBTOTAL', fillColor: '#9DB2BF' },
-          { text: subtotal2?.purokNo ?? '', fillColor: '#9DB2BF' },
-          { text: subtotal2?.estabNo ?? '', fillColor: '#9DB2BF' },
-          { text: subtotal2?.clusterNo ?? '', fillColor: '#9DB2BF' },
-          { text: subtotal2?.votingCntrNo ?? '', fillColor: '#9DB2BF' },
-          { text: subtotal2?.regSkVoterNo ?? '', fillColor: '#9DB2BF' },
+          { text: subtotal2?.purokNo ?? '', fillColor: '#9DB2BF', alignment: 'center' },
+          { text: subtotal2?.estabNo ?? '', fillColor: '#9DB2BF', alignment: 'center' },
+          { text: subtotal2?.clusterNo ?? '', fillColor: '#9DB2BF', alignment: 'center' },
+          { text: subtotal2?.votingCntrNo ?? '', fillColor: '#9DB2BF', alignment: 'center' },
+          { text: subtotal2?.regSkVoterNo ?? '', fillColor: '#9DB2BF', alignment: 'center' },
         ]);
 
+        // --- GRAND TOTAL ---
         tableData.push([
           { text: 'GRANDTOTAL', fillColor: '#F1C93B' },
-          { text: grandtotal.purokNo, fillColor: '#F1C93B' },
-          { text: grandtotal.estabNo, fillColor: '#F1C93B' },
-          { text: grandtotal.clusterNo, fillColor: '#F1C93B' },
-          { text: grandtotal.votingCntrNo, fillColor: '#F1C93B' },
-          { text: grandtotal.regSkVoterNo, fillColor: '#F1C93B' },
+          { text: grandtotal.purokNo, fillColor: '#F1C93B', alignment: 'center' },
+          { text: grandtotal.estabNo, fillColor: '#F1C93B', alignment: 'center' },
+          { text: grandtotal.clusterNo, fillColor: '#F1C93B', alignment: 'center' },
+          { text: grandtotal.votingCntrNo, fillColor: '#F1C93B', alignment: 'center' },
+          { text: grandtotal.regSkVoterNo, fillColor: '#F1C93B', alignment: 'center' },
         ]);
 
         const table = {
@@ -22480,41 +22407,142 @@ export class SummaryReportComponent implements OnInit {
             body: tableData,
           },
           layout: {
-            hLineWidth: function (i: number, node: any) {
-              return 0.5;
-            },
-            vLineWidth: function (i: number, node: any) {
-              return 0.5;
-            },
-            hLineColor: function (i: number, node: any) {
-              return '#000000';
-            },
-            vLineColor: function (i: number, node: any) {
-              return '#000000';
-            },
+            hLineWidth: (i: number) => 0.5,
+            vLineWidth: (i: number) => 0.5,
+            hLineColor: () => '#000000',
+            vLineColor: () => '#000000',
           },
         };
 
+        // 1. I-push una ang Table
         data.push(table);
-      },
-      error: (error: any) => {
-        console.log(error);
-      },
-      complete: () => {
+
+        // 2. PAG-GENERATE UG PAG-PUSH SA SK CHART (I-butang sa Page 2)
+        try {
+          // Pag-extract sa pangalan sa munisipyo ug gidaghanon sa SK Voters
+          const chartLabels = reports.map((r: any) => r.munCityName);
+          const voterData = reports.map((r: any) => r.totalRegSkVoterNo || 0);
+
+          const graphBase64 = await this.generateSkChart(chartLabels, voterData);
+
+          // I-push ang nakagrupo nga Titulo ug Chart para limpyo sa Page 2
+          data.push({
+            pageBreak: 'before',
+            unbreakable: true,
+            stack: [
+              {
+                text: 'Distribution of Registered SK Voters by Municipality/City',
+                fontSize: 14,
+                bold: true,
+                margin: [0, 10, 0, 15],
+                alignment: 'center'
+              },
+              {
+                image: graphBase64,
+                width: 520,
+                alignment: 'center',
+                margin: [0, 0, 0, 0]
+              }
+            ]
+          });
+        } catch (chartError) {
+          console.error("Dili ma-render ang SK graph sa PDF: ", chartError);
+        }
+
+        // 3. TAWGON ANG PDF GENERATOR (Gibalhin dinhi gikan sa complete block para sa husto nga async sync)
         if (reports.length > 0) {
           let isPortrait = false;
           this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
-          console.log(data);
         } else {
           this.Error();
         }
       },
+      error: (error: any) => {
+        console.log(error);
+        this.Error();
+      }
     });
-  }
+}
+
+// BAG-ONG METHOD PARA SA GRAPH RENDERING (I-butang sa ubos sa imong component class)
+generateSkChart(labels: any[], voterData: any[]): Promise<string> {
+  return new Promise((resolve, reject) => {
+    try {
+      const canvas = document.createElement('canvas');
+      canvas.width = 800;
+      canvas.height = 400; // Gi-adjust ang gitas-on kay daghan ang mga munisipyo nga i-lista sa kilid
+      const ctx = canvas.getContext('2d');
+
+      if (!ctx) {
+        reject("Failed to create canvas context");
+        return;
+      }
+
+      new Chart(ctx, {
+        type: 'bar', // Gigamitan og Bar Chart pero Horizontal
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Registered SK Voters',
+              data: voterData,
+              backgroundColor: '#526D82', // Ang nindot nga gray-blue tema sa imong table subtotal
+              borderColor: '#34495e',
+              borderWidth: 1,
+              barThickness: 18 // Sakto nga gibag-on sa bar para dili maghuot
+            }
+          ]
+        },
+        options: {
+          indexAxis: 'y', // KINI ANG MAKA-HORIZONTAL SA GRAPH (Nindot para sa listahan sa munisipyo)
+          responsive: false,
+          plugins: {
+            legend: { display: false }, // Gi-hide ang legend kay usa ra ka dataset
+          },
+          scales: {
+            x: {
+              beginAtZero: true,
+              ticks: { color: '#000000', font: { size: 11, weight: 'bold' } }
+            },
+            y: {
+              ticks: { color: '#000000', font: { size: 11, weight: 'bold' } },
+              grid: { display: false }
+            }
+          },
+          animation: {
+            onComplete: function () {
+              const chartInstance = this;
+              const ctx = chartInstance.ctx;
+              ctx.font = 'bold 10px Arial';
+              ctx.textAlign = 'left';
+              ctx.textBaseline = 'middle';
+              ctx.fillStyle = '#000000'; // Itom nga text sa kilid/tumoy sa horizontal bar
+
+              chartInstance.data.datasets.forEach(function (dataset, i) {
+                const meta = chartInstance.getDatasetMeta(i);
+                meta.data.forEach(function (bar: any, index) {
+                  const data = dataset.data[index];
+                  if (typeof data === 'number' && data > 0) {
+                    const formattedData = Number(data).toLocaleString();
+                    // I-pwesto ang numero sa unahan gamay sa tumoy sa bar
+                    ctx.fillText(formattedData, bar.x + 8, bar.y);
+                  }
+                });
+              });
+
+              resolve(canvas.toDataURL('image/png'));
+            }
+          }
+        }
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+}
 
   VotersGeneratePDF() {
     let reports: any = [];
-
     let data: any = [];
     let subtotal1: any = {};
     let subtotal2: any = {};
@@ -22524,7 +22552,7 @@ export class SummaryReportComponent implements OnInit {
     const dist2: any = [];
 
     this.reportService.GetRegvoterReport(this.params).subscribe({
-      next: (response: any = {}) => {
+      next: async (response: any = {}) => { // Gi-dugangan og async para sa chart rendering
         reports = response.data;
         subtotal1 = response.subtotalData[0];
         subtotal2 = response.subtotalData[1];
@@ -22557,216 +22585,76 @@ export class SummaryReportComponent implements OnInit {
           ],
         });
 
+        // --- TABLE HEADERS ---
         tableData.push([
-          {
-            text: 'Municipality/ City',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-          },
-          {
-            text: 'No. of Puroks',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-          },
-          {
-            text: 'No. of Established Precincts',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-          },
-          {
-            text: 'No. of Clustered Precincts',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-          },
-          {
-            text: 'No. of Voting Centers',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-          },
-          {
-            text: 'No. of Registered Voters',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-          },
+          { text: 'Municipality/ City', fillColor: 'black', color: 'white', bold: true, alignment: 'center' },
+          { text: 'No. of Puroks', fillColor: 'black', color: 'white', bold: true, alignment: 'center' },
+          { text: 'No. of Established Precincts', fillColor: 'black', color: 'white', bold: true, alignment: 'center' },
+          { text: 'No. of Clustered Precincts', fillColor: 'black', color: 'white', bold: true, alignment: 'center' },
+          { text: 'No. of Voting Centers', fillColor: 'black', color: 'white', bold: true, alignment: 'center' },
+          { text: 'No. of Registered Voters', fillColor: 'black', color: 'white', bold: true, alignment: 'center' },
         ]);
 
+        // --- DISTRICT 1 ---
         tableData.push([
-          {
-            text: `1st Congressional District `,
-            colSpan: 6,
-            alignment: 'left',
-            fillColor: '#526D82',
-          },
-          {},
-          {},
-          {},
-          {},
-          {},
+          { text: `1st Congressional District `, colSpan: 6, alignment: 'left', fillColor: '#526D82' },
+          {}, {}, {}, {}, {},
         ]);
 
-        dist1.forEach((item: any, index: any) => {
+        dist1.forEach((item: any) => {
           tableData.push([
-            {
-              text: item.munCityName,
-              fillColor: '#FFFFFF',
-            },
-            {
-              text: item.totalPurokNo,
-              fillColor: '#FFFFFF',
-            },
-            {
-              text: item.totalEstabNo,
-              fillColor: '#FFFFFF',
-            },
-            {
-              text: item.totalClusterNo,
-              fillColor: '#FFFFFF',
-            },
-            {
-              text: item.totalVotingCntrNo,
-              fillColor: '#FFFFFF',
-            },
-            {
-              text: item.totalRegVoterNo,
-              fillColor: '#FFFFFF',
-            },
+            { text: item.munCityName, fillColor: '#FFFFFF' },
+            { text: item.totalPurokNo, fillColor: '#FFFFFF', alignment: 'center' },
+            { text: item.totalEstabNo, fillColor: '#FFFFFF', alignment: 'center' },
+            { text: item.totalClusterNo, fillColor: '#FFFFFF', alignment: 'center' },
+            { text: item.totalVotingCntrNo, fillColor: '#FFFFFF', alignment: 'center' },
+            { text: item.totalRegVoterNo, fillColor: '#FFFFFF', alignment: 'center' },
           ]);
         });
 
         tableData.push([
-          {
-            text: 'SUBTOTAL',
-            fillColor: '#9DB2BF',
-          },
-          {
-            text: subtotal1.purokNo,
-            fillColor: '#9DB2BF',
-          },
-          {
-            text: subtotal1.estabNo,
-            fillColor: '#9DB2BF',
-          },
-          {
-            text: subtotal1.clusterNo,
-            fillColor: '#9DB2BF',
-          },
-          {
-            text: subtotal1.votingCntrNo,
-            fillColor: '#9DB2BF',
-          },
-          {
-            text: subtotal1.regVoterNo,
-            fillColor: '#9DB2BF',
-          },
+          { text: 'SUBTOTAL', fillColor: '#9DB2BF' },
+          { text: subtotal1.purokNo, fillColor: '#9DB2BF', alignment: 'center' },
+          { text: subtotal1.estabNo, fillColor: '#9DB2BF', alignment: 'center' },
+          { text: subtotal1.clusterNo, fillColor: '#9DB2BF', alignment: 'center' },
+          { text: subtotal1.votingCntrNo, fillColor: '#9DB2BF', alignment: 'center' },
+          { text: subtotal1.regVoterNo, fillColor: '#9DB2BF', alignment: 'center' },
         ]);
 
+        // --- DISTRICT 2 ---
         tableData.push([
-          {
-            text: `2nd Congressional District `,
-            colSpan: 6,
-            alignment: 'left',
-            fillColor: '#526D82',
-          },
-          {},
-          {},
-          {},
-          {},
-          {},
+          { text: `2nd Congressional District `, colSpan: 6, alignment: 'left', fillColor: '#526D82' },
+          {}, {}, {}, {}, {},
         ]);
 
-        dist2.forEach((item: any, index: any) => {
+        dist2.forEach((item: any) => {
           tableData.push([
-            {
-              text: item.munCityName,
-              fillColor: '#FFFFFF',
-            },
-            {
-              text: item.totalPurokNo,
-              fillColor: '#FFFFFF',
-            },
-            {
-              text: item.totalEstabNo,
-              fillColor: '#FFFFFF',
-            },
-            {
-              text: item.totalClusterNo,
-              fillColor: '#FFFFFF',
-            },
-            {
-              text: item.totalVotingCntrNo,
-              fillColor: '#FFFFFF',
-            },
-            {
-              text: item.totalRegVoterNo,
-              fillColor: '#FFFFFF',
-            },
+            { text: item.munCityName, fillColor: '#FFFFFF' },
+            { text: item.totalPurokNo, fillColor: '#FFFFFF', alignment: 'center' },
+            { text: item.totalEstabNo, fillColor: '#FFFFFF', alignment: 'center' },
+            { text: item.totalClusterNo, fillColor: '#FFFFFF', alignment: 'center' },
+            { text: item.totalVotingCntrNo, fillColor: '#FFFFFF', alignment: 'center' },
+            { text: item.totalRegVoterNo, fillColor: '#FFFFFF', alignment: 'center' },
           ]);
         });
 
         tableData.push([
-          {
-            text: 'SUBTOTAL',
-            fillColor: '#9DB2BF',
-          },
-          {
-            text: subtotal2.purokNo,
-            fillColor: '#9DB2BF',
-          },
-          {
-            text: subtotal2.estabNo,
-            fillColor: '#9DB2BF',
-          },
-          {
-            text: subtotal2.clusterNo,
-            fillColor: '#9DB2BF',
-          },
-          {
-            text: subtotal2.votingCntrNo,
-            fillColor: '#9DB2BF',
-          },
-          {
-            text: subtotal2.regVoterNo,
-            fillColor: '#9DB2BF',
-          },
+          { text: 'SUBTOTAL', fillColor: '#9DB2BF' },
+          { text: subtotal2.purokNo, fillColor: '#9DB2BF', alignment: 'center' },
+          { text: subtotal2.estabNo, fillColor: '#9DB2BF', alignment: 'center' },
+          { text: subtotal2.clusterNo, fillColor: '#9DB2BF', alignment: 'center' },
+          { text: subtotal2.votingCntrNo, fillColor: '#9DB2BF', alignment: 'center' },
+          { text: subtotal2.regVoterNo, fillColor: '#9DB2BF', alignment: 'center' },
         ]);
 
+        // --- GRAND TOTAL ---
         tableData.push([
-          {
-            text: 'GRANDTOTAL',
-            fillColor: '#F1C93B',
-          },
-          {
-            text: grandtotal.purokNo,
-            fillColor: '#F1C93B',
-          },
-          {
-            text: grandtotal.estabNo,
-            fillColor: '#F1C93B',
-          },
-          {
-            text: grandtotal.clusterNo,
-            fillColor: '#F1C93B',
-          },
-          {
-            text: grandtotal.votingCntrNo,
-            fillColor: '#F1C93B',
-          },
-          {
-            text: grandtotal.regVoterNo,
-            fillColor: '#F1C93B',
-          },
+          { text: 'GRANDTOTAL', fillColor: '#F1C93B' },
+          { text: grandtotal.purokNo, fillColor: '#F1C93B', alignment: 'center' },
+          { text: grandtotal.estabNo, fillColor: '#F1C93B', alignment: 'center' },
+          { text: grandtotal.clusterNo, fillColor: '#F1C93B', alignment: 'center' },
+          { text: grandtotal.votingCntrNo, fillColor: '#F1C93B', alignment: 'center' },
+          { text: grandtotal.regVoterNo, fillColor: '#F1C93B', alignment: 'center' },
         ]);
 
         const table = {
@@ -22776,47 +22664,153 @@ export class SummaryReportComponent implements OnInit {
             body: tableData,
           },
           layout: {
-            hLineWidth: function (i: any, node: any) {
-              return 1;
-            },
-            vLineWidth: function (i: any, node: any) {
-              return 1;
-            },
-            hLineColor: function (i: any, node: any) {
-              return 'black';
-            },
-            vLineColor: function (i: any, node: any) {
-              return 'black';
-            },
-            paddingLeft: function (i: any, node: any) {
-              return 4;
-            },
-            paddingRight: function (i: any, node: any) {
-              return 4;
-            },
-            paddingTop: function (i: any, node: any) {
-              return 2;
-            },
-            paddingBottom: function (i: any, node: any) {
-              return 2;
-            },
+            hLineWidth: () => 1,
+            vLineWidth: () => 1,
+            hLineColor: () => 'black',
+            vLineColor: () => 'black',
+            paddingLeft: () => 4,
+            paddingRight: () => 4,
+            paddingTop: () => 2,
+            paddingBottom: () => 2,
           },
         };
 
+        // 1. I-una og push ang Table para sa Unang Panid
         data.push(table);
-      },
-      error: (error: any) => {
-        console.log(error);
-      },
-      complete: () => {
+
+        // 2. PAG-GENERATE UG PAG-PUSH SA GENERAL VOTERS CHART (I-plastar sa Page 2)
+        try {
+          const chartLabels = reports.map((r: any) => r.munCityName);
+          const clusterData = reports.map((r: any) => r.totalClusterNo || 0);
+          const generalVoters = reports.map((r: any) => r.totalRegVoterNo || 0);
+
+          const graphBase64 = await this.generateGeneralVotersChart(chartLabels, clusterData, generalVoters);
+
+          // I-push nga magkauban aron magdikit ang titulo ug imahe
+          data.push({
+            pageBreak: 'before',
+            unbreakable: true,
+            stack: [
+              {
+                text: 'Comparative Analysis of Clustered Precincts and Registered Voters',
+                fontSize: 14,
+                bold: true,
+                margin: [0, 10, 0, 15],
+                alignment: 'center'
+              },
+              {
+                image: graphBase64,
+                width: 530,
+                alignment: 'center',
+                margin: [0, 0, 0, 0]
+              }
+            ]
+          });
+        } catch (chartError) {
+          console.error("Dili ma-render ang Voters graph sa PDF: ", chartError);
+        }
+
+        // 3. TAWGON ANG PDF GENERATOR DIRETSO SA NEXT BLOCK
         if (reports.length > 0) {
           let isPortrait = false;
           this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
-          console.log(data);
         } else {
           this.Error();
         }
       },
+      error: (error: any) => {
+        console.log(error);
+        this.Error();
+      }
+    });
+  }
+
+  // BAG-ONG METHOD: Maghimo ug 2-Bar Horizontal Graph matag Munisipyo
+  generateGeneralVotersChart(labels: any[], clusters: any[], voters: any[]): Promise<string> {
+    return new Promise((resolve, reject) => {
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = 800;
+        canvas.height = 430; // Gi-tas-an gamay kay tag-duha ka bars ang matag laray sa munisipyo
+        const ctx = canvas.getContext('2d');
+
+        if (!ctx) {
+          reject("Failed to create canvas context");
+          return;
+        }
+
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: 'Clustered Precincts',
+                data: clusters,
+                backgroundColor: '#9DB2BF', // Ang niwang/light gray-blue sa subtotal nimo
+                borderColor: '#788M9B',
+                borderWidth: 1,
+                barThickness: 10
+              },
+              {
+                label: 'Registered Voters',
+                data: voters,
+                backgroundColor: '#526D82', // Ang mas itom-itom nga gray-blue
+                borderColor: '#34495e',
+                borderWidth: 1,
+                barThickness: 14
+              }
+            ]
+          },
+          options: {
+            indexAxis: 'y', // Horizontal setup para dali basahon ang taas nga ngalan sa munisipyo
+            responsive: false,
+            plugins: {
+              legend: {
+                display: true,
+                position: 'top',
+                labels: { font: { size: 11, weight: 'bold' }, color: '#000000' }
+              }
+            },
+            scales: {
+              x: {
+                beginAtZero: true,
+                ticks: { color: '#000000', font: { size: 11, weight: 'bold' } }
+              },
+              y: {
+                ticks: { color: '#000000', font: { size: 11, weight: 'bold' } },
+                grid: { display: false }
+              }
+            },
+            animation: {
+              onComplete: function () {
+                const chartInstance = this;
+                const ctx = chartInstance.ctx;
+                ctx.font = 'bold 9px Arial';
+                ctx.textAlign = 'left';
+                ctx.textBaseline = 'middle';
+                ctx.fillStyle = '#000000';
+
+                chartInstance.data.datasets.forEach(function (dataset, i) {
+                  const meta = chartInstance.getDatasetMeta(i);
+                  meta.data.forEach(function (bar: any, index) {
+                    const data = dataset.data[index];
+                    if (typeof data === 'number' && data > 0) {
+                      const formattedData = Number(data).toLocaleString();
+                      // Isalmot ang text sa tumoy jud sa bar
+                      ctx.fillText(formattedData, bar.x + 6, bar.y);
+                    }
+                  });
+                });
+
+                resolve(canvas.toDataURL('image/png'));
+              }
+            }
+          }
+        });
+      } catch (e) {
+        reject(e);
+      }
     });
   }
   DemographyBarangayGeneratePDF() {
@@ -23118,19 +23112,19 @@ export class SummaryReportComponent implements OnInit {
     });
   }
 
-  DemographyGeneratePDF() {
+  // Siguroha nga naka-install ug imported ang chart.js (o gamit og CDN/Html Canvas)
+// npm install chart.js
+DemographyGeneratePDF() {
     let data: any = [];
     let reports: any = [];
-
     const tableData: any = [];
     let dist1: any = [];
     let dist2: any = [];
-
     let grandTotal: any = [];
     let columns: any = [];
 
     this.reportService.GetDemographyReport(this.params).subscribe({
-      next: (response: any = {}) => {
+      next: async (response: any = {}) => {
         reports = response.data;
         grandTotal = response.grandTotal;
         dist1 = response.districtOne;
@@ -23139,415 +23133,320 @@ export class SummaryReportComponent implements OnInit {
 
         console.log('result: ', response);
 
+        // 1. TITULO SA PDF (Magpabilin sa ibabaw sa pinunang panid)
         data.push({
-          margin: [0, 40, 0, 0],
+          margin: [0, 20, 0, 10],
           columns: [
-            {
-              text: `Total Population and Households by Municipality/City`,
-              fontSize: 14,
-              bold: true,
-            },
-            {
-              text: `Year: ${response.fromYear} - ${response.year}`,
-              fontSize: 14,
-              bold: true,
-              alignment: 'right',
-            },
+            { text: `Total Population and Households by Municipality/City`, fontSize: 14, bold: true },
+            { text: `Year: ${response.fromYear} - ${response.year}`, fontSize: 14, bold: true, alignment: 'right' },
           ],
         });
 
+        // 2. KINI ANG MGA COLUMNS PARA SA IMONG TABLE
         let columnData: any = [];
         columns.forEach((a: any, index: any) => {
           if (index == 0) {
             columnData.push(
-              {
-                text: '#',
-                fillColor: 'black',
-                color: 'white',
-                bold: true,
-                alignment: 'center',
-              },
-              {
-                text: 'Municipality/ City',
-                fillColor: 'black',
-                color: 'white',
-                bold: true,
-                alignment: 'center',
-              }
+              { text: '#', fillColor: 'black', color: 'white', bold: true, alignment: 'center' },
+              { text: 'Municipality/ City', fillColor: 'black', color: 'white', bold: true, alignment: 'center' }
             );
           }
           columnData.push(
-            {
-              text: a.description,
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
-            },
-            {
-              text: a.male,
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
-            },
-            {
-              text: a.female,
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
-            },
-            {
-              text: a.household,
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
-            }
+            { text: a.description, fillColor: 'black', color: 'white', bold: true, alignment: 'center' },
+            { text: a.male, fillColor: 'black', color: 'white', bold: true, alignment: 'center' },
+            { text: a.female, fillColor: 'black', color: 'white', bold: true, alignment: 'center' },
+            { text: a.household, fillColor: 'black', color: 'white', bold: true, alignment: 'center' }
           );
         });
         tableData.push(columnData);
 
+        // 3. DISTRICT 1 LOOPING
         reports.forEach((a: any, index: any) => {
           if (a.district === 1) {
             tableData.push([
-              {
-                text: `1st Congressional District `,
-                colSpan: 14,
-                alignment: 'left',
-                fillColor: '#526D82',
-                marginLeft: 5,
-              },
+              { text: `1st Congressional District `, colSpan: 14, alignment: 'left', fillColor: '#526D82', marginLeft: 5 }
             ]);
             dist1.forEach((b: any, index2: any) => {
               let d1: any = [];
-              d1.push(
-                {
-                  text: index2 + 1,
-                  alignment: 'center',
-                },
-                {
-                  text: b.munCityName,
-                }
-              );
+              d1.push({ text: index2 + 1, alignment: 'center' }, { text: b.munCityName });
 
-              columns.forEach((c: any, index3: any) => {
-                let _population: any = '-';
-                let _male: any = '-';
-                let _female: any = '-';
-                let _householdNo: any = '-';
-
-                a.data.forEach((d: any, index4: any) => {
+              columns.forEach((c: any) => {
+                let _population: any = '-'; let _male: any = '-'; let _female: any = '-'; let _householdNo: any = '-';
+                a.data.forEach((d: any) => {
                   if (b.munCityId === d.munCityId) {
-                    d.munData.forEach((e: any, index5: any) => {
+                    d.munData.forEach((e: any) => {
                       if (c.setYear === e.setYear) {
-                        _population = e.population;
-                        _male = e.male;
-                        _female = e.female;
-                        _householdNo = e.householdNo;
+                        _population = e.population; _male = e.male; _female = e.female; _householdNo = e.householdNo;
                       }
                     });
                   }
                 });
                 d1.push(
-                  {
-                    text: _population,
-                    alignment: 'center',
-                  },
-                  {
-                    text: _male,
-                    alignment: 'center',
-                  },
-                  {
-                    text: _female,
-                    alignment: 'center',
-                  },
-                  {
-                    text: _householdNo,
-                    alignment: 'center',
-                  }
+                  { text: _population, alignment: 'center' },
+                  { text: _male, alignment: 'center' },
+                  { text: _female, alignment: 'center' },
+                  { text: _householdNo, alignment: 'center' }
                 );
               });
               tableData.push(d1);
             });
 
+            // SUBTOTAL 1
             let _subTotal: any = [];
-            _subTotal.push(
-              {
-                text: 'SUBTOTAL',
-                colSpan: 2,
-                marginLeft: 5,
-                fillColor: '#9DB2BF',
-              },
-              {}
-            );
-            columns.forEach((c: any, index3: any) => {
-              let _population: any = '-';
-              let _male: any = '-';
-              let _female: any = '-';
-              let _householdNo: any = '-';
-
-              a.subTotal.forEach((e: any, index5: any) => {
+            _subTotal.push({ text: 'SUBTOTAL', colSpan: 2, marginLeft: 5, fillColor: '#9DB2BF' }, {});
+            columns.forEach((c: any) => {
+              let _population: any = '-'; let _male: any = '-'; let _female: any = '-'; let _householdNo: any = '-';
+              a.subTotal.forEach((e: any) => {
                 if (c.setYear === e.setYear) {
-                  _population = e.population;
-                  _male = e.male;
-                  _female = e.female;
-                  _householdNo = e.householdNo;
+                  _population = e.population; _male = e.male; _female = e.female; _householdNo = e.householdNo;
                 }
               });
               _subTotal.push(
-                {
-                  text: _population,
-                  alignment: 'center',
-                  fillColor: '#9DB2BF',
-                },
-                {
-                  text: _male,
-                  alignment: 'center',
-                  fillColor: '#9DB2BF',
-                },
-                {
-                  text: _female,
-                  alignment: 'center',
-                  fillColor: '#9DB2BF',
-                },
-                {
-                  text: _householdNo,
-                  alignment: 'center',
-                  fillColor: '#9DB2BF',
-                }
+                { text: _population, alignment: 'center', fillColor: '#9DB2BF' },
+                { text: _male, alignment: 'center', fillColor: '#9DB2BF' },
+                { text: _female, alignment: 'center', fillColor: '#9DB2BF' },
+                { text: _householdNo, alignment: 'center', fillColor: '#9DB2BF' }
               );
             });
             tableData.push(_subTotal);
           }
+
+          // 4. DISTRICT 2 LOOPING
           if (a.district === 2) {
             tableData.push([
-              {
-                text: `2nd Congressional District `,
-                colSpan: 14,
-                alignment: 'left',
-                fillColor: '#526D82',
-                marginLeft: 5,
-              },
+              { text: `2nd Congressional District `, colSpan: 14, alignment: 'left', fillColor: '#526D82', marginLeft: 5 }
             ]);
             dist2.forEach((b: any, index2: any) => {
               let d2: any = [];
-              d2.push(
-                {
-                  text: index2 + 1,
-                  alignment: 'center',
-                },
-                {
-                  text: b.munCityName,
-                }
-              );
+              d2.push({ text: index2 + 1, alignment: 'center' }, { text: b.munCityName });
 
-              columns.forEach((c: any, index3: any) => {
-                let _population: any = '-';
-                let _male: any = '-';
-                let _female: any = '-';
-                let _householdNo: any = '-';
-
-                a.data.forEach((d: any, index4: any) => {
+              columns.forEach((c: any) => {
+                let _population: any = '-'; let _male: any = '-'; let _female: any = '-'; let _householdNo: any = '-';
+                a.data.forEach((d: any) => {
                   if (b.munCityId === d.munCityId) {
-                    d.munData.forEach((e: any, index5: any) => {
+                    d.munData.forEach((e: any) => {
                       if (c.setYear === e.setYear) {
-                        _population = e.population;
-                        _male = e.male;
-                        _female = e.female;
-                        _householdNo = e.householdNo;
+                        _population = e.population; _male = e.male; _female = e.female; _householdNo = e.householdNo;
                       }
                     });
                   }
                 });
                 d2.push(
-                  {
-                    text: _population,
-                    alignment: 'center',
-                  },
-                  {
-                    text: _male,
-                    alignment: 'center',
-                  },
-                  {
-                    text: _female,
-                    alignment: 'center',
-                  },
-                  {
-                    text: _householdNo,
-                    alignment: 'center',
-                  }
+                  { text: _population, alignment: 'center' },
+                  { text: _male, alignment: 'center' },
+                  { text: _female, alignment: 'center' },
+                  { text: _householdNo, alignment: 'center' }
                 );
               });
               tableData.push(d2);
             });
 
+            // SUBTOTAL 2
             let _subTotal: any = [];
-            _subTotal.push(
-              {
-                text: 'SUBTOTAL',
-                colSpan: 2,
-                marginLeft: 5,
-                fillColor: '#9DB2BF',
-              },
-              {}
-            );
-            columns.forEach((c: any, index3: any) => {
-              let _population: any = '-';
-              let _male: any = '-';
-              let _female: any = '-';
-              let _householdNo: any = '-';
-
-              a.subTotal.forEach((e: any, index5: any) => {
+            _subTotal.push({ text: 'SUBTOTAL', colSpan: 2, marginLeft: 5, fillColor: '#9DB2BF' }, {});
+            columns.forEach((c: any) => {
+              let _population: any = '-'; let _male: any = '-'; let _female: any = '-'; let _householdNo: any = '-';
+              a.subTotal.forEach((e: any) => {
                 if (c.setYear === e.setYear) {
-                  _population = e.population;
-                  _male = e.male;
-                  _female = e.female;
-                  _householdNo = e.householdNo;
+                  _population = e.population; _male = e.male; _female = e.female; _householdNo = e.householdNo;
                 }
               });
               _subTotal.push(
-                {
-                  text: _population,
-                  alignment: 'center',
-                  fillColor: '#9DB2BF',
-                },
-                {
-                  text: _male,
-                  alignment: 'center',
-                  fillColor: '#9DB2BF',
-                },
-                {
-                  text: _female,
-                  alignment: 'center',
-                  fillColor: '#9DB2BF',
-                },
-                {
-                  text: _householdNo,
-                  alignment: 'center',
-                  fillColor: '#9DB2BF',
-                }
+                { text: _population, alignment: 'center', fillColor: '#9DB2BF' },
+                { text: _male, alignment: 'center', fillColor: '#9DB2BF' },
+                { text: _female, alignment: 'center', fillColor: '#9DB2BF' },
+                { text: _householdNo, alignment: 'center', fillColor: '#9DB2BF' }
               );
             });
             tableData.push(_subTotal);
           }
         });
 
+        // 5. GRAND TOTAL
         let _grandTotal: any = [];
-        _grandTotal.push(
-          {
-            text: 'GRANDTOTAL',
-            colSpan: 2,
-            marginLeft: 5,
-            fillColor: '#F1C93B',
-          },
-          {}
-        );
-        columns.forEach((c: any, index3: any) => {
-          let _population: any = '-';
-          let _male: any = '-';
-          let _female: any = '-';
-          let _householdNo: any = '-';
-
-          grandTotal.forEach((e: any, index5: any) => {
+        _grandTotal.push({ text: 'GRANDTOTAL', colSpan: 2, marginLeft: 5, fillColor: '#F1C93B' }, {});
+        columns.forEach((c: any) => {
+          let _population: any = '-'; let _male: any = '-'; let _female: any = '-'; let _householdNo: any = '-';
+          grandTotal.forEach((e: any) => {
             if (c.setYear === e.setYear) {
-              _population = e.population;
-              _male = e.male;
-              _female = e.female;
-              _householdNo = e.householdNo;
+              _population = e.population; _male = e.male; _female = e.female; _householdNo = e.householdNo;
             }
           });
           _grandTotal.push(
-            {
-              text: _population,
-              alignment: 'center',
-              fillColor: '#F1C93B',
-            },
-            {
-              text: _male,
-              alignment: 'center',
-              fillColor: '#F1C93B',
-            },
-            {
-              text: _female,
-              alignment: 'center',
-              fillColor: '#F1C93B',
-            },
-            {
-              text: _householdNo,
-              alignment: 'center',
-              fillColor: '#F1C93B',
-            }
+            { text: _population, alignment: 'center', fillColor: '#F1C93B' },
+            { text: _male, alignment: 'center', fillColor: '#F1C93B' },
+            { text: _female, alignment: 'center', fillColor: '#F1C93B' },
+            { text: _householdNo, alignment: 'center', fillColor: '#F1C93B' }
           );
         });
         tableData.push(_grandTotal);
 
+        
         const table = {
-          margin: [0, 20, 0, 0],
+          margin: [0, 10, 0, 15], 
           table: {
-            widths: [
-              25,
-              'auto',
-              'auto',
-              'auto',
-              'auto',
-              'auto',
-              'auto',
-              'auto',
-              'auto',
-              'auto',
-              'auto',
-              'auto',
-              'auto',
-              '*',
-            ],
+            widths: [25, 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', '*'],
             body: tableData,
           },
           layout: {
-            hLineWidth: function (i: any, node: any) {
-              return i === 0 || i === node.table.body.length ? 1 : 1;
-            },
-            vLineWidth: function (i: any, node: any) {
-              return i === 0 || i === node.table.widths.length ? 1 : 1;
-            },
-            hLineColor: function (i: any, node: any) {
-              return 'black';
-            },
-            vLineColor: function (i: any, node: any) {
-              return 'black';
-            },
-            paddingLeft: function (i: any, node: any) {
-              return 4;
-            },
-            paddingRight: function (i: any, node: any) {
-              return 4;
-            },
-            paddingTop: function (i: any, node: any) {
-              return 2;
-            },
-            paddingBottom: function (i: any, node: any) {
-              return 2;
-            },
+            hLineWidth: () => 1, vLineWidth: () => 1,
+            hLineColor: () => 'black', vLineColor: () => 'black',
+            paddingLeft: () => 4, paddingRight: () => 4,
+            paddingTop: () => 3, paddingBottom: () => 3,
           },
         };
 
+        
         data.push(table);
-      },
-      error: (error: any) => {
-        console.log(error);
-      },
-      complete: () => {
+
+        
+        try {
+          const chartLabels = columns.map((c: any) => c.description || `Year ${c.setYear}`);
+          
+          const totalPopData = columns.map((c: any) => {
+            const gt = grandTotal.find((g: any) => g.setYear === c.setYear);
+            return gt ? gt.population : 0;
+          });
+          
+          const maleData = columns.map((c: any) => {
+            const gt = grandTotal.find((g: any) => g.setYear === c.setYear);
+            return gt ? gt.male : 0;
+          });
+          
+          const femaleData = columns.map((c: any) => {
+            const gt = grandTotal.find((g: any) => g.setYear === c.setYear);
+            return gt ? gt.female : 0;
+          });
+
+          const householdData = columns.map((c: any) => {
+            const gt = grandTotal.find((g: any) => g.setYear === c.setYear);
+            return gt ? gt.householdNo : 0;
+          });
+
+          const graphBase64 = await this.generateDemographyChart(chartLabels, totalPopData, maleData, femaleData, householdData);
+          
+         
+          data.push({
+            pageBreak: 'before', 
+            stack: [
+              { 
+                text: 'Demographic Profile and Household Distribution', 
+                fontSize: 14, 
+                bold: true, 
+                margin: [0, 10, 0, 15], 
+                alignment: 'center' 
+              },
+              {
+                image: graphBase64,
+                width: 540, 
+                alignment: 'center',
+                margin: [0, 0, 0, 0] 
+              }
+            ]
+          });
+
+        } catch (chartError) {
+          console.error("Dili ma-render ang graph sa PDF: ", chartError);
+        }
+
+        
         if (reports.length > 0) {
-          let isPortrait = false;
+          let isPortrait = false; 
           this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
-          console.log(data);
         } else {
           this.Error();
         }
       },
+      error: (error: any) => {
+        console.error(error);
+        this.Error();
+      }
     });
-  }
+}
+
+
+generateDemographyChart(labels: any[], totalPop: any[], males: any[], females: any[], households: any[]): Promise<string> {
+  return new Promise((resolve, reject) => {
+    try {
+      const canvas = document.createElement('canvas');
+      canvas.width = 850;   
+      canvas.height = 360;
+      const ctx = canvas.getContext('2d');
+
+      if (!ctx) {
+        reject("Failed to create canvas context");
+        return;
+      }
+
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [
+            { label: 'Total Population', data: totalPop, backgroundColor: '#526D82' },
+            { label: 'Male', data: males, backgroundColor: '#3498db' },
+            { label: 'Female', data: females, backgroundColor: '#e74c3c' },
+            { label: 'Household', data: households, backgroundColor: '#2ecc71' } 
+          ]
+        },
+        options: {
+          responsive: false,
+          plugins: {
+            legend: {
+              labels: {
+                color: '#333333',
+                font: { size: 12, weight: 'bold' }
+              }
+            },
+          },
+          scales: {
+            x: { 
+              ticks: {
+                color: '#000000',
+                font: { size: 12, weight: 'bold' }
+              },
+              grid: { display: false }
+            },
+            y: { 
+              beginAtZero: true,
+              ticks: {
+                color: '#000000',
+                font: { size: 11, weight: 'bold' }
+              }
+            }
+          },
+          animation: {
+            onComplete: function () {
+              const chartInstance = this;
+              const ctx = chartInstance.ctx;
+              
+              ctx.font = 'bold 10px Arial'; // Gi-gamyan gamay ang font size para masigo tanan numero
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'bottom';
+
+              chartInstance.data.datasets.forEach(function (dataset, i) {
+                const meta = chartInstance.getDatasetMeta(i);
+                meta.data.forEach(function (bar, index) {
+                  const data = dataset.data[index];
+                  if(typeof data === 'number' && data > 0) {
+                    const formattedData = Number(data).toLocaleString();
+                    ctx.fillStyle = '#FFFFFF'; // Puti nga text sa sulod sa bar
+                    ctx.fillText(formattedData, bar.x, bar.y + 15); 
+                  }
+                });
+              });
+
+              resolve(canvas.toDataURL('image/png'));
+            }
+          }
+        }
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+}
+
 
   OrgStafGeneratePDF() {
     let data: any = [];
@@ -23559,7 +23458,7 @@ export class SummaryReportComponent implements OnInit {
     const tableData: any = [];
 
     this.reportService.GetOrgStaffReport(this.params).subscribe({
-      next: (response: any = {}) => {
+      next: async (response: any = {}) => { // Gi-dugangan og async alang sa graph rendering
         reports = response.data;
         grandTotal = response.grandTotal;
 
@@ -23582,113 +23481,24 @@ export class SummaryReportComponent implements OnInit {
           ],
         });
 
+        // --- TABLE HEADERS ---
         tableData.push([
-          {
-            text: '#',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-            fontSize: 9,
-          },
-          {
-            text: 'Municipality/ City',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-            fontSize: 9,
-          },
-          {
-            text: 'Permanent Employees',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-            fontSize: 9,
-          },
-          {
-            text: 'Temporary',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-            fontSize: 9,
-          },
-          {
-            text: 'Co-Terminus',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-            fontSize: 9,
-          },
-          {
-            text: 'Elected',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-            fontSize: 9,
-          },
-          {
-            text: 'Casual',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-            fontSize: 9,
-          },
-          {
-            text: 'Job Order',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-            fontSize: 9,
-          },
-          {
-            text: 'Contractual',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-            fontSize: 9,
-          },
-          {
-            text: 'Casual SEF',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-            fontSize: 9,
-          },
-          {
-            text: 'School Board',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-            fontSize: 9,
-          },
-          {
-            text: 'Contract of Services',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-            fontSize: 9,
-          },
-          {
-            text: 'Others',
-            fillColor: 'black',
-            color: 'white',
-            bold: true,
-            alignment: 'center',
-            fontSize: 9,
-          },
+          { text: '#', fillColor: 'black', color: 'white', bold: true, alignment: 'center', fontSize: 9 },
+          { text: 'Municipality/ City', fillColor: 'black', color: 'white', bold: true, alignment: 'center', fontSize: 9 },
+          { text: 'Permanent Employees', fillColor: 'black', color: 'white', bold: true, alignment: 'center', fontSize: 9 },
+          { text: 'Temporary', fillColor: 'black', color: 'white', bold: true, alignment: 'center', fontSize: 9 },
+          { text: 'Co-Terminus', fillColor: 'black', color: 'white', bold: true, alignment: 'center', fontSize: 9 },
+          { text: 'Elected', fillColor: 'black', color: 'white', bold: true, alignment: 'center', fontSize: 9 },
+          { text: 'Casual', fillColor: 'black', color: 'white', bold: true, alignment: 'center', fontSize: 9 },
+          { text: 'Job Order', fillColor: 'black', color: 'white', bold: true, alignment: 'center', fontSize: 9 },
+          { text: 'Contractual', fillColor: 'black', color: 'white', bold: true, alignment: 'center', fontSize: 9 },
+          { text: 'Casual SEF', fillColor: 'black', color: 'white', bold: true, alignment: 'center', fontSize: 9 },
+          { text: 'School Board', fillColor: 'black', color: 'white', bold: true, alignment: 'center', fontSize: 9 },
+          { text: 'Contract of Services', fillColor: 'black', color: 'white', bold: true, alignment: 'center', fontSize: 9 },
+          { text: 'Others', fillColor: 'black', color: 'white', bold: true, alignment: 'center', fontSize: 9 },
         ]);
 
+        // --- POPULATE DISTRICTS & DATA ---
         reports.forEach((a: any) => {
           let _district: string = '1st';
           if (a.district === 2) {
@@ -23703,305 +23513,237 @@ export class SummaryReportComponent implements OnInit {
               marginLeft: 5,
               fontSize: 9,
             },
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
+            {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
           ]);
+
           a.data.forEach((b: any, index2: any) => {
             tableData.push([
-              {
-                text: index2 + 1,
-                fillColor: '#FFFFFF',
-                alignment: 'center',
-                fontSize: 9,
-              },
-              {
-                text: b.munCityName,
-                fillColor: '#FFFFFF',
-                fontSize: 9,
-              },
-              {
-                text: b.munData.permanentNo,
-                fillColor: '#FFFFFF',
-                fontSize: 9,
-                alignment: 'center',
-              },
-              {
-                text: b.munData.temporary,
-                fillColor: '#FFFFFF',
-                alignment: 'center',
-                fontSize: 9,
-              },
-              {
-                text: b.munData.coTerminus,
-                fillColor: '#FFFFFF',
-                alignment: 'center',
-                fontSize: 9,
-              },
-              {
-                text: b.munData.elected,
-                fillColor: '#FFFFFF',
-                alignment: 'center',
-                fontSize: 9,
-              },
-              {
-                text: b.munData.casual,
-                fillColor: '#FFFFFF',
-                alignment: 'center',
-                fontSize: 9,
-              },
-              {
-                text: b.munData.jobOrder,
-                fillColor: '#FFFFFF',
-                alignment: 'center',
-                fontSize: 9,
-              },
-              {
-                text: b.munData.contractual,
-                fillColor: '#FFFFFF',
-                alignment: 'center',
-                fontSize: 9,
-              },
-              {
-                text: b.munData.casualSef,
-                fillColor: '#FFFFFF',
-                alignment: 'center',
-                fontSize: 9,
-              },
-              {
-                text: b.munData.schoolBoard,
-                fillColor: '#FFFFFF',
-                fontSize: 9,
-                alignment: 'center',
-              },
-              {
-                text: b.munData.contractService,
-                fillColor: '#FFFFFF',
-                fontSize: 9,
-                alignment: 'center',
-              },
-              {
-                text: b.munData.others,
-                fillColor: '#FFFFFF',
-                fontSize: 9,
-              },
+              { text: index2 + 1, fillColor: '#FFFFFF', alignment: 'center', fontSize: 9 },
+              { text: b.munCityName, fillColor: '#FFFFFF', fontSize: 9 },
+              { text: b.munData.permanentNo, fillColor: '#FFFFFF', fontSize: 9, alignment: 'center' },
+              { text: b.munData.temporary, fillColor: '#FFFFFF', alignment: 'center', fontSize: 9 },
+              { text: b.munData.coTerminus, fillColor: '#FFFFFF', alignment: 'center', fontSize: 9 },
+              { text: b.munData.elected, fillColor: '#FFFFFF', alignment: 'center', fontSize: 9 },
+              { text: b.munData.casual, fillColor: '#FFFFFF', alignment: 'center', fontSize: 9 },
+              { text: b.munData.jobOrder, fillColor: '#FFFFFF', alignment: 'center', fontSize: 9 },
+              { text: b.munData.contractual, fillColor: '#FFFFFF', alignment: 'center', fontSize: 9 },
+              { text: b.munData.casualSef, fillColor: '#FFFFFF', alignment: 'center', fontSize: 9 },
+              { text: b.munData.schoolBoard, fillColor: '#FFFFFF', fontSize: 9, alignment: 'center' },
+              { text: b.munData.contractService, fillColor: '#FFFFFF', fontSize: 9, alignment: 'center' },
+              { text: b.munData.others, fillColor: '#FFFFFF', fontSize: 9, alignment: 'center' },
             ]);
           });
 
+          // --- SUBTOTAL PER DISTRICT ---
           tableData.push([
-            {
-              text: 'SUBTOTAL',
-              fillColor: '#9DB2BF',
-              colSpan: 2,
-              marginLeft: 5,
-              fontSize: 9,
-            },
+            { text: 'SUBTOTAL', fillColor: '#9DB2BF', colSpan: 2, marginLeft: 5, fontSize: 9 },
             {},
-            {
-              text: a.subTotal.permanentNo,
-              fillColor: '#9DB2BF',
-              alignment: 'center',
-              fontSize: 9,
-            },
-            {
-              text: a.subTotal.temporary,
-              fillColor: '#9DB2BF',
-              alignment: 'center',
-              fontSize: 9,
-            },
-            {
-              text: a.subTotal.coTerminus,
-              fillColor: '#9DB2BF',
-              alignment: 'center',
-              fontSize: 9,
-            },
-            {
-              text: a.subTotal.elected,
-              fillColor: '#9DB2BF',
-              alignment: 'center',
-              fontSize: 9,
-            },
-            {
-              text: a.subTotal.casual,
-              fillColor: '#9DB2BF',
-              alignment: 'center',
-              fontSize: 9,
-            },
-            {
-              text: a.subTotal.jobOrder,
-              fillColor: '#9DB2BF',
-              alignment: 'center',
-              fontSize: 9,
-            },
-            {
-              text: a.subTotal.contractual,
-              fillColor: '#9DB2BF',
-              alignment: 'center',
-              fontSize: 9,
-            },
-            {
-              text: a.subTotal.casualSef,
-              fillColor: '#9DB2BF',
-              alignment: 'center',
-              fontSize: 9,
-            },
-            {
-              text: a.subTotal.schoolBoard,
-              fillColor: '#9DB2BF',
-              alignment: 'center',
-              fontSize: 9,
-            },
-            {
-              text: a.subTotal.contractService,
-              fillColor: '#9DB2BF',
-              alignment: 'center',
-              fontSize: 9,
-            },
-            {
-              text: a.subTotal.others,
-              fillColor: '#9DB2BF',
-              alignment: 'center',
-              fontSize: 9,
-            },
+            { text: a.subTotal.permanentNo, fillColor: '#9DB2BF', alignment: 'center', fontSize: 9 },
+            { text: a.subTotal.temporary, fillColor: '#9DB2BF', alignment: 'center', fontSize: 9 },
+            { text: a.subTotal.coTerminus, fillColor: '#9DB2BF', alignment: 'center', fontSize: 9 },
+            { text: a.subTotal.elected, fillColor: '#9DB2BF', alignment: 'center', fontSize: 9 },
+            { text: a.subTotal.casual, fillColor: '#9DB2BF', alignment: 'center', fontSize: 9 },
+            { text: a.subTotal.jobOrder, fillColor: '#9DB2BF', alignment: 'center', fontSize: 9 },
+            { text: a.subTotal.contractual, fillColor: '#9DB2BF', alignment: 'center', fontSize: 9 },
+            { text: a.subTotal.casualSef, fillColor: '#9DB2BF', alignment: 'center', fontSize: 9 },
+            { text: a.subTotal.schoolBoard, fillColor: '#9DB2BF', alignment: 'center', fontSize: 9 },
+            { text: a.subTotal.contractService, fillColor: '#9DB2BF', alignment: 'center', fontSize: 9 },
+            { text: a.subTotal.others, fillColor: '#9DB2BF', alignment: 'center', fontSize: 9 },
           ]);
         });
 
+        // --- GRAND TOTAL ---
         tableData.push([
-          {
-            text: 'GRANDTOTAL',
-            fillColor: '#F1C93B',
-            colSpan: 2,
-            marginLeft: 5,
-            fontSize: 9,
-          },
+          { text: 'GRANDTOTAL', fillColor: '#F1C93B', colSpan: 2, marginLeft: 5, fontSize: 9 },
           {},
-          {
-            text: grandTotal.permanentNo,
-            fillColor: '#F1C93B',
-            alignment: 'center',
-            fontSize: 9,
-          },
-          {
-            text: grandTotal.temporary,
-            fillColor: '#F1C93B',
-            alignment: 'center',
-            fontSize: 9,
-          },
-          {
-            text: grandTotal.coTerminus,
-            fillColor: '#F1C93B',
-            alignment: 'center',
-            fontSize: 9,
-          },
-          {
-            text: grandTotal.elected,
-            fillColor: '#F1C93B',
-            alignment: 'center',
-            fontSize: 9,
-          },
-          {
-            text: grandTotal.casual,
-            fillColor: '#F1C93B',
-            alignment: 'center',
-            fontSize: 9,
-          },
-          {
-            text: grandTotal.jobOrder,
-            fillColor: '#F1C93B',
-            alignment: 'center',
-            fontSize: 9,
-          },
-          {
-            text: grandTotal.contractual,
-            fillColor: '#F1C93B',
-            alignment: 'center',
-            fontSize: 9,
-          },
-          {
-            text: grandTotal.casualSef,
-            fillColor: '#F1C93B',
-            alignment: 'center',
-            fontSize: 9,
-          },
-          {
-            text: grandTotal.schoolBoard,
-            fillColor: '#F1C93B',
-            alignment: 'center',
-            fontSize: 9,
-          },
-          {
-            text: grandTotal.contractService,
-            fillColor: '#F1C93B',
-            alignment: 'center',
-            fontSize: 9,
-          },
-          {
-            text: grandTotal.others,
-            fillColor: '#F1C93B',
-            alignment: 'center',
-            fontSize: 9,
-          },
+          { text: grandTotal.permanentNo, fillColor: '#F1C93B', alignment: 'center', fontSize: 9 },
+          { text: grandTotal.temporary, fillColor: '#F1C93B', alignment: 'center', fontSize: 9 },
+          { text: grandTotal.coTerminus, fillColor: '#F1C93B', alignment: 'center', fontSize: 9 },
+          { text: grandTotal.elected, fillColor: '#F1C93B', alignment: 'center', fontSize: 9 },
+          { text: grandTotal.casual, fillColor: '#F1C93B', alignment: 'center', fontSize: 9 },
+          { text: grandTotal.jobOrder, fillColor: '#F1C93B', alignment: 'center', fontSize: 9 },
+          { text: grandTotal.contractual, fillColor: '#F1C93B', alignment: 'center', fontSize: 9 },
+          { text: grandTotal.casualSef, fillColor: '#F1C93B', alignment: 'center', fontSize: 9 },
+          { text: grandTotal.schoolBoard, fillColor: '#F1C93B', alignment: 'center', fontSize: 9 },
+          { text: grandTotal.contractService, fillColor: '#F1C93B', alignment: 'center', fontSize: 9 },
+          { text: grandTotal.others, fillColor: '#F1C93B', alignment: 'center', fontSize: 9 },
         ]);
 
         const table = {
           margin: [0, 10, 0, 0],
           table: {
-            widths: [
-              25,
-              '*',
-              '*',
-              '*',
-              '*',
-              '*',
-              '*',
-              '*',
-              '*',
-              '*',
-              '*',
-              '*',
-              '*',
-            ],
+            widths: [25, '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*'],
             body: tableData,
           },
           layout: {
-            hLineWidth: function (i: number, node: any) {
-              return 0.5;
-            },
-            vLineWidth: function (i: number, node: any) {
-              return 0.5;
-            },
-            hLineColor: function (i: number, node: any) {
-              return '#000000';
-            },
-            vLineColor: function (i: number, node: any) {
-              return '#000000';
-            },
+            hLineWidth: (i: number) => 0.5,
+            vLineWidth: (i: number) => 0.5,
+            hLineColor: () => '#000000',
+            vLineColor: () => '#000000',
           },
         };
 
+        // 1. I-push una ang dakong Staffing table
         data.push(table);
-      },
-      error: (error: any) => {
-        console.log(error);
-      },
-      complete: () => {
+
+        // 2. PAG-GENERATE UG PAG-PUSH SA DONUT CHART (I-butang sa sunod nga page para limpyo)
+        try {
+          // Pag-andam sa mga label ug tagsa-tagsa nga data sa grand total
+          const donutLabels = [
+            'Permanent', 'Temporary', 'Co-Terminus', 'Elected', 'Casual', 
+            'Job Order', 'Contractual', 'Casual SEF', 'School Board', 
+            'Contract of Services', 'Others'
+          ];
+          
+          const donutData = [
+            grandTotal.permanentNo || 0,
+            grandTotal.temporary || 0,
+            grandTotal.coTerminus || 0,
+            grandTotal.elected || 0,
+            grandTotal.casual || 0,
+            grandTotal.jobOrder || 0,
+            grandTotal.contractual || 0,
+            grandTotal.casualSef || 0,
+            grandTotal.schoolBoard || 0,
+            grandTotal.contractService || 0,
+            grandTotal.others || 0
+          ];
+
+          const donutBase64 = await this.generateStaffingDonutChart(donutLabels, donutData);
+
+          data.push({
+            pageBreak: 'before',
+            unbreakable: true,
+            stack: [
+              {
+                text: 'Overall Staffing Pattern Percentage Distribution (Grand Total)',
+                fontSize: 14,
+                bold: true,
+                margin: [0, 15, 0, 15],
+                alignment: 'center'
+              },
+              {
+                image: donutBase64,
+                width: 420, // Sakto nga gidak-on para sa donut chart ug sa iyang side legends
+                alignment: 'center',
+                margin: [0, 10, 0, 0]
+              }
+            ]
+          });
+        } catch (chartError) {
+          console.error("Dili ma-render ang Staffing Donut Graph: ", chartError);
+        }
+
+        // 3. PAGTAWAG SA PDF SERVICE GENERATION
         if (reports.length > 0) {
-          let isPortrait = false;
+          let isPortrait = false; // Nindot nga Landscape kay grabe ka-luapad sa columns ani
           this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
-          console.log(data);
         } else {
           this.Error();
         }
       },
+      error: (error: any) => {
+        console.log(error);
+        this.Error();
+      }
+    });
+  }
+
+  // BAG-ONG METHOD: Maghimo og Donut Chart alang sa Grand Total Distribution
+  generateStaffingDonutChart(labels: string[], chartData: number[]): Promise<string> {
+    return new Promise((resolve, reject) => {
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = 700;
+        canvas.height = 350; // Sakto nga resolution para ma-render og dungan ang lingkin ug ang mga label sa kilid
+        const ctx = canvas.getContext('2d');
+
+        if (!ctx) {
+          reject("Failed to create canvas context");
+          return;
+        }
+
+        // Pagsala sa mga fields nga walay sulod (0) aron dili maghuot ang labels sa Donut
+        const filteredLabels: string[] = [];
+        const filteredData: number[] = [];
+        
+        chartData.forEach((val, idx) => {
+          if (val > 0) {
+            filteredLabels.push(labels[idx]);
+            filteredData.push(val);
+          }
+        });
+
+        // 11 ka nindot ug limpyo nga color palette alang sa modernong report
+        const colorPalette = [
+          '#2b5c8f', '#4682b4', '#6baed6', '#9ecae1', '#c6dbef',
+          '#e6550d', '#fdae6b', '#fdd0a2', '#31a354', '#74c476', '#a1d99b'
+        ];
+
+        new Chart(ctx, {
+  type: 'doughnut',
+  data: {
+    labels: filteredLabels,
+    datasets: [{
+      data: filteredData,
+      backgroundColor: colorPalette.slice(0, filteredData.length),
+      borderWidth: 1.5,
+      borderColor: '#ffffff'
+    }]
+  },
+  options: {
+    responsive: false,
+    cutout: '55%', // Sakto nga ania kini nakapahimutang direkta sa options root
+    plugins: {
+      legend: {
+        display: true,
+        position: 'right',
+        labels: {
+          boxWidth: 15,
+          padding: 12,
+          font: { size: 11, weight: 'bold' },
+          color: '#000000',
+          generateLabels: (chart) => {
+            const data = chart.data;
+            
+            // Gi-validate aron mapugngan ang 'is possibly undefined' o empty arrays error
+            if (data && data.labels && data.labels.length && data.datasets && data.datasets.length) {
+              return data.labels.map((label, i) => {
+                const dataset = data.datasets[0];
+                const value = dataset.data[i];
+                const formattedValue = Number(value).toLocaleString();
+                
+                // Luwas nga pagkuha sa color array/string aron malikayan ang typescript indexing error
+                const bgColors = dataset.backgroundColor as string[];
+                const currentFill = Array.isArray(bgColors) ? bgColors[i] : (bgColors || '#000000');
+
+                return {
+                  text: ` ${label} (${formattedValue})`,
+                  fillStyle: currentFill,
+                  strokeStyle: '#ffffff',
+                  lineWidth: 1,
+                  hidden: false,
+                  index: i
+                };
+              });
+            }
+            return [];
+          }
+        }
+      },
+      tooltip: { enabled: true }
+    },
+    // SAKTO NGA LUGAR: Ang animation onComplete gibalhin na sa sulod sa options root block
+    animation: {
+      onComplete: function () {
+        resolve(canvas.toDataURL('image/png'));
+      }
+    }
+  }
+});
+      } catch (e) {
+        reject(e);
+      }
     });
   }
 
@@ -24544,204 +24286,280 @@ export class SummaryReportComponent implements OnInit {
       },
     });
   }
-  FiscalMattersGeneratePDF() {
-    let reports: any = [];
-    let data: any = [];
+ FiscalMattersGeneratePDF() {
+  let reports: any = [];
+  let data: any = [];
 
-    this.reportService.GetFiscalMatterReport(this.params).subscribe({
-      next: (response) => {
-        reports = <any>response;
+  this.reportService.GetFiscalMatterReport(this.params).subscribe({
+    next: (response) => {
+      reports = <any>response;
 
-        // Function to generate separate Revenue and Expenditure tables per Municipality
-        const generateTablesForMunicipality = () => {
-          const municipalities: { [key: string]: any } = {};
+      // 1. I-group ang reports ug i-prepare ang istruktura sa kada Municipality
+      const municipalities: { [key: string]: any } = {};
 
-          // Group reports by municipality and category
-          reports.forEach((item: any) => {
-            const { munCityName, fiscalYear, category } = item;
-            const key = `${munCityName}`;
+      reports.forEach((item: any) => {
+        const { munCityName, fiscalYear, category } = item;
+        const key = `${munCityName}`;
 
-            if (!municipalities[key]) {
-              municipalities[key] = {
-                cityName: munCityName,
-                revenueData: [],
-                expenditureData: [],
-              };
-            }
+        if (!municipalities[key]) {
+          municipalities[key] = {
+            cityName: munCityName,
+            revenueData: [],
+            expenditureData: [],
+          };
+        }
 
-            if (category === 1) {
-              municipalities[key].revenueData.push({
-                fiscalYear: fiscalYear,
-                name: item.name,
-                amount: item.amount,
-                category: 'Revenue',
-              });
-            } else {
-              municipalities[key].expenditureData.push({
-                fiscalYear: fiscalYear,
-                name: item.name,
-                amount: item.amount,
-                category: 'Expenditure',
-              });
-            }
+        if (category === 1) {
+          municipalities[key].revenueData.push({
+            fiscalYear: fiscalYear,
+            name: item.name,
+            amount: item.amount,
+            category: 'Revenue',
           });
+        } else {
+          municipalities[key].expenditureData.push({
+            fiscalYear: fiscalYear,
+            name: item.name,
+            amount: item.amount,
+            category: 'Expenditure',
+          });
+        }
+      });
 
-          // Iterate over each municipality and add separate tables to data
-          for (const key in municipalities) {
-            const { cityName, revenueData, expenditureData } =
-              municipalities[key];
+      // 2. DATA AGGREGATION PARA SA GROUPED BAR CHART
+      const chartLabels: string[] = [];
+      const revenueAmounts: number[] = [];
+      const expenditureAmounts: number[] = [];
 
-            // Generate separate Revenue and Expenditure tables
-            generateTables(cityName, revenueData, expenditureData);
-          }
-        };
+      for (const key in municipalities) {
+        const mun = municipalities[key];
+        chartLabels.push(mun.cityName);
 
-        // Function to generate separate tables for a municipality
-        const generateTables = (
-          cityName: string,
-          revenueData: any[],
-          expenditureData: any[]
-        ) => {
-          // Generate Revenue Table
-          generateTable(cityName, revenueData, 'Revenue');
-          // Generate Expenditure Table without page break
-          generateTable(cityName, expenditureData, 'Expenditure', false);
-        };
+        const totalRev = mun.revenueData.reduce((sum: number, item: any) => sum + Number(item.amount), 0);
+        const totalExp = mun.expenditureData.reduce((sum: number, item: any) => sum + Number(item.amount), 0);
 
-        // Function to generate a table for a municipality
-        const generateTable = (
-          cityName: string,
-          dataItems: any[],
-          category: string,
-          addPageBreak: boolean = true
-        ) => {
-          // Determine the section title
-          const tableTitle = `${cityName} - ${category}`;
+        revenueAmounts.push(totalRev);
+        expenditureAmounts.push(totalExp);
+      }
 
-          // Prepare table headers
-          const tableHeaders = [
-            {
-              text: 'Fiscal Year',
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
-              border: [true, true, true, true],
-            },
-            {
-              text: 'Name',
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
-              border: [true, true, true, true],
-            },
-            {
-              text: 'Amount (PhP)',
-              fillColor: 'black',
-              color: 'white',
-              bold: true,
-              alignment: 'center',
-              border: [true, true, true, true],
-            },
-          ];
-
-          // Prepare table data
-          const tableData = dataItems.map((item: any) => [
-            {
-              text: item.fiscalYear,
-              fillColor: '#FFFFFF',
-              border: [true, true, true, true],
-              alignment: 'center',
-              fontSize: 10,
-            },
-            {
-              text: item.name,
-              fillColor: '#FFFFFF',
-              border: [true, true, true, true],
-              alignment: 'center',
-              fontSize: 10,
-            },
-            {
-              text: item.amount,
-              fillColor: '#FFFFFF',
-              border: [true, true, true, true],
-              alignment: 'center',
-              fontSize: 10,
-            },
-          ]);
-
-          // Add table to data
-          if (tableData.length > 0) {
-            // Add page break only if required
-            if (addPageBreak && data.length > 0) {
-              data.push({ text: '', pageBreak: 'before' });
-            }
-
-            data.push({
-              margin: [0, 10, 0, 0],
-              text: tableTitle,
-              fontSize: 14,
-              bold: true,
-              alignment: 'center',
+      // 3. GI-REVISE NGA PLUGIN: GAHIMONG PATINDOG (ROTATED) ANG MGA NUMERO ARON DILI MAGPATONG
+      const barLabelsPlugin = {
+        id: 'barLabels',
+        afterDatasetsDraw(chart: any) {
+          const { ctx } = chart;
+          chart.data.datasets.forEach((dataset: any, i: number) => {
+            const meta = chart.getDatasetMeta(i);
+            meta.data.forEach((bar: any, index: number) => {
+              const value = dataset.data[index];
+              if (value > 0) {
+                const formattedValue = Number(value).toLocaleString();
+                
+                ctx.save();
+                ctx.font = 'bold 8px Arial';
+                ctx.fillStyle = '#333333';
+                
+                // Ibalhin ang tunga sa context ngadto sa tumoy sa bar
+                ctx.translate(bar.x, bar.y - 5);
+                // I-rotate og -90 degrees para magpatindog ang text pataas
+                ctx.rotate(-Math.PI / 2);
+                
+                ctx.textAlign = 'left';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(formattedValue, 0, 0);
+                ctx.restore();
+              }
             });
+          });
+        }
+      };
 
-            const table = {
-              margin: [0, 5, 0, 15],
-              table: {
-                headerRows: 1,
-                widths: ['auto', '*', 'auto'],
-                body: [tableHeaders, ...tableData],
+      // 4. PAG-GENERATE SA TSART PADULONG SA BASE64 IMAGE
+      const generateChartImage = (): Promise<string> => {
+        return new Promise((resolve) => {
+          const canvas = document.createElement('canvas');
+          // Gilapdan nato og gamay ang canvas aron naay igong dapit ang matag lungsod
+          canvas.width = 800;  
+          canvas.height = 420; 
+          const ctx = canvas.getContext('2d');
+
+          if (!ctx) {
+            resolve('');
+            return;
+          }
+
+          new Chart(ctx, {
+            type: 'bar', 
+            data: {
+              labels: chartLabels,
+              datasets: [
+                {
+                  label: 'Total Revenue',
+                  data: revenueAmounts,
+                  backgroundColor: '#1f77b4', 
+                  borderWidth: 1,
+                  barPercentage: 0.8,       // Gi-adjust para naay saktong gibagon ang bar
+                  categoryPercentage: 0.7   // Gi-adjust ang distansya kada grupo sa lungsod
+                },
+                {
+                  label: 'Total Expenditure',
+                  data: expenditureAmounts,
+                  backgroundColor: '#d62728', 
+                  borderWidth: 1,
+                  barPercentage: 0.8,
+                  categoryPercentage: 0.7
+                }
+              ]
+            },
+            plugins: [barLabelsPlugin], 
+            options: {
+              responsive: false,
+              animation: {
+                onComplete: function () {
+                  resolve(canvas.toDataURL('image/png'));
+                }
               },
               layout: {
-                hLineWidth: function (i: any, node: any) {
-                  return 1;
-                },
-                vLineWidth: function (i: any, node: any) {
-                  return 1;
-                },
-                hLineColor: function (i: any, node: any) {
-                  return '#CCCCCC';
-                },
-                vLineColor: function (i: any, node: any) {
-                  return '#CCCCCC';
-                },
-                paddingLeft: function (i: any, node: any) {
-                  return 5;
-                },
-                paddingRight: function (i: any, node: any) {
-                  return 5;
-                },
-                paddingTop: function (i: any, node: any) {
-                  return 3;
-                },
-                paddingBottom: function (i: any, node: any) {
-                  return 3;
-                },
+                padding: {
+                  top: 70,    // Gidakoan ang top padding kay patindog naman ang text sa ibabaw sa bar
+                  right: 15,
+                  left: 15,
+                  bottom: 10
+                }
               },
-            };
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  ticks: {
+                    font: { size: 9 },
+                    callback: function(value) {
+                      // Shortcut notation para sa dagkong kantidad aron limpyo tan-awon ang Y-Axis
+                      const num = Number(value);
+                      if (num >= 1.0e+9) return '₱' + (num / 1.0e+9).toFixed(1) + 'B';
+                      if (num >= 1.0e+6) return '₱' + (num / 1.0e+6).toFixed(1) + 'M';
+                      return '₱' + num.toLocaleString();
+                    }
+                  }
+                },
+                x: {
+                  ticks: {
+                    font: { size: 9, weight: 'bold' },
+                    maxRotation: 45, // I-slanted gamay ang ngalan sa lungsod kung sikit gihapon
+                    minRotation: 0
+                  }
+                }
+              },
+              plugins: {
+                legend: {
+                  display: true,
+                  position: 'top',
+                  labels: { font: { size: 11, weight: 'bold' } }
+                }
+              }
+            }
+          });
+        });
+      };
 
-            data.push(table);
+      // 5. FUNCTION PARA SA PAG-RECONSTRUCT SA MGA TABLES
+      const generateTable = (
+        cityName: string,
+        dataItems: any[],
+        category: string,
+        addPageBreak: boolean = true
+      ) => {
+        const tableTitle = `${cityName} - ${category}`;
+
+        const tableHeaders = [
+          { text: 'Fiscal Year', fillColor: 'black', color: 'white', bold: true, alignment: 'center', border: [true, true, true, true] },
+          { text: 'Name', fillColor: 'black', color: 'white', bold: true, alignment: 'center', border: [true, true, true, true] },
+          { text: 'Amount (PhP)', fillColor: 'black', color: 'white', bold: true, alignment: 'center', border: [true, true, true, true] },
+        ];
+
+        const tableData = dataItems.map((item: any) => [
+          { text: item.fiscalYear, fillColor: '#FFFFFF', border: [true, true, true, true], alignment: 'center', fontSize: 10 },
+          { text: item.name, fillColor: '#FFFFFF', border: [true, true, true, true], alignment: 'center', fontSize: 10 },
+          { text: Number(item.amount).toLocaleString(), fillColor: '#FFFFFF', border: [true, true, true, true], alignment: 'center', fontSize: 10 },
+        ]);
+
+        if (tableData.length > 0) {
+          if (addPageBreak && data.length > 0) {
+            data.push({ text: '', pageBreak: 'before' });
           }
-        };
 
-        // Call function to generate separate tables for each municipality
-        generateTablesForMunicipality();
-      },
-      error: (error) => {
-        console.log(error);
-      },
-      complete: () => {
-        if (reports.length > 0) {
-          let isPortrait = true; // Assuming portrait mode
-          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
-        } else {
-          this.Error();
+          data.push({
+            margin: [0, 10, 0, 0],
+            text: tableTitle,
+            fontSize: 14,
+            bold: true,
+            alignment: 'center',
+          });
+
+          const table = {
+            margin: [0, 5, 0, 15],
+            table: {
+              headerRows: 1,
+              widths: ['auto', '*', 'auto'],
+              body: [tableHeaders, ...tableData],
+            },
+            layout: {
+              hLineWidth: () => 1,
+              vLineWidth: () => 1,
+              hLineColor: () => '#CCCCCC',
+              vLineColor: () => '#CCCCCC',
+              paddingLeft: () => 5,
+              paddingRight: () => 5,
+              paddingTop: () => 3,
+              paddingBottom: () => 3,
+            },
+          };
+
+          data.push(table);
         }
-      },
-    });
-  }
+      };
 
+      const generateTablesForMunicipality = () => {
+        for (const key in municipalities) {
+          const { cityName, revenueData, expenditureData } = municipalities[key];
+          generateTable(cityName, revenueData, 'Revenue');
+          generateTable(cityName, expenditureData, 'Expenditure', false);
+        }
+      };
+
+      // 6. EXECUTION BLOCK
+      if (reports.length > 0) {
+        generateChartImage().then((chartImageBase64) => {
+          if (chartImageBase64) {
+            data.push({
+              text: 'Fiscal Matters - Revenue vs Expenditure Overview',
+              fontSize: 16,
+              bold: true,
+              alignment: 'center',
+              margin: [0, 0, 0, 15]
+            });
+
+            data.push({
+              image: chartImageBase64,
+              width: 530, // Gi-fit sa printable area para dili molapas sa marhin sa pdfMake
+              alignment: 'center',
+              margin: [0, 0, 0, 20]
+            });
+          }
+
+          generateTablesForMunicipality();
+
+          let isPortrait = true;
+          this.pdfService.GeneratePdf(data, isPortrait, this.remarks);
+        });
+      } else {
+        this.Error();
+      }
+    },
+    error: (error) => {
+      console.log(error);
+      this.Error();
+    }
+  });
+}
   CityOfficialGeneratePDF() {
     let reports: any = [];
     let data: any = [];

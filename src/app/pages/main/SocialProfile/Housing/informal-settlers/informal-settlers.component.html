@@ -56,31 +56,33 @@
     <td style="text-align: center">{{ item.remarks || '-' }}</td>
 
     <td class="text-center">
-      <div class="d-inline-flex">
-        <app-admin>
-          <ng-container *ngIf="item.transId">
-            <button (click)="data = item; isAdd = false" class="btn btn-info btn-circle btn-sm" data-toggle="modal" data-target="#openModal">
-              <i class="fa fa-pen"></i>
-            </button>
-            &nbsp;
-            <button (click)="DeleteData(item.transId, i, item)" class="btn btn-warning btn-circle btn-sm" title="Delete">
-              <i class="fa fa-trash"></i>
-            </button>
-            &nbsp;
-            <button (click)="SetMarker(item); editmodal = item" class="btn btn-success btn-circle btn-sm" data-toggle="modal" data-target="#gmapModal">
-              <i class="fa fa-globe"></i>
-            </button>
-          </ng-container>
+      <div class="d-inline-flex align-items-center gap-2">
+  <app-admin class="d-inline-flex align-items-center gap-2">
+    
+    <ng-container *ngIf="item.transId">
+      <button  (click)="data = item; isAdd = false" class="btn btn-info btn-circle btn-sm mx-1" data-toggle="modal" data-target="#openModal">
+        <i class="fa fa-pen"></i>
+      </button>
+      
+      <button (click)="DeleteData(item.transId, i, item)" class="btn btn-warning btn-circle btn-sm mx-1" title="Delete">
+        <i class="fa fa-trash"></i>
+      </button>
+      
+      <button (click)="SetMarker(item); editmodal = item" class="btn btn-success btn-circle btn-sm mx-1" data-toggle="modal" data-target="#gmapModal">
+        <i class="fa fa-globe"></i>
+      </button>
+    </ng-container>
 
-          <button *ngIf="i === 0 || listData[i-1].brgyId !== item.brgyId || item.transId"
-                  (click)="data = { brgyId: item.brgyId, brgyName: item.brgyName }; isAdd = true" 
-                  class="btn btn-primary btn-circle btn-sm ml-1" 
-                  data-toggle="modal" 
-                  data-target="#openModal">
-            <i class="fa fa-plus"></i>
-          </button>
-        </app-admin>
-      </div>
+    <button *ngIf="i === 0 || listData[i-1].brgyId !== item.brgyId || item.transId"
+            (click)="data = { brgyId: item.brgyId, brgyName: item.brgyName }; isAdd = true" 
+            class="btn btn-primary btn-circle btn-sm mx-1" 
+            data-toggle="modal" 
+            data-target="#openModal">
+      <i class="fa fa-plus"></i>
+    </button>
+    
+  </app-admin>
+</div>
     </td>
   </tr>
 </tbody>

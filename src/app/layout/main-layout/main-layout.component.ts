@@ -262,6 +262,11 @@ export class MainLayoutComponent implements OnInit {
       route: 'socio-economic/Agriculture/slaughterhouses',
       key: 'tSEAAgri_Menu7',
     },
+    // {
+    //   name: 'Livestock / Poultry Version2',
+    //   route: 'socio-economic/Agriculture/livestock-production-v2',
+    //   key: 'tSEAAgriLivestockVersion2',
+    // },
   ];
   facilitiesModules = [
     {

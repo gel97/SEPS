@@ -297,11 +297,11 @@ export class DashboardComponent implements OnInit {
     return;
   }
 
-  // Maghimo ta og "invisible" nga link para mo-trigger ang download
+  
   const link = document.createElement('a');
   link.href = url;
-  link.download = fileName; // I-set ang ngalan sa file
-  link.target = '_blank';    // Siguroha nga mo-open sa bag-ong tab kung dili mo-auto download
+  link.download = fileName; 
+  link.target = '_blank';   
   
   document.body.appendChild(link);
   link.click();
@@ -311,7 +311,7 @@ export class DashboardComponent implements OnInit {
 }
 
 receiveRequest(req: any): void {
-  // 1. I-trigger ang download (gamit ang logic nato ganina)
+
   if (req.downloadUrl) {
     const link = document.createElement('a');
     link.href = req.downloadUrl;
@@ -319,8 +319,7 @@ receiveRequest(req: any): void {
     link.click();
   }
 
-  // 2. I-set ang status para mausab ang UI
-  // Sa actual app, mas maayo kung i-update pud nimo ni sa database via API
+ 
   req.isReceived = true; 
 }
 
@@ -329,8 +328,8 @@ receiveRequest(req: any): void {
   ): { coreElement: string; requests: Request[] }[] {
     const grouped: { [key: string]: Request[] } = {};
     for (const req of requests) {
-      // Use coreElement from the request, or a generic 'Others' if not available
-      const key = req.coreElement || req['coreElementName'] || 'Others'; // Added req.coreElementName fallback
+     
+      const key = req.coreElement || req['coreElementName'] || 'Others'; 
       if (!grouped[key]) {
         grouped[key] = [];
       }
@@ -355,14 +354,13 @@ receiveRequest(req: any): void {
     this.selectedFolder = folder;
   }
   loadMunicipalityData() {
-    // This method now primarily populates `dataRequests` if needed directly.
-    // The `groupedRequests` logic is handled by `loadRequests()`.
+  
     this.dashboardService
       .getDataRequestsByMunicipality(this.auth.munCityId)
       .subscribe({
         next: (res: Request[]) => {
           this.dataRequests = res;
-          // Note: groupedRequests is handled by the main loadRequests() now
+       
           this.isLoading = false;
         },
         error: (err: any) => {
@@ -374,9 +372,9 @@ receiveRequest(req: any): void {
   loadMunicipalityTemplates(munCityId: string): void {
     this.dashboardService.getDataRequestsByMunicipality(munCityId).subscribe({
       next: (res: Request[]) => {
-        this.requests = res; // Populate requests array
+        this.requests = res; 
         console.log('Loaded municipality templates:', res);
-        // You'd still need to enrich these with template download URLs here if `requests` is used for display.
+  
       },
       error: (err: any) => {
         console.error('Error fetching templates:', err);
@@ -398,7 +396,7 @@ receiveRequest(req: any): void {
 
               return {
                 ...req,
-                details: req.details || template?.name || 'No file name', // Display template name if req.details is empty
+                details: req.details || template?.name || 'No file name', 
                 templates: template
                   ? { name: template.name }
                   : req['templates'],
