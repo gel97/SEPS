@@ -175,11 +175,8 @@
                       <td>{{ text.contactNo }}</td>
                       <td>{{ text.location }}</td>
                       <td>
-  <span *ngIf="text.longtitude && text.latitude">
-    {{ text.longtitude }}, {{ text.latitude }}
-  </span>
-  <span *ngIf="!text.longtitude || !text.latitude" class="text-muted">
-    No coordinates
+  <span *ngIf="text.tagging">
+    {{ text.tagging.latitude }}, {{text.tagging.longitude}}
   </span>
 </td>
 

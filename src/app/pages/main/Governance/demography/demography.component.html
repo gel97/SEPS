@@ -39,12 +39,10 @@
                 <p>List of Demography:</p>
               </div>
             </div>
-            <app-admin>
-             <div class="input-group col-sm-3" *ngIf="isBarangay">
+             <div class="input-group col-sm-3">
                   <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
                       aria-label="Search" aria-describedby="basic-addon2" [(ngModel)]="searchText">
               </div>
-              </app-admin>
                     <ul class="nav nav-tabs pb-2">
               <li class="nav-item" (click)="handleOnTabChange(true)">
                 <a
@@ -246,7 +244,7 @@
         class="btn btn-success"
         data-toggle="modal"
         data-target="#pdfModal"
-        (click)="viewPrkDemo()"
+        
       >
         <i class="fa fa-file-pdf"></i> Generate PDF
       </button>
@@ -706,102 +704,10 @@
          </div>
        </div>
      </div>
+
+
+
+
+
+
  -->
-     <style>
-    #main {
-      margin: 50px 0;
-    }
-
-    #main #faq .card {
-      margin-bottom: 30px;
-      border: 0;
-    }
-
-    #main #faq .card .card-header {
-      border: 0;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Reduced shadow */
-      border-radius: 2px;
-      padding: 0;
-      background: #f0f0f0; /* Light gray background for header */
-    }
-
-    #main #faq .card .card-header .btn-header-link {
-      color: #333; /* Darker text for better readability */
-      display: block;
-      text-align: left;
-      background: #e0e0e0; /* Slightly darker background */
-      padding: 15px; /* Reduced padding */
-    }
-
-    #main #faq .card .card-header .btn-header-link:after {
-      content: "\f107";
-      font-family: "Font Awesome 5 Free";
-      font-weight: 900;
-      float: right;
-    }
-
-    #main #faq .card .card-header .btn-header-link.collapsed {
-      background: #cccccc; /* Gray background for collapsed state */
-      color: #000; /* Dark text */
-    }
-
-    #main #faq .card .card-header .btn-header-link.collapsed:after {
-      content: "\f106";
-    }
-
-    #main #faq .card .collapsing {
-      background: #e0e0e0; /* Consistent background color */
-      line-height: 30px;
-    }
-
-    #main #faq .card .collapse {
-      border: 0;
-    }
-
-    #main #faq .card .collapse.show {
-      background: #f0f0f0; /* Light gray for open state */
-      line-height: 30px;
-      color: #333; /* Darker text */
-    }
-  </style>
-     <div
-  class="modal fade"
-  id="pdfModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="pdfModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-xl" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="pdfModalLabel">Purok</h5>
-        <button type="button" class="close" data-dismiss="modal">
-          <span>&times;</span>
-        </button>
-      </div>
-
-      <div class="modal-body position-relative" style="height: 80vh">
-        <!-- Loader -->
-        <div *ngIf="loadingPdf" class="loader-container">
-          <div class="loader">
-            <div class="central-circle">
-              <span class="percent">{{ pdfPercent }}%</span>
-            </div>
-            <div class="orbiting-circle"></div>
-            <div class="pulse-ring"></div>
-          </div>
-        </div>
-
-        <!-- PDF -->
-        <iframe
-          *ngIf="pdfSrc && !loadingPdf"
-          [src]="pdfSrc"
-          width="100%"
-          height="100%"
-          frameborder="0"
-        ></iframe>
-      </div>
-    </div>
-  </div>
-</div>

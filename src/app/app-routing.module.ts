@@ -159,6 +159,7 @@ import { CriticalFacilitiesComponent } from './pages/main/Province/critical-faci
 import { SubmissionsComponent } from './pages/main/submissions/submissions.component';
 import { ValidatorComponent } from './Admin/validator/validator.component';
 import { VerifyComponent } from './pages/main/verify/verify.component';
+import { LivestockProductionV2Component } from './pages/main/Socio-Economic/Agriculture/livestock-production-v2/livestock-production-v2.component';
 
 const socioEconomic_TradeIndustry: string =
   'socio-economic/trade-and-industry/';
@@ -312,6 +313,10 @@ const routes: Routes = [
       {
         path: socioEconomic_Agriculture + 'provincial-crops-harvested',
         component: ProvincialCropsHarvestedComponent,
+      },
+      {
+        path: socioEconomic_Agriculture + 'livestock-production-v2',
+        component: LivestockProductionV2Component,
       },
       {
         path: socioEconomic_Agriculture + 'provincial-crops-total-production',

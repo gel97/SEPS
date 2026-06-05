@@ -120,6 +120,7 @@ import { LoadingComponent } from './components/loading/loading.component';
 import { SepDataComponent } from './pages/main/Tools/sep-data/sep-data.component';
 import { FilterPipe } from './pipes/filter.pipe';
 import { FilterallPipe } from './pipes/filterall.pipe';
+import { AgeGroupService } from './shared/Governance/AgeGroup.service';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { GmapComponent } from './components/gmap/gmap.component';
 import { AgmCoreModule } from '@agm/core';
@@ -205,6 +206,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SubmissionsComponent } from './pages/main/submissions/submissions.component';
 import { ValidatorComponent } from './Admin/validator/validator.component';
 import { VerifyComponent } from './pages/main/verify/verify.component';
+import { AgencySortPipe } from './pipes/agency-sort.pipe';
+import { LivestockProductionV2Component } from './pages/main/Socio-Economic/Agriculture/livestock-production-v2/livestock-production-v2.component';
 
 @NgModule({
   declarations: [
@@ -320,6 +323,7 @@ import { VerifyComponent } from './pages/main/verify/verify.component';
 
     SepDataComponent,
     FilterPipe,
+    ///AgencySortPipe,
     TablesCapsv2Pipe,
     FilterallPipe,
     GmapComponent,
@@ -375,7 +379,7 @@ import { VerifyComponent } from './pages/main/verify/verify.component';
     TouristArrivalComponent,
     GuestSelectLoginComponent,
     AccomEstabComponent,
-    ApprovalComponent,
+    //ApprovalComponent,
     TravelOpsComponent,
     NumberOfRestEstComponent,
     SlopeComponent,
@@ -397,6 +401,7 @@ import { VerifyComponent } from './pages/main/verify/verify.component';
     SubmissionsComponent,
     ValidatorComponent,
     VerifyComponent,
+    LivestockProductionV2Component,
   ],
   imports: [
     MdbCollapseModule,

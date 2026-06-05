@@ -29,6 +29,8 @@ export class LoginComponent implements OnInit {
   userData: any = {};
   user: any = {};
   errorLogin: string = '';
+  spinner: any;
+  returnUrl: any;
 
   constructor(
     private service: AuthService,
@@ -70,7 +72,7 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  signIn() {
+ signIn() {
   if (!this.user.username || !this.user.password) {
     Swal.fire({
       icon: 'warning',
@@ -81,18 +83,32 @@ export class LoginComponent implements OnInit {
   }
 
   this.isLogin = true;
+  if (this.spinner) this.spinner.show(); // Gipakita ang spinner gikan sa first project
+
   this.service.signin(this.user).subscribe({
     next: (response) => {
-      if (response.token) {
-        localStorage.setItem('token', response.token);
+      if (this.spinner) this.spinner.hide();
 
-        if (response.role?.toLowerCase() === 'guest') {
+      
+      const token = response?.token || response?.userData?.token;
+      const userType = response?.userData?.userType || response?.role;
+
+      if (token) {
+        localStorage.setItem('token', token);
+
+        // Check kung guest ba ang userType/role
+        if (userType?.toLowerCase() === 'guest') {
           localStorage.setItem('guest', 'true');
         } else {
           localStorage.setItem('guest', 'false');
         }
 
-        this.router.navigate(['/']);
+       
+        if (this.returnUrl) {
+          this.router.navigateByUrl(this.returnUrl);
+        } else {
+          this.router.navigateByUrl('dashboard');
+        }
       } else {
         this.isLogin = false;
         Swal.fire({
@@ -103,58 +119,54 @@ export class LoginComponent implements OnInit {
       }
     },
     error: (error) => {
-  const message =
-    typeof error.error === 'string'
-      ? error.error
-      : error.error?.message || '';
-
-  // 🔴 DEACTIVATED ACCOUNT
-  if (message.toLowerCase().includes('deactivated')) {
-    Swal.fire({
-      icon: 'error',
-      title: 'Account Deactivated',
-      text: message,
-      confirmButtonText: 'OK',
-    }).then(() => {
+      if (this.spinner) this.spinner.hide();
       this.isLogin = false;
-    });
-    return;
-  }
 
-  // 🟡 PENDING APPROVAL
-  if (message.toLowerCase().includes('not been assigned')) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Pending Approval',
-      text: message,
-      confirmButtonText: 'OK',
-    }).then(() => {
-      this.isLogin = false;
-    });
-    return;
-  }
+      const message =
+        typeof error.error === 'string'
+          ? error.error
+          : error.error?.message || '';
 
-  // 🔴 DEFAULT
-  Swal.fire({
-    icon: 'error',
-    title: 'Login Failed',
-    text: 'Incorrect username or password.',
-    confirmButtonText: 'OK',
-  }).then(() => {
-    this.isLogin = false;
-  });
-}
-,
+      
+      if (message.toLowerCase().includes('deactivated')) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Account Deactivated',
+          text: message,
+          confirmButtonText: 'OK'
+        });
+        return;
+      }
+
+      
+      if (message.toLowerCase().includes('not been assigned')) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Pending Approval',
+          text: message,
+          confirmButtonText: 'OK'
+        });
+        return;
+      }
+
+      
+      Swal.fire({
+        icon: 'error',
+        title: 'Login Failed',
+        html: '<p>Incorrect username or password.</p><small>Note: Please use your HRIS login account and password then try again.</small>',
+        confirmButtonText: 'OK',
+      });
+    }
   });
 }
 
 
-  // ✅ Facebook login
+  
   loginWithFacebook(): void {
     this.socialAuthService.signIn(FacebookLoginProvider.PROVIDER_ID);
   }
 
-  // ✅ Google login setup
+
   callLoginButton() {
     this.auth2.attachClickHandler(
       this.loginElement.nativeElement,
