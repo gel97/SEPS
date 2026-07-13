@@ -72,7 +72,94 @@ export class LoginComponent implements OnInit {
     }
   }
 
- signIn() {
+//  signIn() {
+//   if (!this.user.username || !this.user.password) {
+//     Swal.fire({
+//       icon: 'warning',
+//       title: 'Missing Credentials',
+//       text: 'Please enter both username and password.',
+//     });
+//     return;
+//   }
+
+//   this.isLogin = true;
+//   if (this.spinner) this.spinner.show(); // Gipakita ang spinner gikan sa first project
+
+//   this.service.signin(this.user).subscribe({
+//     next: (response) => {
+//       if (this.spinner) this.spinner.hide();
+
+      
+//       const token = response?.token || response?.userData?.token;
+//       const userType = response?.userData?.userType || response?.role;
+
+//       if (token) {
+//         localStorage.setItem('token', token);
+
+//         // Check kung guest ba ang userType/role
+//         if (userType?.toLowerCase() === 'guest') {
+//           localStorage.setItem('guest', 'true');
+//         } else {
+//           localStorage.setItem('guest', 'false');
+//         }
+
+       
+//         if (this.returnUrl) {
+//           this.router.navigateByUrl(this.returnUrl);
+//         } else {
+//           this.router.navigateByUrl('dashboard');
+//         }
+//       } else {
+//         this.isLogin = false;
+//         Swal.fire({
+//           icon: 'error',
+//           title: 'Login Failed',
+//           text: 'Login succeeded but no token returned.',
+//         });
+//       }
+//     },
+//     error: (error) => {
+//       if (this.spinner) this.spinner.hide();
+//       this.isLogin = false;
+
+//       const message =
+//         typeof error.error === 'string'
+//           ? error.error
+//           : error.error?.message || '';
+
+      
+//       if (message.toLowerCase().includes('deactivated')) {
+//         Swal.fire({
+//           icon: 'error',
+//           title: 'Account Deactivated',
+//           text: message,
+//           confirmButtonText: 'OK'
+//         });
+//         return;
+//       }
+
+      
+//       if (message.toLowerCase().includes('not been assigned')) {
+//         Swal.fire({
+//           icon: 'warning',
+//           title: 'Pending Approval',
+//           text: message,
+//           confirmButtonText: 'OK'
+//         });
+//         return;
+//       }
+
+      
+//       Swal.fire({
+//         icon: 'error',
+//         title: 'Login Failed',
+//         html: '<p>Incorrect username or password.</p><small>Note: Please use your HRIS login account and password then try again.</small>',
+//         confirmButtonText: 'OK',
+//       });
+//     }
+//   });
+// }
+signIn() {
   if (!this.user.username || !this.user.password) {
     Swal.fire({
       icon: 'warning',
@@ -83,83 +170,101 @@ export class LoginComponent implements OnInit {
   }
 
   this.isLogin = true;
-  if (this.spinner) this.spinner.show(); // Gipakita ang spinner gikan sa first project
-
   this.service.signin(this.user).subscribe({
     next: (response) => {
-      if (this.spinner) this.spinner.hide();
-
       
-      const token = response?.token || response?.userData?.token;
-      const userType = response?.userData?.userType || response?.role;
+      // Unregistered HRIS Employee (Status 200 OK gikan sa BE)
+      if (response && response.requiresRegistration) {
+        this.isLogin = false;
+        
+        Swal.fire({
+          icon: 'info',
+          title: 'Registration Required',
+          text: `Welcome ${response.hrisData?.firstName || 'User'}. Your HRIS profile exists but you are not yet registered in SEPS/EMIS.`,
+          confirmButtonText: 'OK'
+        });
+        return;
+      }
+
+      // Dynamic Evaluation for both wrapped HRIS payloads & flat SEPS payloads
+      const token = response?.userData?.token || response?.token;
+      const userType = response?.userData?.userType || response?.role || '';
 
       if (token) {
-        localStorage.setItem('token', token);
-
-        // Check kung guest ba ang userType/role
-        if (userType?.toLowerCase() === 'guest') {
+        if (userType.toLowerCase() === 'guest') {
           localStorage.setItem('guest', 'true');
         } else {
           localStorage.setItem('guest', 'false');
         }
 
-       
-        if (this.returnUrl) {
-          this.router.navigateByUrl(this.returnUrl);
-        } else {
-          this.router.navigateByUrl('dashboard');
-        }
+        this.router.navigate(['/']);
       } else {
         this.isLogin = false;
         Swal.fire({
           icon: 'error',
           title: 'Login Failed',
-          text: 'Login succeeded but no token returned.',
+          text: 'Login response structured incorrectly (Missing User Data Token).',
         });
       }
     },
     error: (error) => {
-      if (this.spinner) this.spinner.hide();
       this.isLogin = false;
+      const message = typeof error.error === 'string'
+        ? error.error
+        : error.error?.message || '';
 
-      const message =
-        typeof error.error === 'string'
-          ? error.error
-          : error.error?.message || '';
+      const normalizedMessage = message.toLowerCase();
 
-      
-      if (message.toLowerCase().includes('deactivated')) {
+      // 1. Account Deactivated
+      if (normalizedMessage.includes('deactivated')) {
+        Swal.fire({ icon: 'error', title: 'Account Deactivated', text: message });
+        return;
+      }
+
+      // 2. Pending Approval
+      if (normalizedMessage.includes('not been assigned')) {
+        Swal.fire({ icon: 'warning', title: 'Pending Approval', text: message });
+        return;
+      }
+
+      // 3. FALLBACK/MALUSET nga check: 
+      // Kung pananglitan ang server mibalik og status 401/404 pero naay hrisData nga na-apil sa error response payload
+      if (error.error && error.error.requiresRegistration) {
+        Swal.fire({
+          icon: 'info',
+          title: 'Registration Required',
+          text: `Welcome ${error.error.hrisData?.firstName || 'User'}. Your HRIS profile exists but you are not yet registered in SEPS/EMIS.`,
+          confirmButtonText: 'OK'
+        });
+        return;
+      }
+
+      // 4. Pure unregistered / No record found fallback 
+      if (normalizedMessage.includes('not a registered user')) {
         Swal.fire({
           icon: 'error',
-          title: 'Account Deactivated',
-          text: message,
-          confirmButtonText: 'OK'
+          title: 'Account Not Found',
+          text: "Let's set up your account.",
+          confirmButtonText: 'Register Now',
+          showCancelButton: true,
+          cancelButtonText: 'Cancel'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.router.navigate(['/register']); 
+          }
         });
         return;
       }
 
-      
-      if (message.toLowerCase().includes('not been assigned')) {
-        Swal.fire({
-          icon: 'warning',
-          title: 'Pending Approval',
-          text: message,
-          confirmButtonText: 'OK'
-        });
-        return;
-      }
-
-      
+      // Default Error
       Swal.fire({
         icon: 'error',
         title: 'Login Failed',
-        html: '<p>Incorrect username or password.</p><small>Note: Please use your HRIS login account and password then try again.</small>',
-        confirmButtonText: 'OK',
+        text: message || 'Incorrect username or password.',
       });
     }
   });
 }
-
 
   
   loginWithFacebook(): void {

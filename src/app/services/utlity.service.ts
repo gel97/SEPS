@@ -40,7 +40,7 @@ export class UtilityService {
     , httpOptions);
     }
     SetUserRoutes(route:any) {
-    return this.http.post(environment.apiUrl + '/UserRoute/setUserRoutes', route, httpOptions);
+    return this.http.post(environment.apiUrl + '/UserRoute/setUserRoutes/', route, httpOptions);
   }
 
   Set_UserStatus(id :any,status: any) {

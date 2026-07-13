@@ -33,6 +33,7 @@ import {
 import { ModifyCityMunService } from 'src/app/services/modify-city-mun.service';
 import { Location } from '@angular/common';
 
+
 @Component({
   selector: 'app-main-layout',
   templateUrl: './main-layout.component.html',
@@ -40,6 +41,7 @@ import { Location } from '@angular/common';
 })
 export class MainLayoutComponent implements OnInit {
   http: any;
+  userType: string | null = '';
 
   goToDashboard() {
     this.router.navigate(['/dashboard']);
