@@ -229,27 +229,19 @@ getUsersSortByOffice(){
       }
     )
   }
-  setUserRoute(routeId: any, event: any) {
-  // I-cast ang event ngadto sa HTMLInputElement aron makuha ang saktong `.checked`
-  const inputElement = event.target as HTMLInputElement;
-  
-  // Sigurohon nato nga dili null sa dili pa kuhaon ang value
-  const finalIsActive = inputElement ? inputElement.checked : false;
-
-  var routes = {
-    "userId": Number(this.userId),
-    "routeId": Number(routeId),
-    "isActive": finalIsActive
-  };
-
-  console.log(routes);
-
-  this.utility.SetUserRoutes(routes).subscribe(
-    (data: any) => {
-      console.log(data);
+  setUserRoute(routeId: any, isActive: any){
+    var routes = {
+      "userId": this.userId,
+      "routeId": routeId,
+      "isActive": isActive
     }
-  );
-}
+    console.log(routes);
+    this.utility.SetUserRoutes(routes).subscribe(
+      (data: any)=>{
+        console.log(data);
+      }
+    )
+  }
    setUserAccessTemplate(templateId: any, isActive: any){
     var template = {
       "userId": this.userId,

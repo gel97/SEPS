@@ -1,0 +1,74 @@
+<div *ngIf="isLguUser; else underDevTemplate">
+  <ng-content></ng-content>
+</div>
+
+<ng-template #underDevTemplate>
+  
+  <div *ngIf="mode === 'show'" style="
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    min-height: 50vh; 
+    width: 100%;
+  ">
+    <div style="
+  padding: 3rem 2rem; 
+  max-width: 500px; 
+  background-color: #ffffff; 
+  border: 1px solid #e5e7eb; 
+  color: #1f2937; 
+  border-radius: 16px; 
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  margin: 2rem auto;
+">
+  <div style="
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px; /* Gidakoan gamay para hayahay ang logo */
+  height: 80px;
+  background-color: #f8fafc; /* Humok nga slate/white background */
+  border: 1px solid #f1f5f9;
+  border-radius: 50%;
+  margin-bottom: 1.5rem;
+  padding: 8px;
+  box-sizing: border-box;
+">
+  <img 
+    src="assets/img/davnor.png" 
+    alt="Davao del Norte Logo" 
+    style="
+      width: 100%; 
+      height: 100%; 
+      object-fit: contain;
+    "
+  />
+</div>
+
+  <h3 style="
+    margin: 0 0 0.5rem 0; 
+    font-weight: 700; 
+    color: #111827; 
+    font-size: 1.25rem;
+    letter-spacing: -0.025em;
+  ">
+    Module under development
+  </h3>
+
+  <p style="
+    margin: 0; 
+    font-size: 0.925rem; 
+    line-height: 1.6; 
+    color: #4b5563; 
+    font-weight: 400;
+  ">
+    This page or dashboard is currently being optimized for 
+    <strong style="color: #111827; font-weight: 600;">National Government Agency (NGA)</strong> and 
+    <strong style="color: #111827; font-weight: 600;">Government Employee</strong> accounts.
+</p>
+</div>
+  </div>
+
+  </ng-template>

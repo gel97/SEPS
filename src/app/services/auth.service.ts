@@ -52,11 +52,10 @@ export class AuthService {
   // auth.service.ts
 
 public get isValidatorUser(): boolean {
-  // Kuhaa ang pinaka-latest gikan sa localStorage
+
   const cityId = localStorage.getItem('munCityId') || '';
   
-  // Mo-return og true kung ang ID nagsugod sa "Validator-"
-  // Example: "Validator-112301" -> true
+
   return cityId.startsWith('Validator');
 }
 public get realMunCityId(): string {
@@ -67,91 +66,90 @@ public get realMunCityId(): string {
   }
   return cityId;
 }
+//let httpUrl = environment.apiUrl + "/api/Auth/Login";
 
   signin(user: any): Observable<any> {
-    const loginTime = new Date().toLocaleString();
-    const logoutTime = 'Still Logged';
-    const now = new Date();
-    const formattedDate = now.toLocaleString(); // formats the date and time as a string
-    console.log(formattedDate);
-    console.log(user);
+  const loginTime = new Date().toLocaleString();
+  const logoutTime = 'Still Logged';
+  const now = new Date();
+  const formattedDate = now.toLocaleString();
+  console.log(formattedDate);
+  console.log(user);
 
-    let httpUrl = environment.apiUrl + "/api/Auth/Login";
+  return this.http.post(this.apiurl, user).pipe(
+    tap((response: any) => {
+      const uData = response?.userData ? response.userData : response;
+      const token = uData?.token;
 
-    return this.http.post(this.apiurl, user).pipe(
-      tap((response: any) => {
+      // Kung walay token (sama sa kaso sa Unregistered HRIS), ayaw i-save sa localStorage apan ayaw sab i-block ang response
+      if (!token) return;
 
-      const uData = response?.userData || response;
-      const token = uData?.token || response?.token;
+      localStorage.setItem('token', token);
+      localStorage.setItem('userData', JSON.stringify(response)); 
+      localStorage.setItem('expire', response.expire || uData?.expire || '');
+      localStorage.setItem('ipAddress', response.ipAddress || '');
+      localStorage.setItem('userId', uData?.userId || response.userId || '');
+      localStorage.setItem('userType', uData?.userType || response.role || '');
+      localStorage.setItem('designation', uData?.designation || response.designation || '');
+      localStorage.setItem('hash', response.hash || '');
+      localStorage.setItem('munCityId', response.munCityId || '');
+      localStorage.setItem('munCityName', response.munCityName || '');
+      localStorage.setItem('o_munCityId', response.munCityId || '');
+      localStorage.setItem('o_munCityName', response.munCityName || '');
+      localStorage.setItem('activeSetYear', response.activeSetYear || '');
+      localStorage.setItem('setYear', response.activeSetYear || '');
 
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('hash', response.hash);
-        localStorage.setItem('userId', response.userId);
-        localStorage.setItem('munCityId', response.munCityId);
-        localStorage.setItem('munCityName', response.munCityName);
-        localStorage.setItem('o_munCityId', response.munCityId);
-        localStorage.setItem('o_munCityName', response.munCityName);
-        localStorage.setItem('activeSetYear', response.activeSetYear);
-        localStorage.setItem('setYear', response.activeSetYear);
-        localStorage.setItem('userData', JSON.stringify(response));
-        localStorage.setItem('expire', response.expire);
-        localStorage.setItem('designation', uData?.designation || response.designation);
-        localStorage.setItem('userType', uData?.userType || response.userType);
+      this.token = token;
+      this.hash = response.hash;
+      this.userId = uData?.userId || response.userId;
+      this.munCityId = response.munCityId;
+      this.munCityName = response.munCityName;
+      this.o_munCityId = response.munCityId;
+      this.o_munCityName = response.munCityName;
+      this.activeSetYear = response.activeSetYear;
+      this.setYear = response.activeSetYear;
+      this.designation = uData?.designation || response.designation;
 
-        this.token = localStorage.getItem('token');
-        this.hash = localStorage.getItem('hash');
-        this.userId = localStorage.getItem('userId');
-        this.munCityId = localStorage.getItem('munCityId');
-        this.munCityName = localStorage.getItem('munCityName');
-        this.o_munCityId = localStorage.getItem('o_munCityId');
-        this.o_munCityName = localStorage.getItem('o_munCityName');
-        this.activeSetYear = localStorage.getItem('activeSetYear');
-        this.setYear = localStorage.getItem('setYear');
-        this.designation = localStorage.getItem('designation');
-        console.log(this.munCityId);
-
-        // Create activity log
-        const activityLog = {
-          munCityId: response.munCityId,
-          munCityName: response.munCityName,
-          loginTime: loginTime,
-          logoutTime: logoutTime, // You can update this later on logout
-          ipAddress: response.ipAddress, // Fetch dynamically if available
-          browserInfo: navigator.userAgent,
-          userId: uData?.userId || response.userId,
+      // Create activity log object
+      const activityLog = {
+        munCityId: response.munCityId,
+        munCityName: response.munCityName,
+        loginTime: loginTime,
+        logoutTime: logoutTime,
+        ipAddress: response.ipAddress,
+        browserInfo: navigator.userAgent,
+        userId: uData?.userId || response.userId,
         role: uData?.userType || response.role,
-        };
+      };
 
-        // Send the activity log to the backend API (replace with your actual API URL)
-        this.http.post(`${this.Base.url}/logs`, activityLog).subscribe({
-          next: (logResponse) => {
-            console.log('Log recorded successfully:', logResponse);
-          },
-          error: (error) => {
-            console.error('Error recording log:', error);
-          },
+     
+      setTimeout(() => {
+        this.http.post(`${this.Base.url}/logs`, activityLog, {
+          headers: { 'Authorization': `Bearer ${token}` } 
+        }).subscribe({
+          next: (logResponse) => console.log('Log recorded successfully:', logResponse),
+          error: (error) => console.error('Background log failed (but login is safe):', error)
         });
+      }, 500);
 
-        // Save activity logs locally
-        let activityLogs = JSON.parse(
-          localStorage.getItem('activityLogs') || '[]'
-        );
-        activityLogs.push(activityLog);
-        localStorage.setItem('activityLogs', JSON.stringify(activityLogs));
-      }),
-      catchError((error: HttpErrorResponse) => {
-        console.error('Login error:', error);
-        return throwError(() => error);
-      })
-    );
-  }
-  // Sa imong Validator Component (.ts)
+      // Save activity logs locally
+      let activityLogs = JSON.parse(localStorage.getItem('activityLogs') || '[]');
+      activityLogs.push(activityLog);
+      localStorage.setItem('activityLogs', JSON.stringify(activityLogs));
+    }),
+    catchError((error: HttpErrorResponse) => {
+      console.error('Login error:', error);
+      return throwError(() => error);
+    })
+  );
+}
+  
 loadExcelFiles() {
   // Gamita ang helper function imbes nga ang raw string gikan sa storage
   const cleanId = this.realMunCityId; 
   
   if (cleanId) {
-    // Karon, ang tawag mahimo nang: .../api/EncoderValidate/list/112301
+  
     this.http.get(`${this.apiurl}/lists/${cleanId}`).subscribe((data: any) => {
       this.files = data;
     });
@@ -186,7 +184,7 @@ loadExcelFiles() {
     return this.http.post(this.apiSignOut, out).pipe(
       catchError((error: HttpErrorResponse) => {
         console.error('Logout error:', error);
-        return throwError(() => new Error('Logout failed')); // Ensure proper error propagation
+        return throwError(() => new Error('Logout failed')); 
       })
     );
   }
@@ -195,12 +193,12 @@ loadExcelFiles() {
   //   return this.http.post;
   // }
   clearActivityLogs() {
-    localStorage.removeItem('activityLogs'); // This will remove the logs from localStorage
+    localStorage.removeItem('activityLogs'); 
     console.log('Activity logs cleared.');
   }
   signinGoogle(user: any): Observable<any> {
     const now = new Date();
-    const formattedDate = now.toLocaleString(); // formats the date and time as a string
+    const formattedDate = now.toLocaleString(); 
     console.log(formattedDate);
     console.log(user);
     return this.http.post(this.apiurlGoogle, user).pipe(

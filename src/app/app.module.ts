@@ -208,6 +208,7 @@ import { ValidatorComponent } from './Admin/validator/validator.component';
 import { VerifyComponent } from './pages/main/verify/verify.component';
 import { AgencySortPipe } from './pipes/agency-sort.pipe';
 import { LivestockProductionV2Component } from './pages/main/Socio-Economic/Agriculture/livestock-production-v2/livestock-production-v2.component';
+import { SEEPComponent } from './Admin/seep/seep.component';
 
 @NgModule({
   declarations: [
@@ -402,6 +403,7 @@ import { LivestockProductionV2Component } from './pages/main/Socio-Economic/Agri
     ValidatorComponent,
     VerifyComponent,
     LivestockProductionV2Component,
+    SEEPComponent,
   ],
   imports: [
     MdbCollapseModule,
