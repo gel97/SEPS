@@ -263,10 +263,166 @@ importApprovedFile(recNo: number, moduleCode: string) {
         })
       );
   }
+  GetExcelExportWithBrgy(
+  setYear: number,
+  munCityId: string,
+  apiControllerName: string,
+  brgyId: string
+) {
+  Swal.fire({
+    title: 'Exporting Data',
+    html: 'Please wait for a moment.',
+    timerProgressBar: true,
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+      const httpOptions: any = {
+        headers: new HttpHeaders({
+          Accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        }),
+        responseType: 'blob',
+        observe: 'response',
+      };
+
+      this.http
+        .get<HttpResponse<Blob>>(
+          this.Base.url + this.ApiUrl.get_export_with_menuId_BrgyId(setYear, munCityId, apiControllerName, brgyId),
+          httpOptions
+        )
+        .subscribe({
+          next: (response: any) => {
+            const contentDispositionHeader = response.headers.get('Content-Disposition');
+            const fileNameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+            const matches = fileNameRegex.exec(contentDispositionHeader);
+            const fileName = matches !== null && matches[1] 
+              ? matches[1].replace(/['"]/g, '') 
+              : 'Purok_Chair_Export.xlsx';
+
+            const blob = new Blob([response.body], {
+              type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            });
+
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+            Swal.close();
+          },
+          error: (err) => {
+            Swal.close();
+            Swal.fire('Error', 'Failed to export Excel file. Please try again.', 'error');
+            console.error(err);
+          }
+        });
+    },
+  });
+}
+// Idugang ni nga function sa imong reports.service.ts
+Get_ExImportWithBrgy(
+  file: File,
+  setYear: any,
+  munCityId: any,
+  apiControllerName: string,
+  brgyId: string // <-- Bag-ong parameter para sa Barangay
+): Observable<any> {
+  const formData = new FormData();
+  formData.append('File', file);
+  formData.append('Year', setYear.toString());
+  formData.append('MunCityId', munCityId);
+  formData.append('BrgyId', brgyId); // <-- I-insert ang BrgyId sa form data
+
+  return this.http.post(
+    this.Base.url + this.ApiUrl.post_ExImport(apiControllerName),
+    formData
+  );
+}
+Get_ExImportWithBrgyIP(
+  file: File,
+  setYear: any,
+  munCityId: any,
+  apiControllerName: string,
+  brgyId: string // <-- Bag-ong parameter para sa Barangay
+): Observable<any> {
+  const formData = new FormData();
+  formData.append('File', file);
+  formData.append('Year', setYear.toString());
+  formData.append('MunCityId', munCityId);
+  formData.append('BrgyId', brgyId); // <-- I-insert ang BrgyId sa form data
+
+  return this.http.post(
+    this.Base.url + this.ApiUrl.post_import_excel(apiControllerName),
+    formData
+  );
+}
+GetExcelExportWithBrgyIP(
+  setYear: number,
+  munCityId: string,
+  apiControllerName: string,
+  brgyId: string
+) {
+  Swal.fire({
+    title: 'Exporting Data',
+    html: 'Please wait for a moment.',
+    timerProgressBar: true,
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+      
+      const httpOptions: any = {
+        headers: new HttpHeaders({
+          Accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        }),
+        responseType: 'blob',
+        observe: 'response',
+      };
+
+      this.http
+        .get<HttpResponse<Blob>>(
+          // I-call ang gi-update nato nga URL helper sa ibabaw gamit ang saktong parameters
+          this.Base.url + this.ApiUrl.get_export_excel(setYear, munCityId, apiControllerName, brgyId),
+          httpOptions
+        )
+        .subscribe({
+          next: (response: any) => {
+            const contentDispositionHeader = response.headers.get('Content-Disposition');
+            const fileNameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+            const matches = fileNameRegex.exec(contentDispositionHeader);
+            const fileName = matches !== null && matches[1] 
+              ? matches[1].replace(/['"]/g, '') 
+              : 'Purok_IP_Export.xlsx';
+
+            const blob = new Blob([response.body], {
+              type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            });
+
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+            Swal.close();
+          },
+          error: (err) => {
+            Swal.close();
+            Swal.fire('Error', 'Failed to export Excel file. Please try again.', 'error');
+            console.error(err);
+          }
+        });
+    },
+  });
+}
+
   GetExcelExport(
     setYear: number,
     munCityId: string,
-    apiControllerName: string
+    apiControllerName: string,
   ) {
     Swal.fire({
       title: 'Exporting Data',
@@ -287,7 +443,7 @@ importApprovedFile(recNo: number, moduleCode: string) {
         this.http
           .get<HttpResponse<Blob>>(
             this.Base.url +
-              this.ApiUrl.get_ExExport(setYear, munCityId, apiControllerName),
+              this.ApiUrl.get_ExExport(setYear, munCityId, apiControllerName,),
             httpOptions
           )
           .subscribe((response: any) => {

@@ -69,6 +69,13 @@ export class GeoProfileService {
       { responseType: 'json' }
     );
   }
+  ImportBrgy() {
+  return this.Http.post<any[]>(
+    this.Base.url + this.ApiUrl.post_import_geo_brgy(),
+     // Kani nga array ang madawat sa backend [1, 5, 12]
+    { responseType: 'json' }
+  );
+}
   ListOfBarangay(munCityId: any) {
     return this.Http.post<any[]>(
       this.Base.url + this.ApiUrl.post_list_barangay(munCityId),

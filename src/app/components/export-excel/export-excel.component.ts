@@ -2,6 +2,7 @@ import { Component, OnInit, Output, Input } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { SepDataService } from 'src/app/shared/Tools/sep-data.service';
 import { ReportsService } from 'src/app/shared/Tools/reports.service';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-export-excel',
   templateUrl: './export-excel.component.html',
@@ -14,6 +15,7 @@ export class ExportExcelComponent implements OnInit {
 
   @Input() apiControllerName: any;
   @Input() menuId: any;
+  @Input() brgyId: string = '';
 
   constructor(
     private sepDataService: SepDataService,
@@ -58,6 +60,19 @@ export class ExportExcelComponent implements OnInit {
   //     );
   //   }
   // }
+  ExportExcelWithBrgyId() {
+    if (!this.brgyId) {
+      Swal.fire('Warning', 'Please select a Barangay first.', 'warning');
+      return;
+    }
+
+    this.reportService.GetExcelExportWithBrgy(
+      this.authService.setYear,
+      this.authService.munCityId,
+      this.apiControllerName,
+      this.brgyId
+    );
+  }
   GetListSepYear() {
     this.sepDataService.ListSepYear().subscribe({
       next: (response) => {

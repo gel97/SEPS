@@ -483,9 +483,18 @@ export class CommercialEstablishmentsComponent implements OnInit {
   markerObj: any = {};
 
   SetMarker(data: any = {}) {
+  // 1. Kung null ang data.tagging pero naay sulod ang main latitude/longtitude (sama sa 2026 data),
+  // mag-himo ta og temporaryo nga tagging object para dili mabuak ang imong naandan nga structure.
+  if (!data.tagging && (data.latitude != null || data.longtitude != null)) {
+    data.tagging = {
+      latitude: data.latitude,
+      longitude: data.longtitude // Bantayi ang spelling (longitude vs longtitude)
+    };
+  }
+
   console.log('lnglat: ', data.tagging);
 
-  
+  // 2. Standard validation check
   if (
     !data.tagging ||
     data.tagging.latitude == null || data.tagging.latitude === '' ||
@@ -496,6 +505,7 @@ export class CommercialEstablishmentsComponent implements OnInit {
     return; 
   }
 
+  // 3. I-map ang marker object gamit ang data.tagging (mag-work na ni sa parehas nga tuig)
   this.markerObj = {
     lat: Number(data.tagging.latitude),
     lng: Number(data.tagging.longitude),
