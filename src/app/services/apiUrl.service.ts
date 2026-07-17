@@ -107,6 +107,11 @@ get_purokDemo_pdf = (setYear: any, munCityId: any) =>
     `/PurokIp/ListBarangays?munCityId=${munCityId}`;
   get_IP_pdf = (setYear: any, munCityId: any) => 
     `/PurokIp/generate_pdf/${setYear}/${munCityId}`;
+  post_import_excel = (apiControllerName: string) =>
+    `/${apiControllerName}/import_excel`;;
+  // I-update o idugang ni sa imong API URL configuration list/class
+get_export_excel = (setYear: any, munCityId: any, apiControllerName: string, brgyId: any) => 
+  `/${apiControllerName}/export/${munCityId}/${brgyId}?setYear=${setYear}`;
 
   // for N/A
   get_notApplicableModules = (
@@ -136,6 +141,7 @@ get_purokDemo_pdf = (setYear: any, munCityId: any) =>
   put_update_profbrgy = () => `/PhyGeoProfBrgy`;
   delete_profbrgy = (transId: any) => `/PhyGeoProfBrgy/${transId}`;
   post_report_geobrgy = () => `/PhyGeoProfBrgy/Reports`;
+  post_import_geo_brgy = () => `/PhyGeoProfBrgy/Import`;
 
   //BrgyChildDev
   get_list_brgyChildDev = (munCityId: any, setYear: any) =>
@@ -373,6 +379,14 @@ get_purokDemo_pdf = (setYear: any, munCityId: any) =>
   //   brgyId: string
   // ) =>
   //   `/${apiControllerName}/export_excel/${menuId}/${setYear}/${MunCityId}/${brgyId}`;
+  get_export_with_menuId_BrgyId = (
+  setYear: any,
+  MunCityId: any,
+  apiControllerName: string,
+  brgyId: string
+) => `/${apiControllerName}/export/${MunCityId}/${brgyId}?setYear=${setYear}`;
+
+
   post_ExImport = (apiControllerName: string) =>
     `/${apiControllerName}/import_excel`;
   get_ExExport = (setYear: any, MunCityId: any, apiControllerName: string) =>

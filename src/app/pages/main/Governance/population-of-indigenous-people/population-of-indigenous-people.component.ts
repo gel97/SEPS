@@ -74,6 +74,8 @@ export class PopulationOfIndigenousPeopleComponent implements OnInit {
   showAddForm: boolean = true;
   loadingPdf = false;
   pdfPercent = 0;
+  apiControllerName: string = 'PurokIp';
+
   pdfSrc: any;
   @ViewChild(ImportComponent)
   private importComponent!: ImportComponent;
@@ -372,6 +374,90 @@ export class PopulationOfIndigenousPeopleComponent implements OnInit {
       }
     });
   }
+  exportExcelIP(brgyId: string) {
+  if (!brgyId) {
+    Swal.fire('Warning', 'Please select a Barangay first.', 'warning');
+    return;
+  }
+
+  // I-call ang bag-ong gihimo nga IP helper function
+  this.reportService.GetExcelExportWithBrgyIP(
+    this.setYear,
+    this.munCityId,
+    'PurokIp', // Imong IP controller name
+    brgyId
+  );
+}
+ImportExcelWithBrgyIP(e: any, barangayObj: any) {
+  const extractedBrgyId = barangayObj.brgyId;
+
+  if (!extractedBrgyId) {
+    Swal.fire('Warning', 'Cannot identify Barangay for this import.', 'warning');
+    return;
+  }
+
+  // Siguroha nga adunay file nga gipili
+  if (!e.target.files || e.target.files.length === 0) {
+    return;
+  }
+
+  Swal.fire({
+    title: 'Are you sure?',
+    text: `You are importing data for Barangay ${barangayObj.brgyName || ''}.`,
+    icon: 'info',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, submit it!',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // I-trigger ang loading screen diha-diha dayon
+      Swal.fire({
+        title: 'Importing Data',
+        html: 'Please wait for a moment while we process the file...',
+        timerProgressBar: true,
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
+      // Tawgon ang bag-ong service function nga naay BrgyId
+      this.reportService
+        .Get_ExImportWithBrgyIP(
+          e.target.files[0],
+          this.auth.setYear,
+          this.auth.munCityId,
+          this.apiControllerName, // PurokChair
+          extractedBrgyId
+        )
+        .subscribe({
+          next: (success) => {
+  Swal.close();
+  Swal.fire({
+    position: 'center',
+    icon: 'success',
+    title: 'File imported successfully',
+    showConfirmButton: true,
+  });
+  
+  // Imbis nga mag-reload sa page, tawga ang function nga nag-load sa lista sa barangay
+  this.GetBarangayPrk(); // <-- Usba kini sa tinuod nga ngalan sa imong load function
+},
+          error: (err) => {
+            Swal.close();
+            Swal.fire({
+              position: 'center',
+              icon: 'error',
+              title: 'Import Failed',
+              text: err.error || 'Something went wrong. Possible invalid file template.',
+              showConfirmButton: true,
+            });
+          }
+        });
+    }
+  });
+}
   autoAssignCategory() {
     if (this.ipMale > 0 || this.ipFemale > 0) {
       this.category = 'IP';

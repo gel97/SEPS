@@ -23,12 +23,12 @@ export class BarangaysComponent implements OnInit {
   private pdfComponent!: PdfComponent;
 
   @ViewChild('closebutton') closebutton!: ElementRef;
-  apiControllerName!: string;
+  apiControllerName: string = 'PurokChair';
   loadingPdf = false;
   pdfPercent = 0;
   pdfSrc: any;
-
-
+  brgyId: any;
+  authService: any;
   constructor(
     private pdfService: PdfService,
     private reportService: ReportsService,
@@ -189,10 +189,106 @@ viewPurokChairPdf() {
     error: (err) => {
       console.error('Error loading PDF', err);
       this.loadingPdf = false;
-      Swal.fire('Error', ' Please check the API.', 'error');
+      Swal.fire('Oppps!!', ' No Data Available', 'error');
     },
   });
 }
+
+ExportExcelWithBrgyId(barangayObj: any) {
+  console.log("Per Barangay Export Clicked! Object Data:", barangayObj);
+
+  const extractedBrgyId = barangayObj.brgyId;
+
+  if (!extractedBrgyId) {
+    Swal.fire('Warning', 'Cannot find Barangay ID from the selection.', 'warning');
+    return;
+  }
+
+  // Gi-usab gikan sa 'this.authService' ngadto sa 'this.auth' 
+  // aron moparehas sa variable name sa imong constructor.
+  this.reportService.GetExcelExportWithBrgy(
+    this.auth.setYear,      
+    this.auth.munCityId,    
+    this.apiControllerName, 
+    extractedBrgyId
+  );
+}
+// Idugang ni sa barangays.component.ts
+ImportExcelWithBrgy(e: any, barangayObj: any) {
+  const extractedBrgyId = barangayObj.brgyId;
+
+  if (!extractedBrgyId) {
+    Swal.fire('Warning', 'Cannot identify Barangay for this import.', 'warning');
+    return;
+  }
+
+  // Siguroha nga adunay file nga gipili
+  if (!e.target.files || e.target.files.length === 0) {
+    return;
+  }
+
+  Swal.fire({
+    title: 'Are you sure?',
+    text: `You are importing data for Barangay ${barangayObj.brgyName || ''}.`,
+    icon: 'info',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, submit it!',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // I-trigger ang loading screen diha-diha dayon
+      Swal.fire({
+        title: 'Importing Data',
+        html: 'Please wait for a moment while we process the file...',
+        timerProgressBar: true,
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
+      // Tawgon ang bag-ong service function nga naay BrgyId
+      this.reportService
+        .Get_ExImportWithBrgy(
+          e.target.files[0],
+          this.auth.setYear,
+          this.auth.munCityId,
+          this.apiControllerName, // PurokChair
+          extractedBrgyId
+        )
+        .subscribe({
+          next: (success) => {
+  Swal.close();
+  Swal.fire({
+    position: 'center',
+    icon: 'success',
+    title: 'File imported successfully',
+    showConfirmButton: true,
+  });
+  
+  // Imbis nga mag-reload sa page, tawga ang function nga nag-load sa lista sa barangay
+  this.GetBarangayPrk(); // <-- Usba kini sa tinuod nga ngalan sa imong load function
+},
+          error: (err) => {
+            Swal.close();
+            Swal.fire({
+              position: 'center',
+              icon: 'error',
+              title: 'Import Failed',
+              text: err.error || 'Something went wrong. Possible invalid file template.',
+              showConfirmButton: true,
+            });
+          }
+        });
+    }
+  });
+}
+
+  getIp() {
+    throw new Error('Method not implemented.');
+  }
+
   GeneratePDF() {
     let reports: any = [];
     let data: any = [];

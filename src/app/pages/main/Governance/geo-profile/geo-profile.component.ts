@@ -37,7 +37,7 @@ export class GeoProfileComponent implements OnInit {
     private gmap: MunCityLocService,
     private auth: AuthService,
     private modifyService: ModifyCityMunService,
-    private SourceService: SourceService
+    private SourceService: SourceService,
   ) {}
   modifyCityMun(cityMunName: string) {
     return this.modifyService.ModifyText(cityMunName);
@@ -141,7 +141,7 @@ export class GeoProfileComponent implements OnInit {
 
     this.SourceService.updateSource(
       this.selectedSourceId,
-      this.newSource
+      this.newSource,
     ).subscribe({
       next: () => {
         this.getSources();
@@ -186,7 +186,7 @@ export class GeoProfileComponent implements OnInit {
             Swal.fire(
               'Error',
               `Failed to delete source.\n${error.message || error}`,
-              'error'
+              'error',
             );
           },
         });
@@ -263,6 +263,91 @@ export class GeoProfileComponent implements OnInit {
       },
       complete: () => {},
     });
+  }
+  importMethod2() {
+  this.showOverlay = true;
+
+  this.service.ImportBrgy().subscribe({
+    next: (res: any) => {
+      this.Init(); 
+      this.showOverlay = false;
+
+      const importedCount = res?.importedCount || 0;
+      const skippedBrgys = res?.skippedBarangays || [];
+
+      if (importedCount > 0 && skippedBrgys.length > 0) {
+       
+        const brgyListHtml = skippedBrgys.map((b: string) => `<li><b>${b}</b></li>`).join('');
+        
+        Swal.fire({
+          icon: 'warning',
+          title: 'Import Partial Success',
+          html: `
+            <div class="text-left">
+              <p class="text-success mb-2">✓ Successfully imported data for <b>${importedCount}</b> barangay(s).</p>
+              <hr>
+              <p class="text-danger mb-1"><b>Skipped / Already Encoded:</b></p>
+              <p class="text-muted small">These barangays already have a manual entry for the active year, so they were not overwritten.</p>
+              <ul style="max-height: 150px; overflow-y: auto; padding-left: 20px;">
+                ${brgyListHtml}
+              </ul>
+            </div>
+          `,
+          confirmButtonColor: '#3085d6'
+        });
+      } 
+      else if (importedCount > 0 && skippedBrgys.length === 0) {
+        
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'success',
+          title: 'All barangays imported successfully!',
+          showConfirmButton: false,
+          timer: 3500
+        });
+      } 
+      else if (importedCount === 0 && skippedBrgys.length > 0) {
+        
+        const brgyListHtml = skippedBrgys.map((b: string) => `<li><b>${b}</b></li>`).join('');
+        
+        Swal.fire({
+          icon: 'info',
+          title: 'No Data Imported',
+          html: `
+            <div class="text-left">
+              <p>All barangays already have encoded data for the active year.</p>
+              <hr>
+              <p class="text-danger mb-1"><b>List of Encoded Barangays:</b></p>
+              <ul style="max-height: 150px; overflow-y: auto; padding-left: 20px;">
+                ${brgyListHtml}
+              </ul>
+            </div>
+          `,
+          confirmButtonColor: '#3085d6'
+        });
+      }
+    },
+    error: (error) => {
+      this.showOverlay = false;
+      Swal.fire({
+        icon: 'error',
+        title: 'Something went wrong',
+        text: 'Please check your connection or contact administrative support.'
+      });
+    }
+  });
+}
+  hasImportedData(): boolean {
+    if (!this.listData || this.listData.length === 0) {
+      return false;
+    }
+
+    
+    return this.listData.some(
+      (item: { year: any; totalLandArea: any; noPurok: any }) =>
+        item.year || item.totalLandArea || item.noPurok,
+    );
   }
   handleOnTabChange(isPhyGeoBrgy: boolean) {
     this.isPhyGeoBrgy = isPhyGeoBrgy;
@@ -601,7 +686,7 @@ export class GeoProfileComponent implements OnInit {
       error: (error) => {},
       complete: () => {
         this.munCity = this.MunLoc.find(
-          (a: { munCityId: any }) => a.munCityId == this.auth.munCityId
+          (a: { munCityId: any }) => a.munCityId == this.auth.munCityId,
         );
         // this.SetMarker(this.munCity);
         // console.log(this.munCity);
@@ -614,7 +699,7 @@ export class GeoProfileComponent implements OnInit {
       Swal.fire(
         'Missing Data!',
         'Please fill out the required fields',
-        'warning'
+        'warning',
       );
     } else {
       this.data.munCityId = this.auth.munCityId;
@@ -622,7 +707,7 @@ export class GeoProfileComponent implements OnInit {
       this.service.AddPhyGeoBrgy(this.data).subscribe({
         next: (request) => {
           let index = this.listData.findIndex(
-            (obj: any) => obj.brgyId === this.data.brgyId
+            (obj: any) => obj.brgyId === this.data.brgyId,
           );
           this.listData[index] = request;
         },
@@ -754,7 +839,7 @@ export class GeoProfileComponent implements OnInit {
       Swal.fire(
         'Missing Data!',
         'Please fill out the required fields',
-        'warning'
+        'warning',
       );
     } else {
       this.geo.munCityId = this.auth.munCityId;
@@ -769,7 +854,7 @@ export class GeoProfileComponent implements OnInit {
           Swal.fire('ERROR!', 'Error', 'error');
           this.geo = {};
           this.Init();
-        }
+        },
       );
     }
   }
@@ -850,7 +935,7 @@ export class GeoProfileComponent implements OnInit {
       Swal.fire(
         'Missing Data!',
         'Please fill out the required fields',
-        'warning'
+        'warning',
       );
     } else {
       if (

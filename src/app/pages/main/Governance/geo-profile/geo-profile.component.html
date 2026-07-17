@@ -649,6 +649,32 @@
                 </div>
                 <!--------------------PhyGeoBrgy--------------------------------------->
                 <div class="table-responsive" *ngIf="!isPhyGeoBrgy">
+                  <br>
+                  <div
+                    class="mb-3 d-flex justify-content-start align-items-center"
+                  >
+                    <app-admin>
+                      <button
+                        type="button"
+                        class="btn btn-primary d-inline-flex align-items-center"
+                        (click)="importMethod2()"
+                        [disabled]="showOverlay || hasImportedData()"
+                      >
+                        <i class="fa fa-download mr-2" *ngIf="!showOverlay"></i>
+                        <i
+                          class="fa fa-spinner fa-spin mr-2"
+                          *ngIf="showOverlay"
+                        ></i>
+                        {{
+                          hasImportedData()
+                            ? "Data Already Imported"
+                            : showOverlay
+                              ? "Importing Data..."
+                              : "Import Previous Year Data"
+                        }}
+                      </button>
+                    </app-admin>
+                  </div>
                   <table class="table table-framed table-hover table-striped">
                     <thead class="table-dark">
                       <tr>
